@@ -145,16 +145,27 @@
   <ItemGroup>
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\CCreeper_2.h" />
     <ClInclude Include="..\public\Client_Defines.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
+    <ClInclude Include="..\public\Creeper.h" />
+    <ClInclude Include="..\public\Creeper_Body.h" />
+    <ClInclude Include="..\public\Creeper_Foot.h" />
+    <ClInclude Include="..\public\Creeper_Head.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
+    <ClInclude Include="..\public\Level_HERO.h" />
+    <ClInclude Include="..\public\Level_Hyeok.h" />
     <ClInclude Include="..\public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
+    <ClInclude Include="..\public\Level_TOOL.h" />
+    <ClInclude Include="..\public\Level_WOO.h" />
+    <ClInclude Include="..\public\Level_YU.h" />
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Level_Moo.h" />
     <ClInclude Include="MainApp.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -162,13 +173,24 @@
   <ItemGroup>
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
+    <ClCompile Include="..\private\Creeper.cpp" />
+    <ClCompile Include="..\private\Creeper_2.cpp" />
+    <ClCompile Include="..\private\Creeper_Body.cpp" />
+    <ClCompile Include="..\private\Creeper_Foot.cpp" />
+    <ClCompile Include="..\private\Creeper_Head.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />
+    <ClCompile Include="..\private\Level_HERO.cpp" />
+    <ClCompile Include="..\private\Level_Hyeok.cpp" />
     <ClCompile Include="..\private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
+    <ClCompile Include="..\private\Level_TOOL.cpp" />
+    <ClCompile Include="..\private\Level_WOO.cpp" />
+    <ClCompile Include="..\private\Level_YU.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Level_Moo.cpp" />
     <ClCompile Include="MainApp.cpp" />
   </ItemGroup>
   <ItemGroup>

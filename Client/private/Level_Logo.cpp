@@ -26,6 +26,49 @@ void CLevel_Logo::Update(_float fTimeDelta)
 			return;
 	}
 
+	if (GetKeyState(VK_F1) & 0x8000)
+	{
+		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_MOO))))
+			return;
+	}
+
+	if (GetKeyState(VK_F2) & 0x8000)
+	{
+		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_HYEOK))))
+			return;
+	}
+
+	if (GetKeyState(VK_F3) & 0x8000)
+	{
+		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_HERO))))
+			return;
+	}
+
+	if (GetKeyState(VK_F4) & 0x8000)
+	{
+		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_WOO))))
+			return;
+	}
+
+	if (GetKeyState(VK_F5) & 0x8000)
+	{ 
+		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_YU))))
+			return;
+	}
+
+	if (GetKeyState(VK_F11) & 0x8000)
+	{
+		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_TOOL))))
+			return;
+	}
+
+
 }
 
 HRESULT CLevel_Logo::Render()

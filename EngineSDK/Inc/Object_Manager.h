@@ -20,6 +20,7 @@ public:
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);
 	void Clear(_uint iLevelIndex);
+	class CGameObject* Find_Objects(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
 private:	
 	_uint								m_iNumLevels = {};
 	map<const _wstring, class CLayer*>* m_pLayers = { nullptr };

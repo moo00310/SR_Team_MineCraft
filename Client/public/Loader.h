@@ -43,6 +43,12 @@ private:
 public:
 	HRESULT Loading_For_Logo();
 	HRESULT Loading_For_GamePlay();
+	HRESULT Loading_For_MOOPlay();
+	HRESULT Loading_For_YUPlay();
+	HRESULT Loading_For_HEROPlay();
+	HRESULT Loading_For_WOOPlay();
+	HRESULT Loading_For_HECKPlay();
+	HRESULT Loading_For_TOOL();
 
 
 public:
