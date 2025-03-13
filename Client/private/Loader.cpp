@@ -19,6 +19,7 @@
   지형 관련
 */
 #include "Dirt.h"
+#include "MCTerrain.h"
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -289,6 +290,10 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
 		CDirt::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MCTerrain"),
+		CMCTerrain::Create(m_pGraphic_Device, 10,10,20))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

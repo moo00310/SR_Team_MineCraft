@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "BreakableCube.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -27,16 +28,14 @@ public:
 	virtual HRESULT Render()override;
 
 private:
-	CTexture*				m_pTextureCom = { nullptr };
-	CTransform*				m_pTransformCom = { nullptr };
-	CVIBuffer_Cube*		m_pVIBufferCom = { nullptr };
-
-private:
-	HRESULT Ready_Components();
+	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
 	
-
+private:
+	int m_iMapX;
+	int m_iMapY;
+	int m_iMapZ;
 public:
-	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device, int iMapX, int iMapY, int iMapZ);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

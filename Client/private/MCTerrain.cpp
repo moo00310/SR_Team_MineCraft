@@ -1,5 +1,6 @@
-#include "MCTerrain.h"
+Ôªø#include "MCTerrain.h"
 #include "GameInstance.h"
+#include "Dirt.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -8,7 +9,10 @@ CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CMCTerrain::CMCTerrain(const CMCTerrain& Prototype)
-    : CGameObject { Prototype }
+	: CGameObject(Prototype),
+	m_iMapX(Prototype.m_iMapX), 
+	m_iMapY(Prototype.m_iMapY),
+	m_iMapZ(Prototype.m_iMapZ)
 {
 
 }
@@ -20,7 +24,7 @@ HRESULT CMCTerrain::Initialize_Prototype()
 
 HRESULT CMCTerrain::Initialize(void* pArg)
 {
-	if (FAILED(Ready_Components()))
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
     return S_OK;
@@ -45,49 +49,45 @@ void CMCTerrain::Late_Update(_float fTimeDelta)
 HRESULT CMCTerrain::Render()
 {
 
-	if (FAILED(m_pTransformCom->Bind_Resource()))
-		return E_FAIL;
-
-	if (FAILED(m_pTextureCom->Bind_Resource(0)))
-		return E_FAIL;
-
-	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-		return E_FAIL;
-
-	/* ¡§¡°¿ª ±◊∏∞¥Ÿ. */
-	if (FAILED(m_pVIBufferCom->Render()))
-		return E_FAIL;
-
-	
-
     return S_OK;
 }
 
-HRESULT CMCTerrain::Ready_Components()
+HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
-		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
+	//2Ï∞®Ïõê 
+	/*
+		for (int i = 0; i < m_iMapX; ++i) {
+		for (int j = 0; j < m_iMapZ; ++j) {
+			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
+				LEVEL_YU, strLayerTag)))
+				return E_FAIL;
 
-	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-		return E_FAIL;
-
-	/* For.Com_Transform */
-	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f)};
-
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
-		return E_FAIL;
+			_float3 temp = { (float)j,0.f, (float)i };
+			dynamic_cast<CDirt*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_BackGround"), i * m_iMapZ + j))->SetPos(temp);
+		}
+	}
+	*/
 
 
+	// 3Ï∞®Ïõê
+	for (int i = 0; i < m_iMapY; ++i) {  // YÏ∂ïÏù¥ ÎÜíÏù¥
+		for (int j = 0; j < m_iMapX; ++j) {  // XÏ∂ï
+			for (int k = 0; k < m_iMapZ; ++k) {  // ZÏ∂ï
+				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
+					LEVEL_YU, strLayerTag)))
+					return E_FAIL;
+
+				
+				_float3 temp = { (float)j,(float)i,(float)k };
+				dynamic_cast<CDirt*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_BackGround"), (i * m_iMapX * m_iMapZ) + (j * m_iMapZ) + k))->SetPos(temp);
+			}
+		}
+	}
 
 	return S_OK;
 }
 
-CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device, int iMapX, int iMapY, int iMapZ)
 {
 	CMCTerrain* pInstance = new CMCTerrain(pGraphic_Device);
 
@@ -96,6 +96,10 @@ CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 		MSG_BOX("Failed to Created : CTerrain");
 		Safe_Release(pInstance);
 	}
+
+	pInstance->m_iMapX = iMapX;
+	pInstance->m_iMapY = iMapY;
+	pInstance->m_iMapZ = iMapZ;
 
 	return pInstance;
 }
@@ -117,8 +121,5 @@ void CMCTerrain::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pVIBufferCom);	
-	Safe_Release(m_pTextureCom);
 
 }

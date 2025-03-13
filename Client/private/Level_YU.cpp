@@ -12,7 +12,7 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -39,9 +39,9 @@ HRESULT CLevel_YU::Ready_Layer_Camera(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_YU::Ready_Layer_BackGround(const _wstring& strLayerTag)
+HRESULT CLevel_YU::Ready_Layer_Terrain(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MCTerrain"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
