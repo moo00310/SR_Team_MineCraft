@@ -31,14 +31,14 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(CUBE& tInfo)
 
     _float3 VertInex[8] =
     {
-        {_float3(fBoxSize.x / 24 * -0.5f,   fBoxSize.y / 24 * +0.5f,  fBoxSize.z / 24 * -0.5f)},
-        {_float3(fBoxSize.x / 24 * -0.5f,   fBoxSize.y / 24 * -0.5f,  fBoxSize.z / 24 * -0.5f)},
-        {_float3(fBoxSize.x / 24 *  0.5f,   fBoxSize.y / 24 * -0.5f,  fBoxSize.z / 24 * -0.5f)},
-        {_float3(fBoxSize.x / 24 * 0.5f,    fBoxSize.y / 24 * 0.5f,   fBoxSize.z / 24 * -0.5f)},
-        {_float3(fBoxSize.x / 24 * -0.5f,   fBoxSize.y / 24 * 0.5f,   fBoxSize.z / 24 * 0.5f)},
-        {_float3(fBoxSize.x / 24 * -0.5f,   fBoxSize.y / 24 * -0.5f,  fBoxSize.z / 24 * 0.5f)},
-        {_float3(fBoxSize.x / 24 * 0.5f,    fBoxSize.y / 24 * -0.5f,  fBoxSize.z / 24 * 0.5f)},
-        {_float3(fBoxSize.x / 24 * 0.5f,    fBoxSize.y / 24 * 0.5f,   fBoxSize.z / 24 * 0.5f)},
+        {_float3(fBoxSize.x / 16 * -0.5f,   fBoxSize.y / 16 * +0.5f,  fBoxSize.z / 16 * -0.5f)},
+        {_float3(fBoxSize.x / 16 * -0.5f,   fBoxSize.y / 16 * -0.5f,  fBoxSize.z / 16 * -0.5f)},
+        {_float3(fBoxSize.x / 16 *  0.5f,   fBoxSize.y / 16 * -0.5f,  fBoxSize.z / 16 * -0.5f)},
+        {_float3(fBoxSize.x / 16 * 0.5f,    fBoxSize.y / 16 * 0.5f,   fBoxSize.z / 16 * -0.5f)},
+        {_float3(fBoxSize.x / 16 * -0.5f,   fBoxSize.y / 16 * 0.5f,   fBoxSize.z / 16 * 0.5f)},
+        {_float3(fBoxSize.x / 16 * -0.5f,   fBoxSize.y / 16 * -0.5f,  fBoxSize.z / 16 * 0.5f)},
+        {_float3(fBoxSize.x / 16 * 0.5f,    fBoxSize.y / 16 * -0.5f,  fBoxSize.z / 16 * 0.5f)},
+        {_float3(fBoxSize.x / 16 * 0.5f,    fBoxSize.y / 16 * 0.5f,   fBoxSize.z / 16 * 0.5f)},
     };
 
 

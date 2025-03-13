@@ -3,10 +3,11 @@
 
 #include "Client_Defines.h"
 #include "Cube.h"
+#include "Transform.h"
 
 class CBreakableCube : public CCube
 {
-protected:
+public:
 	CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CBreakableCube(const CBreakableCube& Prototype);
 	virtual ~CBreakableCube() = default;
@@ -18,6 +19,10 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
+
+public:
+	void SetPos(_float3 v3) { m_pTransformCom->Set_State(CTransform::STATE_POSITION, v3); }
+
 protected:
 	HRESULT Ready_Components();
 
