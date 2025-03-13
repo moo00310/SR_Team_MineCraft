@@ -82,6 +82,9 @@
     <ClInclude Include="..\Public\VIBuffer_Cube.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Collider_Cube.h">
+      <Filter>04.Components\Collider\Collider_Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -156,6 +159,12 @@
     <Filter Include="02.GameObject\UIObject">
       <UniqueIdentifier>{ca1b37c0-851b-4920-b166-7d1b22ab39c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Components\Collider">
+      <UniqueIdentifier>{ac333ff8-526e-4a4d-91e7-5521671771af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\Collider\Collider_Cube">
+      <UniqueIdentifier>{c4c3a07f-c4f1-49ab-97d7-33867f0aa987}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -220,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp">
       <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider_Cube.cpp">
+      <Filter>04.Components\Collider\Collider_Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
