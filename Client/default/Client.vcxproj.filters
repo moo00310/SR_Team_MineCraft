@@ -67,6 +67,12 @@
     <Filter Include="01.Levels\95.Huck_Level">
       <UniqueIdentifier>{5e2cb000-7faa-4a12-9278-93b6fd4b74f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="100.Imgui">
+      <UniqueIdentifier>{358cf3bf-282b-49f9-9823-cbcd4151d38f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Tool">
+      <UniqueIdentifier>{8dd9bcae-8454-402f-a09d-f9a622e50806}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -147,6 +153,33 @@
     <ClInclude Include="..\public\Level_HERO.h">
       <Filter>01.Levels\96.Hero_Level</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Imgui\imgui.h">
+      <Filter>100.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Imgui\imgui_impl_dx9.h">
+      <Filter>100.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Imgui\imgui_impl_win32.h">
+      <Filter>100.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Imgui\imgui_internal.h">
+      <Filter>100.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Imgui\imstb_rectpack.h">
+      <Filter>100.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Imgui\imstb_textedit.h">
+      <Filter>100.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Imgui\imstb_truetype.h">
+      <Filter>100.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Imgui\imconfig.h">
+      <Filter>100.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tool.h">
+      <Filter>02.GameObjects\Tool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -224,6 +257,30 @@
     </ClCompile>
     <ClCompile Include="..\private\Level_TOOL.cpp">
       <Filter>01.Levels\100.Tool_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Imgui\imgui.cpp">
+      <Filter>100.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Imgui\imgui_demo.cpp">
+      <Filter>100.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Imgui\imgui_draw.cpp">
+      <Filter>100.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Imgui\imgui_impl_dx9.cpp">
+      <Filter>100.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Imgui\imgui_impl_win32.cpp">
+      <Filter>100.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Imgui\imgui_tables.cpp">
+      <Filter>100.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Imgui\imgui_widgets.cpp">
+      <Filter>100.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tool.cpp">
+      <Filter>02.GameObjects\Tool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,8 @@
 #include "Terrain.h"
 #include "player.h"
 
+#include "Tool.h"
+
 /*
 * 크리퍼 테스트 용
 */
@@ -421,6 +423,11 @@ HRESULT CLoader::Loading_For_TOOL()
 	/* For.Prototype_GameObject_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tool */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Tool"),
+		CTool::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

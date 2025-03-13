@@ -1,3 +1,9 @@
+#include "imgui.h"
+#include "imgui_impl_dx9.h"
+#include "imgui_impl_win32.h"
+#include <d3d9.h>
+#include <tchar.h>
+
 #include "MainApp.h"
 #include "GameInstance.h"
 
@@ -31,6 +37,17 @@ HRESULT CMainApp::Initialize()
 	/* 최초 보여줄 레벨을 할당하자. */
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplWin32_Init(g_hWnd);
+	ImGui_ImplDX9_Init(m_pGraphic_Device);
 	
 
 	return S_OK;
@@ -121,6 +138,11 @@ CMainApp* CMainApp::Create()
 void CMainApp::Free()
 {
 	__super::Free();
+
+	// Cleanup
+	ImGui_ImplDX9_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
 
 	Safe_Release(m_pGraphic_Device);
 

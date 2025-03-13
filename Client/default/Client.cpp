@@ -1,5 +1,9 @@
 ﻿// Client.cpp : 애플리케이션에 대한 진입점을 정의합니다.
-//
+#include "imgui.h"
+#include "imgui_impl_dx9.h"
+#include "imgui_impl_win32.h"
+#include <d3d9.h>
+#include <tchar.h>
 
 #include "framework.h"
 #include "Client.h"
@@ -180,8 +184,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam);
+
     switch (message)
     {
     case WM_COMMAND:
