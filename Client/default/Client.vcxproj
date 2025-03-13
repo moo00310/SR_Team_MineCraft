@@ -144,14 +144,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\CCreeper_2.h" />
+    <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\Client_Defines.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Creeper.h" />
     <ClInclude Include="..\public\Creeper_Body.h" />
     <ClInclude Include="..\public\Creeper_Foot.h" />
     <ClInclude Include="..\public\Creeper_Head.h" />
+    <ClInclude Include="..\public\Dirt.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
     <ClInclude Include="..\public\Level_HERO.h" />
     <ClInclude Include="..\public\Level_Hyeok.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="..\public\Level_WOO.h" />
     <ClInclude Include="..\public\Level_YU.h" />
     <ClInclude Include="..\public\Loader.h" />
+    <ClInclude Include="..\public\MCTerrain.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="Client.h" />
@@ -172,12 +176,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\BackGround.cpp" />
+    <ClCompile Include="..\private\BreakableCube.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
+    <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
     <ClCompile Include="..\private\Creeper_2.cpp" />
     <ClCompile Include="..\private\Creeper_Body.cpp" />
     <ClCompile Include="..\private\Creeper_Foot.cpp" />
     <ClCompile Include="..\private\Creeper_Head.cpp" />
+    <ClCompile Include="..\private\Dirt.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />
     <ClCompile Include="..\private\Level_HERO.cpp" />
     <ClCompile Include="..\private\Level_Hyeok.cpp" />
@@ -187,6 +194,7 @@
     <ClCompile Include="..\private\Level_WOO.cpp" />
     <ClCompile Include="..\private\Level_YU.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
+    <ClCompile Include="..\private\MCTerrain.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="Client.cpp" />
