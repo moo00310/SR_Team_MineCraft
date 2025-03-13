@@ -65,7 +65,7 @@
       <Filter>04.Components\VIBuffer\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Transform.h">
-      <Filter>04.Components\Transform</Filter>
+      <Filter>04.Components\Texture\Transform</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Timer.h">
       <Filter>05.Timers</Filter>
@@ -81,6 +81,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cube.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\FastNoiseLite.h">
+      <Filter>99.Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +144,6 @@
     <Filter Include="04.Components\VIBuffer\Terrain">
       <UniqueIdentifier>{688c68fb-dda6-432a-bcbf-b68cb6fec7bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Components\Transform">
-      <UniqueIdentifier>{e6f09916-b879-4da9-af31-206b538ecd54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.Timers">
       <UniqueIdentifier>{97f5d22b-91e8-48e5-9a75-38182d68917a}</UniqueIdentifier>
     </Filter>
@@ -155,6 +155,9 @@
     </Filter>
     <Filter Include="02.GameObject\UIObject">
       <UniqueIdentifier>{ca1b37c0-851b-4920-b166-7d1b22ab39c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\Texture\Transform">
+      <UniqueIdentifier>{e6f09916-b879-4da9-af31-206b538ecd54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -204,7 +207,7 @@
       <Filter>04.Components\VIBuffer\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Transform.cpp">
-      <Filter>04.Components\Transform</Filter>
+      <Filter>04.Components\Texture\Transform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Timer.cpp">
       <Filter>05.Timers</Filter>

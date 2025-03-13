@@ -150,6 +150,7 @@
     <ClInclude Include="..\Public\Engine_Macro.h" />
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
+    <ClInclude Include="..\Public\FastNoiseLite.h" />
     <ClInclude Include="..\public\GameInstance.h" />
     <ClInclude Include="..\public\GameObject.h" />
     <ClInclude Include="..\Public\Graphic_Device.h" />

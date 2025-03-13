@@ -12,9 +12,6 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
@@ -42,21 +39,9 @@ HRESULT CLevel_YU::Ready_Layer_Camera(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_YU::Ready_Layer_Player(const _wstring& strLayerTag)
-{
-	for (size_t i = 0; i < 50; i++)
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Player"),
-			LEVEL_YU, strLayerTag)))
-			return E_FAIL;
-	}
-	
-
-	return S_OK;
-}
 HRESULT CLevel_YU::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Terrain"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 

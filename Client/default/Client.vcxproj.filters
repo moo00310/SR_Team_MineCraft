@@ -61,11 +61,23 @@
     <Filter Include="01.Levels\96.Hero_Level">
       <UniqueIdentifier>{0fddaa52-c229-4143-bb33-658575395b07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\97.Yoo_Level">
-      <UniqueIdentifier>{7a1c36c3-72e4-420c-977f-871f02cb77a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\95.Huck_Level">
       <UniqueIdentifier>{5e2cb000-7faa-4a12-9278-93b6fd4b74f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\97.Yu_Level">
+      <UniqueIdentifier>{7a1c36c3-72e4-420c-977f-871f02cb77a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.YUGameObj">
+      <UniqueIdentifier>{94f75442-4443-4798-94a7-e6320d1b41ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Cube">
+      <UniqueIdentifier>{f69e9ec9-7769-4022-a924-c73c6795056c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Cube\BreakableCube">
+      <UniqueIdentifier>{0488b03f-b5b7-40b8-8574-6c042e114251}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.EnvironmentCube">
+      <UniqueIdentifier>{36d3484c-9877-44fd-9f1d-2faf9ee790fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,7 +148,7 @@
       <Filter>01.Levels\100.Tool_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_YU.h">
-      <Filter>01.Levels\97.Yoo_Level</Filter>
+      <Filter>01.Levels\97.Yu_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_WOO.h">
       <Filter>01.Levels\98.Woo_Level</Filter>
@@ -146,6 +158,18 @@
     </ClInclude>
     <ClInclude Include="..\public\Level_HERO.h">
       <Filter>01.Levels\96.Hero_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MCTerrain.h">
+      <Filter>02.GameObjects\99.YUGameObj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Cube.h">
+      <Filter>02.GameObjects\00.Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BreakableCube.h">
+      <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Dirt.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -220,10 +244,22 @@
       <Filter>01.Levels\98.Woo_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_YU.cpp">
-      <Filter>01.Levels\97.Yoo_Level</Filter>
+      <Filter>01.Levels\97.Yu_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_TOOL.cpp">
       <Filter>01.Levels\100.Tool_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MCTerrain.cpp">
+      <Filter>02.GameObjects\99.YUGameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Cube.cpp">
+      <Filter>02.GameObjects\00.Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BreakableCube.cpp">
+      <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Dirt.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

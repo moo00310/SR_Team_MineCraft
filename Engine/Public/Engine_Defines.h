@@ -17,6 +17,8 @@ using namespace std;
 #include "Engine_Typedef.h"
 #include "Engine_Macro.h"
 
+#include "FastNoiseLite.h"
+
 using namespace Engine;
 
 
