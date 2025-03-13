@@ -5,6 +5,13 @@
 #include "Level_Logo.h"
 #include "Loader.h"
 
+#include "Level_Moo.h"
+#include "Level_Hero.h"
+#include "Level_Woo.h"
+#include "Level_YU.h"
+#include "Level_Hyeok.h"
+#include "Level_Tool.h"
+
 #include "GameInstance.h"
 
 CLevel_Loading::CLevel_Loading(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -29,6 +36,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 	return S_OK;
 }
 
+
 void CLevel_Loading::Update(_float fTimeDelta)
 {
 
@@ -46,6 +54,31 @@ void CLevel_Loading::Update(_float fTimeDelta)
 			case LEVEL_GAMEPLAY:
 				pLevel = CLevel_GamePlay::Create(m_pGraphic_Device);
 				break;
+
+			case LEVEL_MOO:
+				pLevel = CLevel_Moo::Create(m_pGraphic_Device);
+				break;
+
+			case LEVEL_HERO:
+				pLevel = CLevel_HERO::Create(m_pGraphic_Device);
+				break;
+
+			case LEVEL_WOO:
+				pLevel = CLevel_WOO::Create(m_pGraphic_Device);
+				break;
+
+			case LEVEL_YU:
+				pLevel = CLevel_YU::Create(m_pGraphic_Device);
+				break;
+
+			case LEVEL_HYEOK:
+				pLevel = CLevel_Hyeok::Create(m_pGraphic_Device);
+				break;
+
+			case LEVEL_TOOL:
+				pLevel = CLevel_TOOL::Create(m_pGraphic_Device);
+				break;
+
 			}
 
 			if (nullptr == pLevel)

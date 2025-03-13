@@ -13,18 +13,6 @@
     <Filter Include="01.Levels">
       <UniqueIdentifier>{41256f5c-82f1-4be2-a738-7bf24b49e419}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\Logo">
-      <UniqueIdentifier>{a926e41f-b171-4b7c-90c8-605be1a166f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\Loading">
-      <UniqueIdentifier>{cd6f1077-a658-4259-ad08-ca7b827e1e50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\Loading\Loader">
-      <UniqueIdentifier>{a4567c73-3efb-4ce1-a29b-da4945a9cb93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\GamePlay">
-      <UniqueIdentifier>{efb49076-2627-4a87-abf5-c51f865b5c61}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{fc197735-46d5-4551-ad66-96d8601cef85}</UniqueIdentifier>
     </Filter>
@@ -42,6 +30,42 @@
     </Filter>
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{16d06422-a5ba-4e2c-af8a-628d2d2a5dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\02.GamePlay">
+      <UniqueIdentifier>{efb49076-2627-4a87-abf5-c51f865b5c61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\01.Logo">
+      <UniqueIdentifier>{a926e41f-b171-4b7c-90c8-605be1a166f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\00.Loading">
+      <UniqueIdentifier>{cd6f1077-a658-4259-ad08-ca7b827e1e50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\00.Loading\Loader">
+      <UniqueIdentifier>{a4567c73-3efb-4ce1-a29b-da4945a9cb93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj">
+      <UniqueIdentifier>{cc9af935-1bfa-41fe-b2fb-a606983dd2eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\Creeper">
+      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\98.Woo_Level">
+      <UniqueIdentifier>{1c9b8337-13a5-45f4-9928-2e9fabb769ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\99.Moo_Level">
+      <UniqueIdentifier>{512437dd-cba9-4bf3-90d1-66f662014dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\100.Tool_Level">
+      <UniqueIdentifier>{f3ef3871-2c1e-4094-a3e4-0d46527dd77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\96.Hero_Level">
+      <UniqueIdentifier>{0fddaa52-c229-4143-bb33-658575395b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\97.Yoo_Level">
+      <UniqueIdentifier>{7a1c36c3-72e4-420c-977f-871f02cb77a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\95.Huck_Level">
+      <UniqueIdentifier>{5e2cb000-7faa-4a12-9278-93b6fd4b74f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -67,16 +91,16 @@
       <Filter>99.Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_Logo.h">
-      <Filter>01.Levels\Logo</Filter>
+      <Filter>01.Levels\01.Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_Loading.h">
-      <Filter>01.Levels\Loading</Filter>
+      <Filter>01.Levels\00.Loading</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Loader.h">
-      <Filter>01.Levels\Loading\Loader</Filter>
+      <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_GamePlay.h">
-      <Filter>01.Levels\GamePlay</Filter>
+      <Filter>01.Levels\02.GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
       <Filter>02.GameObjects\BackGround</Filter>
@@ -89,6 +113,39 @@
     </ClInclude>
     <ClInclude Include="..\public\Player.h">
       <Filter>02.GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Level_Moo.h">
+      <Filter>01.Levels\99.Moo_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Creeper_Head.h">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Creeper.h">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Creeper_Body.h">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Creeper_Foot.h">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CCreeper_2.h">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_TOOL.h">
+      <Filter>01.Levels\100.Tool_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_YU.h">
+      <Filter>01.Levels\97.Yoo_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_WOO.h">
+      <Filter>01.Levels\98.Woo_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_Hyeok.h">
+      <Filter>01.Levels\95.Huck_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Level_HERO.h">
+      <Filter>01.Levels\96.Hero_Level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -112,16 +169,16 @@
       <Filter>00.MainApp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Logo.cpp">
-      <Filter>01.Levels\Logo</Filter>
+      <Filter>01.Levels\01.Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Loading.cpp">
-      <Filter>01.Levels\Loading</Filter>
+      <Filter>01.Levels\00.Loading</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Loader.cpp">
-      <Filter>01.Levels\Loading\Loader</Filter>
+      <Filter>01.Levels\00.Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_GamePlay.cpp">
-      <Filter>01.Levels\GamePlay</Filter>
+      <Filter>01.Levels\02.GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
       <Filter>02.GameObjects\BackGround</Filter>
@@ -134,6 +191,39 @@
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
       <Filter>02.GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Level_Moo.cpp">
+      <Filter>01.Levels\99.Moo_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Creeper.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Creeper_2.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Creeper_Body.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Creeper_Foot.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Creeper_Head.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Hyeok.cpp">
+      <Filter>01.Levels\95.Huck_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_HERO.cpp">
+      <Filter>01.Levels\96.Hero_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_WOO.cpp">
+      <Filter>01.Levels\98.Woo_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_YU.cpp">
+      <Filter>01.Levels\97.Yoo_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_TOOL.cpp">
+      <Filter>01.Levels\100.Tool_Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

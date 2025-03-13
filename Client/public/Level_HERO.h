@@ -1,0 +1,29 @@
+#pragma once
+
+#include "Client_Defines.h"
+#include "Level.h"
+
+BEGIN(Client)
+
+class CLevel_HERO final : public CLevel
+{
+private:
+	CLevel_HERO(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual ~CLevel_HERO() = default;
+
+public:
+	virtual HRESULT Initialize() override;
+	virtual void Update(_float fTimeDelta) override;
+	virtual HRESULT Render() override;
+
+private:
+	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_Player(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
+
+public:
+	static CLevel_HERO* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual void Free() override;
+};
+
+END

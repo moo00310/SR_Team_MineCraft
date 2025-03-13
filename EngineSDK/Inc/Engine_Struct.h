@@ -18,4 +18,12 @@ namespace Engine
 		D3DXVECTOR3		vPosition;
 		D3DXVECTOR2		vTexcoord;	
 	}VTXPOSTEX;
+
+	typedef struct tagCreateCube
+	{
+		D3DXVECTOR2 Imagesize;
+		D3DXVECTOR3 BoxSIze;
+		D3DXVECTOR2 Pixelpos;
+
+	}CUBE;
 }
