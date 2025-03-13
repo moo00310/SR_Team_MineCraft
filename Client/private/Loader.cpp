@@ -17,6 +17,9 @@
 #include "Creeper_Head.h"
 #include "Creeper_Foot.h"
 
+//HERO
+#include "HeroCube.h" //콜라이더 테스트용 큐브
+
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -300,8 +303,19 @@ HRESULT CLoader::Loading_For_HEROPlay()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
+	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
+	/* For.Prototype_Component_CCollider_Cube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+		CCollider_Cube::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	/* For.Prototype_Component_VIBuffer_Cube */
+	CUBE tCube{ _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, tCube))))
+		return E_FAIL;
 
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
@@ -321,6 +335,11 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	/* For.Prototype_GameObject_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_HeroCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCube"),
+		CHeroCube::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

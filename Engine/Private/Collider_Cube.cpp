@@ -204,10 +204,10 @@ HRESULT CCollider_Cube::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CCollider_Cube::Update_ColliderBox(_float4x4 WorldMatrix)
+HRESULT CCollider_Cube::Update_ColliderBox(const _float4x4* WorldMatrix)
 {
 
-	m_StateDesc.StateMatrix = WorldMatrix;
+	m_StateDesc.StateMatrix = *WorldMatrix;
 
 	m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
 	m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);

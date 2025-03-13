@@ -23,7 +23,7 @@ public:
 public:
 	HRESULT Initialize_Prototype();
 	HRESULT Initialize(void* pArg) override;
-	HRESULT Update_ColliderBox(_float4x4 WorldMatrix);
+	HRESULT Update_ColliderBox(const _float4x4* WorldMatrix);
 	HRESULT Render_ColliderBox();
 	_bool	Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance = nullptr);
 

@@ -73,6 +73,9 @@
     <Filter Include="02.GameObjects\Tool">
       <UniqueIdentifier>{8dd9bcae-8454-402f-a09d-f9a622e50806}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj">
+      <UniqueIdentifier>{1d6eeeac-132a-43a9-ba2c-c1c4fb854509}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -180,6 +183,9 @@
     <ClInclude Include="..\public\Tool.h">
       <Filter>02.GameObjects\Tool</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\HeroCube.h">
+      <Filter>02.GameObjects\97.HeroGameObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -281,6 +287,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Tool.cpp">
       <Filter>02.GameObjects\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HeroCube.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
