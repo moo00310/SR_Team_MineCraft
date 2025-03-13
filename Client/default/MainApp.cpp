@@ -4,6 +4,8 @@
 #include "Level_Logo.h"
 #include "Level_Loading.h"
 
+// test push ฟไรป
+
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
 {
