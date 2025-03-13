@@ -8,6 +8,7 @@ const _tchar* CCollider_Cube::m_pTransformTag = TEXT("Com_Transform");
 CCollider_Cube::CCollider_Cube(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent(pGraphic_Device)
 {
+
 }
 
 CCollider_Cube::CCollider_Cube(const CCollider_Cube & rhs)
@@ -111,11 +112,14 @@ HRESULT CCollider_Cube::Initialize_Prototype()
 
 HRESULT CCollider_Cube::Initialize(void * pArg)
 {
-	m_pTransform = CTransform::Create(m_pGraphic_Device);
-	if (m_pTransform == nullptr)
-		return E_FAIL;
+	//m_pTransform = CTransform::Create(m_pGraphic_Device);
 
-	if (pArg != nullptr)
+	//Safe_AddRef(m_pTransform);
+
+	/*if (m_pTransform == nullptr)
+		return E_FAIL;*/
+
+	if (pArg != nullptr) //아규먼트가 있을 때 여기를 들어오는데, 이 차이 밖에 없는데 왜 릴리즈 에러가 터지냐고
 	{
 		memcpy(&m_StateDesc, pArg, sizeof(COLLRECTDESC));
 
@@ -361,7 +365,7 @@ void CCollider_Cube::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTransform);
+	//Safe_Release(m_pTransform);
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
 }

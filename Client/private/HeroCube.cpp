@@ -48,11 +48,12 @@ void CHeroCube::Update(_float fTimeDelta)
 		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
 	}
 
-	//인버스를 인버스...
-	//const _float4x4* pWorldMatrix = ;
-	//D3DXMATRIX World_Matrix = m_pTransformCom->Get_WorldMatrix();
-	//D3DXMatrixInverse(&World_Matrix, nullptr, pWorldMatrix_Inverse);
-	m_pColliderCom->Update_ColliderBox(m_pTransformCom->Get_WorldMatrix());
+	if (FAILED(m_pColliderCom->Update_ColliderBox(m_pTransformCom->Get_WorldMatrix())))
+	{
+		MSG_BOX("Update_ColliderBox()");
+		return;
+	}
+		
 }
 
 void CHeroCube::Late_Update(_float fTimeDelta)
@@ -74,7 +75,8 @@ HRESULT CHeroCube::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	m_pColliderCom->Render_ColliderBox();
+	if (FAILED(m_pColliderCom->Render_ColliderBox()))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -92,9 +94,15 @@ HRESULT CHeroCube::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Collider */
+	CCollider_Cube::COLLRECTDESC Desc{};
+  	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f; //콜라이더 크기 결정(왜 이거를 하면 릴리즈 에러가 나는가)
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom))))
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;
+
+	/*if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom))))
+		return E_FAIL;*/
 
 	/* For.Com_Transform */
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
@@ -136,8 +144,10 @@ void CHeroCube::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pColliderCom);
+	//Safe_Release(m_pGraphic_Device); //안돼 이건 억지야
+
 }

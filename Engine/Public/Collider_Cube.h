@@ -40,7 +40,7 @@ public:
 
 protected:
 	COLLRECTDESC		m_StateDesc;
-	class CTransform*	m_pTransform = nullptr;
+	//class CTransform*	m_pTransform = nullptr;
 	static const _tchar*		m_pTransformTag;
 
 protected:
