@@ -26,4 +26,18 @@ namespace Engine
 		D3DXVECTOR2 Pixelpos;
 
 	}CUBE;
+
+#pragma region Collider_Cube
+	typedef struct tagVertexCubeTexture
+	{
+		D3DXVECTOR3		vPosition;
+		D3DXVECTOR3		vTexture;//텍스쳐가 왜 들어 가는걸까?
+	}VTXCUBETEX;
+
+	typedef struct FaceIndices16//이건 뭐지?
+	{
+		unsigned short _0, _1, _2;
+	}FACEINDICES16;
+#pragma endregion
+
 }
