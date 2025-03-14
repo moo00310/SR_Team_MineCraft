@@ -39,7 +39,17 @@ public:
 	void Set_IsInverse(_bool bIsInverse) { m_bIsInverse = bIsInverse; }
 
 protected:
+
 	COLLRECTDESC		m_StateDesc;
+	//콜라이더가 트랜스폼을 들어야할지 말아야할지 모르겠음
+	//일단 오브젝트한테 정보 받아오는거로 임시로 해놓을 예정
+	D3DXVECTOR3			m_vCenter;
+	D3DXVECTOR3			m_vHalfExtents;
+	D3DXVECTOR3			m_vAxisX;
+	D3DXVECTOR3			m_vAxisY;
+	D3DXVECTOR3			m_vAxisZ;
+private:
+	void Calculate_TransInfo();
 	//class CTransform*	m_pTransform = nullptr;
 	//static const _tchar*		m_pTransformTag;
 

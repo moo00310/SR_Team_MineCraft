@@ -34,14 +34,13 @@ void CHeroCubeNoMove::Priority_Update(_float fTimeDelta)
 
 void CHeroCubeNoMove::Update(_float fTimeDelta)
 {
-	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
-
 	if (FAILED(m_pColliderCom->Update_ColliderBox(m_pTransformCom->Get_WorldMatrix())))
 	{
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
 
+	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
 }
 
 void CHeroCubeNoMove::Late_Update(_float fTimeDelta)
@@ -83,7 +82,7 @@ HRESULT CHeroCubeNoMove::Ready_Components()
 
 	/* For.Com_Collider */
 	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
-	Desc.fRadiusX = 0.2f * (rand() % 10); Desc.fRadiusY = 0.2f * (rand() % 10); Desc.fRadiusZ = 0.2f * (rand() % 10);
+	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;

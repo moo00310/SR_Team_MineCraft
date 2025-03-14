@@ -211,7 +211,6 @@ HRESULT CCollider_Cube::Initialize(void * pArg)
 
 HRESULT CCollider_Cube::Update_ColliderBox(const _float4x4* WorldMatrix)
 {
-
 	m_StateDesc.StateMatrix = *WorldMatrix;
 
 	m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
@@ -237,6 +236,7 @@ HRESULT CCollider_Cube::Update_ColliderBox(const _float4x4* WorldMatrix)
 		D3DXVec3TransformCoord(&m_vPoint[i], &m_vPoint[i], &m_StateDesc.StateMatrix);
 	}
 	
+	Calculate_TransInfo();
 
 	return S_OK;
 }
@@ -282,99 +282,153 @@ HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 
 _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance)
 {
-	if (!pTarget) return false;
+	if (pTarget == nullptr)
+		return false;
 
-	// 각 OBB의 8개의 꼭짓점 위치를 계산합니다.
-	D3DXVECTOR3 vA[8], vB[8];
+	// 각 OBB의 중심, 반 크기, 회전 축(정규화된 벡터) 가져오기
+	D3DXVECTOR3 centerA = this->m_vCenter;
+	D3DXVECTOR3 halfA = this->m_vHalfExtents;
+	D3DXVECTOR3 axesA[3] = { this->m_vAxisX, this->m_vAxisY, this->m_vAxisZ };
 
-	// 자신의 OBB (this)
-	D3DXVECTOR3 vCenterA(this->m_vCenter);  // OBB의 중심
-	D3DXVECTOR3 vHalfExtentsA(this->m_vHalfExtents);  // OBB의 반 크기 (반 길이)
+	D3DXVECTOR3 centerB = pTarget->m_vCenter;
+	D3DXVECTOR3 halfB = pTarget->m_vHalfExtents;
+	D3DXVECTOR3 axesB[3] = { pTarget->m_vAxisX, pTarget->m_vAxisY, pTarget->m_vAxisZ };
 
-	// 타겟 OBB (pTarget)
-	D3DXVECTOR3 vCenterB(pTarget->m_vCenter);
-	D3DXVECTOR3 vHalfExtentsB(pTarget->m_vHalfExtents);
-
-	// OBB의 각 축 (회전, 크기 정보 등) 계산을 위해 방향 벡터가 필요합니다.
-	D3DXVECTOR3 vAxesA[3] = { this->m_vAxisX, this->m_vAxisY, this->m_vAxisZ };
-	D3DXVECTOR3 vAxesB[3] = { pTarget->m_vAxisX, pTarget->m_vAxisY, pTarget->m_vAxisZ };
-
-	// OBB의 8개의 꼭짓점 좌표 계산
+	// OBB의 8개 꼭짓점 계산 (center + 회전행렬 * 오프셋)
+	D3DXVECTOR3 cornersA[8];
 	for (int i = 0; i < 8; ++i)
 	{
-		vA[i] = vCenterA;
-
-		if (i & 1) vA[i].x += vHalfExtentsA.x;
-		else vA[i].x -= vHalfExtentsA.x;
-
-		if (i & 2) vA[i].y += vHalfExtentsA.y;
-		else vA[i].y -= vHalfExtentsA.y;
-
-		if (i & 4) vA[i].z += vHalfExtentsA.z;
-		else vA[i].z -= vHalfExtentsA.z;
-
-		// 회전 적용
-		vA[i] = D3DXVECTOR3(
-			vAxesA[0].x * vA[i].x + vAxesA[1].x * vA[i].y + vAxesA[2].x * vA[i].z,
-			vAxesA[0].y * vA[i].x + vAxesA[1].y * vA[i].y + vAxesA[2].y * vA[i].z,
-			vAxesA[0].z * vA[i].x + vAxesA[1].z * vA[i].y + vAxesA[2].z * vA[i].z
-		);
+		float offsetX = (i & 1) ? halfA.x : -halfA.x;
+		float offsetY = (i & 2) ? halfA.y : -halfA.y;
+		float offsetZ = (i & 4) ? halfA.z : -halfA.z;
+		cornersA[i] = centerA + axesA[0] * offsetX +
+			axesA[1] * offsetY +
+			axesA[2] * offsetZ;
 	}
 
-	// 타겟 OBB의 8개의 꼭짓점 좌표 계산
+	D3DXVECTOR3 cornersB[8];
 	for (int i = 0; i < 8; ++i)
 	{
-		vB[i] = vCenterB;
-
-		if (i & 1) vB[i].x += vHalfExtentsB.x;
-		else vB[i].x -= vHalfExtentsB.x;
-
-		if (i & 2) vB[i].y += vHalfExtentsB.y;
-		else vB[i].y -= vHalfExtentsB.y;
-
-		if (i & 4) vB[i].z += vHalfExtentsB.z;
-		else vB[i].z -= vHalfExtentsB.z;
-
-		// 회전 적용
-		vB[i] = D3DXVECTOR3(
-			vAxesB[0].x * vB[i].x + vAxesB[1].x * vB[i].y + vAxesB[2].x * vB[i].z,
-			vAxesB[0].y * vB[i].x + vAxesB[1].y * vB[i].y + vAxesB[2].y * vB[i].z,
-			vAxesB[0].z * vB[i].x + vAxesB[1].z * vB[i].y + vAxesB[2].z * vB[i].z
-		);
+		float offsetX = (i & 1) ? halfB.x : -halfB.x;
+		float offsetY = (i & 2) ? halfB.y : -halfB.y;
+		float offsetZ = (i & 4) ? halfB.z : -halfB.z;
+		cornersB[i] = centerB + axesB[0] * offsetX +
+			axesB[1] * offsetY +
+			axesB[2] * offsetZ;
 	}
 
-	// OBB의 축에 대해 투영을 수행하고, 두 OBB가 겹치는지 체크합니다.
-	D3DXVECTOR3 vAxis[6] = {
-		vAxesA[0], vAxesA[1], vAxesA[2],  // A OBB의 축
-		vAxesB[0], vAxesB[1], vAxesB[2]   // B OBB의 축
-	};
-
-	for (int i = 0; i < 6; ++i)
+	// SAT를 위한 테스트 축들을 생성합니다.
+	// A와 B의 로컬 축 3개씩과 두 상자의 엣지 간 교차 축 (최대 9개)를 포함합니다.
+	std::vector<D3DXVECTOR3> testAxes;
+	// A의 축 추가
+	testAxes.push_back(axesA[0]);
+	testAxes.push_back(axesA[1]);
+	testAxes.push_back(axesA[2]);
+	// B의 축 추가
+	testAxes.push_back(axesB[0]);
+	testAxes.push_back(axesB[1]);
+	testAxes.push_back(axesB[2]);
+	// 두 상자의 엣지 교차축 추가 (0에 가까운 길이의 축은 무시)
+	for (int i = 0; i < 3; ++i)
 	{
-		// 각 축에 대해 두 OBB를 투영시킵니다.
+		for (int j = 0; j < 3; ++j)
+		{
+			D3DXVECTOR3 axis;
+			D3DXVec3Cross(&axis, &axesA[i], &axesB[j]);
+			if (D3DXVec3Length(&axis) > 1e-6f)
+			{
+				D3DXVec3Normalize(&axis, &axis);
+				testAxes.push_back(axis);
+			}
+		}
+	}
+
+	// 각 축에 대해 두 상자의 투영 간 겹침(오버랩) 여부와 침투 깊이를 계산합니다.
+	float minPenetration = FLT_MAX;
+	D3DXVECTOR3 smallestAxis(0, 0, 0);
+	for (size_t i = 0; i < testAxes.size(); ++i)
+	{
+		D3DXVECTOR3 axis = testAxes[i];
+
+		// 상자 A의 투영 구간 계산
 		float minA = FLT_MAX, maxA = -FLT_MAX;
-		float minB = FLT_MAX, maxB = -FLT_MAX;
-
 		for (int j = 0; j < 8; ++j)
 		{
-			float projectionA = D3DXVec3Dot(&vA[j], &vAxis[i]);
-			minA = min(minA, projectionA);
-			maxA = max(maxA, projectionA);
-
-			float projectionB = D3DXVec3Dot(&vB[j], &vAxis[i]);
-			minB = min(minB, projectionB);
-			maxB = max(maxB, projectionB);
+			float projection = D3DXVec3Dot(&cornersA[j], &axis);
+			minA = min(minA, projection);
+			maxA = max(maxA, projection);
+		}
+		// 상자 B의 투영 구간 계산
+		float minB = FLT_MAX, maxB = -FLT_MAX;
+		for (int j = 0; j < 8; ++j)
+		{
+			float projection = D3DXVec3Dot(&cornersB[j], &axis);
+			minB = min(minB, projection);
+			maxB = max(maxB, projection);
 		}
 
-		// 투영이 겹치지 않으면 충돌이 없다고 판단합니다.
+		// 투영 구간에 분리(겹치지 않음)가 있으면 충돌하지 않음
 		if (maxA < minB || maxB < minA)
+			return false;
+		else
 		{
-			return false;  // 충돌 없음
+			// 겹치는 양(오버랩) 계산
+			float overlap = min(maxA, maxB) - max(minA, minB);
+			if (overlap < minPenetration)
+			{
+				minPenetration = overlap;
+				smallestAxis = axis;
+			}
 		}
 	}
 
-	// OBB 충돌이 발생한 경우
+	// 충돌이 발생한 경우, 옵션으로 충돌 벡터(최소 침투 깊이와 방향)를 계산합니다.
+	if (pOutDistance)
+	{
+		// 상자 A에서 B로 가는 벡터
+		D3DXVECTOR3 d = centerB - centerA;
+		// 만약 d와 최소 침투 축의 방향이 반대이면 방향을 반전시킵니다.
+		if (D3DXVec3Dot(&d, &smallestAxis) < 0)
+			smallestAxis = -smallestAxis;
+		*pOutDistance = _float3(smallestAxis.x * minPenetration,
+			smallestAxis.y * minPenetration,
+			smallestAxis.z * minPenetration);
+	}
+
 	return true;
+}
+
+
+
+
+
+void CCollider_Cube::Calculate_TransInfo()
+{
+	// 월드 행렬이 존재한다고 가정합니다.
+    D3DXMATRIX matWorld = m_StateDesc.StateMatrix;  // 월드 행렬 (현재 객체의 변환 정보)
+
+    // 월드 행렬에서 위치 추출
+    m_vCenter = D3DXVECTOR3(matWorld._41, matWorld._42, matWorld._43);
+
+    // 월드 행렬의 상위 3x3 부분에서 회전 행렬을 추출하여 각 축을 계산
+    m_vAxisX = D3DXVECTOR3(matWorld._11, matWorld._12, matWorld._13);  // X축
+    m_vAxisY = D3DXVECTOR3(matWorld._21, matWorld._22, matWorld._23);  // Y축
+    m_vAxisZ = D3DXVECTOR3(matWorld._31, matWorld._32, matWorld._33);  // Z축
+
+    // 월드 행렬에서 크기 (스케일) 추출 (회전이 적용된 크기이므로, 절반 크기)
+ //   _float fScale;
+	//fScale = D3DXVec3Length(&m_vAxisX); // X축 벡터의 길이 = 스케일 X
+ //   m_vHalfExtents.x = fScale / 2.0f;  // 크기의 절반을 사용
+
+	//fScale = D3DXVec3Length(&m_vAxisY); // Y축 벡터의 길이 = 스케일 Y
+ //   m_vHalfExtents.y = fScale / 2.0f;  // 크기의 절반을 사용
+
+	//fScale = D3DXVec3Length(&m_vAxisZ); // Z축 벡터의 길이 = 스케일 Z
+ //   m_vHalfExtents.z = fScale / 2.0f;  // 크기의 절반을 사용
+
+	m_vHalfExtents.x = m_StateDesc.fRadiusX;
+	m_vHalfExtents.y = m_StateDesc.fOffSetY;
+	m_vHalfExtents.z = m_StateDesc.fOffsetZ;
 }
 
 CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device/*, COLLRECTDESC& Des*/)

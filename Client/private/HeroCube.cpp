@@ -34,6 +34,12 @@ void CHeroCube::Priority_Update(_float fTimeDelta)
 
 void CHeroCube::Update(_float fTimeDelta)
 {
+	if (FAILED(m_pColliderCom->Update_ColliderBox(m_pTransformCom->Get_WorldMatrix())))
+	{
+		MSG_BOX("Update_ColliderBox()");
+		return;
+	}
+
 	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
 
 	if (GetKeyState(VK_UP) & 0x8000)
@@ -51,12 +57,6 @@ void CHeroCube::Update(_float fTimeDelta)
 	if (GetKeyState(VK_RIGHT) & 0x8000)
 	{
 		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
-	}
-
-	if (FAILED(m_pColliderCom->Update_ColliderBox(m_pTransformCom->Get_WorldMatrix())))
-	{
-		MSG_BOX("Update_ColliderBox()");
-		return;
 	}
 		
 }
@@ -100,7 +100,7 @@ HRESULT CHeroCube::Ready_Components()
 
 	/* For.Com_Collider */
 	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
-	Desc.fRadiusX = 0.2f * (rand() % 10); Desc.fRadiusY = 0.2f * (rand() % 10); Desc.fRadiusZ = 0.2f * (rand() % 10);
+	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;
