@@ -20,3 +20,5 @@
 *.lib
 *.dll
 Client/default/Client.vcxproj.user
+*.xml
+*.sarif
