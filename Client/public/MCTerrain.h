@@ -27,15 +27,10 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-	void SetMapSize(int iMapX, int iMapY, int iMapZ); // 맵 사이즈 설정
-	HRESULT TerrainGeneration();
+	
 private:
 	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
 	
-private:
-	int m_iMapX = {};
-	int m_iMapY = {};
-	int m_iMapZ = {};
 	FastNoiseLite noise;
 public:
 	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

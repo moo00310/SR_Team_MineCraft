@@ -63,12 +63,12 @@ HRESULT CMapTool::Render()
         ImGui::SetNextWindowSize(ImVec2(300, 300));
         ImGui::Begin("Map Tool");
 
-        if (ImGui::Button("Basic Terrain")) {
+        if (ImGui::Button("Basic Terrain", ImVec2(150, 150))) {
             m_bMainFrame = false;
             m_bBasicFrame = true;
         }
 
-        if (ImGui::Button("Make Height Map")) {
+        if (ImGui::Button("Make Height Map", ImVec2(150, 150))) {
             m_bMainFrame = false;
             m_bMapFrame = true;
         }
@@ -79,21 +79,20 @@ HRESULT CMapTool::Render()
 
 #pragma region BasicFrame
     if (m_bBasicFrame) {
-        ImGui::SetNextWindowSize(ImVec2(200, 200));
+        ImGui::SetNextWindowSize(ImVec2(400, 400));
         ImGui::Begin("BasicMap Tool");
 
-        if (ImGui::Button("To Main")) {
+        if (ImGui::Button("To Main", ImVec2(200, 50))) {
             m_bBasicFrame = false;
             m_bMainFrame = true;
         }
 
-        ImGui::InputInt("Map X", &mapX);
-        ImGui::InputInt("Map Y", &mapY);
-        ImGui::InputInt("Map Z", &mapZ);
+        ImGui::InputInt("Map X", &m_iMapX);
+        ImGui::InputInt("Map Y", &m_iMapY);
+        ImGui::InputInt("Map Z", &m_iMapZ);
 
-        if (ImGui::Button("Generation")) {
-            dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))->SetMapSize(mapX, mapY, mapZ);
-            dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))->TerrainGeneration();
+        if (ImGui::Button("Generation", ImVec2(200, 50))) {
+            TerrainGeneration();
         }
 
         ImGui::End();
@@ -102,35 +101,38 @@ HRESULT CMapTool::Render()
 
 #pragma region MapFrame
     if (m_bMapFrame) {
-        ImGui::SetNextWindowSize(ImVec2(300, 300));
+        ImGui::SetNextWindowSize(ImVec2(400, 400));
         ImGui::Begin("Height Map");
 
-        if (ImGui::Button("To Main")) {
+        if (ImGui::Button("To Main", ImVec2(200, 50))) {
             m_bMapFrame = false;
             m_bMainFrame = true;
         }
 
         ImGui::SliderInt("Seed", &m_iSeed, 0, 99999);
-        ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.2f);
-        ImGui::SliderInt("Octaves", &m_iOctaves, 1, 7);
+        ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
 
 
-        if (ImGui::Button("ShowHeightGrayImg")) {
+        if (ImGui::Button("Show Height Gray Img", ImVec2(200, 50))) {
             if (heightMapTexture) {
                 heightMapTexture->Release();
                 heightMapTexture = nullptr;
             }
-            GeneratePerlinNoiseTexture(256, 256);
+            GeneratePerlinNoiseTexture(128, 128);
             m_bMapHeightFrame = true;
         }
 
-        if (ImGui::Button("ShowTerrainImg")) {
+        if (ImGui::Button("Show Terrain Img", ImVec2(200, 50))) {
             if (ColorMapTexture) {
                 ColorMapTexture->Release();
                 ColorMapTexture = nullptr;
             }
-            GeneratePerlinNoiseTextureColor(256, 256);
+            GeneratePerlinNoiseTextureColor(128, 128);
             m_bMapColorFrame = true;
+        }
+
+        if (ImGui::Button("Generation", ImVec2(200, 50))) {
+            TerrainGenerationWithNoise();
         }
 
 
@@ -167,11 +169,101 @@ HRESULT CMapTool::Render()
     return S_OK;
 }
 
+HRESULT CMapTool::TerrainGeneration()
+{
+    m_pGameInstance->ClearLayer(LEVEL_YU, TEXT("Layer_Environment"));
+
+    //2차원 
+/*
+    for (int i = 0; i < m_iMapX; ++i) {
+    for (int j = 0; j < m_iMapZ; ++j) {
+        if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
+            LEVEL_YU, strLayerTag)))
+            return E_FAIL;
+
+        _float3 temp = { (float)j,0.f, (float)i };
+        dynamic_cast<CDirt*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_BackGround"), i * m_iMapZ + j))->SetPos(temp);
+    }
+}
+*/
+
+
+// 3차원
+    for (int i = 0; i < m_iMapY; ++i) {  // Y축이 높이
+        for (int j = 0; j < m_iMapX; ++j) {  // X축
+            for (int k = 0; k < m_iMapZ; ++k) {  // Z축
+                if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"),LEVEL_YU, TEXT("Layer_Environment"))))
+                    return E_FAIL;
+
+
+                _float3 temp = { (float)j,(float)i,(float)k };
+                dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), (i * m_iMapX * m_iMapZ) + (j * m_iMapZ) + k))->SetPos(temp);
+            }
+        }
+    }
+
+    return S_OK;
+}
+
+HRESULT CMapTool::TerrainGenerationWithNoise()
+{
+    m_pGameInstance->ClearLayer(LEVEL_YU, TEXT("Layer_Environment"));
+
+    D3DLOCKED_RECT heightLockedRect;
+    D3DLOCKED_RECT colorLockedRect;
+
+    int index = 0;
+
+    if (SUCCEEDED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY)) &&
+        SUCCEEDED(ColorMapTexture->LockRect(0, &colorLockedRect, NULL, D3DLOCK_READONLY))) {
+
+        DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
+        DWORD* colorPixels = (DWORD*)colorLockedRect.pBits;
+
+        int pitchHeight = heightLockedRect.Pitch / 4; // DWORD(4바이트) 단위 변환
+        int pitchColor = colorLockedRect.Pitch / 4;
+
+        int width = 128;  // 텍스처 가로 크기
+        int height = 128; // 텍스처 세로 크기
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                // 높이맵 픽셀 값 가져오기
+                DWORD heightColor = heightPixels[y * pitchHeight + x];
+                int heightValue = (heightColor & 0xFF)/15;
+
+                // 컬러맵 픽셀 값 가져오기
+                DWORD colorValue = colorPixels[y * pitchColor + x];
+                int b = (colorValue) & 0xFF;
+
+                if (b == 34) {
+                    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, TEXT("Layer_Environment"))))
+                        return E_FAIL;
+                }
+                else {
+                    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, TEXT("Layer_Environment"))))
+                        return E_FAIL;
+                }
+
+                
+
+                _float3 temp = { (float)x,(float)heightValue,(float)y };
+                dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index))->SetPos(temp);
+                index++;
+            }
+        }
+
+        // 두 개의 텍스처 해제
+        heightMapTexture->UnlockRect(0);
+        ColorMapTexture->UnlockRect(0);
+    }
+    return S_OK;
+}
+
 void CMapTool::GeneratePerlinNoiseTexture(int width, int height) {
     FastNoiseLite noise;
     noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
     noise.SetFrequency(m_fFrequency);
-    noise.SetFractalOctaves(m_iOctaves);
     noise.SetSeed(m_iSeed);
 
     // DirectX9 텍스처 생성
@@ -204,7 +296,6 @@ void CMapTool::GeneratePerlinNoiseTextureColor(int width, int height)
     FastNoiseLite noise;
     noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
     noise.SetFrequency(m_fFrequency);
-    noise.SetFractalOctaves(m_iOctaves);
     noise.SetSeed(m_iSeed);
 
     // DirectX9 텍스처 생성

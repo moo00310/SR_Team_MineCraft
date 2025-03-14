@@ -24,6 +24,7 @@
 */
 #include "Dirt.h"
 #include "Stone.h"
+#include "GrassDirt.h"
 #include "MCTerrain.h"
 #include "MapTool.h"
 
@@ -281,7 +282,12 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/dirt%d.png"), 1))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_Terrain */
+	/* For.Prototype_Component_Texture_GrassDirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_GrassDirt"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassdirt%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Stone */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Stone"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/stone%d.png"), 1))))
 		return E_FAIL;
@@ -307,6 +313,10 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Stone"),
 		CStone::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"),
+		CGrassDirt::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MCTerrain"),
