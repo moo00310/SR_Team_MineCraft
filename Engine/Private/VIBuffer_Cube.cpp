@@ -8,6 +8,7 @@ CVIBuffer_Cube::CVIBuffer_Cube(LPDIRECT3DDEVICE9 pGraphic_Device)
 CVIBuffer_Cube::CVIBuffer_Cube(const CVIBuffer_Cube& Prototype):
     CVIBuffer (Prototype)
 {
+    D3DXMatrixIdentity(&m_WorldMatrix);
 }
 
 HRESULT CVIBuffer_Cube::Initialize_Prototype(CUBE& tInfo)
@@ -154,6 +155,17 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(CUBE& tInfo)
 HRESULT CVIBuffer_Cube::Initialize(void* pArg)
 {
     return S_OK;
+}
+
+HRESULT CVIBuffer_Cube::Bind_WorldMatrix()
+{
+    m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_WorldMatrix);
+    return S_OK;
+}
+
+void CVIBuffer_Cube::SetMatrix(const D3DXMATRIX& mat)
+{
+    m_WorldMatrix = mat;
 }
 
 CVIBuffer_Cube* CVIBuffer_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, CUBE tInfo)

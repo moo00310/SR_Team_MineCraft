@@ -41,3 +41,11 @@ namespace Engine
 #pragma endregion
 
 }
+
+typedef struct tagbone
+{
+	const char* name;
+	int index;
+	int parent;
+	D3DXMATRIX transform;
+}BONE;

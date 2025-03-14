@@ -122,6 +122,10 @@ CGameObject* CGameInstance::Get_Object(_uint iLevelIndex, const _tchar* pLayerTa
 	return m_pObject_Manager->Find_Objects(iLevelIndex, pLayerTag, iIndex);
 }
 
+void CGameInstance::ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	m_pObject_Manager->ClearLayer(iLevelIndex, pLayerTag);
+}
 
 #pragma endregion
 

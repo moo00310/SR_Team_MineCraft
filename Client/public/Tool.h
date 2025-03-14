@@ -4,9 +4,9 @@
 
 BEGIN(Client)
 
-class CTool final : public CGameObject
+class CTool : public CGameObject
 {
-private:
+protected:
 	CTool(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CTool(const CTool& Prototype);
 	virtual ~CTool() = default;
@@ -24,7 +24,7 @@ private:
 	bool show_demo_window = true;
 	bool show_another_window = true;
 
-private:
+protected:
 	HRESULT Ready_Components();
 
 public:

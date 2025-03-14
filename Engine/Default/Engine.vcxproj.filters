@@ -65,7 +65,7 @@
       <Filter>04.Components\VIBuffer\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Transform.h">
-      <Filter>04.Components\Texture\Transform</Filter>
+      <Filter>04.Components\Transform</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Timer.h">
       <Filter>06.Timers</Filter>
@@ -159,7 +159,7 @@
     <Filter Include="04.Components\Collider\Collider_Cube">
       <UniqueIdentifier>{c4c3a07f-c4f1-49ab-97d7-33867f0aa987}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Components\Texture\Transform">
+    <Filter Include="04.Components\Transform">
       <UniqueIdentifier>{e6f09916-b879-4da9-af31-206b538ecd54}</UniqueIdentifier>
     </Filter>
     <Filter Include="05.Renderer">
@@ -222,7 +222,7 @@
       <Filter>04.Components\VIBuffer\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Transform.cpp">
-      <Filter>04.Components\Texture\Transform</Filter>
+      <Filter>04.Components\Transform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Timer.cpp">
       <Filter>06.Timers</Filter>

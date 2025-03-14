@@ -54,7 +54,7 @@ namespace Engine
 
 	public:
 		explicit CTag_Finder(const TCHAR* pStr)
-			: m_str(pStr) // ¹®ÀÚ¿­ º¹»ç
+			: m_str(pStr) // ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 		{
 		}
 
@@ -64,4 +64,15 @@ namespace Engine
 			return m_str == Pair.first;
 		}
 	};
+	inline D3DXMATRIX MAtrixTranslation(float x, float y, float z) {
+		D3DXMATRIX mat;
+		D3DXMatrixIdentity(&mat);
+		D3DXMatrixTranslation(&mat, x, y, z);
+		return mat;
+	}
+
+	inline D3DXVECTOR3 MAtrix_Trasform(const D3DXMATRIX& mat) {
+		D3DXVECTOR3 temp = { mat._41, mat._42, mat._43 };
+		return temp;
+	}
 }

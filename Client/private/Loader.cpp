@@ -13,9 +13,6 @@
 * 크리퍼 테스트 용
 */
 #include "Creeper.h"
-#include "Creeper_Body.h"
-#include "Creeper_Head.h"
-#include "Creeper_Foot.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -24,7 +21,11 @@
   지형 관련
 */
 #include "Dirt.h"
+#include "Stone.h"
+#include "GrassDirt.h"
 #include "MCTerrain.h"
+#include "MapTool.h"
+
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -247,23 +248,6 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CCreeper::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-
-	/* For.Prototype_GameObject_Head */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Head"),
-		CCreeper_Head::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-
-	/* For.Prototype_GameObject_Body */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Body"),
-		CCreeper_Body::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Creeper */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Foot"),
-		CCreeper_Foot::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -274,9 +258,19 @@ HRESULT CLoader::Loading_For_MOOPlay()
 HRESULT CLoader::Loading_For_YUPlay()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
-	/* For.Prototype_Component_Texture_Terrain */
+	/* For.Prototype_Component_Texture_Dirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Dirt"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/dirt%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_GrassDirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_GrassDirt"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassdirt%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Stone */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Stone"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/stone%d.png"), 1))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -298,8 +292,21 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CDirt::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Stone"),
+		CStone::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"),
+		CGrassDirt::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MCTerrain"),
-		CMCTerrain::Create(m_pGraphic_Device, 10,10,20))))
+		CMCTerrain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tool */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MapTool"),
+		CMapTool::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
