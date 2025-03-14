@@ -75,5 +75,4 @@ namespace Engine
 		D3DXVECTOR3 temp = { mat._41, mat._42, mat._43 };
 		return temp;
 	}
-
 }
