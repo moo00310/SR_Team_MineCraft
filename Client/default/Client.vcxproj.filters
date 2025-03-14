@@ -88,6 +88,11 @@
     <Filter Include="02.GameObjects\97.HeroGameObj">
       <UniqueIdentifier>{1d6eeeac-132a-43a9-ba2c-c1c4fb854509}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroCube">
+      <UniqueIdentifier>{ff815d71-a06f-4679-a898-8934e72fc6b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroCubeNoMove">
+      <UniqueIdentifier>{ddb7df8e-096e-4719-91f9-4051854f1245}</UniqueIdentifier>
     <Filter Include="02.GameObjects\Tool\MapTool">
       <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
     </Filter>
@@ -141,19 +146,7 @@
     <ClInclude Include="Level_Moo.h">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Creeper_Head.h">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Creeper.h">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Creeper_Body.h">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Creeper_Foot.h">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\CCreeper_2.h">
       <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_TOOL.h">
@@ -198,9 +191,6 @@
     <ClInclude Include="..\public\Tool.h">
       <Filter>02.GameObjects\Tool</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\HeroCube.h">
-      <Filter>02.GameObjects\97.HeroGameObj</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\MCTerrain.h">
       <Filter>02.GameObjects\99.YUGameObj</Filter>
     </ClInclude>
@@ -213,6 +203,11 @@
     <ClInclude Include="..\public\Dirt.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\HeroCube.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HeroCubeNoMove.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroCubeNoMove</Filter>
     <ClInclude Include="..\public\MapTool.h">
       <Filter>02.GameObjects\Tool\MapTool</Filter>
     </ClInclude>
@@ -273,18 +268,6 @@
     <ClCompile Include="..\private\Creeper.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Creeper_2.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Creeper_Body.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Creeper_Foot.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Creeper_Head.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Level_Hyeok.cpp">
       <Filter>01.Levels\95.Huck_Level</Filter>
     </ClCompile>
@@ -324,9 +307,6 @@
     <ClCompile Include="..\private\Tool.cpp">
       <Filter>02.GameObjects\Tool</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\HeroCube.cpp">
-      <Filter>02.GameObjects\97.HeroGameObj</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\MCTerrain.cpp">
       <Filter>02.GameObjects\99.YUGameObj</Filter>
     </ClCompile>
@@ -339,6 +319,11 @@
     <ClCompile Include="..\private\Dirt.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\HeroCube.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HeroCubeNoMove.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroCubeNoMove</Filter>
     <ClCompile Include="..\private\MapTool.cpp">
       <Filter>02.GameObjects\Tool\MapTool</Filter>
     </ClCompile>

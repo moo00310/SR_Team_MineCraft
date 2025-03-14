@@ -15,8 +15,8 @@ HRESULT CLevel_HERO::Initialize()
 	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-		return E_FAIL;
+	/*if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;*/
 
 	if (FAILED(Ready_Layer_HeroCube(TEXT("Layer_HeroCube"))))
 		return E_FAIL;
@@ -68,7 +68,14 @@ HRESULT CLevel_HERO::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 HRESULT CLevel_HERO::Ready_Layer_HeroCube(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCube"),
+	//for (size_t i = 0; i < 10; i++)
+	//{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCube"),
+			LEVEL_HERO, strLayerTag)))
+			return E_FAIL;
+	//}
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCubeNoMove"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
 
