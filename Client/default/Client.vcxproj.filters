@@ -219,6 +219,9 @@
     <ClInclude Include="..\public\GrassDirt.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CoalOre.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -334,6 +337,9 @@
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\GrassDirt.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CoalOre.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
