@@ -241,100 +241,141 @@ HRESULT CCollider_Cube::Update_ColliderBox(const _float4x4* WorldMatrix)
 	return S_OK;
 }
 
-HRESULT CCollider_Cube::Render_ColliderBox()
+HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 {
-	//if (GetKeyState(VK_F11))
-	//{
-	//	m_bRender == true ? m_bRender = false : m_bRender = true;
-	//}
+	// 세계 변환 행렬 설정
+	m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_StateDesc.StateMatrix);
 
-	//if (m_bRender)
-	//{
-		m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_StateDesc.StateMatrix);
+	// 와이어프레임 모드 설정
+	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-		m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	// bRed가 true일 때 빨간색 적용
+	if (isHit)
+	{
+		m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 0, 0)); // 빨간색
+		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TFACTOR);
+	}
+	else
+	{
+		// 원래 텍스처를 사용하도록 설정 복구
+		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+	}
 
-		m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iStride);
-		m_pGraphic_Device->SetFVF(m_dwFVF);
-		m_pGraphic_Device->SetIndices(m_pIB);
+	// 정점 및 인덱스 버퍼 설정
+	m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iStride);
+	m_pGraphic_Device->SetFVF(m_dwFVF);
+	m_pGraphic_Device->SetIndices(m_pIB);
 
-		m_pGraphic_Device->DrawIndexedPrimitive(m_ePrimitiveType, 0, 0, m_iNumVertices, 0, m_iNumPrimitive);
+	// 프리미티브(도형) 그리기
+	m_pGraphic_Device->DrawIndexedPrimitive(m_ePrimitiveType, 0, 0, m_iNumVertices, 0, m_iNumPrimitive);
 
-		m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	//}
-	
-
+	// 원래 상태(솔리드 모드)로 복구
+	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
 	return S_OK;
 }
 
-_bool CCollider_Cube::Collision_Check(CCollider_Cube * pTarget, _float3* pOutDistance)
+//#include <D3DX10math.h>  // D3DXVECTOR3 및 관련 함수 사용을 위해 포함
+
+_bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance)
 {
-	//AABB Collision Check
+	if (!pTarget) return false;
 
-	CCollider_Cube* pOther = pTarget;
-	if (nullptr == pOther)
-		return false;
+	// 각 OBB의 8개의 꼭짓점 위치를 계산합니다.
+	D3DXVECTOR3 vA[8], vB[8];
 
-	_float3		vSourMin, vSourMax, vSourCenter;
-	_float3		vDestMin, vDestMax, vDestCenter;
-	_float3		vDistance = _float3(0, 0, 0);
+	// 자신의 OBB (this)
+	D3DXVECTOR3 vCenterA(this->m_vCenter);  // OBB의 중심
+	D3DXVECTOR3 vHalfExtentsA(this->m_vHalfExtents);  // OBB의 반 크기 (반 길이)
 
+	// 타겟 OBB (pTarget)
+	D3DXVECTOR3 vCenterB(pTarget->m_vCenter);
+	D3DXVECTOR3 vHalfExtentsB(pTarget->m_vHalfExtents);
 
-	vSourMin = m_vPoint[3];
-	vSourMax = m_vPoint[5];
-	vSourCenter = (vSourMax + vSourMin)*0.5f;
+	// OBB의 각 축 (회전, 크기 정보 등) 계산을 위해 방향 벡터가 필요합니다.
+	D3DXVECTOR3 vAxesA[3] = { this->m_vAxisX, this->m_vAxisY, this->m_vAxisZ };
+	D3DXVECTOR3 vAxesB[3] = { pTarget->m_vAxisX, pTarget->m_vAxisY, pTarget->m_vAxisZ };
 
-
-	vDestMin = pOther->m_vPoint[3];
-	vDestMax = pOther->m_vPoint[5];
-	
-	vDestCenter = (vDestMax + vDestMin)*0.5f;
-
-
-	if (min(vSourMax.x, vDestMax.x) < max(vSourMin.x, vDestMin.x))
-		return false;
-	else
+	// OBB의 8개의 꼭짓점 좌표 계산
+	for (int i = 0; i < 8; ++i)
 	{
-		if (vSourCenter.x > vDestCenter.x)
-		{
-			vDistance.x = -((min(vSourMax.x, vDestMax.x) - max(vSourMin.x, vDestMin.x)));
-		}
-		else
-			vDistance.x = (min(vSourMax.x, vDestMax.x) - max(vSourMin.x, vDestMin.x));
+		vA[i] = vCenterA;
+
+		if (i & 1) vA[i].x += vHalfExtentsA.x;
+		else vA[i].x -= vHalfExtentsA.x;
+
+		if (i & 2) vA[i].y += vHalfExtentsA.y;
+		else vA[i].y -= vHalfExtentsA.y;
+
+		if (i & 4) vA[i].z += vHalfExtentsA.z;
+		else vA[i].z -= vHalfExtentsA.z;
+
+		// 회전 적용
+		vA[i] = D3DXVECTOR3(
+			vAxesA[0].x * vA[i].x + vAxesA[1].x * vA[i].y + vAxesA[2].x * vA[i].z,
+			vAxesA[0].y * vA[i].x + vAxesA[1].y * vA[i].y + vAxesA[2].y * vA[i].z,
+			vAxesA[0].z * vA[i].x + vAxesA[1].z * vA[i].y + vAxesA[2].z * vA[i].z
+		);
 	}
 
-	//if (min(vSourMax.y, vDestMax.y) < max(vSourMin.y, vDestMin.y))
-	/*	return false;
-	else
+	// 타겟 OBB의 8개의 꼭짓점 좌표 계산
+	for (int i = 0; i < 8; ++i)
 	{
-		if (vSourCenter.y > vDestCenter.y)
-		{
-			vDistance.y = -((min(vSourMax.y, vDestMax.y) - max(vSourMin.y, vDestMin.y)));
-		}
-		else
-			vDistance.y = min(vSourMax.y, vDestMax.y) - max(vSourMin.y, vDestMin.y);
-	}*/
+		vB[i] = vCenterB;
 
-	if (min(vSourMax.z, vDestMax.z) < max(vSourMin.z, vDestMin.z))
-		return false;
-	else
-	{
-		if (vSourCenter.z > vDestCenter.z)
-		{
-			vDistance.z = -((min(vSourMax.z, vDestMax.z) - max(vSourMin.z, vDestMin.z)));
-		}
-		else
-			vDistance.z = min(vSourMax.z, vDestMax.z) - max(vSourMin.z, vDestMin.z);
+		if (i & 1) vB[i].x += vHalfExtentsB.x;
+		else vB[i].x -= vHalfExtentsB.x;
+
+		if (i & 2) vB[i].y += vHalfExtentsB.y;
+		else vB[i].y -= vHalfExtentsB.y;
+
+		if (i & 4) vB[i].z += vHalfExtentsB.z;
+		else vB[i].z -= vHalfExtentsB.z;
+
+		// 회전 적용
+		vB[i] = D3DXVECTOR3(
+			vAxesB[0].x * vB[i].x + vAxesB[1].x * vB[i].y + vAxesB[2].x * vB[i].z,
+			vAxesB[0].y * vB[i].x + vAxesB[1].y * vB[i].y + vAxesB[2].y * vB[i].z,
+			vAxesB[0].z * vB[i].x + vAxesB[1].z * vB[i].y + vAxesB[2].z * vB[i].z
+		);
 	}
 
-	if (pOutDistance != nullptr)
-		*pOutDistance = vDistance;
+	// OBB의 축에 대해 투영을 수행하고, 두 OBB가 겹치는지 체크합니다.
+	D3DXVECTOR3 vAxis[6] = {
+		vAxesA[0], vAxesA[1], vAxesA[2],  // A OBB의 축
+		vAxesB[0], vAxesB[1], vAxesB[2]   // B OBB의 축
+	};
 
+	for (int i = 0; i < 6; ++i)
+	{
+		// 각 축에 대해 두 OBB를 투영시킵니다.
+		float minA = FLT_MAX, maxA = -FLT_MAX;
+		float minB = FLT_MAX, maxB = -FLT_MAX;
+
+		for (int j = 0; j < 8; ++j)
+		{
+			float projectionA = D3DXVec3Dot(&vA[j], &vAxis[i]);
+			minA = min(minA, projectionA);
+			maxA = max(maxA, projectionA);
+
+			float projectionB = D3DXVec3Dot(&vB[j], &vAxis[i]);
+			minB = min(minB, projectionB);
+			maxB = max(maxB, projectionB);
+		}
+
+		// 투영이 겹치지 않으면 충돌이 없다고 판단합니다.
+		if (maxA < minB || maxB < minA)
+		{
+			return false;  // 충돌 없음
+		}
+	}
+
+	// OBB 충돌이 발생한 경우
 	return true;
 }
-
-
 
 CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device/*, COLLRECTDESC& Des*/)
 {

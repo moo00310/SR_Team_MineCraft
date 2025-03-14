@@ -1,23 +1,23 @@
-#include "HeroCube.h"
+#include "HeroCubeNoMove.h"
 
 #include "GameInstance.h"
 
-CHeroCube::CHeroCube(LPDIRECT3DDEVICE9 pGraphic_Device)
+CHeroCubeNoMove::CHeroCubeNoMove(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject{ pGraphic_Device }
 {
 }
 
-CHeroCube::CHeroCube(const CHeroCube& Prototype)
+CHeroCubeNoMove::CHeroCubeNoMove(const CHeroCubeNoMove& Prototype)
 	:CGameObject(Prototype)
 {
 }
 
-HRESULT CHeroCube::Initialize_Prototype()
+HRESULT CHeroCubeNoMove::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CHeroCube::Initialize(void* pArg)
+HRESULT CHeroCubeNoMove::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -27,46 +27,29 @@ HRESULT CHeroCube::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CHeroCube::Priority_Update(_float fTimeDelta)
+void CHeroCubeNoMove::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(CCollider_Manager::COLLISION_PLAYER, this);
 }
 
-void CHeroCube::Update(_float fTimeDelta)
+void CHeroCubeNoMove::Update(_float fTimeDelta)
 {
 	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
-
-	if (GetKeyState(VK_UP) & 0x8000)
-	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
-	}
-	if (GetKeyState(VK_DOWN) & 0x8000)
-	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	}
-	if (GetKeyState(VK_LEFT) & 0x8000)
-	{
-		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta * -1.f);
-	}
-	if (GetKeyState(VK_RIGHT) & 0x8000)
-	{
-		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
-	}
 
 	if (FAILED(m_pColliderCom->Update_ColliderBox(m_pTransformCom->Get_WorldMatrix())))
 	{
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
-		
+
 }
 
-void CHeroCube::Late_Update(_float fTimeDelta)
+void CHeroCubeNoMove::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
 }
 
-HRESULT CHeroCube::Render()
+HRESULT CHeroCubeNoMove::Render()
 {
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
@@ -86,7 +69,7 @@ HRESULT CHeroCube::Render()
 	return S_OK;
 }
 
-HRESULT CHeroCube::Ready_Components()
+HRESULT CHeroCubeNoMove::Ready_Components()
 {
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
@@ -109,7 +92,7 @@ HRESULT CHeroCube::Ready_Components()
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom))))
 		return E_FAIL;*/
 
-	/* For.Com_Transform */
+		/* For.Com_Transform */
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
 
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
@@ -119,33 +102,33 @@ HRESULT CHeroCube::Ready_Components()
 	return S_OK;
 }
 
-CHeroCube* CHeroCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CHeroCubeNoMove* CHeroCubeNoMove::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	CHeroCube* pInstance = new CHeroCube(pGraphic_Device);
+	CHeroCubeNoMove* pInstance = new CHeroCubeNoMove(pGraphic_Device);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CHeroCube");
+		MSG_BOX("Failed to Created : CHeroCubeNoMove");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CHeroCube::Clone(void* pArg)
+CGameObject* CHeroCubeNoMove::Clone(void* pArg)
 {
-	CHeroCube* pInstance = new CHeroCube(*this);
+	CHeroCubeNoMove* pInstance = new CHeroCubeNoMove(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Created : CHeroCube");
+		MSG_BOX("Failed to Created : CHeroCubeNoMove");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-void CHeroCube::Free()
+void CHeroCubeNoMove::Free()
 {
 	__super::Free();
 

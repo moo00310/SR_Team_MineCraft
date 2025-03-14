@@ -12,13 +12,13 @@ END
 
 BEGIN(Client)
 
-class CHeroCube final : public CGameObject
+class CHeroCubeNoMove final : public CGameObject
 {
 
 private:
-	CHeroCube(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CHeroCube(const CHeroCube& Prototype);
-	virtual ~CHeroCube() = default;
+	CHeroCubeNoMove(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CHeroCubeNoMove(const CHeroCubeNoMove& Prototype);
+	virtual ~CHeroCubeNoMove() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -39,7 +39,7 @@ private:
 	HRESULT Ready_Components();
 
 public:
-	static CHeroCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CHeroCubeNoMove* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

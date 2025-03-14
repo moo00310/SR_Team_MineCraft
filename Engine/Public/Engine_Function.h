@@ -47,4 +47,21 @@ namespace Engine
 		return iRefCnt;
 	}
 
+	class CTag_Finder
+	{
+	private:
+		std::basic_string<TCHAR> m_str;
+
+	public:
+		explicit CTag_Finder(const TCHAR* pStr)
+			: m_str(pStr) // 문자열 복사
+		{
+		}
+
+		template<typename T>
+		bool operator()(const T& Pair) const
+		{
+			return m_str == Pair.first;
+		}
+	};
 }
