@@ -26,13 +26,17 @@ public:
 
 private:
 	CTransform* m_pTransformCom = { nullptr };
-
-private:
-	//vector<BONE*> Bones;
+	CTexture* m_pTextureCom = { nullptr };
+	CVIBuffer_Cube* m_pVIBufferCom[6];
+	vector<BONE> vecBones;
 
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone();
+	HRESULT Ready_Mesh();
+
+	HRESULT UpDate_Mesh();
+
 
 public:
 	static CCreeper* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

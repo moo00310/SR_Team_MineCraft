@@ -13,9 +13,6 @@
 * 크리퍼 테스트 용
 */
 #include "Creeper.h"
-#include "Creeper_Body.h"
-#include "Creeper_Head.h"
-#include "Creeper_Foot.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -248,23 +245,6 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	/* For.Prototype_GameObject_Creeper */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper"),
 		CCreeper::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-
-	/* For.Prototype_GameObject_Head */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Head"),
-		CCreeper_Head::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-
-	/* For.Prototype_GameObject_Body */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Body"),
-		CCreeper_Body::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Creeper */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Foot"),
-		CCreeper_Foot::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

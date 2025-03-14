@@ -1,19 +1,26 @@
 #include "Creeper.h"
 
 #include "Transform.h"
+#include "Texture.h"
+#include "VIBuffer_Cube.h"
 #include "GameInstance.h"
-#include "Creeper_Head.h"
-#include "Creeper_Body.h"
-#include "Creeper_Foot.h"
 
 CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject{ pGraphic_Device }
 {
+    for (int i = 0; i < 6; i++)
+    {
+       m_pVIBufferCom[i] = nullptr;     
+    }
 }
 
 CCreeper::CCreeper(const CCreeper& Prototype)
     : CGameObject(Prototype)
 {
+    for (int i = 0; i < 6; i++)
+    {
+        m_pVIBufferCom[i] = nullptr;
+    }
 }
 
 HRESULT CCreeper::Initialize_Prototype()
@@ -31,83 +38,150 @@ HRESULT CCreeper::Initialize(void* pArg)
 
 void CCreeper::Priority_Update(_float fTimeDelta)
 {
+  
 }
 
 void CCreeper::Update(_float fTimeDelta)
 {
-    //_float3 a = { 1.f, 1.f, 0.f };
-    //dynamic_cast<CCreeper_Head*>(m_pGameInstance->Get_Object(LEVEL_GAMEPLAY, TEXT("Creeper_Head"), 0))->TRcom()->Turn(a, fTimeDelta);
+    m_pTransformCom->Turn(_float3(1.f,1.f,1.f), fTimeDelta);
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
 {
+
+    vecBones[0].transform = *(m_pTransformCom->Get_WorldMatrix());
+
+    Ready_Mesh();
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
         return;
 }
 
 HRESULT CCreeper::Render()
 {
-  
+
+    if (FAILED(m_pTextureCom->Bind_Resource(0)))
+        return E_FAIL;
+
+    /*if (FAILED(m_pTransformCom->Bind_Resource()))
+        return E_FAIL;*/
+    for (int i = 0; i < 6; i++)
+    {
+        if (FAILED(m_pVIBufferCom[i]->Bind_WorldMatrix()))
+            return E_FAIL;
+
+        if (FAILED(m_pVIBufferCom[i]->Bind_Buffers()))
+            return E_FAIL;
+
+        if (FAILED(m_pVIBufferCom[i]->Render()))
+            return E_FAIL;
+    }
+
     return S_OK;
 }
 
 HRESULT CCreeper::Ready_Components()
 {
+    // 크리퍼 텍스처
+   /* For.Com_Texture */
+    if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_Texture_Creeper"),
+        TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+        return E_FAIL;
+
     /* For.Com_Transform */
     CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
 
-   // Model
-  if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Head"),
-      LEVEL_MOO, TEXT("Creeper_Head"))))
-      return E_FAIL;
+    /* For.Com_VIBuffer */
+    if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
+        TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[0]))))
+        return E_FAIL;
 
-   if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Body"),
-       LEVEL_MOO, TEXT("Creeper_Body"))))
-       return E_FAIL;
-   
-   if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Foot"),
-       LEVEL_MOO, TEXT("Creeper_Foot_1"))))
-       return E_FAIL;
-   if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Foot"),
-       LEVEL_MOO, TEXT("Creeper_Foot_2"))))
-       return E_FAIL;
-     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Foot"),
-         LEVEL_MOO, TEXT("Creeper_Foot_3"))))
-       return E_FAIL;
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper_Foot"),
-        LEVEL_MOO, TEXT("Creeper_Foot_4"))))
-      return E_FAIL;
-   
+    if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
+        TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[1]))))
+        return E_FAIL;
 
+    if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+        TEXT("m_pVIBufferCom_Foot_LF"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[2]))))
+        return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+        TEXT("m_pVIBufferCom_Foot_RF"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[3]))))
+        return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+        TEXT("m_pVIBufferCom_Foot_LB"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[4]))))
+        return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+        TEXT("m_pVIBufferCom_Foot_RB"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[5]))))
+        return E_FAIL;
+
+   
     if (FAILED(Ready_Bone())) 
         return E_FAIL;
-   
+    if (FAILED(Ready_Mesh()))
+        return E_FAIL;
 
     return S_OK;
 }
 
 HRESULT CCreeper::Ready_Bone()
 {
-   _float3 temp = { 0.f, 22.f / 24.f, 0.f };
-    dynamic_cast<CCreeper_Head*>(m_pGameInstance->Get_Object(LEVEL_MOO, TEXT("Creeper_Head"), 0))->SetPos(temp);
-   
-   temp = { 0.f, 12.f / 24.f, 0.f };
-    static_cast<CCreeper_Body*>(m_pGameInstance->Get_Object(LEVEL_MOO, TEXT("Creeper_Body"), 0))->SetPos(temp);
-   
-   temp = { 2.f / 24.f, 3.f / 24.f,  -4.f / 24.f };
-   static_cast<CCreeper_Foot*>(m_pGameInstance->Get_Object(LEVEL_MOO, TEXT("Creeper_Foot_1"), 0))->SetPos(temp);
-   
-   temp = { -2.f / 24.f, 3.f / 24.f, -4.f / 24.f };
-   static_cast<CCreeper_Foot*>(m_pGameInstance->Get_Object(LEVEL_MOO, TEXT("Creeper_Foot_2"), 0))->SetPos(temp);
-   
-   temp = { 2.f / 24.f, 3.f / 24.f, 4.f / 24.f };
-   static_cast<CCreeper_Foot*>(m_pGameInstance->Get_Object(LEVEL_MOO, TEXT("Creeper_Foot_3"), 0))->SetPos(temp);
-   
-   temp = { -2.f / 24.f, 3.f / 24.f, 4.f / 24.f };
-   static_cast<CCreeper_Foot*>(m_pGameInstance->Get_Object(LEVEL_MOO, TEXT("Creeper_Foot_4"), 0))->SetPos(temp);
+
+    BONE bone[7] = 
+    {
+         { "Root"    ,0, -1,  MAtrixTranslation(0.f,              0.f,      0.f) },
+         { "Pelvis"  ,1,  0,  MAtrixTranslation(0,              6.f /16.f,  0) },
+         { "Neck"    ,2,  1,  MAtrixTranslation(0,              12.f/16.f,  0) },
+         { "Leg_LF"  ,3,  1,  MAtrixTranslation(2.f/16.f,       0,          -2.f/16.f) },
+         { "Leg_RF"  ,4,  1,  MAtrixTranslation(-2.f/16.f,      0,          -2.f/16.f) },
+         { "Leg_LB"  ,5,  1,  MAtrixTranslation(2.f/16.f,       0,          2.f/16.f) },
+         { "Leg_RB"  ,6,  1,  MAtrixTranslation(-2.f/16,        0,          2.f/16.f) },
+    };
+
+    for (int i = 0; i < 7; i++)
+    {
+        vecBones.push_back(bone[i]);
+    }
+
+    return S_OK;
+}
+
+HRESULT CCreeper::Ready_Mesh()
+{
+
+    // 본과 본인 매트릭스를 곱해야함 월드 매트릭스를 건내줌
+    D3DMATRIX temp = {};
+    D3DMATRIX Reletive = {};
+
+    // 머리
+    temp = MAtrixTranslation(0, 4.f / 16.f, 0.f) *  vecBones[2].transform * vecBones[1].transform * vecBones[0].transform;
+    m_pVIBufferCom[0]->SetMatrix(temp);
+
+    // 몸통
+    temp = MAtrixTranslation(0, 6.f / 16.f, 0.f) * vecBones[1].transform * vecBones[0].transform;
+    m_pVIBufferCom[1]->SetMatrix(temp);
+
+    // 다리
+    temp = MAtrixTranslation(0, -3.f / 16.f, -2.f / 16.f) * vecBones[3].transform * vecBones[1].transform * vecBones[0].transform;
+    m_pVIBufferCom[2]->SetMatrix(temp);
+
+    temp = MAtrixTranslation(0, -3.f / 16.f, -2.f / 16.f) * vecBones[4].transform * vecBones[1].transform * vecBones[0].transform;
+    m_pVIBufferCom[3]->SetMatrix(temp);
+
+    temp = MAtrixTranslation(0, -3.f / 16.f, 2.f / 16.f) * vecBones[5].transform * vecBones[1].transform * vecBones[0].transform;
+    m_pVIBufferCom[4]->SetMatrix(temp);
+
+    temp = MAtrixTranslation(0, -3.f / 16.f, 2.f / 16.f) * vecBones[6].transform * vecBones[1].transform * vecBones[0].transform;
+    m_pVIBufferCom[5]->SetMatrix(temp);
+
+    return S_OK;
+}
+
+HRESULT CCreeper::UpDate_Mesh()
+{
+
+
+
     return S_OK;
 }
 
@@ -142,5 +216,11 @@ void CCreeper::Free()
     __super::Free();
 
     Safe_Release(m_pTransformCom);
+    Safe_Release(m_pTextureCom);
 
+    for (int i = 0; i < 6; i++)
+    {
+        Safe_Release(m_pVIBufferCom[i]);
+    }
+  
 }
