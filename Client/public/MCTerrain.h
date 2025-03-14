@@ -27,15 +27,17 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+	void SetMapSize(int iMapX, int iMapY, int iMapZ); // 맵 사이즈 설정
+	HRESULT TerrainGeneration();
 private:
 	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
 	
 private:
-	int m_iMapX;
-	int m_iMapY;
-	int m_iMapZ;
+	int m_iMapX = {};
+	int m_iMapY = {};
+	int m_iMapZ = {};
 public:
-	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device, int iMapX, int iMapY, int iMapZ);
+	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

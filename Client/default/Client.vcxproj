@@ -173,6 +173,7 @@
     <ClInclude Include="..\public\Level_WOO.h" />
     <ClInclude Include="..\public\Level_YU.h" />
     <ClInclude Include="..\public\Loader.h" />
+    <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\MCTerrain.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Terrain.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="..\private\Level_WOO.cpp" />
     <ClCompile Include="..\private\Level_YU.cpp" />
     <ClCompile Include="..\private\Loader.cpp" />
+    <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\MCTerrain.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />

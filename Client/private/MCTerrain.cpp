@@ -24,9 +24,6 @@ HRESULT CMCTerrain::Initialize_Prototype()
 
 HRESULT CMCTerrain::Initialize(void* pArg)
 {
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-		return E_FAIL;
-
     return S_OK;
 }
 
@@ -50,6 +47,23 @@ HRESULT CMCTerrain::Render()
 {
 
     return S_OK;
+}
+
+void CMCTerrain::SetMapSize(int iMapX, int iMapY, int iMapZ)
+{
+	m_iMapX = iMapX;
+	m_iMapY = iMapY;
+	m_iMapZ = iMapZ;
+}
+
+HRESULT CMCTerrain::TerrainGeneration()
+{
+	m_pGameInstance->ClearLayer(LEVEL_YU, TEXT("Layer_BackGround"));
+
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
@@ -87,7 +101,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device, int iMapX, int iMapY, int iMapZ)
+CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CMCTerrain* pInstance = new CMCTerrain(pGraphic_Device);
 
@@ -96,10 +110,6 @@ CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device, int iMapX, int
 		MSG_BOX("Failed to Created : CTerrain");
 		Safe_Release(pInstance);
 	}
-
-	pInstance->m_iMapX = iMapX;
-	pInstance->m_iMapY = iMapY;
-	pInstance->m_iMapZ = iMapZ;
 
 	return pInstance;
 }
