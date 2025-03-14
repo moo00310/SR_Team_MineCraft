@@ -12,23 +12,24 @@ public:
 	{
 		_float	fRadiusX = 0.5f, fRadiusY = 0.5f,  fRadiusZ = 0.5f;
 		_float	fOffSetX = 0.f, fOffSetY = 0.f,  fOffsetZ = 0.f;
-		_float4x4		StateMatrix;
+		_float4x4 StateMatrix;
+		class CTransform* pTransformCom = { nullptr };
 	}COLLRECTDESC;
 
-public:
+private:
 	CCollider_Cube(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CCollider_Cube(const CCollider_Cube& rhs);
+	CCollider_Cube(const CCollider_Cube& Prototype);
 	virtual ~CCollider_Cube() = default;
 
 public:
-	HRESULT Initialize_Prototype(/*COLLRECTDESC& Des*/);
+	HRESULT Initialize_Prototype();
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update_ColliderBox(const _float4x4* WorldMatrix);
 	HRESULT Render_ColliderBox(_bool isHit);
 	_bool	Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance = nullptr);
 
 public:
-	void Set_Position(CTransform* pTransform) {}
+	//void Set_Position(CTransform* pTransform) {}
 
 public:
 	COLLRECTDESC Get_CollRectDesc() { return m_StateDesc; }
@@ -43,14 +44,14 @@ protected:
 	COLLRECTDESC		m_StateDesc;
 	//콜라이더가 트랜스폼을 들어야할지 말아야할지 모르겠음
 	//일단 오브젝트한테 정보 받아오는거로 임시로 해놓을 예정
-	D3DXVECTOR3			m_vCenter;
-	D3DXVECTOR3			m_vHalfExtents;
-	D3DXVECTOR3			m_vAxisX;
-	D3DXVECTOR3			m_vAxisY;
-	D3DXVECTOR3			m_vAxisZ;
+	//D3DXVECTOR3			m_vCenter;
+	//D3DXVECTOR3			m_vHalfExtents;
+	//D3DXVECTOR3			m_vAxisX;
+	//D3DXVECTOR3			m_vAxisY;
+	//D3DXVECTOR3			m_vAxisZ;
 private:
-	void Calculate_TransInfo();
-	//class CTransform*	m_pTransform = nullptr;
+	//void Calculate_TransInfo();
+	class CTransform*	m_pTransform = nullptr;
 	//static const _tchar*		m_pTransformTag;
 
 protected:
