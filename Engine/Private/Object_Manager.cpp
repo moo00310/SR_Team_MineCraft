@@ -81,6 +81,25 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	m_pLayers[iLevelIndex].clear();
 }
 
+void CObject_Manager::ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	if (iLevelIndex >= m_iNumLevels)
+		return;
+	auto& layerMap = m_pLayers[iLevelIndex];
+	for (auto iter = layerMap.begin(); iter != layerMap.end(); )
+	{
+		if (iter->first == pLayerTag)
+		{
+			Safe_Release(iter->second);
+			iter = layerMap.erase(iter); // erase 후 유효한 다음 반복자로 이동
+		}
+		else
+		{
+			++iter;
+		}
+	}
+}
+
 CGameObject* CObject_Manager::Find_Objects(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex)
 {
 	CLayer* pLayer = Find_Layer(iLevelIndex, pLayerTag);

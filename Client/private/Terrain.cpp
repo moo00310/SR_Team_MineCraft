@@ -8,7 +8,7 @@ CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CTerrain::CTerrain(const CTerrain& Prototype)
-    : CGameObject { Prototype }
+    : CGameObject (Prototype)
 {
 
 }

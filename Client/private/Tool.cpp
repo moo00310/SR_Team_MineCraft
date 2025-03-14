@@ -14,7 +14,7 @@ CTool::CTool(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CTool::CTool(const CTool& Prototype)
-    : CGameObject { Prototype }
+    : CGameObject (Prototype)
 {
 
 }
@@ -38,7 +38,6 @@ HRESULT CTool::Initialize(void* pArg)
 
 void CTool::Priority_Update(_float fTimeDelta)
 {
-	int a = 10;
 }
 
 void CTool::Update(_float fTimeDelta)
