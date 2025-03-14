@@ -91,6 +91,9 @@
     <ClInclude Include="..\Public\Collider_Manager.h">
       <Filter>04.Components\Collider\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Line.h">
+      <Filter>04.Components\VIBuffer\Line</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -174,6 +177,9 @@
     <Filter Include="04.Components\Collider\Manager">
       <UniqueIdentifier>{cefd2401-0359-4a91-bd6c-16280b2e28ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Components\VIBuffer\Line">
+      <UniqueIdentifier>{56dcda29-4b9b-48aa-aa60-532acc6693a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -244,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Manager.cpp">
       <Filter>04.Components\Collider\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Line.cpp">
+      <Filter>04.Components\VIBuffer\Line</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -83,6 +83,8 @@ HRESULT CHeroCube::Render()
 	if (FAILED(m_pColliderCom->Render_ColliderBox(m_bHit)))
 		return E_FAIL;
 
+	m_pGameInstance->Ray_Cast(m_pTransformCom->Get_WorldMatrix(), m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), 100.f, CCollider_Manager::COLLISION_BLOCK);
+
 	return S_OK;
 }
 
