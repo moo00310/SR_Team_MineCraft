@@ -47,7 +47,7 @@
       <Filter>02.GameObject\Manager\Layer</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Renderer.h">
-      <Filter>04.Renderer</Filter>
+      <Filter>05.Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Component.h">
       <Filter>04.Components</Filter>
@@ -68,10 +68,10 @@
       <Filter>04.Components\Transform</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Timer.h">
-      <Filter>05.Timers</Filter>
+      <Filter>06.Timers</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Timer_Manager.h">
-      <Filter>05.Timers\Manager</Filter>
+      <Filter>06.Timers\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera.h">
       <Filter>02.GameObject\Camera</Filter>
@@ -87,6 +87,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\FastNoiseLite.h">
       <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Collider_Manager.h">
+      <Filter>04.Components\Collider\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -126,9 +129,6 @@
     <Filter Include="03.Prototype\Manager">
       <UniqueIdentifier>{00500f36-ef8e-41b5-aa07-5e12106b1fa6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Renderer">
-      <UniqueIdentifier>{ac1221d1-ea14-4963-a022-db50384008db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Components">
       <UniqueIdentifier>{430a8c1a-1040-4ea7-bd9c-16a49f38a6a1}</UniqueIdentifier>
     </Filter>
@@ -147,12 +147,6 @@
     <Filter Include="04.Components\VIBuffer\Terrain">
       <UniqueIdentifier>{688c68fb-dda6-432a-bcbf-b68cb6fec7bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.Timers">
-      <UniqueIdentifier>{97f5d22b-91e8-48e5-9a75-38182d68917a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05.Timers\Manager">
-      <UniqueIdentifier>{45424e6a-9752-432d-b096-86bb2ca8ec51}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObject\Camera">
       <UniqueIdentifier>{818845ae-d1f4-4af6-8117-3b38123510e2}</UniqueIdentifier>
     </Filter>
@@ -167,6 +161,18 @@
     </Filter>
     <Filter Include="04.Components\Transform">
       <UniqueIdentifier>{e6f09916-b879-4da9-af31-206b538ecd54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Renderer">
+      <UniqueIdentifier>{ac1221d1-ea14-4963-a022-db50384008db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Timers">
+      <UniqueIdentifier>{97f5d22b-91e8-48e5-9a75-38182d68917a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.Timers\Manager">
+      <UniqueIdentifier>{45424e6a-9752-432d-b096-86bb2ca8ec51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\Collider\Manager">
+      <UniqueIdentifier>{cefd2401-0359-4a91-bd6c-16280b2e28ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -198,7 +204,7 @@
       <Filter>02.GameObject\Manager\Layer</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Renderer.cpp">
-      <Filter>04.Renderer</Filter>
+      <Filter>05.Renderer</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Component.cpp">
       <Filter>04.Components</Filter>
@@ -219,10 +225,10 @@
       <Filter>04.Components\Transform</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Timer.cpp">
-      <Filter>05.Timers</Filter>
+      <Filter>06.Timers</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Timer_Manager.cpp">
-      <Filter>05.Timers\Manager</Filter>
+      <Filter>06.Timers\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera.cpp">
       <Filter>02.GameObject\Camera</Filter>
@@ -235,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Cube.cpp">
       <Filter>04.Components\Collider\Collider_Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Collider_Manager.cpp">
+      <Filter>04.Components\Collider\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

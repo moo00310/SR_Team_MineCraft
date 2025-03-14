@@ -16,6 +16,7 @@
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
+#include "HeroCubeNoMove.h"
 /*
   지형 관련
 */
@@ -103,10 +104,10 @@ HRESULT CLoader::Loading()
 
 	}
 
-	if (FAILED(hr))
-		return E_FAIL;
+	LeaveCriticalSection(&m_CriticalSection); //오류 나서 두개 위치 바꿈
 
-	LeaveCriticalSection(&m_CriticalSection);
+	if (FAILED(hr))
+		return E_FAIL;	//오류 나서 두개 위치 바꿈
 
 	return S_OK;
 }
@@ -320,11 +321,8 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
-	/* For.Prototype_Component_CCollider_Cube */
-	CCollider_Cube::COLLRECTDESC Desc{};
-	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f; //콜라이더 크기 결정(왜 이거를 하면 릴리즈 에러가 나는가)
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		CCollider_Cube::Create(m_pGraphic_Device, Desc))))
+ 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+		CCollider_Cube::Create(m_pGraphic_Device/*, Desc*/))))
 		return E_FAIL;
 
 
@@ -340,24 +338,20 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
-	/* For.Prototype_GameObject_Terrain */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Terrain"),
-		CTerrain::Create(m_pGraphic_Device))))
-		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Player */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Player"),
-		CPlayer::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
 	/* For.Prototype_GameObject_HeroCube */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCube"),
 		CHeroCube::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_HeroCubeNoMove */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCubeNoMove"),
+		CHeroCubeNoMove::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

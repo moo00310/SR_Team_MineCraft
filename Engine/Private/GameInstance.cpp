@@ -6,6 +6,7 @@
 #include "Graphic_Device.h"
 #include "Object_Manager.h"
 #include "Prototype_Manager.h"
+#include "Collider_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance);
 
@@ -39,6 +40,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, LPDIRECT
 	if (nullptr == m_pRenderer)
 		return E_FAIL;
 
+	m_pCollider_Manager = CCollider_Manager::Create();
+	if (nullptr == m_pCollider_Manager)
+		return E_FAIL;
+
 
 	return S_OK;
 }
@@ -48,12 +53,11 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
 
-	
-
 	m_pObject_Manager->Late_Update(fTimeDelta);
 
-
 	m_pLevel_Manager->Update(fTimeDelta);
+
+	m_pCollider_Manager->Reset_ColliderGroup(); // 마지막에 호출하라고함 (그룹에 넣다 뺏다 반복 하는 듯)
 }
 
 HRESULT CGameInstance::Draw()
@@ -151,6 +155,30 @@ void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 	return m_pTimer_Manager->Update(strTimerTag);
 }
 
+HRESULT CGameInstance::Add_CollisionGroup(CCollider_Manager::COLLISION_GROUP eCollisionGroup, CGameObject* pGameObject)
+{
+	if (!m_pCollider_Manager)
+		return E_FAIL;
+
+	return m_pCollider_Manager->Add_CollisionGroup(eCollisionGroup, pGameObject);
+}
+
+void CGameInstance::Out_CollisiomGroup(CCollider_Manager::COLLISION_GROUP eCollisionGroup, CGameObject* pGameObject)
+{
+	if (!m_pCollider_Manager)
+		return;
+
+	m_pCollider_Manager->Out_CollisiomGroup(eCollisionGroup, pGameObject);
+}
+
+_bool CGameInstance::Collision_with_Group(CCollider_Manager::COLLISION_GROUP eGroup, CGameObject* pGameObject, CCollider_Manager::COLLISION_TYPE eType, _float3* pOutDistance)
+{
+	if (nullptr == m_pCollider_Manager)
+		return false;
+
+	return m_pCollider_Manager->Collision_with_Group(eGroup, pGameObject, eType, pOutDistance);
+}
+
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -164,6 +192,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pPrototype_Manager);
 
 	Safe_Release(m_pLevel_Manager);
+
+	Safe_Release(m_pCollider_Manager);
 
 	Safe_Release(m_pGraphic_Device);
 

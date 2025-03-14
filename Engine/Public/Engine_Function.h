@@ -47,6 +47,23 @@ namespace Engine
 		return iRefCnt;
 	}
 
+	class CTag_Finder
+	{
+	private:
+		std::basic_string<TCHAR> m_str;
+
+	public:
+		explicit CTag_Finder(const TCHAR* pStr)
+			: m_str(pStr) // ���ڿ� ����
+		{
+		}
+
+		template<typename T>
+		bool operator()(const T& Pair) const
+		{
+			return m_str == Pair.first;
+		}
+	};
 	inline D3DXMATRIX MAtrixTranslation(float x, float y, float z) {
 		D3DXMATRIX mat;
 		D3DXMatrixIdentity(&mat);
@@ -58,5 +75,4 @@ namespace Engine
 		D3DXVECTOR3 temp = { mat._41, mat._42, mat._43 };
 		return temp;
 	}
-
 }

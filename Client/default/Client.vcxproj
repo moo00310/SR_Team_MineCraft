@@ -160,6 +160,7 @@
     <ClInclude Include="..\public\Creeper.h" />
     <ClInclude Include="..\public\HeroCube.h" />
     <ClInclude Include="..\public\Dirt.h" />
+    <ClInclude Include="..\public\HeroCubeNoMove.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
     <ClInclude Include="..\public\Level_HERO.h" />
     <ClInclude Include="..\public\Level_Hyeok.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="..\private\Creeper.cpp" />
     <ClCompile Include="..\private\HeroCube.cpp" />
     <ClCompile Include="..\private\Dirt.cpp" />
+    <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />
     <ClCompile Include="..\private\Level_HERO.cpp" />
     <ClCompile Include="..\private\Level_Hyeok.cpp" />

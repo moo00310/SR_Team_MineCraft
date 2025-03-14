@@ -6,8 +6,9 @@
 #include "Renderer.h"
 #include "Prototype_Manager.h"
 
-BEGIN(Engine)
+#include "Collider_Manager.h" //콜라이더 그룹 enum 가져오려고 인클루드함...클라에서 enum 관리가 맞는 것 같음
 
+BEGIN(Engine)
 
 class ENGINE_DLL CGameInstance final : public CBase
 {
@@ -49,6 +50,13 @@ public:
 	void Update_Timer(const _wstring& strTimerTag);
 #pragma endregion
 
+#pragma region Collider_Manager
+	HRESULT Add_CollisionGroup(CCollider_Manager::COLLISION_GROUP eCollisionGroup, class CGameObject* pGameObject);
+	void Out_CollisiomGroup(CCollider_Manager::COLLISION_GROUP eCollisionGroup, class CGameObject* pGameObject);
+	_bool Collision_with_Group(CCollider_Manager::COLLISION_GROUP eGroup, class CGameObject* pGameObject, CCollider_Manager::COLLISION_TYPE eType, _float3* pOutDistance = nullptr);
+#pragma endregion
+
+
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
 	class CLevel_Manager*		m_pLevel_Manager = { nullptr };
@@ -56,6 +64,7 @@ private:
 	class CObject_Manager*		m_pObject_Manager = { nullptr };
 	class CRenderer*			m_pRenderer = { nullptr };
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
+	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 
 public:
 	void Release_Engine();
