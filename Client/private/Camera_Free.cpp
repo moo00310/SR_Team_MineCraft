@@ -6,7 +6,7 @@ CCamera_Free::CCamera_Free(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CCamera_Free::CCamera_Free(const CCamera_Free& Prototype)
-	: CCamera{ Prototype }
+	: CCamera ( Prototype )
 {
 }
 

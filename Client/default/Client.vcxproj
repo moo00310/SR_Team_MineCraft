@@ -72,12 +72,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\bin\</OutDir>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <IncludePath>../../Imgui/;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\bin\</OutDir>
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <IncludePath>../../Imgui/;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -143,6 +143,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Imgui\imconfig.h" />
+    <ClInclude Include="..\..\Imgui\imgui.h" />
+    <ClInclude Include="..\..\Imgui\imgui_impl_dx9.h" />
+    <ClInclude Include="..\..\Imgui\imgui_impl_win32.h" />
+    <ClInclude Include="..\..\Imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\..\Imgui\imstb_textedit.h" />
+    <ClInclude Include="..\..\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
@@ -154,6 +162,7 @@
     <ClInclude Include="..\public\Creeper_Body.h" />
     <ClInclude Include="..\public\Creeper_Foot.h" />
     <ClInclude Include="..\public\Creeper_Head.h" />
+    <ClInclude Include="..\public\HeroCube.h" />
     <ClInclude Include="..\public\Dirt.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
     <ClInclude Include="..\public\Level_HERO.h" />
@@ -167,6 +176,7 @@
     <ClInclude Include="..\public\MCTerrain.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Terrain.h" />
+    <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Level_Moo.h" />
@@ -175,6 +185,13 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Imgui\imgui.cpp" />
+    <ClCompile Include="..\..\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\Imgui\imgui_impl_dx9.cpp" />
+    <ClCompile Include="..\..\Imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\..\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
@@ -184,6 +201,7 @@
     <ClCompile Include="..\private\Creeper_Body.cpp" />
     <ClCompile Include="..\private\Creeper_Foot.cpp" />
     <ClCompile Include="..\private\Creeper_Head.cpp" />
+    <ClCompile Include="..\private\HeroCube.cpp" />
     <ClCompile Include="..\private\Dirt.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />
     <ClCompile Include="..\private\Level_HERO.cpp" />
@@ -197,6 +215,7 @@
     <ClCompile Include="..\private\MCTerrain.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
+    <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Level_Moo.cpp" />
     <ClCompile Include="MainApp.cpp" />

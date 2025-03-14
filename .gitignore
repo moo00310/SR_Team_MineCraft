@@ -363,3 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 EngineSDK/Lib/Engine.lib
+*.lib
+
+!Client/Bin/Resources/
+!Client/Bin/Resources/*

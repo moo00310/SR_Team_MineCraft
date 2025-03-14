@@ -5,6 +5,7 @@
 #include "VIBuffer_Cube.h"
 #include "Transform.h"
 #include "Texture.h"
+#include "Collider_Cube.h"
 
 
 
