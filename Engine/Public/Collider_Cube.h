@@ -21,7 +21,7 @@ public:
 	virtual ~CCollider_Cube() = default;
 
 public:
-	HRESULT Initialize_Prototype(COLLRECTDESC& Des);
+	HRESULT Initialize_Prototype(/*COLLRECTDESC& Des*/);
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update_ColliderBox(const _float4x4* WorldMatrix);
 	HRESULT Render_ColliderBox();
@@ -41,24 +41,24 @@ public:
 protected:
 	COLLRECTDESC		m_StateDesc;
 	//class CTransform*	m_pTransform = nullptr;
-	static const _tchar*		m_pTransformTag;
+	//static const _tchar*		m_pTransformTag;
 
 protected:
-	LPDIRECT3DVERTEXBUFFER9  m_pVB = nullptr;
-	_uint						m_iNumVertices = 0;
-	_uint						m_iStride = 0; /* 정점의 크기(byte) */
-	_ulong						m_dwFVF = 0;
-	D3DPRIMITIVETYPE			m_ePrimitiveType;
-	_uint						m_iNumPrimitive = 0;
+	LPDIRECT3DVERTEXBUFFER9  m_pVB = { nullptr };
+	_uint						m_iNumVertices = {};
+	_uint						m_iStride = {}; /* 정점의 크기(byte) */
+	_ulong						m_dwFVF = {};
+	D3DPRIMITIVETYPE			m_ePrimitiveType = {};
+	_uint						m_iNumPrimitive = {};
 
 protected:
-	LPDIRECT3DINDEXBUFFER9		m_pIB = nullptr;
-	_uint						m_iIndicesByte = 0;
-	D3DFORMAT					m_eIndexFormat;
+	LPDIRECT3DINDEXBUFFER9		m_pIB = { nullptr };
+	_uint						m_iIndicesByte = {};
+	D3DFORMAT					m_eIndexFormat = {};
 
 
 public:
-	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, COLLRECTDESC& Des);
+	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device/*, COLLRECTDESC* Des = nullptr*/);
 	virtual CComponent* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
 };

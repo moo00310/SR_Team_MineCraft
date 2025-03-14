@@ -22,6 +22,8 @@ HRESULT CHeroCube::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
+
 	return S_OK;
 }
 
@@ -94,15 +96,15 @@ HRESULT CHeroCube::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Collider */
-	//CCollider_Cube::COLLRECTDESC Desc{};
- // 	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f; //콜라이더 크기 결정(왜 이거를 하면 릴리즈 에러가 나는가)
-	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-	//	TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
-	//	return E_FAIL;
-
+	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
+	Desc.fRadiusX = 0.2f * (rand() % 10); Desc.fRadiusY = 0.2f * (rand() % 10); Desc.fRadiusZ = 0.2f * (rand() % 10);
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom))))
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;
+
+	/*if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom))))
+		return E_FAIL;*/
 
 	/* For.Com_Transform */
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
