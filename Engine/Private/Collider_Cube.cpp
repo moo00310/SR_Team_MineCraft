@@ -37,14 +37,12 @@ HRESULT CCollider_Cube::Initialize(void * pArg)
 		return E_FAIL;
 
 	memcpy(&m_StateDesc, pArg, sizeof(COLLRECTDESC));
-	m_pTransform = m_StateDesc.pTransformCom;
+	m_pTransformCom = m_StateDesc.pTransformCom;
 
-	if (!m_pTransform)
+	if (!m_pTransformCom)
 		return E_FAIL;
 		
-	Safe_AddRef(m_pTransform);
-
-	D3DXMatrixIdentity(&m_StateDesc.StateMatrix);
+	Safe_AddRef(m_pTransformCom);
 
 	m_iNumVertices = 8;
 	m_iStride = sizeof(VTXCUBETEX);
@@ -127,9 +125,10 @@ HRESULT CCollider_Cube::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CCollider_Cube::Update_ColliderBox(const _float4x4* WorldMatrix)
+HRESULT CCollider_Cube::Update_ColliderBox()
 {
-	m_StateDesc.StateMatrix = *WorldMatrix;
+	const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
+	_float4x4 StateMatrix = *pWorldMatrix;
 
 	m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
 	m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
@@ -140,21 +139,19 @@ HRESULT CCollider_Cube::Update_ColliderBox(const _float4x4* WorldMatrix)
 	m_vPoint[6] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);
 	m_vPoint[7] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);
 
-	_float3 vecOffsetPos = *(_float3*)&(m_StateDesc.StateMatrix.m[3][0]);
+	_float3 vecOffsetPos = *(_float3*)&(StateMatrix.m[3][0]);
 	vecOffsetPos.x += m_StateDesc.fOffSetX;
 	vecOffsetPos.y += m_StateDesc.fOffSetY;
 	vecOffsetPos.z += m_StateDesc.fOffsetZ;
 
-	m_StateDesc.StateMatrix.m[3][0] = vecOffsetPos.x;
-	m_StateDesc.StateMatrix.m[3][1] = vecOffsetPos.y;
-	m_StateDesc.StateMatrix.m[3][2] = vecOffsetPos.z;
+	StateMatrix.m[3][0] = vecOffsetPos.x;
+	StateMatrix.m[3][1] = vecOffsetPos.y;
+	StateMatrix.m[3][2] = vecOffsetPos.z;
 
 	for (int i = 0; i < 8; ++i)
 	{
-		D3DXVec3TransformCoord(&m_vPoint[i], &m_vPoint[i], &m_StateDesc.StateMatrix);
+		D3DXVec3TransformCoord(&m_vPoint[i], &m_vPoint[i], &StateMatrix);
 	}
-	
-	//Calculate_TransInfo();
 
 	return S_OK;
 }
@@ -162,7 +159,7 @@ HRESULT CCollider_Cube::Update_ColliderBox(const _float4x4* WorldMatrix)
 HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 {
 	// 세계 변환 행렬 설정
-	m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_StateDesc.StateMatrix);
+	m_pGraphic_Device->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	// 와이어프레임 모드 설정
 	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
@@ -196,35 +193,33 @@ HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 	return S_OK;
 }
 
-//#include <D3DX10math.h>  // D3DXVECTOR3 및 관련 함수 사용을 위해 포함
-
 _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance)
 {
 	if (pTarget == nullptr)
 		return false;
 
 	// this 객체의 월드 매트릭스 추출
-	const _float4x4* pWorldMatrixA = m_pTransform->Get_WorldMatrix();
+	const _float4x4* pWorldMatrixA = m_pTransformCom->Get_WorldMatrix();
 	// 타겟 객체의 월드 매트릭스 추출
-	const _float4x4* pWorldMatrixB = pTarget->m_pTransform->Get_WorldMatrix();
+	const _float4x4* pWorldMatrixB = pTarget->m_pTransformCom->Get_WorldMatrix();
 
 	// 월드 매트릭스에서 로컬 축과 중심 추출 (D3DXMATRIX 스타일 가정: _11~_33은 회전, _41~_43은 번역)
-	D3DXVECTOR3 axesA[3] = {
-		D3DXVECTOR3(pWorldMatrixA->_11, pWorldMatrixA->_12, pWorldMatrixA->_13),
-		D3DXVECTOR3(pWorldMatrixA->_21, pWorldMatrixA->_22, pWorldMatrixA->_23),
-		D3DXVECTOR3(pWorldMatrixA->_31, pWorldMatrixA->_32, pWorldMatrixA->_33)
+	_float3 axesA[3] = {
+		_float3(pWorldMatrixA->_11, pWorldMatrixA->_12, pWorldMatrixA->_13),
+		_float3(pWorldMatrixA->_21, pWorldMatrixA->_22, pWorldMatrixA->_23),
+		_float3(pWorldMatrixA->_31, pWorldMatrixA->_32, pWorldMatrixA->_33)
 	};
-	D3DXVECTOR3 centerA(pWorldMatrixA->_41, pWorldMatrixA->_42, pWorldMatrixA->_43);
+	_float3 centerA(pWorldMatrixA->_41, pWorldMatrixA->_42, pWorldMatrixA->_43);
 	// 정규화
 	D3DXVec3Normalize(&axesA[0], &axesA[0]);
 	D3DXVec3Normalize(&axesA[1], &axesA[1]);
 	D3DXVec3Normalize(&axesA[2], &axesA[2]);
 
 	// this 객체의 반 크기 (로컬 공간에서 정의된 값)
-	D3DXVECTOR3 halfA = { m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ };
+	_float3 halfA = { m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ };
 
 	// this 객체의 8개 꼭짓점 계산
-	D3DXVECTOR3 cornersA[8];
+	_float3 cornersA[8];
 	for (int i = 0; i < 8; ++i)
 	{
 		float offsetX = (i & 1) ? halfA.x : -halfA.x;
@@ -236,21 +231,21 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 	}
 
 	// 타겟 객체의 월드 매트릭스에서 로컬 축과 중심 추출
-	D3DXVECTOR3 axesB[3] = {
-		D3DXVECTOR3(pWorldMatrixB->_11, pWorldMatrixB->_12, pWorldMatrixB->_13),
-		D3DXVECTOR3(pWorldMatrixB->_21, pWorldMatrixB->_22, pWorldMatrixB->_23),
-		D3DXVECTOR3(pWorldMatrixB->_31, pWorldMatrixB->_32, pWorldMatrixB->_33)
+	_float3 axesB[3] = {
+		_float3(pWorldMatrixB->_11, pWorldMatrixB->_12, pWorldMatrixB->_13),
+		_float3(pWorldMatrixB->_21, pWorldMatrixB->_22, pWorldMatrixB->_23),
+		_float3(pWorldMatrixB->_31, pWorldMatrixB->_32, pWorldMatrixB->_33)
 	};
-	D3DXVECTOR3 centerB(pWorldMatrixB->_41, pWorldMatrixB->_42, pWorldMatrixB->_43);
+	_float3 centerB(pWorldMatrixB->_41, pWorldMatrixB->_42, pWorldMatrixB->_43);
 	D3DXVec3Normalize(&axesB[0], &axesB[0]);
 	D3DXVec3Normalize(&axesB[1], &axesB[1]);
 	D3DXVec3Normalize(&axesB[2], &axesB[2]);
 
 	// 타겟 객체의 반 크기
-	D3DXVECTOR3 halfB = { pTarget->m_StateDesc.fRadiusX,pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
+	_float3 halfB = { pTarget->m_StateDesc.fRadiusX,pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
 
 	// 타겟 객체의 8개 꼭짓점 계산
-	D3DXVECTOR3 cornersB[8];
+	_float3 cornersB[8];
 	for (int i = 0; i < 8; ++i)
 	{
 		float offsetX = (i & 1) ? halfB.x : -halfB.x;
@@ -262,7 +257,7 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 	}
 
 	// SAT(Separating Axis Theorem)를 위한 테스트 축 설정
-	std::vector<D3DXVECTOR3> testAxes;
+	std::vector<_float3> testAxes;
 	// 각 객체의 로컬 축 3개씩
 	testAxes.push_back(axesA[0]);
 	testAxes.push_back(axesA[1]);
@@ -275,7 +270,7 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 	{
 		for (int j = 0; j < 3; ++j)
 		{
-			D3DXVECTOR3 axis;
+			_float3 axis;
 			D3DXVec3Cross(&axis, &axesA[i], &axesB[j]);
 			if (D3DXVec3Length(&axis) > 1e-6f)
 			{
@@ -287,7 +282,7 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 
 	// 각 축에 대해 투영 구간을 계산하고, 겹치는지 검사합니다.
 	float minPenetration = FLT_MAX;
-	D3DXVECTOR3 smallestAxis(0, 0, 0);
+	_float3 smallestAxis(0, 0, 0);
 	for (const auto& axis : testAxes)
 	{
 		// this 객체 투영 구간
@@ -326,7 +321,7 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 	if (pOutDistance)
 	{
 		// 두 중심 간 벡터
-		D3DXVECTOR3 d = centerB - centerA;
+		_float3 d = centerB - centerA;
 		// 두 벡터의 방향이 반대면 최소 축의 방향을 반전
 		if (D3DXVec3Dot(&d, &smallestAxis) < 0)
 			smallestAxis = -smallestAxis;
@@ -338,47 +333,13 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 	return true;
 }
 
-
-
-
-
-
-//void CCollider_Cube::Calculate_TransInfo()
-//{
-//	// 월드 행렬이 존재한다고 가정합니다.
-//    D3DXMATRIX matWorld = m_StateDesc.StateMatrix;  // 월드 행렬 (현재 객체의 변환 정보)
-//
-//    // 월드 행렬에서 위치 추출
-//    m_vCenter = D3DXVECTOR3(matWorld._41, matWorld._42, matWorld._43);
-//
-//    // 월드 행렬의 상위 3x3 부분에서 회전 행렬을 추출하여 각 축을 계산
-//    m_vAxisX = D3DXVECTOR3(matWorld._11, matWorld._12, matWorld._13);  // X축
-//    m_vAxisY = D3DXVECTOR3(matWorld._21, matWorld._22, matWorld._23);  // Y축
-//    m_vAxisZ = D3DXVECTOR3(matWorld._31, matWorld._32, matWorld._33);  // Z축
-//
-//    // 월드 행렬에서 크기 (스케일) 추출 (회전이 적용된 크기이므로, 절반 크기)
-// //   _float fScale;
-//	//fScale = D3DXVec3Length(&m_vAxisX); // X축 벡터의 길이 = 스케일 X
-// //   m_vHalfExtents.x = fScale / 2.0f;  // 크기의 절반을 사용
-//
-//	//fScale = D3DXVec3Length(&m_vAxisY); // Y축 벡터의 길이 = 스케일 Y
-// //   m_vHalfExtents.y = fScale / 2.0f;  // 크기의 절반을 사용
-//
-//	//fScale = D3DXVec3Length(&m_vAxisZ); // Z축 벡터의 길이 = 스케일 Z
-// //   m_vHalfExtents.z = fScale / 2.0f;  // 크기의 절반을 사용
-//
-//	m_vHalfExtents.x = m_StateDesc.fRadiusX;
-//	m_vHalfExtents.y = m_StateDesc.fOffSetY;
-//	m_vHalfExtents.z = m_StateDesc.fOffsetZ;
-//}
-
 CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device/*, COLLRECTDESC& Des*/)
 {
 	CCollider_Cube*	pInstance = new CCollider_Cube(pGraphic_Device);
 
 	if (FAILED(pInstance->Initialize_Prototype(/*Des*/)))
 	{
-		MSG_BOX("Failed to Created : CCollider_Rect");
+		MSG_BOX("Failed to Created : CCollider_Cube");
 		Safe_Release(pInstance);
 	}
 
@@ -402,7 +363,7 @@ void CCollider_Cube::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTransform);
+	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
 }

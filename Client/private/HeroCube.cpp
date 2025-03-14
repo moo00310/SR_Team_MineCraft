@@ -34,7 +34,7 @@ void CHeroCube::Priority_Update(_float fTimeDelta)
 
 void CHeroCube::Update(_float fTimeDelta)
 {
-	if (FAILED(m_pColliderCom->Update_ColliderBox(m_pTransformCom->Get_WorldMatrix())))
+	if (FAILED(m_pColliderCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
 		return;
