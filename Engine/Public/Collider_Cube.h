@@ -21,7 +21,7 @@ public:
 	virtual ~CCollider_Cube() = default;
 
 public:
-	HRESULT Initialize_Prototype();
+	HRESULT Initialize_Prototype(COLLRECTDESC& Des);
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update_ColliderBox(const _float4x4* WorldMatrix);
 	HRESULT Render_ColliderBox();
@@ -58,7 +58,7 @@ protected:
 
 
 public:
-	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, COLLRECTDESC& Des);
 	virtual CComponent* Clone(void* pArg = nullptr) override;
 	virtual void Free() override;
 };

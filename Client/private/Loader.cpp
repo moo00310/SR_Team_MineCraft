@@ -305,8 +305,10 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
 	/* For.Prototype_Component_CCollider_Cube */
+	CCollider_Cube::COLLRECTDESC Desc{};
+	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f; //콜라이더 크기 결정(왜 이거를 하면 릴리즈 에러가 나는가)
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		CCollider_Cube::Create(m_pGraphic_Device))))
+		CCollider_Cube::Create(m_pGraphic_Device, Desc))))
 		return E_FAIL;
 
 

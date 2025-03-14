@@ -27,7 +27,7 @@ CCollider_Cube::CCollider_Cube(const CCollider_Cube & rhs)
 	Safe_AddRef(m_pIB);
 }
 
-HRESULT CCollider_Cube::Initialize_Prototype()
+HRESULT CCollider_Cube::Initialize_Prototype(COLLRECTDESC& Des)
 {
 	D3DXMatrixIdentity(&m_StateDesc.StateMatrix);
 
@@ -119,90 +119,90 @@ HRESULT CCollider_Cube::Initialize(void * pArg)
 	/*if (m_pTransform == nullptr)
 		return E_FAIL;*/
 
-	if (pArg != nullptr) //아규먼트가 있을 때 여기를 들어오는데, 이 차이 밖에 없는데 왜 릴리즈 에러가 터지냐고
-	{
-		memcpy(&m_StateDesc, pArg, sizeof(COLLRECTDESC));
+	//if (pArg != nullptr) //아규먼트가 있을 때 여기를 들어오는데, 이 차이 밖에 없는데 왜 릴리즈 에러가 터지냐고
+	//{
+	//	memcpy(&m_StateDesc, pArg, sizeof(COLLRECTDESC));
 
-		D3DXMatrixIdentity(&m_StateDesc.StateMatrix);
+	//	D3DXMatrixIdentity(&m_StateDesc.StateMatrix);
 
-		m_iNumVertices = 8;
-		m_iStride = sizeof(VTXCUBETEX);
-		m_dwFVF = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
-		m_ePrimitiveType = D3DPT_TRIANGLELIST;
-		m_iNumPrimitive = 12;
+	//	m_iNumVertices = 8;
+	//	m_iStride = sizeof(VTXCUBETEX);
+	//	m_dwFVF = D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE3(0);
+	//	m_ePrimitiveType = D3DPT_TRIANGLELIST;
+	//	m_iNumPrimitive = 12;
 
-		/* 정점들을 할당했다. */
-		if (FAILED(m_pGraphic_Device->CreateVertexBuffer(m_iNumVertices * m_iStride, 0, m_dwFVF, D3DPOOL_MANAGED, &m_pVB, 0)))
-			return E_FAIL;
+	//	/* 정점들을 할당했다. */
+	//	if (FAILED(m_pGraphic_Device->CreateVertexBuffer(m_iNumVertices * m_iStride, 0, m_dwFVF, D3DPOOL_MANAGED, &m_pVB, 0)))
+	//		return E_FAIL;
 
-		VTXCUBETEX*			pVertices = nullptr;
+	//	VTXCUBETEX*			pVertices = nullptr;
 
-		m_pVB->Lock(0, /*m_iNumVertices * m_iStride*/0, (void**)&pVertices, 0);
-
-
-		pVertices[0].vPosition = m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// + InitPos;
-		pVertices[0].vTexture = pVertices[0].vPosition;
-
-		pVertices[1].vPosition = m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
-		pVertices[1].vTexture = pVertices[1].vPosition;
-
-		pVertices[2].vPosition = m_vPoint[2] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
-		pVertices[2].vTexture = pVertices[2].vPosition;
-
-		pVertices[3].vPosition = m_vPoint[3] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
-		pVertices[3].vTexture = pVertices[3].vPosition;
-
-		pVertices[4].vPosition = m_vPoint[4] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// + InitPos;
-		pVertices[4].vTexture = pVertices[4].vPosition;
-
-		pVertices[5].vPosition = m_vPoint[5] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
-		pVertices[5].vTexture = pVertices[5].vPosition;
-
-		pVertices[6].vPosition = m_vPoint[6] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
-		pVertices[6].vTexture = pVertices[6].vPosition;
-
-		pVertices[7].vPosition = m_vPoint[7] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
-		pVertices[7].vTexture = pVertices[7].vPosition;
-		m_pVB->Unlock();
-
-		m_iIndicesByte = sizeof(FACEINDICES16);
-		m_eIndexFormat = D3DFMT_INDEX16;
-
-		if (FAILED(m_pGraphic_Device->CreateIndexBuffer(m_iNumPrimitive * m_iIndicesByte, 0, m_eIndexFormat, D3DPOOL_MANAGED, &m_pIB, nullptr)))
-			return E_FAIL;
-
-		FACEINDICES16*	pIndices = nullptr;
-
-		m_pIB->Lock(0, 0, (void**)&pIndices, 0);
+	//	m_pVB->Lock(0, /*m_iNumVertices * m_iStride*/0, (void**)&pVertices, 0);
 
 
-		/* +X */
-		pIndices[0]._0 = 1; pIndices[0]._1 = 5; pIndices[0]._2 = 6;
-		pIndices[1]._0 = 1; pIndices[1]._1 = 6; pIndices[1]._2 = 2;
+	//	pVertices[0].vPosition = m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// + InitPos;
+	//	pVertices[0].vTexture = pVertices[0].vPosition;
 
-		/* -X */
-		pIndices[2]._0 = 4; pIndices[2]._1 = 0; pIndices[2]._2 = 3;
-		pIndices[3]._0 = 4; pIndices[3]._1 = 3; pIndices[3]._2 = 7;
+	//	pVertices[1].vPosition = m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
+	//	pVertices[1].vTexture = pVertices[1].vPosition;
 
-		/* +Y */
-		pIndices[4]._0 = 4; pIndices[4]._1 = 5; pIndices[4]._2 = 1;
-		pIndices[5]._0 = 4; pIndices[5]._1 = 1; pIndices[5]._2 = 0;
+	//	pVertices[2].vPosition = m_vPoint[2] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
+	//	pVertices[2].vTexture = pVertices[2].vPosition;
 
-		/* -Y */
-		pIndices[6]._0 = 3; pIndices[6]._1 = 2; pIndices[6]._2 = 6;
-		pIndices[7]._0 = 3; pIndices[7]._1 = 6; pIndices[7]._2 = 7;
+	//	pVertices[3].vPosition = m_vPoint[3] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
+	//	pVertices[3].vTexture = pVertices[3].vPosition;
 
-		/* +Z */
-		pIndices[8]._0 = 5; pIndices[8]._1 = 4; pIndices[8]._2 = 7;
-		pIndices[9]._0 = 5; pIndices[9]._1 = 7; pIndices[9]._2 = 6;
+	//	pVertices[4].vPosition = m_vPoint[4] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// + InitPos;
+	//	pVertices[4].vTexture = pVertices[4].vPosition;
 
-		/* -Z */
-		pIndices[10]._0 = 0; pIndices[10]._1 = 1; pIndices[10]._2 = 2;
-		pIndices[11]._0 = 0; pIndices[11]._1 = 2; pIndices[11]._2 = 3;
+	//	pVertices[5].vPosition = m_vPoint[5] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
+	//	pVertices[5].vTexture = pVertices[5].vPosition;
+
+	//	pVertices[6].vPosition = m_vPoint[6] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
+	//	pVertices[6].vTexture = pVertices[6].vPosition;
+
+	//	pVertices[7].vPosition = m_vPoint[7] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
+	//	pVertices[7].vTexture = pVertices[7].vPosition;
+	//	m_pVB->Unlock();
+
+	//	m_iIndicesByte = sizeof(FACEINDICES16);
+	//	m_eIndexFormat = D3DFMT_INDEX16;
+
+	//	if (FAILED(m_pGraphic_Device->CreateIndexBuffer(m_iNumPrimitive * m_iIndicesByte, 0, m_eIndexFormat, D3DPOOL_MANAGED, &m_pIB, nullptr)))
+	//		return E_FAIL;
+
+	//	FACEINDICES16*	pIndices = nullptr;
+
+	//	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
 
 
-		m_pIB->Unlock();
-	}
+	//	/* +X */
+	//	pIndices[0]._0 = 1; pIndices[0]._1 = 5; pIndices[0]._2 = 6;
+	//	pIndices[1]._0 = 1; pIndices[1]._1 = 6; pIndices[1]._2 = 2;
+
+	//	/* -X */
+	//	pIndices[2]._0 = 4; pIndices[2]._1 = 0; pIndices[2]._2 = 3;
+	//	pIndices[3]._0 = 4; pIndices[3]._1 = 3; pIndices[3]._2 = 7;
+
+	//	/* +Y */
+	//	pIndices[4]._0 = 4; pIndices[4]._1 = 5; pIndices[4]._2 = 1;
+	//	pIndices[5]._0 = 4; pIndices[5]._1 = 1; pIndices[5]._2 = 0;
+
+	//	/* -Y */
+	//	pIndices[6]._0 = 3; pIndices[6]._1 = 2; pIndices[6]._2 = 6;
+	//	pIndices[7]._0 = 3; pIndices[7]._1 = 6; pIndices[7]._2 = 7;
+
+	//	/* +Z */
+	//	pIndices[8]._0 = 5; pIndices[8]._1 = 4; pIndices[8]._2 = 7;
+	//	pIndices[9]._0 = 5; pIndices[9]._1 = 7; pIndices[9]._2 = 6;
+
+	//	/* -Z */
+	//	pIndices[10]._0 = 0; pIndices[10]._1 = 1; pIndices[10]._2 = 2;
+	//	pIndices[11]._0 = 0; pIndices[11]._1 = 2; pIndices[11]._2 = 3;
+
+
+	//	m_pIB->Unlock();
+	//}
 
 
 	return S_OK;
@@ -335,11 +335,11 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube * pTarget, _float3* pOutDis
 
 
 
-CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device, COLLRECTDESC& Des)
 {
 	CCollider_Cube*	pInstance = new CCollider_Cube(pGraphic_Device);
 
-	if (FAILED(pInstance->Initialize_Prototype()))
+	if (FAILED(pInstance->Initialize_Prototype(Des)))
 	{
 		MSG_BOX("Failed to Created : CCollider_Rect");
 		Safe_Release(pInstance);

@@ -94,15 +94,15 @@ HRESULT CHeroCube::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Collider */
-	CCollider_Cube::COLLRECTDESC Desc{};
-  	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f; //콜라이더 크기 결정(왜 이거를 하면 릴리즈 에러가 나는가)
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
-		return E_FAIL;
+	//CCollider_Cube::COLLRECTDESC Desc{};
+ // 	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f; //콜라이더 크기 결정(왜 이거를 하면 릴리즈 에러가 나는가)
+	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+	//	TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
+	//	return E_FAIL;
 
-	/*if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
 		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom))))
-		return E_FAIL;*/
+		return E_FAIL;
 
 	/* For.Com_Transform */
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
