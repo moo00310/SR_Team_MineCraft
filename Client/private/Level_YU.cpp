@@ -1,5 +1,6 @@
 #include "Level_YU.h"
 #include "GameInstance.h"
+#include "MapTool.h"
 
 CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -15,12 +16,20 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Tool(TEXT("Layer_Tool"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
 void CLevel_YU::Update(_float fTimeDelta)
 {
-	int a = 10;
+	bool bCurrentKeyState = (GetKeyState(VK_F1) & 0x8000) != 0;
+	if (bCurrentKeyState && !bPrevKeyState)
+	{
+		//dynamic_cast<CMapTool*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Tool"), 0))->SetFrameOnOff();
+	}
+	bPrevKeyState = bCurrentKeyState;
 }
 
 HRESULT CLevel_YU::Render()
@@ -42,6 +51,15 @@ HRESULT CLevel_YU::Ready_Layer_Camera(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_Terrain(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MCTerrain"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Tool(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MapTool"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 

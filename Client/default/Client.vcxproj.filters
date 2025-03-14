@@ -88,6 +88,9 @@
     <Filter Include="02.GameObjects\97.HeroGameObj">
       <UniqueIdentifier>{1d6eeeac-132a-43a9-ba2c-c1c4fb854509}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Tool\MapTool">
+      <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -210,6 +213,15 @@
     <ClInclude Include="..\public\Dirt.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\MapTool.h">
+      <Filter>02.GameObjects\Tool\MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Stone.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GrassDirt.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -325,6 +337,15 @@
       <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Dirt.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MapTool.cpp">
+      <Filter>02.GameObjects\Tool\MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Stone.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GrassDirt.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>

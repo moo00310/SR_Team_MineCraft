@@ -1,6 +1,5 @@
 ﻿#include "MCTerrain.h"
 #include "GameInstance.h"
-#include "Dirt.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -9,10 +8,7 @@ CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CMCTerrain::CMCTerrain(const CMCTerrain& Prototype)
-	: CGameObject(Prototype),
-	m_iMapX(Prototype.m_iMapX), 
-	m_iMapY(Prototype.m_iMapY),
-	m_iMapZ(Prototype.m_iMapZ)
+	: CGameObject(Prototype)
 {
 
 }
@@ -24,9 +20,6 @@ HRESULT CMCTerrain::Initialize_Prototype()
 
 HRESULT CMCTerrain::Initialize(void* pArg)
 {
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-		return E_FAIL;
-
     return S_OK;
 }
 
@@ -54,40 +47,10 @@ HRESULT CMCTerrain::Render()
 
 HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-	//2차원 
-	/*
-		for (int i = 0; i < m_iMapX; ++i) {
-		for (int j = 0; j < m_iMapZ; ++j) {
-			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
-				LEVEL_YU, strLayerTag)))
-				return E_FAIL;
-
-			_float3 temp = { (float)j,0.f, (float)i };
-			dynamic_cast<CDirt*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_BackGround"), i * m_iMapZ + j))->SetPos(temp);
-		}
-	}
-	*/
-
-
-	// 3차원
-	for (int i = 0; i < m_iMapY; ++i) {  // Y축이 높이
-		for (int j = 0; j < m_iMapX; ++j) {  // X축
-			for (int k = 0; k < m_iMapZ; ++k) {  // Z축
-				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
-					LEVEL_YU, strLayerTag)))
-					return E_FAIL;
-
-				
-				_float3 temp = { (float)j,(float)i,(float)k };
-				dynamic_cast<CDirt*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_BackGround"), (i * m_iMapX * m_iMapZ) + (j * m_iMapZ) + k))->SetPos(temp);
-			}
-		}
-	}
-
 	return S_OK;
 }
 
-CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device, int iMapX, int iMapY, int iMapZ)
+CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CMCTerrain* pInstance = new CMCTerrain(pGraphic_Device);
 
@@ -96,10 +59,6 @@ CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device, int iMapX, int
 		MSG_BOX("Failed to Created : CTerrain");
 		Safe_Release(pInstance);
 	}
-
-	pInstance->m_iMapX = iMapX;
-	pInstance->m_iMapY = iMapY;
-	pInstance->m_iMapZ = iMapZ;
 
 	return pInstance;
 }
