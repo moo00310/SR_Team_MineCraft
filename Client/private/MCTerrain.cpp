@@ -1,6 +1,5 @@
 ﻿#include "MCTerrain.h"
 #include "GameInstance.h"
-#include "Dirt.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -66,6 +65,7 @@ HRESULT CMCTerrain::TerrainGeneration()
 	return S_OK;
 }
 
+
 HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
 	//2차원 
@@ -93,7 +93,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 				
 				_float3 temp = { (float)j,(float)i,(float)k };
-				dynamic_cast<CDirt*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_BackGround"), (i * m_iMapX * m_iMapZ) + (j * m_iMapZ) + k))->SetPos(temp);
+				dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_BackGround"), (i * m_iMapX * m_iMapZ) + (j * m_iMapZ) + k))->SetPos(temp);
 			}
 		}
 	}

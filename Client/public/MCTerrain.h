@@ -36,6 +36,7 @@ private:
 	int m_iMapX = {};
 	int m_iMapY = {};
 	int m_iMapZ = {};
+	FastNoiseLite noise;
 public:
 	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

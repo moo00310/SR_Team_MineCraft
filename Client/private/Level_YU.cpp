@@ -27,7 +27,7 @@ void CLevel_YU::Update(_float fTimeDelta)
 	bool bCurrentKeyState = (GetKeyState(VK_F1) & 0x8000) != 0;
 	if (bCurrentKeyState && !bPrevKeyState)
 	{
-		dynamic_cast<CMapTool*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Tool"), 0))->SetFrameOnOff();
+		//dynamic_cast<CMapTool*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Tool"), 0))->SetFrameOnOff();
 	}
 	bPrevKeyState = bCurrentKeyState;
 }
