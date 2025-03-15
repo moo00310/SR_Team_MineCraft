@@ -20,9 +20,11 @@ void CLineManager::Add_Line(const _float3& origin, const _float3& dir, _float ma
 
 void CLineManager::Draw_Line(LINE& tLine)
 {
-    _float4x4 identityMatrix;
-    D3DXMatrixIdentity(&identityMatrix);
-    m_pGraphic_Device->SetTransform(D3DTS_WORLD, &identityMatrix);
+    // 기존 상태 저장
+    DWORD prevTextureFactor, prevColorOp, prevColorArg1;
+    //m_pGraphic_Device->GetRenderState(D3DRS_TEXTUREFACTOR, &prevTextureFactor);
+    m_pGraphic_Device->GetTextureStageState(0, D3DTSS_COLOROP, &prevColorOp);
+    m_pGraphic_Device->GetTextureStageState(0, D3DTSS_COLORARG1, &prevColorArg1);
 
     if (tLine.isHit)
     {
@@ -39,18 +41,26 @@ void CLineManager::Draw_Line(LINE& tLine)
         { end,   D3DCOLOR_XRGB(255, 255, 0) } // 노란색 끝점
     };
 
-
-    m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
     m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, line, sizeof(VTXPOSCOL));
 
-    // 원래 상태(솔리드 모드)로 복구
-    m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+    // 상태 복구
+    //m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, prevTextureFactor);
+    m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, prevColorOp);
+    m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, prevColorArg1);
 
+    // 구조체 초기화
     ZeroMemory(&tLine, sizeof(tLine));
+
 }
 
 void CLineManager::Render_Lines()
 {
+
+    _float4x4 identityMatrix;
+    D3DXMatrixIdentity(&identityMatrix);
+    m_pGraphic_Device->SetTransform(D3DTS_WORLD, &identityMatrix);
+    m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+
     for (auto& line : m_Lines)
     {
         if (line.fMaxDistance > 0.0f)

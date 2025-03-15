@@ -1,7 +1,7 @@
 #pragma once
 #include "Base.h"
 
-#define MAX_LINES 1000  // 최대 라인 개수
+#define MAX_LINES 30  // 최대 라인 개수
 
 class CLineManager : public CBase
 {

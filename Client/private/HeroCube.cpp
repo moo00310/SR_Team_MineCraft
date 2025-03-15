@@ -35,6 +35,17 @@ void CHeroCube::Priority_Update(_float fTimeDelta)
 void CHeroCube::Update(_float fTimeDelta)
 {
 
+	_float Min;
+	_bool isRayHit{ false };
+	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+	D3DXVec3Normalize(&vLook, &vLook);
+	isRayHit = m_pGameInstance->Ray_Cast(vPosition, vLook, Min, CCollider_Manager::COLLISION_BLOCK, 10.f);
+	if (isRayHit)
+	{
+		int a = 10;
+	}
+
 	if (FAILED(m_pColliderCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
@@ -42,6 +53,10 @@ void CHeroCube::Update(_float fTimeDelta)
 	}
 
 	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_BLOCK, this, CCollider_Manager::COLLSIION_BOX);
+	if (m_bHit)
+	{
+		int a = 10;
+	}
 
 	if (GetKeyState('R') & 0x8000)
 	{
@@ -71,19 +86,6 @@ void CHeroCube::Update(_float fTimeDelta)
 void CHeroCube::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
-
-	_float Min;
-	_bool b{ false };
-	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-	_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-
-	D3DXVec3Normalize(&vLook, &vLook);
-
-	b = m_pGameInstance->Ray_Cast(vPosition, vLook, Min, CCollider_Manager::COLLISION_BLOCK, 10.f);
-	if (b)
-	{
-		int a = 10;
-	}
 }
 
 HRESULT CHeroCube::Render()
