@@ -14,7 +14,7 @@ CGameInstance::CGameInstance()
 {
 }
 
-HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, LPDIRECT3DDEVICE9* ppOut)
+HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LPDIRECT3DDEVICE9* ppOut)
 {
 	m_pGraphic_Device = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.isWindowed, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, ppOut);
 	if (nullptr == m_pGraphic_Device)
@@ -40,7 +40,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, LPDIRECT
 	if (nullptr == m_pRenderer)
 		return E_FAIL;
 
-	m_pCollider_Manager = CCollider_Manager::Create();
+	m_pCollider_Manager = CCollider_Manager::Create(*ppOut);
 	if (nullptr == m_pCollider_Manager)
 		return E_FAIL;
 
@@ -177,6 +177,14 @@ _bool CGameInstance::Collision_with_Group(CCollider_Manager::COLLISION_GROUP eGr
 		return false;
 
 	return m_pCollider_Manager->Collision_with_Group(eGroup, pGameObject, eType, pOutDistance);
+}
+
+_bool CGameInstance::Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup)
+{
+	if (nullptr == m_pCollider_Manager)
+		return false;
+
+	return m_pCollider_Manager->Ray_Cast(matWorld, vOrigin, vDir, fLength, eGroup);
 }
 
 #pragma endregion

@@ -6,7 +6,7 @@ CUIObject::CUIObject(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CUIObject::CUIObject(const CUIObject& Prototype)
-	: CGameObject{ Prototype }
+	: CGameObject(Prototype)
 {
 }
 
@@ -25,7 +25,7 @@ HRESULT CUIObject::Initialize(void* pArg)
 	m_pGraphic_Device->GetViewport(&ViewportDesc);
 
 	/* w, h, n, f : ºäº¼·ýÀ» ¼³Á¤ÇÑ´Ù */
-	D3DXMatrixOrthoLH(&m_ProjMatrix, ViewportDesc.Width, ViewportDesc.Height, 0.f, 1.f);
+	D3DXMatrixOrthoLH(&m_ProjMatrix, static_cast<_float>(ViewportDesc.Width), static_cast<_float>(ViewportDesc.Height), 0.f, 1.f);
 
 	return S_OK;
 }

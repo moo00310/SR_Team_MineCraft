@@ -40,6 +40,15 @@ namespace Engine
 	}FACEINDICES16;
 #pragma endregion
 
+#pragma region Ray_Cast
+	typedef struct tagColorVertex
+	{
+		D3DXVECTOR3 vPosition;
+		D3DXCOLOR   vColor;
+	}VTXPOSCOL;
+#pragma endregion
+
+
 }
 
 typedef struct tagbone
