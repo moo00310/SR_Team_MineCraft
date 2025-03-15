@@ -22,6 +22,7 @@ public:
 private:
 	HRESULT TerrainGenerationWithNoise();
 	void GeneratePerlinNoiseTexture(int width, int height);
+	HRESULT SaveData();
 
 	bool m_bMainFrame = true;
 	bool m_bMapFrame = false;
@@ -30,6 +31,9 @@ private:
 	LPDIRECT3DTEXTURE9 heightMapTexture = nullptr;
 	float m_fFrequency = 0.01f; //작을수록 부드러움, 클수록 더 세밀함
 	int m_iSeed = 12345; //다양한 종류의 맵
+
+	int m_iDirtDeep=2;
+	int m_iStoneDeep=-2;
 
 	int m_iMapX = 32;
 	int m_iMapZ = 32;

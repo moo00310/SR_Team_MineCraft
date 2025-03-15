@@ -154,6 +154,7 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\Client_Struct.h" />
     <ClInclude Include="..\public\CoalOre.h" />
     <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\Client_Defines.h" />

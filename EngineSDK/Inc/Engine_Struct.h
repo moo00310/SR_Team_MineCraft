@@ -40,7 +40,6 @@ namespace Engine
 	}FACEINDICES16;
 #pragma endregion
 
-
 	typedef struct tagbone
 	{
 		const char* name;
