@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 namespace Engine
 {
@@ -45,7 +45,7 @@ namespace Engine
 		const char* name;
 		int index;
 		int parent;
-		D3DXMATRIX transform;
+		Matrix transform;
 	}BONE;
 
 #pragma region Ray_Cast

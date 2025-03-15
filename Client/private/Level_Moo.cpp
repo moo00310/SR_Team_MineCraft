@@ -37,8 +37,8 @@ HRESULT CLevel_Moo::Render()
 
 HRESULT CLevel_Moo::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_GAMEPLAY, strLayerTag)))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Camera_Free"),
+		LEVEL_MOO, strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;
@@ -46,8 +46,8 @@ HRESULT CLevel_Moo::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 HRESULT CLevel_Moo::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
-		LEVEL_GAMEPLAY, strLayerTag)))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Terrain"),
+		LEVEL_MOO, strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;
@@ -55,8 +55,8 @@ HRESULT CLevel_Moo::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 HRESULT CLevel_Moo::Ready_Layer_Creeper(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Creeper"),
-			LEVEL_GAMEPLAY, strLayerTag)))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper"),
+		LEVEL_MOO, strLayerTag)))
 			return E_FAIL;
 
 	return S_OK;

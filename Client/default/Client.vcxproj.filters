@@ -144,9 +144,6 @@
     <ClInclude Include="..\public\Player.h">
       <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Level_Moo.h">
-      <Filter>01.Levels\99.Moo_Level</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Creeper.h">
       <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
     </ClInclude>
@@ -222,6 +219,9 @@
     <ClInclude Include="..\public\CoalOre.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Level_Moo.h">
+      <Filter>01.Levels\99.Moo_Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -266,9 +266,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
       <Filter>02.GameObjects\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Level_Moo.cpp">
-      <Filter>01.Levels\99.Moo_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Creeper.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
@@ -341,6 +338,9 @@
     </ClCompile>
     <ClCompile Include="..\private\CoalOre.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Moo.cpp">
+      <Filter>01.Levels\99.Moo_Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

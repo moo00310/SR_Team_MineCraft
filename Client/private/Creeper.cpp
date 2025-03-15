@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "VIBuffer_Cube.h"
 #include "GameInstance.h"
+#include <iostream>
 
 CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject{ pGraphic_Device }
@@ -60,15 +61,28 @@ void CCreeper::Update(_float fTimeDelta)
         m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
     }
 
+    
+    // 걷는 모션
     if (GetKeyState('Q') & 0x8000)
     {
-       //vecBones[3].transform.Go_Straight(fTimeDelta, 1000);
+        if (Comput > 20)
+            flag *= -1;
+        if(Comput < -20)
+            flag *= -1;
+
+        a = vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
+        vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
+        vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
+        vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
+        Comput += 1.5f * flag;
+
     }
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
 {
-
+ 
+    // 현재 트랜스폼을 월드로 바꿈
     vecBones[0].transform = *(m_pTransformCom->Get_WorldMatrix());
 
     Ready_Mesh();
@@ -168,7 +182,7 @@ HRESULT CCreeper::Ready_Bone()
 
 HRESULT CCreeper::Ready_Mesh()
 {
-    D3DMATRIX temp = {};
+    Matrix temp = {};
 
     // 머리
     temp = MAtrixTranslation(0, 4.f / 16.f, 0.f) *  vecBones[2].transform * vecBones[1].transform * vecBones[0].transform;
