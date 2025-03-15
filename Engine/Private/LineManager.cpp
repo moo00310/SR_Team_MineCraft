@@ -21,8 +21,7 @@ void CLineManager::Add_Line(const _float3& origin, const _float3& dir, _float ma
 void CLineManager::Draw_Line(LINE& tLine)
 {
     // 기존 상태 저장
-    DWORD prevTextureFactor, prevColorOp, prevColorArg1;
-    //m_pGraphic_Device->GetRenderState(D3DRS_TEXTUREFACTOR, &prevTextureFactor);
+    DWORD prevColorOp, prevColorArg1;
     m_pGraphic_Device->GetTextureStageState(0, D3DTSS_COLOROP, &prevColorOp);
     m_pGraphic_Device->GetTextureStageState(0, D3DTSS_COLORARG1, &prevColorArg1);
 
@@ -44,7 +43,6 @@ void CLineManager::Draw_Line(LINE& tLine)
     m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, line, sizeof(VTXPOSCOL));
 
     // 상태 복구
-    //m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, prevTextureFactor);
     m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, prevColorOp);
     m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, prevColorArg1);
 

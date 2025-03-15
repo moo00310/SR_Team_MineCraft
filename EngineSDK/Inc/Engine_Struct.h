@@ -5,10 +5,11 @@ namespace Engine
 	typedef struct tagEngineDesc 
 	{
 		HWND			hWnd;
-		bool			isWindowed;
-		unsigned int	iWinSizeX;
-		unsigned int	iWinSizeY;
-		unsigned int	iNumLevels;		
+		_bool			isWindowed;
+		_uint			iWinSizeX;
+		_uint			iWinSizeY;
+		_uint			iNumLevels;
+		_uint			iNumCollisionGroups;
 	}ENGINE_DESC;
 
 	/*D3DDECLUSAGE*/

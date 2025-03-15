@@ -1,10 +1,6 @@
 #include "..\Public\Collider_Cube.h"
 
 
-//const _tchar* CCollider_Cube::m_pTransformTag = TEXT("Com_Transform");
-
-//_bool m_bRender = true;
-
 CCollider_Cube::CCollider_Cube(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent(pGraphic_Device)
 {

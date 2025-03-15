@@ -40,7 +40,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 	if (nullptr == m_pRenderer)
 		return E_FAIL;
 
-	m_pCollider_Manager = CCollider_Manager::Create(*ppOut);
+	m_pCollider_Manager = CCollider_Manager::Create(*ppOut, EngineDesc.iNumCollisionGroups);
 	if (nullptr == m_pCollider_Manager)
 		return E_FAIL;
 
@@ -157,7 +157,7 @@ void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 	return m_pTimer_Manager->Update(strTimerTag);
 }
 
-HRESULT CGameInstance::Add_CollisionGroup(CCollider_Manager::COLLISION_GROUP eCollisionGroup, CGameObject* pGameObject)
+HRESULT CGameInstance::Add_CollisionGroup(_uint eCollisionGroup, CGameObject* pGameObject)
 {
 	if (!m_pCollider_Manager)
 		return E_FAIL;
@@ -165,7 +165,7 @@ HRESULT CGameInstance::Add_CollisionGroup(CCollider_Manager::COLLISION_GROUP eCo
 	return m_pCollider_Manager->Add_CollisionGroup(eCollisionGroup, pGameObject);
 }
 
-void CGameInstance::Out_CollisiomGroup(CCollider_Manager::COLLISION_GROUP eCollisionGroup, CGameObject* pGameObject)
+void CGameInstance::Out_CollisiomGroup(_uint eCollisionGroup, CGameObject* pGameObject)
 {
 	if (!m_pCollider_Manager)
 		return;
@@ -173,7 +173,7 @@ void CGameInstance::Out_CollisiomGroup(CCollider_Manager::COLLISION_GROUP eColli
 	m_pCollider_Manager->Out_CollisiomGroup(eCollisionGroup, pGameObject);
 }
 
-_bool CGameInstance::Collision_with_Group(CCollider_Manager::COLLISION_GROUP eGroup, CGameObject* pGameObject, CCollider_Manager::COLLISION_TYPE eType, _float3* pOutDistance)
+_bool CGameInstance::Collision_with_Group(_uint eGroup, CGameObject* pGameObject, CCollider_Manager::COLLISION_TYPE eType, _float3* pOutDistance)
 {
 	if (nullptr == m_pCollider_Manager)
 		return false;
@@ -181,7 +181,7 @@ _bool CGameInstance::Collision_with_Group(CCollider_Manager::COLLISION_GROUP eGr
 	return m_pCollider_Manager->Collision_with_Group(eGroup, pGameObject, eType, pOutDistance);
 }
 
-_bool CGameInstance::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float& tMin, CCollider_Manager::COLLISION_GROUP eGroup, _float maxDistance)
+_bool CGameInstance::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float& tMin, _uint eGroup, _float maxDistance)
 {
 	if (nullptr == m_pCollider_Manager)
 		return false;

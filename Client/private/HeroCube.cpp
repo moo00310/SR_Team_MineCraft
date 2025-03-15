@@ -29,7 +29,7 @@ HRESULT CHeroCube::Initialize(void* pArg)
 
 void CHeroCube::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_CollisionGroup(CCollider_Manager::COLLISION_PLAYER, this);
+	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 }
 
 void CHeroCube::Update(_float fTimeDelta)
@@ -40,7 +40,7 @@ void CHeroCube::Update(_float fTimeDelta)
 	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 	D3DXVec3Normalize(&vLook, &vLook);
-	isRayHit = m_pGameInstance->Ray_Cast(vPosition, vLook, Min, CCollider_Manager::COLLISION_BLOCK, 10.f);
+	isRayHit = m_pGameInstance->Ray_Cast(vPosition, vLook, Min, COLLISION_BLOCK, 10.f);
 	if (isRayHit)
 	{
 		int a = 10;
@@ -52,7 +52,7 @@ void CHeroCube::Update(_float fTimeDelta)
 		return;
 	}
 
-	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_BLOCK, this, CCollider_Manager::COLLSIION_BOX);
+	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_BLOCK, this, CCollider_Manager::COLLSIION_BOX);
 	if (m_bHit)
 	{
 		int a = 10;
