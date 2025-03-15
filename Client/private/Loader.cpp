@@ -23,6 +23,7 @@
 #include "Dirt.h"
 #include "Stone.h"
 #include "GrassDirt.h"
+#include "CoalOre.h"
 #include "MCTerrain.h"
 #include "MapTool.h"
 
@@ -265,12 +266,17 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	/* For.Prototype_Component_Texture_GrassDirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_GrassDirt"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassdirt%d.png"), 1))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassDirt%d.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Stone */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Stone"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/stone%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_coalOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_coalOre"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/coalOre%d.png"), 1))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -292,12 +298,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CDirt::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"),
+		CGrassDirt::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Stone"),
 		CStone::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"),
-		CGrassDirt::Create(m_pGraphic_Device))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"),
+		CCoalOre::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MCTerrain"),

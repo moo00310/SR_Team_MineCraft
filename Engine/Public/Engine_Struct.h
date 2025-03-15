@@ -31,10 +31,10 @@ namespace Engine
 	typedef struct tagVertexCubeTexture
 	{
 		D3DXVECTOR3		vPosition;
-		D3DXVECTOR3		vTexture;//ÅØ½ºÃÄ°¡ ¿Ö µé¾î °¡´Â°É±î?
+		D3DXVECTOR3		vTexture;//í…ìŠ¤ì³ê°€ ì™œ ë“¤ì–´ ê°€ëŠ”ê±¸ê¹Œ?
 	}VTXCUBETEX;
 
-	typedef struct FaceIndices16//ÀÌ°Ç ¹¹Áö?
+	typedef struct FaceIndices16//ì´ê±´ ë­ì§€?
 	{
 		unsigned short _0, _1, _2;
 	}FACEINDICES16;
@@ -47,5 +47,14 @@ namespace Engine
 		int parent;
 		D3DXMATRIX transform;
 	}BONE;
+
+#pragma region Ray_Cast
+	typedef struct tagColorVertex
+	{
+		D3DXVECTOR3 vPosition;
+		D3DXCOLOR   vColor;
+	}VTXPOSCOL;
+#pragma endregion
+
 }
 

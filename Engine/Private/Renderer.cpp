@@ -9,7 +9,7 @@ CRenderer::CRenderer(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CRenderer::Add_RenderGroup(RENDERGROUP eRenderGroup, CGameObject* pRenderObject)
 {
-	if (eRenderGroup >= RG_END ||
+	if (eRenderGroup >= RG_END || eRenderGroup < 0 ||
 		nullptr == pRenderObject)
 		return E_FAIL;
 

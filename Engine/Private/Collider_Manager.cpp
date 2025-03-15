@@ -7,7 +7,8 @@
 
 //IMPLEMENT_SINGLETON(CCollider_Manager)
 
-CCollider_Manager::CCollider_Manager(/*LPDIRECT3DDEVICE9 pGraphic_Device*/)
+CCollider_Manager::CCollider_Manager(LPDIRECT3DDEVICE9 pGraphic_Device)
+	:m_pGraphic_Device{ pGraphic_Device }
 {
 }
 
@@ -53,14 +54,14 @@ HRESULT CCollider_Manager::Reset_ColliderGroup()
 }
 _bool  CCollider_Manager::Collision_with_Group(COLLISION_GROUP eGroup, class CGameObject* pGameObject, COLLISION_TYPE eCollisionType, _float3* pOutDistance )
 {
-	CComponent* pDes = nullptr;
-	CComponent* pSrc = nullptr;
-	pSrc = pGameObject->Find_Component(TEXT("Com_Collider_Cube"));
+	CComponent* pOtherCollider = { nullptr };
+	CComponent* pMyCollider = { nullptr };
+	pMyCollider = pGameObject->Find_Component(TEXT("Com_Collider_Cube"));
 
 	for (auto& iter : m_GameObjects[eGroup])
 	{
 		//자기 자신과는 충돌 안하도록
-		if (iter->Find_Component(TEXT("Com_Collider_Cube")) == pSrc)
+		if (iter->Find_Component(TEXT("Com_Collider_Cube")) == pMyCollider)
 			continue;
 
 		if (nullptr != iter /*&& CGameInstance::Get_Instance()->Is_In_Frustum(iter->Get_Position(), iter->Get_Radius()) == true*/)
@@ -77,10 +78,10 @@ _bool  CCollider_Manager::Collision_with_Group(COLLISION_GROUP eGroup, class CGa
 					return true;
 				break;*/
 			case Engine::CCollider_Manager::COLLSIION_BOX:
-				 pDes = (CCollider_Cube*)iter->Find_Component(TEXT("Com_Collider_Cube"));
-				if (pDes == nullptr)
+				 pOtherCollider = (CCollider_Cube*)iter->Find_Component(TEXT("Com_Collider_Cube"));
+				if (pOtherCollider == nullptr)
 					continue;
-				if (true == ((dynamic_cast<CCollider_Cube*>(pSrc)->Collision_Check((CCollider_Cube*)pDes, pOutDistance))))
+				if (true == ((dynamic_cast<CCollider_Cube*>(pMyCollider)->Collision_Check((CCollider_Cube*)pOtherCollider, pOutDistance))))
 					return true;
 				break;
 			default:
@@ -140,10 +141,33 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(COLLISION_GROUP eGroup, vec
 	return false;
 }
 
-
-CCollider_Manager* CCollider_Manager::Create()
+_bool CCollider_Manager::Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup)
 {
-	return new CCollider_Manager();
+	if (!m_pGraphic_Device) return true;
+
+	// 선의 두 개의 점을 정의 (빨간색 적용)
+	VTXPOSCOL vertices[] =
+	{
+		{ vOrigin, D3DCOLOR_XRGB(255, 0, 0) },
+		{ vOrigin + vDir * fLength, D3DCOLOR_XRGB(255, 0, 0) }
+	};
+
+	// 월드 행렬 설정
+	m_pGraphic_Device->SetTransform(D3DTS_WORLD, matWorld);
+
+	// FVF 설정
+	m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+
+	// 선 그리기
+	m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, vertices, sizeof(VTXPOSCOL));
+	
+	return true;
+}
+
+
+CCollider_Manager* CCollider_Manager::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+{
+	return new CCollider_Manager(pGraphic_Device);
 }
 
 void CCollider_Manager::Free()

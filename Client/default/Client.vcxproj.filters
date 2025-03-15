@@ -4,9 +4,6 @@
     <Filter Include="99.Headers">
       <UniqueIdentifier>{fcace3ae-9159-40b6-9db2-b1157c2c1a8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="98.Default">
-      <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00.MainApp">
       <UniqueIdentifier>{369681bb-6938-407b-bc8d-ba710eb82c23}</UniqueIdentifier>
     </Filter>
@@ -97,19 +94,22 @@
     <Filter Include="02.GameObjects\Tool\MapTool">
       <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99.Headers\98.Default">
+      <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
-      <Filter>98.Default</Filter>
+      <Filter>99.Headers\98.Default</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>98.Default</Filter>
+      <Filter>99.Headers\98.Default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>98.Default</Filter>
+      <Filter>99.Headers\98.Default</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>98.Default</Filter>
+      <Filter>99.Headers\98.Default</Filter>
     </ClInclude>
     <ClInclude Include="MainApp.h">
       <Filter>00.MainApp</Filter>
@@ -219,23 +219,26 @@
     <ClInclude Include="..\public\GrassDirt.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CoalOre.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
-      <Filter>98.Default</Filter>
+      <Filter>99.Headers\98.Default</Filter>
     </Image>
     <Image Include="small.ico">
-      <Filter>98.Default</Filter>
+      <Filter>99.Headers\98.Default</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
-      <Filter>98.Default</Filter>
+      <Filter>99.Headers\98.Default</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
-      <Filter>98.Default</Filter>
+      <Filter>99.Headers\98.Default</Filter>
     </ClCompile>
     <ClCompile Include="MainApp.cpp">
       <Filter>00.MainApp</Filter>
@@ -334,6 +337,9 @@
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\GrassDirt.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CoalOre.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
