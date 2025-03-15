@@ -69,6 +69,8 @@ HRESULT CGameInstance::Draw()
 
 	m_pRenderer->Draw();
 
+	m_pCollider_Manager->Render();
+
 	m_pLevel_Manager->Render();
 
 	m_pGraphic_Device->Render_End();
@@ -179,20 +181,20 @@ _bool CGameInstance::Collision_with_Group(CCollider_Manager::COLLISION_GROUP eGr
 	return m_pCollider_Manager->Collision_with_Group(eGroup, pGameObject, eType, pOutDistance);
 }
 
-_bool CGameInstance::Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup)
+//_bool CGameInstance::Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup)
+//{
+//	if (nullptr == m_pCollider_Manager)
+//		return false;
+//
+//	return m_pCollider_Manager->Ray_Cast(matWorld, vOrigin, vDir, fLength, eGroup);
+//}
+
+_bool CGameInstance::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, float& tMin, CCollider_Manager::COLLISION_GROUP eGroup)
 {
 	if (nullptr == m_pCollider_Manager)
 		return false;
 
-	return m_pCollider_Manager->Ray_Cast(matWorld, vOrigin, vDir, fLength, eGroup);
-}
-
-_bool CGameInstance::IntersectRayOBB(const _float3& rayOrigin, const _float3& rayDir, float& tMin, CCollider_Manager::COLLISION_GROUP eGroup)
-{
-	if (nullptr == m_pCollider_Manager)
-		return false;
-
-	return m_pCollider_Manager->IntersectRayOBB(rayOrigin, rayDir, tMin, eGroup);
+	return m_pCollider_Manager->Ray_Cast(rayOrigin, rayDir, tMin, eGroup);
 }
 
 #pragma endregion

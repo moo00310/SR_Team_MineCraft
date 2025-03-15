@@ -141,31 +141,35 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(COLLISION_GROUP eGroup, vec
 	return false;
 }
 
-_bool CCollider_Manager::Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup)
+//_bool CCollider_Manager::Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup)
+//{
+//	if (!m_pGraphic_Device) return true;
+//
+//	// 선의 두 개의 점을 정의 (빨간색 적용)
+//	VTXPOSCOL vertices[] =
+//	{
+//		{ vOrigin, D3DCOLOR_XRGB(255, 0, 0) },
+//		{ vOrigin + vDir * fLength, D3DCOLOR_XRGB(255, 0, 0) }
+//	};
+//
+//	// 월드 행렬 설정
+//	m_pGraphic_Device->SetTransform(D3DTS_WORLD, matWorld);
+//
+//	// FVF 설정
+//	m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+//
+//	// 선 그리기
+//	m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, vertices, sizeof(VTXPOSCOL));
+//	
+//	return true;
+//}
+
+bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, float& tMin, CCollider_Manager::COLLISION_GROUP eGroup)
 {
-	if (!m_pGraphic_Device) return true;
-
-	// 선의 두 개의 점을 정의 (빨간색 적용)
-	VTXPOSCOL vertices[] =
-	{
-		{ vOrigin, D3DCOLOR_XRGB(255, 0, 0) },
-		{ vOrigin + vDir * fLength, D3DCOLOR_XRGB(255, 0, 0) }
-	};
-
-	// 월드 행렬 설정
-	m_pGraphic_Device->SetTransform(D3DTS_WORLD, matWorld);
-
-	// FVF 설정
-	m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
-
-	// 선 그리기
-	m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, vertices, sizeof(VTXPOSCOL));
-	
-	return true;
-}
-
-bool CCollider_Manager::IntersectRayOBB(const _float3& rayOrigin, const _float3& rayDir, float& tMin, CCollider_Manager::COLLISION_GROUP eGroup)
-{
+	m_isHit = false;
+	m_isDraw = true;
+	m_RayOrigin = rayOrigin;
+	m_RayDir = rayDir;
 	for (auto& iter : m_GameObjects[eGroup])
 	{
 		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
@@ -213,10 +217,46 @@ bool CCollider_Manager::IntersectRayOBB(const _float3& rayOrigin, const _float3&
 
 		// OBB와 충돌한 경우 즉시 true 반환
 		if (tMin <= tMax)
+		{
+			m_isHit = true;
 			return true;
+		}
 	}
 
 	return false;
+}
+
+void CCollider_Manager::Render()
+{
+	if (!m_isDraw)
+		return;
+
+	if (m_isHit)
+	{
+		m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 0, 0)); // 빨간색
+		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TFACTOR);
+	}
+
+	D3DXVECTOR3 end = m_RayOrigin + m_RayDir * 100.f;
+
+	VTXPOSCOL line[] =
+	{
+		{ m_RayOrigin, D3DCOLOR_XRGB(255, 0, 0) },  // 빨간색 시작점
+		{ end,   D3DCOLOR_XRGB(255, 255, 0) } // 노란색 끝점
+	};
+
+	_float4x4 identityMatrix;
+	D3DXMatrixIdentity(&identityMatrix);
+	m_pGraphic_Device->SetTransform(D3DTS_WORLD, &identityMatrix);
+	m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+	m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, line, sizeof(VTXPOSCOL));
+
+	// 원래 상태(솔리드 모드)로 복구
+	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+	//레이 케스트 호출할때만 그리기
+	m_isDraw = false;
 }
 
 

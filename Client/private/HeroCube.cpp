@@ -22,7 +22,7 @@ HRESULT CHeroCube::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
 
 	return S_OK;
 }
@@ -34,17 +34,18 @@ void CHeroCube::Priority_Update(_float fTimeDelta)
 
 void CHeroCube::Update(_float fTimeDelta)
 {
+
 	if (FAILED(m_pColliderCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
 
-	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
+	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_BLOCK, this, CCollider_Manager::COLLSIION_BOX);
 
 	_float Min;
 	_bool b{ false };
-	b = m_pGameInstance->IntersectRayOBB(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), Min, CCollider_Manager::COLLISION_BLOCK);
+	b = m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), Min, CCollider_Manager::COLLISION_BLOCK);
 	if (b)
 	{
  		int a = 10;
@@ -92,7 +93,20 @@ HRESULT CHeroCube::Render()
 	if (FAILED(m_pColliderCom->Render_ColliderBox(m_bHit)))
 		return E_FAIL;
 
-	m_pGameInstance->Ray_Cast(m_pTransformCom->Get_WorldMatrix(), m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), 100.f, CCollider_Manager::COLLISION_BLOCK);
+	//D3DXVECTOR3 end = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + m_pTransformCom->Get_State(CTransform::STATE_LOOK) * 100.f;
+
+	//VTXPOSCOL line[] =
+	//{
+	//	{ m_pTransformCom->Get_State(CTransform::STATE_POSITION), D3DCOLOR_XRGB(255, 0, 0) },  // 빨간색 시작점
+	//	{ end,   D3DCOLOR_XRGB(255, 255, 0) } // 노란색 끝점
+	//};
+
+
+	//_float4x4 mat;
+	//D3DXMatrixIdentity(&mat);
+	//m_pGraphic_Device->SetTransform(D3DTS_WORLD, &mat);
+	//m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
+	//m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, line, sizeof(VTXPOSCOL));
 
 	return S_OK;
 }
