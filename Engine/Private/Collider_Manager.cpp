@@ -52,6 +52,7 @@ HRESULT CCollider_Manager::Reset_ColliderGroup()
 
 	return S_OK;
 }
+
 _bool  CCollider_Manager::Collision_with_Group(COLLISION_GROUP eGroup, class CGameObject* pGameObject, COLLISION_TYPE eCollisionType, _float3* pOutDistance )
 {
 	CComponent* pOtherCollider = { nullptr };
@@ -164,13 +165,8 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(COLLISION_GROUP eGroup, vec
 //	return true;
 //}
 
-bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, float& tMin, CCollider_Manager::COLLISION_GROUP eGroup)
+_bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float& tMin, CCollider_Manager::COLLISION_GROUP eGroup, _float maxDistance)
 {
-	m_isHit = false;
-	m_isDraw = true;
-	m_RayOrigin = rayOrigin;
-	m_RayDir = rayDir;
-
 	for (auto& iter : m_GameObjects[eGroup])
 	{
 		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
@@ -191,19 +187,19 @@ bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir
 
 		// 레이와 OBB의 교차 검사 (Slab 방식)
 		tMin = 0.f;
-		float tMax = FLT_MAX;
-		bool hit = true;  // 현재 OBB에 대해 충돌 판정
+		_float tMax = FLT_MAX;
+		_bool hit = true;  // 현재 OBB에 대해 충돌 판정
 
 		for (int i = 0; i < 3; ++i)
 		{
 			_float3 lValue = obbCenter - rayOrigin;
-			float e = D3DXVec3Dot(&axes[i], &lValue);
-			float f = D3DXVec3Dot(&axes[i], &rayDir);
+			_float e = D3DXVec3Dot(&axes[i], &lValue);
+			_float f = D3DXVec3Dot(&axes[i], &rayDir);
 
 			if (fabs(f) > 1e-6f)  // 레이가 해당 축과 평행하지 않은 경우
 			{
-				float t1 = (e - halfSize[i]) / f;
-				float t2 = (e + halfSize[i]) / f;
+				_float t1 = (e - halfSize[i]) / f;
+				_float t2 = (e + halfSize[i]) / f;
 				if (t1 > t2)
 					std::swap(t1, t2);
 				tMin = max(tMin, t1);
@@ -226,60 +222,53 @@ bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir
 			}
 		}
 
-		// 현재 OBB와 충돌한 경우 바로 true 반환
-		if (hit)
+		// 현재 OBB와 충돌한 경우 거리 제한 추가
+		if (hit && tMin <= maxDistance)
 		{
-			m_isHit = true;
+			m_pLineManager->Add_Line(rayOrigin, rayDir, maxDistance, true);
 			return true;
 		}
 	}
-
+	m_pLineManager->Add_Line(rayOrigin, rayDir, maxDistance, false);
 	return false;
 }
 
 
+
 void CCollider_Manager::Render()
 {
-	if (!m_isDraw)
-		return;
-
-	if (m_isHit)
-	{
-		m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 0, 0)); // 빨간색
-		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
-		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TFACTOR);
-	}
-
-	D3DXVECTOR3 end = m_RayOrigin + m_RayDir * 100.f;
-
-	VTXPOSCOL line[] =
-	{
-		{ m_RayOrigin, D3DCOLOR_XRGB(255, 0, 0) },  // 빨간색 시작점
-		{ end,   D3DCOLOR_XRGB(255, 255, 0) } // 노란색 끝점
-	};
-
-	_float4x4 identityMatrix;
-	D3DXMatrixIdentity(&identityMatrix);
-	m_pGraphic_Device->SetTransform(D3DTS_WORLD, &identityMatrix);
-	m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
-	m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, line, sizeof(VTXPOSCOL));
-
-	// 원래 상태(솔리드 모드)로 복구
-	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-	//레이 케스트 호출할때만 그리기
-	m_isDraw = false;
+	m_pLineManager->Render_Lines();
 }
 
 
 
+HRESULT CCollider_Manager::Initialize()
+{
+	m_pLineManager = CLineManager::Create(m_pGraphic_Device);
+	if (!m_pLineManager)
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
 CCollider_Manager* CCollider_Manager::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	return new CCollider_Manager(pGraphic_Device);
+	CCollider_Manager* pInstance = new CCollider_Manager(pGraphic_Device);
+
+	if (FAILED(pInstance->Initialize()))
+	{
+		MSG_BOX("Failed to Created : CCollider_Manager");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CCollider_Manager::Free()
 {
 	for (_uint i = 0; i < COLLISION_GROUPEND; ++i)
 		m_GameObjects[i].clear();
+
+	Safe_Release(m_pLineManager);
 }

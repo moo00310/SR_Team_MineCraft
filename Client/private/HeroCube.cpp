@@ -72,7 +72,6 @@ void CHeroCube::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
 
-	//처음엔 왜 레이캐스트가 히트로 뜨는지 의문 look 0 0 1 일때 항상 충돌남
 	_float Min;
 	_bool b{ false };
 	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
@@ -80,7 +79,7 @@ void CHeroCube::Late_Update(_float fTimeDelta)
 
 	D3DXVec3Normalize(&vLook, &vLook);
 
-	b = m_pGameInstance->Ray_Cast(vPosition, vLook, Min, CCollider_Manager::COLLISION_BLOCK);
+	b = m_pGameInstance->Ray_Cast(vPosition, vLook, Min, CCollider_Manager::COLLISION_BLOCK, 10.f);
 	if (b)
 	{
 		int a = 10;
@@ -103,21 +102,6 @@ HRESULT CHeroCube::Render()
 
 	if (FAILED(m_pColliderCom->Render_ColliderBox(m_bHit)))
 		return E_FAIL;
-
-	//D3DXVECTOR3 end = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + m_pTransformCom->Get_State(CTransform::STATE_LOOK) * 100.f;
-
-	//VTXPOSCOL line[] =
-	//{
-	//	{ m_pTransformCom->Get_State(CTransform::STATE_POSITION), D3DCOLOR_XRGB(255, 0, 0) },  // 빨간색 시작점
-	//	{ end,   D3DCOLOR_XRGB(255, 255, 0) } // 노란색 끝점
-	//};
-
-
-	//_float4x4 mat;
-	//D3DXMatrixIdentity(&mat);
-	//m_pGraphic_Device->SetTransform(D3DTS_WORLD, &mat);
-	//m_pGraphic_Device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE);
-	//m_pGraphic_Device->DrawPrimitiveUP(D3DPT_LINELIST, 1, line, sizeof(VTXPOSCOL));
 
 	return S_OK;
 }
