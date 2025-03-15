@@ -19,7 +19,7 @@ HRESULT CLevel_HERO::Initialize()
 		return E_FAIL;*/
 
 	if (FAILED(Ready_Layer_HeroCube(TEXT("Layer_HeroCube"))))
-		return E_FAIL;
+ 		return E_FAIL;
 
 	return S_OK;
 }

@@ -34,7 +34,7 @@ void CHeroCube::Priority_Update(_float fTimeDelta)
 
 void CHeroCube::Update(_float fTimeDelta)
 {
-	if (FAILED(m_pColliderCom->Update_ColliderBox(m_pTransformCom->Get_WorldMatrix())))
+	if (FAILED(m_pColliderCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
 		return;
@@ -83,6 +83,8 @@ HRESULT CHeroCube::Render()
 	if (FAILED(m_pColliderCom->Render_ColliderBox(m_bHit)))
 		return E_FAIL;
 
+	m_pGameInstance->Ray_Cast(m_pTransformCom->Get_WorldMatrix(), m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), 100.f, CCollider_Manager::COLLISION_BLOCK);
+
 	return S_OK;
 }
 
@@ -98,22 +100,19 @@ HRESULT CHeroCube::Ready_Components()
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 
-	/* For.Com_Collider */
-	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
-	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f;
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
-		return E_FAIL;
-
-	/*if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		TEXT("Com_Collider"), reinterpret_cast<CComponent**>(&m_pColliderCom))))
-		return E_FAIL;*/
-
 	/* For.Com_Transform */
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
 
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
+		return E_FAIL;
+
+	/* For.Com_Collider */
+	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
+	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f;
+	Desc.pTransformCom = m_pTransformCom;
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;
 
 	return S_OK;

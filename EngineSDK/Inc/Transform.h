@@ -30,7 +30,8 @@ public:
 
 	const _float4x4* Get_WorldMatrix_Inverse() {
 	
-		return D3DXMatrixInverse(&m_WorldMatrixInverse, nullptr, &m_WorldMatrix);
+		D3DXMatrixInverse(&m_WorldMatrixInverse, nullptr, &m_WorldMatrix);
+		return &m_WorldMatrixInverse;
 	}
 
 	const _float4x4* Get_WorldMatrix() {

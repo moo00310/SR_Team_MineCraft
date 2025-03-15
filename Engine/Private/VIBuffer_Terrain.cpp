@@ -6,7 +6,7 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& Prototype)
-	: CVIBuffer{ Prototype }
+	: CVIBuffer(Prototype)
 	, m_iNumVerticesX { Prototype.m_iNumVerticesX }
 	, m_iNumVerticesZ { Prototype.m_iNumVerticesZ }
 {
@@ -34,13 +34,13 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(_uint iNumVerticesX, _uint iNumV
 
 	m_pVB->Lock(0, /*m_iNumVertices * m_iVertexStride*/0, reinterpret_cast<void**>(&pVertices), 0);
 
-	for (size_t i = 0; i < m_iNumVerticesZ; i++)
+	for (_uint i = 0; i < m_iNumVerticesZ; i++)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX; j++)
+		for (_uint j = 0; j < m_iNumVerticesX; j++)
 		{
 			_uint			iIndex = i * m_iNumVerticesX + j;
 
-			pVertices[iIndex].vPosition = _float3(j, 0.f, i);
+			pVertices[iIndex].vPosition = _float3(static_cast<_float>(j), 0.f, static_cast<_float>(i));
 			pVertices[iIndex].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f) * 50.f, i / (m_iNumVerticesZ - 1.f) * 50.f);
 		}
 	}	
@@ -58,9 +58,9 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(_uint iNumVerticesX, _uint iNumV
 
 	_uint		iNumIndices = { 0 };
 
-	for (size_t i = 0; i < m_iNumVerticesZ - 1; i++)
+	for (_uint i = 0; i < m_iNumVerticesZ - 1; i++)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX - 1; j++)
+		for (_uint j = 0; j < m_iNumVerticesX - 1; j++)
 		{
 			_uint			iIndex = i * m_iNumVerticesX + j;
 
