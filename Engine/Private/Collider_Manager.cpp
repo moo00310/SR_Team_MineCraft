@@ -170,6 +170,7 @@ bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir
 	m_isDraw = true;
 	m_RayOrigin = rayOrigin;
 	m_RayDir = rayDir;
+
 	for (auto& iter : m_GameObjects[eGroup])
 	{
 		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
@@ -189,34 +190,44 @@ bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir
 		D3DXVec3Normalize(&axes[2], &axes[2]);
 
 		// 레이와 OBB의 교차 검사 (Slab 방식)
-		tMin = 0.0f;
+		tMin = 0.f;
 		float tMax = FLT_MAX;
+		bool hit = true;  // 현재 OBB에 대해 충돌 판정
 
 		for (int i = 0; i < 3; ++i)
 		{
 			_float3 lValue = obbCenter - rayOrigin;
-			float e = D3DXVec3Dot(&(axes[i]), &(lValue));
-			float f = D3DXVec3Dot(&(axes[i]), &rayDir);
+			float e = D3DXVec3Dot(&axes[i], &lValue);
+			float f = D3DXVec3Dot(&axes[i], &rayDir);
 
-			if (fabs(f) > 1e-6f)  // 레이가 축과 평행하지 않은 경우
+			if (fabs(f) > 1e-6f)  // 레이가 해당 축과 평행하지 않은 경우
 			{
 				float t1 = (e - halfSize[i]) / f;
 				float t2 = (e + halfSize[i]) / f;
-				if (t1 > t2) std::swap(t1, t2);
+				if (t1 > t2)
+					std::swap(t1, t2);
 				tMin = max(tMin, t1);
 				tMax = min(tMax, t2);
 
-				if (tMin > tMax) // 교차하지 않으면 다음 OBB 검사
+				if (tMin > tMax)  // 슬랩 간에 교차가 없으면 충돌 없음
+				{
+					hit = false;
 					break;
+				}
 			}
-			else if (-e - halfSize[i] > 0.0f || -e + halfSize[i] < 0.0f)
+			else // 레이가 해당 축과 평행한 경우
 			{
-				break;  // 레이가 축과 평행하면서 OBB 밖에 있음
+				// 만약 레이 원점이 슬랩 밖에 있다면 충돌 없음
+				if (-e - halfSize[i] > 0.0f || -e + halfSize[i] < 0.0f)
+				{
+					hit = false;
+					break;
+				}
 			}
 		}
 
-		// OBB와 충돌한 경우 즉시 true 반환
-		if (tMin <= tMax)
+		// 현재 OBB와 충돌한 경우 바로 true 반환
+		if (hit)
 		{
 			m_isHit = true;
 			return true;
@@ -225,6 +236,7 @@ bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir
 
 	return false;
 }
+
 
 void CCollider_Manager::Render()
 {

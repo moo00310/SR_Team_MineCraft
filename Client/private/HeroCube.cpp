@@ -43,14 +43,11 @@ void CHeroCube::Update(_float fTimeDelta)
 
 	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_BLOCK, this, CCollider_Manager::COLLSIION_BOX);
 
-	_float Min;
-	_bool b{ false };
-	b = m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), Min, CCollider_Manager::COLLISION_BLOCK);
-	if (b)
+	if (GetKeyState('R') & 0x8000)
 	{
- 		int a = 10;
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 5), 0.f, 0.f));
+		m_pTransformCom->Rotation({ 0.f, 1.f, 1.f }, D3DXToRadian(0.f));
 	}
-
 
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
@@ -74,6 +71,20 @@ void CHeroCube::Update(_float fTimeDelta)
 void CHeroCube::Late_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
+
+	//처음엔 왜 레이캐스트가 히트로 뜨는지 의문 look 0 0 1 일때 항상 충돌남
+	_float Min;
+	_bool b{ false };
+	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	b = m_pGameInstance->Ray_Cast(vPosition, vLook, Min, CCollider_Manager::COLLISION_BLOCK);
+	if (b)
+	{
+		int a = 10;
+	}
 }
 
 HRESULT CHeroCube::Render()

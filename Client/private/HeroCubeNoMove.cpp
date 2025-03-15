@@ -40,6 +40,11 @@ void CHeroCubeNoMove::Update(_float fTimeDelta)
 		return;
 	}
 
+	//마지막에 발사한 놈만 렌더 되네
+	//_float fMin;
+	//m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), fMin, CCollider_Manager::COLLISION_PLAYER);
+
+
 	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
 }
 
