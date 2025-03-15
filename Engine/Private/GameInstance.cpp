@@ -187,6 +187,14 @@ _bool CGameInstance::Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float
 	return m_pCollider_Manager->Ray_Cast(matWorld, vOrigin, vDir, fLength, eGroup);
 }
 
+_bool CGameInstance::IntersectRayOBB(const _float3& rayOrigin, const _float3& rayDir, float& tMin, CCollider_Manager::COLLISION_GROUP eGroup)
+{
+	if (nullptr == m_pCollider_Manager)
+		return false;
+
+	return m_pCollider_Manager->IntersectRayOBB(rayOrigin, rayDir, tMin, eGroup);
+}
+
 #pragma endregion
 
 void CGameInstance::Release_Engine()

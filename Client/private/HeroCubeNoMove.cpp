@@ -29,7 +29,7 @@ HRESULT CHeroCubeNoMove::Initialize(void* pArg)
 
 void CHeroCubeNoMove::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_CollisionGroup(CCollider_Manager::COLLISION_PLAYER, this);
+	m_pGameInstance->Add_CollisionGroup(CCollider_Manager::COLLISION_BLOCK, this);
 }
 
 void CHeroCubeNoMove::Update(_float fTimeDelta)

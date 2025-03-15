@@ -31,15 +31,14 @@ namespace Engine
 	typedef struct tagVertexCubeTexture
 	{
 		D3DXVECTOR3		vPosition;
-		D3DXVECTOR3		vTexture;//텍스쳐가 왜 들어 가는걸까?
+		D3DXVECTOR3		vTexture;
 	}VTXCUBETEX;
 
-	typedef struct FaceIndices16//이건 뭐지?
+	typedef struct FaceIndices16
 	{
 		unsigned short _0, _1, _2;
 	}FACEINDICES16;
 #pragma endregion
-
 
 	typedef struct tagbone
 	{

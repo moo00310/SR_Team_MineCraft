@@ -42,6 +42,15 @@ void CHeroCube::Update(_float fTimeDelta)
 
 	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
 
+	_float Min;
+	_bool b{ false };
+	b = m_pGameInstance->IntersectRayOBB(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), Min, CCollider_Manager::COLLISION_BLOCK);
+	if (b)
+	{
+ 		int a = 10;
+	}
+
+
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);

@@ -60,8 +60,9 @@ _bool  CCollider_Manager::Collision_with_Group(COLLISION_GROUP eGroup, class CGa
 
 	for (auto& iter : m_GameObjects[eGroup])
 	{
+		pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
 		//자기 자신과는 충돌 안하도록
-		if (iter->Find_Component(TEXT("Com_Collider_Cube")) == pMyCollider)
+		if (pOtherCollider == pMyCollider)
 			continue;
 
 		if (nullptr != iter /*&& CGameInstance::Get_Instance()->Is_In_Frustum(iter->Get_Position(), iter->Get_Radius()) == true*/)
@@ -78,7 +79,6 @@ _bool  CCollider_Manager::Collision_with_Group(COLLISION_GROUP eGroup, class CGa
 					return true;
 				break;*/
 			case Engine::CCollider_Manager::COLLSIION_BOX:
-				 pOtherCollider = (CCollider_Cube*)iter->Find_Component(TEXT("Com_Collider_Cube"));
 				if (pOtherCollider == nullptr)
 					continue;
 				if (true == ((dynamic_cast<CCollider_Cube*>(pMyCollider)->Collision_Check((CCollider_Cube*)pOtherCollider, pOutDistance))))
@@ -163,6 +163,62 @@ _bool CCollider_Manager::Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _f
 	
 	return true;
 }
+
+bool CCollider_Manager::IntersectRayOBB(const _float3& rayOrigin, const _float3& rayDir, float& tMin, CCollider_Manager::COLLISION_GROUP eGroup)
+{
+	for (auto& iter : m_GameObjects[eGroup])
+	{
+		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
+		CCollider_Cube::COLLRECTDESC& CubeDesc = pOtherCollider->Get_Desc();
+		const _float4x4* pWorldMatrix = CubeDesc.pTransformCom->Get_WorldMatrix();
+		const _float3 halfSize = { CubeDesc.fRadiusX, CubeDesc.fRadiusY, CubeDesc.fRadiusZ };
+
+		// OBB의 중심 및 로컬 축 추출
+		_float3 obbCenter(pWorldMatrix->_41, pWorldMatrix->_42, pWorldMatrix->_43);
+		_float3 axes[3] = {
+			_float3(pWorldMatrix->_11, pWorldMatrix->_12, pWorldMatrix->_13),
+			_float3(pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23),
+			_float3(pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33)
+		};
+		D3DXVec3Normalize(&axes[0], &axes[0]);
+		D3DXVec3Normalize(&axes[1], &axes[1]);
+		D3DXVec3Normalize(&axes[2], &axes[2]);
+
+		// 레이와 OBB의 교차 검사 (Slab 방식)
+		tMin = 0.0f;
+		float tMax = FLT_MAX;
+
+		for (int i = 0; i < 3; ++i)
+		{
+			_float3 lValue = obbCenter - rayOrigin;
+			float e = D3DXVec3Dot(&(axes[i]), &(lValue));
+			float f = D3DXVec3Dot(&(axes[i]), &rayDir);
+
+			if (fabs(f) > 1e-6f)  // 레이가 축과 평행하지 않은 경우
+			{
+				float t1 = (e - halfSize[i]) / f;
+				float t2 = (e + halfSize[i]) / f;
+				if (t1 > t2) std::swap(t1, t2);
+				tMin = max(tMin, t1);
+				tMax = min(tMax, t2);
+
+				if (tMin > tMax) // 교차하지 않으면 다음 OBB 검사
+					break;
+			}
+			else if (-e - halfSize[i] > 0.0f || -e + halfSize[i] < 0.0f)
+			{
+				break;  // 레이가 축과 평행하면서 OBB 밖에 있음
+			}
+		}
+
+		// OBB와 충돌한 경우 즉시 true 반환
+		if (tMin <= tMax)
+			return true;
+	}
+
+	return false;
+}
+
 
 
 CCollider_Manager* CCollider_Manager::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

@@ -60,6 +60,8 @@ public:
 
 	//레이케스트
 	_bool Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup);
+
+	_bool IntersectRayOBB(const _float3& rayOrigin, const _float3& rayDir, float& tMin, CCollider_Manager::COLLISION_GROUP eGroup);
 #pragma endregion
 
 
