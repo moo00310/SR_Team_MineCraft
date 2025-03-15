@@ -4,7 +4,6 @@
 #include "Texture.h"
 #include "VIBuffer_Cube.h"
 #include "GameInstance.h"
-#include <iostream>
 
 CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject{ pGraphic_Device }
@@ -82,10 +81,12 @@ void CCreeper::Update(_float fTimeDelta)
 void CCreeper::Late_Update(_float fTimeDelta)
 {
  
-    // 현재 트랜스폼을 월드로 바꿈
+    // 본의 매트릭스를 현재 트랜스폼으로 업데이트
     vecBones[0].transform = *(m_pTransformCom->Get_WorldMatrix());
 
+    // 본이 적용된 매쉬 업데이트
     Ready_Mesh();
+
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
         return;
 }

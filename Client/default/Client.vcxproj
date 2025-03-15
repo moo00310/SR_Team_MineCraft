@@ -176,6 +176,7 @@
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\MCTerrain.h" />
     <ClInclude Include="..\public\Player.h" />
+    <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\MCTerrain.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
+    <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
