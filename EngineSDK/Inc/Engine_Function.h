@@ -64,6 +64,7 @@ namespace Engine
 			return m_str == Pair.first;
 		}
 	};
+
 	inline D3DXMATRIX MAtrixTranslation(float x, float y, float z) {
 		D3DXMATRIX mat;
 		D3DXMatrixIdentity(&mat);
@@ -75,4 +76,10 @@ namespace Engine
 		D3DXVECTOR3 temp = { mat._41, mat._42, mat._43 };
 		return temp;
 	}
+
+
+	inline D3DXMATRIX MAtrix_Turn(const D3DXMATRIX& mat, const D3DXVECTOR3& vAxis, float fTimeDelta) {
+		D3DXVECTOR3 temp = { mat._41, mat._42, mat._43 };
+	}
+
 }

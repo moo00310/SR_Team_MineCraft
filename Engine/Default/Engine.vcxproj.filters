@@ -91,6 +91,9 @@
     <ClInclude Include="..\Public\Collider_Manager.h">
       <Filter>04.Components\Collider\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Matrix.h">
+      <Filter>100.Matrix</Filter>
+     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Line.h">
       <Filter>04.Components\VIBuffer\Line</Filter>
     </ClInclude>
@@ -177,6 +180,9 @@
     <Filter Include="04.Components\Collider\Manager">
       <UniqueIdentifier>{cefd2401-0359-4a91-bd6c-16280b2e28ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="100.Matrix">
+      <UniqueIdentifier>{7711c16c-4476-4a6d-8f93-e6657c5e929b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="04.Components\VIBuffer\Line">
       <UniqueIdentifier>{56dcda29-4b9b-48aa-aa60-532acc6693a0}</UniqueIdentifier>
     </Filter>
@@ -251,6 +257,9 @@
     <ClCompile Include="..\Private\Collider_Manager.cpp">
       <Filter>04.Components\Collider\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Matrix.cpp">
+      <Filter>100.Matrix</Filter>
+     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Line.cpp">
       <Filter>04.Components\VIBuffer\Line</Filter>
     </ClCompile>
