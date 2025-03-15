@@ -91,6 +91,9 @@
     <ClInclude Include="..\Public\Collider_Manager.h">
       <Filter>04.Components\Collider\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Matrix.h">
+      <Filter>100.Matrix</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -174,6 +177,9 @@
     <Filter Include="04.Components\Collider\Manager">
       <UniqueIdentifier>{cefd2401-0359-4a91-bd6c-16280b2e28ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="100.Matrix">
+      <UniqueIdentifier>{7711c16c-4476-4a6d-8f93-e6657c5e929b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -244,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Manager.cpp">
       <Filter>04.Components\Collider\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Matrix.cpp">
+      <Filter>100.Matrix</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

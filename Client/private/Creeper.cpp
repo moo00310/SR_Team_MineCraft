@@ -43,7 +43,27 @@ void CCreeper::Priority_Update(_float fTimeDelta)
 
 void CCreeper::Update(_float fTimeDelta)
 {
-    m_pTransformCom->Turn(_float3(1.f,1.f,1.f), fTimeDelta);
+    if (GetKeyState(VK_UP) & 0x8000)
+    {
+        m_pTransformCom->Go_Straight(fTimeDelta);
+    }
+    if (GetKeyState(VK_DOWN) & 0x8000)
+    {
+        m_pTransformCom->Go_Backward(fTimeDelta);
+    }
+    if (GetKeyState(VK_LEFT) & 0x8000)
+    {
+        m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta * -1.f);
+    }
+    if (GetKeyState(VK_RIGHT) & 0x8000)
+    {
+        m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
+    }
+
+    if (GetKeyState('Q') & 0x8000)
+    {
+       //vecBones[3].transform.Go_Straight(fTimeDelta, 1000);
+    }
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
@@ -148,10 +168,7 @@ HRESULT CCreeper::Ready_Bone()
 
 HRESULT CCreeper::Ready_Mesh()
 {
-
-    // 본과 본인 매트릭스를 곱해야함 월드 매트릭스를 건내줌
     D3DMATRIX temp = {};
-    D3DMATRIX Reletive = {};
 
     // 머리
     temp = MAtrixTranslation(0, 4.f / 16.f, 0.f) *  vecBones[2].transform * vecBones[1].transform * vecBones[0].transform;
