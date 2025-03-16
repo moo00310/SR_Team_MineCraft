@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 
 #include "Camera_TPS.h"
+#include "Camera_FPS.h"
 
 CLevel_HERO::CLevel_HERO(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -44,7 +45,20 @@ HRESULT CLevel_HERO::Render()
 
 HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	CCamera_TPS::CAMERA_TPS_DESC Cam_TPS_Desc{};
+	//CCamera_TPS::CAMERA_TPS_DESC Cam_TPS_Desc{};
+	//Cam_TPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
+	//Cam_TPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	//Cam_TPS_Desc.fFov = D3DXToRadian(60.f);
+	//Cam_TPS_Desc.fNear = 0.1f;
+	//Cam_TPS_Desc.fFar = 300.f;
+	//Cam_TPS_Desc.fMouseSensor = 0.1f;
+	//Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
+	//	//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
+	//	LEVEL_HERO, strLayerTag,&Cam_TPS_Desc)))
+	//	return E_FAIL;
+
+	CCamera_FPS::CAMERA_FPS_DESC Cam_TPS_Desc{};
 	Cam_TPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
 	Cam_TPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Cam_TPS_Desc.fFov = D3DXToRadian(60.f);
@@ -52,9 +66,9 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 	Cam_TPS_Desc.fFar = 300.f;
 	Cam_TPS_Desc.fMouseSensor = 0.1f;
 	Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
-		//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
-		LEVEL_HERO, strLayerTag,&Cam_TPS_Desc)))
+	//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_FPS"),
+		LEVEL_HERO, strLayerTag, &Cam_TPS_Desc)))
 		return E_FAIL;
 
 	return S_OK;

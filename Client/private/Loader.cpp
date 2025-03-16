@@ -4,6 +4,7 @@
 
 #include "Camera_Free.h"
 #include "Camera_TPS.h"
+#include "Camera_FPS.h"
 
 #include "BackGround.h"
 #include "Terrain.h"
@@ -442,6 +443,11 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	/* For.Prototype_GameObject_Camera_TPS */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
 		CCamera_TPS::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_FPS */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_FPS"),
+		CCamera_FPS::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_HeroCube */
