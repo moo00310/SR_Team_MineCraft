@@ -9,9 +9,12 @@
 
 #include "Tool.h"
 
-//크리퍼 테스트 용
+//Moo
 #include "Creeper.h"
 #include "Steve.h"
+#include "Tree.h"
+#include "Wood.h"
+#include "Leaf.h"
 
 
 //HERO
@@ -26,7 +29,6 @@
 #include "CoalOre.h"
 #include "MCTerrain.h"
 #include "MapTool.h"
-
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -200,6 +202,16 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Steve/Steve.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Leaf */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Leaf"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/leaves0.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Wood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Wood"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/wood0.png"), 1))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Terrain"),
@@ -245,7 +257,7 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
-		cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(16.f, 48.f) };
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(16.f, 48.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
@@ -259,6 +271,7 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	//// 터레인 큐브
@@ -290,6 +303,22 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	/* For.Prototype_GameObject_Creeper */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Steve"),
 		CSteve::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Wood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Wood"),
+		CWood::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Leaf */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Leaf"),
+		CLeaf::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_Tree */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Tree"),
+		CTree::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

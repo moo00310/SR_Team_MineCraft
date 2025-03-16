@@ -27,7 +27,7 @@ HRESULT CMainApp::Initialize()
 	Desc.iWinSizeX = g_iWinSizeX;
 	Desc.iWinSizeY = g_iWinSizeY;
 	Desc.iNumLevels = LEVEL_END;
-	Desc.iNumCollisionGroups = COLLISION_GROUPEND;
+	Desc.iNumCollisionGroups = COLLISION_GROUP_END;
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(Desc, &m_pGraphic_Device)))
 		return E_FAIL;
@@ -41,6 +41,7 @@ HRESULT CMainApp::Initialize()
 	/* 최초 보여줄 레벨을 할당하자. */
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
+	
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -98,9 +99,9 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Ready_Default_Setting()
 {
-	m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-	m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-	m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 
 	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
@@ -117,7 +118,6 @@ HRESULT CMainApp::Ready_Component_For_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		CVIBuffer_Rect::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
 
 	/* For.Prototype_Component_Transform */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
@@ -140,6 +140,13 @@ HRESULT CMainApp::Ready_Component_For_Static()
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
+		return E_FAIL;
+
+
+	// 큐브 생성 모시기
+	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	return S_OK;

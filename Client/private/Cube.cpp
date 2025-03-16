@@ -44,7 +44,6 @@ HRESULT CCube::Render()
 
 HRESULT CCube::Ready_Components()
 {
-
     return S_OK;
 }
 

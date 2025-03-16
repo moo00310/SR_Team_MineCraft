@@ -148,7 +148,7 @@ HRESULT CCreeper::Ready_Components()
         TEXT("m_pVIBufferCom_Foot_RB"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[5]))))
         return E_FAIL;
 
-   
+
     if (FAILED(Ready_Bone())) 
         return E_FAIL;
     if (FAILED(Ready_Mesh()))

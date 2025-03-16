@@ -43,6 +43,10 @@ public:
 		memcpy(&m_WorldMatrix.m[eState][0], &vState, sizeof vState);
 	}
 
+	void MultiplyMatrix(const D3DXMATRIX& mat) {
+		D3DXMatrixMultiply(&m_WorldMatrix, &m_WorldMatrix, &mat); 
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;

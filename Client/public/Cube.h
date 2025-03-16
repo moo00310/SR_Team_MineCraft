@@ -30,7 +30,7 @@ protected:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 	virtual HRESULT Ready_Components();
-
+		
 public:
 	static CCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
