@@ -6,6 +6,8 @@
 #include "GameInstance.h"
 #include "MCTerrain.h"
 
+#include "Client_Struct.h"
+
 CMapTool::CMapTool(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CTool{ pGraphic_Device }
 {
@@ -101,7 +103,8 @@ HRESULT CMapTool::Render()
         ImGui::SliderInt("Seed", &m_iSeed, 0, 99999);
         ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
 
-
+        ImGui::SliderInt("DirtDeep", &m_iDirtDeep, 0, 5);
+        ImGui::SliderInt("StoneDeep", &m_iStoneDeep, -5, 15);
 
         if (ImGui::Button("Show Height Gray Img", ImVec2(200, 50))) {
             if (heightMapTexture) {
@@ -115,6 +118,14 @@ HRESULT CMapTool::Render()
         if (ImGui::Button("Generation", ImVec2(200, 50))) {
             TerrainGenerationWithNoise();
         }
+        ImGui::SameLine();
+        ImGui::Text("less than 64x64 Good");
+
+        if (ImGui::Button("SaveData", ImVec2(200, 50))) {
+            SaveData();
+        }
+        ImGui::SameLine();
+        ImGui::Text("Save To File");
 
 
         ImGui::End();
@@ -160,7 +171,6 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
         const int width = m_iMapX;
         const int height = m_iMapZ;
 
-        vector<CBreakableCube*> createdObjects;
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -175,12 +185,11 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
                 CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
                 if (pCube) {
                     pCube->SetPos(_float3((float)x, (float)heightValue, (float)y));
-                    createdObjects.push_back(pCube);
                 }
                 index++;
 
-                int a = 5;
-                int kk = -5;
+                int a = m_iDirtDeep;
+                int kk = m_iStoneDeep;
 
                 while (heightValue > kk) {
                     heightValue--;
@@ -191,7 +200,6 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
                         CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
                         if (pCube) {
                             pCube->SetPos(_float3((float)x, (float)heightValue, (float)y));
-                            createdObjects.push_back(pCube);
                         }
                     }
                     else {
@@ -201,7 +209,6 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
                         CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
                         if (pCube) {
                             pCube->SetPos(_float3((float)x, (float)heightValue, (float)y));
-                            createdObjects.push_back(pCube);
                         }
                     }
 
@@ -249,6 +256,67 @@ void CMapTool::GeneratePerlinNoiseTexture(int width, int height) {
 
     heightMapTexture->UnlockRect(0);
     return;
+}
+
+HRESULT CMapTool::SaveData()
+{
+    HANDLE hFile = CreateFile(L"../bin/Resources/DataFiles/BlockData.txt", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile == INVALID_HANDLE_VALUE) {
+        return E_FAIL;
+    }
+    DWORD dwBytesWritten;
+
+    D3DLOCKED_RECT heightLockedRect;
+
+    if (SUCCEEDED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))) {
+
+        DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
+
+        int pitchHeight = heightLockedRect.Pitch / 4;
+
+        const int width = m_iMapX;
+        const int height = m_iMapZ;
+
+        vector<CBreakableCube*> createdObjects;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                DWORD heightColor = heightPixels[y * pitchHeight + x];
+                int heightValue = (heightColor & 0xFF) / 15;
+
+                BLOCKDESC eblockData;
+                eblockData.eBlockType = GRASSDIRT;
+                eblockData.fPosition = _float3((float)x, (float)heightValue, (float)y);
+                WriteFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+                int a = 5;
+                int kk = -5;
+
+                while (heightValue > kk) {
+                    heightValue--;
+                    if (a > 0) {
+                        BLOCKDESC eblockData2;
+                        eblockData2.eBlockType = DIRT;
+                        eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
+                        WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+                    }
+                    else {
+
+                        BLOCKDESC eblockData3;
+                        eblockData3.eBlockType = STONE;
+                        eblockData3.fPosition = _float3((float)x, (float)heightValue, (float)y);
+                        WriteFile(hFile, &eblockData3, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+                    }
+
+                    a--;
+                }
+            }
+        }
+
+        // 텍스처 해제
+        heightMapTexture->UnlockRect(0);
+    }
+    CloseHandle(hFile);
+    return S_OK;
 }
 
 

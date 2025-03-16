@@ -20,6 +20,9 @@ HRESULT CMCTerrain::Initialize_Prototype()
 
 HRESULT CMCTerrain::Initialize(void* pArg)
 {
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_Environment"))))
+		return E_FAIL;
+
     return S_OK;
 }
 
@@ -47,6 +50,44 @@ HRESULT CMCTerrain::Render()
 
 HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
+
+	HANDLE hFile = CreateFile(L"../bin/Resources/DataFiles/BlockData.txt", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (hFile == INVALID_HANDLE_VALUE) {
+		return S_OK;
+	}
+	DWORD dwBytesRead;
+	BLOCKDESC eblockData;
+	int index = 0;
+
+	while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
+	{
+		switch (eblockData.eBlockType)
+		{
+		case GRASSDIRT:
+			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, strLayerTag)))
+				return E_FAIL;
+			break;
+		case DIRT:
+			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, strLayerTag)))
+				return E_FAIL;
+			break;
+		case STONE:
+			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, strLayerTag)))
+				return E_FAIL;
+			break;
+		default:
+			break;
+		}
+
+
+		CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
+		if (pCube) {
+			pCube->SetPos(_float3(eblockData.fPosition));
+		}
+		index++;
+	}
+
+	CloseHandle(hFile);
 	return S_OK;
 }
 
