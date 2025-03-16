@@ -260,62 +260,67 @@ void CMapTool::GeneratePerlinNoiseTexture(int width, int height) {
 
 HRESULT CMapTool::SaveData()
 {
-    HANDLE hFile = CreateFile(L"../bin/Resources/DataFiles/BlockData.txt", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (hFile == INVALID_HANDLE_VALUE) {
-        return E_FAIL;
-    }
-    DWORD dwBytesWritten;
+    const int CHUNK_SIZE = 16; // 청크 크기 (16x16)
+    const int numChunksX = m_iMapX / CHUNK_SIZE;
+    const int numChunksZ = m_iMapZ / CHUNK_SIZE;
 
     D3DLOCKED_RECT heightLockedRect;
+    if (FAILED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))) {
+        return E_FAIL;
+    }
 
-    if (SUCCEEDED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))) {
+    DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
+    int pitchHeight = heightLockedRect.Pitch / 4;
 
-        DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
+    for (int chunkZ = 0; chunkZ < numChunksZ; chunkZ++) {
+        for (int chunkX = 0; chunkX < numChunksX; chunkX++) {
+            // 파일명 설정
+            int chunkIndex = chunkZ * numChunksX + chunkX;
+            wchar_t filename[100];
+            swprintf(filename, 100, L"../bin/Resources/DataFiles/BlockDataChunk%d.txt", chunkIndex);
 
-        int pitchHeight = heightLockedRect.Pitch / 4;
+            HANDLE hFile = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+            if (hFile == INVALID_HANDLE_VALUE) {
+                heightMapTexture->UnlockRect(0);
+                return E_FAIL;
+            }
+            DWORD dwBytesWritten;
 
-        const int width = m_iMapX;
-        const int height = m_iMapZ;
+            // 청크 내부의 블록 저장
+            for (int y = chunkZ * CHUNK_SIZE; y < (chunkZ + 1) * CHUNK_SIZE; y++) {
+                for (int x = chunkX * CHUNK_SIZE; x < (chunkX + 1) * CHUNK_SIZE; x++) {
+                    DWORD heightColor = heightPixels[y * pitchHeight + x];
+                    int heightValue = (heightColor & 0xFF) / 15;
 
-        vector<CBreakableCube*> createdObjects;
+                    // 상단 블록 (잔디)
+                    BLOCKDESC eblockData;
+                    eblockData.eBlockType = GRASSDIRT;
+                    eblockData.fPosition = _float3((float)x, (float)heightValue, (float)y);
+                    WriteFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
 
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                DWORD heightColor = heightPixels[y * pitchHeight + x];
-                int heightValue = (heightColor & 0xFF) / 15;
-
-                BLOCKDESC eblockData;
-                eblockData.eBlockType = GRASSDIRT;
-                eblockData.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                WriteFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
-                int a = 5;
-                int kk = -5;
-
-                while (heightValue > kk) {
-                    heightValue--;
-                    if (a > 0) {
+                    int depth = m_iDirtDeep;
+                    int minDepth = m_iStoneDeep;
+                    while (heightValue > minDepth) {
+                        heightValue--;
                         BLOCKDESC eblockData2;
-                        eblockData2.eBlockType = DIRT;
                         eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
+                        if (depth > 0) {
+                            eblockData2.eBlockType = DIRT;
+                        }
+                        else {
+                            eblockData2.eBlockType = STONE;
+                        }
                         WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+                        depth--;
                     }
-                    else {
-
-                        BLOCKDESC eblockData3;
-                        eblockData3.eBlockType = STONE;
-                        eblockData3.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                        WriteFile(hFile, &eblockData3, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
-                    }
-
-                    a--;
                 }
             }
-        }
 
-        // 텍스처 해제
-        heightMapTexture->UnlockRect(0);
+            CloseHandle(hFile);
+        }
     }
-    CloseHandle(hFile);
+
+    heightMapTexture->UnlockRect(0);
     return S_OK;
 }
 
