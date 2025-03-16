@@ -47,6 +47,9 @@ HRESULT CCamera_FPS::Initialize(void* pArg)
 
 void CCamera_FPS::Priority_Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
+
 	// 1. È­¸é Áß¾Ó ÁÂÇ¥ °è»ê
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -96,14 +99,21 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 
 void CCamera_FPS::Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
 }
 
 void CCamera_FPS::Late_Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
 }
 
 HRESULT CCamera_FPS::Render()
 {
+	if (!m_isActive)
+		return S_OK;
+
 	return S_OK;
 }
 

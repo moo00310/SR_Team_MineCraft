@@ -33,6 +33,11 @@ HRESULT CLevel_HERO::Initialize()
 
 void CLevel_HERO::Update(_float fTimeDelta)
 {
+	if (GetKeyState(VK_TAB) & 0x8000)
+	{
+		m_pCameraManager->Change_Camera();
+	}
+
 	int a = 10;
 }
 
@@ -45,20 +50,7 @@ HRESULT CLevel_HERO::Render()
 
 HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	//CCamera_TPS::CAMERA_TPS_DESC Cam_TPS_Desc{};
-	//Cam_TPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
-	//Cam_TPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	//Cam_TPS_Desc.fFov = D3DXToRadian(60.f);
-	//Cam_TPS_Desc.fNear = 0.1f;
-	//Cam_TPS_Desc.fFar = 300.f;
-	//Cam_TPS_Desc.fMouseSensor = 0.1f;
-	//Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
-	//	//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
-	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
-	//	LEVEL_HERO, strLayerTag,&Cam_TPS_Desc)))
-	//	return E_FAIL;
-
-	CCamera_FPS::CAMERA_FPS_DESC Cam_TPS_Desc{};
+	CCamera_TPS::CAMERA_TPS_DESC Cam_TPS_Desc{};
 	Cam_TPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
 	Cam_TPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
 	Cam_TPS_Desc.fFov = D3DXToRadian(60.f);
@@ -66,10 +58,28 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 	Cam_TPS_Desc.fFar = 300.f;
 	Cam_TPS_Desc.fMouseSensor = 0.1f;
 	Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
+		//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
+		LEVEL_HERO, strLayerTag,&Cam_TPS_Desc)))
+		return E_FAIL;
+
+	CCamera_FPS::CAMERA_FPS_DESC Cam_FPS_Desc{};
+	Cam_FPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
+	Cam_FPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Cam_FPS_Desc.fFov = D3DXToRadian(60.f);
+	Cam_FPS_Desc.fNear = 0.1f;
+	Cam_FPS_Desc.fFar = 300.f;
+	Cam_FPS_Desc.fMouseSensor = 0.1f;
+	Cam_FPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
 	//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_FPS"),
-		LEVEL_HERO, strLayerTag, &Cam_TPS_Desc)))
+		LEVEL_HERO, strLayerTag, &Cam_FPS_Desc)))
 		return E_FAIL;
+
+	//카메라 매니저에다가 카메라 Layer의 모든 카메라를 가져온다음
+	//특정 키를 누를 때마다 다음 카메라만 활성화시킨다.
+
+	m_pCameraManager = CCameraManager::Create();
 
 	return S_OK;
 }
@@ -138,4 +148,5 @@ void CLevel_HERO::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pCameraManager);
 }

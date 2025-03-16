@@ -106,6 +106,9 @@
     <Filter Include="02.GameObjects\Camera\TPS">
       <UniqueIdentifier>{f144a248-6181-4626-bfb5-013346057121}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Camera\00.CameraManager">
+      <UniqueIdentifier>{9d537468-14f4-4e96-962a-897e70d09192}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="..\public\Camera_FPS.h">
       <Filter>02.GameObjects\Camera\FPS</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CameraManager.h">
+      <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -371,6 +377,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_FPS.cpp">
       <Filter>02.GameObjects\Camera\FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CameraManager.cpp">
+      <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

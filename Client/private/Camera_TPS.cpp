@@ -47,6 +47,9 @@ HRESULT CCamera_TPS::Initialize(void* pArg)
 
 void CCamera_TPS::Priority_Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
+
 	// 1. È­¸é Áß¾Ó ÁÂÇ¥ °è»ê
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -91,14 +94,21 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 
 void CCamera_TPS::Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
 }
 
 void CCamera_TPS::Late_Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
 }
 
 HRESULT CCamera_TPS::Render()
 {
+	if (!m_isActive)
+		return S_OK;
+
 	return S_OK;
 }
 

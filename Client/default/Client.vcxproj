@@ -153,6 +153,7 @@
     <ClInclude Include="..\..\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
+    <ClInclude Include="..\public\CameraManager.h" />
     <ClInclude Include="..\public\Camera_FPS.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="..\..\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
+    <ClCompile Include="..\private\CameraManager.cpp" />
     <ClCompile Include="..\private\Camera_FPS.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />

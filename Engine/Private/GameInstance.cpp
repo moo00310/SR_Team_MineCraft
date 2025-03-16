@@ -183,6 +183,8 @@ _bool CGameInstance::Collision_with_Group(_uint eGroup, CGameObject* pGameObject
 
 _bool CGameInstance::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint iGroup, _Out_ _float& fDist)
 {
+	fDist = 0.f;
+
 	if (nullptr == m_pCollider_Manager)
 		return false;
 

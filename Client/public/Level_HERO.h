@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "Level.h"
+#include "CameraManager.h"
 
 BEGIN(Client)
 
@@ -15,13 +16,14 @@ public:
 	virtual HRESULT Initialize() override;
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
-
 private:
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Player(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_HeroCube(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Steve(const _wstring& strLayerTag);
+private:
+	CCameraManager* m_pCameraManager{ nullptr };
 
 public:
 	static CLevel_HERO* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
