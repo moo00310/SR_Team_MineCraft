@@ -33,12 +33,10 @@ HRESULT CLevel_HERO::Initialize()
 
 void CLevel_HERO::Update(_float fTimeDelta)
 {
-	if (GetKeyState(VK_TAB) & 0x8000)
+	if (m_pGameInstance->Key_Down(VK_F5))
 	{
 		m_pCameraManager->Change_Camera();
 	}
-
-	int a = 10;
 }
 
 HRESULT CLevel_HERO::Render()

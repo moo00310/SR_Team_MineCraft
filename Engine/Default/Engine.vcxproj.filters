@@ -101,6 +101,9 @@
       <Filter>99.Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Matrix.h" />
+    <ClInclude Include="..\Public\Key_Manager.h">
+      <Filter>07.KeyManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -190,6 +193,9 @@
     <Filter Include="04.Components\Collider\Manager\LineManager">
       <UniqueIdentifier>{51ddd23e-394a-41cb-8fc2-06d0c5ab55c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07.KeyManager">
+      <UniqueIdentifier>{3895b10e-a52a-42fb-8525-9483f3f5a450}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -266,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="..\private\LineManager.cpp">
       <Filter>04.Components\Collider\Manager\LineManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Key_Manager.cpp">
+      <Filter>07.KeyManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

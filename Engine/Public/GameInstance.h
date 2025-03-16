@@ -5,8 +5,8 @@
 /* 엔진 개발자가 클라개밫자에게 보여주고싶은 함수를 ... */
 #include "Renderer.h"
 #include "Prototype_Manager.h"
-
-#include "Collider_Manager.h" //콜라이더 그룹 enum 가져오려고 인클루드함...클라에서 enum 관리가 맞는 것 같음
+#include "Collider_Manager.h"
+#include "Key_Manager.h"
 
 BEGIN(Engine)
 
@@ -50,7 +50,7 @@ public:
 	void Update_Timer(const _wstring& strTimerTag);
 #pragma endregion
 
-#pragma region Collider_Manager
+#pragma region COLLIDER_MANAGER
 	//콜리전 그룹에 추가
 	HRESULT Add_CollisionGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
 	//콜리전 그룹에서 빼기
@@ -64,6 +64,12 @@ public:
 	_bool Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint iGroup, _Out_ _float& fDist);
 #pragma endregion
 
+#pragma region KEY_MANAGER
+	_bool		Key_Pressing(int _Key);
+	_bool		Key_Up(int _Key);		// 누르고 있다가 뗐을 때
+	_bool		Key_Down(int _Key);		// 눌렀을 때
+#pragma endregion
+
 
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
@@ -73,6 +79,7 @@ private:
 	class CRenderer*			m_pRenderer = { nullptr };
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
+	class CKey_Manager*			m_pKey_Manager = { nullptr };
 
 public:
 	void Release_Engine();

@@ -38,5 +38,7 @@ using namespace Engine;
 #endif
 #endif
 
+#define	VK_MAX		0xff
+
 
 

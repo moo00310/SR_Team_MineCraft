@@ -44,12 +44,18 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 	if (nullptr == m_pCollider_Manager)
 		return E_FAIL;
 
+	m_pKey_Manager = CKey_Manager::Create();
+	if (nullptr == m_pKey_Manager)
+		return E_FAIL;
+
 
 	return S_OK;
 }
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
+	m_pKey_Manager->Update();
+
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
 
@@ -156,7 +162,9 @@ void CGameInstance::Update_Timer(const _wstring& strTimerTag)
 {
 	return m_pTimer_Manager->Update(strTimerTag);
 }
+#pragma endregion
 
+#pragma region COLLIDER_MANAGER
 HRESULT CGameInstance::Add_CollisionGroup(_uint eCollisionGroup, CGameObject* pGameObject)
 {
 	if (!m_pCollider_Manager)
@@ -190,11 +198,29 @@ _bool CGameInstance::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _
 
 	return m_pCollider_Manager->Ray_Cast(rayOrigin, rayDir, maxDistance, iGroup, fDist);
 }
+#pragma endregion
 
+#pragma region KEY_MANAGER
+_bool CGameInstance::Key_Pressing(int _Key)
+{
+	return m_pKey_Manager->Key_Pressing(_Key);
+}
+
+_bool CGameInstance::Key_Up(int _Key)
+{
+	return m_pKey_Manager->Key_Up(_Key);
+}
+
+_bool CGameInstance::Key_Down(int _Key)
+{
+	return m_pKey_Manager->Key_Down(_Key);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pKey_Manager);
+
 	Safe_Release(m_pTimer_Manager);
 
 	Safe_Release(m_pRenderer);
