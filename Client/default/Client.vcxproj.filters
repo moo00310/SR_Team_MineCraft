@@ -43,9 +43,6 @@
     <Filter Include="02.GameObjects\99.MooGameOBj">
       <UniqueIdentifier>{cc9af935-1bfa-41fe-b2fb-a606983dd2eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\Creeper">
-      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\98.Woo_Level">
       <UniqueIdentifier>{1c9b8337-13a5-45f4-9928-2e9fabb769ee}</UniqueIdentifier>
     </Filter>
@@ -97,8 +94,23 @@
     <Filter Include="99.Headers\98.Default">
       <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\Steve">
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn">
+      <UniqueIdentifier>{078da7be-a447-487e-9317-64540e099a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Creeper">
+      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Steve">
       <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\01.Model">
+      <UniqueIdentifier>{870df70a-a72c-44f8-90a4-dc74afb89282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Tree">
+      <UniqueIdentifier>{c6d205d6-2c92-49c2-8609-9aa9ee73e31d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Tree\Block">
+      <UniqueIdentifier>{b8e50c1c-9e44-4cd6-b43a-8d3c1860d3ec}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\Camera\FPS">
       <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
@@ -160,7 +172,7 @@
       <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Creeper.h">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Creeper</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_TOOL.h">
       <Filter>01.Levels\100.Tool_Level</Filter>
@@ -238,10 +250,19 @@
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Steve.h">
-      <Filter>02.GameObjects\99.MooGameOBj\Steve</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Steve</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Client_Struct.h">
       <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Tree.h">
+      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Wood.h">
+      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Leaf.h">
+      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
@@ -307,7 +328,7 @@
       <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Creeper.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Creeper</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Hyeok.cpp">
       <Filter>01.Levels\95.Huck_Level</Filter>
@@ -382,7 +403,16 @@
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Steve.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\Steve</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Steve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Tree.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Wood.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Leaf.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_TPS.cpp">
       <Filter>02.GameObjects\Camera\TPS</Filter>

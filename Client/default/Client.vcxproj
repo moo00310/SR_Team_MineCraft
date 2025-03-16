@@ -168,6 +168,7 @@
     <ClInclude Include="..\public\HeroCube.h" />
     <ClInclude Include="..\public\Dirt.h" />
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
+    <ClInclude Include="..\public\Leaf.h" />
     <ClInclude Include="..\public\HeroEnemy.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
     <ClInclude Include="..\public\Level_HERO.h" />
@@ -186,6 +187,8 @@
     <ClInclude Include="..\public\Stone.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Tool.h" />
+    <ClInclude Include="..\public\Tree.h" />
+    <ClInclude Include="..\public\Wood.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MainApp.h" />
@@ -214,6 +217,7 @@
     <ClCompile Include="..\private\HeroCube.cpp" />
     <ClCompile Include="..\private\Dirt.cpp" />
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
+    <ClCompile Include="..\private\Leaf.cpp" />
     <ClCompile Include="..\private\HeroEnemy.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />
     <ClCompile Include="..\private\Level_HERO.cpp" />
@@ -232,6 +236,8 @@
     <ClCompile Include="..\private\Stone.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
+    <ClCompile Include="..\private\Tree.cpp" />
+    <ClCompile Include="..\private\Wood.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="MainApp.cpp" />
   </ItemGroup>

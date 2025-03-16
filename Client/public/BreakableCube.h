@@ -22,6 +22,7 @@ public:
 
 public:
 	void SetPos(_float3 v3) { m_pTransformCom->Set_State(CTransform::STATE_POSITION, v3); }
+	void SetMatrix(const _float4x4& mat) { m_pTransformCom->MultiplyMatrix(mat); }
 
 protected:
 	HRESULT Ready_Components();

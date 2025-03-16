@@ -12,17 +12,20 @@
 
 #include "Tool.h"
 
-//Å©¸®ÆÛ Å×½ºÆ® ¿ë
+//Moo
 #include "Creeper.h"
 #include "Steve.h"
+#include "Tree.h"
+#include "Wood.h"
+#include "Leaf.h"
 
 
 //HERO
-#include "HeroCube.h" //Äİ¶óÀÌ´õ Å×½ºÆ®¿ë Å¥ºê
+#include "HeroCube.h" //ì½œë¼ì´ë” í…ŒìŠ¤íŠ¸ìš© íë¸Œ
 #include "HeroCubeNoMove.h"
 #include "HeroEnemy.h"
 /*
-  ÁöÇü °ü·Ã
+  ì§€í˜• ê´€ë ¨
 */
 #include "Dirt.h"
 #include "Stone.h"
@@ -30,7 +33,6 @@
 #include "CoalOre.h"
 #include "MCTerrain.h"
 #include "MapTool.h"
-
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -43,7 +45,7 @@ CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 _uint APIENTRY LoadingMain(void* pArg)
 {
-	/* ÀÚ¿ø·ÎµùÇÑ´Ù. */
+	/* ìì›ë¡œë”©í•œë‹¤. */
 	CLoader*		pLoader = static_cast<CLoader*>(pArg);
 
 	if (FAILED(pLoader->Loading()))
@@ -109,10 +111,10 @@ HRESULT CLoader::Loading()
 
 	}
 
-	LeaveCriticalSection(&m_CriticalSection); //¿À·ù ³ª¼­ µÎ°³ À§Ä¡ ¹Ù²Ş
+	LeaveCriticalSection(&m_CriticalSection); //ì˜¤ë¥˜ ë‚˜ì„œ ë‘ê°œ ìœ„ì¹˜ ë°”ê¿ˆ
 
 	if (FAILED(hr))
-		return E_FAIL;	//¿À·ù ³ª¼­ µÎ°³ À§Ä¡ ¹Ù²Ş
+		return E_FAIL;	//ì˜¤ë¥˜ ë‚˜ì„œ ë‘ê°œ ìœ„ì¹˜ ë°”ê¿ˆ
 
 	return S_OK;
 }
@@ -120,26 +122,26 @@ HRESULT CLoader::Loading()
 HRESULT CLoader::Loading_For_Logo()
 {
 	
-	lstrcpy(m_szLoadingText, TEXT("ÅØ½ºÃÄÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("í…ìŠ¤ì³ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_Component_Texture_BackGround*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_BackGround"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("¸ğµ¨À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ëª¨ë¸ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("»ç¿îµåÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì‚¬ìš´ë“œì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	
 
-	lstrcpy(m_szLoadingText, TEXT("¿øÇü°´Ã¼À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì›í˜•ê°ì²´ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 	/* For.Prototype_GameObject_BackGround */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
 		CBackGround::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	
-	lstrcpy(m_szLoadingText, TEXT("·ÎµùÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 	m_isFinished = true;
 
@@ -148,22 +150,22 @@ HRESULT CLoader::Loading_For_Logo()
 
 HRESULT CLoader::Loading_For_GamePlay()
 {
-	lstrcpy(m_szLoadingText, TEXT("ÅØ½ºÃÄÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("í…ìŠ¤ì³ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("¸ğµ¨À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ëª¨ë¸ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("»ç¿îµåÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì‚¬ìš´ë“œì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¿øÇü°´Ã¼À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì›í˜•ê°ì²´ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_GameObject_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pGraphic_Device))))
@@ -179,7 +181,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 		CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("·ÎµùÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 	m_isFinished = true;
 
@@ -188,7 +190,7 @@ HRESULT CLoader::Loading_For_GamePlay()
 
 HRESULT CLoader::Loading_For_MOOPlay()
 {
-	lstrcpy(m_szLoadingText, TEXT("ÅØ½ºÃÄÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("í…ìŠ¤ì³ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
@@ -204,14 +206,24 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Steve/Steve.png"), 1))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("¸ğµ¨À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	/* For.Prototype_Component_Texture_Leaf */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Leaf"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/leaves0.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Wood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Wood"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/wood0.png"), 1))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("ëª¨ë¸ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
 		return E_FAIL;
 
 	/*-----------------------------------
-	*  Å©¸®ÆÛ ¸ğµ¨
+	*  í¬ë¦¬í¼ ëª¨ë¸
 	------------------------------*/
 
 	/* For.Prototype_Component_VIBuffer_Creeper */
@@ -231,7 +243,7 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		return E_FAIL;
 
 	/*-----------------------------------
-	*  ½ºÆ¼ºê ¸ğµ¨
+	*  ìŠ¤í‹°ë¸Œ ëª¨ë¸
 	------------------------------*/
 	/* For.Prototype_Component_VIBuffer_Steve */
 	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
@@ -251,6 +263,7 @@ HRESULT CLoader::Loading_For_MOOPlay()
 
 		cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(16.f, 48.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
+
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
@@ -263,19 +276,20 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	//// ÅÍ·¹ÀÎ Å¥ºê
+	//// í„°ë ˆì¸ íë¸Œ
 	//cube = { _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	///* For.Prototype_Component_Com_mVIBCubeTerrain */
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Com_mVIBCubeTerrain"),
 	//	CVIBuffer_CubeTerrain::Create(m_pGraphic_Device, cube))))
 	//	return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("»ç¿îµåÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì‚¬ìš´ë“œì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¿øÇü°´Ã¼À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì›í˜•ê°ì²´ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_GameObject_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pGraphic_Device))))
@@ -296,7 +310,23 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CSteve::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("·ÎµùÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù."));
+	/* For.Prototype_GameObject_Wood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Wood"),
+		CWood::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Leaf */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Leaf"),
+		CLeaf::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_Tree */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Tree"),
+		CTree::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 	m_isFinished = true;
 
@@ -305,7 +335,7 @@ HRESULT CLoader::Loading_For_MOOPlay()
 
 HRESULT CLoader::Loading_For_YUPlay()
 {
-	lstrcpy(m_szLoadingText, TEXT("ÅØ½ºÃÄÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("í…ìŠ¤ì³ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_Component_Texture_Dirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Dirt"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/dirt%d.png"), 1))))
@@ -326,16 +356,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/coalOre%d.png"), 1))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("¸ğµ¨À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ëª¨ë¸ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_BreakableCube"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("»ç¿îµåÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì‚¬ìš´ë“œì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¿øÇü°´Ã¼À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì›í˜•ê°ì²´ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_GameObject_Camera_Free */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Free"),
 		CCamera_Free::Create(m_pGraphic_Device))))
@@ -366,7 +396,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CMapTool::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("·ÎµùÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 	m_isFinished = true;
 
@@ -375,27 +405,27 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 HRESULT CLoader::Loading_For_HEROPlay()
 {
-	lstrcpy(m_szLoadingText, TEXT("ÅØ½ºÃÄÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("í…ìŠ¤ì³ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 	/* For.Prototype_Component_Texture_Steve */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Steve"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Steve/Steve.png"), 1))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("Äİ¶óÀÌ´õÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì½œë¼ì´ë”ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
  	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
 		CCollider_Cube::Create(m_pGraphic_Device/*, Desc*/))))
 		return E_FAIL;
 
 #pragma region MODEL
-	lstrcpy(m_szLoadingText, TEXT("¸ğµ¨À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ëª¨ë¸ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_Component_VIBuffer_Cube */
 	CUBE tCube{ _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, tCube))))
 		return E_FAIL;
 	/*-----------------------------------
-	*  ½ºÆ¼ºê ¸ğµ¨
+	*  ìŠ¤í‹°ë¸Œ ëª¨ë¸
 	------------------------------*/
 	/* For.Prototype_Component_VIBuffer_Steve */
 	Engine::CUBE cube{};
@@ -431,10 +461,10 @@ HRESULT CLoader::Loading_For_HEROPlay()
 #pragma endregion
 
 
-	lstrcpy(m_szLoadingText, TEXT("»ç¿îµåÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì‚¬ìš´ë“œì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¿øÇü°´Ã¼À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì›í˜•ê°ì²´ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 	/* For.Prototype_GameObject_Camera_Free */
 	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Free"),
@@ -471,7 +501,7 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CHeroEnemy::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("·ÎµùÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 	m_isFinished = true;
 
@@ -480,16 +510,16 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 HRESULT CLoader::Loading_For_WOOPlay()
 {
-	lstrcpy(m_szLoadingText, TEXT("ÅØ½ºÃÄÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("í…ìŠ¤ì³ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¸ğµ¨À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ëª¨ë¸ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("»ç¿îµåÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì‚¬ìš´ë“œì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¿øÇü°´Ã¼À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì›í˜•ê°ì²´ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_GameObject_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pGraphic_Device))))
@@ -505,7 +535,7 @@ HRESULT CLoader::Loading_For_WOOPlay()
 		CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("·ÎµùÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 	m_isFinished = true;
 
@@ -514,16 +544,16 @@ HRESULT CLoader::Loading_For_WOOPlay()
 
 HRESULT CLoader::Loading_For_HECKPlay()
 {
-	lstrcpy(m_szLoadingText, TEXT("ÅØ½ºÃÄÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("í…ìŠ¤ì³ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	
 
-	lstrcpy(m_szLoadingText, TEXT("¸ğµ¨À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ëª¨ë¸ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("»ç¿îµåÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì‚¬ìš´ë“œì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¿øÇü°´Ã¼À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì›í˜•ê°ì²´ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_GameObject_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pGraphic_Device))))
@@ -539,7 +569,7 @@ HRESULT CLoader::Loading_For_HECKPlay()
 		CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("·ÎµùÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 	m_isFinished = true;
 
@@ -548,16 +578,16 @@ HRESULT CLoader::Loading_For_HECKPlay()
 
 HRESULT CLoader::Loading_For_TOOL()
 {
-	lstrcpy(m_szLoadingText, TEXT("ÅØ½ºÃÄÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("í…ìŠ¤ì³ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¸ğµ¨À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ëª¨ë¸ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("»ç¿îµåÀ»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì‚¬ìš´ë“œì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("¿øÇü°´Ã¼À»(¸¦) ·ÎµùÁßÀÔ´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ì›í˜•ê°ì²´ì„(ë¥¼) ë¡œë”©ì¤‘ì…ë‹ˆë‹¤."));
 	/* For.Prototype_GameObject_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pGraphic_Device))))
@@ -578,7 +608,7 @@ HRESULT CLoader::Loading_For_TOOL()
 		CTool::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("·ÎµùÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù."));
+	lstrcpy(m_szLoadingText, TEXT("ë¡œë”©ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤."));
 
 	m_isFinished = true;
 
