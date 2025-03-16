@@ -97,6 +97,9 @@
     <Filter Include="99.Headers\98.Default">
       <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\Steve">
+      <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -143,9 +146,6 @@
     </ClInclude>
     <ClInclude Include="..\public\Player.h">
       <Filter>02.GameObjects\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Level_Moo.h">
-      <Filter>01.Levels\99.Moo_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Creeper.h">
       <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
@@ -222,6 +222,12 @@
     <ClInclude Include="..\public\CoalOre.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Level_Moo.h">
+      <Filter>01.Levels\99.Moo_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Steve.h">
+      <Filter>02.GameObjects\99.MooGameOBj\Steve</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\Client_Struct.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
@@ -269,9 +275,6 @@
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
       <Filter>02.GameObjects\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Level_Moo.cpp">
-      <Filter>01.Levels\99.Moo_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Creeper.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\Creeper</Filter>
@@ -344,6 +347,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CoalOre.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Level_Moo.cpp">
+      <Filter>01.Levels\99.Moo_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Steve.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\Steve</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

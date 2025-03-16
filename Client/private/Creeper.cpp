@@ -60,18 +60,31 @@ void CCreeper::Update(_float fTimeDelta)
         m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
     }
 
+    
+    // 걷는 모션
     if (GetKeyState('Q') & 0x8000)
     {
-       //vecBones[3].transform.Go_Straight(fTimeDelta, 1000);
+
+        elapsedTime += fTimeDelta;
+        Comput = maxAngle * sin(elapsedTime * D3DXToRadian(2.5f));
+
+        vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), Comput);
+        vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), -Comput);
+        vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), -Comput);
+        vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), Comput);
     }
+
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
 {
-
+ 
+    // 본의 매트릭스를 현재 트랜스폼으로 업데이트
     vecBones[0].transform = *(m_pTransformCom->Get_WorldMatrix());
 
+    // 본이 적용된 매쉬 업데이트
     Ready_Mesh();
+
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
         return;
 }
@@ -168,28 +181,30 @@ HRESULT CCreeper::Ready_Bone()
 
 HRESULT CCreeper::Ready_Mesh()
 {
-    D3DMATRIX temp = {};
+    Matrix temp = {};
+    Matrix rootTransform = vecBones[1].transform * vecBones[0].transform;
 
     // 머리
-    temp = MAtrixTranslation(0, 4.f / 16.f, 0.f) *  vecBones[2].transform * vecBones[1].transform * vecBones[0].transform;
+    temp = MAtrixTranslation(0, 4.f / 16.f, 0.f) *  vecBones[2].transform * rootTransform;
     m_pVIBufferCom[0]->SetMatrix(temp);
 
     // 몸통
-    temp = MAtrixTranslation(0, 6.f / 16.f, 0.f) * vecBones[1].transform * vecBones[0].transform;
+    temp = MAtrixTranslation(0, 6.f / 16.f, 0.f) * rootTransform;
     m_pVIBufferCom[1]->SetMatrix(temp);
 
     // 다리
-    temp = MAtrixTranslation(0, -3.f / 16.f, -2.f / 16.f) * vecBones[3].transform * vecBones[1].transform * vecBones[0].transform;
-    m_pVIBufferCom[2]->SetMatrix(temp);
+    const float legOffsets[4][2] = {
+       {-3.f / 16.f, -2.f / 16.f},
+       {-3.f / 16.f, -2.f / 16.f},
+       {-3.f / 16.f,  2.f / 16.f},
+       {-3.f / 16.f,  2.f / 16.f}
+    };
 
-    temp = MAtrixTranslation(0, -3.f / 16.f, -2.f / 16.f) * vecBones[4].transform * vecBones[1].transform * vecBones[0].transform;
-    m_pVIBufferCom[3]->SetMatrix(temp);
-
-    temp = MAtrixTranslation(0, -3.f / 16.f, 2.f / 16.f) * vecBones[5].transform * vecBones[1].transform * vecBones[0].transform;
-    m_pVIBufferCom[4]->SetMatrix(temp);
-
-    temp = MAtrixTranslation(0, -3.f / 16.f, 2.f / 16.f) * vecBones[6].transform * vecBones[1].transform * vecBones[0].transform;
-    m_pVIBufferCom[5]->SetMatrix(temp);
+    for (int i = 0; i < 4; ++i)
+    {
+        temp = MAtrixTranslation(0, legOffsets[i][0], legOffsets[i][1]) * vecBones[i + 3].transform * rootTransform;
+        m_pVIBufferCom[i + 2]->SetMatrix(temp);
+    }
 
     return S_OK;
 }
