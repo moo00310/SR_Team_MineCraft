@@ -30,11 +30,6 @@ private:
 	CVIBuffer_Cube* m_pVIBufferCom[6];
 	vector<BONE> vecBones;
 
-	Matrix a = {};
-	_float3  vRight = {};
-	_float3 vUp = {};
-	_float3 vLook = {};
-
 	float Comput = {};
 	int  flag = { 1 };
 

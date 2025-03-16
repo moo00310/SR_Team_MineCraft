@@ -68,7 +68,7 @@ void CSteve::Update(_float fTimeDelta)
 		if (Comput < -20)
 			flag *= -1;
 
-		a = vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
+		vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
 		vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
 		vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
 		vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));

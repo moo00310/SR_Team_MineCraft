@@ -107,10 +107,9 @@ HRESULT CMainApp::Ready_Default_Setting()
 
 	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
 
-
-
 	return S_OK;
 }
+
 HRESULT CMainApp::Ready_Component_For_Static()
 {
 	/* For.Prototype_Component_VIBuffer_Rect */
