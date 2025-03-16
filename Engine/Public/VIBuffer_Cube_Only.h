@@ -1,6 +1,8 @@
 #pragma once
 #include "VIBuffer.h"
 
+// 이 클래스는 단일 텍스쳐만 적용이 되는 버텍스 클래스입니다.
+
 BEGIN(Engine)
 
 class ENGINE_DLL CVIBuffer_Cube_Only : public CVIBuffer

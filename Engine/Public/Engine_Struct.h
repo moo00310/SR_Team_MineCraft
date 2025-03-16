@@ -27,8 +27,7 @@ namespace Engine
 		D3DXVECTOR2 Pixelpos;
 
 	}CUBE;
-
-	// 단일 텍스쳐용 큐브.
+	
 	typedef struct tagCreateCubeOnly
 	{
 		D3DXVECTOR3 BoxSIze;
