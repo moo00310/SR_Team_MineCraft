@@ -9,10 +9,10 @@
 
 #include "Tool.h"
 
-/*
-* 크리퍼 테스트 용
-*/
+//크리퍼 테스트 용
 #include "Creeper.h"
+#include "Steve.h"
+
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -192,7 +192,12 @@ HRESULT CLoader::Loading_For_MOOPlay()
 
 	/* For.Prototype_Component_Texture_Creeper */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Creeper"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Creeper/Creeper.png"), 1))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Creeper/Creeper.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Steve */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Steve"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Steve/Steve.png"), 1))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -201,11 +206,11 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_VIBuffer_Cube */
-	// head : _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f)
-	// body : _float2(64.f, 32.f), _float3(6.f, 12.f, 4.f), _float2(16.f, 16.f)
-	// foot : _float2(64.f, 32.f), _float3(4.f, 6.f, 4.f), _float2(0.f, 16.f)
+	/*-----------------------------------
+	*  크리퍼 모델
+	------------------------------*/
 
+	/* For.Prototype_Component_VIBuffer_Creeper */
 	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
@@ -218,6 +223,40 @@ HRESULT CLoader::Loading_For_MOOPlay()
 
 	cube = { _float2(64.f, 32.f), _float3(4.f, 6.f, 4.f), _float2(0.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	/*-----------------------------------
+	*  스티브 모델
+	------------------------------*/
+	/* For.Prototype_Component_VIBuffer_Steve */
+	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(8.f, 12.f, 4.f), _float2(16.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(0.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+		cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(16.f, 48.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(40.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(32.f, 48.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
@@ -243,10 +282,14 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CCamera_Free::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-
 	/* For.Prototype_GameObject_Creeper */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Creeper"),
 		CCreeper::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Creeper */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Steve"),
+		CSteve::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
