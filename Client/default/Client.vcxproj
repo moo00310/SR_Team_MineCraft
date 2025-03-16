@@ -154,6 +154,7 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
+    <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\public\Client_Struct.h" />
     <ClInclude Include="..\public\CoalOre.h" />
     <ClInclude Include="..\public\Cube.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
+    <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />

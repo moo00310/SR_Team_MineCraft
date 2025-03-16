@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 
 #include "Camera_Free.h"
+#include "Camera_TPS.h"
+
 #include "BackGround.h"
 #include "Terrain.h"
 #include "player.h"
@@ -383,7 +385,7 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CCollider_Cube::Create(m_pGraphic_Device/*, Desc*/))))
 		return E_FAIL;
 
-
+#pragma region MODEL
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	/* For.Prototype_Component_VIBuffer_Cube */
 	CUBE tCube{ _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
@@ -424,6 +426,7 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
+#pragma endregion
 
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
@@ -432,8 +435,13 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 
 	/* For.Prototype_GameObject_Camera_Free */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Free"),
-		CCamera_Free::Create(m_pGraphic_Device))))
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Free"),
+	//	CCamera_Free::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_TPS */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
+		CCamera_TPS::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_HeroCube */

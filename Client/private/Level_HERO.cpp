@@ -1,6 +1,8 @@
 #include "Level_HERO.h"
 #include "GameInstance.h"
 
+#include "Camera_TPS.h"
+
 CLevel_HERO::CLevel_HERO(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
 {
@@ -9,9 +11,6 @@ CLevel_HERO::CLevel_HERO(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_HERO::Initialize()
 {
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
-
 	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 	//	return E_FAIL;
 
@@ -22,6 +21,10 @@ HRESULT CLevel_HERO::Initialize()
  		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
+		return E_FAIL;
+
+	//스티브 다음으로 준비해야 스티브의 트랜스 폼을 찾을 수 있음
+	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -41,8 +44,17 @@ HRESULT CLevel_HERO::Render()
 
 HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Free"),
-		LEVEL_HERO, strLayerTag)))
+	CCamera_TPS::CAMERA_TPS_DESC Cam_TPS_Desc{};
+	Cam_TPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
+	Cam_TPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Cam_TPS_Desc.fFov = D3DXToRadian(60.f);
+	Cam_TPS_Desc.fNear = 0.1f;
+	Cam_TPS_Desc.fFar = 300.f;
+	Cam_TPS_Desc.fMouseSensor = 0.1f;
+	Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
+		//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
+		LEVEL_HERO, strLayerTag,&Cam_TPS_Desc)))
 		return E_FAIL;
 
 	return S_OK;

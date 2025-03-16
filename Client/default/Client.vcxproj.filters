@@ -100,6 +100,12 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\Steve">
       <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Camera\FPS">
+      <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera\TPS">
+      <UniqueIdentifier>{f144a248-6181-4626-bfb5-013346057121}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -140,9 +146,6 @@
     </ClInclude>
     <ClInclude Include="..\public\Terrain.h">
       <Filter>02.GameObjects\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Camera_Free.h">
-      <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Player.h">
       <Filter>02.GameObjects\Player</Filter>
@@ -230,6 +233,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Client_Struct.h">
       <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_Free.h">
+      <Filter>02.GameObjects\Camera\Free</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_TPS.h">
+      <Filter>02.GameObjects\Camera\TPS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -353,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Steve.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\Steve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_TPS.cpp">
+      <Filter>02.GameObjects\Camera\TPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -28,7 +28,7 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 	Desc.fFov = D3DXToRadian(60.f);
 	Desc.fNear = 0.1f;
 	Desc.fFar = 300.f;
-	Desc.fMouseSensor = 1.f;
+	//Desc.fMouseSensor = 1.f;
 
 	m_fMouseSensor = 0.1f;
 
