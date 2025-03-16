@@ -181,6 +181,7 @@
     <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
     <ClInclude Include="..\public\Terrain.h" />
+    <ClInclude Include="..\public\TestParticle.h" />
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
+    <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="MainApp.cpp" />

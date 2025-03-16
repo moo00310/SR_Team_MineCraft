@@ -237,6 +237,9 @@
     <ClInclude Include="..\public\HyockCube.h">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\TestParticle.h">
+      <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -361,6 +364,9 @@
       <Filter>02.GameObjects\99.MooGameOBj\Steve</Filter>
     </ClCompile>
     <ClCompile Include="..\private\HyockCube.cpp">
+      <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TestParticle.cpp">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClCompile>
   </ItemGroup>
