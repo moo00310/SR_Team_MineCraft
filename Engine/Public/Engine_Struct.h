@@ -28,6 +28,12 @@ namespace Engine
 
 	}CUBE;
 
+	// 단일 텍스쳐용 큐브.
+	typedef struct tagCreateCubeOnly
+	{
+		D3DXVECTOR3 BoxSIze;
+	}CUBE_ONLY;
+
 #pragma region Collider_Cube
 	typedef struct tagVertexCubeTexture
 	{

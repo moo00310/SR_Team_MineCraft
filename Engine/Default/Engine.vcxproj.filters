@@ -101,6 +101,9 @@
       <Filter>99.Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Matrix.h" />
+    <ClInclude Include="..\Public\VIBuffer_Cube_Only.h">
+      <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -266,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="..\private\LineManager.cpp">
       <Filter>04.Components\Collider\Manager\LineManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Cube_Only.cpp">
+      <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

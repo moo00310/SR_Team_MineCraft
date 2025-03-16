@@ -100,6 +100,9 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\Steve">
       <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\96.HyockGameObj">
+      <UniqueIdentifier>{8a31c5af-11ec-412f-8e80-5543a28f4aab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -231,6 +234,9 @@
     <ClInclude Include="..\public\Client_Struct.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\HyockCube.h">
+      <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -353,6 +359,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Steve.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\Steve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HyockCube.cpp">
+      <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,9 @@ HRESULT CLevel_Hyeok::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Hyock(TEXT("Layer_Hyock_Cube"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -57,6 +60,15 @@ HRESULT CLevel_Hyeok::Ready_Layer_Player(const _wstring& strLayerTag)
 HRESULT CLevel_Hyeok::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_Terrain"),
+		LEVEL_HYEOK, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hyeok::Ready_Layer_Hyock(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_Hyock_Cube"),
 		LEVEL_HYEOK, strLayerTag)))
 		return E_FAIL;
 
