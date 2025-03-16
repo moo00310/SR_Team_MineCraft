@@ -23,3 +23,5 @@ Client/default/Client.vcxproj.user
 *.enc
 *.xml
 *.sarif
+EngineSDK
+EngineSDK

@@ -9,12 +9,12 @@ class CTransform;
 class CVIBuffer_Cube;
 END
 
-class CCreeper : public CGameObject
+class CSteve : public CGameObject
 {
 private:
-	CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CCreeper(const CCreeper& Prototype);
-	virtual ~CCreeper() = default;
+	CSteve(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CSteve(const CSteve& Prototype);
+	virtual ~CSteve() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -33,9 +33,6 @@ private:
 	float Comput = {};
 	int  flag = { 1 };
 
-	float elapsedTime = 0.f;
-	float maxAngle = D3DXToRadian(20.f);
-
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone();
@@ -45,8 +42,9 @@ private:
 
 
 public:
-	static CCreeper* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };
+
 

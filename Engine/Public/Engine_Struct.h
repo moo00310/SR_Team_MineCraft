@@ -1,14 +1,15 @@
-#pragma once
+﻿#pragma once
 
 namespace Engine
 {
 	typedef struct tagEngineDesc 
 	{
 		HWND			hWnd;
-		bool			isWindowed;
-		unsigned int	iWinSizeX;
-		unsigned int	iWinSizeY;
-		unsigned int	iNumLevels;		
+		_bool			isWindowed;
+		_uint			iWinSizeX;
+		_uint			iWinSizeY;
+		_uint			iNumLevels;
+		_uint			iNumCollisionGroups;
 	}ENGINE_DESC;
 
 	/*D3DDECLUSAGE*/
@@ -31,10 +32,10 @@ namespace Engine
 	typedef struct tagVertexCubeTexture
 	{
 		D3DXVECTOR3		vPosition;
-		D3DXVECTOR3		vTexture;//텍스쳐가 왜 들어 가는걸까?
+		D3DXVECTOR3		vTexture;
 	}VTXCUBETEX;
 
-	typedef struct FaceIndices16//이건 뭐지?
+	typedef struct FaceIndices16
 	{
 		unsigned short _0, _1, _2;
 	}FACEINDICES16;
@@ -45,7 +46,7 @@ namespace Engine
 		const char* name;
 		int index;
 		int parent;
-		D3DXMATRIX transform;
+		Matrix transform;
 	}BONE;
 
 #pragma region Ray_Cast

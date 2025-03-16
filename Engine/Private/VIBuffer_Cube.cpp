@@ -88,12 +88,12 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(CUBE& tInfo)
 
     _float2 UvPexel[6] =
     {
-        {_float2(startPixelpos.x + 3 * fBoxSize.x ,     startPixelpos.y + fBoxSize.z)},
-        {_float2(startPixelpos.x + 2 * fBoxSize.x,  startPixelpos.y + fBoxSize.z)},
-        {_float2(startPixelpos.x + fBoxSize.x,  startPixelpos.y + fBoxSize.z)},
-        {_float2(startPixelpos.x,                   startPixelpos.y + fBoxSize.z)},
-        {_float2(startPixelpos.x + fBoxSize.x,      startPixelpos.y)},
-        {_float2(startPixelpos.x + 2 * fBoxSize.x,  startPixelpos.y)}
+        {_float2(startPixelpos.x + fBoxSize.z * 2 + fBoxSize.x,  startPixelpos.y + fBoxSize.z)},
+        {_float2(startPixelpos.x,                                startPixelpos.y + fBoxSize.z)},
+        {_float2(startPixelpos.x + fBoxSize.z,                   startPixelpos.y + fBoxSize.z)},
+        {_float2(startPixelpos.x + fBoxSize.z + fBoxSize.x,      startPixelpos.y + fBoxSize.z)},
+        {_float2(startPixelpos.x + fBoxSize.z,                   startPixelpos.y)},
+        {_float2(startPixelpos.x + fBoxSize.z + fBoxSize.x,      startPixelpos.y)} 
     };
 
 #pragma region UV ╦егн
