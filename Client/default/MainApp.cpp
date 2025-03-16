@@ -11,7 +11,7 @@
 #include "Level_Logo.h"
 #include "Level_Loading.h"
 
-// test push ¿äÃ»
+// test push ìš”ì²­
 
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
@@ -27,7 +27,9 @@ HRESULT CMainApp::Initialize()
 	Desc.iWinSizeX = g_iWinSizeX;
 	Desc.iWinSizeY = g_iWinSizeY;
 	Desc.iNumLevels = LEVEL_END;
-	Desc.iNumCollisionGroups = COLLISION_GROUP_END;
+
+	Desc.iNumCollisionGroups = COLLISION_END;
+
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(Desc, &m_pGraphic_Device)))
 		return E_FAIL;
@@ -38,7 +40,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Default_Setting()))
 		return E_FAIL;
 
-	/* ÃÖÃÊ º¸¿©ÁÙ ·¹º§À» ÇÒ´çÇÏÀÚ. */
+	/* ìµœì´ˆ ë³´ì—¬ì¤„ ë ˆë²¨ì„ í• ë‹¹í•˜ìž. */
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
@@ -66,14 +68,14 @@ HRESULT CMainApp::Initialize()
 //		std::ios::sync_with_stdio();
 //	}
 //
-//	// :one: ÄÜ¼Ö ÇÚµé °¡Á®¿À±â
+//	// :one: ì½˜ì†” í•¸ë“¤ ê°€ì ¸ì˜¤ê¸°
 //	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 //
-//	// :two: ÄÜ¼Ö ¹öÆÛ Å©±â ¸ÕÀú Á¶Á¤
-//	COORD bufferSize = { 20, 20 }; // °¡·Î 80, ¼¼·Î 20
+//	// :two: ì½˜ì†” ë²„í¼ í¬ê¸° ë¨¼ì € ì¡°ì •
+//	COORD bufferSize = { 20, 20 }; // ê°€ë¡œ 80, ì„¸ë¡œ 20
 //	SetConsoleScreenBufferSize(hConsole, bufferSize);
 //
-//	// :three: ÄÜ¼Ö Ã¢ Å©±â Á¶Á¤
+//	// :three: ì½˜ì†” ì°½ í¬ê¸° ì¡°ì •
 //	SMALL_RECT windowSize = { 0, 0, 80 - 1, 20 - 1 };
 //	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
 //
@@ -124,19 +126,19 @@ HRESULT CMainApp::Ready_Component_For_Static()
 		CTransform::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	// ÇÇÄ«Ãò ÀÌ¹ÌÁö
+	// í”¼ì¹´ì¸„ ì´ë¯¸ì§€
 	/* For.Prototype_Component_Texture_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Player"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Player/Player0.png"), 1))))
 		return E_FAIL;
 
-	// ÁöÇü ÀÌ¹ÌÁö
+	// ì§€í˜• ì´ë¯¸ì§€
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
 		return E_FAIL;
 
-	// ÁöÇü ¸ðµ¨
+	// ì§€í˜• ëª¨ë¸
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
@@ -179,7 +181,7 @@ void CMainApp::Free()
 
 	m_pGameInstance->Release_Engine();
 
-	/* ³»¸â¹ö¸¦ Á¤¸®ÇÑ´Ù.*/	
+	/* ë‚´ë©¤ë²„ë¥¼ ì •ë¦¬í•œë‹¤.*/	
 	Safe_Release(m_pGameInstance);
 	
 

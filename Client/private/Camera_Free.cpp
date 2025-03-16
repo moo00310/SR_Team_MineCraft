@@ -28,7 +28,7 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 	Desc.fFov = D3DXToRadian(60.f);
 	Desc.fNear = 0.1f;
 	Desc.fFar = 300.f;
-	Desc.fMouseSensor = 1.f;
+	//Desc.fMouseSensor = 1.f;
 
 	m_fMouseSensor = 0.1f;
 
@@ -43,6 +43,9 @@ HRESULT CCamera_Free::Initialize(void* pArg)
 
 void CCamera_Free::Priority_Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
+
 	/* 다른객체안에서 연산 시, 뷰, 투영행릉르 가지고 뭘 하고싶을 수 있어. */
 	/* 장치에서 바로 겟 해온다. */
 
@@ -91,15 +94,21 @@ void CCamera_Free::Priority_Update(_float fTimeDelta)
 
 void CCamera_Free::Update(_float fTimeDelta)
 {
-
+	if (!m_isActive)
+		return;
 }
 
 void CCamera_Free::Late_Update(_float fTimeDelta)
 {
+	if (!m_isActive)
+		return;
 }
 
 HRESULT CCamera_Free::Render()
 {
+	if (!m_isActive)
+		return S_OK;
+
 	return S_OK;
 }
 
