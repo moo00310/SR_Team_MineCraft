@@ -143,7 +143,7 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(_uint iGroupIndex, vector<c
 }
 
 
-_bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float& tMin, _uint eGroup, _float maxDistance)
+_bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float& fDist)
 {
 	for (auto& iter : m_pGameObjects[eGroup])
 	{
@@ -164,7 +164,7 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 		D3DXVec3Normalize(&axes[2], &axes[2]);
 
 		// 레이와 OBB의 교차 검사 (Slab 방식)
-		tMin = 0.f;
+		fDist = 0.f;
 		_float tMax = FLT_MAX;
 		_bool hit = true;  // 현재 OBB에 대해 충돌 판정
 
@@ -180,10 +180,10 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 				_float t2 = (e + halfSize[i]) / f;
 				if (t1 > t2)
 					std::swap(t1, t2);
-				tMin = max(tMin, t1);
+				fDist = max(fDist, t1);
 				tMax = min(tMax, t2);
 
-				if (tMin > tMax)  // 슬랩 간에 교차가 없으면 충돌 없음
+				if (fDist > tMax)  // 슬랩 간에 교차가 없으면 충돌 없음
 				{
 					hit = false;
 					break;
@@ -201,7 +201,7 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 		}
 
 		// 현재 OBB와 충돌한 경우 거리 제한 추가
-		if (hit && tMin <= maxDistance)
+		if (hit && fDist <= maxDistance)
 		{
 			m_pLineManager->Add_Line(rayOrigin, rayDir, maxDistance, true);
 			return true;

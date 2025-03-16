@@ -41,8 +41,8 @@ void CHeroCubeNoMove::Update(_float fTimeDelta)
 	}
 
 	//마지막에 발사한 놈만 렌더 되네
-	_float fMin;
-	m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), fMin, COLLISION_PLAYER, 5.f);
+	_float fRange;
+	m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), 5.f, COLLISION_PLAYER, fRange);
 
 
 	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
