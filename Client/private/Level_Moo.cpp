@@ -26,6 +26,7 @@ HRESULT CLevel_Moo::Initialize()
 	if (FAILED(Ready_Layer_Tree(TEXT("Layer_Tree_1"))))
 		return E_FAIL; 
 
+
 	return S_OK;
 }
 
@@ -36,7 +37,7 @@ void CLevel_Moo::Update(_float fTimeDelta)
 
 HRESULT CLevel_Moo::Render()
 {
-	SetWindowText(g_hWnd, TEXT("MOO_TEST �����Դϴ�."));
+	SetWindowText(g_hWnd, TEXT("MOO_TEST ·¹º§ÀÔ´Ï´Ù."));
 
 	return S_OK;
 }
@@ -70,7 +71,7 @@ HRESULT CLevel_Moo::Ready_Layer_Creeper(const _wstring& strLayerTag)
 
 HRESULT CLevel_Moo::Ready_Layer_Steve(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Steve"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
 		LEVEL_MOO, strLayerTag)))
 		return E_FAIL;
 

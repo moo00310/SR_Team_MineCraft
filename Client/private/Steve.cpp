@@ -115,7 +115,7 @@ HRESULT CSteve::Ready_Components()
 {
 	// 스티브 텍스처
   /* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_Texture_Steve"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Steve"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
@@ -128,28 +128,28 @@ HRESULT CSteve::Ready_Components()
 	/* For.Com_VIBuffer */
 
 	// 머리
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
 		TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[0]))))
 		return E_FAIL;
 	
 	// 몸통
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
 		TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[1]))))
 		return E_FAIL;
 
 	// 다리
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
 		TEXT("m_pVIBufferCom_Foot_R"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[2]))))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
 		TEXT("m_pVIBufferCom_Foot_L"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[3]))))
 		return E_FAIL;
 
 	// 팔
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
 		TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[4]))))
 		return E_FAIL;
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
 		TEXT("m_pVIBufferCom_Arm_L"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[5]))))
 		return E_FAIL;
 

@@ -143,9 +143,13 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(_uint iGroupIndex, vector<c
 }
 
 
-_bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float& fDist)
+_bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float& fDist, _Out_ CGameObject** ppGameObject)
 {
 	fDist = 0.f;
+	if (ppGameObject)
+	{
+		*ppGameObject = nullptr;
+	}
 
 	for (auto& iter : m_pGameObjects[eGroup])
 	{
@@ -206,6 +210,12 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 		if (hit && fDist <= maxDistance)
 		{
 			m_pLineManager->Add_Line(rayOrigin, rayDir, maxDistance, true);
+
+			if (ppGameObject)
+			{
+				*ppGameObject = iter;
+			}
+
 			return true;
 		}
 	}

@@ -112,6 +112,21 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Tree\Block">
       <UniqueIdentifier>{b8e50c1c-9e44-4cd6-b43a-8d3c1860d3ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Camera\FPS">
+      <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera\TPS">
+      <UniqueIdentifier>{f144a248-6181-4626-bfb5-013346057121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera\00.CameraManager">
+      <UniqueIdentifier>{9d537468-14f4-4e96-962a-897e70d09192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Behavior_Tree">
+      <UniqueIdentifier>{6c2d2db5-6575-4350-96b5-f1680963c5d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy">
+      <UniqueIdentifier>{95716bec-861e-49d5-bd33-aa5e8e8ea25e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -152,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="..\public\Terrain.h">
       <Filter>02.GameObjects\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Camera_Free.h">
-      <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Player.h">
       <Filter>02.GameObjects\Player</Filter>
@@ -251,6 +263,24 @@
     </ClInclude>
     <ClInclude Include="..\public\Leaf.h">
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_Free.h">
+      <Filter>02.GameObjects\Camera\Free</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_TPS.h">
+      <Filter>02.GameObjects\Camera\TPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Camera_FPS.h">
+      <Filter>02.GameObjects\Camera\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CameraManager.h">
+      <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Behavior_Tree.h">
+      <Filter>03.Behavior_Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HeroEnemy.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +413,21 @@
     </ClCompile>
     <ClCompile Include="..\private\Leaf.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_TPS.cpp">
+      <Filter>02.GameObjects\Camera\TPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_FPS.cpp">
+      <Filter>02.GameObjects\Camera\FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CameraManager.cpp">
+      <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Behavior_Tree.cpp">
+      <Filter>03.Behavior_Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HeroEnemy.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

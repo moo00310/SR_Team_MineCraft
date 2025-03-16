@@ -20,7 +20,7 @@ HRESULT CMCTerrain::Initialize_Prototype()
 
 HRESULT CMCTerrain::Initialize(void* pArg)
 {
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_Environment"))))
+	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
 
     return S_OK;
@@ -48,48 +48,147 @@ HRESULT CMCTerrain::Render()
     return S_OK;
 }
 
-HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
+CGameInstance* CMCTerrain::GetGameInstance()
 {
-
-	HANDLE hFile = CreateFile(L"../bin/Resources/DataFiles/BlockData.txt", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE) {
-		return S_OK;
-	}
-	DWORD dwBytesRead;
-	BLOCKDESC eblockData;
-	int index = 0;
-
-	while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
-	{
-		switch (eblockData.eBlockType)
-		{
-		case GRASSDIRT:
-			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, strLayerTag)))
-				return E_FAIL;
-			break;
-		case DIRT:
-			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, strLayerTag)))
-				return E_FAIL;
-			break;
-		case STONE:
-			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, strLayerTag)))
-				return E_FAIL;
-			break;
-		default:
-			break;
-		}
-
-
-		CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
-		if (pCube) {
-			pCube->SetPos(_float3(eblockData.fPosition));
-		}
-		index++;
-	}
-
-	CloseHandle(hFile);
-	return S_OK;
+   return m_pGameInstance; 
 }
+
+CRITICAL_SECTION cs;  // 전역 변수로 동기화 객체 추가
+
+int GetFileCount()
+{
+    WIN32_FIND_DATA findFileData;
+    HANDLE hFind = FindFirstFile(L"../bin/Resources/DataFiles/BlockDataChunk*.txt", &findFileData);
+
+    int fileCount = 0;
+    if (hFind != INVALID_HANDLE_VALUE)
+    {
+        do {
+            fileCount++;
+        } while (FindNextFile(hFind, &findFileData));
+
+        FindClose(hFind);
+    }
+
+    return fileCount;
+}
+
+struct ThreadParams
+{
+    int chunkIndex;
+    CMCTerrain* pTerrain;
+};
+
+DWORD WINAPI ProcessFileThread(LPVOID lpParam)
+{
+    ThreadParams* params = (ThreadParams*)lpParam;
+    int chunkIndex = params->chunkIndex;
+    CMCTerrain* pTerrain = params->pTerrain;
+
+    if (!pTerrain) return 1;
+    CGameInstance* pGameInstance = pTerrain->GetGameInstance();
+
+    wchar_t filename[100];
+    swprintf(filename, 100, L"../bin/Resources/DataFiles/BlockDataChunk%d.txt", chunkIndex);
+
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
+
+    HANDLE hFile = CreateFile(filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile == INVALID_HANDLE_VALUE) {
+        return 1;
+    }
+
+    DWORD dwBytesRead;
+    BLOCKDESC eblockData;
+    int index = 0;
+
+    while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
+    {
+        CBreakableCube* pCube = nullptr;
+
+        EnterCriticalSection(&cs);  // 동기화 시작
+        switch (eblockData.eBlockType)
+        {
+        case GRASSDIRT:
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            break;
+        case DIRT:
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            break;
+        case STONE:
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            break;
+        default:
+            break;
+        }
+        LeaveCriticalSection(&cs);  // 동기화 종료
+    }
+
+    CloseHandle(hFile);
+    return 0;
+}
+
+HRESULT CMCTerrain::Ready_Layer_BackGround()
+{
+    InitializeCriticalSection(&cs); // CRITICAL_SECTION 초기화
+
+    int fileCount = GetFileCount();
+    if (fileCount == 0) {
+        MSG_BOX("파일이 없습니다");
+        return S_OK;
+    }
+
+    HANDLE* hThreads = new HANDLE[fileCount];
+    ThreadParams* params = new ThreadParams[fileCount];
+
+    for (int i = 0; i < fileCount; ++i)
+    {
+        params[i].chunkIndex = i;
+        params[i].pTerrain = this;
+
+        hThreads[i] = CreateThread(NULL, 0, ProcessFileThread, &params[i], 0, NULL);
+        if (!hThreads[i]) {
+            delete[] hThreads;
+            delete[] params;
+            return E_FAIL;
+        }
+    }
+
+    WaitForMultipleObjects(fileCount, hThreads, TRUE, INFINITE);
+
+    for (int i = 0; i < fileCount; ++i)
+    {
+        CloseHandle(hThreads[i]);
+    }
+
+    delete[] hThreads;
+    delete[] params;
+
+    DeleteCriticalSection(&cs); // CRITICAL_SECTION 삭제
+
+    MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
+    return S_OK;
+}
+
 
 CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
