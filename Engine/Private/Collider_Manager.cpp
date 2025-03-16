@@ -145,6 +145,8 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(_uint iGroupIndex, vector<c
 
 _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float& fDist)
 {
+	fDist = 0.f;
+
 	for (auto& iter : m_pGameObjects[eGroup])
 	{
 		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
