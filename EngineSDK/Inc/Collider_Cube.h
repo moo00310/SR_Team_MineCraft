@@ -26,6 +26,8 @@ public:
 	HRESULT Update_ColliderBox();
 	HRESULT Render_ColliderBox(_bool isHit);
 	_bool	Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance = nullptr);
+public:
+	COLLRECTDESC& Get_Desc() { return m_StateDesc; }
 
 private:
 	_float3						m_vPoint[8];

@@ -1,10 +1,6 @@
 #include "..\Public\Collider_Cube.h"
 
 
-//const _tchar* CCollider_Cube::m_pTransformTag = TEXT("Com_Transform");
-
-//_bool m_bRender = true;
-
 CCollider_Cube::CCollider_Cube(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent(pGraphic_Device)
 {
@@ -190,7 +186,16 @@ HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 	// 원래 상태(솔리드 모드)로 복구
 	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
+	// 상태 복구 - 텍스처 팩터 상태를 기본값으로 복구
+	m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
+
+	// 텍스처 단계 복구
+	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+
 	return S_OK;
+
 }
 
 _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance)

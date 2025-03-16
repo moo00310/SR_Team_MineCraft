@@ -93,9 +93,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Matrix.h">
       <Filter>100.Matrix</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Line.h">
       <Filter>04.Components\VIBuffer\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LineManager.h">
+      <Filter>04.Components\Collider\Manager\LineManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -186,6 +189,9 @@
     <Filter Include="04.Components\VIBuffer\Line">
       <UniqueIdentifier>{56dcda29-4b9b-48aa-aa60-532acc6693a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Components\Collider\Manager\LineManager">
+      <UniqueIdentifier>{51ddd23e-394a-41cb-8fc2-06d0c5ab55c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -259,9 +265,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Matrix.cpp">
       <Filter>100.Matrix</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Line.cpp">
       <Filter>04.Components\VIBuffer\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LineManager.cpp">
+      <Filter>04.Components\Collider\Manager\LineManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
