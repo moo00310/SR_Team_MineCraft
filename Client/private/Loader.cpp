@@ -458,12 +458,20 @@ HRESULT CLoader::Loading_For_HECKPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Destroy"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/destroy_stage_%d.png"), 10))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Diamond_ore"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Block/diamond_ore.png"), 1))))
+		return E_FAIL;
 	
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 
 	Engine::CUBE_ONLY cube{ _float3(1.f, 1.f, 1.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Cube_Destroy"),
+		CVIBuffer_Cube_Only::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Cube_Diamond_Ore"),
 		CVIBuffer_Cube_Only::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 

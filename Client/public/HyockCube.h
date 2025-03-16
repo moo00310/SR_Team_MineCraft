@@ -4,8 +4,9 @@
 #include "GameInstance.h"
 #include "Texture.h"
 #include "VIBuffer_Cube_Only.h"
+#include "Cube.h"
 
-class CHyockCube : public CGameObject
+class CHyockCube : public CCube
 {
 private:
 	CHyockCube(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -31,7 +32,9 @@ protected:
 	virtual HRESULT Ready_Components();
 
 private:
-	CTexture* m_TextureCom = {nullptr};
+	CTexture* m_TextureDestroyCom = {nullptr};
+	CTexture* m_TextureDiamondOreCom = { nullptr };
 	CVIBuffer_Cube_Only* m_CubeOnlyCom = { nullptr };
+	CVIBuffer_Cube_Only* m_CubeCom = {nullptr};
 };
 
