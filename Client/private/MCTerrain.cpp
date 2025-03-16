@@ -50,44 +50,57 @@ HRESULT CMCTerrain::Render()
 
 HRESULT CMCTerrain::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-
-	HANDLE hFile = CreateFile(L"../bin/Resources/DataFiles/BlockData.txt", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE) {
-		return S_OK;
-	}
+	int chunkIndex = 0;
 	DWORD dwBytesRead;
 	BLOCKDESC eblockData;
 	int index = 0;
 
-	while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
+	while (true)
 	{
-		switch (eblockData.eBlockType)
+		// 파일명 생성 (BlockDataChunk0.txt, BlockDataChunk1.txt, ...)
+		wchar_t filename[100];
+		swprintf(filename, 100, L"../bin/Resources/DataFiles/BlockDataChunk%d.txt", chunkIndex);
+
+		// 파일 열기
+		HANDLE hFile = CreateFile(filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (hFile == INVALID_HANDLE_VALUE) {
+			break; // 더 이상 파일이 없으면 루프 종료
+		}
+
+		// 파일에서 블록 데이터 읽기
+		while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
 		{
-		case GRASSDIRT:
-			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, strLayerTag)))
-				return E_FAIL;
-			break;
-		case DIRT:
-			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, strLayerTag)))
-				return E_FAIL;
-			break;
-		case STONE:
-			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, strLayerTag)))
-				return E_FAIL;
-			break;
-		default:
-			break;
+			switch (eblockData.eBlockType)
+			{
+			case GRASSDIRT:
+				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, strLayerTag)))
+					return E_FAIL;
+				break;
+			case DIRT:
+				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, strLayerTag)))
+					return E_FAIL;
+				break;
+			case STONE:
+				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, strLayerTag)))
+					return E_FAIL;
+				break;
+			default:
+				break;
+			}
+
+			// 생성된 블록의 위치 설정
+			CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
+			if (pCube) {
+				pCube->SetPos(_float3(eblockData.fPosition));
+			}
+			index++;
 		}
 
-
-		CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
-		if (pCube) {
-			pCube->SetPos(_float3(eblockData.fPosition));
-		}
-		index++;
+		// 파일 닫기
+		CloseHandle(hFile);
+		chunkIndex++; // 다음 청크 파일로 이동
 	}
 
-	CloseHandle(hFile);
 	return S_OK;
 }
 
