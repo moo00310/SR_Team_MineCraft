@@ -152,6 +152,7 @@
     <ClInclude Include="..\..\Imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\CameraManager.h" />
     <ClInclude Include="..\public\Camera_FPS.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="..\public\HeroCube.h" />
     <ClInclude Include="..\public\Dirt.h" />
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
+    <ClInclude Include="..\public\HeroEnemy.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
     <ClInclude Include="..\public\Level_HERO.h" />
     <ClInclude Include="..\public\Level_Hyeok.h" />
@@ -199,6 +201,7 @@
     <ClCompile Include="..\..\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
+    <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
     <ClCompile Include="..\private\CameraManager.cpp" />
     <ClCompile Include="..\private\Camera_FPS.cpp" />
@@ -211,6 +214,7 @@
     <ClCompile Include="..\private\HeroCube.cpp" />
     <ClCompile Include="..\private\Dirt.cpp" />
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
+    <ClCompile Include="..\private\HeroEnemy.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />
     <ClCompile Include="..\private\Level_HERO.cpp" />
     <ClCompile Include="..\private\Level_Hyeok.cpp" />

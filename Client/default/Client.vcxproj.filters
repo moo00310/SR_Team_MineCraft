@@ -109,6 +109,12 @@
     <Filter Include="02.GameObjects\Camera\00.CameraManager">
       <UniqueIdentifier>{9d537468-14f4-4e96-962a-897e70d09192}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Behavior_Tree">
+      <UniqueIdentifier>{6c2d2db5-6575-4350-96b5-f1680963c5d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy">
+      <UniqueIdentifier>{95716bec-861e-49d5-bd33-aa5e8e8ea25e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -249,6 +255,12 @@
     <ClInclude Include="..\public\CameraManager.h">
       <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Behavior_Tree.h">
+      <Filter>03.Behavior_Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HeroEnemy.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -380,6 +392,12 @@
     </ClCompile>
     <ClCompile Include="..\private\CameraManager.cpp">
       <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Behavior_Tree.cpp">
+      <Filter>03.Behavior_Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HeroEnemy.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

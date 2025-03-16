@@ -28,6 +28,10 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	//BT 연습용 적
+	if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -101,16 +105,13 @@ HRESULT CLevel_HERO::Ready_Layer_BackGround(const _wstring& strLayerTag)
 
 HRESULT CLevel_HERO::Ready_Layer_HeroCube(const _wstring& strLayerTag)
 {
-	//for (size_t i = 0; i < 10; i++)
-	//{
-		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCube"),
-			LEVEL_HERO, strLayerTag)))
-			return E_FAIL;
-	//}
-
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCubeNoMove"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCube"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
+
+	/*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCubeNoMove"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;*/
 
 	return S_OK;
 }
@@ -118,6 +119,15 @@ HRESULT CLevel_HERO::Ready_Layer_HeroCube(const _wstring& strLayerTag)
 HRESULT CLevel_HERO::Ready_Layer_Steve(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_HERO::Ready_Layer_HeroEnemy(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroEnemy"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
 

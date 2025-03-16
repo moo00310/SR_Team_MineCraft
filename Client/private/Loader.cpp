@@ -20,6 +20,7 @@
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
 #include "HeroCubeNoMove.h"
+#include "HeroEnemy.h"
 /*
   지형 관련
 */
@@ -463,6 +464,11 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	/* For.Prototype_GameObject_Steve */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
 		CSteve::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_HeroEnemy */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_HeroEnemy"),
+		CHeroEnemy::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

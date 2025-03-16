@@ -22,6 +22,8 @@ private:
 	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_HeroCube(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Steve(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_HeroEnemy(const _wstring& strLayerTag);
+
 private:
 	CCameraManager* m_pCameraManager{ nullptr };
 
