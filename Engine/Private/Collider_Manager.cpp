@@ -256,5 +256,7 @@ void CCollider_Manager::Free()
 		m_pGameObjects[i].clear();
 	}
 
+	Safe_Delete_Array(m_pGameObjects);
+
 	Safe_Release(m_pLineManager);
 }

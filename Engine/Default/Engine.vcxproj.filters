@@ -91,9 +91,6 @@
     <ClInclude Include="..\Public\Collider_Manager.h">
       <Filter>04.Components\Collider\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Matrix.h">
-      <Filter>100.Matrix</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Line.h">
       <Filter>04.Components\VIBuffer\Line</Filter>
     </ClInclude>
@@ -103,6 +100,7 @@
     <ClInclude Include="..\Public\Matrix.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Matrix.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -262,9 +260,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Collider_Manager.cpp">
       <Filter>04.Components\Collider\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Matrix.cpp">
-      <Filter>100.Matrix</Filter>
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Line.cpp">
       <Filter>04.Components\VIBuffer\Line</Filter>
