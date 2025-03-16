@@ -29,7 +29,7 @@ HRESULT CHeroCubeNoMove::Initialize(void* pArg)
 
 void CHeroCubeNoMove::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_CollisionGroup(CCollider_Manager::COLLISION_PLAYER, this);
+	m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);
 }
 
 void CHeroCubeNoMove::Update(_float fTimeDelta)
@@ -40,7 +40,12 @@ void CHeroCubeNoMove::Update(_float fTimeDelta)
 		return;
 	}
 
-	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
+	//마지막에 발사한 놈만 렌더 되네
+	_float fRange;
+	m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), 5.f, COLLISION_PLAYER, fRange);
+
+
+	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
 }
 
 void CHeroCubeNoMove::Late_Update(_float fTimeDelta)

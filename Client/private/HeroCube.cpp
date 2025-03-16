@@ -22,25 +22,47 @@ HRESULT CHeroCube::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
+	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
 
 	return S_OK;
 }
 
 void CHeroCube::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_CollisionGroup(CCollider_Manager::COLLISION_PLAYER, this);
+	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 }
 
 void CHeroCube::Update(_float fTimeDelta)
 {
+
+	_float fRange;
+	_bool isRayHit{ false };
+	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+	D3DXVec3Normalize(&vLook, &vLook);
+	isRayHit = m_pGameInstance->Ray_Cast(vPosition, vLook, 10.f, COLLISION_BLOCK, fRange);
+	if (isRayHit)
+	{
+		int a = 10;
+	}
+
 	if (FAILED(m_pColliderCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
 
-	m_bHit = m_pGameInstance->Collision_with_Group(CCollider_Manager::COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
+	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_BLOCK, this, CCollider_Manager::COLLSIION_BOX);
+	if (m_bHit)
+	{
+		int a = 10;
+	}
+
+	if (GetKeyState('R') & 0x8000)
+	{
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 5), 0.f, 0.f));
+		m_pTransformCom->Rotation({ 0.f, 1.f, 1.f }, D3DXToRadian(0.f));
+	}
 
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
@@ -82,8 +104,6 @@ HRESULT CHeroCube::Render()
 
 	if (FAILED(m_pColliderCom->Render_ColliderBox(m_bHit)))
 		return E_FAIL;
-
-	m_pGameInstance->Ray_Cast(m_pTransformCom->Get_WorldMatrix(), m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), 100.f, CCollider_Manager::COLLISION_BLOCK);
 
 	return S_OK;
 }
