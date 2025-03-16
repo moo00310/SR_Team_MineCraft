@@ -53,6 +53,8 @@ CGameInstance* CMCTerrain::GetGameInstance()
    return m_pGameInstance; 
 }
 
+CRITICAL_SECTION cs;  // 전역 변수로 동기화 객체 추가
+
 int GetFileCount()
 {
     WIN32_FIND_DATA findFileData;
@@ -74,20 +76,18 @@ int GetFileCount()
 struct ThreadParams
 {
     int chunkIndex;
-    CMCTerrain* pTerrain; // CMCTerrain 객체의 포인터 추가
+    CMCTerrain* pTerrain;
 };
 
 DWORD WINAPI ProcessFileThread(LPVOID lpParam)
 {
     ThreadParams* params = (ThreadParams*)lpParam;
     int chunkIndex = params->chunkIndex;
-    CMCTerrain* pTerrain = params->pTerrain; // CMCTerrain 객체 참조
+    CMCTerrain* pTerrain = params->pTerrain;
 
-    if (!pTerrain) return 1; // 예외 처리
-    
+    if (!pTerrain) return 1;
     CGameInstance* pGameInstance = pTerrain->GetGameInstance();
 
-    // 파일명 생성
     wchar_t filename[100];
     swprintf(filename, 100, L"../bin/Resources/DataFiles/BlockDataChunk%d.txt", chunkIndex);
 
@@ -96,7 +96,7 @@ DWORD WINAPI ProcessFileThread(LPVOID lpParam)
 
     HANDLE hFile = CreateFile(filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile == INVALID_HANDLE_VALUE) {
-        return 1; // 파일이 없으면 종료
+        return 1;
     }
 
     DWORD dwBytesRead;
@@ -106,6 +106,8 @@ DWORD WINAPI ProcessFileThread(LPVOID lpParam)
     while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
     {
         CBreakableCube* pCube = nullptr;
+
+        EnterCriticalSection(&cs);  // 동기화 시작
         switch (eblockData.eBlockType)
         {
         case GRASSDIRT:
@@ -138,23 +140,22 @@ DWORD WINAPI ProcessFileThread(LPVOID lpParam)
         default:
             break;
         }
-
-
+        LeaveCriticalSection(&cs);  // 동기화 종료
     }
 
     CloseHandle(hFile);
     return 0;
 }
 
-
 HRESULT CMCTerrain::Ready_Layer_BackGround()
 {
+    InitializeCriticalSection(&cs); // CRITICAL_SECTION 초기화
+
     int fileCount = GetFileCount();
     if (fileCount == 0) {
         MSG_BOX("파일이 없습니다");
         return S_OK;
     }
-        
 
     HANDLE* hThreads = new HANDLE[fileCount];
     ThreadParams* params = new ThreadParams[fileCount];
@@ -172,7 +173,6 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         }
     }
 
-    // 모든 쓰레드가 끝날 때까지 대기
     WaitForMultipleObjects(fileCount, hThreads, TRUE, INFINITE);
 
     for (int i = 0; i < fileCount; ++i)
@@ -183,10 +183,12 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
     delete[] hThreads;
     delete[] params;
 
-    MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
+    DeleteCriticalSection(&cs); // CRITICAL_SECTION 삭제
 
+    MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
     return S_OK;
 }
+
 
 CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
