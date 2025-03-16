@@ -64,17 +64,16 @@ void CCreeper::Update(_float fTimeDelta)
     // °È´Â ¸ð¼Ç
     if (GetKeyState('Q') & 0x8000)
     {
-        if (Comput > 20)
-            flag *= -1;
-        if(Comput < -20)
-            flag *= -1;
 
-        vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
-        vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
-        vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
-        vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
-        Comput += 1.5f * flag;
+        elapsedTime += fTimeDelta;
+        Comput = maxAngle * sin(elapsedTime * D3DXToRadian(2.5f));
+
+        vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), Comput);
+        vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), -Comput);
+        vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), -Comput);
+        vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), Comput);
     }
+
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)

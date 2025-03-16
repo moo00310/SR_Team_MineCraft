@@ -33,6 +33,9 @@ private:
 	float Comput = {};
 	int  flag = { 1 };
 
+	float elapsedTime = 0.f;
+	float maxAngle = D3DXToRadian(20.f);
+
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone();
