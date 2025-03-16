@@ -20,13 +20,14 @@ HRESULT CCameraManager::Initialize()
 		if (!pCamera)
 			break;
 
+		Safe_AddRef(pCamera);
 		pCamera->Set_Active(false);
-
 		m_Cameras.push_back(pCamera);
 
 		++iIndex;
 	}
 
+	//처음 카메라 부터 시작
 	m_CurrentCamera = m_Cameras.begin();
 	(*m_CurrentCamera)->Set_Active(true);
 
@@ -66,4 +67,11 @@ CCameraManager* CCameraManager::Create()
 void CCameraManager::Free()
 {
 	__super::Free();
+
+	for (CCamera* pCamera : m_Cameras)
+	{
+		Safe_Release(pCamera);
+	}
+
+	m_Cameras.clear();
 }

@@ -49,6 +49,20 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 {
 	if (!m_isActive)
 		return;
+}
+
+
+
+void CCamera_FPS::Update(_float fTimeDelta)
+{
+	if (!m_isActive)
+		return;
+}
+
+void CCamera_FPS::Late_Update(_float fTimeDelta)
+{
+	if (!m_isActive)
+		return;
 
 	// 1. 화면 중앙 좌표 계산
 	RECT rc;
@@ -93,20 +107,6 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 	m_pTransformCom->LookAt(vCameraPos + vLook);  // 1인칭 카메라는 자신의 앞을 바라봄
 
 	__super::Update_VP_Matrices();
-}
-
-
-
-void CCamera_FPS::Update(_float fTimeDelta)
-{
-	if (!m_isActive)
-		return;
-}
-
-void CCamera_FPS::Late_Update(_float fTimeDelta)
-{
-	if (!m_isActive)
-		return;
 }
 
 HRESULT CCamera_FPS::Render()

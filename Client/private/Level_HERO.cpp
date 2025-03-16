@@ -56,7 +56,6 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 	Cam_TPS_Desc.fFar = 300.f;
 	Cam_TPS_Desc.fMouseSensor = 0.1f;
 	Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
-		//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
 		LEVEL_HERO, strLayerTag,&Cam_TPS_Desc)))
 		return E_FAIL;
@@ -69,14 +68,12 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 	Cam_FPS_Desc.fFar = 300.f;
 	Cam_FPS_Desc.fMouseSensor = 0.1f;
 	Cam_FPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
-	//Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_FPS"),
 		LEVEL_HERO, strLayerTag, &Cam_FPS_Desc)))
 		return E_FAIL;
 
 	//카메라 매니저에다가 카메라 Layer의 모든 카메라를 가져온다음
 	//특정 키를 누를 때마다 다음 카메라만 활성화시킨다.
-
 	m_pCameraManager = CCameraManager::Create();
 
 	return S_OK;
@@ -90,7 +87,6 @@ HRESULT CLevel_HERO::Ready_Layer_Player(const _wstring& strLayerTag)
 			LEVEL_HERO, strLayerTag)))
 			return E_FAIL;
 	}
-	
 
 	return S_OK;
 }
@@ -140,7 +136,6 @@ CLevel_HERO* CLevel_HERO::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 	return pInstance;
 }
-
 
 void CLevel_HERO::Free()
 {

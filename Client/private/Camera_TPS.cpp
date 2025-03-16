@@ -50,6 +50,20 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 	if (!m_isActive)
 		return;
 
+}
+
+
+void CCamera_TPS::Update(_float fTimeDelta)
+{
+	if (!m_isActive)
+		return;
+}
+
+void CCamera_TPS::Late_Update(_float fTimeDelta)
+{
+	if (!m_isActive)
+		return;
+
 	// 1. È­¸é Áß¾Ó ÁÂÇ¥ °è»ê
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -89,19 +103,6 @@ void CCamera_TPS::Priority_Update(_float fTimeDelta)
 	m_pTransformCom->LookAt(vHeadPos);
 
 	__super::Update_VP_Matrices();
-}
-
-
-void CCamera_TPS::Update(_float fTimeDelta)
-{
-	if (!m_isActive)
-		return;
-}
-
-void CCamera_TPS::Late_Update(_float fTimeDelta)
-{
-	if (!m_isActive)
-		return;
 }
 
 HRESULT CCamera_TPS::Render()
