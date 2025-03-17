@@ -25,12 +25,10 @@ public:
 
 protected:
 	virtual HRESULT Ready_Components();
+	virtual ParticleAttribute AddParticle() override;
 
 private:
 	HRESULT PrevRender() override;
-	HRESULT EndRender() override;
-
-private:
-	CTexture* m_pTextureCom = {nullptr};
+	HRESULT EndRender() override;	
 };
 
