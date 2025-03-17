@@ -53,7 +53,8 @@ CGameInstance* CMCTerrain::GetGameInstance()
    return m_pGameInstance; 
 }
 
-CRITICAL_SECTION cs;  // 전역 변수로 동기화 객체 추가
+#pragma region 파일 읽기 with 쓰레드
+CRITICAL_SECTION cs;
 
 int GetFileCount()
 {
@@ -79,7 +80,7 @@ struct ThreadParams
     CMCTerrain* pTerrain;
 };
 
-DWORD WINAPI ProcessFileThread(LPVOID lpParam)
+DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
 {
     ThreadParams* params = (ThreadParams*)lpParam;
     int chunkIndex = params->chunkIndex;
@@ -165,7 +166,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         params[i].chunkIndex = i;
         params[i].pTerrain = this;
 
-        hThreads[i] = CreateThread(NULL, 0, ProcessFileThread, &params[i], 0, NULL);
+        hThreads[i] = CreateThread(NULL, 0, ProcessFileReadThread, &params[i], 0, NULL);
         if (!hThreads[i]) {
             delete[] hThreads;
             delete[] params;
@@ -188,6 +189,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
     MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
     return S_OK;
 }
+#pragma endregion
 
 
 CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
