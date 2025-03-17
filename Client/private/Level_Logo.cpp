@@ -73,7 +73,7 @@ void CLevel_Logo::Update(_float fTimeDelta)
 
 HRESULT CLevel_Logo::Render()
 {
-	SetWindowText(g_hWnd, TEXT(" ΰ     Դϴ ."));
+	SetWindowText(g_hWnd, TEXT("로고화면입니다."));
 
 	return S_OK;
 }

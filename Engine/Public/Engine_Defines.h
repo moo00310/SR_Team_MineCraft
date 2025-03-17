@@ -9,6 +9,8 @@
 #include <map>
 #include <list>
 #include <vector>
+#include <algorithm>
+#include <random>
 using namespace std;
 
 
