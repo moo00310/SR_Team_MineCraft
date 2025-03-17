@@ -102,7 +102,6 @@ HRESULT CTool::Render()
 
 	// ·»´õ¸µ
 	ImGui::EndFrame();
-	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, FALSE);
 	m_pGraphic_Device->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 	m_pGraphic_Device->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 	//D3DCOLOR clear_col_dx = D3DCOLOR_RGBA((int)(clear_color.x * clear_color.w * 255.0f), (int)(clear_color.y * clear_color.w * 255.0f), (int)(clear_color.z * clear_color.w * 255.0f), (int)(clear_color.w * 255.0f));

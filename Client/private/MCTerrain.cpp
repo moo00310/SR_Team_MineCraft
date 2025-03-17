@@ -43,6 +43,7 @@ void CMCTerrain::Late_Update(_float fTimeDelta)
 
 HRESULT CMCTerrain::Render()
 {
+    m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
     return S_OK;
 }
 
