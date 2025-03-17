@@ -177,6 +177,7 @@
     <ClInclude Include="..\public\Level_Hyeok.h" />
     <ClInclude Include="..\public\Level_Loading.h" />
     <ClInclude Include="..\public\Level_Logo.h" />
+    <ClInclude Include="..\public\MainLogo.h" />
     <ClInclude Include="..\public\Level_Moo.h" />
     <ClInclude Include="..\public\Level_TOOL.h" />
     <ClInclude Include="..\public\Level_WOO.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="..\private\Level_Hyeok.cpp" />
     <ClCompile Include="..\private\Level_Loading.cpp" />
     <ClCompile Include="..\Private\Level_Logo.cpp" />
+    <ClCompile Include="..\private\MainLogo.cpp" />
     <ClCompile Include="..\private\Level_Moo.cpp" />
     <ClCompile Include="..\private\Level_TOOL.cpp" />
     <ClCompile Include="..\private\Level_WOO.cpp" />
