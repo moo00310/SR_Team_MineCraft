@@ -32,7 +32,10 @@ public:
 private:
 	HRESULT Ready_Layer_BackGround();
 	void CheckRenderLayerObjects();
+	void RenderWithoutStone();
 	int m_iFileCount = 0;
+	bool prevF1State = false;
+	bool prevF2State = false;
 public:
 	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

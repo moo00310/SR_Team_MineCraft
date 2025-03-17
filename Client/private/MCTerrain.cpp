@@ -1,5 +1,7 @@
 ﻿#include "MCTerrain.h"
 #include "GameInstance.h"
+#include "Stone.h"
+#include "CoalOre.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -22,7 +24,6 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
-
     CheckRenderLayerObjects();
     return S_OK;
 }
@@ -33,6 +34,21 @@ void CMCTerrain::Priority_Update(_float fTimeDelta)
 
 void CMCTerrain::Update(_float fTimeDelta)
 {
+    bool currF1State = (GetAsyncKeyState(VK_F1) & 0x8000) != 0;
+    bool currF2State = (GetAsyncKeyState(VK_F2) & 0x8000) != 0;
+
+    if (currF1State && !prevF1State)
+    {
+        CheckRenderLayerObjects();
+    }
+
+    if (currF2State && !prevF2State)
+    {
+        RenderWithoutStone();
+    }
+
+    prevF1State = currF1State;
+    prevF2State = currF2State;
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
@@ -136,6 +152,24 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
             }
             index++;
             break;
+        case IRONORE:
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            break;
+        case COALORE:
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            break;
         default:
             break;
         }
@@ -188,7 +222,64 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
 }
 #pragma endregion
 
+#include <unordered_set>
+
+struct Float3Hash {
+    size_t operator()(const _float3& v) const {
+        size_t hx = std::hash<float>()(v.x);
+        size_t hy = std::hash<float>()(v.y);
+        size_t hz = std::hash<float>()(v.z);
+        return hx ^ (hy << 1) ^ (hz << 2);  // XOR을 이용한 해싱
+    }
+};
+
 void CMCTerrain::CheckRenderLayerObjects()
+{
+    for (int i = 0; i < m_iFileCount; ++i) {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", i);
+
+        list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+
+        // 블록 위치 정보를 저장할 unordered_set
+        std::unordered_set<_float3, Float3Hash> blockPositions;
+
+        // 먼저 모든 블록의 위치를 저장
+        for (auto _object : _copyObjectList) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                _break->Set_RenderActive(true);
+                blockPositions.insert(_break->GetPos());
+            }
+        }
+
+        // 블록의 렌더링 여부 확인
+        for (auto _object : _copyObjectList) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                _float3 pos = _break->GetPos();
+                
+                // 6방향 확인
+                static const _float3 offsets[] = {
+                    {-1, 0, 0}, {1, 0, 0}, {0, 1, 0},
+                    {0, -1, 0}, {0, 0, 1}, {0, 0, -1}
+                };
+
+                bool isSurrounded = true;
+                for (const auto& offset : offsets) {
+                    if (blockPositions.find({ pos.x + offset.x, pos.y + offset.y, pos.z + offset.z }) == blockPositions.end()) {
+                        isSurrounded = false;
+                        break;
+                    }
+                }
+
+                if (isSurrounded) {
+                    _break->Set_RenderActive(false);
+                }
+            }
+        }
+    }
+}
+
+void CMCTerrain::RenderWithoutStone()
 {
     for (int i = 0; i < m_iFileCount; ++i) {
         wchar_t layerName[100];
@@ -198,28 +289,8 @@ void CMCTerrain::CheckRenderLayerObjects()
 
         for (auto _object : _copyObjectList) {
             if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
-                _float3 pos = _break->GetPos(); // 현재 블록 위치
-
-                // 주변 블록 존재 여부 확인
-                bool hasLeft = false, hasRight = false, hasTop = false, hasBottom = false, hasDown = false, hasUp = false;
-
-                for (auto _object2 : _copyObjectList) {
-                    if (_object == _object2) continue;
-
-                    if (CBreakableCube* _other = dynamic_cast<CBreakableCube*>(_object2)) {
-                        _float3 otherPos = _other->GetPos();
-
-                        if (otherPos.x == pos.x - 1 && otherPos.y == pos.y && otherPos.z == pos.z) hasLeft = true;
-                        if (otherPos.x == pos.x + 1 && otherPos.y == pos.y && otherPos.z == pos.z) hasRight = true;
-                        if (otherPos.x == pos.x && otherPos.y == pos.y + 1 && otherPos.z == pos.z) hasTop = true;
-                        if (otherPos.x == pos.x && otherPos.y == pos.y - 1 && otherPos.z == pos.z) hasBottom = true;
-                        if (otherPos.x == pos.x && otherPos.y == pos.y && otherPos.z == pos.z +1) hasUp = true;
-                        if (otherPos.x == pos.x && otherPos.y == pos.y && otherPos.z == pos.z -1) hasDown = true;
-                    }
-                }
-
-                // 위, 아래, 좌, 우에 블록이 없으면 렌더링 활성화
-                if (hasLeft && hasRight && hasTop && hasBottom && hasDown && hasUp) {
+                _break->Set_RenderActive(true);
+                if (dynamic_cast<CStone*>(_object)) {
                     _break->Set_RenderActive(false);
                 }
             }

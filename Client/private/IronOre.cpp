@@ -1,22 +1,22 @@
-#include "CoalOre.h"
+#include "IronOre.h"
 #include "GameInstance.h"
 
-CCoalOre::CCoalOre(LPDIRECT3DDEVICE9 pGraphic_Device)
+CIronOre::CIronOre(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CBreakableCube(pGraphic_Device)
 {
 }
 
-CCoalOre::CCoalOre(const CCoalOre& Prototype)
+CIronOre::CIronOre(const CIronOre& Prototype)
     : CBreakableCube(Prototype)
 {
 }
 
-HRESULT CCoalOre::Initialize_Prototype()
+HRESULT CIronOre::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CCoalOre::Initialize(void* pArg)
+HRESULT CIronOre::Initialize(void* pArg)
 {
     if (FAILED(Ready_Components()))
         return E_FAIL;
@@ -24,15 +24,15 @@ HRESULT CCoalOre::Initialize(void* pArg)
     return S_OK;
 }
 
-void CCoalOre::Priority_Update(_float fTimeDelta)
+void CIronOre::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CCoalOre::Update(_float fTimeDelta)
+void CIronOre::Update(_float fTimeDelta)
 {
 }
 
-void CCoalOre::Late_Update(_float fTimeDelta)
+void CIronOre::Late_Update(_float fTimeDelta)
 {
     if (m_bRenderActive) {
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
@@ -40,7 +40,7 @@ void CCoalOre::Late_Update(_float fTimeDelta)
     }
 }
 
-HRESULT CCoalOre::Render()
+HRESULT CIronOre::Render()
 {
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
@@ -58,10 +58,10 @@ HRESULT CCoalOre::Render()
     return S_OK;
 }
 
-HRESULT CCoalOre::Ready_Components()
+HRESULT CIronOre::Ready_Components()
 {
     /* For.Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_CoalOre"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_IronOre"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -80,33 +80,33 @@ HRESULT CCoalOre::Ready_Components()
 }
 
 
-CCoalOre* CCoalOre::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CIronOre* CIronOre::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CCoalOre* pInstance = new CCoalOre(pGraphic_Device);
+    CIronOre* pInstance = new CIronOre(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CCoalOre");
+        MSG_BOX("Failed to Created : CIronOre");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CCoalOre::Clone(void* pArg)
+CGameObject* CIronOre::Clone(void* pArg)
 {
-    CCoalOre* pInstance = new CCoalOre(*this);
+    CIronOre* pInstance = new CIronOre(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CCoalOre");
+        MSG_BOX("Failed to Created : CIronOre");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CCoalOre::Free()
+void CIronOre::Free()
 {
     __super::Free();
 }

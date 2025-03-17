@@ -104,7 +104,7 @@ HRESULT CMapTool::Render()
         ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
 
         ImGui::SliderInt("DirtDeep", &m_iDirtDeep, 0, 5);
-        ImGui::SliderInt("StoneDeep", &m_iStoneDeep, -5, 15);
+        ImGui::SliderInt("StoneDeep", &m_iStoneDeep, -10, 15);
 
         if (ImGui::Button("Show Height Gray Img", ImVec2(200, 50))) {
             if (heightMapTexture) {
@@ -269,6 +269,29 @@ struct SaveThreadParams {
     int m_iDirtDeep, m_iStoneDeep;
 };
 
+BLOCKTYPE GetBlockType(int heightValue) {
+    struct BlockProbability {
+        int minHeight, maxHeight;
+        int probability;
+        BLOCKTYPE oreType;
+    };
+
+    static const BlockProbability blockTable[] = {
+        { -3, -1, 3, COALORE },   // 석탄 5%
+        { -6, -4, 7, IRONORE }    // 철광석 10%
+    };
+
+    for (const auto& entry : blockTable) {
+        if (entry.minHeight <= heightValue && heightValue <= entry.maxHeight) {
+            if (rand() % 100 < entry.probability) {
+                return entry.oreType;
+            }
+        }
+    }
+
+    return STONE; // 기본값: 돌
+}
+
 DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
     SaveThreadParams* params = (SaveThreadParams*)lpParam;
     int chunkIndex = params->chunkZ * params->numChunksX + params->chunkX;
@@ -298,7 +321,7 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
                 heightValue--;
                 BLOCKDESC eblockData2;
                 eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                eblockData2.eBlockType = (depth > 0) ? DIRT : STONE;
+                eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
                 WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
                 depth--;
             }
