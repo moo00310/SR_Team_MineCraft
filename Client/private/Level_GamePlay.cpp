@@ -28,7 +28,7 @@ void CLevel_GamePlay::Update(_float fTimeDelta)
 
 HRESULT CLevel_GamePlay::Render()
 {
-	SetWindowText(g_hWnd, TEXT("°ÔÀÓÇÃ·¹ÀÌ ·¹º§ÀÔ´Ï´Ù."));
+	SetWindowText(g_hWnd, TEXT("ê²Œì„í”Œë ˆì´ ë ˆë²¨ì…ë‹ˆë‹¤."));
 
 	return S_OK;
 }

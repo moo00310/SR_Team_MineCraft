@@ -1,4 +1,4 @@
-#include "Level_HERO.h"
+ï»¿#include "Level_HERO.h"
 #include "GameInstance.h"
 
 #include "Camera_TPS.h"
@@ -24,11 +24,11 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
 
-	//½ºÆ¼ºê ´ÙÀ½À¸·Î ÁØºñÇØ¾ß ½ºÆ¼ºêÀÇ Æ®·£½º ÆûÀ» Ã£À» ¼ö ÀÖÀ½
+	//ìŠ¤í‹°ë¸Œ ë‹¤ìŒìœ¼ë¡œ ì¤€ë¹„í•´ì•¼ ìŠ¤í‹°ë¸Œì˜ íŠ¸ëœìŠ¤ í¼ì„ ì°¾ì„ ìˆ˜ ìˆìŒ
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	//BT ¿¬½À¿ë Àû
+	//BT ì—°ìŠµìš© ì 
 	if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
 		return E_FAIL;
 
@@ -45,7 +45,7 @@ void CLevel_HERO::Update(_float fTimeDelta)
 
 HRESULT CLevel_HERO::Render()
 {
-	SetWindowText(g_hWnd, TEXT("ÇÑ¿µ¿õ ·¹º§ÀÔ´Ï´Ù."));
+	SetWindowText(g_hWnd, TEXT("í•œì˜ì›… ë ˆë²¨ì…ë‹ˆë‹¤."));
 
 	return S_OK;
 }
@@ -59,7 +59,7 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 	Cam_TPS_Desc.fNear = 0.1f;
 	Cam_TPS_Desc.fFar = 300.f;
 	Cam_TPS_Desc.fMouseSensor = 0.1f;
-	Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//°ÔÀÓÀÎ½ºÅÏ½º-> Find Layer-> Steve Layer¿¡¼­ GameObject* °¡Á®¿Í¾ß ÇÒ µí
+	Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//ê²Œì„ì¸ìŠ¤í„´ìŠ¤-> Find Layer-> Steve Layerì—ì„œ GameObject* ê°€ì ¸ì™€ì•¼ í•  ë“¯
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
 		LEVEL_HERO, strLayerTag,&Cam_TPS_Desc)))
 		return E_FAIL;
@@ -71,13 +71,13 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 	Cam_FPS_Desc.fNear = 0.1f;
 	Cam_FPS_Desc.fFar = 300.f;
 	Cam_FPS_Desc.fMouseSensor = 0.1f;
-	Cam_FPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//°ÔÀÓÀÎ½ºÅÏ½º-> Find Layer-> Steve Layer¿¡¼­ GameObject* °¡Á®¿Í¾ß ÇÒ µí
+	Cam_FPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//ê²Œì„ì¸ìŠ¤í„´ìŠ¤-> Find Layer-> Steve Layerì—ì„œ GameObject* ê°€ì ¸ì™€ì•¼ í•  ë“¯
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_FPS"),
 		LEVEL_HERO, strLayerTag, &Cam_FPS_Desc)))
 		return E_FAIL;
 
-	//Ä«¸Ş¶ó ¸Å´ÏÀú¿¡´Ù°¡ Ä«¸Ş¶ó LayerÀÇ ¸ğµç Ä«¸Ş¶ó¸¦ °¡Á®¿Â´ÙÀ½
-	//Æ¯Á¤ Å°¸¦ ´©¸¦ ¶§¸¶´Ù ´ÙÀ½ Ä«¸Ş¶ó¸¸ È°¼ºÈ­½ÃÅ²´Ù.
+	//ì¹´ë©”ë¼ ë§¤ë‹ˆì €ì—ë‹¤ê°€ ì¹´ë©”ë¼ Layerì˜ ëª¨ë“  ì¹´ë©”ë¼ë¥¼ ê°€ì ¸ì˜¨ë‹¤ìŒ
+	//íŠ¹ì • í‚¤ë¥¼ ëˆ„ë¥¼ ë•Œë§ˆë‹¤ ë‹¤ìŒ ì¹´ë©”ë¼ë§Œ í™œì„±í™”ì‹œí‚¨ë‹¤.
 	m_pCameraManager = CCameraManager::Create();
 
 	return S_OK;

@@ -1,4 +1,4 @@
-#include "Level_Hyeok.h"
+ï»¿#include "Level_Hyeok.h"
 #include "GameInstance.h"
 
 CLevel_Hyeok::CLevel_Hyeok(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -34,7 +34,7 @@ void CLevel_Hyeok::Update(_float fTimeDelta)
 
 HRESULT CLevel_Hyeok::Render()
 {
-	SetWindowText(g_hWnd, TEXT("±èµ¿Çõ ·¹º§ÀÔ´Ï´Ù."));
+	SetWindowText(g_hWnd, TEXT("ê¹€ë™í˜ ë ˆë²¨ì…ë‹ˆë‹¤."));
 
 	return S_OK;
 }

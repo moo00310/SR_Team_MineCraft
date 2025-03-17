@@ -101,7 +101,6 @@
       <Filter>99.Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Matrix.h" />
-    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cube_Only.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClInclude>

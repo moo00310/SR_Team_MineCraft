@@ -1,4 +1,4 @@
-#include "Level_WOO.h"
+ï»¿#include "Level_WOO.h"
 #include "GameInstance.h"
 
 CLevel_WOO::CLevel_WOO(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -28,7 +28,7 @@ void CLevel_WOO::Update(_float fTimeDelta)
 
 HRESULT CLevel_WOO::Render()
 {
-	SetWindowText(g_hWnd, TEXT("ÀåÇö¿ì ·¹º§ÀÔ´Ï´Ù."));
+	SetWindowText(g_hWnd, TEXT("ìž¥í˜„ìš° ë ˆë²¨ìž…ë‹ˆë‹¤."));
 
 	return S_OK;
 }

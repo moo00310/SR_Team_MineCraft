@@ -423,46 +423,6 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		return E_FAIL;
 
 #pragma region MODEL
-	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
-	/* For.Prototype_Component_VIBuffer_Cube */
-	CUBE tCube{ _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, tCube))))
-		return E_FAIL;
-	/*-----------------------------------
-	*  스티브 모델
-	------------------------------*/
-	/* For.Prototype_Component_VIBuffer_Steve */
-	Engine::CUBE cube{};
-	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(8.f, 12.f, 4.f), _float2(16.f, 16.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(0.f, 16.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(16.f, 48.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(40.f, 16.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(32.f, 48.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
 #pragma endregion
 
 
@@ -549,7 +509,7 @@ HRESULT CLoader::Loading_For_WOOPlay()
 
 HRESULT CLoader::Loading_For_HECKPlay()
 {
-	lstrcpy(m_szLoadingText, TEXT("�ؽ�����(��) �ε����Դϴ�."));
+	lstrcpy(m_szLoadingText, TEXT(" ؽ     (  )  ε    Դϴ ."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Destroy"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/destroy_stage_%d.png"), 10))))
 		return E_FAIL;
@@ -600,7 +560,7 @@ HRESULT CLoader::Loading_For_HECKPlay()
 		CTestParticle::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("�ε��� �Ϸ�Ǿ����ϴ�."));
+	lstrcpy(m_szLoadingText, TEXT(" ε     Ϸ Ǿ    ϴ ."));
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
