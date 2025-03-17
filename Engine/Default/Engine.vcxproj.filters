@@ -101,11 +101,15 @@
       <Filter>99.Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Matrix.h" />
+    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Cube_Only.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleSystem.h">
       <Filter>96.Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Key_Manager.h">
+      <Filter>07.KeyManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +203,9 @@
     <Filter Include="96.Particle">
       <UniqueIdentifier>{afaa3b0b-13c6-41eb-a725-0e898f8abde4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07.KeyManager">
+      <UniqueIdentifier>{3895b10e-a52a-42fb-8525-9483f3f5a450}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -281,6 +288,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleSystem.cpp">
       <Filter>96.Particle</Filter>
+     </ClCompile>
+    <ClCompile Include="..\Private\Key_Manager.cpp">
+      <Filter>07.KeyManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -22,6 +22,7 @@ private:
 	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Creeper(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Steve(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_Tree(const _wstring& strLayerTag);
 
 public:
 	static CLevel_Moo* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

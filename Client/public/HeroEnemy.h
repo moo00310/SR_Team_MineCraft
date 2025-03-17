@@ -1,5 +1,4 @@
 #pragma once
-// 모든 큐브의 부모가 되는 곳
 
 #include "Client_Defines.h"
 #include "GameObject.h"
@@ -8,14 +7,18 @@ BEGIN(Engine)
 class CTexture;
 class CTransform;
 class CVIBuffer_Cube;
+class CCollider_Cube;
 END
 
-class CCube : public CGameObject
+BEGIN(Client)
+
+class CHeroEnemy final : public CGameObject
 {
-protected:
-	CCube(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CCube(const CCube& Prototype);
-	virtual ~CCube() = default;
+
+private:
+	CHeroEnemy(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CHeroEnemy(const CHeroEnemy& Prototype);
+	virtual ~CHeroEnemy() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -24,16 +27,22 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
-
-protected:
-	CTexture* m_pTextureCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
+private:
+	_bool			m_bHit{ false };
+	CGameObject*	m_pTarget{ nullptr };
+private:
+	CTexture*		m_pTextureCom = { nullptr };
+	CTransform*		m_pTransformCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
-	virtual HRESULT Ready_Components();
-		
+	CCollider_Cube* m_pColliderCom = { nullptr };
+
+private:
+	HRESULT Ready_Components();
+
 public:
-	static CCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CHeroEnemy* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };
 
+END

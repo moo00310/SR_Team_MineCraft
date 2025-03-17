@@ -26,8 +26,10 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
+public:
+	CGameInstance* GetGameInstance();
 private:
-	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_BackGround();
 	
 public:
 	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
