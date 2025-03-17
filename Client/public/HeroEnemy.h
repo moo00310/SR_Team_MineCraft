@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "Behavior_Tree.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -14,6 +15,9 @@ BEGIN(Client)
 
 class CHeroEnemy final : public CGameObject
 {
+	//프렌드 하기 vs Get()Set() 만들기
+	friend class CCheck_Enemy_Node;
+	friend class CChase_Enemy_Node;
 
 private:
 	CHeroEnemy(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -30,14 +34,18 @@ public:
 private:
 	_bool			m_bHit{ false };
 	CGameObject*	m_pTarget{ nullptr };
+	CTransform*		m_pTargetTransform{ nullptr };
 private:
 	CTexture*		m_pTextureCom = { nullptr };
 	CTransform*		m_pTransformCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 	CCollider_Cube* m_pColliderCom = { nullptr };
 
+	CNode*			m_pBehaviorTree{ nullptr };
+
 private:
 	HRESULT Ready_Components();
+	HRESULT Ready_BehaviorTree();
 
 public:
 	static CHeroEnemy* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

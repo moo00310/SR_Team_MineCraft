@@ -34,8 +34,10 @@ void CCoalOre::Update(_float fTimeDelta)
 
 void CCoalOre::Late_Update(_float fTimeDelta)
 {
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
-        return;
+    if (m_bRenderActive) {
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+            return;
+    }
 }
 
 HRESULT CCoalOre::Render()
@@ -59,7 +61,7 @@ HRESULT CCoalOre::Render()
 HRESULT CCoalOre::Ready_Components()
 {
     /* For.Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_coalOre"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_CoalOre"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 

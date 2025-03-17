@@ -59,6 +59,11 @@ CGameObject* CLayer::Get_Object(_uint iIndex)
 	return *iter;
 }
 
+list<class CGameObject*> CLayer::Get_GameObjectList()
+{
+	return m_GameObjects;
+}
+
 CLayer* CLayer::Create()
 {
 	return new CLayer();

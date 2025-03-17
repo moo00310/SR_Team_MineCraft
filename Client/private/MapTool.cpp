@@ -104,7 +104,7 @@ HRESULT CMapTool::Render()
         ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
 
         ImGui::SliderInt("DirtDeep", &m_iDirtDeep, 0, 5);
-        ImGui::SliderInt("StoneDeep", &m_iStoneDeep, -5, 15);
+        ImGui::SliderInt("StoneDeep", &m_iStoneDeep, -10, 15);
 
         if (ImGui::Button("Show Height Gray Img", ImVec2(200, 50))) {
             if (heightMapTexture) {
@@ -258,9 +258,84 @@ void CMapTool::GeneratePerlinNoiseTexture(int width, int height) {
     return;
 }
 
-HRESULT CMapTool::SaveData()
-{
-    const int CHUNK_SIZE = 16; // 청크 크기 (16x16)
+#pragma region 파일 저장 with 쓰레드
+CRITICAL_SECTION cs2;
+
+struct SaveThreadParams {
+    int chunkX, chunkZ;
+    int numChunksX;
+    DWORD* heightPixels;
+    int pitchHeight;
+    int m_iDirtDeep, m_iStoneDeep;
+};
+
+BLOCKTYPE GetBlockType(int heightValue) {
+    struct BlockProbability {
+        int minHeight, maxHeight;
+        int probability;
+        BLOCKTYPE oreType;
+    };
+
+    static const BlockProbability blockTable[] = {
+        { -3, -1, 3, COALORE },   // 석탄 5%
+        { -6, -4, 7, IRONORE }    // 철광석 10%
+    };
+
+    for (const auto& entry : blockTable) {
+        if (entry.minHeight <= heightValue && heightValue <= entry.maxHeight) {
+            if (rand() % 100 < entry.probability) {
+                return entry.oreType;
+            }
+        }
+    }
+
+    return STONE; // 기본값: 돌
+}
+
+DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
+    SaveThreadParams* params = (SaveThreadParams*)lpParam;
+    int chunkIndex = params->chunkZ * params->numChunksX + params->chunkX;
+
+    wchar_t filename[100];
+    swprintf(filename, 100, L"../bin/Resources/DataFiles/BlockDataChunk%d.txt", chunkIndex);
+
+    HANDLE hFile = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile == INVALID_HANDLE_VALUE) {
+        return 1;
+    }
+    DWORD dwBytesWritten;
+
+    for (int y = params->chunkZ * 16; y < (params->chunkZ + 1) * 16; y++) {
+        for (int x = params->chunkX * 16; x < (params->chunkX + 1) * 16; x++) {
+            DWORD heightColor = params->heightPixels[y * params->pitchHeight + x];
+            int heightValue = (heightColor & 0xFF) / 15;
+
+            BLOCKDESC eblockData;
+            eblockData.eBlockType = GRASSDIRT;
+            eblockData.fPosition = _float3((float)x, (float)heightValue, (float)y);
+            WriteFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+
+            int depth = params->m_iDirtDeep;
+            int minDepth = params->m_iStoneDeep;
+            while (heightValue > minDepth) {
+                heightValue--;
+                BLOCKDESC eblockData2;
+                eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
+                eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
+                WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+                depth--;
+            }
+        }
+    }
+
+    CloseHandle(hFile);
+    return 0;
+}
+
+HRESULT CMapTool::SaveData() {
+    InitializeCriticalSection(&cs2);
+
+    const int CHUNK_SIZE = 16;
     const int numChunksX = m_iMapX / CHUNK_SIZE;
     const int numChunksZ = m_iMapZ / CHUNK_SIZE;
 
@@ -272,57 +347,40 @@ HRESULT CMapTool::SaveData()
     DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
     int pitchHeight = heightLockedRect.Pitch / 4;
 
+    HANDLE* hThreads = new HANDLE[numChunksX * numChunksZ];
+    SaveThreadParams* params = new SaveThreadParams[numChunksX * numChunksZ];
+
     for (int chunkZ = 0; chunkZ < numChunksZ; chunkZ++) {
         for (int chunkX = 0; chunkX < numChunksX; chunkX++) {
-            // 파일명 설정
-            int chunkIndex = chunkZ * numChunksX + chunkX;
-            wchar_t filename[100];
-            swprintf(filename, 100, L"../bin/Resources/DataFiles/BlockDataChunk%d.txt", chunkIndex);
+            int index = chunkZ * numChunksX + chunkX;
+            params[index] = { chunkX, chunkZ, numChunksX, heightPixels, pitchHeight, m_iDirtDeep, m_iStoneDeep };
 
-            HANDLE hFile = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-            if (hFile == INVALID_HANDLE_VALUE) {
+            hThreads[index] = CreateThread(NULL, 0, SaveChunkThread, &params[index], 0, NULL);
+            if (!hThreads[index]) {
+                delete[] hThreads;
+                delete[] params;
                 heightMapTexture->UnlockRect(0);
                 return E_FAIL;
             }
-            DWORD dwBytesWritten;
-
-            // 청크 내부의 블록 저장
-            for (int y = chunkZ * CHUNK_SIZE; y < (chunkZ + 1) * CHUNK_SIZE; y++) {
-                for (int x = chunkX * CHUNK_SIZE; x < (chunkX + 1) * CHUNK_SIZE; x++) {
-                    DWORD heightColor = heightPixels[y * pitchHeight + x];
-                    int heightValue = (heightColor & 0xFF) / 15;
-
-                    // 상단 블록 (잔디)
-                    BLOCKDESC eblockData;
-                    eblockData.eBlockType = GRASSDIRT;
-                    eblockData.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                    WriteFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
-
-                    int depth = m_iDirtDeep;
-                    int minDepth = m_iStoneDeep;
-                    while (heightValue > minDepth) {
-                        heightValue--;
-                        BLOCKDESC eblockData2;
-                        eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                        if (depth > 0) {
-                            eblockData2.eBlockType = DIRT;
-                        }
-                        else {
-                            eblockData2.eBlockType = STONE;
-                        }
-                        WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
-                        depth--;
-                    }
-                }
-            }
-
-            CloseHandle(hFile);
         }
     }
 
+    WaitForMultipleObjects(numChunksX * numChunksZ, hThreads, TRUE, INFINITE);
+
+    for (int i = 0; i < numChunksX * numChunksZ; ++i) {
+        CloseHandle(hThreads[i]);
+    }
+
+    delete[] hThreads;
+    delete[] params;
     heightMapTexture->UnlockRect(0);
+    DeleteCriticalSection(&cs2);
+
+    MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
+
     return S_OK;
 }
+#pragma endregion
 
 
 CMapTool* CMapTool::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
