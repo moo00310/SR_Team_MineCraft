@@ -158,6 +158,8 @@
     <ClInclude Include="..\public\Camera_FPS.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\Camera_TPS.h" />
+    <ClInclude Include="..\public\Chase_Enemy_Node.h" />
+    <ClInclude Include="..\public\Check_Enemy_Node.h" />
     <ClInclude Include="..\public\Client_Struct.h" />
     <ClInclude Include="..\public\CoalOre.h" />
     <ClInclude Include="..\public\Cube.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\MCTerrain.h" />
+    <ClInclude Include="..\public\Patrol_Node.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
@@ -214,6 +217,8 @@
     <ClCompile Include="..\private\Camera_FPS.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Camera_TPS.cpp" />
+    <ClCompile Include="..\private\Chase_Enemy_Node.cpp" />
+    <ClCompile Include="..\private\Check_Enemy_Node.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
@@ -238,6 +243,7 @@
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\MCTerrain.cpp" />
+    <ClCompile Include="..\private\Patrol_Node.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />

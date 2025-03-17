@@ -64,6 +64,9 @@ void CCamera_FPS::Late_Update(_float fTimeDelta)
 	if (!m_isActive)
 		return;
 
+	// 현재 창이 활성화 상태인지 확인
+	bool isActive = (GetForegroundWindow() == g_hWnd);
+
 	// 1. 화면 중앙 좌표 계산
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -74,26 +77,39 @@ void CCamera_FPS::Late_Update(_float fTimeDelta)
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse); // 클라이언트 좌표로 변환
 
-	// 3. 마우스 이동량 계산 (중앙 기준)
+	// 3. 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
+	if (!isActive)
+		return;
+
+	// === 마우스가 창 내부에 있는지 확인 ===
+	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
+		return;  // 창 밖이면 회전 로직을 실행하지 않음
+
+	// 4. 마우스 이동량 계산 (중앙 기준)
 	_int iMouseMoveX = ptMouse.x - ptCenter.x;
 	_int iMouseMoveY = ptMouse.y - ptCenter.y;
 
-	// 4. 마우스 이동량을 기반으로 카메라 회전 적용
+	// 5. 마우스 이동량을 기반으로 카메라 회전 적용
 	m_fYaw += iMouseMoveX * fTimeDelta * m_fMouseSensor;
 	m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
 
 	// 피치(Pitch) 값 제한 (위아래 회전 각도 제한)
 	m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch));
 
-	// 5. 마우스 커서를 다시 화면 중앙으로 이동 (마우스 고정)
+	// 6. 마우스를 다시 중앙으로 이동
 	ClientToScreen(g_hWnd, &ptCenter);
 	SetCursorPos(ptCenter.x, ptCenter.y);
 
-	// 6. FPS 카메라의 위치 설정 (플레이어의 머리 위치)
+	// 7. 마우스를 창 내부에 가두기 (ClipCursor 사용)
+	RECT clipRect;
+	GetWindowRect(g_hWnd, &clipRect);
+	ClipCursor(&clipRect); // 마우스를 창 내부에 고정
+
+	// 8. FPS 카메라의 위치 설정 (플레이어의 머리 위치)
 	_float3 vPlayerPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
 	_float3 vCameraPos = vPlayerPos + _float3(0.f, 1.8f, 0.f);  // 플레이어 머리 위치
 
-	// 7. 카메라 방향 벡터 계산 (1인칭)
+	// 9. 카메라 방향 벡터 계산 (1인칭)
 	_float3 vLook;
 	vLook.x = cosf(m_fPitch) * sinf(m_fYaw);
 	vLook.y = sinf(m_fPitch);
@@ -102,12 +118,20 @@ void CCamera_FPS::Late_Update(_float fTimeDelta)
 	vLookVector = XMVector3Normalize(vLookVector);
 	XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&vLook), vLookVector);
 
-	// 8. 카메라 방향 적용
+	// 10. 카메라 방향 적용
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
 	m_pTransformCom->LookAt(vCameraPos + vLook);  // 1인칭 카메라는 자신의 앞을 바라봄
 
 	__super::Update_VP_Matrices();
 }
+
+//// 창이 비활성화되면 마우스 고정을 해제하는 함수
+//void CCamera_FPS::OnLoseFocus()
+//{
+//	ClipCursor(NULL);  // 마우스 고정 해제
+//}
+
+
 
 HRESULT CCamera_FPS::Render()
 {

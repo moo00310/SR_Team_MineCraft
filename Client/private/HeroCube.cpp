@@ -20,7 +20,11 @@ HRESULT CHeroCube::Initialize_Prototype()
 HRESULT CHeroCube::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
+	{
+		//MSG_BOX("CHeroCube::Ready_Components()");
 		return E_FAIL;
+	}
+
 
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
 
@@ -111,7 +115,7 @@ HRESULT CHeroCube::Render()
 HRESULT CHeroCube::Ready_Components()
 {
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
+	if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_BackGround"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

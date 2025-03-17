@@ -64,6 +64,9 @@ void CCamera_TPS::Late_Update(_float fTimeDelta)
 	if (!m_isActive)
 		return;
 
+	// 현재 창이 활성화 상태인지 확인
+	bool isActive = (GetForegroundWindow() == g_hWnd);
+
 	// 1. 화면 중앙 좌표 계산
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
@@ -74,20 +77,33 @@ void CCamera_TPS::Late_Update(_float fTimeDelta)
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse); // 클라이언트 좌표로 변환
 
-	// 3. 마우스 이동량 계산 (중앙 기준)
+	// 3. 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
+	if (!isActive)
+		return;
+
+	// === 마우스가 창 내부에 있는지 확인 ===
+	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
+		return;  // 창 밖이면 회전 로직을 실행하지 않음
+
+	// 4. 마우스 이동량 계산 (중앙 기준)
 	_int iMouseMoveX = ptMouse.x - ptCenter.x;
 	_int iMouseMoveY = ptMouse.y - ptCenter.y;
 
-	// 4. 마우스 이동량을 기반으로 카메라 회전 적용
+	// 5. 마우스 이동량을 기반으로 카메라 회전 적용
 	m_fYaw += iMouseMoveX * fTimeDelta * m_fMouseSensor;
 	m_fPitch += iMouseMoveY * fTimeDelta * m_fMouseSensor;
 	m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch));
 
-	// 5. 마우스 커서를 다시 화면 중앙으로 이동 (마우스 고정)
+	// 6. 마우스를 다시 중앙으로 이동
 	ClientToScreen(g_hWnd, &ptCenter);
 	SetCursorPos(ptCenter.x, ptCenter.y);
 
-	// 6. 카메라 위치 업데이트
+	// 7. 마우스를 창 내부에 가두기 (ClipCursor 사용)
+	RECT clipRect;
+	GetWindowRect(g_hWnd, &clipRect);
+	ClipCursor(&clipRect); // 마우스를 창 내부에 고정
+
+	// 8. 카메라 위치 업데이트
 	_float3 vTargetPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
 	_float fRadius = 5.0f;
 	_float fHeight = 2.0f;
