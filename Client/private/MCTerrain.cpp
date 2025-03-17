@@ -23,6 +23,7 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
 
+    CheckRenderLayerObjects();
     return S_OK;
 }
 
@@ -32,8 +33,6 @@ void CMCTerrain::Priority_Update(_float fTimeDelta)
 
 void CMCTerrain::Update(_float fTimeDelta)
 {
-
-
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
@@ -44,7 +43,6 @@ void CMCTerrain::Late_Update(_float fTimeDelta)
 
 HRESULT CMCTerrain::Render()
 {
-
     return S_OK;
 }
 
@@ -56,22 +54,21 @@ CGameInstance* CMCTerrain::GetGameInstance()
 #pragma region 파일 읽기 with 쓰레드
 CRITICAL_SECTION cs;
 
-int GetFileCount()
+int CMCTerrain::GetFileCount()
 {
     WIN32_FIND_DATA findFileData;
     HANDLE hFind = FindFirstFile(L"../bin/Resources/DataFiles/BlockDataChunk*.txt", &findFileData);
 
-    int fileCount = 0;
     if (hFind != INVALID_HANDLE_VALUE)
     {
         do {
-            fileCount++;
+            m_iFileCount++;
         } while (FindNextFile(hFind, &findFileData));
 
         FindClose(hFind);
     }
 
-    return fileCount;
+    return m_iFileCount;
 }
 
 struct ThreadParams
@@ -190,6 +187,44 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
 }
 #pragma endregion
 
+void CMCTerrain::CheckRenderLayerObjects()
+{
+    for (int i = 0; i < m_iFileCount; ++i) {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", i);
+
+        list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+
+        for (auto _object : _copyObjectList) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                _float3 pos = _break->GetPos(); // 현재 블록 위치
+
+                // 주변 블록 존재 여부 확인
+                bool hasLeft = false, hasRight = false, hasTop = false, hasBottom = false, hasDown = false, hasUp = false;
+
+                for (auto _object2 : _copyObjectList) {
+                    if (_object == _object2) continue;
+
+                    if (CBreakableCube* _other = dynamic_cast<CBreakableCube*>(_object2)) {
+                        _float3 otherPos = _other->GetPos();
+
+                        if (otherPos.x == pos.x - 1 && otherPos.y == pos.y && otherPos.z == pos.z) hasLeft = true;
+                        if (otherPos.x == pos.x + 1 && otherPos.y == pos.y && otherPos.z == pos.z) hasRight = true;
+                        if (otherPos.x == pos.x && otherPos.y == pos.y + 1 && otherPos.z == pos.z) hasTop = true;
+                        if (otherPos.x == pos.x && otherPos.y == pos.y - 1 && otherPos.z == pos.z) hasBottom = true;
+                        if (otherPos.x == pos.x && otherPos.y == pos.y && otherPos.z == pos.z +1) hasUp = true;
+                        if (otherPos.x == pos.x && otherPos.y == pos.y && otherPos.z == pos.z -1) hasDown = true;
+                    }
+                }
+
+                // 위, 아래, 좌, 우에 블록이 없으면 렌더링 활성화
+                if (hasLeft && hasRight && hasTop && hasBottom && hasDown && hasUp) {
+                    _break->Set_RenderActive(false);
+                }
+            }
+        }
+    }
+}
 
 CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {

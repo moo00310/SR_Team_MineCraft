@@ -28,9 +28,11 @@ public:
 	virtual HRESULT Render()override;
 public:
 	CGameInstance* GetGameInstance();
+	int GetFileCount();
 private:
 	HRESULT Ready_Layer_BackGround();
-
+	void CheckRenderLayerObjects();
+	int m_iFileCount = 0;
 public:
 	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
