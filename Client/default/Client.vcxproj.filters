@@ -246,9 +246,6 @@
     <ClInclude Include="..\public\GrassDirt.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CoalOre.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Level_Moo.h">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClInclude>
@@ -290,6 +287,12 @@
     </ClInclude>
     <ClInclude Include="..\public\HeroEnemy.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IronOre.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CoalOre.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,9 +408,6 @@
     <ClCompile Include="..\private\GrassDirt.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CoalOre.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Level_Moo.cpp">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClCompile>
@@ -443,6 +443,12 @@
     </ClCompile>
     <ClCompile Include="..\private\TestParticle.cpp">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\IronOre.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CoalOre.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

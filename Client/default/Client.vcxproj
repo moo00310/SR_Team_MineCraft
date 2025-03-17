@@ -169,6 +169,7 @@
     <ClInclude Include="..\public\Dirt.h" />
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
     <ClInclude Include="..\public\HyockCube.h" />
+    <ClInclude Include="..\public\IronOre.h" />
     <ClInclude Include="..\public\Leaf.h" />
     <ClInclude Include="..\public\HeroEnemy.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="..\private\Dirt.cpp" />
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
     <ClCompile Include="..\private\HyockCube.cpp" />
+    <ClCompile Include="..\private\IronOre.cpp" />
     <ClCompile Include="..\private\Leaf.cpp" />
     <ClCompile Include="..\private\HeroEnemy.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />

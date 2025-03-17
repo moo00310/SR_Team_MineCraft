@@ -37,6 +37,8 @@ private:
 
 	int m_iMapX = 32;
 	int m_iMapZ = 32;
+
+	
 public:
 	static CMapTool* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

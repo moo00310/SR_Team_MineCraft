@@ -135,6 +135,11 @@ void CGameInstance::ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag)
 	m_pObject_Manager->ClearLayer(iLevelIndex, pLayerTag);
 }
 
+list<class CGameObject*> CGameInstance::Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	return m_pObject_Manager->Get_GameObjectList(iLevelIndex, pLayerTag);
+}
+
 #pragma endregion
 
 #pragma region RENDERER
