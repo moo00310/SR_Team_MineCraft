@@ -130,6 +130,18 @@
     <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy">
       <UniqueIdentifier>{95716bec-861e-49d5-bd33-aa5e8e8ea25e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action">
+      <UniqueIdentifier>{8e527e81-b6fa-45aa-a003-763b8c1f9c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy">
+      <UniqueIdentifier>{9bad2947-082a-42c1-9cb4-36c8a1bc8580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy">
+      <UniqueIdentifier>{12324777-f39b-4cc0-ac76-3363161effb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol">
+      <UniqueIdentifier>{3786004d-b6e0-4a00-83c8-215590c82138}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -291,6 +303,15 @@
     <ClInclude Include="..\public\HeroEnemy.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Check_Enemy_Node.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Chase_Enemy_Node.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Patrol_Node.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -443,6 +464,15 @@
     </ClCompile>
     <ClCompile Include="..\private\TestParticle.cpp">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Check_Enemy_Node.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Chase_Enemy_Node.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Patrol_Node.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
