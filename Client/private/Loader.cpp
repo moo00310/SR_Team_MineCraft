@@ -39,6 +39,9 @@
 #include "VIBuffer_Cube_Only.h"
 #include "TestParticle.h"
 
+//Woo
+#include "MainLogo.h"
+
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -475,14 +478,21 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 HRESULT CLoader::Loading_For_WOOPlay()
 {
+
+#pragma region Add_Prototype Component
+	
+
+	#pragma region Texture UI
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Texture_BackGround*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_MainLogo"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/isles.png"), 1))))
+		return E_FAIL;
+	#pragma endregion 
 
-
-	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
-
-
-	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
-
+#pragma endregion 
+	
+#pragma region Add_Prototype Game Object
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 	/* For.Prototype_GameObject_Terrain */
@@ -499,6 +509,16 @@ HRESULT CLoader::Loading_For_WOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	#pragma region UI Object
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_MainLogo"),
+		CMainLogo::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	#pragma endregion 
+
+#pragma endregion 
+
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

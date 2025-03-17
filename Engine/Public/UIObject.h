@@ -39,7 +39,7 @@ protected:
 protected:
 	void Begin();
 	void End();
-
+	_bool isPick(HWND hWnd);
 
 
 public:
