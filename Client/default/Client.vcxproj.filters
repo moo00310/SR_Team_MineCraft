@@ -141,6 +141,15 @@
     </Filter>
     <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol">
       <UniqueIdentifier>{3786004d-b6e0-4a00-83c8-215590c82138}</UniqueIdentifier>
+     </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj">
+      <UniqueIdentifier>{684ac113-50e1-4f66-ae17-bf8550ddf509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI">
+      <UniqueIdentifier>{7d7790ef-549e-406c-a782-a1beb097846a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\00.MainLogo">
+      <UniqueIdentifier>{b828998a-4569-4d8c-9de0-8e447ba86c1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -258,9 +267,6 @@
     <ClInclude Include="..\public\GrassDirt.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CoalOre.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Level_Moo.h">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClInclude>
@@ -311,6 +317,15 @@
     </ClInclude>
     <ClInclude Include="..\public\Patrol_Node.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MainLogo.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\00.MainLogo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IronOre.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CoalOre.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -426,9 +441,6 @@
     <ClCompile Include="..\private\GrassDirt.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CoalOre.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Level_Moo.cpp">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClCompile>
@@ -473,6 +485,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Patrol_Node.cpp">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol</Filter>
+     </ClCompile>
+    <ClCompile Include="..\private\MainLogo.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\00.MainLogo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\IronOre.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CoalOre.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

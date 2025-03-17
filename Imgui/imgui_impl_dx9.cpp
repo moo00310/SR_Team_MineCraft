@@ -103,7 +103,6 @@ static void ImGui_ImplDX9_SetupRenderState(ImDrawData* draw_data)
     device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
     device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
     device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-    device->SetRenderState(D3DRS_ZENABLE, FALSE);
     device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
     device->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
     device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);

@@ -5,7 +5,7 @@ CTestParticle::CTestParticle(LPDIRECT3DDEVICE9 pGraphic_Device) : CParticleSyste
 }
 
 CTestParticle::CTestParticle(const CTestParticle& Prototype) : CParticleSystem(Prototype)
-{
+{	
 }
 
 HRESULT CTestParticle::Initialize_Prototype()
@@ -14,17 +14,26 @@ HRESULT CTestParticle::Initialize_Prototype()
 }
 
 HRESULT CTestParticle::Initialize(void* pArg)
-{	
-	m_iParticleCount = 2;
-	/*vbSize = 2048;
-	vbOffset = 0;
-	vbBatchSize = 512;*/
+{
+	iParticleCount = 2000;
+	dwPointSize = GetScale(0.2f);
+	dwPointScaleA = GetScale(0.f);
+	dwPointScaleB = GetScale(0.f);
+	dwPointScaleC = GetScale(1.f);			
+
+	SetParticleAttribute();
+
+	// SetParticleAttribute 하고 반드시 
+	// 부모 Initialize 호출시켜서 버텍스 초기화 시킬 것.
+	if (FAILED(__super::Initialize(pArg)))
+	{
+		return E_FAIL;
+	}
 
 	if (FAILED(Ready_Components()))
+	{
 		return E_FAIL;
-
-	if (FAILED(__super::Create_VertexBuffer()))
-		return E_FAIL;
+	}		
 
 	return S_OK;
 }
@@ -34,8 +43,8 @@ void CTestParticle::Priority_Update(_float fTimeDelta)
 }
 
 void CTestParticle::Update(_float fTimeDelta)
-{
-	int a = 10;
+{	
+	__super::Update(fTimeDelta);
 }
 
 void CTestParticle::Late_Update(_float fTimeDelta)
@@ -45,7 +54,8 @@ void CTestParticle::Late_Update(_float fTimeDelta)
 
 HRESULT CTestParticle::Render()
 {
-	m_pTextureCom->Bind_Resource(0);
+	m_pParticleTexture->Bind_Resource(0);
+
 	__super::Render();
 
 	return S_OK;
@@ -79,37 +89,44 @@ CTestParticle* CTestParticle::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 void CTestParticle::Free()
 {
-	__super::Free();
-
-	Safe_Release(m_pTextureCom);
+	__super::Free();	
 }
 
 HRESULT CTestParticle::Ready_Components()
 {
 	if (FAILED(__super::Add_Component(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Diamond_ore"),
-		TEXT("Com_Component_Diamond_Ore2"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		TEXT("Com_Component_Diamond_Ore2"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
+ParticleAttribute CTestParticle::AddParticle()
+{
+	ParticleAttribute att;
+	att.vPosition = { 0.f, 0.f, 0.f };
+	att.vColor = { 1.f, 1.f, 1.f, 1.f };
+	att.vVelocity = { GetRandomFloat(-2.f, 2.f), GetRandomFloat(1.f, 2.f), 0.f};
+
+	return att;
+}
+
 HRESULT CTestParticle::PrevRender()
 {
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALEENABLE, true);
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSIZE, 20);
-
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_A, 10);
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_B, 20);
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_C, 30);
+	if (FAILED(__super::PrevRender()))
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
 
 HRESULT CTestParticle::EndRender()
 {
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALEENABLE, false);
+	if (FAILED(__super::PrevRender()))
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
