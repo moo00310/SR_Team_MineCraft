@@ -18,6 +18,7 @@ public:
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);
 	CGameObject* Get_Object(_uint iIndex);
+	list<class CGameObject*> Get_GameObjectList();
 private:
 	list<class CGameObject*>			m_GameObjects;
 

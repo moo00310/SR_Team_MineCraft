@@ -143,7 +143,6 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
         }
         LeaveCriticalSection(&cs);  // 동기화 종료
     }
-
     CloseHandle(hFile);
     return 0;
 }
