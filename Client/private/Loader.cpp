@@ -34,6 +34,11 @@
 #include "MCTerrain.h"
 #include "MapTool.h"
 
+//Hyock
+#include "HyockCube.h"
+#include "VIBuffer_Cube_Only.h"
+#include "TestParticle.h"
+
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -544,10 +549,28 @@ HRESULT CLoader::Loading_For_WOOPlay()
 
 HRESULT CLoader::Loading_For_HECKPlay()
 {
+	lstrcpy(m_szLoadingText, TEXT("�ؽ�����(��) �ε����Դϴ�."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Destroy"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/destroy_stage_%d.png"), 10))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Diamond_ore"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Block/diamond_ore.png"), 1))))
+		return E_FAIL;
+  
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 	
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+
+	Engine::CUBE_ONLY cube{ _float3(1.f, 1.f, 1.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Cube_Destroy"),
+		CVIBuffer_Cube_Only::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Cube_Diamond_Ore"),
+		CVIBuffer_Cube_Only::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
 
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
@@ -568,6 +591,16 @@ HRESULT CLoader::Loading_For_HECKPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_Player"),
 		CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_Hyock_Cube"),
+		CHyockCube::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_TestParticle"),
+		CTestParticle::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	lstrcpy(m_szLoadingText, TEXT("�ε��� �Ϸ�Ǿ����ϴ�."));
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

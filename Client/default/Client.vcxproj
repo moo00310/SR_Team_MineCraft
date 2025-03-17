@@ -168,6 +168,7 @@
     <ClInclude Include="..\public\HeroCube.h" />
     <ClInclude Include="..\public\Dirt.h" />
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
+    <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Leaf.h" />
     <ClInclude Include="..\public\HeroEnemy.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
     <ClInclude Include="..\public\Terrain.h" />
+    <ClInclude Include="..\public\TestParticle.h" />
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\Wood.h" />
@@ -217,6 +219,7 @@
     <ClCompile Include="..\private\HeroCube.cpp" />
     <ClCompile Include="..\private\Dirt.cpp" />
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
+    <ClCompile Include="..\private\HyockCube.cpp" />
     <ClCompile Include="..\private\Leaf.cpp" />
     <ClCompile Include="..\private\HeroEnemy.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />
@@ -235,6 +238,7 @@
     <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
+    <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\Wood.cpp" />
