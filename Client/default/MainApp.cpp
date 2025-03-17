@@ -11,7 +11,8 @@
 #include "Level_Logo.h"
 #include "Level_Loading.h"
 
-// test push 요청
+#include "Steve.h"
+
 
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
@@ -21,6 +22,8 @@ CMainApp::CMainApp()
 
 HRESULT CMainApp::Initialize()
 {
+	srand(unsigned int(time(0)));
+
 	ENGINE_DESC		Desc{};
 	Desc.hWnd = g_hWnd;
 	Desc.isWindowed = true;
@@ -32,6 +35,32 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(m_pGameInstance->Initialize_Engine(Desc, &m_pGraphic_Device)))
 		return E_FAIL;
 
+#pragma region 조명 연산
+	D3DLIGHT9			LightDesc{};
+
+	/* 난반사에 위한 빛의 색상. */
+	LightDesc.Type = D3DLIGHT_DIRECTIONAL;
+	LightDesc.Direction = _float3(1.f, -1.f, 1.f);
+	LightDesc.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	LightDesc.Ambient = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	//LightDesc.Specular = ;
+
+	/* LightDesc.Specular = ;*/
+	m_pGraphic_Device->SetLight(0, &LightDesc);
+
+	/* 텍스쳐로 재질을 대체한다. */
+
+	D3DMATERIAL9		MtrlDesc{};
+	/* 난반사에 위한 픽셀의 색상. */
+	MtrlDesc.Diffuse = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	MtrlDesc.Ambient = D3DXCOLOR(0.4f, 0.4f, 0.4f, 1.f);
+	//MtrlDesc.Specular = ;
+
+	m_pGraphic_Device->SetMaterial(&MtrlDesc);
+
+	m_pGraphic_Device->LightEnable(0, true);
+#pragma endregion
+	
 	if (FAILED(Ready_Component_For_Static()))
 		return E_FAIL;
 
@@ -99,6 +128,7 @@ HRESULT CMainApp::Render()
 
 HRESULT CMainApp::Ready_Default_Setting()
 {
+	// 샘플링
 	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
@@ -106,51 +136,45 @@ HRESULT CMainApp::Ready_Default_Setting()
 	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 	//m_pGraphic_Device->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
 	
-
-	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
+	//m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
 
 	return S_OK;
 }
 
 HRESULT CMainApp::Ready_Component_For_Static()
 {
-	/* For.Prototype_Component_VIBuffer_Rect */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-		CVIBuffer_Rect::Create(m_pGraphic_Device))))
+	if (FAILED(Ready_Component()))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Transform */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		CTransform::Create(m_pGraphic_Device))))
+	if (FAILED(Ready_Texture()))
 		return E_FAIL;
 
-	// 피카츄 이미지
-	/* For.Prototype_Component_Texture_Player */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Player"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Player/Player0.png"), 1))))
+	if (FAILED(Ready_Steve()))
 		return E_FAIL;
 
-	// 지형 이미지
-	/* For.Prototype_Component_Texture_Terrain */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
+	return S_OK;
+}
+
+HRESULT CMainApp::Open_Level(LEVEL eLevelID)
+{
+	if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pGraphic_Device, eLevelID))))
 		return E_FAIL;
 
-	// 지형 모델
-	/* For.Prototype_Component_VIBuffer_Terrain */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
+	return S_OK;
+}
+
+
+HRESULT CMainApp::Ready_Steve()
+{
+	// 스티브 이미지
+	/* For.Prototype_Component_Texture_Steve */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Steve"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Steve/Steve.png"), 1))))
 		return E_FAIL;
 
-
-	// ť�� ���� ��ñ�
-	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
+	// 모델
 	/* For.Prototype_Component_VIBuffer_Steve */
-	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
+	Engine::CUBE cube{ _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
@@ -180,13 +204,62 @@ HRESULT CMainApp::Ready_Component_For_Static()
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
+	// 스티브 게임 오브젝트
+	/* For.Prototype_GameObject_Steve */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
+		CSteve::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	return S_OK;
 }
 
-HRESULT CMainApp::Open_Level(LEVEL eLevelID)
+
+HRESULT CMainApp::Ready_Texture()
 {
-	if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING, CLevel_Loading::Create(m_pGraphic_Device, eLevelID))))
+
+	// 피카츄 이미지
+	/* For.Prototype_Component_Texture_Player */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Player"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Player/Player0.png"), 1))))
+		return E_FAIL;
+
+	// 지형 이미지
+	/* For.Prototype_Component_Texture_Terrain */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CMainApp::Ready_Component()
+{
+	/* For.Prototype_Component_Transform */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		CTransform::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	// 지형 모델
+	/* For.Prototype_Component_VIBuffer_Terrain */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
+		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Rect */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+		CVIBuffer_Rect::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Cube */
+	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	// 콜라이더 큐브 모델
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+		CCollider_Cube::Create(m_pGraphic_Device/*, Desc*/))))
 		return E_FAIL;
 
 	return S_OK;
@@ -220,10 +293,5 @@ void CMainApp::Free()
 
 	/* 내멤버를 정리한다.*/	
 	Safe_Release(m_pGameInstance);
-	
-
-
-	
-
 
 }

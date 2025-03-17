@@ -28,6 +28,11 @@ private:
 	HRESULT Ready_Component_For_Static();
 	HRESULT Open_Level(LEVEL eLevelID);
 
+
+	HRESULT Ready_Texture();
+	HRESULT Ready_Component();
+	HRESULT Ready_Steve();
+
 public:
 	static CMainApp* Create();
 	virtual void Free() override;
