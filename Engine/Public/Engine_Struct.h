@@ -27,6 +27,18 @@ namespace Engine
 		D3DXVECTOR2 Pixelpos;
 
 	}CUBE;
+	
+	typedef struct tagCreateCubeOnly
+	{
+		D3DXVECTOR3 BoxSIze;
+	}CUBE_ONLY;
+
+	// 파티클 구조체.
+	typedef struct tagParticle
+	{
+		_float3		Position;
+		D3DXCOLOR	Color;
+	}PARTICLE;
 
 #pragma region Collider_Cube
 	typedef struct tagVertexCubeTexture

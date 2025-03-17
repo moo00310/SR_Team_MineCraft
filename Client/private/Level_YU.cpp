@@ -1,4 +1,4 @@
-#include "Level_YU.h"
+ï»¿#include "Level_YU.h"
 #include "GameInstance.h"
 #include "MapTool.h"
 
@@ -34,7 +34,7 @@ void CLevel_YU::Update(_float fTimeDelta)
 
 HRESULT CLevel_YU::Render()
 {
-	SetWindowText(g_hWnd, TEXT("ÃÖÀ¯°æ ·¹º§ÀÔ´Ï´Ù."));
+	SetWindowText(g_hWnd, TEXT("ìµœìœ ê²½ ë ˆë²¨ìž…ë‹ˆë‹¤."));
 
 	return S_OK;
 }

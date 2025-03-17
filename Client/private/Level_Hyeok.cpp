@@ -1,4 +1,4 @@
-#include "Level_Hyeok.h"
+ï»¿#include "Level_Hyeok.h"
 #include "GameInstance.h"
 
 CLevel_Hyeok::CLevel_Hyeok(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -18,6 +18,12 @@ HRESULT CLevel_Hyeok::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
+	/*if (FAILED(Ready_Layer_Hyock(TEXT("Layer_Hyock_Cube"))))
+		return E_FAIL;*/
+
+	if (FAILED(Ready_Layer_TestParticle(TEXT("Layer_TestParticle"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -28,7 +34,7 @@ void CLevel_Hyeok::Update(_float fTimeDelta)
 
 HRESULT CLevel_Hyeok::Render()
 {
-	SetWindowText(g_hWnd, TEXT("±èµ¿Çõ ·¹º§ÀÔ´Ï´Ù."));
+	SetWindowText(g_hWnd, TEXT("ê¹€ë™í˜ ë ˆë²¨ìž…ë‹ˆë‹¤."));
 
 	return S_OK;
 }
@@ -57,6 +63,24 @@ HRESULT CLevel_Hyeok::Ready_Layer_Player(const _wstring& strLayerTag)
 HRESULT CLevel_Hyeok::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_Terrain"),
+		LEVEL_HYEOK, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hyeok::Ready_Layer_Hyock(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_Hyock_Cube"),
+		LEVEL_HYEOK, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hyeok::Ready_Layer_TestParticle(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_TestParticle"),
 		LEVEL_HYEOK, strLayerTag)))
 		return E_FAIL;
 

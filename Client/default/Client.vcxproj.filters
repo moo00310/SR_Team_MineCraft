@@ -103,6 +103,9 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Steve">
       <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\96.HyockGameObj">
+      <UniqueIdentifier>{8a31c5af-11ec-412f-8e80-5543a28f4aab}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\99.MooGameOBj\01.Model">
       <UniqueIdentifier>{870df70a-a72c-44f8-90a4-dc74afb89282}</UniqueIdentifier>
     </Filter>
@@ -254,6 +257,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Client_Struct.h">
       <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HyockCube.h">
+      <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TestParticle.h">
+      <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tree.h">
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree</Filter>
@@ -428,6 +437,12 @@
     </ClCompile>
     <ClCompile Include="..\private\HeroEnemy.cpp">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HyockCube.cpp">
+      <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TestParticle.cpp">
+      <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@ CBreakableCube::CBreakableCube(const CBreakableCube& Prototype)
 
 HRESULT CBreakableCube::Initialize_Prototype()
 {
+
     return S_OK;
 }
 

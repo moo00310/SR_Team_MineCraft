@@ -27,10 +27,7 @@ HRESULT CMainApp::Initialize()
 	Desc.iWinSizeX = g_iWinSizeX;
 	Desc.iWinSizeY = g_iWinSizeY;
 	Desc.iNumLevels = LEVEL_END;
-
-
 	Desc.iNumCollisionGroups = COLLISION_END;
-
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(Desc, &m_pGraphic_Device)))
 		return E_FAIL;
@@ -151,6 +148,38 @@ HRESULT CMainApp::Ready_Component_For_Static()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Steve */
+	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(8.f, 12.f, 4.f), _float2(16.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(0.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(16.f, 48.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(40.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(32.f, 48.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
+		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
 
 	return S_OK;
 }
