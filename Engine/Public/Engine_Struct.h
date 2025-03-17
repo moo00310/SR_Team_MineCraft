@@ -40,6 +40,19 @@ namespace Engine
 		D3DXCOLOR	Color;
 	}PARTICLE;
 
+	// 파티클 속성 구조체.
+	typedef struct tagParticleAttribute
+	{
+		// 파티클 포지션.
+		_float3 vPosition;
+
+		// 파티클 속도.
+		_float3 vVelocity;		
+
+		// 파티클 컬러.
+		D3DXCOLOR vColor;			
+	}ParticleAttribute;
+
 #pragma region Collider_Cube
 	typedef struct tagVertexCubeTexture
 	{
