@@ -2,32 +2,40 @@
 #include "GameInstance.h"
 #include "HeroEnemy.h"
 
+CCheck_Enemy_Node::CCheck_Enemy_Node(CHeroEnemy* pEnemy)
+	:m_pHeroEnemy(pEnemy)
+{
+}
+
+CCheck_Enemy_Node::~CCheck_Enemy_Node()
+{
+}
+
 STATUS CCheck_Enemy_Node::Excute(CGameObject* _Obj, _float _fTimeDelta)
 {
-	//부모에서 게임인스턴스를 받아버리자
-	if (!m_pGameInstance)
-	{
-		m_pGameInstance = CGameInstance::Get_Instance();
-	}
-
 	if (!m_pHeroEnemy)
 	{
 		m_pHeroEnemy = dynamic_cast<CHeroEnemy*>(_Obj);
 	}
 
+	if (m_pHeroEnemy->Get_Target())
+	{
+		return STATUS::SUCCESS;
+	}
+
 	_bool isHit{ false };
 	_float fHitDist;
 
-	isHit = m_pGameInstance->Ray_Cast(m_pHeroEnemy->m_pTransformCom->Get_State(CTransform::STATE_POSITION),
-		m_pHeroEnemy->m_pTransformCom->Get_State(CTransform::STATE_LOOK),
+	isHit = m_pHeroEnemy->Get_GameInstance()->Ray_Cast(m_pHeroEnemy->Get_Transform()->Get_State(CTransform::STATE_POSITION),
+		m_pHeroEnemy->Get_Transform()->Get_State(CTransform::STATE_LOOK),
 		5.f,
 		COLLISION_PLAYER,
 		fHitDist,
-		&m_pHeroEnemy->m_pTarget);
+		&m_pHeroEnemy->Get_Target());
 
 	if (isHit)
 	{
-		m_pHeroEnemy->m_pTargetTransform = static_cast<CTransform*>(m_pHeroEnemy->m_pTarget->Find_Component(TEXT("Com_Transform")));
+ 		m_pHeroEnemy->Set_Target_Transform(static_cast<CTransform*>(m_pHeroEnemy->Get_Target()->Find_Component(TEXT("Com_Transform"))));
 
 		return STATUS::SUCCESS;
 	}
@@ -36,4 +44,9 @@ STATUS CCheck_Enemy_Node::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		return STATUS::FAIL;
 	}
 	
+}
+
+CCheck_Enemy_Node* CCheck_Enemy_Node::Create(CHeroEnemy* pEnemy)
+{
+	return new CCheck_Enemy_Node(pEnemy);
 }

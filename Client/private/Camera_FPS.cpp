@@ -61,77 +61,80 @@ void CCamera_FPS::Update(_float fTimeDelta)
 
 void CCamera_FPS::Late_Update(_float fTimeDelta)
 {
-	if (!m_isActive)
-		return;
+    if (!m_isActive)
+        return;
 
-	// 현재 창이 활성화 상태인지 확인
-	bool isActive = (GetForegroundWindow() == g_hWnd);
+    // 현재 창이 활성화 상태인지 확인
+    bool isActive = (GetForegroundWindow() == g_hWnd);
 
-	// 1. 화면 중앙 좌표 계산
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
-	POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
+    // 1. 화면 중앙 좌표 계산
+    RECT rc;
+    GetClientRect(g_hWnd, &rc);
+    POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
 
-	// 2. 현재 마우스 좌표 가져오기
-	POINT ptMouse;
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse); // 클라이언트 좌표로 변환
+    // 2. 현재 마우스 좌표 가져오기
+    POINT ptMouse;
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse); // 클라이언트 좌표로 변환
 
-	// 3. 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
-	if (!isActive)
-		return;
+    // 3. 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
+    if (!isActive)
+        return;
 
-	// === 마우스가 창 내부에 있는지 확인 ===
-	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
-		return;  // 창 밖이면 회전 로직을 실행하지 않음
+    // === 마우스가 창 내부에 있는지 확인 ===
+    if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
+        return;  // 창 밖이면 회전 로직을 실행하지 않음
 
-	// 4. 마우스 이동량 계산 (중앙 기준)
-	_int iMouseMoveX = ptMouse.x - ptCenter.x;
-	_int iMouseMoveY = ptMouse.y - ptCenter.y;
+    // 4. 마우스 이동량 계산 (중앙 기준)
+    _int iMouseMoveX = ptMouse.x - ptCenter.x;
+    _int iMouseMoveY = ptMouse.y - ptCenter.y;
 
-	// 5. 마우스 이동량을 기반으로 카메라 회전 적용
-	m_fYaw += iMouseMoveX * fTimeDelta * m_fMouseSensor;
-	m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
+    // 5. 마우스 이동량을 기반으로 카메라 회전 적용
+    _float fYawDelta = iMouseMoveX * fTimeDelta * m_fMouseSensor;
+    _float fPitchDelta = iMouseMoveY * fTimeDelta * m_fMouseSensor;
 
-	// 피치(Pitch) 값 제한 (위아래 회전 각도 제한)
-	m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch));
+    // 현재 카메라의 look 방향을 _float3로 가져옴
+    _float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 
-	// 6. 마우스를 다시 중앙으로 이동
-	ClientToScreen(g_hWnd, &ptCenter);
-	SetCursorPos(ptCenter.x, ptCenter.y);
+    // 피치(Pitch) 값 제한 (위아래 회전 각도 제한)
+    fPitchDelta = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, fPitchDelta));
 
-	// 7. 마우스를 창 내부에 가두기 (ClipCursor 사용)
-	RECT clipRect;
-	GetWindowRect(g_hWnd, &clipRect);
-	ClipCursor(&clipRect); // 마우스를 창 내부에 고정
+    // 회전 계산: yaw와 pitch에 맞춰 look 벡터 계산
+    _float fYaw = atan2f(vLook.z, vLook.x) + fYawDelta;  // 현재 yaw에 delta 추가
+    _float fPitch = asinf(vLook.y) + fPitchDelta;  // 현재 pitch에 delta 추가
 
-	// 8. FPS 카메라의 위치 설정 (플레이어의 머리 위치)
-	_float3 vPlayerPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
-	_float3 vCameraPos = vPlayerPos + _float3(0.f, 1.8f, 0.f);  // 플레이어 머리 위치
+    // 새 look 벡터 계산
+    vLook.x = cosf(fPitch) * sinf(fYaw);
+    vLook.y = sinf(fPitch);
+    vLook.z = cosf(fPitch) * cosf(fYaw);
 
-	// 9. 카메라 방향 벡터 계산 (1인칭)
-	_float3 vLook;
-	vLook.x = cosf(m_fPitch) * sinf(m_fYaw);
-	vLook.y = sinf(m_fPitch);
-	vLook.z = cosf(m_fPitch) * cosf(m_fYaw);
-	XMVECTOR vLookVector = XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&vLook));
-	vLookVector = XMVector3Normalize(vLookVector);
-	XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&vLook), vLookVector);
+    // Look 벡터 정규화
+    XMVECTOR vLookVector = XMLoadFloat3(reinterpret_cast<XMFLOAT3*>(&vLook));
+    vLookVector = XMVector3Normalize(vLookVector);
+    XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&vLook), vLookVector);
 
-	// 10. 카메라 방향 적용
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
-	m_pTransformCom->LookAt(vCameraPos + vLook);  // 1인칭 카메라는 자신의 앞을 바라봄
+    // 카메라 회전 적용 (Look 벡터 설정)
+    m_pTransformCom->Set_State(CTransform::STATE_LOOK, vLook);
 
-	__super::Update_VP_Matrices();
+    // 6. 마우스를 다시 중앙으로 이동
+    ClientToScreen(g_hWnd, &ptCenter);
+    SetCursorPos(ptCenter.x, ptCenter.y);
+
+    // 7. 마우스를 창 내부에 가두기 (ClipCursor 사용)
+    RECT clipRect;
+    GetWindowRect(g_hWnd, &clipRect);
+    ClipCursor(&clipRect); // 마우스를 창 내부에 고정
+
+    // 8. FPS 카메라의 위치 설정 (플레이어의 머리 위치)
+    _float3 vPlayerPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
+    _float3 vCameraPos = vPlayerPos + _float3(0.f, 1.8f, 0.f);  // 플레이어 머리 위치
+
+    // 9. 카메라 위치 적용
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);  // 카메라 위치 설정
+    m_pTransformCom->LookAt(vCameraPos + vLook);  // 1인칭 카메라는 자신의 앞을 바라봄
+
+    __super::Update_VP_Matrices();
 }
-
-//// 창이 비활성화되면 마우스 고정을 해제하는 함수
-//void CCamera_FPS::OnLoseFocus()
-//{
-//	ClipCursor(NULL);  // 마우스 고정 해제
-//}
-
-
 
 HRESULT CCamera_FPS::Render()
 {

@@ -36,20 +36,41 @@ HRESULT CCameraManager::Initialize()
 
 void CCameraManager::Change_Camera()
 {
-	//현재 카메라를 끄고
+	// 현재 카메라가 바라보고 있는 방향 벡터 저장
+	_float3 vCurrentLook = (*m_CurrentCamera)->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	_float3 vCurrentPos = (*m_CurrentCamera)->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+	// 현재 Yaw, Pitch 값 저장 (TPS ↔ FPS 전환 시 유지)
+	_float fCurrentYaw = (*m_CurrentCamera)->Get_Yaw();
+	_float fCurrentPitch = (*m_CurrentCamera)->Get_Pitch();
+
+	// 현재 카메라를 끄고
 	(*m_CurrentCamera)->Set_Active(false);
 
-	//마지막 카메라 였으면 처음부터
+	// 마지막 카메라였다면 처음으로 순환
 	auto pNextCamera = ++m_CurrentCamera;
 	if (pNextCamera == m_Cameras.end())
 	{
 		pNextCamera = m_Cameras.begin();
 	}
-	//다음 카메라 활성화
-	(*pNextCamera)->Set_Active(true);
 
+	// 다음 카메라 활성화
+	(*pNextCamera)->Set_Active(true);
 	m_CurrentCamera = pNextCamera;
+
+	// 새로운 카메라에 기존 카메라 방향을 유지하도록 설정
+	(*m_CurrentCamera)->Set_Yaw(fCurrentYaw);
+	(*m_CurrentCamera)->Set_Pitch(fCurrentPitch);
+
+	// 새로운 Look 벡터 설정 (Yaw/Pitch 기반으로 적용됨)
+	(*m_CurrentCamera)->Get_Transform()->Set_State(CTransform::STATE_LOOK, vCurrentLook);
+
+	// 위치 설정
+	(*m_CurrentCamera)->Get_Transform()->Set_State(CTransform::STATE_POSITION, vCurrentPos);
 }
+
+
+
 
 CCameraManager* CCameraManager::Create()
 {

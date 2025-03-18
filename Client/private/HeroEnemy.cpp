@@ -104,6 +104,26 @@ HRESULT CHeroEnemy::Render()
 	return S_OK;
 }
 
+CTransform* CHeroEnemy::Get_Transform()
+{
+	return m_pTransformCom;
+}
+
+CTransform* CHeroEnemy::Get_Target_Transform()
+{
+	return m_pTargetTransform;
+}
+
+CGameObject*& CHeroEnemy::Get_Target()
+{
+	return m_pTarget;
+}
+
+void CHeroEnemy::Set_Target_Transform(CTransform* pTransform)
+{
+	m_pTargetTransform = pTransform;
+}
+
 HRESULT CHeroEnemy::Ready_Components()
 {
 	/* For.Com_Texture */
@@ -139,7 +159,7 @@ HRESULT CHeroEnemy::Ready_BehaviorTree()
 	CSelectorNode* pRoot = new CSelectorNode(L"Root");
 
 	// 조건 검사 노드: 적이 있는지 확인
-	CCheck_Enemy_Node* pCheckEnemy = new CCheck_Enemy_Node();
+	CCheck_Enemy_Node* pCheckEnemy = CCheck_Enemy_Node::Create(this);
 
 	// 행동 노드: 적을 따라가기
 	CChase_Enemy_Node* pChaseEnemy = new CChase_Enemy_Node();

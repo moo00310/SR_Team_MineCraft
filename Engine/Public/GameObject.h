@@ -24,6 +24,7 @@ public:
 
 public:
 	class CComponent* Find_Component(const _tchar* pComponentTag);
+	class CGameInstance* Get_GameInstance();
 
 protected:
 	LPDIRECT3DDEVICE9				m_pGraphic_Device = { nullptr };
