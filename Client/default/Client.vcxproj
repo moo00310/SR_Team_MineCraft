@@ -189,6 +189,7 @@
     <ClInclude Include="..\public\MCTerrain.h" />
     <ClInclude Include="..\public\Patrol_Node.h" />
     <ClInclude Include="..\public\Player.h" />
+    <ClInclude Include="..\public\SkyBox.h" />
     <ClInclude Include="..\public\StartButton.h" />
     <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
@@ -245,6 +246,7 @@
     <ClCompile Include="..\private\MCTerrain.cpp" />
     <ClCompile Include="..\private\Patrol_Node.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
+    <ClCompile Include="..\private\SkyBox.cpp" />
     <ClCompile Include="..\private\StartButton.cpp" />
     <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />

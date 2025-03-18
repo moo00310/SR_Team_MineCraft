@@ -19,12 +19,6 @@
     <Filter Include="02.GameObjects\Terrain">
       <UniqueIdentifier>{9de21c46-a0f5-43b6-8a26-1378d9bcc1aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camera">
-      <UniqueIdentifier>{ca227791-6c30-46ed-b75c-8604aeaf2b89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Camera\Free">
-      <UniqueIdentifier>{9a579ff3-968b-4937-b82a-dcf470db3132}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{16d06422-a5ba-4e2c-af8a-628d2d2a5dc0}</UniqueIdentifier>
     </Filter>
@@ -148,8 +142,17 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\02.Arm">
       <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camera\Player">
+    <Filter Include="02.GameObjects\02.Camera">
+      <UniqueIdentifier>{ca227791-6c30-46ed-b75c-8604aeaf2b89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Free">
+      <UniqueIdentifier>{9a579ff3-968b-4937-b82a-dcf470db3132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Player">
       <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.SkyBox">
+      <UniqueIdentifier>{2e4902cf-7091-4917-b530-ae487272273e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -292,10 +295,10 @@
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
-      <Filter>02.GameObjects\Camera\Free</Filter>
+      <Filter>02.GameObjects\02.Camera\Free</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Player.h">
-      <Filter>02.GameObjects\Camera\Player</Filter>
+      <Filter>02.GameObjects\02.Camera\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Behavior_Tree.h">
       <Filter>03.Behavior_Tree</Filter>
@@ -326,6 +329,9 @@
     </ClInclude>
     <ClInclude Include="..\public\Arm_Steve.h">
       <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SkyBox.h">
+      <Filter>02.GameObjects\03.SkyBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,7 +373,7 @@
       <Filter>02.GameObjects\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
-      <Filter>02.GameObjects\Camera\Free</Filter>
+      <Filter>02.GameObjects\02.Camera\Free</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
       <Filter>02.GameObjects\Player</Filter>
@@ -457,7 +463,7 @@
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Player.cpp">
-      <Filter>02.GameObjects\Camera\Player</Filter>
+      <Filter>02.GameObjects\02.Camera\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Behavior_Tree.cpp">
       <Filter>03.Behavior_Tree</Filter>
@@ -494,6 +500,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Arm_Steve.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SkyBox.cpp">
+      <Filter>02.GameObjects\03.SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

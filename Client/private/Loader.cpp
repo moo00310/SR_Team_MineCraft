@@ -23,6 +23,7 @@
 #include "HeroCube.h" //콜라이더 테스트용 큐브
 #include "HeroCubeNoMove.h"
 #include "HeroEnemy.h"
+#include "SkyBox.h"
 
 
 //지형 관련
@@ -389,6 +390,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 HRESULT CLoader::Loading_For_HEROPlay()
 {
+#pragma region TEXTURE
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
 	/* For.Prototype_Component_Texture_BackGround*/
@@ -396,10 +398,16 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_GrassDirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_GrassDirt"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassDirt%d.png"), 1))))
+		return E_FAIL;
+#pragma endregion
+
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
  	
-
 #pragma region MODEL
+	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 #pragma endregion
 
 
@@ -407,11 +415,6 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
-
-	/* For.Prototype_GameObject_Camera_Free */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Free"),
-	//	CCamera_Free::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Player"),
@@ -436,6 +439,11 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	/* For.Prototype_GameObject_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Terrain"),
 		CTerrain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SkyBox */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SkyBox"),
+		CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
