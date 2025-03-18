@@ -151,6 +151,9 @@
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\00.MainLogo">
       <UniqueIdentifier>{b828998a-4569-4d8c-9de0-8e447ba86c1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\01.StartButton">
+      <UniqueIdentifier>{63beb701-9cd8-4e97-9eaa-fca31c7f74ab}</UniqueIdentifier>
+       </Filter>
     <Filter Include="02.GameObjects\99.MooGameOBj\02.Arm">
       <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
     </Filter>
@@ -330,6 +333,9 @@
     <ClInclude Include="..\public\CoalOre.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\StartButton.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
+   </ClInclude>
     <ClInclude Include="..\public\Arm_Steve.h">
       <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
     </ClInclude>
@@ -501,6 +507,9 @@
     <ClCompile Include="..\private\CoalOre.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\StartButton.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
+      </ClCompile>
     <ClCompile Include="..\private\Arm_Steve.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
     </ClCompile>

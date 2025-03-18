@@ -72,6 +72,10 @@ HRESULT CLevel_WOO::Ready_Layer_MainLogo(const _wstring& strLayerTag)
 		LEVEL_WOO, strLayerTag)))
 		return E_FAIL;
 
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_WOO, TEXT("Prototype_GameObject_StartButton"),
+		LEVEL_WOO, strLayerTag)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
