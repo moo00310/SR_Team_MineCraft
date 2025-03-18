@@ -31,9 +31,18 @@ public:
 	int GetFileCount();
 private:
 	HRESULT Ready_Layer_BackGround();
+	// 모든 물체 Render
 	void CheckRenderLayerObjects();
+	// 돌 빼고 Render
 	void RenderWithoutStone();
-	int m_iFileCount = 0;
+	// 모든 청크 비활성화
+	void OffAllChunkLayer();
+
+	//플레이어 어디 청크에 있는지 들고오는 함수
+	void GetPlayerChunk();
+
+
+	int m_iChunkCount = 0;
 	bool prevF1State = false;
 	bool prevF2State = false;
 public:

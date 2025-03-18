@@ -3,6 +3,8 @@
 #include "Stone.h"
 #include "CoalOre.h"
 
+#include "Steve.h"
+
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
 {
@@ -49,6 +51,9 @@ void CMCTerrain::Update(_float fTimeDelta)
 
     prevF1State = currF1State;
     prevF2State = currF2State;
+
+    OffAllChunkLayer();
+    GetPlayerChunk();
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
@@ -79,13 +84,13 @@ int CMCTerrain::GetFileCount()
     if (hFind != INVALID_HANDLE_VALUE)
     {
         do {
-            m_iFileCount++;
+            m_iChunkCount++;
         } while (FindNextFile(hFind, &findFileData));
 
         FindClose(hFind);
     }
 
-    return m_iFileCount;
+    return m_iChunkCount;
 }
 
 struct ThreadParams
@@ -235,7 +240,7 @@ struct Float3Hash {
 
 void CMCTerrain::CheckRenderLayerObjects()
 {
-    for (int i = 0; i < m_iFileCount; ++i) {
+    for (int i = 0; i < m_iChunkCount; ++i) {
         wchar_t layerName[100];
         swprintf(layerName, 100, L"Layer_Chunk%d", i);
 
@@ -277,11 +282,12 @@ void CMCTerrain::CheckRenderLayerObjects()
             }
         }
     }
+   
 }
 
 void CMCTerrain::RenderWithoutStone()
 {
-    for (int i = 0; i < m_iFileCount; ++i) {
+    for (int i = 0; i < m_iChunkCount; ++i) {
         wchar_t layerName[100];
         swprintf(layerName, 100, L"Layer_Chunk%d", i);
 
@@ -297,6 +303,64 @@ void CMCTerrain::RenderWithoutStone()
         }
     }
 }
+
+void CMCTerrain::OffAllChunkLayer()
+{
+    for (int i = 0; i < m_iChunkCount; ++i) {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", i);
+
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, false);
+    }
+}
+
+void CMCTerrain::GetPlayerChunk()
+{
+    // 플레이어 위치 가져오기
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return;
+
+    _float3 playerPos = pSteve->GetPos();
+
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    int chunk = x + (width * z);
+
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk - width); 
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk + width);
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+    if (chunk% width != 0) {
+        swprintf(layerName, 100, L"Layer_Chunk%d", chunk - 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk - width) - 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) - 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    }
+
+    if ((chunk +1) % width != 0) {
+        swprintf(layerName, 100, L"Layer_Chunk%d", chunk + 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk - width) + 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) + 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    }
+}
+
 
 CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
@@ -327,6 +391,5 @@ CGameObject* CMCTerrain::Clone(void* pArg)
 void CMCTerrain::Free()
 {
 	__super::Free();
-
 
 }

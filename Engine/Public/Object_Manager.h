@@ -23,6 +23,7 @@ public:
 	void ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag);
 	class CGameObject* Find_Objects(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
 	list<class CGameObject*> Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag);
+	void SetLayerRenderActive(_uint iLevelIndex, const _tchar* pLayerTag, bool _b);
 private:	
 	_uint								m_iNumLevels = {};
 	map<const _wstring, class CLayer*>* m_pLayers = { nullptr };
