@@ -16,8 +16,8 @@ BEGIN(Client)
 class CHeroEnemy final : public CGameObject
 {
 	//프렌드 하기 vs Get()Set() 만들기
-	friend class CCheck_Enemy_Node;
-	friend class CChase_Enemy_Node;
+	/*friend class CCheck_Enemy_Node;
+	friend class CChase_Enemy_Node;*/
 
 private:
 	CHeroEnemy(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -31,10 +31,26 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
+
+#pragma region GET_SET
+public: //Get
+	CTransform*			Get_Transform();
+	CTransform*			Get_Target_Transform();
+	CGameObject*&		Get_Target();
+
+public: //Set
+	void				Set_Target_Transform(CTransform* pTransform);
+#pragma endregion
+
 private:
 	_bool			m_bHit{ false };
+
+#pragma region TARGET
 	CGameObject*	m_pTarget{ nullptr };
 	CTransform*		m_pTargetTransform{ nullptr };
+#pragma endregion
+
+
 private:
 	CTexture*		m_pTextureCom = { nullptr };
 	CTransform*		m_pTransformCom = { nullptr };

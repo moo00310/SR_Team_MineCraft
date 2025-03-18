@@ -10,12 +10,19 @@ class CHeroEnemy;
 
 class CCheck_Enemy_Node : public CNode
 {
+private:
+	CCheck_Enemy_Node() = default;
+	CCheck_Enemy_Node(CHeroEnemy* pEnemy);
+	virtual ~CCheck_Enemy_Node();
+	
 public:
 	STATUS Excute(CGameObject* _Obj, _float _fTimeDelta) override;
 
 private:
 	CHeroEnemy* m_pHeroEnemy{ nullptr };
-	CGameInstance* m_pGameInstance{ nullptr };
+
+public:
+	static CCheck_Enemy_Node* Create(CHeroEnemy* pEnemy);
 
 };
 END
