@@ -15,8 +15,9 @@ HRESULT CTestParticle::Initialize_Prototype()
 
 HRESULT CTestParticle::Initialize(void* pArg)
 {
-	iParticleCount = 20000;
-	dwVpBatchSize = 5000;
+	IsBounding = true;
+	iParticleCount = 10;
+	dwVpBatchSize = 10;
 	dwPointSize = GetScale(0.2f);
 	dwPointScaleA = GetScale(0.f);
 	dwPointScaleB = GetScale(0.f);
@@ -102,17 +103,28 @@ HRESULT CTestParticle::Ready_Components()
 	return S_OK;
 }
 
-ParticleAttribute CTestParticle::AddParticle()
+ParticleAttribute CTestParticle::OnSetAddParticle()
 {
+	ParticleBoundingBox box;
+	box.vMinPosition = { -5.f, -5.f, -5.f };
+	box.vMaxPosition = { 5.f, 5.f, 5.f };
+
+	SetParticleBoundingBox(box);
+
 	ParticleAttribute att;
 	att.vPosition = { 0.f, 0.f, 0.f };
 	att.vColor = { 1.f, 1.f, 1.f, 1.f };
 	att.vVelocity = { GetRandomFloat(-2.f, 2.f), GetRandomFloat(1.f, 2.f), 0.f};
-	att.fCurrentTime = 0.f;
+	/*att.fCurrentTime = 0.f;
 	att.fEndTime = 3.f;
-	att.IsTime = true;
+	att.IsTime = true;*/
 
 	return att;
+}
+
+void CTestParticle::OnBoundingExit(ParticleAttribute& particle)
+{
+	particle.vPosition = {0.f, 0.f, 0.f};
 }
 
 HRESULT CTestParticle::PrevRender()

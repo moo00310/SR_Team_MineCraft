@@ -25,7 +25,8 @@ public:
 
 protected:
 	virtual HRESULT Ready_Components();
-	virtual ParticleAttribute AddParticle() override;
+	virtual ParticleAttribute OnSetAddParticle() override;
+	virtual void OnBoundingExit(ParticleAttribute& particle) override;
 
 private:
 	HRESULT PrevRender() override;

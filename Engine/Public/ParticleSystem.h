@@ -32,12 +32,20 @@ protected:
 	// 파티클 속성 셋팅.
 	void SetParticleAttribute();	
 
+	// 파티클 경계선 셋팅.
+	void SetParticleBoundingBox(ParticleBoundingBox box);
+
 	// float 매개변수를 DWORD 형태로 반환.
 	DWORD GetScale(float f);
 
 	float GetRandomFloat(float lowBound, float highBound);
 
-	virtual ParticleAttribute AddParticle() = 0;
+	// SetParticleAttribute 호출 시 실행.	
+	virtual ParticleAttribute OnSetAddParticle() = 0;
+
+	// 파티클 경계선 벗어나면 호출
+	// 단, IsBounding이 true 상태여야 함.
+	virtual void OnBoundingExit(ParticleAttribute& particle) = 0;
 
 public:
 	virtual void Free() override;
@@ -45,6 +53,9 @@ public:
 private:
 	// 파티클 세그먼트 당 종료.
 	DWORD dwVpOffset = 0;
+
+	// 파티클 경계선.
+	ParticleBoundingBox m_boundingBox;
 
 protected:
 	_uint	m_iFVF = {};
@@ -72,7 +83,10 @@ protected:
 	DWORD dwPointScaleB;
 
 	// 포인트 스프라이트 거리별 크기 C.
-	DWORD dwPointScaleC;
+	DWORD dwPointScaleC;	
+
+	// 파티클 경계선 활성화.
+	bool IsBounding = false;
 
 	// 파티클 텍스쳐.
 	CTexture* m_pParticleTexture = { nullptr };
