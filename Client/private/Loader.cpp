@@ -42,6 +42,7 @@
 
 //Woo
 #include "MainLogo.h"
+#include "StartButton.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -453,10 +454,17 @@ HRESULT CLoader::Loading_For_WOOPlay()
 
 	#pragma region Texture UI
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
-	/* For.Prototype_Component_Texture_BackGround*/
+
+	/* For.Prototype_Component_Texture_MainLogo*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_MainLogo"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/isles.png"), 1))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_StartButton*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_StartButton"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/StartButton/StartButton1.png"), 1))))
+		return E_FAIL;
+
 	#pragma endregion 
 
 #pragma endregion 
@@ -483,6 +491,11 @@ HRESULT CLoader::Loading_For_WOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_MainLogo"),
 		CMainLogo::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_StartButton"),
+		CStartButton::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	#pragma endregion 
 
 #pragma endregion 
