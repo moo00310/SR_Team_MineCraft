@@ -70,8 +70,40 @@ namespace Engine
 		float fEndTime;
 
 		// 파티클 타이머 활성화.
-		bool IsTime = false;
+		bool IsTime = false;		
 	}ParticleAttribute;
+
+	// 파티클 경계선.
+	typedef struct tagParticleBoundingBox
+	{
+		// 최소 범위.
+		_float3 vMinPosition;
+
+		// 최대 범위.
+		_float3 vMaxPosition;
+
+		// 범위 밖으로 벗어났는지 확인.
+		bool IsExit(_float3 _position)
+		{
+			// 각 조건은 범위를 벗어남.
+			if (vMinPosition.x > _position.x || vMaxPosition.x < _position.x)
+			{
+				return true;
+			}
+
+			if (vMinPosition.y > _position.y || vMaxPosition.y < _position.y)
+			{
+				return true;
+			}
+
+			if (vMinPosition.z > _position.z || vMaxPosition.z < _position.z)
+			{
+				return true;
+			}
+
+			return false;
+		}
+	}ParticleBoundingBox;
 
 #pragma region Collider_Cube
 	typedef struct tagVertexCubeTexture

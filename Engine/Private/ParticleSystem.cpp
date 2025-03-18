@@ -5,8 +5,9 @@ CParticleSystem::CParticleSystem(LPDIRECT3DDEVICE9 pGraphic_Device) : CGameObjec
 }
 
 CParticleSystem::CParticleSystem(const CParticleSystem& Prototype) : 
-	CGameObject(Prototype)		
+	CGameObject(Prototype)
 {
+	ZeroMemory(&m_boundingBox, sizeof(ParticleBoundingBox));
 	Safe_AddRef(m_pVB);		
 	Safe_AddRef(m_pParticleTexture);
 }
@@ -30,16 +31,25 @@ void CParticleSystem::Update(_float fTimeDelta)
 {
 	for (auto& data : m_ListParticleAttribute)
 	{
+		// 파티클 타이머 활성화 시 시간 증가.
 		if (data.IsAlive == true && data.IsTime == true)
 		{
 			data.fCurrentTime += fTimeDelta;
 		}
 
+		// 파티클 종료 확인.
 		if (data.IsAlive == true && data.fCurrentTime >= data.fEndTime && data.IsTime == true)
 		{
 			data.IsAlive = false;
 		}
 
+		// 경계선 벗어나면 위치 리셋.
+		if (IsBounding == true && m_boundingBox.IsExit(data.vPosition) == true)
+		{
+			OnBoundingExit(data);
+		}
+
+		// 파티클 이동.
 		data.vPosition += data.vVelocity * fTimeDelta;		
 	}
 }
@@ -178,14 +188,19 @@ HRESULT CParticleSystem::Create_VertexBuffer()
 }
 
 void CParticleSystem::SetParticleAttribute()
-{
+{	
 	for (int i = 0; i < iParticleCount; i++)
 	{
-		ParticleAttribute att = AddParticle();	
+		ParticleAttribute att = OnSetAddParticle();
 		att.IsAlive = true;
 
 		m_ListParticleAttribute.push_back(att);
 	}	
+}
+
+void CParticleSystem::SetParticleBoundingBox(ParticleBoundingBox box)
+{
+	m_boundingBox = box;
 }
 
 DWORD CParticleSystem::GetScale(float f)

@@ -15,14 +15,25 @@ HRESULT CTestParticle::Initialize_Prototype()
 
 HRESULT CTestParticle::Initialize(void* pArg)
 {
-	iParticleCount = 20000;
-	dwVpBatchSize = 5000;
-	dwPointSize = GetScale(0.2f);
-	dwPointScaleA = GetScale(0.f);
+	// 파티클 속성 셋팅 작업.
+	IsBounding = true;			// 범위 적용.
+	iParticleCount = 500;		// 파티클 갯수.
+	dwVpBatchSize = 250;			// 세그먼트 당 사이즈.
+	dwPointSize = GetScale(2.f);	// 포인트 스프라이트 크기.
+	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
 	dwPointScaleC = GetScale(1.f);			
 
+	// 파티클 속성 셋팅.
 	SetParticleAttribute();
+
+	// 파티클 경계선 셋팅 (범위).
+	ParticleBoundingBox box;
+	box.vMinPosition = { -20.f, -5.f, -20.f };		// 최소 범위.
+	box.vMaxPosition = { 20.f, 20.f, 20.f };		// 최대 범위.
+
+	// 파티클 경계선 셋팅 작업.
+	SetParticleBoundingBox(box);
 
 	// SetParticleAttribute 하고 반드시 
 	// 부모 Initialize 호출시켜서 버텍스 초기화 시킬 것.
@@ -95,24 +106,31 @@ void CTestParticle::Free()
 
 HRESULT CTestParticle::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Diamond_ore"),
-		TEXT("Com_Component_Diamond_Ore2"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
+	if (FAILED(__super::Add_Component(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Rain"),
+		TEXT("Com_Component_Smoke"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
 	return S_OK;
 }
 
-ParticleAttribute CTestParticle::AddParticle()
-{
+// SetParticleAttribute 호출 시 콜백.
+// 파티클마다 각 속성을 정의 해준다.
+ParticleAttribute CTestParticle::OnSetAddParticle()
+{	
 	ParticleAttribute att;
-	att.vPosition = { 0.f, 0.f, 0.f };
+	att.vPosition = { GetRandomFloat(-15.f, 15.f), 15.f, GetRandomFloat(-5.f, 5.f) };
 	att.vColor = { 1.f, 1.f, 1.f, 1.f };
-	att.vVelocity = { GetRandomFloat(-2.f, 2.f), GetRandomFloat(1.f, 2.f), 0.f};
-	att.fCurrentTime = 0.f;
+	att.vVelocity = { 0.f, -GetRandomFloat(20.f, 40.f), 0.f};
+	/*att.fCurrentTime = 0.f;
 	att.fEndTime = 3.f;
-	att.IsTime = true;
+	att.IsTime = true;*/
 
 	return att;
+}
+
+void CTestParticle::OnBoundingExit(ParticleAttribute& particle)
+{
+	particle.vPosition = { GetRandomFloat(-15.f, 15.f), 15.f, GetRandomFloat(-5.f, 5.f) };
 }
 
 HRESULT CTestParticle::PrevRender()
@@ -121,6 +139,11 @@ HRESULT CTestParticle::PrevRender()
 	{
 		return E_FAIL;
 	}
+
+	// 금 간 텍스쳐는 투명도 적용 후 렌더링.
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 155);
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
 	return S_OK;
 }
@@ -131,6 +154,8 @@ HRESULT CTestParticle::EndRender()
 	{
 		return E_FAIL;
 	}
+
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	return S_OK;
 }
