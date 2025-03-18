@@ -30,7 +30,17 @@ void CParticleSystem::Update(_float fTimeDelta)
 {
 	for (auto& data : m_ListParticleAttribute)
 	{
-		data.vPosition += data.vVelocity * fTimeDelta;
+		if (data.IsAlive == true && data.IsTime == true)
+		{
+			data.fCurrentTime += fTimeDelta;
+		}
+
+		if (data.IsAlive == true && data.fCurrentTime >= data.fEndTime && data.IsTime == true)
+		{
+			data.IsAlive = false;
+		}
+
+		data.vPosition += data.vVelocity * fTimeDelta;		
 	}
 }
 
@@ -48,34 +58,58 @@ HRESULT CParticleSystem::Render()
 
 	Bind_Buffers();
 
-	PARTICLE* p = 0;	
+	// 파티클 버텍스 버퍼.
+	VTXPARTICLE* p = 0;
 
-	// 버텍스 시작 사이즈.
-	_uint startSize = 0;
+	// 현재 세그먼트의 버텍스 단계.
+	_uint currentVertexIndex = 0;	
 
-	// 버텍스 인덱스 (포인트 스프라이트는 점 하나다).
-	_uint vertexIndex = 0;
+	// 오프셋 초기화.
+	dwVpOffset = 0;
 
+	// dwVpOffset * sizeof(VTXPARTICLE)에서 dwVpSBatchSize * sizeof(PARTICLE) 크기만큼 할당.
+	m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpSBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
+
+	// 파티클 인스턴싱 로직.
 	for (auto& data : m_ListParticleAttribute)
 	{
-		// size에서 sizeof(PARTICLE) 크기만큼 할당.
-		m_pVB->Lock(startSize, sizeof(PARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
+		// 생존한 파티클인지 확인.
+		if (data.IsAlive == false)
+		{
+			continue;
+		}
 
 		p->Position = data.vPosition;
 		p->Color = data.vColor;
 
-		m_pVB->Unlock();
+		// 다음 버텍스로 증가.
+		p++;
 
-		// 점을 그린다.
-		// vertexIndex부터 1개만 그린다 (점 하나기 때문에 버텍스도 한 개이다).
-		m_pGraphic_Device->DrawPrimitive(
-			D3DPT_POINTLIST,
-			vertexIndex++,
-			1);
+		// 현재 세그먼트의 단계 증가.
+		currentVertexIndex++;
 
-		// 다음 시작 사이즈.
-		startSize += sizeof(PARTICLE);
-	}
+		// 현재 세그먼트 단계가 다 채워졌을 경우 그린다.
+		if (currentVertexIndex == dwVpSBatchSize)
+		{
+			// 잠금 해제.
+			m_pVB->Unlock();
+
+			// 지정 범위 점을 그린다.			
+			m_pGraphic_Device->DrawPrimitive(
+				D3DPT_POINTLIST,
+				dwVpOffset,
+				dwVpSBatchSize);			
+
+			// 오프셋 추가.
+			dwVpOffset += dwVpSBatchSize;
+
+			// 다음 세그먼트 그리기 위한 락.
+			m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpSBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
+
+			// 현재 세그먼트의 단계 초기화.
+			currentVertexIndex = 0;
+		}		
+	}	
 
 	if (FAILED(EndRender()))
 	{
@@ -87,7 +121,7 @@ HRESULT CParticleSystem::Render()
 
 HRESULT CParticleSystem::Bind_Buffers()
 {
-	m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, sizeof(PARTICLE));
+	m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, sizeof(VTXPARTICLE));
 
 	/* 장치가 알아서 내 정점을 이용하여 특정 연산을 수행할 수 있도록 */
 	/* 내 정점의 정보를 알려준다. */
@@ -130,7 +164,7 @@ HRESULT CParticleSystem::Create_VertexBuffer()
 	m_iFVF = D3DFVF_XYZ | D3DFVF_DIFFUSE;
 
 	m_pGraphic_Device->CreateVertexBuffer(
-		iParticleCount * sizeof(PARTICLE),
+		iParticleCount * sizeof(VTXPARTICLE),
 		// 동적 버텍스 버퍼를 이용할 것이며 | 포인트 스프라이트이며 | 이건 잘 모르겠다
 		D3DUSAGE_DYNAMIC | D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY,
 		m_iFVF,
@@ -147,7 +181,8 @@ void CParticleSystem::SetParticleAttribute()
 {
 	for (int i = 0; i < iParticleCount; i++)
 	{
-		ParticleAttribute att = AddParticle();		
+		ParticleAttribute att = AddParticle();	
+		att.IsAlive = true;
 
 		m_ListParticleAttribute.push_back(att);
 	}	

@@ -16,6 +16,7 @@ HRESULT CTestParticle::Initialize_Prototype()
 HRESULT CTestParticle::Initialize(void* pArg)
 {
 	iParticleCount = 2000;
+	dwVpSBatchSize = 500;
 	dwPointSize = GetScale(0.2f);
 	dwPointScaleA = GetScale(0.f);
 	dwPointScaleB = GetScale(0.f);
@@ -107,6 +108,9 @@ ParticleAttribute CTestParticle::AddParticle()
 	att.vPosition = { 0.f, 0.f, 0.f };
 	att.vColor = { 1.f, 1.f, 1.f, 1.f };
 	att.vVelocity = { GetRandomFloat(-2.f, 2.f), GetRandomFloat(1.f, 2.f), 0.f};
+	att.fCurrentTime = 0.f;
+	att.fEndTime = 3.f;
+	att.IsTime = true;
 
 	return att;
 }

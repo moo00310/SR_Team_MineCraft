@@ -49,6 +49,12 @@ protected:
 	// 파티클 갯수.
 	_uint iParticleCount = 0;
 
+	// 파티클 세그먼트 당 채울 갯수.
+	DWORD dwVpSBatchSize;
+
+	// 파티클 세그먼트 당 종료.
+	DWORD dwVpOffset = 0;
+
 	// 포인트 스프라이트 크기.
 	DWORD dwPointSize;
 

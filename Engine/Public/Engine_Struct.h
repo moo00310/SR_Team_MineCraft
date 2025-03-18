@@ -34,11 +34,11 @@ namespace Engine
 	}CUBE_ONLY;
 
 	// 파티클 구조체.
-	typedef struct tagParticle
+	typedef struct tagVertexParticle
 	{
 		_float3		Position;
 		D3DXCOLOR	Color;
-	}PARTICLE;
+	}VTXPARTICLE;
 
 	// 파티클 속성 구조체.
 	typedef struct tagParticleAttribute
@@ -50,7 +50,19 @@ namespace Engine
 		_float3 vVelocity;		
 
 		// 파티클 컬러.
-		D3DXCOLOR vColor;			
+		D3DXCOLOR vColor;	
+
+		// 파티클 생존 여부.
+		bool IsAlive = false;
+
+		// 파티클 현재 지속 시간.
+		float fCurrentTime;
+
+		// 파티클 종료 시간.
+		float fEndTime;
+
+		// 파티클 타이머 활성화.
+		bool IsTime = false;
 	}ParticleAttribute;
 
 #pragma region Collider_Cube
