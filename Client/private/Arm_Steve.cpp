@@ -21,11 +21,6 @@ HRESULT CArm_Steve::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	
-
-	CComponent* temp = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Camera"), 1)->Find_Component(TEXT("Com_Transform"));
-	m_pTargetTransformCom = static_cast<CTransform*>(temp);
-	m_pTransformCom->MultiplyMatrix(MAtrixTranslation(0.f, 0.f, 20.f));
-
 	return S_OK;
 }
 
@@ -35,10 +30,27 @@ void CArm_Steve::Priority_Update(_float fTimeDelta)
 
 void CArm_Steve::Update(_float fTimeDelta)
 {
+	Matrix		ViewMatrix = {};
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
+	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+	Matrix mat = {};
+	mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-115));
+	mat.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-20));
+	mat.Set_State(mat.STATE_POSITION, _float3(0.4f, -0.4f, 0.6f));
 
-	// �ʱⰪ
-	m_pTransformCom->Set_Matrix(*m_pTargetTransformCom->Get_WorldMatrix() * *m_pTransformCom->Get_WorldMatrix());
-	
+	if (GetKeyState(VK_LBUTTON) & 0x8000)
+	{
+		Matrix matrix = {};
+		matrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-30));
+		matrix.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-15));
+		matrix.Go_Vector(matrix.STATE_UP, fTimeDelta, -25.f);
+		matrix.Go_Straight(fTimeDelta, -15.f);
+		m_pTransformCom->Set_Matrix(matrix * mat * ViewMatrix);
+	}
+	else
+	{
+		m_pTransformCom->Set_Matrix(mat * ViewMatrix);
+	}
 }
 
 void CArm_Steve::Late_Update(_float fTimeDelta)
@@ -124,7 +136,6 @@ void CArm_Steve::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTargetTransformCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pVIBufferCom);
