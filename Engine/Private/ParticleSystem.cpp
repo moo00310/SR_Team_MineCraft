@@ -62,7 +62,7 @@ HRESULT CParticleSystem::Render()
 	VTXPARTICLE* p = 0;
 
 	// 현재 세그먼트의 버텍스 단계.
-	_uint currentVertexIndex = 0;	
+	_uint currentSegmentVertexIndex = 0;
 
 	// 오프셋 초기화.
 	dwVpOffset = 0;
@@ -86,10 +86,10 @@ HRESULT CParticleSystem::Render()
 		p++;
 
 		// 현재 세그먼트의 단계 증가.
-		currentVertexIndex++;
+		currentSegmentVertexIndex++;
 
 		// 현재 세그먼트 단계가 다 채워졌을 경우 그린다.
-		if (currentVertexIndex == dwVpBatchSize)
+		if (currentSegmentVertexIndex == dwVpBatchSize)
 		{
 			// 잠금 해제.
 			m_pVB->Unlock();
@@ -107,7 +107,7 @@ HRESULT CParticleSystem::Render()
 			m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
 
 			// 현재 세그먼트의 단계 초기화.
-			currentVertexIndex = 0;
+			currentSegmentVertexIndex = 0;
 		}		
 	}	
 
