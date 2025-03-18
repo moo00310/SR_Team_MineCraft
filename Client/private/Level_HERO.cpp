@@ -32,6 +32,10 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
 		return E_FAIL;
 
+	//임무결 1인칭 확인용
+	if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -78,7 +82,7 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 	//카메라 매니저에다가 카메라 Layer의 모든 카메라를 가져온다음
 	//특정 키를 누를 때마다 다음 카메라만 활성화시킨다.
-	m_pCameraManager = CCameraManager::Create();
+	m_pCameraManager = CCameraManager::Create(LEVEL_HERO);
 
 	return S_OK;
 }
@@ -129,6 +133,15 @@ HRESULT CLevel_HERO::Ready_Layer_HeroEnemy(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroEnemy"),
 		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_HERO::Ready_Laye_MooArm(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arm_Steve"),
+		LEVEL_STATIC, strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

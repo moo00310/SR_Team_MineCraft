@@ -39,6 +39,8 @@ public:
 	class CGameObject* Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
 	void ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag);
 	list<class CGameObject*> Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag);
+	// 청크 활성화 관련 (true면 청크 활성화, false면 청크 비활성화 느낌)
+	void SetLayerRenderActive(_uint iLevelIndex, const _tchar* pLayerTag, bool _b);
 #pragma endregion
 
 #pragma region RENDERER

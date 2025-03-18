@@ -71,6 +71,11 @@ CComponent* CGameObject::Find_Component(const _tchar* pComponentTag)
 	return iter->second;
 }
 
+CGameInstance* CGameObject::Get_GameInstance()
+{
+	return m_pGameInstance;
+}
+
 void CGameObject::Free()
 {
 	__super::Free();

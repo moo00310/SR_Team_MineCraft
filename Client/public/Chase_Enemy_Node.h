@@ -13,6 +13,5 @@ public:
 
 private:
 	CHeroEnemy* m_pHeroEnemy{ nullptr };
-	CGameInstance* m_pGameInstance{ nullptr };
 };
 END

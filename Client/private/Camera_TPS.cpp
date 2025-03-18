@@ -61,64 +61,73 @@ void CCamera_TPS::Update(_float fTimeDelta)
 
 void CCamera_TPS::Late_Update(_float fTimeDelta)
 {
-	if (!m_isActive)
-		return;
+    if (!m_isActive)
+        return;
 
-	// 현재 창이 활성화 상태인지 확인
-	bool isActive = (GetForegroundWindow() == g_hWnd);
+    // 현재 창이 활성화 상태인지 확인
+    bool isActive = (GetForegroundWindow() == g_hWnd);
 
-	// 1. 화면 중앙 좌표 계산
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
-	POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
+    // 1. 화면 중앙 좌표 계산
+    RECT rc;
+    GetClientRect(g_hWnd, &rc);
+    POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
 
-	// 2. 현재 마우스 좌표 가져오기
-	POINT ptMouse;
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse); // 클라이언트 좌표로 변환
+    // 2. 현재 마우스 좌표 가져오기
+    POINT ptMouse;
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse); // 클라이언트 좌표로 변환
 
-	// 3. 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
-	if (!isActive)
-		return;
+    // 3. 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
+    if (!isActive)
+        return;
 
-	// === 마우스가 창 내부에 있는지 확인 ===
-	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
-		return;  // 창 밖이면 회전 로직을 실행하지 않음
+    // === 마우스가 창 내부에 있는지 확인 ===
+    if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
+        return;  // 창 밖이면 회전 로직을 실행하지 않음
 
-	// 4. 마우스 이동량 계산 (중앙 기준)
-	_int iMouseMoveX = ptMouse.x - ptCenter.x;
-	_int iMouseMoveY = ptMouse.y - ptCenter.y;
+    // 4. 마우스 이동량 계산 (중앙 기준)
+    _int iMouseMoveX = ptMouse.x - ptCenter.x;
+    _int iMouseMoveY = ptMouse.y - ptCenter.y;
 
-	// 5. 마우스 이동량을 기반으로 카메라 회전 적용
-	m_fYaw += iMouseMoveX * fTimeDelta * m_fMouseSensor;
-	m_fPitch += iMouseMoveY * fTimeDelta * m_fMouseSensor;
-	m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch));
+    // 5. 마우스 이동량을 기반으로 카메라 회전 적용
+    m_fYaw += iMouseMoveX * fTimeDelta * m_fMouseSensor;
+    m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
 
-	// 6. 마우스를 다시 중앙으로 이동
-	ClientToScreen(g_hWnd, &ptCenter);
-	SetCursorPos(ptCenter.x, ptCenter.y);
+    // 피치(Pitch) 값 제한 (위아래 회전 각도 제한)
+    m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch));
 
-	// 7. 마우스를 창 내부에 가두기 (ClipCursor 사용)
-	RECT clipRect;
-	GetWindowRect(g_hWnd, &clipRect);
-	ClipCursor(&clipRect); // 마우스를 창 내부에 고정
+    // 6. 마우스를 다시 중앙으로 이동
+    ClientToScreen(g_hWnd, &ptCenter);
+    SetCursorPos(ptCenter.x, ptCenter.y);
 
-	// 8. 카메라 위치 업데이트
-	_float3 vTargetPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
-	_float fRadius = 5.0f;
-	_float fHeight = 2.0f;
+    // 7. 마우스를 창 내부에 가두기 (ClipCursor 사용)
+    RECT clipRect;
+    GetWindowRect(g_hWnd, &clipRect);
+    ClipCursor(&clipRect); // 마우스를 창 내부에 고정
 
-	_float fX = fRadius * cosf(m_fPitch) * sinf(m_fYaw);
-	_float fY = fRadius * sinf(m_fPitch) + fHeight;
-	_float fZ = fRadius * cosf(m_fPitch) * cosf(m_fYaw);
+    // 8. 캐릭터 머리 위치 기준으로 회전 중심 설정
+    _float3 vTargetPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
+    _float fHeadHeight = 1.5f;  // 캐릭터 머리 높이 조정
+    _float3 vHeadPos = vTargetPos + _float3(0.f, fHeadHeight, 0.f);  // 머리 위치
 
-	_float3 vCameraPos = vTargetPos + _float3(fX, fY, fZ);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
+    // 9. 카메라 방향 벡터 계산 (1인칭과 동일한 방식)
+    _float3 vLook;
+    vLook.x = cosf(m_fPitch) * sinf(m_fYaw);
+    vLook.y = sinf(m_fPitch);
+    vLook.z = cosf(m_fPitch) * cosf(m_fYaw);
+    XMVECTOR vLookVector = XMLoadFloat3(reinterpret_cast<const XMFLOAT3*>(&vLook));
+    vLookVector = XMVector3Normalize(vLookVector);
+    XMStoreFloat3(reinterpret_cast<XMFLOAT3*>(&vLook), vLookVector);
 
-	_float3 vHeadPos = vTargetPos + _float3(0.f, 1.f, 0.f);
-	m_pTransformCom->LookAt(vHeadPos);
+    // 10. 머리를 중심으로 카메라 배치 (캐릭터 머리에서 fRadius만큼 뒤로 배치)
+    _float fRadius = 3.5f;  // 카메라 거리
+    _float3 vCameraPos = vHeadPos - vLook * fRadius;
 
-	__super::Update_VP_Matrices();
+    // 11. 카메라 위치와 방향 적용
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
+    m_pTransformCom->LookAt(vHeadPos);  // 머리를 바라보게 설정
+
+    __super::Update_VP_Matrices();
 }
 
 HRESULT CCamera_TPS::Render()

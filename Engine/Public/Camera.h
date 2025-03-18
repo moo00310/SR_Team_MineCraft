@@ -32,6 +32,13 @@ public:
 
 public:
 	void					Set_Active(_bool _isActive);
+	const _float3&			Get_LookAt();
+	void					Set_LookAt(const _float3& vLookAt);
+	class CTransform*		Get_Transform();
+	_float					Get_Yaw();
+	_float					Get_Pitch();
+	void					Set_Yaw(_float fYaw);
+	void					Set_Pitch(_float fPitch);
 
 protected:
 	_float4x4				m_ViewMatrix = {};

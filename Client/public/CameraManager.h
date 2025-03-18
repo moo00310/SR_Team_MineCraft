@@ -8,14 +8,14 @@ private:
 	CCameraManager();
 	virtual ~CCameraManager() = default;
 public:
-	HRESULT Initialize();
+	HRESULT Initialize(_uint iLevelIndex);
 public:
 	void Change_Camera();
 private:
 	list<CCamera*> m_Cameras;
 	list<CCamera*>::iterator m_CurrentCamera;
 public:
-	static CCameraManager* Create();
+	static CCameraManager* Create(_uint iLevelIndex);
 	void Free();
 };
 

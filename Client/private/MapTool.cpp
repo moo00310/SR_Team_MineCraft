@@ -85,20 +85,20 @@ HRESULT CMapTool::Render()
         }
 
         if (ImGui::Button("X -"))
-            m_iMapX = max(4, m_iMapX / 2);
+            m_iMapX = max(4, m_iMapX -16);
         ImGui::SameLine();
         ImGui::Text("MapX Size: %d", m_iMapX);
         ImGui::SameLine();
         if (ImGui::Button("X +"))
-            m_iMapX = min(256, m_iMapX * 2);
+            m_iMapX = min(256, m_iMapX +16);
 
         if (ImGui::Button("Z -"))
-            m_iMapZ = max(4, m_iMapZ / 2);
+            m_iMapZ = max(4, m_iMapZ -16);
         ImGui::SameLine();
         ImGui::Text("MapZ Size: %d", m_iMapZ);
         ImGui::SameLine();
         if (ImGui::Button("Z +"))
-            m_iMapZ = min(256, m_iMapZ * 2);
+            m_iMapZ = min(256, m_iMapZ +16);
 
         ImGui::SliderInt("Seed", &m_iSeed, 0, 99999);
         ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
