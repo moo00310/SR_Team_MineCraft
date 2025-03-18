@@ -42,6 +42,10 @@ protected:
 public:
 	virtual void Free() override;
 
+private:
+	// 파티클 세그먼트 당 종료.
+	DWORD dwVpOffset = 0;
+
 protected:
 	_uint	m_iFVF = {};
 	LPDIRECT3DVERTEXBUFFER9 m_pVB = { nullptr };
@@ -50,10 +54,7 @@ protected:
 	_uint iParticleCount = 0;
 
 	// 파티클 세그먼트 당 채울 갯수.
-	DWORD dwVpSBatchSize;
-
-	// 파티클 세그먼트 당 종료.
-	DWORD dwVpOffset = 0;
+	DWORD dwVpSBatchSize;	
 
 	// 포인트 스프라이트 크기.
 	DWORD dwPointSize;
