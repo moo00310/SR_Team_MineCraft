@@ -20,7 +20,7 @@ HRESULT CMainLogo::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = g_iWinSizeX;
+    Desc.fSizeX = g_iWinSizeX + 200.f;
     Desc.fSizeY = g_iWinSizeY;
     Desc.fX = g_iWinSizeX * 0.5f;
     Desc.fY = g_iWinSizeY * 0.5f;
@@ -31,10 +31,10 @@ HRESULT CMainLogo::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-
     m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(0, 0, 0.f));
-
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
+    //m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(0, 0, 0.f));
+    
     return S_OK;
 }
 
@@ -44,19 +44,20 @@ void CMainLogo::Priority_Update(_float fTimeDelta)
 
 void CMainLogo::Update(_float fTimeDelta)
 {
-    if (GetKeyState(VK_LEFT) & 0x8000)
+    // 경과 시간 누적 
+    elapsedTime += fTimeDelta;
+
+    if (5.0f > elapsedTime)
     {
         m_pTransformCom->Go_Left(0.016f);
     }
-    if (GetKeyState(VK_RIGHT) & 0x8000)
+    if (elapsedTime >= 5.0f)
     {
         m_pTransformCom->Go_Right(0.016f);
     }
-
-    if (GetKeyState(VK_LBUTTON) & 0x8000)
+    if (elapsedTime >= 10.0f)
     {
-        if (true == __super::isPick(g_hWnd))
-            int a = 10;
+        elapsedTime = 0.0f;
     }
 }
 
@@ -68,6 +69,8 @@ void CMainLogo::Late_Update(_float fTimeDelta)
 
 HRESULT CMainLogo::Render()
 {
+   // m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
+
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 

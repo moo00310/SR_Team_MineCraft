@@ -1,5 +1,8 @@
 ﻿#include "Level_WOO.h"
 #include "GameInstance.h"
+#include "Level_Loading.h"
+
+_bool g_bChangeLevel = false;
 
 CLevel_WOO::CLevel_WOO(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -18,6 +21,8 @@ HRESULT CLevel_WOO::Initialize()
 	//if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 	//	return E_FAIL;
 
+	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
+
 	if(FAILED(Ready_Layer_MainLogo(TEXT("Layer_MainLogo"))))
 		return E_FAIL;
 
@@ -26,7 +31,15 @@ HRESULT CLevel_WOO::Initialize()
 
 void CLevel_WOO::Update(_float fTimeDelta)
 {
-	int a = 10;
+	/* 레벨 전환 */
+	if (g_bChangeLevel)
+	{
+		g_bChangeLevel = false;
+
+		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_MOO))))
+			return;
+	}
 }
 
 HRESULT CLevel_WOO::Render()

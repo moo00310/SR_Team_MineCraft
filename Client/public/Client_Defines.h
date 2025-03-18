@@ -16,6 +16,8 @@ namespace Client
 
 extern HWND g_hWnd;
 
+extern _bool g_bChangeLevel;
+
 
 using namespace Client;
 
