@@ -7,7 +7,7 @@ CCameraManager::CCameraManager()
 {
 }
 
-HRESULT CCameraManager::Initialize()
+HRESULT CCameraManager::Initialize(_uint iLevelIndex)
 {
 	_int iIndex{ 0 };
 	CCamera* pCamera{ nullptr };
@@ -15,7 +15,7 @@ HRESULT CCameraManager::Initialize()
 	//모든 카메라를 가져온다.
 	while (true)
 	{
-		pCamera = dynamic_cast<CCamera*>(CGameInstance::Get_Instance()->Get_Object(LEVEL_HERO, TEXT("Layer_Camera"), iIndex));
+		pCamera = dynamic_cast<CCamera*>(CGameInstance::Get_Instance()->Get_Object(iLevelIndex, TEXT("Layer_Camera"), iIndex));
 		
 		if (!pCamera)
 			break;
@@ -51,11 +51,11 @@ void CCameraManager::Change_Camera()
 	m_CurrentCamera = pNextCamera;
 }
 
-CCameraManager* CCameraManager::Create()
+CCameraManager* CCameraManager::Create(_uint iLevelIndex)
 {
 	CCameraManager* pInstance = new CCameraManager();
 
-	if (FAILED(pInstance->Initialize()))
+	if (FAILED(pInstance->Initialize(iLevelIndex)))
 	{
 		MSG_BOX("Failed to Created : CCameraManager");
 		Safe_Release(pInstance);

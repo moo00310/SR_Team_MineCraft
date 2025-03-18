@@ -91,6 +91,7 @@ void CSteve::Late_Update(_float fTimeDelta)
 
 HRESULT CSteve::Render()
 {
+	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
@@ -109,6 +110,16 @@ HRESULT CSteve::Render()
 	}
 
 	return S_OK;
+}
+
+void CSteve::SetPos(_float3 v3)
+{
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, v3);
+}
+
+_float3 CSteve::GetPos()
+{
+	return m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 }
 
 HRESULT CSteve::Ready_Components()
