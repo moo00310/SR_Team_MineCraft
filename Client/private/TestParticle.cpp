@@ -15,8 +15,8 @@ HRESULT CTestParticle::Initialize_Prototype()
 
 HRESULT CTestParticle::Initialize(void* pArg)
 {
-	iParticleCount = 200000;
-	dwVpSBatchSize = 50000;
+	iParticleCount = 20000;
+	dwVpBatchSize = 5000;
 	dwPointSize = GetScale(0.2f);
 	dwPointScaleA = GetScale(0.f);
 	dwPointScaleB = GetScale(0.f);

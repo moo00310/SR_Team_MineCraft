@@ -68,7 +68,7 @@ HRESULT CParticleSystem::Render()
 	dwVpOffset = 0;
 
 	// dwVpOffset * sizeof(VTXPARTICLE)에서 dwVpSBatchSize * sizeof(PARTICLE) 크기만큼 할당.
-	m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpSBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
+	m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
 
 	// 파티클 인스턴싱 로직.
 	for (auto& data : m_ListParticleAttribute)
@@ -89,7 +89,7 @@ HRESULT CParticleSystem::Render()
 		currentVertexIndex++;
 
 		// 현재 세그먼트 단계가 다 채워졌을 경우 그린다.
-		if (currentVertexIndex == dwVpSBatchSize)
+		if (currentVertexIndex == dwVpBatchSize)
 		{
 			// 잠금 해제.
 			m_pVB->Unlock();
@@ -98,13 +98,13 @@ HRESULT CParticleSystem::Render()
 			m_pGraphic_Device->DrawPrimitive(
 				D3DPT_POINTLIST,
 				dwVpOffset,
-				dwVpSBatchSize);			
+				dwVpBatchSize);
 
 			// 오프셋 추가.
-			dwVpOffset += dwVpSBatchSize;
+			dwVpOffset += dwVpBatchSize;
 
 			// 다음 세그먼트 그리기 위한 락.
-			m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpSBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
+			m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
 
 			// 현재 세그먼트의 단계 초기화.
 			currentVertexIndex = 0;
