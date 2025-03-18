@@ -41,6 +41,7 @@ protected:
 	float GetRandomFloat(float lowBound, float highBound);
 
 	// SetParticleAttribute 호출 시 실행.	
+	// 파티클마다 각 속성을 정의 해준다.
 	virtual ParticleAttribute OnSetAddParticle() = 0;
 
 	// 파티클 경계선 벗어나면 호출
