@@ -34,11 +34,9 @@ private:
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 
-
-	CTransform* m_pTargetTransformCom = { nullptr };
 	float Comput = {};
 	int  flag = { 1 };
-	int m_bisTPS = { 1 };
+	int m_bisTPS = { -1 };
 
 private:
 	HRESULT Ready_Components();

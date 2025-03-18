@@ -89,6 +89,16 @@ namespace Engine
             Set_State(STATE_POSITION, vPosition);
         }
 
+        void Go_Vector(TRANSFORMSTATE eState, _float fTimeDelta, _float fSpeedPerSec)
+        {
+            _float3		vPosition = Get_State(STATE_POSITION);
+            _float3		vVector3 = Get_State(eState);
+
+            vPosition += *D3DXVec3Normalize(&vVector3, &vVector3) * fSpeedPerSec * fTimeDelta;
+
+            Set_State(STATE_POSITION, vPosition);
+        }
+
         _float4x4 Turn(const _float3& vAxis, _float fTimeDelta, _float fSpeedPerSec)
         {
             _float3			vRight = Get_State(STATE_RIGHT);
