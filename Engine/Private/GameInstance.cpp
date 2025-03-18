@@ -140,6 +140,11 @@ list<class CGameObject*> CGameInstance::Get_GameObjectList(_uint iLevelIndex, co
 	return m_pObject_Manager->Get_GameObjectList(iLevelIndex, pLayerTag);
 }
 
+void CGameInstance::SetLayerRenderActive(_uint iLevelIndex, const _tchar* pLayerTag, bool _b)
+{
+	m_pObject_Manager->SetLayerRenderActive(iLevelIndex, pLayerTag, _b);
+}
+
 #pragma endregion
 
 #pragma region RENDERER

@@ -23,7 +23,7 @@ void CLayer::Priority_Update(_float fTimeDelta)
 			pGameObject->Priority_Update(fTimeDelta);
 
 	}
-		
+
 }
 
 void CLayer::Update(_float fTimeDelta)
@@ -38,11 +38,13 @@ void CLayer::Update(_float fTimeDelta)
 
 void CLayer::Late_Update(_float fTimeDelta)
 {
-	for (auto& pGameObject : m_GameObjects)
-	{
-		if (nullptr != pGameObject)
-			pGameObject->Late_Update(fTimeDelta);
+	if (m_bLayerActive) {
+		for (auto& pGameObject : m_GameObjects)
+		{
+			if (nullptr != pGameObject)
+				pGameObject->Late_Update(fTimeDelta);
 
+		}
 	}
 }
 
@@ -62,6 +64,11 @@ CGameObject* CLayer::Get_Object(_uint iIndex)
 list<class CGameObject*> CLayer::Get_GameObjectList()
 {
 	return m_GameObjects;
+}
+
+void CLayer::SetLayerRenderActive(bool _b)
+{
+	m_bLayerActive = _b;
 }
 
 CLayer* CLayer::Create()

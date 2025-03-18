@@ -24,6 +24,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+	void SetPos(_float3 v3);
+	_float3 GetPos();
+
 private:
 	CTransform* m_pTransformCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
