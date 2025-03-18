@@ -12,6 +12,7 @@
 #include "Level_Loading.h"
 
 #include "Steve.h"
+#include "Arm_Steve.h"
 
 
 CMainApp::CMainApp()
@@ -208,6 +209,12 @@ HRESULT CMainApp::Ready_Steve()
 	/* For.Prototype_GameObject_Steve */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
 		CSteve::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 스티브_팔 게임 오브젝트
+	/* For.Prototype_GameObject_Arm_Steve */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Arm_Steve"),
+		CArm_Steve::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;
