@@ -2,7 +2,6 @@
 
 #include "Client_Defines.h"
 #include "Level.h"
-#include "CameraManager.h"
 
 BEGIN(Client)
 
@@ -22,9 +21,6 @@ private:
 	HRESULT Ready_Layer_Terrain(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Tool(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Steve(const _wstring& strLayerTag);
-
-private:
-	CCameraManager* m_pCameraManager{ nullptr };
 
 public:
 	static CLevel_YU* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -2,7 +2,7 @@
 
 #include "Client_Defines.h"
 #include "Level.h"
-#include "CameraManager.h"
+
 
 BEGIN(Client)
 
@@ -26,7 +26,7 @@ private:
 	HRESULT Ready_Laye_MooArm(const _wstring& strLayerTag);
 
 private:
-	CCameraManager* m_pCameraManager{ nullptr };
+	//CCameraManager* m_pCameraManager{ nullptr };
 
 public:
 	static CLevel_HERO* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

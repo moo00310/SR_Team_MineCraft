@@ -115,15 +115,6 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Tree\Block">
       <UniqueIdentifier>{b8e50c1c-9e44-4cd6-b43a-8d3c1860d3ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camera\FPS">
-      <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Camera\TPS">
-      <UniqueIdentifier>{f144a248-6181-4626-bfb5-013346057121}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Camera\00.CameraManager">
-      <UniqueIdentifier>{9d537468-14f4-4e96-962a-897e70d09192}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Behavior_Tree">
       <UniqueIdentifier>{6c2d2db5-6575-4350-96b5-f1680963c5d7}</UniqueIdentifier>
     </Filter>
@@ -153,9 +144,12 @@
     </Filter>
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\01.StartButton">
       <UniqueIdentifier>{63beb701-9cd8-4e97-9eaa-fca31c7f74ab}</UniqueIdentifier>
-       </Filter>
+    </Filter>
     <Filter Include="02.GameObjects\99.MooGameOBj\02.Arm">
       <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Camera\Player">
+      <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -300,14 +294,8 @@
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\Camera\Free</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Camera_TPS.h">
-      <Filter>02.GameObjects\Camera\TPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Camera_FPS.h">
-      <Filter>02.GameObjects\Camera\FPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\CameraManager.h">
-      <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
+    <ClInclude Include="..\public\Camera_Player.h">
+      <Filter>02.GameObjects\Camera\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Behavior_Tree.h">
       <Filter>03.Behavior_Tree</Filter>
@@ -335,7 +323,7 @@
     </ClInclude>
     <ClInclude Include="..\public\StartButton.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
-   </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Arm_Steve.h">
       <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
     </ClInclude>
@@ -468,14 +456,8 @@
     <ClCompile Include="..\private\Leaf.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Camera_TPS.cpp">
-      <Filter>02.GameObjects\Camera\TPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Camera_FPS.cpp">
-      <Filter>02.GameObjects\Camera\FPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\CameraManager.cpp">
-      <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
+    <ClCompile Include="..\private\Camera_Player.cpp">
+      <Filter>02.GameObjects\Camera\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Behavior_Tree.cpp">
       <Filter>03.Behavior_Tree</Filter>
@@ -509,7 +491,7 @@
     </ClCompile>
     <ClCompile Include="..\private\StartButton.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
-      </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\Arm_Steve.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
     </ClCompile>

@@ -2,8 +2,7 @@
 #include "GameInstance.h"
 #include "MapTool.h"
 
-#include "Camera_TPS.h"
-#include "Camera_FPS.h"
+#include "Camera_Player.h"
 
 
 #include "Steve.h"
@@ -84,33 +83,17 @@ HRESULT CLevel_YU::Ready_Layer_Steve(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	CCamera_TPS::CAMERA_TPS_DESC Cam_TPS_Desc{};
-	Cam_TPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
-	Cam_TPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Cam_TPS_Desc.fFov = D3DXToRadian(60.f);
-	Cam_TPS_Desc.fNear = 0.1f;
-	Cam_TPS_Desc.fFar = 300.f;
-	Cam_TPS_Desc.fMouseSensor = 0.1f;
-	Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Camera_TPS"),
-		LEVEL_YU, strLayerTag, &Cam_TPS_Desc)))
+	CCamera_Player::CAMERA_PLAYER_DESC Cam_Player_Desc{};
+	Cam_Player_Desc.vEye = _float3(0.f, 10.f, -10.f);
+	Cam_Player_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Cam_Player_Desc.fFov = D3DXToRadian(60.f);
+	Cam_Player_Desc.fNear = 0.1f;
+	Cam_Player_Desc.fFar = 300.f;
+	Cam_Player_Desc.fMouseSensor = 0.1f;
+	Cam_Player_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Player"),
+		LEVEL_YU, strLayerTag, &Cam_Player_Desc)))
 		return E_FAIL;
-
-	CCamera_FPS::CAMERA_FPS_DESC Cam_FPS_Desc{};
-	Cam_FPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
-	Cam_FPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Cam_FPS_Desc.fFov = D3DXToRadian(60.f);
-	Cam_FPS_Desc.fNear = 0.1f;
-	Cam_FPS_Desc.fFar = 300.f;
-	Cam_FPS_Desc.fMouseSensor = 0.1f;
-	Cam_FPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Camera_FPS"),
-		LEVEL_YU, strLayerTag, &Cam_FPS_Desc)))
-		return E_FAIL;
-
-	//카메라 매니저에다가 카메라 Layer의 모든 카메라를 가져온다음
-	//특정 키를 누를 때마다 다음 카메라만 활성화시킨다.
-	m_pCameraManager = CCameraManager::Create(LEVEL_YU);
 
 	return S_OK;
 }
@@ -133,5 +116,5 @@ CLevel_YU* CLevel_YU::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 void CLevel_YU::Free()
 {
 	__super::Free();
-	Safe_Release(m_pCameraManager);
+
 }

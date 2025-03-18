@@ -162,7 +162,7 @@ HRESULT CHeroEnemy::Ready_BehaviorTree()
 	CCheck_Enemy_Node* pCheckEnemy = CCheck_Enemy_Node::Create(this);
 
 	// 행동 노드: 적을 따라가기
-	CChase_Enemy_Node* pChaseEnemy = new CChase_Enemy_Node();
+	CChase_Enemy_Node* pChaseEnemy = CChase_Enemy_Node::Create(this);
 
 	// 행동 노드: 순찰하기
 	CPatrol_Node* pPatrol = new CPatrol_Node();
