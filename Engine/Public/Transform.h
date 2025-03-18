@@ -47,6 +47,11 @@ public:
 		D3DXMatrixMultiply(&m_WorldMatrix, &m_WorldMatrix, &mat); 
 	}
 
+	void Set_Matrix(const D3DXMATRIX& mat)
+	{
+		memcpy(&m_WorldMatrix, &mat, sizeof mat);
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;

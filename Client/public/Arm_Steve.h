@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Client_Defines.h"
 #include "GameObject.h"
 
@@ -9,12 +8,18 @@ class CTransform;
 class CVIBuffer_Cube;
 END
 
-class CSteve : public CGameObject
+class CArm_Steve : public CGameObject
 {
+public:
+	typedef struct tagArmesc 
+	{
+		CGameObject* pTarget = { nullptr };
+	} DESC;
+
 private:
-	CSteve(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CSteve(const CSteve& Prototype);
-	virtual ~CSteve() = default;
+	CArm_Steve(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CArm_Steve(const CArm_Steve& Prototype);
+	virtual ~CArm_Steve() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -27,27 +32,19 @@ public:
 private:
 	CTransform* m_pTransformCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
-	CVIBuffer_Cube* m_pVIBufferCom[6];
-	vector<BONE> vecBones;
+	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 
+
+	CTransform* m_pTargetTransformCom = { nullptr };
 	float Comput = {};
 	int  flag = { 1 };
 	int m_bisTPS = { 1 };
 
-	// 바뀌면 스티브 클래스 내에서도 모델링 바꾸려고 해요
-	// 1인칭일떄 팔보여주고
-	// 3인칭일때 모델 보여주려고
-
 private:
 	HRESULT Ready_Components();
-	HRESULT Ready_Bone();
-	HRESULT Ready_Mesh();
-
 
 public:
-	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CArm_Steve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };
-
-

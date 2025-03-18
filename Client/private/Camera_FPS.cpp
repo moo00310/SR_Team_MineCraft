@@ -51,8 +51,6 @@ void CCamera_FPS::Priority_Update(_float fTimeDelta)
 		return;
 }
 
-
-
 void CCamera_FPS::Update(_float fTimeDelta)
 {
 	if (!m_isActive)

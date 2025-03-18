@@ -115,6 +115,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,6 +152,7 @@
     <ClInclude Include="..\..\Imgui\imstb_rectpack.h" />
     <ClInclude Include="..\..\Imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\Imgui\imstb_truetype.h" />
+    <ClInclude Include="..\public\Arm_Steve.h" />
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
@@ -210,6 +212,7 @@
     <ClCompile Include="..\..\Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\..\Imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\private\Arm_Steve.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
