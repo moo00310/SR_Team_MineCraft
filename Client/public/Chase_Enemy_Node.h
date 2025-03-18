@@ -10,8 +10,5 @@ class CChase_Enemy_Node : public CNode
 {
 public:
 	STATUS Excute(CGameObject* _Obj, _float _fTimeDelta) override;
-
-private:
-	CHeroEnemy* m_pHeroEnemy{ nullptr };
 };
 END

@@ -159,10 +159,10 @@ HRESULT CHeroEnemy::Ready_BehaviorTree()
 	CSelectorNode* pRoot = new CSelectorNode(L"Root");
 
 	// 조건 검사 노드: 적이 있는지 확인
-	CCheck_Enemy_Node* pCheckEnemy = CCheck_Enemy_Node::Create(this);
+	CCheck_Enemy_Node* pCheckEnemy = new CCheck_Enemy_Node;
 
 	// 행동 노드: 적을 따라가기
-	CChase_Enemy_Node* pChaseEnemy = new CChase_Enemy_Node();
+	CChase_Enemy_Node* pChaseEnemy = new CChase_Enemy_Node;
 
 	// 행동 노드: 순찰하기
 	CPatrol_Node* pPatrol = new CPatrol_Node();

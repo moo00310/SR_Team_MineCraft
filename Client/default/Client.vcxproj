@@ -156,10 +156,8 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
-    <ClInclude Include="..\public\CameraManager.h" />
-    <ClInclude Include="..\public\Camera_FPS.h" />
+    <ClInclude Include="..\public\Camera_Player.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
-    <ClInclude Include="..\public\Camera_TPS.h" />
     <ClInclude Include="..\public\Chase_Enemy_Node.h" />
     <ClInclude Include="..\public\Check_Enemy_Node.h" />
     <ClInclude Include="..\public\Client_Struct.h" />
@@ -191,6 +189,7 @@
     <ClInclude Include="..\public\MCTerrain.h" />
     <ClInclude Include="..\public\Patrol_Node.h" />
     <ClInclude Include="..\public\Player.h" />
+    <ClInclude Include="..\public\SkyBox.h" />
     <ClInclude Include="..\public\StartButton.h" />
     <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
@@ -217,10 +216,8 @@
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
-    <ClCompile Include="..\private\CameraManager.cpp" />
-    <ClCompile Include="..\private\Camera_FPS.cpp" />
+    <ClCompile Include="..\private\Camera_Player.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
-    <ClCompile Include="..\private\Camera_TPS.cpp" />
     <ClCompile Include="..\private\Chase_Enemy_Node.cpp" />
     <ClCompile Include="..\private\Check_Enemy_Node.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
@@ -249,6 +246,7 @@
     <ClCompile Include="..\private\MCTerrain.cpp" />
     <ClCompile Include="..\private\Patrol_Node.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
+    <ClCompile Include="..\private\SkyBox.cpp" />
     <ClCompile Include="..\private\StartButton.cpp" />
     <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />

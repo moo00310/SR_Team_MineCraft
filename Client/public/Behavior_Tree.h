@@ -15,9 +15,7 @@ protected:
 public://CGameObject* _Obj를 전달할 필요 없이 초기화 때 받는게 나을 것 같음
 	virtual STATUS Excute(CGameObject* _Obj, _float _fTimeDelta) = 0;
 public:
-	virtual void Free() override
-	{
-	}
+	virtual void Free() override {};
 };
 
 //CompositeNode

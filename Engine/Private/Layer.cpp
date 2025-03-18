@@ -80,7 +80,7 @@ void CLayer::Free()
 {
 	__super::Free();
 
-	for (auto& pGameObject : m_GameObjects)
+ 	for (auto& pGameObject : m_GameObjects)
 		Safe_Release(pGameObject);
 	m_GameObjects.clear();
 }

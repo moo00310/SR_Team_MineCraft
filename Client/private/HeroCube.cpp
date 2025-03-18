@@ -20,11 +20,7 @@ HRESULT CHeroCube::Initialize_Prototype()
 HRESULT CHeroCube::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
-	{
-		//MSG_BOX("CHeroCube::Ready_Components()");
 		return E_FAIL;
-	}
-
 
 	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
 

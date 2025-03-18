@@ -52,12 +52,12 @@ private:
 
 
 private:
-	CTexture*		m_pTextureCom = { nullptr };
-	CTransform*		m_pTransformCom = { nullptr };
-	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
-	CCollider_Cube* m_pColliderCom = { nullptr };
+	CTexture*				m_pTextureCom = { nullptr };
+	CTransform*				m_pTransformCom = { nullptr };
+	CVIBuffer_Cube*			m_pVIBufferCom = { nullptr };
+	CCollider_Cube*			m_pColliderCom = { nullptr };
 
-	CNode*			m_pBehaviorTree{ nullptr };
+	CNode*					m_pBehaviorTree{ nullptr };
 
 private:
 	HRESULT Ready_Components();
