@@ -19,19 +19,20 @@ HRESULT CStartButton::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = 450.f;
-    Desc.fSizeY = 100.f;
-    Desc.fX = 640;
-    Desc.fY = 360;
+    Desc.fSizeX = 450;
+    Desc.fSizeY = 100;
+    Desc.fX = g_iWinSizeX * 0.5f;
+    Desc.fY = g_iWinSizeY * 0.4f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
+    
+ 	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
 
-    m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(0, 0, 0.f));
 
     return S_OK;
 }
@@ -45,7 +46,7 @@ void CStartButton::Update(_float fTimeDelta)
     if (GetKeyState(VK_LBUTTON) & 0x8000)
     {
         if (true == __super::isPick(g_hWnd))
-            int a = 10;
+            g_bChangeLevel = true;
     }
 }
 
@@ -57,6 +58,8 @@ void CStartButton::Late_Update(_float fTimeDelta)
 
 HRESULT CStartButton::Render()
 {
+    //m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
+
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
@@ -86,12 +89,12 @@ HRESULT CStartButton::Ready_Components()
         reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
         return E_FAIL;
 
-    //CTransform::TRANSFORM_DESC TransformDesc{ 10.f, D3DXToRadian(90.f) };
+    CTransform::TRANSFORM_DESC TransformDesc{ 10.f, D3DXToRadian(90.f) };
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
 
-    return S_OK;
+        return S_OK;
 }
 
 CStartButton* CStartButton::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

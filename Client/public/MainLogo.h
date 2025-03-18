@@ -33,6 +33,9 @@ private:
 private:
 	HRESULT Ready_Components();
 
+private:
+	_float elapsedTime = {0.0f};
+
 public:
 	static CMainLogo* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

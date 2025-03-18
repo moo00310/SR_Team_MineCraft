@@ -69,15 +69,16 @@ void CUIObject::End()
 
 _bool CUIObject::isPick(HWND hWnd)
 {
-	POINT ptMouse{};
-
+	POINT			ptMouse{};
 	GetCursorPos(&ptMouse);
-	ClientToScreen(hWnd, &ptMouse);
+	ScreenToClient(hWnd, &ptMouse);
 	
-	RECT rcUI = { m_fX - m_fSizeX * 0.5f, m_fY - m_fSizeY * 0.5f, m_fX + m_fSizeX * 0.5f, m_fY + m_fSizeY * 0.5f };
+	RECT			rcUI = { m_fX - m_fSizeX * 0.5f, m_fY - m_fSizeY * 0.5f, m_fX + m_fSizeX * 0.5f, m_fY + m_fSizeY * 0.5f };
 
 	return PtInRect(&rcUI, ptMouse);
 }
+
+
 
 void CUIObject::Free()
 {

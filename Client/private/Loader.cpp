@@ -467,7 +467,7 @@ HRESULT CLoader::Loading_For_WOOPlay()
 
 	/* For.Prototype_Component_Texture_MainLogo*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_MainLogo"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/isles.png"), 1))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/isles2.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_StartButton*/
