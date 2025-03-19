@@ -13,7 +13,6 @@ CUIObject::CUIObject(const CUIObject& Prototype)
 HRESULT CUIObject::Initialize_Prototype()
 {
 
-
 	return S_OK;
 }
 
@@ -26,6 +25,13 @@ HRESULT CUIObject::Initialize(void* pArg)
 
 	/* w, h, n, f : ºäº¼·ýÀ» ¼³Á¤ÇÑ´Ù */
 	D3DXMatrixOrthoLH(&m_ProjMatrix, static_cast<_float>(ViewportDesc.Width), static_cast<_float>(ViewportDesc.Height), 0.f, 1.f);
+
+	UIOBJECT_DESC* pDesc = static_cast<UIOBJECT_DESC*>(pArg);
+
+	m_fX = pDesc->fX;
+	m_fY = pDesc->fY;
+	m_fSizeX = pDesc->fSizeX;
+	m_fSizeY = pDesc->fSizeY;
 
 	return S_OK;
 }
@@ -60,6 +66,19 @@ void CUIObject::End()
 	m_pGraphic_Device->SetTransform(D3DTS_VIEW, &m_OldViewMatrix);
 	m_pGraphic_Device->SetTransform(D3DTS_PROJECTION, &m_OldProjMatrix);
 }
+
+_bool CUIObject::isPick(HWND hWnd)
+{
+	POINT			ptMouse{};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(hWnd, &ptMouse);
+	
+	RECT			rcUI = { m_fX - m_fSizeX * 0.5f, m_fY - m_fSizeY * 0.5f, m_fX + m_fSizeX * 0.5f, m_fY + m_fSizeY * 0.5f };
+
+	return PtInRect(&rcUI, ptMouse);
+}
+
+
 
 void CUIObject::Free()
 {

@@ -29,10 +29,6 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
-
-public:
-	void					Set_Active(_bool _isActive);
-
 protected:
 	_float4x4				m_ViewMatrix = {};
 	_float4x4				m_ProjMatrix = {};
@@ -42,7 +38,7 @@ protected:
 	_float					m_fFar = {};
 
 	class CTransform*		m_pTransformCom = {};
-	_bool					m_isActive{ true };
+
 protected:
 	HRESULT Update_VP_Matrices();
 

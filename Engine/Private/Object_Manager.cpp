@@ -109,6 +109,21 @@ CGameObject* CObject_Manager::Find_Objects(_uint iLevelIndex, const _tchar* pLay
 	return pLayer->Get_Object(iIndex);
 }
 
+list<class CGameObject*> CObject_Manager::Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, pLayerTag);
+	return pLayer->Get_GameObjectList();
+}
+
+void CObject_Manager::SetLayerRenderActive(_uint iLevelIndex, const _tchar* pLayerTag, bool _b)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, pLayerTag);
+	if (pLayer == nullptr)
+		return;
+
+	pLayer->SetLayerRenderActive(_b);
+}
+
 CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& strLayerTag)
 {
 	auto	iter = m_pLayers[iLevelIndex].find(strLayerTag);

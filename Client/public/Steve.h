@@ -24,6 +24,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+	void SetPos(_float3 v3);
+	_float3 GetPos();
+
 private:
 	CTransform* m_pTransformCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
@@ -32,13 +35,16 @@ private:
 
 	float Comput = {};
 	int  flag = { 1 };
+	int m_bisTPS = { 1 };
+
+	// 바뀌면 스티브 클래스 내에서도 모델링 바꾸려고 해요
+	// 1인칭일떄 팔보여주고
+	// 3인칭일때 모델 보여주려고
 
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone();
 	HRESULT Ready_Mesh();
-
-	HRESULT UpDate_Mesh();
 
 
 public:

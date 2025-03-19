@@ -14,8 +14,8 @@ CVIBuffer_Cube::CVIBuffer_Cube(const CVIBuffer_Cube& Prototype):
 HRESULT CVIBuffer_Cube::Initialize_Prototype(CUBE& tInfo)
 {
     m_iNumVertices = 24;
-    m_iVertexStride = sizeof(VTXPOSTEX);
-    m_iFVF = D3DFVF_XYZ | D3DFVF_TEX1;
+    m_iVertexStride = sizeof(VTXNORTEX);
+    m_iFVF = D3DFVF_XYZ | D3DFVF_NORMAL |D3DFVF_TEX1;
     m_iNumPritimive = 12;
 
     m_iNumIndices = m_iNumPritimive * 3;
@@ -43,11 +43,12 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(CUBE& tInfo)
     };
 
 
-    VTXPOSTEX* pVertices = { nullptr };
+    VTXNORTEX* pVertices = { nullptr };
     m_pVB->Lock(0, 0, reinterpret_cast<void**>(&pVertices), 0);
 
 
 #pragma region 버택스 점찍기
+
     // front 앞 면
     pVertices[0].vPosition = VertInex[0];
     pVertices[1].vPosition = VertInex[1];
@@ -115,10 +116,8 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(CUBE& tInfo)
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y + fBoxSize.z) / Imagesize.y);
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y);
     }
+
 #pragma endregion
-
-    m_pVB->Unlock();
-
     /*IB*/
     if (FAILED(__super::Create_IndexBuffer()))
         return E_FAIL;
@@ -146,6 +145,24 @@ HRESULT CVIBuffer_Cube::Initialize_Prototype(CUBE& tInfo)
     pIndices[iNumIndices++] = 20;  pIndices[iNumIndices++] = 23;  pIndices[iNumIndices++] = 22;
     pIndices[iNumIndices++] = 20;  pIndices[iNumIndices++] = 22;  pIndices[iNumIndices++] = 21;
 
+#pragma region Normal 매핑
+    _float3		vSourDir, vDestDir, vNormal;
+
+    for (int i = 0; i < 34; i++)
+    {
+        vSourDir = pVertices[pIndices[i+1]].vPosition - pVertices[pIndices[i]].vPosition;
+        vDestDir = pVertices[pIndices[i+2]].vPosition - pVertices[pIndices[i+1]].vPosition;
+
+        D3DXVec3Normalize(&vNormal, D3DXVec3Cross(&vNormal, &vSourDir, &vDestDir));
+
+        pVertices[pIndices[i]].vNormal += vNormal;
+        pVertices[pIndices[i+1]].vNormal += vNormal;
+        pVertices[pIndices[i+2]].vNormal += vNormal;
+    }
+  
+#pragma endregion
+
+    m_pVB->Unlock();
     m_pIB->Unlock();
 
     return S_OK;

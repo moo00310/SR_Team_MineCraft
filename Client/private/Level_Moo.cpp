@@ -17,14 +17,18 @@ HRESULT CLevel_Moo::Initialize()
 		return E_FAIL;
 
 
-	//if (FAILED(Ready_Layer_Creeper(TEXT("Layer_Creeper"))))
-	//	return E_FAIL;
+	/*if (FAILED(Ready_Layer_Creeper(TEXT("Layer_Creeper"))))
+		return E_FAIL;
 
-	/*if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steev"))))
+	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Layer_Tree(TEXT("Layer_Tree_1"))))
+	if (FAILED(Ready_Layer_Tree(TEXT("Layer_Trees"))))
 		return E_FAIL; 
+
+	//임무결 1인칭 확인용
+	if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
+		return E_FAIL;
 
 
 	return S_OK;
@@ -37,7 +41,7 @@ void CLevel_Moo::Update(_float fTimeDelta)
 
 HRESULT CLevel_Moo::Render()
 {
-	SetWindowText(g_hWnd, TEXT("MOO_TEST ·¹º§ÀÔ´Ï´Ù."));
+	SetWindowText(g_hWnd, TEXT("MOO_TEST"));
 
 	return S_OK;
 }
@@ -80,9 +84,25 @@ HRESULT CLevel_Moo::Ready_Layer_Steve(const _wstring& strLayerTag)
 
 HRESULT CLevel_Moo::Ready_Layer_Tree(const _wstring& strLayerTag)
 {
+	for (int i = 0; i < 100; i++)
+	{
+		// 나무 높이, 추가 잎, 위치 개수 지정
+		int randWood = rand() % 3 + 4;
+		int ranLeaf = rand() % 8 + 4;
 
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Tree"),
-		LEVEL_MOO, strLayerTag)))
+		CTree::DESC desc = { randWood, ranLeaf, _float3(static_cast<int>(rand() % 100) , 0.f, static_cast<int>(rand() % 100)), i};
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Tree"),
+			LEVEL_MOO, strLayerTag, &desc)))
+			return E_FAIL;
+	}
+
+	return S_OK;
+}
+
+HRESULT CLevel_Moo::Ready_Laye_MooArm(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arm_Steve"),
+		LEVEL_STATIC, strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

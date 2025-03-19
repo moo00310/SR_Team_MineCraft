@@ -3,8 +3,7 @@
 #include "GameInstance.h"
 
 #include "Camera_Free.h"
-#include "Camera_TPS.h"
-#include "Camera_FPS.h"
+#include "Camera_Player.h"
 
 #include "BackGround.h"
 #include "Terrain.h"
@@ -24,13 +23,15 @@
 #include "HeroCube.h" //콜라이더 테스트용 큐브
 #include "HeroCubeNoMove.h"
 #include "HeroEnemy.h"
-/*
-  지형 관련
-*/
+#include "SkyBox.h"
+
+
+//지형 관련
 #include "Dirt.h"
 #include "Stone.h"
 #include "GrassDirt.h"
 #include "CoalOre.h"
+#include "IronOre.h"
 #include "MCTerrain.h"
 #include "MapTool.h"
 
@@ -39,6 +40,10 @@
 #include "VIBuffer_Cube_Only.h"
 #include "ParticleRain.h"
 #include "ParticleDash.h"
+
+//Woo
+#include "MainLogo.h"
+#include "StartButton.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -202,16 +207,8 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_Creeper */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Creeper"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Creeper/Creeper.png"), 1))))
-		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_Steve */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Steve"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Steve/Steve.png"), 1))))
-		return E_FAIL;
-
+	// 나무 텍스쳐
 	/* For.Prototype_Component_Texture_Leaf */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Leaf"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/leaves0.png"), 1))))
@@ -222,15 +219,13 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/wood0.png"), 1))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
-	/* For.Prototype_Component_VIBuffer_Terrain */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Terrain"),
-		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
-		return E_FAIL;
-
 	/*-----------------------------------
 	*  크리퍼 모델
-	------------------------------*/
+	-----------------------------*/
+	/* For.Prototype_Component_Texture_Creeper */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Creeper"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Creeper/Creeper.png"), 1))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_Creeper */
 	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
@@ -248,42 +243,8 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
-	/*-----------------------------------
-	*  스티브 모델
-	------------------------------*/
-	/* For.Prototype_Component_VIBuffer_Steve */
-	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(8.f, 12.f, 4.f), _float2(16.f, 16.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(0.f, 16.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-		cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(16.f, 48.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
-
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(40.f, 16.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(32.f, 48.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
+	
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 	//// 터레인 큐브
 	//cube = { _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
@@ -311,8 +272,8 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CCreeper::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Creeper */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
+	/* For.Prototype_GameObject_Steve */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Steve"),
 		CSteve::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
@@ -325,7 +286,6 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Leaf"),
 		CLeaf::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
 
 	/* For.Prototype_GameObject_Tree */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Tree"),
@@ -357,9 +317,14 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/stone%d.png"), 1))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Texture_coalOre */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_coalOre"),
+	/* For.Prototype_Component_Texture_CoalOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_CoalOre"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/coalOre%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_IronOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_IronOre"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/ironOre%d.png"), 1))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -372,27 +337,32 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
-	/* For.Prototype_GameObject_Camera_Free */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Free"),
-		CCamera_Free::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
+	/* For.Prototype_GameObject_Dirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
 		CDirt::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_GrassDirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"),
 		CGrassDirt::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Stone */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Stone"),
 		CStone::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_CoalOre */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"),
 		CCoalOre::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_IronOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"),
+		CIronOre::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_MCTerrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MCTerrain"),
 		CMCTerrain::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -400,6 +370,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Tool */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MapTool"),
 		CMapTool::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_Player */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Player"),
+		CCamera_Player::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Camera_Free */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Free"),
+		CCamera_Free::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -411,19 +391,24 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 HRESULT CLoader::Loading_For_HEROPlay()
 {
+#pragma region TEXTURE
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
-	/* For.Prototype_Component_Texture_Steve */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Steve"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Steve/Steve.png"), 1))))
+	/* For.Prototype_Component_Texture_BackGround*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_BackGround"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_GrassDirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_GrassDirt"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassDirt%d.png"), 1))))
+		return E_FAIL;
+#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
- 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		CCollider_Cube::Create(m_pGraphic_Device/*, Desc*/))))
-		return E_FAIL;
-
+ 	
 #pragma region MODEL
+	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 #pragma endregion
 
 
@@ -432,19 +417,9 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 
-	/* For.Prototype_GameObject_Camera_Free */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Free"),
-	//	CCamera_Free::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
-
-	/* For.Prototype_GameObject_Camera_TPS */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
-		CCamera_TPS::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Camera_FPS */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_FPS"),
-		CCamera_FPS::Create(m_pGraphic_Device))))
+	/* For.Prototype_GameObject_Camera_Player */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Player"),
+		CCamera_Player::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_HeroCube */
@@ -457,14 +432,19 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CHeroCubeNoMove::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Steve */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
-		CSteve::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
 	/* For.Prototype_GameObject_HeroEnemy */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_HeroEnemy"),
 		CHeroEnemy::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Terrain */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Terrain"),
+		CTerrain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SkyBox */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SkyBox"),
+		CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -476,14 +456,28 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 HRESULT CLoader::Loading_For_WOOPlay()
 {
+
+#pragma region Add_Prototype Component
+	
+
+	#pragma region Texture UI
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
+	/* For.Prototype_Component_Texture_MainLogo*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_MainLogo"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/isles2.png"), 1))))
+		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Texture_StartButton*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_StartButton"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/StartButton/StartButton1.png"), 1))))
+		return E_FAIL;
 
+	#pragma endregion 
 
-	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
-
+#pragma endregion 
+	
+#pragma region Add_Prototype Game Object
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
 	/* For.Prototype_GameObject_Terrain */
@@ -501,6 +495,21 @@ HRESULT CLoader::Loading_For_WOOPlay()
 		CPlayer::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	#pragma region UI Object
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_MainLogo"),
+		CMainLogo::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_StartButton"),
+		CStartButton::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	#pragma endregion 
+
+#pragma endregion 
+
+
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -510,7 +519,7 @@ HRESULT CLoader::Loading_For_WOOPlay()
 
 HRESULT CLoader::Loading_For_HECKPlay()
 {
-	lstrcpy(m_szLoadingText, TEXT(" ؽ     (  )  ε    Դϴ ."));
+	lstrcpy(m_szLoadingText, TEXT(" 텍스쳐을(를) 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Destroy"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/destroy_stage_%d.png"), 10))))
 		return E_FAIL;
@@ -573,7 +582,7 @@ HRESULT CLoader::Loading_For_HECKPlay()
 		CParticleDash::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT(" ε     Ϸ Ǿ    ϴ ."));
+	lstrcpy(m_szLoadingText, TEXT(" 원형객체을(를) 로딩중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

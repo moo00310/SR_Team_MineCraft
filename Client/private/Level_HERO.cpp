@@ -1,8 +1,7 @@
 ﻿#include "Level_HERO.h"
 #include "GameInstance.h"
 
-#include "Camera_TPS.h"
-#include "Camera_FPS.h"
+#include "Camera_Player.h"
 
 CLevel_HERO::CLevel_HERO(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -15,8 +14,8 @@ HRESULT CLevel_HERO::Initialize()
 	//if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
 	//	return E_FAIL;
 
-	/*if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-		return E_FAIL;*/
+	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+  		return E_FAIL;
 
 	if (FAILED(Ready_Layer_HeroCube(TEXT("Layer_HeroCube"))))
  		return E_FAIL;
@@ -32,15 +31,23 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
 		return E_FAIL;
 
+	//BT 연습용 적
+	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;
+
+	//임무결 1인칭 확인용
+	/*if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
+		return E_FAIL;*/
+
 	return S_OK;
 }
 
 void CLevel_HERO::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down(VK_F5))
+	/*if (m_pGameInstance->Key_Down(VK_F5))
 	{
 		m_pCameraManager->Change_Camera();
-	}
+	}*/
 }
 
 HRESULT CLevel_HERO::Render()
@@ -52,33 +59,22 @@ HRESULT CLevel_HERO::Render()
 
 HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	CCamera_TPS::CAMERA_TPS_DESC Cam_TPS_Desc{};
-	Cam_TPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
-	Cam_TPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Cam_TPS_Desc.fFov = D3DXToRadian(60.f);
-	Cam_TPS_Desc.fNear = 0.1f;
-	Cam_TPS_Desc.fFar = 300.f;
-	Cam_TPS_Desc.fMouseSensor = 0.1f;
-	Cam_TPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_TPS"),
-		LEVEL_HERO, strLayerTag,&Cam_TPS_Desc)))
-		return E_FAIL;
 
-	CCamera_FPS::CAMERA_FPS_DESC Cam_FPS_Desc{};
-	Cam_FPS_Desc.vEye = _float3(0.f, 10.f, -10.f);
-	Cam_FPS_Desc.vAt = _float3(0.f, 0.f, 0.f);
-	Cam_FPS_Desc.fFov = D3DXToRadian(60.f);
-	Cam_FPS_Desc.fNear = 0.1f;
-	Cam_FPS_Desc.fFar = 300.f;
-	Cam_FPS_Desc.fMouseSensor = 0.1f;
-	Cam_FPS_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_FPS"),
-		LEVEL_HERO, strLayerTag, &Cam_FPS_Desc)))
+	CCamera_Player::CAMERA_PLAYER_DESC Cam_Player_Desc{};
+	Cam_Player_Desc.vEye = _float3(0.f, 10.f, -10.f);
+	Cam_Player_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Cam_Player_Desc.fFov = D3DXToRadian(60.f);
+	Cam_Player_Desc.fNear = 0.1f;
+	Cam_Player_Desc.fFar = 300.f;
+	Cam_Player_Desc.fMouseSensor = 0.1f;
+	Cam_Player_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Player"),
+		LEVEL_HERO, strLayerTag, &Cam_Player_Desc)))
 		return E_FAIL;
 
 	//카메라 매니저에다가 카메라 Layer의 모든 카메라를 가져온다음
 	//특정 키를 누를 때마다 다음 카메라만 활성화시킨다.
-	m_pCameraManager = CCameraManager::Create();
+	//m_pCameraManager = CCameraManager::Create(LEVEL_HERO);
 
 	return S_OK;
 }
@@ -96,9 +92,9 @@ HRESULT CLevel_HERO::Ready_Layer_Player(const _wstring& strLayerTag)
 }
 HRESULT CLevel_HERO::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Terrain"),
+ 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Terrain"),
 		LEVEL_HERO, strLayerTag)))
-		return E_FAIL;
+  		return E_FAIL;
 
 	return S_OK;
 }
@@ -134,6 +130,24 @@ HRESULT CLevel_HERO::Ready_Layer_HeroEnemy(const _wstring& strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_HERO::Ready_Laye_MooArm(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arm_Steve"),
+		LEVEL_STATIC, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_HERO::Ready_Layer_SkyBox(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_SkyBox"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 CLevel_HERO* CLevel_HERO::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CLevel_HERO* pInstance = new CLevel_HERO(pGraphic_Device);
@@ -151,5 +165,5 @@ void CLevel_HERO::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pCameraManager);
+	//Safe_Release(m_pCameraManager);
 }

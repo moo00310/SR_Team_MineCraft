@@ -19,12 +19,6 @@
     <Filter Include="02.GameObjects\Terrain">
       <UniqueIdentifier>{9de21c46-a0f5-43b6-8a26-1378d9bcc1aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camera">
-      <UniqueIdentifier>{ca227791-6c30-46ed-b75c-8604aeaf2b89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Camera\Free">
-      <UniqueIdentifier>{9a579ff3-968b-4937-b82a-dcf470db3132}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{16d06422-a5ba-4e2c-af8a-628d2d2a5dc0}</UniqueIdentifier>
     </Filter>
@@ -115,15 +109,6 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Tree\Block">
       <UniqueIdentifier>{b8e50c1c-9e44-4cd6-b43a-8d3c1860d3ec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Camera\FPS">
-      <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Camera\TPS">
-      <UniqueIdentifier>{f144a248-6181-4626-bfb5-013346057121}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Camera\00.CameraManager">
-      <UniqueIdentifier>{9d537468-14f4-4e96-962a-897e70d09192}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.Behavior_Tree">
       <UniqueIdentifier>{6c2d2db5-6575-4350-96b5-f1680963c5d7}</UniqueIdentifier>
     </Filter>
@@ -132,6 +117,45 @@
     </Filter>
     <Filter Include="02.GameObjects\Particle">
       <UniqueIdentifier>{e76eac64-4f2c-48d7-a84d-80b3b509d737}</UniqueIdentifier>
+     </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action">
+      <UniqueIdentifier>{8e527e81-b6fa-45aa-a003-763b8c1f9c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy">
+      <UniqueIdentifier>{9bad2947-082a-42c1-9cb4-36c8a1bc8580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy">
+      <UniqueIdentifier>{12324777-f39b-4cc0-ac76-3363161effb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol">
+      <UniqueIdentifier>{3786004d-b6e0-4a00-83c8-215590c82138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj">
+      <UniqueIdentifier>{684ac113-50e1-4f66-ae17-bf8550ddf509}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI">
+      <UniqueIdentifier>{7d7790ef-549e-406c-a782-a1beb097846a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\00.MainLogo">
+      <UniqueIdentifier>{b828998a-4569-4d8c-9de0-8e447ba86c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\01.StartButton">
+      <UniqueIdentifier>{63beb701-9cd8-4e97-9eaa-fca31c7f74ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\02.Arm">
+      <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera">
+      <UniqueIdentifier>{ca227791-6c30-46ed-b75c-8604aeaf2b89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Free">
+      <UniqueIdentifier>{9a579ff3-968b-4937-b82a-dcf470db3132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Player">
+      <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.SkyBox">
+      <UniqueIdentifier>{2e4902cf-7091-4917-b530-ae487272273e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -249,9 +273,6 @@
     <ClInclude Include="..\public\GrassDirt.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\CoalOre.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Level_Moo.h">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClInclude>
@@ -274,16 +295,10 @@
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
-      <Filter>02.GameObjects\Camera\Free</Filter>
+      <Filter>02.GameObjects\02.Camera\Free</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Camera_TPS.h">
-      <Filter>02.GameObjects\Camera\TPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Camera_FPS.h">
-      <Filter>02.GameObjects\Camera\FPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\CameraManager.h">
-      <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
+    <ClInclude Include="..\public\Camera_Player.h">
+      <Filter>02.GameObjects\02.Camera\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Behavior_Tree.h">
       <Filter>03.Behavior_Tree</Filter>
@@ -296,6 +311,33 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleDash.h">
       <Filter>02.GameObjects\Particle</Filter>
+ </ClInclude>
+    <ClInclude Include="..\public\Check_Enemy_Node.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Chase_Enemy_Node.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Patrol_Node.h">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MainLogo.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\00.MainLogo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IronOre.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CoalOre.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\StartButton.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Arm_Steve.h">
+      <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SkyBox.h">
+      <Filter>02.GameObjects\03.SkyBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -337,7 +379,7 @@
       <Filter>02.GameObjects\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
-      <Filter>02.GameObjects\Camera\Free</Filter>
+      <Filter>02.GameObjects\02.Camera\Free</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
       <Filter>02.GameObjects\Player</Filter>
@@ -411,9 +453,6 @@
     <ClCompile Include="..\private\GrassDirt.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CoalOre.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Level_Moo.cpp">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClCompile>
@@ -429,14 +468,8 @@
     <ClCompile Include="..\private\Leaf.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Camera_TPS.cpp">
-      <Filter>02.GameObjects\Camera\TPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Camera_FPS.cpp">
-      <Filter>02.GameObjects\Camera\FPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\CameraManager.cpp">
-      <Filter>02.GameObjects\Camera\00.CameraManager</Filter>
+    <ClCompile Include="..\private\Camera_Player.cpp">
+      <Filter>02.GameObjects\02.Camera\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Behavior_Tree.cpp">
       <Filter>03.Behavior_Tree</Filter>
@@ -452,6 +485,33 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleDash.cpp">
       <Filter>02.GameObjects\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Check_Enemy_Node.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Chase_Enemy_Node.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Patrol_Node.cpp">
+      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MainLogo.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\00.MainLogo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\IronOre.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CoalOre.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\StartButton.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Arm_Steve.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SkyBox.cpp">
+      <Filter>02.GameObjects\03.SkyBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

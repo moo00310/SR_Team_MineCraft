@@ -1,5 +1,9 @@
 ﻿#include "MCTerrain.h"
 #include "GameInstance.h"
+#include "Stone.h"
+#include "CoalOre.h"
+
+#include "Steve.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -22,7 +26,7 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
-
+    CheckRenderLayerObjects();
     return S_OK;
 }
 
@@ -32,8 +36,24 @@ void CMCTerrain::Priority_Update(_float fTimeDelta)
 
 void CMCTerrain::Update(_float fTimeDelta)
 {
+    bool currF1State = (GetAsyncKeyState(VK_F1) & 0x8000) != 0;
+    bool currF2State = (GetAsyncKeyState(VK_F2) & 0x8000) != 0;
 
+    if (currF1State && !prevF1State)
+    {
+        CheckRenderLayerObjects();
+    }
 
+    if (currF2State && !prevF2State)
+    {
+        RenderWithoutStone();
+    }
+
+    prevF1State = currF1State;
+    prevF2State = currF2State;
+
+    OffAllChunkLayer();
+    GetPlayerChunk();
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
@@ -44,7 +64,7 @@ void CMCTerrain::Late_Update(_float fTimeDelta)
 
 HRESULT CMCTerrain::Render()
 {
-
+    m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
     return S_OK;
 }
 
@@ -53,24 +73,24 @@ CGameInstance* CMCTerrain::GetGameInstance()
    return m_pGameInstance; 
 }
 
-CRITICAL_SECTION cs;  // 전역 변수로 동기화 객체 추가
+#pragma region 파일 읽기 with 쓰레드
+CRITICAL_SECTION cs;
 
-int GetFileCount()
+int CMCTerrain::GetFileCount()
 {
     WIN32_FIND_DATA findFileData;
     HANDLE hFind = FindFirstFile(L"../bin/Resources/DataFiles/BlockDataChunk*.txt", &findFileData);
 
-    int fileCount = 0;
     if (hFind != INVALID_HANDLE_VALUE)
     {
         do {
-            fileCount++;
+            m_iChunkCount++;
         } while (FindNextFile(hFind, &findFileData));
 
         FindClose(hFind);
     }
 
-    return fileCount;
+    return m_iChunkCount;
 }
 
 struct ThreadParams
@@ -79,7 +99,7 @@ struct ThreadParams
     CMCTerrain* pTerrain;
 };
 
-DWORD WINAPI ProcessFileThread(LPVOID lpParam)
+DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
 {
     ThreadParams* params = (ThreadParams*)lpParam;
     int chunkIndex = params->chunkIndex;
@@ -137,12 +157,29 @@ DWORD WINAPI ProcessFileThread(LPVOID lpParam)
             }
             index++;
             break;
+        case IRONORE:
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            break;
+        case COALORE:
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            break;
         default:
             break;
         }
         LeaveCriticalSection(&cs);  // 동기화 종료
     }
-
     CloseHandle(hFile);
     return 0;
 }
@@ -165,7 +202,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         params[i].chunkIndex = i;
         params[i].pTerrain = this;
 
-        hThreads[i] = CreateThread(NULL, 0, ProcessFileThread, &params[i], 0, NULL);
+        hThreads[i] = CreateThread(NULL, 0, ProcessFileReadThread, &params[i], 0, NULL);
         if (!hThreads[i]) {
             delete[] hThreads;
             delete[] params;
@@ -187,6 +224,141 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
 
     MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
     return S_OK;
+}
+#pragma endregion
+
+#include <unordered_set>
+
+struct Float3Hash {
+    size_t operator()(const _float3& v) const {
+        size_t hx = std::hash<float>()(v.x);
+        size_t hy = std::hash<float>()(v.y);
+        size_t hz = std::hash<float>()(v.z);
+        return hx ^ (hy << 1) ^ (hz << 2);  // XOR을 이용한 해싱
+    }
+};
+
+void CMCTerrain::CheckRenderLayerObjects()
+{
+    for (int i = 0; i < m_iChunkCount; ++i) {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", i);
+
+        list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+
+        // 블록 위치 정보를 저장할 unordered_set
+        std::unordered_set<_float3, Float3Hash> blockPositions;
+
+        // 먼저 모든 블록의 위치를 저장
+        for (auto _object : _copyObjectList) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                _break->Set_RenderActive(true);
+                blockPositions.insert(_break->GetPos());
+            }
+        }
+
+        // 블록의 렌더링 여부 확인
+        for (auto _object : _copyObjectList) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                _float3 pos = _break->GetPos();
+                
+                // 6방향 확인
+                static const _float3 offsets[] = {
+                    {-1, 0, 0}, {1, 0, 0}, {0, 1, 0},
+                    {0, -1, 0}, {0, 0, 1}, {0, 0, -1}
+                };
+
+                bool isSurrounded = true;
+                for (const auto& offset : offsets) {
+                    if (blockPositions.find({ pos.x + offset.x, pos.y + offset.y, pos.z + offset.z }) == blockPositions.end()) {
+                        isSurrounded = false;
+                        break;
+                    }
+                }
+
+                if (isSurrounded) {
+                    _break->Set_RenderActive(false);
+                }
+            }
+        }
+    }
+   
+}
+
+void CMCTerrain::RenderWithoutStone()
+{
+    for (int i = 0; i < m_iChunkCount; ++i) {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", i);
+
+        list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+
+        for (auto _object : _copyObjectList) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                _break->Set_RenderActive(true);
+                if (dynamic_cast<CStone*>(_object)) {
+                    _break->Set_RenderActive(false);
+                }
+            }
+        }
+    }
+}
+
+void CMCTerrain::OffAllChunkLayer()
+{
+    for (int i = 0; i < m_iChunkCount; ++i) {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", i);
+
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, false);
+    }
+}
+
+void CMCTerrain::GetPlayerChunk()
+{
+    // 플레이어 위치 가져오기
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return;
+
+    _float3 playerPos = pSteve->GetPos();
+
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    int chunk = x + (width * z);
+
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk - width); 
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk + width);
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+    if (chunk% width != 0) {
+        swprintf(layerName, 100, L"Layer_Chunk%d", chunk - 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk - width) - 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) - 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    }
+
+    if ((chunk +1) % width != 0) {
+        swprintf(layerName, 100, L"Layer_Chunk%d", chunk + 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk - width) + 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+
+        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) + 1);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    }
 }
 
 
@@ -219,6 +391,5 @@ CGameObject* CMCTerrain::Clone(void* pArg)
 void CMCTerrain::Free()
 {
 	__super::Free();
-
 
 }

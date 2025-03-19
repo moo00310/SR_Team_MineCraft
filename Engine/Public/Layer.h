@@ -18,8 +18,11 @@ public:
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);
 	CGameObject* Get_Object(_uint iIndex);
+	list<class CGameObject*> Get_GameObjectList();
+	void SetLayerRenderActive(bool _b);
 private:
 	list<class CGameObject*>			m_GameObjects;
+	bool m_bLayerActive = true;
 
 public:
 	static CLayer* Create();

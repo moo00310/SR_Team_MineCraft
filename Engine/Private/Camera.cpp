@@ -1,4 +1,6 @@
 #include "Camera.h"
+#include <DirectXMath.h>
+using namespace DirectX;
 
 CCamera::CCamera(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -43,35 +45,24 @@ HRESULT CCamera::Initialize(void* pArg)
 
 void CCamera::Priority_Update(_float fTimeDelta)
 {
-    if (!m_isActive)
-        return;
+
 }
 
 void CCamera::Update(_float fTimeDelta)
 {
-    if (!m_isActive)
-        return;
+
 }
 
 void CCamera::Late_Update(_float fTimeDelta)
 {
-    if (!m_isActive)
-        return;
+
 }
 
 HRESULT CCamera::Render()
 {
-    if (!m_isActive)
-        return S_OK;
 
     return S_OK;
 }
-
-void CCamera::Set_Active(_bool _isActive)
-{
-    m_isActive = _isActive;
-}
-
 
 HRESULT CCamera::Update_VP_Matrices()
 {

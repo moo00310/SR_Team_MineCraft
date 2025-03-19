@@ -47,6 +47,11 @@ public:
 		D3DXMatrixMultiply(&m_WorldMatrix, &m_WorldMatrix, &mat); 
 	}
 
+	void Set_Matrix(const D3DXMATRIX& mat)
+	{
+		memcpy(&m_WorldMatrix, &mat, sizeof mat);
+	}
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -56,7 +61,7 @@ public:
 
 public:
 	_float3 Compute_Scaled() const;
-	void Scaling();
+	void Scaling(_float fX, _float fY, _float fZ);
 	void Go_Straight(_float fTimeDelta);
 	void Go_Backward(_float fTimeDelta);
 	void Go_Left(_float fTimeDelta);

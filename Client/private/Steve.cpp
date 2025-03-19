@@ -85,12 +85,22 @@ void CSteve::Late_Update(_float fTimeDelta)
 	// 본이 적용된 매쉬 업데이트
 	Ready_Mesh();
 
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
-		return;
+
+	if (m_pGameInstance->Key_Down(VK_F5))
+	{
+		m_bisTPS *= -1;
+	}
+	if (m_bisTPS > 0)
+	{
+		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+			return;
+	}
 }
+		
 
 HRESULT CSteve::Render()
 {
+	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
@@ -109,6 +119,16 @@ HRESULT CSteve::Render()
 	}
 
 	return S_OK;
+}
+
+void CSteve::SetPos(_float3 v3)
+{
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, v3);
+}
+
+_float3 CSteve::GetPos()
+{
+	return m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 }
 
 HRESULT CSteve::Ready_Components()
@@ -212,10 +232,6 @@ HRESULT CSteve::Ready_Mesh()
 	return S_OK;
 }
 
-HRESULT CSteve::UpDate_Mesh()
-{
-	return S_OK;
-}
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {

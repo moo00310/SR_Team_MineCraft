@@ -34,12 +34,15 @@ void CStone::Update(_float fTimeDelta)
 
 void CStone::Late_Update(_float fTimeDelta)
 {
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
-        return;
+    if (m_bRenderActive) {
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+            return;
+    }
 }
 
 HRESULT CStone::Render()
 {
+    
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
