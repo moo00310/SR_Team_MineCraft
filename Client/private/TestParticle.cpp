@@ -38,9 +38,8 @@ HRESULT CTestParticle::Initialize(void* pArg)
 
 	// 파티클 경계선 셋팅 작업.
 	SetParticleBoundingBox(box);
-
-	// SetParticleAttribute 하고 반드시 
-	// 부모 Initialize 호출시켜서 버텍스 초기화 시킬 것.
+	
+	// 부모 Initialize 호출시켜서 버텍스 초기화 시키고 이거 호출 시킬 것.
 	if (FAILED(Create_VertexBuffer()))
 	{
 		return E_FAIL;

@@ -130,6 +130,9 @@
     <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy">
       <UniqueIdentifier>{95716bec-861e-49d5-bd33-aa5e8e8ea25e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Particle">
+      <UniqueIdentifier>{e76eac64-4f2c-48d7-a84d-80b3b509d737}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -291,6 +294,9 @@
     <ClInclude Include="..\public\HeroEnemy.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleRain.h">
+      <Filter>02.GameObjects\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -443,6 +449,9 @@
     </ClCompile>
     <ClCompile Include="..\private\TestParticle.cpp">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleRain.cpp">
+      <Filter>02.GameObjects\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

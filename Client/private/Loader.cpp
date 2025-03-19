@@ -38,6 +38,7 @@
 #include "HyockCube.h"
 #include "VIBuffer_Cube_Only.h"
 #include "TestParticle.h"
+#include "ParticleRain.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -562,6 +563,10 @@ HRESULT CLoader::Loading_For_HECKPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_TestParticle"),
 		CTestParticle::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleRain"),
+		CParticleRain::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT(" ε     Ϸ Ǿ    ϴ ."));
