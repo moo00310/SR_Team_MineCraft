@@ -56,7 +56,7 @@ void CHeroCube::Priority_Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Pressing(VK_SPACE))
 	{
-		m_pRigidBodyCom->Jump();
+		m_pRigidbodyCom->Jump();
 	}
 }
 
@@ -87,7 +87,7 @@ void CHeroCube::Update(_float fTimeDelta)
 	}
 
 		
-	m_pRigidBodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
 void CHeroCube::Late_Update(_float fTimeDelta)
@@ -144,7 +144,7 @@ HRESULT CHeroCube::Ready_Components()
 	/* For.Com_Rigidbody */
 	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pColliderCom, 0.01f };
 	if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Rigidbody"),
-		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidBodyCom), &RigidbodyDesc)))
+		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
 		return E_FAIL;
 
 	return S_OK;
@@ -180,7 +180,7 @@ void CHeroCube::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pRigidBodyCom);
+	Safe_Release(m_pRigidbodyCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVIBufferCom);

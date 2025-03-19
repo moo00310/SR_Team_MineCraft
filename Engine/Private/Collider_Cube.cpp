@@ -27,7 +27,7 @@ HRESULT CCollider_Cube::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CCollider_Cube::Initialize(void * pArg)
+HRESULT CCollider_Cube::Initialize(void* pArg)
 {
 	if (pArg == nullptr)
 		return E_FAIL;
@@ -37,7 +37,7 @@ HRESULT CCollider_Cube::Initialize(void * pArg)
 
 	if (!m_pTransformCom)
 		return E_FAIL;
-		
+
 	Safe_AddRef(m_pTransformCom);
 
 	m_iNumVertices = 8;
@@ -46,86 +46,60 @@ HRESULT CCollider_Cube::Initialize(void * pArg)
 	m_ePrimitiveType = D3DPT_TRIANGLELIST;
 	m_iNumPrimitive = 12;
 
-	/* 정점들을 할당했다. */
+	/* 정점 버퍼 생성 */
 	if (FAILED(m_pGraphic_Device->CreateVertexBuffer(m_iNumVertices * m_iStride, 0, m_dwFVF, D3DPOOL_MANAGED, &m_pVB, 0)))
 		return E_FAIL;
 
-	VTXCUBETEX*			pVertices = nullptr;
+	VTXCUBETEX* pVertices = nullptr;
+	m_pVB->Lock(0, 0, (void**)&pVertices, 0);
 
-	m_pVB->Lock(0, /*m_iNumVertices * m_iStride*/0, (void**)&pVertices, 0);
+	// Offset 적용
+	_float3 vOffset = _float3(m_StateDesc.fOffSetX, m_StateDesc.fOffSetY, m_StateDesc.fOffsetZ);
 
+	pVertices[0].vPosition = m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
+	pVertices[1].vPosition = m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
+	pVertices[2].vPosition = m_vPoint[2] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
+	pVertices[3].vPosition = m_vPoint[3] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
+	pVertices[4].vPosition = m_vPoint[4] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ) + vOffset;
+	pVertices[5].vPosition = m_vPoint[5] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ) + vOffset;
+	pVertices[6].vPosition = m_vPoint[6] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ) + vOffset;
+	pVertices[7].vPosition = m_vPoint[7] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ) + vOffset;
 
-	pVertices[0].vPosition = m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// + InitPos;
-	pVertices[0].vTexture = pVertices[0].vPosition;
+	for (int i = 0; i < 8; i++)
+		pVertices[i].vTexture = pVertices[i].vPosition;
 
-	pVertices[1].vPosition = m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
-	pVertices[1].vTexture = pVertices[1].vPosition;
-
-	pVertices[2].vPosition = m_vPoint[2] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
-	pVertices[2].vTexture = pVertices[2].vPosition;
-
-	pVertices[3].vPosition = m_vPoint[3] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);// +InitPos;
-	pVertices[3].vTexture = pVertices[3].vPosition;
-
-	pVertices[4].vPosition = m_vPoint[4] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// + InitPos;
-	pVertices[4].vTexture = pVertices[4].vPosition;
-
-	pVertices[5].vPosition = m_vPoint[5] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
-	pVertices[5].vTexture = pVertices[5].vPosition;
-
-	pVertices[6].vPosition = m_vPoint[6] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
-	pVertices[6].vTexture = pVertices[6].vPosition;
-
-	pVertices[7].vPosition = m_vPoint[7] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);// +InitPos;
-	pVertices[7].vTexture = pVertices[7].vPosition;
 	m_pVB->Unlock();
 
 	m_iIndicesByte = sizeof(FACEINDICES16);
 	m_eIndexFormat = D3DFMT_INDEX16;
 
+	/* 인덱스 버퍼 생성 */
 	if (FAILED(m_pGraphic_Device->CreateIndexBuffer(m_iNumPrimitive * m_iIndicesByte, 0, m_eIndexFormat, D3DPOOL_MANAGED, &m_pIB, nullptr)))
 		return E_FAIL;
 
-	FACEINDICES16*	pIndices = nullptr;
-
+	FACEINDICES16* pIndices = nullptr;
 	m_pIB->Lock(0, 0, (void**)&pIndices, 0);
 
-
-	/* +X */
-	pIndices[0]._0 = 1; pIndices[0]._1 = 5; pIndices[0]._2 = 6;
-	pIndices[1]._0 = 1; pIndices[1]._1 = 6; pIndices[1]._2 = 2;
-
-	/* -X */
-	pIndices[2]._0 = 4; pIndices[2]._1 = 0; pIndices[2]._2 = 3;
-	pIndices[3]._0 = 4; pIndices[3]._1 = 3; pIndices[3]._2 = 7;
-
-	/* +Y */
-	pIndices[4]._0 = 4; pIndices[4]._1 = 5; pIndices[4]._2 = 1;
-	pIndices[5]._0 = 4; pIndices[5]._1 = 1; pIndices[5]._2 = 0;
-
-	/* -Y */
-	pIndices[6]._0 = 3; pIndices[6]._1 = 2; pIndices[6]._2 = 6;
-	pIndices[7]._0 = 3; pIndices[7]._1 = 6; pIndices[7]._2 = 7;
-
-	/* +Z */
-	pIndices[8]._0 = 5; pIndices[8]._1 = 4; pIndices[8]._2 = 7;
-	pIndices[9]._0 = 5; pIndices[9]._1 = 7; pIndices[9]._2 = 6;
-
-	/* -Z */
-	pIndices[10]._0 = 0; pIndices[10]._1 = 1; pIndices[10]._2 = 2;
-	pIndices[11]._0 = 0; pIndices[11]._1 = 2; pIndices[11]._2 = 3;
-
+	/* 인덱스 설정 */
+	pIndices[0] = { 1, 5, 6 }; pIndices[1] = { 1, 6, 2 };  // +X
+	pIndices[2] = { 4, 0, 3 }; pIndices[3] = { 4, 3, 7 };  // -X
+	pIndices[4] = { 4, 5, 1 }; pIndices[5] = { 4, 1, 0 };  // +Y
+	pIndices[6] = { 3, 2, 6 }; pIndices[7] = { 3, 6, 7 };  // -Y
+	pIndices[8] = { 5, 4, 7 }; pIndices[9] = { 5, 7, 6 };  // +Z
+	pIndices[10] = { 0, 1, 2 }; pIndices[11] = { 0, 2, 3 };  // -Z
 
 	m_pIB->Unlock();
 
 	return S_OK;
 }
 
+
 HRESULT CCollider_Cube::Update_ColliderBox()
 {
 	const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
 	_float4x4 StateMatrix = *pWorldMatrix;
 
+	// 기본 8개의 꼭짓점 설정
 	m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
 	m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
 	m_vPoint[2] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
@@ -135,15 +109,18 @@ HRESULT CCollider_Cube::Update_ColliderBox()
 	m_vPoint[6] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);
 	m_vPoint[7] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);
 
+	// 월드 위치에 offset 적용
 	_float3 vecOffsetPos = *(_float3*)&(StateMatrix.m[3][0]);
 	vecOffsetPos.x += m_StateDesc.fOffSetX;
 	vecOffsetPos.y += m_StateDesc.fOffSetY;
 	vecOffsetPos.z += m_StateDesc.fOffsetZ;
 
+	// 월드 행렬의 위치 부분 업데이트
 	StateMatrix.m[3][0] = vecOffsetPos.x;
 	StateMatrix.m[3][1] = vecOffsetPos.y;
 	StateMatrix.m[3][2] = vecOffsetPos.z;
 
+	// 8개의 꼭짓점을 월드 행렬로 변환
 	for (int i = 0; i < 8; ++i)
 	{
 		D3DXVec3TransformCoord(&m_vPoint[i], &m_vPoint[i], &StateMatrix);
@@ -151,6 +128,7 @@ HRESULT CCollider_Cube::Update_ColliderBox()
 
 	return S_OK;
 }
+
 
 HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 {
@@ -200,168 +178,173 @@ HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 
 _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLSION_DIR* pOutDir)
 {
-	if(pOutDistance)
-		*pOutDistance = { 0.f, 0.f, 0.f };
+    if (pOutDistance)
+        *pOutDistance = { 0.f, 0.f, 0.f };
 
-	COLLSION_DIR Collision_Dir{ COLLSION_DIR::NONE };
-	if (pOutDir)
-		*pOutDir = Collision_Dir;
+    COLLSION_DIR Collision_Dir{ COLLSION_DIR::NONE };
+    if (pOutDir)
+        *pOutDir = Collision_Dir;
 
-	if (pTarget == nullptr)
-		return false;
+    if (pTarget == nullptr)
+        return false;
 
-	// 월드 행렬 추출
-	const _float4x4* pWorldMatrixA = m_pTransformCom->Get_WorldMatrix();
-	const _float4x4* pWorldMatrixB = pTarget->m_pTransformCom->Get_WorldMatrix();
+    // 월드 행렬 추출
+    const _float4x4* pWorldMatrixA = m_pTransformCom->Get_WorldMatrix();
+    const _float4x4* pWorldMatrixB = pTarget->m_pTransformCom->Get_WorldMatrix();
 
-	// 로컬 축 및 중심 계산
-	_float3 axesA[3] = {
-		_float3(pWorldMatrixA->_11, pWorldMatrixA->_12, pWorldMatrixA->_13),
-		_float3(pWorldMatrixA->_21, pWorldMatrixA->_22, pWorldMatrixA->_23),
-		_float3(pWorldMatrixA->_31, pWorldMatrixA->_32, pWorldMatrixA->_33)
-	};
-	_float3 centerA(pWorldMatrixA->_41, pWorldMatrixA->_42, pWorldMatrixA->_43);
-	_float3 halfA = { m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ };
+    // 로컬 축 및 중심 계산
+    _float3 axesA[3] = {
+        _float3(pWorldMatrixA->_11, pWorldMatrixA->_12, pWorldMatrixA->_13),
+        _float3(pWorldMatrixA->_21, pWorldMatrixA->_22, pWorldMatrixA->_23),
+        _float3(pWorldMatrixA->_31, pWorldMatrixA->_32, pWorldMatrixA->_33)
+    };
 
-	_float3 axesB[3] = {
-		_float3(pWorldMatrixB->_11, pWorldMatrixB->_12, pWorldMatrixB->_13),
-		_float3(pWorldMatrixB->_21, pWorldMatrixB->_22, pWorldMatrixB->_23),
-		_float3(pWorldMatrixB->_31, pWorldMatrixB->_32, pWorldMatrixB->_33)
-	};
-	_float3 centerB(pWorldMatrixB->_41, pWorldMatrixB->_42, pWorldMatrixB->_43);
-	_float3 halfB = { pTarget->m_StateDesc.fRadiusX, pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
+    // offset 적용된 중심 계산
+    _float3 centerA(pWorldMatrixA->_41 + m_StateDesc.fOffSetX,
+        pWorldMatrixA->_42 + m_StateDesc.fOffSetY,
+        pWorldMatrixA->_43 + m_StateDesc.fOffsetZ);
 
-	// 정규화
-	for (int i = 0; i < 3; ++i)
-	{
-		D3DXVec3Normalize(&axesA[i], &axesA[i]);
-		D3DXVec3Normalize(&axesB[i], &axesB[i]);
-	}
+    _float3 halfA = { m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ };
 
-	// 8개 꼭짓점 계산
-	_float3 cornersA[8], cornersB[8];
-	for (int i = 0; i < 8; ++i)
-	{
-		float offsetX = (i & 1) ? halfA.x : -halfA.x;
-		float offsetY = (i & 2) ? halfA.y : -halfA.y;
-		float offsetZ = (i & 4) ? halfA.z : -halfA.z;
-		cornersA[i] = centerA + axesA[0] * offsetX + axesA[1] * offsetY + axesA[2] * offsetZ;
+    _float3 axesB[3] = {
+        _float3(pWorldMatrixB->_11, pWorldMatrixB->_12, pWorldMatrixB->_13),
+        _float3(pWorldMatrixB->_21, pWorldMatrixB->_22, pWorldMatrixB->_23),
+        _float3(pWorldMatrixB->_31, pWorldMatrixB->_32, pWorldMatrixB->_33)
+    };
 
-		offsetX = (i & 1) ? halfB.x : -halfB.x;
-		offsetY = (i & 2) ? halfB.y : -halfB.y;
-		offsetZ = (i & 4) ? halfB.z : -halfB.z;
-		cornersB[i] = centerB + axesB[0] * offsetX + axesB[1] * offsetY + axesB[2] * offsetZ;
-	}
+    // offset 적용된 중심 계산
+    _float3 centerB(pWorldMatrixB->_41 + pTarget->m_StateDesc.fOffSetX,
+        pWorldMatrixB->_42 + pTarget->m_StateDesc.fOffSetY,
+        pWorldMatrixB->_43 + pTarget->m_StateDesc.fOffsetZ);
 
-	// SAT 충돌 검사
-	std::vector<_float3> testAxes = { axesA[0], axesA[1], axesA[2], axesB[0], axesB[1], axesB[2] };
-	for (int i = 0; i < 3; ++i)
-	{
-		for (int j = 0; j < 3; ++j)
-		{
-			_float3 axis;
-			D3DXVec3Cross(&axis, &axesA[i], &axesB[j]);
-			if (D3DXVec3Length(&axis) > 1e-6f)
-			{
-				D3DXVec3Normalize(&axis, &axis);
-				testAxes.push_back(axis);
-			}
-		}
-	}
+    _float3 halfB = { pTarget->m_StateDesc.fRadiusX, pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
 
-	float minPenetration = FLT_MAX;
-	_float3 smallestAxis(0, 0, 0);
-	for (const auto& axis : testAxes)
-	{
-		float minA = FLT_MAX, maxA = -FLT_MAX;
-		float minB = FLT_MAX, maxB = -FLT_MAX;
+    // 정규화
+    for (int i = 0; i < 3; ++i)
+    {
+        D3DXVec3Normalize(&axesA[i], &axesA[i]);
+        D3DXVec3Normalize(&axesB[i], &axesB[i]);
+    }
 
-		for (int i = 0; i < 8; ++i)
-		{
-			float projA = D3DXVec3Dot(&cornersA[i], &axis);
-			minA = min(minA, projA);
-			maxA = max(maxA, projA);
+    // 8개 꼭짓점 계산
+    _float3 cornersA[8], cornersB[8];
+    for (int i = 0; i < 8; ++i)
+    {
+        float offsetX = (i & 1) ? halfA.x : -halfA.x;
+        float offsetY = (i & 2) ? halfA.y : -halfA.y;
+        float offsetZ = (i & 4) ? halfA.z : -halfA.z;
+        cornersA[i] = centerA + axesA[0] * offsetX + axesA[1] * offsetY + axesA[2] * offsetZ;
 
-			float projB = D3DXVec3Dot(&cornersB[i], &axis);
-			minB = min(minB, projB);
-			maxB = max(maxB, projB);
-		}
+        offsetX = (i & 1) ? halfB.x : -halfB.x;
+        offsetY = (i & 2) ? halfB.y : -halfB.y;
+        offsetZ = (i & 4) ? halfB.z : -halfB.z;
+        cornersB[i] = centerB + axesB[0] * offsetX + axesB[1] * offsetY + axesB[2] * offsetZ;
+    }
 
-		if (maxA < minB || maxB < minA)
-			return false;
+    // SAT 충돌 검사
+    std::vector<_float3> testAxes = { axesA[0], axesA[1], axesA[2], axesB[0], axesB[1], axesB[2] };
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            _float3 axis;
+            D3DXVec3Cross(&axis, &axesA[i], &axesB[j]);
+            if (D3DXVec3Length(&axis) > 1e-6f)
+            {
+                D3DXVec3Normalize(&axis, &axis);
+                testAxes.push_back(axis);
+            }
+        }
+    }
 
-		float overlap = min(maxA, maxB) - max(minA, minB);
-		if (overlap < minPenetration)
-		{
-			minPenetration = overlap;
-			smallestAxis = axis;
-		}
-	}
+    float minPenetration = FLT_MAX;
+    _float3 smallestAxis(0, 0, 0);
+    for (const auto& axis : testAxes)
+    {
+        float minA = FLT_MAX, maxA = -FLT_MAX;
+        float minB = FLT_MAX, maxB = -FLT_MAX;
 
-	// 충돌 방향 분석 (위/아래/옆 구분)
-	if (pOutDistance)
-	{
-		_float3 d = centerB - centerA;
-		if (D3DXVec3Dot(&d, &smallestAxis) < 0)
-			smallestAxis = -smallestAxis;
+        for (int i = 0; i < 8; ++i)
+        {
+            float projA = D3DXVec3Dot(&cornersA[i], &axis);
+            minA = min(minA, projA);
+            maxA = max(maxA, projA);
 
-		// minPenetration이 정상적인 값인지 확인
-		if (minPenetration <= 0)
-			return false;
+            float projB = D3DXVec3Dot(&cornersB[i], &axis);
+            minB = min(minB, projB);
+            maxB = max(maxB, projB);
+        }
 
-		*pOutDistance = smallestAxis * minPenetration;
+        if (maxA < minB || maxB < minA)
+            return false;
 
-		// pOutDistance 값이 이상하면 0 벡터로 보정
-		if (D3DXVec3LengthSq(pOutDistance) < 1e-6f)
-			*pOutDistance = { 0, 0, 0 };
+        float overlap = min(maxA, maxB) - max(minA, minB);
+        if (overlap < minPenetration)
+        {
+            minPenetration = overlap;
+            smallestAxis = axis;
+        }
+    }
 
-		// 충돌 방향 판정
-		if (fabs(smallestAxis.y) > fabs(smallestAxis.x) && fabs(smallestAxis.y) > fabs(smallestAxis.z))
-		{
-			if (smallestAxis.y > 0)
-			{
-				Collision_Dir = COLLSION_DIR::DOWN;
-				//printf("바닥 충돌\n");
-			}
-			else
-			{
-				Collision_Dir = COLLSION_DIR::UP;
-				//printf("천장 충돌\n");
-			}
-		}
-		else if (fabs(smallestAxis.x) > fabs(smallestAxis.z))
-		{
-			if (smallestAxis.x > 0)
-			{
-				Collision_Dir = COLLSION_DIR::LEFT;
-				//printf("왼쪽 충돌\n");
-			}
-			else
-			{
-				Collision_Dir = COLLSION_DIR::RIGHT;
-				//printf("오른쪽 충돌\n");
-			}
-		}
-		else
-		{
-			if (smallestAxis.z > 0)
-			{
-				Collision_Dir = COLLSION_DIR::FRONT;
-				//printf("앞쪽 충돌\n");
-			}
-			else
-			{
-				Collision_Dir = COLLSION_DIR::BACK;
-				//printf("뒤쪽 충돌\n");
-			}
-		}
-	}
+    // 충돌 방향 분석 (위/아래/옆 구분)
+    if (pOutDistance)
+    {
+        _float3 d = centerB - centerA;
+        if (D3DXVec3Dot(&d, &smallestAxis) < 0)
+            smallestAxis = -smallestAxis;
 
-	if (pOutDir)
-		*pOutDir = Collision_Dir;
+        // minPenetration이 정상적인 값인지 확인
+        if (minPenetration <= 0)
+            return false;
 
-	return true;
+        *pOutDistance = smallestAxis * minPenetration;
+
+        // pOutDistance 값이 이상하면 0 벡터로 보정
+        if (D3DXVec3LengthSq(pOutDistance) < 1e-6f)
+            *pOutDistance = { 0, 0, 0 };
+
+        // 충돌 방향 판정
+        if (fabs(smallestAxis.y) > fabs(smallestAxis.x) && fabs(smallestAxis.y) > fabs(smallestAxis.z))
+        {
+            if (smallestAxis.y > 0)
+            {
+                Collision_Dir = COLLSION_DIR::DOWN;
+            }
+            else
+            {
+                Collision_Dir = COLLSION_DIR::UP;
+            }
+        }
+        else if (fabs(smallestAxis.x) > fabs(smallestAxis.z))
+        {
+            if (smallestAxis.x > 0)
+            {
+                Collision_Dir = COLLSION_DIR::LEFT;
+            }
+            else
+            {
+                Collision_Dir = COLLSION_DIR::RIGHT;
+            }
+        }
+        else
+        {
+            if (smallestAxis.z > 0)
+            {
+                Collision_Dir = COLLSION_DIR::FRONT;
+            }
+            else
+            {
+                Collision_Dir = COLLSION_DIR::BACK;
+            }
+        }
+    }
+
+    if (pOutDir)
+        *pOutDir = Collision_Dir;
+
+    return true;
 }
+
 
 
 

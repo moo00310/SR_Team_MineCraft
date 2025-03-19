@@ -32,7 +32,8 @@ private:
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom[6];
 	vector<BONE> vecBones;
-
+	CCollider_Cube* m_pCollider_CubeCom{ nullptr };
+	CRigidbody*		m_pRigidbodyCom{ nullptr };
 	float Comput = {};
 	int  flag = { 1 };
 	int m_bisTPS = { 1 };

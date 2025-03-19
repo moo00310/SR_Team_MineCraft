@@ -264,9 +264,14 @@ HRESULT CMainApp::Ready_Component()
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
-	// 콜라이더 큐브 모델
+	/* Prototype_Component_CCollider_Cube */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
-		CCollider_Cube::Create(m_pGraphic_Device/*, Desc*/))))
+		CCollider_Cube::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Rigidbody */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
+		CRigidbody::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;

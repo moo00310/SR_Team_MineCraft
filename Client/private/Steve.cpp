@@ -39,30 +39,12 @@ HRESULT CSteve::Initialize(void* pArg)
 
 void CSteve::Priority_Update(_float fTimeDelta)
 {
-}
+	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this); //this 말고 나중에 Collide를 넘기게 해야지
 
-void CSteve::Update(_float fTimeDelta)
-{
-	if (GetKeyState(VK_UP) & 0x8000)
+	if (m_pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
-	}
-	if (GetKeyState(VK_DOWN) & 0x8000)
-	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	}
-	if (GetKeyState(VK_LEFT) & 0x8000)
-	{
-		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta * -1.f);
-	}
-	if (GetKeyState(VK_RIGHT) & 0x8000)
-	{
-		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
-	}
 
-	// 걷는 모션
-	if (GetKeyState('Q') & 0x8000)
-	{
 		if (Comput > 20)
 			flag *= -1;
 		if (Comput < -20)
@@ -73,7 +55,34 @@ void CSteve::Update(_float fTimeDelta)
 		vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
 		vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
 		Comput += 1.5f * flag;
+	}
+	if (m_pGameInstance->Key_Pressing('S'))
+	{
+		m_pTransformCom->Go_Backward(fTimeDelta);
+	}
+	if (m_pGameInstance->Key_Pressing('A'))
+	{
+		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta * -1.f);
+	}
+	if (m_pGameInstance->Key_Pressing('D'))
+	{
+		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
+	}
 
+	if (m_pGameInstance->Key_Pressing(VK_SPACE))
+	{
+ 		m_pRigidbodyCom->Jump();
+	}
+
+	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+}
+
+void CSteve::Update(_float fTimeDelta)
+{
+	if (FAILED(m_pCollider_CubeCom->Update_ColliderBox()))
+	{
+		MSG_BOX("Update_ColliderBox()");
+		return;
 	}
 }
 
@@ -117,6 +126,10 @@ HRESULT CSteve::Render()
 		if (FAILED(m_pVIBufferCom[i]->Render()))
 			return E_FAIL;
 	}
+
+
+	if (FAILED(m_pCollider_CubeCom->Render_ColliderBox(false)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -179,6 +192,22 @@ HRESULT CSteve::Ready_Components()
 	if (FAILED(Ready_Mesh()))
 		return E_FAIL;
 
+	//콜라이더
+	/* For.Com_Collider */
+	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
+	Desc.fRadiusX = 0.5f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 0.5;
+	Desc.fOffSetY = 1.f;
+	Desc.pTransformCom = m_pTransformCom;
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
+		return E_FAIL;
+
+	//리지드바디
+	/* For.Com_Rigidbody */
+	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CubeCom, 1.f };
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
+		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
+		return E_FAIL;
 	return S_OK;
 }
 
@@ -263,6 +292,8 @@ void CSteve::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pRigidbodyCom);
+	Safe_Release(m_pCollider_CubeCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
 

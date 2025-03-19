@@ -20,8 +20,8 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_HeroCube(TEXT("Layer_HeroCube"))))
  		return E_FAIL;
 
-	/*if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
-		return E_FAIL;*/
+	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
+		return E_FAIL;
 
 	//스티브 다음으로 준비해야 스티브의 트랜스 폼을 찾을 수 있음
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
@@ -67,7 +67,7 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 	Cam_Player_Desc.fNear = 0.1f;
 	Cam_Player_Desc.fFar = 300.f;
 	Cam_Player_Desc.fMouseSensor = 0.1f;
-	Cam_Player_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_HeroCube"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
+	Cam_Player_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Player"),
 		LEVEL_HERO, strLayerTag, &Cam_Player_Desc)))
 		return E_FAIL;

@@ -37,7 +37,7 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 	CCollider_Cube* m_pColliderCom = { nullptr };
-	CRigidbody* m_pRigidBodyCom = { nullptr };
+	CRigidbody* m_pRigidbodyCom = { nullptr };
 
 private:
 	HRESULT Ready_Components();
