@@ -39,41 +39,9 @@ HRESULT CSteve::Initialize(void* pArg)
 
 void CSteve::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this); //this 말고 나중에 Collide를 넘기게 해야지
-
-	if (m_pGameInstance->Key_Pressing('W'))
-	{
-		m_pTransformCom->Go_Straight(fTimeDelta);
-
-		if (Comput > 20)
-			flag *= -1;
-		if (Comput < -20)
-			flag *= -1;
-
-		vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
-		vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
-		vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
-		vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
-		Comput += 1.5f * flag;
-	}
-	if (m_pGameInstance->Key_Pressing('S'))
-	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
-	}
-	if (m_pGameInstance->Key_Pressing('A'))
-	{
-		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta * -1.f);
-	}
-	if (m_pGameInstance->Key_Pressing('D'))
-	{
-		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
-	}
-
-	if (m_pGameInstance->Key_Pressing(VK_SPACE))
-	{
- 		m_pRigidbodyCom->Jump();
-	}
-
+	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
+	Move(fTimeDelta);
+	Turn(fTimeDelta);
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
@@ -142,6 +110,100 @@ void CSteve::SetPos(_float3 v3)
 _float3 CSteve::GetPos()
 {
 	return m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+}
+
+void CSteve::Move(_float fTimeDelta)
+{
+	if (m_pGameInstance->Key_Pressing('W'))
+	{
+		m_pTransformCom->Go_Straight(fTimeDelta);
+
+		if (Comput > 20)
+			flag *= -1;
+		if (Comput < -20)
+			flag *= -1;
+
+		vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
+		vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
+		vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
+		vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
+		Comput += 1.5f * flag;
+	}
+	if (m_pGameInstance->Key_Pressing('S'))
+	{
+		m_pTransformCom->Go_Backward(fTimeDelta);
+	}
+	if (m_pGameInstance->Key_Pressing('A'))
+	{
+		m_pTransformCom->Go_Left(fTimeDelta);
+		//m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta * -1.f);
+	}
+	if (m_pGameInstance->Key_Pressing('D'))
+	{
+		m_pTransformCom->Go_Right(fTimeDelta);
+		//m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
+	}
+
+	if (m_pGameInstance->Key_Pressing(VK_SPACE))
+	{
+		m_pRigidbodyCom->Jump();
+	}
+}
+
+void CSteve::Turn(_float fTimeDelta)
+{
+	// 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
+	if (!(GetForegroundWindow() == g_hWnd))
+		return;
+
+	// 화면 중앙 좌표 계산
+	RECT rc;
+	GetClientRect(g_hWnd, &rc);
+	POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
+
+	// 현재 마우스 좌표 가져오기
+	POINT ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+
+	// === 마우스가 창 내부에 있는지 확인 ===
+	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
+		return;
+
+	// 마우스 이동량 계산 (중앙 기준)
+	_int iMouseMoveX = ptMouse.x - ptCenter.x;
+
+	// 카메라의 yaw 값을 사용하여 스티브의 회전값을 설정
+	m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * m_fMouseSensor);
+
+	// 스티브의 월드 매트릭스를 가져옴
+	const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
+
+	// 'Look' 벡터를 얻기 위해, 월드 매트릭스에서 방향 벡터를 추출
+	_float3 vLook = { pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33 };
+	_float3 vUp = { pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23 };
+
+	// 'Right' 벡터 계산: Look과 Up의 외적
+	_float3 vRight;
+	D3DXVec3Cross(&vRight, &vUp, &vLook);
+
+	// 마우스 이동에 따른 회전값 적용
+	_float fYaw = iMouseMoveX * fTimeDelta * m_fMouseSensor;  // 회전 각도 계산 (yaw)
+
+	// 회전 행렬 생성 (Y축 기준 회전)
+	_float4x4 matRotation;
+	D3DXMatrixRotationAxis(&matRotation, &vUp, fYaw);  // Y축 기준으로 회전
+
+	// 기존 월드 매트릭스를 회전 행렬로 갱신
+	_float4x4 matNewWorld = *pWorldMatrix;
+	matNewWorld = matRotation * matNewWorld;
+
+	// 새로운 월드 매트릭스를 설정
+	m_pTransformCom->Set_Matrix(matNewWorld);
+
+	//// 마우스를 중앙으로 이동
+	//ClientToScreen(g_hWnd, &ptCenter);
+	//SetCursorPos(ptCenter.x, ptCenter.y);
 }
 
 HRESULT CSteve::Ready_Components()

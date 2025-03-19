@@ -65,70 +65,75 @@ void CCamera_Player::Update(_float fTimeDelta)
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
-	// 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
-	if (!(GetForegroundWindow() == g_hWnd))
-		return;
+    // 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
+    if (!(GetForegroundWindow() == g_hWnd))
+        return;
 
-	// 화면 중앙 좌표 계산
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
-	POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
+    // === 스티브의 Yaw 값 가져오기 ===
+    if (m_pTargetTransformCom) // 스티브의 Transform 컴포넌트가 존재하는지 확인
+    {
+        _float3 vLook = m_pTargetTransformCom->Get_State(CTransform::STATE_LOOK); // Look 벡터 가져오기
 
-	// 현재 마우스 좌표 가져오기
-	POINT ptMouse;
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
+        // Yaw 값 계산 (atan2 사용)
+        m_fYaw = atan2f(vLook.x, vLook.z); // X, Z를 이용해 Yaw 값 추출
+    }
 
+    // === 화면 중앙 좌표 계산 ===
+    RECT rc;
+    GetClientRect(g_hWnd, &rc);
+    POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
 
-	// === 마우스가 창 내부에 있는지 확인 ===
-	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
-		return;
+    // 현재 마우스 좌표 가져오기
+    POINT ptMouse;
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
 
-	// 마우스 이동량 계산 (중앙 기준)
-	_int iMouseMoveX = ptMouse.x - ptCenter.x;
-	_int iMouseMoveY = ptMouse.y - ptCenter.y;
+    // === 마우스가 창 내부에 있는지 확인 ===
+    if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
+        return;
 
-	// 마우스 이동량을 기반으로 카메라 회전 적용
-	m_fYaw += iMouseMoveX * fTimeDelta * m_fMouseSensor;
-	m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
+    // 마우스 이동량 계산 (중앙 기준)
+    _int iMouseMoveY = ptMouse.y - ptCenter.y;
 
-	// 피치(Pitch) 값 제한 (위아래 회전 각도 제한)
-	m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch));
+    // Pitch 값 업데이트 (상하 회전)
+    m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
+    m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch)); // 상하 회전 제한
 
-	// 마우스를 다시 중앙으로 이동
-	ClientToScreen(g_hWnd, &ptCenter);
-	SetCursorPos(ptCenter.x, ptCenter.y);
+    // === 카메라 회전 행렬 적용 ===
+    _float3 vLook;
+    vLook.x = cosf(m_fPitch) * sinf(m_fYaw);
+    vLook.y = sinf(m_fPitch);
+    vLook.z = cosf(m_fPitch) * cosf(m_fYaw);
 
-	// 마우스를 창 내부에 가두기 (ClipCursor 사용)
-	RECT clipRect;
-	GetWindowRect(g_hWnd, &clipRect);
-	ClipCursor(&clipRect);
+    if (m_eCameraMode == E_CAMERA_MODE::FPS)
+    {
+        // 1인칭(FPS) 모드
+        _float3 vCameraPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.8f, 0.f);
+        m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
+        m_pTransformCom->LookAt(vCameraPos + vLook);
+    }
+    else
+    {
+        // 3인칭(TPS) 모드
+        _float3 vPlayerPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
+        _float3 vCameraOffset = -vLook * 5.0f;
+        _float3 vCameraPos = vPlayerPos + vCameraOffset + _float3(0.f, 1.8f, 0.f);
+        m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
+        m_pTransformCom->LookAt(vPlayerPos + _float3(0.f, 1.5f, 0.f));
+    }
 
-	// 카메라 모드에 따른 위치 및 방향 설정
-	_float3 vPlayerPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
-	_float3 vLook;
-	vLook.x = cosf(m_fPitch) * sinf(m_fYaw);
-	vLook.y = sinf(m_fPitch);
-	vLook.z = cosf(m_fPitch) * cosf(m_fYaw);
+    // 마우스를 다시 중앙으로 이동
+    ClientToScreen(g_hWnd, &ptCenter);
+    SetCursorPos(ptCenter.x, ptCenter.y);
 
-	if (m_eCameraMode == E_CAMERA_MODE::FPS)
-	{
-		// FPS 모드 (1인칭)
-		_float3 vCameraPos = vPlayerPos + _float3(0.f, 1.8f, 0.f);  // 플레이어 머리 위치
-		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
-		m_pTransformCom->LookAt(vCameraPos + vLook);
-	}
-	else
-	{
-		// TPS 모드 (3인칭)
-		_float3 vCameraOffset = -vLook * 5.0f;  // 캐릭터에서 일정 거리 뒤쪽
-		_float3 vCameraPos = vPlayerPos + vCameraOffset + _float3(0.f, 1.8f, 0.f); // 살짝 위쪽
-		m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
-		m_pTransformCom->LookAt(vPlayerPos + _float3(0.f, 1.5f, 0.f)); // 캐릭터 머리 중심 바라봄
-	}
+    // 마우스를 창 내부에 가두기 (ClipCursor 사용)
+    RECT clipRect;
+    GetWindowRect(g_hWnd, &clipRect);
+    ClipCursor(&clipRect);
 
-	__super::Update_VP_Matrices();
+    __super::Update_VP_Matrices();
 }
+
 
 HRESULT CCamera_Player::Render()
 {
