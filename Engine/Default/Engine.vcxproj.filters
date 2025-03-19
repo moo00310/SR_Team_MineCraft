@@ -110,6 +110,9 @@
     <ClInclude Include="..\Public\Key_Manager.h">
       <Filter>07.KeyManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect_Normal.h">
+      <Filter>04.Components\VIBuffer\Rect</Filter>
+     </ClInclude>
     <ClInclude Include="..\public\Rigidbody.h">
       <Filter>04.Components\Rigidbody</Filter>
     </ClInclude>
@@ -297,6 +300,9 @@
     <ClCompile Include="..\Private\Key_Manager.cpp">
       <Filter>07.KeyManager</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect_Normal.cpp">
+      <Filter>04.Components\VIBuffer\Rect</Filter>
+ </ClCompile>
     <ClCompile Include="..\private\Rigidbody.cpp">
       <Filter>04.Components\Rigidbody</Filter>
     </ClCompile>

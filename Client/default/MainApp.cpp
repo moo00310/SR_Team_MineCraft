@@ -247,7 +247,6 @@ HRESULT CMainApp::Ready_Component()
 		return E_FAIL;
 
 
-	// 지형 모델
 	/* For.Prototype_Component_VIBuffer_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Terrain"),
 		CVIBuffer_Terrain::Create(m_pGraphic_Device, 256, 256))))
@@ -272,6 +271,11 @@ HRESULT CMainApp::Ready_Component()
 	/* For.Prototype_Component_Rigidbody */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
 		CRigidbody::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	//  노말이 들어간 렉트
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect_Normal"),
+		CVIBuffer_Rect_Normal::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;

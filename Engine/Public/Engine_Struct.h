@@ -134,5 +134,12 @@ namespace Engine
 	}VTXPOSCOL;
 #pragma endregion
 
+#pragma region Anime_Keyfream
+	typedef struct tagKeyframe
+	{
+		float fTime;    // 키프레임의 시간 (초 단위)
+		D3DXMATRIX matTransform; // 키프레임에서의 변환 행렬
+	}KEYFREAME;
+#pragma endregion
 }
 
