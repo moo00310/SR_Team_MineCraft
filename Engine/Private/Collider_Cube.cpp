@@ -198,8 +198,15 @@ HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 
 }
 
-_bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance)
+_bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLSION_DIR* pOutDir)
 {
+	if(pOutDistance)
+		*pOutDistance = { 0.f, 0.f, 0.f };
+
+	COLLSION_DIR Collision_Dir{ COLLSION_DIR::NONE };
+	if (pOutDir)
+		*pOutDir = Collision_Dir;
+
 	if (pTarget == nullptr)
 		return false;
 
@@ -312,26 +319,46 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 		if (fabs(smallestAxis.y) > fabs(smallestAxis.x) && fabs(smallestAxis.y) > fabs(smallestAxis.z))
 		{
 			if (smallestAxis.y > 0)
-				printf("바닥 충돌\n");
+			{
+				Collision_Dir = COLLSION_DIR::DOWN;
+				//printf("바닥 충돌\n");
+			}
 			else
-				printf("천장 충돌\n");
+			{
+				Collision_Dir = COLLSION_DIR::UP;
+				//printf("천장 충돌\n");
+			}
 		}
 		else if (fabs(smallestAxis.x) > fabs(smallestAxis.z))
 		{
 			if (smallestAxis.x > 0)
-				printf("왼쪽 충돌\n");
+			{
+				Collision_Dir = COLLSION_DIR::LEFT;
+				//printf("왼쪽 충돌\n");
+			}
 			else
-				printf("오른쪽 충돌\n");
+			{
+				Collision_Dir = COLLSION_DIR::RIGHT;
+				//printf("오른쪽 충돌\n");
+			}
 		}
 		else
 		{
 			if (smallestAxis.z > 0)
-				printf("앞쪽 충돌\n");
+			{
+				Collision_Dir = COLLSION_DIR::FRONT;
+				//printf("앞쪽 충돌\n");
+			}
 			else
-				printf("뒤쪽 충돌\n");
+			{
+				Collision_Dir = COLLSION_DIR::BACK;
+				//printf("뒤쪽 충돌\n");
+			}
 		}
 	}
 
+	if (pOutDir)
+		*pOutDir = Collision_Dir;
 
 	return true;
 }

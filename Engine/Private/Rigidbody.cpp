@@ -44,31 +44,51 @@ HRESULT CRigidbody::Initialize(void* pArg)
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
 	m_isGrounded = false;
-	//바닥에 닿았으면 속도 줄이기
-
-	//충돌 검사하고 떨어질지 말지 판단
-	if (m_pCollider_Cube)
-	{
-		_float3 vDist;
-		_bool isHit = m_pGameInstance->Collision_with_Group(iCollsionGroup, m_pCollider_Cube, CCollider_Manager::COLLSIION_BOX, &vDist);
-
-		if (isHit)
-		{
-			// 바닥에 닿았을 때 반응 (간단한 처리 예시: 위치 보정 및 속도 감쇠)
-			_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
-			vPosition -= vDist;
-			m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
-			m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
-			m_isGrounded = true;
-			return S_OK;
-		}
-	}
-
 
 	Fall_With_Gravity(fTimeDelta);
 
+	// 충돌 검사
+	if (m_pCollider_Cube)
+	{
+		_float3 vDist;
+		CCollider_Cube::COLLSION_DIR eDir;
+		_bool isHit = m_pGameInstance->Collision_with_Group(iCollsionGroup, m_pCollider_Cube, CCollider_Manager::COLLSIION_BOX, &vDist, &eDir);
+
+		if (isHit)
+		{
+			// 현재 위치 보정 (Y축은 바닥 충돌일 때만 적용)
+			_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
+
+			if (eDir == CCollider_Cube::COLLSION_DIR::UP)
+			{
+				vPosition.y -= vDist.y;  // 바닥 충돌 시 Y축 보정
+				m_vVelocity.y = 0.0f;    // 속도 멈춤
+				m_isGrounded = true;
+			}
+			else
+			{
+				vPosition.x -= vDist.x;  // 벽 충돌 시 X축 보정
+				vPosition.z -= vDist.z;  // 벽 충돌 시 Z축 보정
+			}
+
+			m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
+		}
+	}
+
+	if (m_isGrounded)
+	{
+		printf_s("is Ground\n");
+	}
+	else
+	{
+		printf_s("is Air\n");
+	}
+
+
 	return S_OK;
 }
+
+
 
 void CRigidbody::Jump()
 {

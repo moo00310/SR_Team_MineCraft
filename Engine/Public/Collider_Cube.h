@@ -8,6 +8,8 @@ BEGIN(Engine)
 class ENGINE_DLL CCollider_Cube final : public CComponent
 {
 public:
+	enum class COLLSION_DIR { NONE, LEFT, RIGHT, UP, DOWN, FRONT,BACK };
+public:
 	typedef struct tagCollisionRectDesc
 	{
 		_float	fRadiusX = 0.5f, fRadiusY = 0.5f,  fRadiusZ = 0.5f;
@@ -25,7 +27,7 @@ public:
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update_ColliderBox();
 	HRESULT Render_ColliderBox(_bool isHit);
-	_bool	Collision_Check(CCollider_Cube* pTarget, _float3* pOutDistance = nullptr);
+	_bool	Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLSION_DIR* pOutDir = nullptr);
 public:
 	COLLRECTDESC& Get_Desc() { return m_StateDesc; }
 

@@ -29,7 +29,7 @@ HRESULT CHeroEnemy::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, { 30.f, 0.5f, 30.f });
 
 	Ready_BehaviorTree();
 
