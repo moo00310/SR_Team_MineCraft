@@ -53,29 +53,6 @@ HRESULT CTestParticle::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CTestParticle::Priority_Update(_float fTimeDelta)
-{
-}
-
-void CTestParticle::Update(_float fTimeDelta)
-{	
-	__super::Update(fTimeDelta);
-}
-
-void CTestParticle::Late_Update(_float fTimeDelta)
-{
-	m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this);
-}
-
-HRESULT CTestParticle::Render()
-{
-	m_pParticleTexture->Bind_Resource(0);
-
-	__super::Render();
-
-	return S_OK;
-}
-
 CGameObject* CTestParticle::Clone(void* pArg)
 {
 	CTestParticle* pInstance = new CTestParticle(*this);

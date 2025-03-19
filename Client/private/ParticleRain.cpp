@@ -17,7 +17,7 @@ HRESULT CParticleRain::Initialize_Prototype()
 
 HRESULT CParticleRain::Initialize(void* pArg)
 {
-	iParticleCount = 1000;
+	iParticleCount = 500;
 	IsBounding = true;
 
 	if (FAILED(__super::Initialize(pArg)))
@@ -26,7 +26,7 @@ HRESULT CParticleRain::Initialize(void* pArg)
 	}
 
 	dwVpBatchSize = 500;
-	dwPointSize = GetScale(2.f);	// 포인트 스프라이트 크기.
+	dwPointSize = GetScale(5.f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
 	dwPointScaleC = GetScale(1.f);
@@ -45,32 +45,6 @@ HRESULT CParticleRain::Initialize(void* pArg)
 	}
 
 	if (FAILED(Ready_Components()))
-	{
-		return E_FAIL;
-	}
-
-	return S_OK;
-}
-
-void CParticleRain::Priority_Update(_float fTimeDelta)
-{
-}
-
-void CParticleRain::Update(_float fTimeDelta)
-{
-	__super::Update(fTimeDelta);
-}
-
-void CParticleRain::Late_Update(_float fTimeDelta)
-{
-	m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this);
-}
-
-HRESULT CParticleRain::Render()
-{
-	m_pParticleTexture->Bind_Resource(0);
-
-	if (FAILED(__super::Render()))
 	{
 		return E_FAIL;
 	}
@@ -124,6 +98,7 @@ ParticleAttribute CParticleRain::OnSetAddParticle()
 	att.vPosition = {GetRandomFloat(-30.f, 30.f), 20.f, GetRandomFloat(-30.f, 30.f) };	
 	att.vColor = { 0.1f, 0.f, 0.f, 1.f };
 	att.vVelocity = { 0.f, GetRandomFloat(-180.f, -10.f), 0.f };
+	att.IsAlive = true;
 
 	return att;
 }
@@ -131,30 +106,4 @@ ParticleAttribute CParticleRain::OnSetAddParticle()
 void CParticleRain::OnBoundingExit(ParticleAttribute& particle)
 {
 	particle.vPosition = { GetRandomFloat(-30.f, 30.f), 20.f, GetRandomFloat(-30.f, 30.f) };
-}
-
-HRESULT CParticleRain::PrevRender()
-{
-	if (FAILED(__super::PrevRender()))
-	{
-		return E_FAIL;
-	}
-
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 0);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-	return S_OK;
-}
-
-HRESULT CParticleRain::EndRender()
-{
-	if (FAILED(__super::EndRender()))
-	{
-		return E_FAIL;
-	}
-
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
-	return S_OK;
 }

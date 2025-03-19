@@ -37,8 +37,8 @@
 //Hyock
 #include "HyockCube.h"
 #include "VIBuffer_Cube_Only.h"
-#include "TestParticle.h"
 #include "ParticleRain.h"
+#include "ParticleDash.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -522,6 +522,10 @@ HRESULT CLoader::Loading_For_HECKPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Rain"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/rain.png"), 1))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Dash"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/dash.png"), 1))))
+		return E_FAIL;
   
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 	
@@ -559,14 +563,14 @@ HRESULT CLoader::Loading_For_HECKPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_Hyock_Cube"),
 		CHyockCube::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_TestParticle"),
-		CTestParticle::Create(m_pGraphic_Device))))
-		return E_FAIL;
+		return E_FAIL;	
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleRain"),
 		CParticleRain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
+		CParticleDash::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT(" ε     Ϸ Ǿ    ϴ ."));

@@ -19,10 +19,17 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
+		LEVEL_HYEOK, TEXT("Layer_ParticleDash"))))
+		return E_FAIL;
+
+	m_pParticleDash = m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleDash"), 0);
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
+	m_count = 0.f;
 	return S_OK;
 }
 
@@ -34,6 +41,14 @@ void CPlayer::Update(_float fTimeDelta)
 {
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
+		m_count += fTimeDelta;
+		if (m_count >= 0.2f)
+		{
+			static_cast<CParticleSystem*>(m_pParticleDash)->ResetParticle(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+			m_count = 0.f;
+		}		
+
 		m_pTransformCom->Go_Straight(fTimeDelta);
 	}
 	if (GetKeyState(VK_DOWN) & 0x8000)
@@ -121,7 +136,7 @@ HRESULT CPlayer::Ready_Components()
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
-		return E_FAIL;
+		return E_FAIL; 	
 
 	return S_OK;
 }

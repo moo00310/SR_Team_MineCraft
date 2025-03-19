@@ -27,6 +27,9 @@ HRESULT CLevel_Hyeok::Initialize()
 	if (FAILED(Ready_Layer_RainParticle(TEXT("Layer_ParticleRain"))))
 		return E_FAIL;
 
+	/*if (FAILED(Ready_Layer_DashParticle(TEXT("Layer_ParticleDash"))))
+		return E_FAIL;*/
+
 	return S_OK;
 }
 
@@ -53,7 +56,7 @@ HRESULT CLevel_Hyeok::Ready_Layer_Camera(const _wstring& strLayerTag)
 
 HRESULT CLevel_Hyeok::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-	for (size_t i = 0; i < 50; i++)
+	for (size_t i = 0; i < 1; i++)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_Player"),
 			LEVEL_HYEOK, strLayerTag)))
@@ -93,6 +96,15 @@ HRESULT CLevel_Hyeok::Ready_Layer_TestParticle(const _wstring& strLayerTag)
 HRESULT CLevel_Hyeok::Ready_Layer_RainParticle(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleRain"),
+		LEVEL_HYEOK, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Hyeok::Ready_Layer_DashParticle(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
 		LEVEL_HYEOK, strLayerTag)))
 		return E_FAIL;
 

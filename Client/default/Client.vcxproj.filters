@@ -264,9 +264,6 @@
     <ClInclude Include="..\public\HyockCube.h">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\TestParticle.h">
-      <Filter>02.GameObjects\96.HyockGameObj</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Tree.h">
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree</Filter>
     </ClInclude>
@@ -295,6 +292,9 @@
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleRain.h">
+      <Filter>02.GameObjects\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleDash.h">
       <Filter>02.GameObjects\Particle</Filter>
     </ClInclude>
   </ItemGroup>
@@ -447,10 +447,10 @@
     <ClCompile Include="..\private\HyockCube.cpp">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\TestParticle.cpp">
-      <Filter>02.GameObjects\96.HyockGameObj</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ParticleRain.cpp">
+      <Filter>02.GameObjects\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleDash.cpp">
       <Filter>02.GameObjects\Particle</Filter>
     </ClCompile>
   </ItemGroup>
