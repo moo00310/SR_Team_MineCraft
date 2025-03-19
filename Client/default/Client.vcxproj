@@ -166,6 +166,7 @@
     <ClInclude Include="..\public\Client_Defines.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Creeper.h" />
+    <ClInclude Include="..\public\Edition.h" />
     <ClInclude Include="..\public\GrassDirt.h" />
     <ClInclude Include="..\public\HeroCube.h" />
     <ClInclude Include="..\public\Dirt.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="..\public\Stone.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\TestParticle.h" />
+    <ClInclude Include="..\public\Title.h" />
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\Wood.h" />
@@ -223,6 +225,7 @@
     <ClCompile Include="..\private\CoalOre.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
+    <ClCompile Include="..\private\Edition.cpp" />
     <ClCompile Include="..\private\GrassDirt.cpp" />
     <ClCompile Include="..\private\HeroCube.cpp" />
     <ClCompile Include="..\private\Dirt.cpp" />
@@ -252,6 +255,7 @@
     <ClCompile Include="..\private\Stone.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\TestParticle.cpp" />
+    <ClCompile Include="..\private\Title.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\Wood.cpp" />
