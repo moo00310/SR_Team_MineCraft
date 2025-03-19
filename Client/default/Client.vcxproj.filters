@@ -154,6 +154,12 @@
     <Filter Include="02.GameObjects\03.SkyBox">
       <UniqueIdentifier>{2e4902cf-7091-4917-b530-ae487272273e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\02.title">
+      <UniqueIdentifier>{62fff89f-c69c-4580-8a86-a9bd56df71c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\03.edition">
+      <UniqueIdentifier>{bd44ce59-d87b-47ac-9a92-589a37bb1fe2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -333,6 +339,12 @@
     <ClInclude Include="..\public\SkyBox.h">
       <Filter>02.GameObjects\03.SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Title.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Edition.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -503,6 +515,12 @@
     </ClCompile>
     <ClCompile Include="..\private\SkyBox.cpp">
       <Filter>02.GameObjects\03.SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Title.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Edition.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
