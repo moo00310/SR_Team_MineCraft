@@ -1,4 +1,6 @@
 #pragma once
+
+#include "GameInstance.h"
 #include "GameObject.h"
 #include "Texture.h"
 
@@ -13,11 +15,16 @@ protected:
 
 public:
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual HRESULT Initialize_Prototype() override;	
+	virtual HRESULT Initialize_Prototype() override;
+	virtual void Priority_Update(_float fTimeDelta) override;	
 	virtual void Update(_float fTimeDelta) override;
+	virtual void Late_Update(_float fTimeDelta) override;
 
 	virtual HRESULT Render() override;
 	HRESULT Bind_Buffers();
+
+	// 파티클 속성들 초기화.
+	virtual void Replay(_float3 _position);
 
 protected:
 	// 렌더링 전 상태 셋팅.
@@ -29,9 +36,11 @@ protected:
 protected:
 	HRESULT Create_VertexBuffer();
 
+private:
 	// 파티클 속성 셋팅.
 	void SetParticleAttribute();	
 
+protected:
 	// 파티클 경계선 셋팅.
 	void SetParticleBoundingBox(ParticleBoundingBox box);
 

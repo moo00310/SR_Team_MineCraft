@@ -8,10 +8,13 @@
 #include "Texture.h"
 #include "Collider_Cube.h"
 
+#include "Rigidbody.h"
 
-/* 1. ¿øÇü°´Ã¼¸¦ º¸°üÇÑ´Ù. */
-/* 1_1. ¿øÇü°´Ã¼ÀÇ Å¸ÀÔ( CGameObject, CComponent )¿¡ Å©°Ô ¿µÇâÀ» ¹ÞÁö ¾Ê´Â´Ù. */
-/* 1_2. º¸°üÇÒ¶§ ·¹º§º°( + ¸ðµç·¹º§) ·Î ±¸ºÐÇÏ¿© ÀúÀåÇÒ°Å¾ß. */
+
+
+/* 1. ì›í˜•ê°ì²´ë¥¼ ë³´ê´€í•œë‹¤. */
+/* 1_1. ì›í˜•ê°ì²´ì˜ íƒ€ìž…( CGameObject, CComponent )ì— í¬ê²Œ ì˜í–¥ì„ ë°›ì§€ ì•ŠëŠ”ë‹¤. */
+/* 1_2. ë³´ê´€í• ë•Œ ë ˆë²¨ë³„( + ëª¨ë“ ë ˆë²¨) ë¡œ êµ¬ë¶„í•˜ì—¬ ì €ìž¥í• ê±°ì•¼. */
 
 BEGIN(Engine)
 

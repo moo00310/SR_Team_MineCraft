@@ -53,11 +53,10 @@ HRESULT CCollider_Manager::Reset_ColliderGroup()
 	return S_OK;
 }
 
-_bool  CCollider_Manager::Collision_with_Group(_uint iGroupIndex, class CGameObject* pGameObject, COLLISION_TYPE eCollisionType, _float3* pOutDistance )
+_bool  CCollider_Manager::Collision_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDistance, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir)
 {
+	CComponent* pMyCollider = { pCollider };
 	CComponent* pOtherCollider = { nullptr };
-	CComponent* pMyCollider = { nullptr };
-	pMyCollider = pGameObject->Find_Component(TEXT("Com_Collider_Cube"));
 
 	for (auto& iter : m_pGameObjects[iGroupIndex])
 	{
@@ -82,7 +81,7 @@ _bool  CCollider_Manager::Collision_with_Group(_uint iGroupIndex, class CGameObj
 			case Engine::CCollider_Manager::COLLSIION_BOX:
 				if (pOtherCollider == nullptr)
 					continue;
-				if (true == ((dynamic_cast<CCollider_Cube*>(pMyCollider)->Collision_Check((CCollider_Cube*)pOtherCollider, pOutDistance))))
+				if (true == ((dynamic_cast<CCollider_Cube*>(pMyCollider)->Collision_Check((CCollider_Cube*)pOtherCollider, pOutDistance, pOutDir))))
 					return true;
 				break;
 			default:
