@@ -8,6 +8,7 @@ class CTexture;
 class CTransform;
 class CVIBuffer_Cube;
 class CCollider_Cube;
+class CRigidbody;
 END
 
 BEGIN(Client)
@@ -36,6 +37,7 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 	CCollider_Cube* m_pColliderCom = { nullptr };
+	CRigidbody* m_pRigidbodyCom = { nullptr };
 
 private:
 	HRESULT Ready_Components();
