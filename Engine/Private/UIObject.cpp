@@ -59,12 +59,18 @@ void CUIObject::Begin()
 
 	m_pGraphic_Device->SetTransform(D3DTS_VIEW, &m_ViewMatrix);
 	m_pGraphic_Device->SetTransform(D3DTS_PROJECTION, &m_ProjMatrix);
+
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 0);
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 }
 
 void CUIObject::End()
 {
 	m_pGraphic_Device->SetTransform(D3DTS_VIEW, &m_OldViewMatrix);
 	m_pGraphic_Device->SetTransform(D3DTS_PROJECTION, &m_OldProjMatrix);
+
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
 _bool CUIObject::isPick(HWND hWnd)

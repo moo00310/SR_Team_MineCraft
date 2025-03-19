@@ -1,25 +1,21 @@
 #pragma once
-
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "UIObject.h"
 
 BEGIN(Engine)
 class CTexture;
+class CVIBuffer_Rect;
 class CTransform;
-class CVIBuffer_Cube;
-class CCollider_Cube;
-class CRigidbody;
 END
 
 BEGIN(Client)
 
-class CHeroCube final : public CGameObject
+class CEdition final : public CUIObject
 {
-
 private:
-	CHeroCube(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CHeroCube(const CHeroCube& Prototype);
-	virtual ~CHeroCube() = default;
+	CEdition(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CEdition(CEdition& Prototype);
+	virtual ~CEdition() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -29,21 +25,16 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-protected:
-	_bool m_bHit{ false };
+private:
+	HRESULT Ready_Components();
 
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
-	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
-	CCollider_Cube* m_pColliderCom = { nullptr };
-	CRigidbody* m_pRigidbodyCom = { nullptr };
-
-private:
-	HRESULT Ready_Components();
+	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 public:
-	static CHeroCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CEdition* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

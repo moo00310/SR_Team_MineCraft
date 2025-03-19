@@ -44,6 +44,8 @@
 //Woo
 #include "MainLogo.h"
 #include "StartButton.h"
+#include "Title.h"
+#include "Edition.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -406,6 +408,12 @@ HRESULT CLoader::Loading_For_HEROPlay()
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("리지드바디을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Rigidbody */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Rigidbody"),
+		CRigidbody::Create(m_pGraphic_Device))))
+		return E_FAIL;
  	
 #pragma region MODEL
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -456,21 +464,34 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 HRESULT CLoader::Loading_For_WOOPlay()
 {
-
 #pragma region Add_Prototype Component
 	
-
 	#pragma region Texture UI
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
+	///* For.Prototype_Component_Texture_Loading*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_Loading"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Loading/loading_%03d.png"), 10))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_MainLogo*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_MainLogo"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/isles2.png"), 1))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/MinecraftBanner.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_StartButton*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_StartButton"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/StartButton/StartButton1.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_title*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_title"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/title/minecraft.png"), 1))))
+		return E_FAIL;
+
+	///* For.Prototype_Component_Texture_edition*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_edition"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/title/edition.png"), 1))))
 		return E_FAIL;
 
 	#pragma endregion 
@@ -496,13 +517,26 @@ HRESULT CLoader::Loading_For_WOOPlay()
 		return E_FAIL;
 
 	#pragma region UI Object
+	/* For.Prototype_GameObject_MainLogo */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_MainLogo"),
 		CMainLogo::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_StartButton */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_StartButton"),
 		CStartButton::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_title */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_title"),
+		CTitle::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Edition */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_Edition"),
+		CEdition::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 
 	#pragma endregion 
 

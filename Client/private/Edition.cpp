@@ -1,65 +1,59 @@
-#include "StartButton.h"
+#include "Edition.h"
 
-CStartButton::CStartButton(LPDIRECT3DDEVICE9 pGraphic_Device)
-    : CUIObject{ pGraphic_Device }
+CEdition::CEdition(LPDIRECT3DDEVICE9 pGraphic_Device)
+	: CUIObject{ pGraphic_Device }
 {
 }
 
-CStartButton::CStartButton(CStartButton& Prototype)
-    : CUIObject( Prototype )
+CEdition::CEdition(CEdition& Prototype)
+	: CUIObject( Prototype )
 {
 }
 
-HRESULT CStartButton::Initialize_Prototype()
+HRESULT CEdition::Initialize_Prototype()
 {
-    return S_OK;
+	return S_OK;
 }
 
-HRESULT CStartButton::Initialize(void* pArg)
+HRESULT CEdition::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
-
-    Desc.fSizeX = 450;
-    Desc.fSizeY = 100;
+    
+    //Desc.fSizeX = 100;
+    //Desc.fSizeY = 100;
+    Desc.fSizeX = 300;
+    Desc.fSizeY = 50;
     Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = g_iWinSizeY * 0.5f;
+    Desc.fY = g_iWinSizeY * 0.25f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
-    
- 	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
 
+    m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
 
     return S_OK;
 }
 
-void CStartButton::Priority_Update(_float fTimeDelta)
+void CEdition::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CStartButton::Update(_float fTimeDelta)
+void CEdition::Update(_float fTimeDelta)
 {
-    if (GetKeyState(VK_LBUTTON) & 0x8000)
-    {
-        if (true == __super::isPick(g_hWnd))
-            g_bChangeLevel = true;
-    }
 }
 
-void CStartButton::Late_Update(_float fTimeDelta)
+void CEdition::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
         return;
 }
 
-HRESULT CStartButton::Render()
+HRESULT CEdition::Render()
 {
-    //m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
-
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
@@ -79,9 +73,9 @@ HRESULT CStartButton::Render()
     return S_OK;
 }
 
-HRESULT CStartButton::Ready_Components()
+HRESULT CEdition::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_WOO, TEXT("Prototype_Component_Texture_StartButton"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_WOO, TEXT("Prototype_Component_Texture_edition"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -93,38 +87,36 @@ HRESULT CStartButton::Ready_Components()
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
 
-        return S_OK;
+    return S_OK;
 }
 
-CStartButton* CStartButton::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CEdition* CEdition::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CStartButton* pInstance = new CStartButton(pGraphic_Device);
+    CEdition* pInstance = new CEdition(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CStartButton");
+        MSG_BOX("Failed to Created : CEdition");
         Safe_Release(pInstance);
     }
     return pInstance;
-
 }
 
-CGameObject* CStartButton::Clone(void* pArg)
+CGameObject* CEdition::Clone(void* pArg)
 {
-    CStartButton* pInstance = new CStartButton(*this);
+    CEdition* pInstance = new CEdition(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CStartButton");
+        MSG_BOX("Failed to Created : CEdition");
         Safe_Release(pInstance);
     }
     return pInstance;
 }
 
-void CStartButton::Free()
+void CEdition::Free()
 {
     __super::Free();
-
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pTransformCom);
