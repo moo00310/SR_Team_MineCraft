@@ -110,6 +110,9 @@
     <ClInclude Include="..\Public\Key_Manager.h">
       <Filter>07.KeyManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect_Normal.h">
+      <Filter>04.Components\VIBuffer\Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -287,9 +290,12 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleSystem.cpp">
       <Filter>96.Particle</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Private\Key_Manager.cpp">
       <Filter>07.KeyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect_Normal.cpp">
+      <Filter>04.Components\VIBuffer\Rect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

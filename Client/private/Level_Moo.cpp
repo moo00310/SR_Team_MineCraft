@@ -31,6 +31,10 @@ HRESULT CLevel_Moo::Initialize()
 		return E_FAIL;
 
 
+	//임무결 1인칭 확인용
+	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Arm"))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -103,6 +107,15 @@ HRESULT CLevel_Moo::Ready_Laye_MooArm(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arm_Steve"),
 		LEVEL_STATIC, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Moo::Ready_Laye_Sword(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Sword"),
+		LEVEL_MOO, strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

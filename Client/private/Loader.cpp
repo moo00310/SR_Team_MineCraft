@@ -1,4 +1,4 @@
-#include "Loader.h"
+﻿#include "Loader.h"
 
 #include "GameInstance.h"
 
@@ -17,7 +17,7 @@
 #include "Tree.h"
 #include "Wood.h"
 #include "Leaf.h"
-
+#include "Sword.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -138,13 +138,13 @@ HRESULT CLoader::Loading_For_Logo()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩딩중입니다."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩딩중입니다."));
 	
 
-	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩딩중입니다."));
 
 	/* For.Prototype_GameObject_BackGround */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
@@ -206,7 +206,6 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
 		return E_FAIL;
 
-
 	// 나무 텍스쳐
 	/* For.Prototype_Component_Texture_Leaf */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Leaf"),
@@ -217,6 +216,18 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Wood"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/wood0.png"), 1))))
 		return E_FAIL;
+
+	// 철검 택스쳐
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Sword"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Sword/iron_sword.png"), 1))))
+		return E_FAIL;
+
+
+	// 돌 곡괭이 택스쳐
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Pickaxe"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Pickaxe/stone_pickaxe.png"), 1))))
+		return E_FAIL;
+	
 
 	/*-----------------------------------
 	*  크리퍼 모델
@@ -290,6 +301,12 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Tree"),
 		CTree::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sword */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Sword"),
+		CSword::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

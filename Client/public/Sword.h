@@ -1,0 +1,31 @@
+#pragma once
+
+#include "Client_Defines.h"
+#include "Item_Model.h"
+
+BEGIN(Engine)
+class CTexture;
+class CTransform;
+class CVIBuffer_Cube;
+END
+
+class CSword final : public CItem_Model
+{
+private:
+	CSword(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CSword(const CSword& Prototype);
+	virtual ~CSword() = default;
+
+public:
+	virtual HRESULT Initialize_Prototype()override;
+	virtual HRESULT Initialize(void* pArg)override;
+	virtual void Priority_Update(_float fTimeDelta)override;
+	virtual void Update(_float fTimeDelta)override;
+	virtual void Late_Update(_float fTimeDelta)override;
+	virtual HRESULT Render()override;
+
+public:
+	static CSword* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual CGameObject* Clone(void* pArg) override;
+	virtual void Free();
+};
