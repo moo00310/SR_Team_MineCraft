@@ -191,12 +191,12 @@ void CGameInstance::Out_CollisiomGroup(_uint eCollisionGroup, CGameObject* pGame
 	m_pCollider_Manager->Out_CollisiomGroup(eCollisionGroup, pGameObject);
 }
 
-_bool CGameInstance::Collision_with_Group(_uint eGroup, CGameObject* pGameObject, CCollider_Manager::COLLISION_TYPE eType, _float3* pOutDistance)
+_bool CGameInstance::Collision_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _float3* pOutDistance)
 {
 	if (nullptr == m_pCollider_Manager)
 		return false;
 
-	return m_pCollider_Manager->Collision_with_Group(eGroup, pGameObject, eType, pOutDistance);
+	return m_pCollider_Manager->Collision_with_Group(eGroup, pCollider, eType, pOutDistance);
 }
 
 _bool CGameInstance::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint iGroup, _Out_ _float& fDist, _Out_ CGameObject** ppGameObject)

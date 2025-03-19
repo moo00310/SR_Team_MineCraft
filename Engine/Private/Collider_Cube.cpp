@@ -298,15 +298,23 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 		if (D3DXVec3Dot(&d, &smallestAxis) < 0)
 			smallestAxis = -smallestAxis;
 
+		// minPenetration이 정상적인 값인지 확인
+		if (minPenetration <= 0)
+			return false;
+
 		*pOutDistance = smallestAxis * minPenetration;
+
+		// pOutDistance 값이 이상하면 0 벡터로 보정
+		if (D3DXVec3LengthSq(pOutDistance) < 1e-6f)
+			*pOutDistance = { 0, 0, 0 };
 
 		// 충돌 방향 판정
 		if (fabs(smallestAxis.y) > fabs(smallestAxis.x) && fabs(smallestAxis.y) > fabs(smallestAxis.z))
 		{
 			if (smallestAxis.y > 0)
-				printf("바닥 충돌\n"); // B가 A 위에 있음
+				printf("바닥 충돌\n");
 			else
-				printf("천장 충돌\n"); // B가 A 아래에 있음
+				printf("천장 충돌\n");
 		}
 		else if (fabs(smallestAxis.x) > fabs(smallestAxis.z))
 		{
@@ -323,6 +331,7 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 				printf("뒤쪽 충돌\n");
 		}
 	}
+
 
 	return true;
 }

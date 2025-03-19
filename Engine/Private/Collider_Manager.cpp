@@ -53,11 +53,10 @@ HRESULT CCollider_Manager::Reset_ColliderGroup()
 	return S_OK;
 }
 
-_bool  CCollider_Manager::Collision_with_Group(_uint iGroupIndex, class CGameObject* pGameObject, COLLISION_TYPE eCollisionType, _float3* pOutDistance )
+_bool  CCollider_Manager::Collision_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _float3* pOutDistance )
 {
+	CComponent* pMyCollider = { pCollider };
 	CComponent* pOtherCollider = { nullptr };
-	CComponent* pMyCollider = { nullptr };
-	pMyCollider = pGameObject->Find_Component(TEXT("Com_Collider_Cube"));
 
 	for (auto& iter : m_pGameObjects[iGroupIndex])
 	{

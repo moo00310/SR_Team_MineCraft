@@ -20,7 +20,7 @@ public:
 
 	HRESULT Reset_ColliderGroup();
 
-	_bool Collision_with_Group(_uint iGroupIndex, class CGameObject* pGameObject, COLLISION_TYPE eCollisionType,  _float3* pOutDistance = nullptr);
+	_bool Collision_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType,  _float3* pOutDistance = nullptr);
 	_bool Collision_Check_Group_Multi(_uint iGroupIndex, vector<class CGameObject*>& vecDamagedObj, class CGameObject* pDamageCauser, COLLISION_TYPE eCollisionType);
 
 	_bool Ray_Cast(

@@ -59,7 +59,7 @@ public:
 	//콜리전 그룹에서 빼기
 	void Out_CollisiomGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
 	//특정 그룹의 오브젝트들과 충돌 검사
-	_bool Collision_with_Group(_uint eGroup, class CGameObject* pGameObject, CCollider_Manager::COLLISION_TYPE eType, _float3* pOutDistance = nullptr);
+	_bool Collision_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _float3* pOutDistance = nullptr);
 
 	//레이케스트
 	//_bool Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup);

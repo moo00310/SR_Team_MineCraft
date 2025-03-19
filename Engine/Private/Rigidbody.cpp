@@ -1,5 +1,7 @@
 #include "Rigidbody.h"
 #include "Transform.h"
+#include "Collider_Cube.h"
+#include "GameInstance.h"
 
 CRigidbody::CRigidbody(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent{ pGraphic_Device }
@@ -19,21 +21,62 @@ HRESULT CRigidbody::Initialize_Prototype()
 HRESULT CRigidbody::Initialize(void* pArg)
 {
 	RIGIDBODY_DESC Desc{ *static_cast<RIGIDBODY_DESC*>(pArg) };
+
+	//Transform
 	m_pTransform = Desc.pTransform;
 	Safe_AddRef(m_pTransform);
 	if (!m_pTransform)
 		return E_FAIL;
+
+	//Collider 있어도되고 없어도 되고
+	m_pCollider_Cube = Desc.pCollider_Cube;
+	if (m_pCollider_Cube)
+	{
+		Safe_AddRef(m_pCollider_Cube);
+	}
+
 	m_fMass = Desc.fMass;
 
 
 	return S_OK;
 }
 
-HRESULT CRigidbody::Update(_float fTimeDelta)
+HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
+	m_isGrounded = false;
+	//바닥에 닿았으면 속도 줄이기
+
+	//충돌 검사하고 떨어질지 말지 판단
+	if (m_pCollider_Cube)
+	{
+		_float3 vDist;
+		_bool isHit = m_pGameInstance->Collision_with_Group(iCollsionGroup, m_pCollider_Cube, CCollider_Manager::COLLSIION_BOX, &vDist);
+
+		if (isHit)
+		{
+			// 바닥에 닿았을 때 반응 (간단한 처리 예시: 위치 보정 및 속도 감쇠)
+			_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
+			vPosition -= vDist;
+			m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
+			m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
+			m_isGrounded = true;
+			return S_OK;
+		}
+	}
+
+
 	Fall_With_Gravity(fTimeDelta);
 
 	return S_OK;
+}
+
+void CRigidbody::Jump()
+{
+	if (m_isGrounded) // 바닥에 닿아 있을 때만 점프 가능
+	{
+		m_vVelocity.y = m_fJumpForce; // Y축 방향으로 힘 추가
+		m_isGrounded = false; // 공중에 떠 있는 상태로 변경
+	}
 }
 
 void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
@@ -57,14 +100,16 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 	_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition + m_vVelocity * fTimeDelta);
 
-	vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
+	
 	// 7. 바닥에 닿았을 때 반응 (간단한 처리 예시: 위치 보정 및 속도 감쇠)
+	vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	if (vPosition.y <= 0.0f) // Y축이 0 이하로 내려갔다면
 	{
 		vPosition.y = 0.0f;
 		m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
 		  // 바닥에 닿았다면 위치를 0으로 고정
 		m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
+		m_isGrounded = true;
 	}
 }
 
@@ -98,4 +143,9 @@ void CRigidbody::Free()
 {
 	__super::Free();
 	Safe_Release(m_pTransform);
+
+	if (m_pCollider_Cube)
+	{
+		Safe_Release(m_pCollider_Cube);
+	}
 }
