@@ -149,7 +149,7 @@ HRESULT CParticleSystem::Bind_Buffers()
 	return S_OK;
 }
 
-void CParticleSystem::ResetParticle(_float3 _position)
+void CParticleSystem::Replay(_float3 _position)
 {
 	for (auto& particle : m_ListParticleAttribute)
 	{

@@ -24,7 +24,7 @@ public:
 	HRESULT Bind_Buffers();
 
 	// 파티클 속성들 초기화.
-	virtual void ResetParticle(_float3 _position);
+	virtual void Replay(_float3 _position);
 
 protected:
 	// 렌더링 전 상태 셋팅.

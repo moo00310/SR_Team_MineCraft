@@ -44,7 +44,7 @@ void CPlayer::Update(_float fTimeDelta)
 		m_count += fTimeDelta;
 		if (m_count >= 0.2f)
 		{
-			static_cast<CParticleSystem*>(m_pParticleDash)->ResetParticle(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			static_cast<CParticleSystem*>(m_pParticleDash)->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
 			m_count = 0.f;
 		}		
