@@ -123,6 +123,12 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
     BLOCKDESC eblockData;
     int index = 0;
 
+    vector<D3DXVECTOR3> stoneVec;
+    vector<D3DXVECTOR3> dirtVec;
+    vector<D3DXVECTOR3> grassVec;
+    vector<D3DXVECTOR3> ironVec;
+    vector<D3DXVECTOR3> coalVec;
+
     while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
     {
         CBreakableCube* pCube = nullptr;
@@ -131,49 +137,19 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
         switch (eblockData.eBlockType)
         {
         case GRASSDIRT:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-            }
-            index++;
+            grassVec.push_back(eblockData.fPosition);
             break;
         case DIRT:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-            }
-            index++;
+            dirtVec.push_back(eblockData.fPosition);
             break;
         case STONE:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-            }
-            index++;
+            stoneVec.push_back(eblockData.fPosition);
             break;
         case IRONORE:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-            }
-            index++;
+            ironVec.push_back(eblockData.fPosition);
             break;
         case COALORE:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-            }
-            index++;
+            coalVec.push_back(eblockData.fPosition);
             break;
         default:
             break;
@@ -181,6 +157,26 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
         LeaveCriticalSection(&cs);  // 동기화 종료
     }
     CloseHandle(hFile);
+
+
+    EnterCriticalSection(&cs);
+    vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
+        {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
+        {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
+        {TEXT("Prototype_GameObject_Stone"), &stoneVec},
+        {TEXT("Prototype_GameObject_IronOre"), &ironVec},
+        {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
+    };
+
+    for (size_t i = 0; i < blockTypes.size(); ++i)
+    {
+        pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
+        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
+        if (pCube)
+            pCube->Set_InstanceBuffer(*(blockTypes[i].second));
+    }
+    LeaveCriticalSection(&cs);
+
     return 0;
 }
 
