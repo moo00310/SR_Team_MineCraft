@@ -26,11 +26,12 @@ protected:
 	// 렌더링 후 상태 셋팅.
 	virtual HRESULT EndRender();
 
+private:
+	// 파티클 속성 셋팅.
+	void SetParticleAttribute();
+
 protected:
 	HRESULT Create_VertexBuffer();
-
-	// 파티클 속성 셋팅.
-	void SetParticleAttribute();	
 
 	// 파티클 경계선 셋팅.
 	void SetParticleBoundingBox(ParticleBoundingBox box);
@@ -40,7 +41,7 @@ protected:
 
 	float GetRandomFloat(float lowBound, float highBound);
 
-	// SetParticleAttribute 호출 시 실행.	
+	// Initialize 호출 시 실행.	
 	// 파티클마다 각 속성을 정의 해준다.
 	virtual ParticleAttribute OnSetAddParticle() = 0;
 

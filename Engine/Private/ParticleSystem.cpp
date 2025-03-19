@@ -14,10 +14,8 @@ CParticleSystem::CParticleSystem(const CParticleSystem& Prototype) :
 
 HRESULT CParticleSystem::Initialize(void* pArg)
 {
- 	if (FAILED(Create_VertexBuffer()))
-	{
-		return E_FAIL;
-	}
+	// 파티클 속성 셋팅.
+	SetParticleAttribute();
 
 	return S_OK;
 }
