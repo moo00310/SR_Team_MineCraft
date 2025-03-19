@@ -405,6 +405,12 @@ HRESULT CLoader::Loading_For_HEROPlay()
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("리지드바디을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Rigidbody */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Rigidbody"),
+		CRigidbody::Create(m_pGraphic_Device))))
+		return E_FAIL;
  	
 #pragma region MODEL
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));

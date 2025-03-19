@@ -22,7 +22,7 @@ HRESULT CHeroCube::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 100.5f, static_cast<_float>(rand() % 10)));
 
 	return S_OK;
 }
@@ -34,7 +34,6 @@ void CHeroCube::Priority_Update(_float fTimeDelta)
 
 void CHeroCube::Update(_float fTimeDelta)
 {
-
 	_float fRange;
 	_bool isRayHit{ false };
 	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
@@ -52,7 +51,8 @@ void CHeroCube::Update(_float fTimeDelta)
 		return;
 	}
 
-	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_BLOCK, this, CCollider_Manager::COLLSIION_BOX);
+	_float3 vDist;
+	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_BLOCK, this, CCollider_Manager::COLLSIION_BOX, &vDist);
 	if (m_bHit)
 	{
 		int a = 10;
@@ -81,6 +81,7 @@ void CHeroCube::Update(_float fTimeDelta)
 		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
 	}
 		
+	m_pRigidBodyCom->Update(fTimeDelta);
 }
 
 void CHeroCube::Late_Update(_float fTimeDelta)
@@ -122,7 +123,6 @@ HRESULT CHeroCube::Ready_Components()
 
 	/* For.Com_Transform */
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
-
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;
@@ -135,8 +135,14 @@ HRESULT CHeroCube::Ready_Components()
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;
 
+	/* For.Com_Rigidbody */
+   	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, 0.01f };
+	if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Rigidbody"),
+		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidBodyCom), &RigidbodyDesc)))
+		return E_FAIL;
+
 	return S_OK;
-}
+ }
 
 CHeroCube* CHeroCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
@@ -168,10 +174,9 @@ void CHeroCube::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pRigidBodyCom);
 	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
-	//Safe_Release(m_pGraphic_Device); //안돼 이건 억지야
-
 }

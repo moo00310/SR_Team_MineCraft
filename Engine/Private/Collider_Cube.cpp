@@ -203,74 +203,51 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 	if (pTarget == nullptr)
 		return false;
 
-	// this 객체의 월드 매트릭스 추출
+	// 월드 행렬 추출
 	const _float4x4* pWorldMatrixA = m_pTransformCom->Get_WorldMatrix();
-	// 타겟 객체의 월드 매트릭스 추출
 	const _float4x4* pWorldMatrixB = pTarget->m_pTransformCom->Get_WorldMatrix();
 
-	// 월드 매트릭스에서 로컬 축과 중심 추출 (D3DXMATRIX 스타일 가정: _11~_33은 회전, _41~_43은 번역)
+	// 로컬 축 및 중심 계산
 	_float3 axesA[3] = {
 		_float3(pWorldMatrixA->_11, pWorldMatrixA->_12, pWorldMatrixA->_13),
 		_float3(pWorldMatrixA->_21, pWorldMatrixA->_22, pWorldMatrixA->_23),
 		_float3(pWorldMatrixA->_31, pWorldMatrixA->_32, pWorldMatrixA->_33)
 	};
 	_float3 centerA(pWorldMatrixA->_41, pWorldMatrixA->_42, pWorldMatrixA->_43);
-	// 정규화
-	D3DXVec3Normalize(&axesA[0], &axesA[0]);
-	D3DXVec3Normalize(&axesA[1], &axesA[1]);
-	D3DXVec3Normalize(&axesA[2], &axesA[2]);
-
-	// this 객체의 반 크기 (로컬 공간에서 정의된 값)
 	_float3 halfA = { m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ };
 
-	// this 객체의 8개 꼭짓점 계산
-	_float3 cornersA[8];
-	for (int i = 0; i < 8; ++i)
-	{
-		float offsetX = (i & 1) ? halfA.x : -halfA.x;
-		float offsetY = (i & 2) ? halfA.y : -halfA.y;
-		float offsetZ = (i & 4) ? halfA.z : -halfA.z;
-		cornersA[i] = centerA + axesA[0] * offsetX +
-			axesA[1] * offsetY +
-			axesA[2] * offsetZ;
-	}
-
-	// 타겟 객체의 월드 매트릭스에서 로컬 축과 중심 추출
 	_float3 axesB[3] = {
 		_float3(pWorldMatrixB->_11, pWorldMatrixB->_12, pWorldMatrixB->_13),
 		_float3(pWorldMatrixB->_21, pWorldMatrixB->_22, pWorldMatrixB->_23),
 		_float3(pWorldMatrixB->_31, pWorldMatrixB->_32, pWorldMatrixB->_33)
 	};
 	_float3 centerB(pWorldMatrixB->_41, pWorldMatrixB->_42, pWorldMatrixB->_43);
-	D3DXVec3Normalize(&axesB[0], &axesB[0]);
-	D3DXVec3Normalize(&axesB[1], &axesB[1]);
-	D3DXVec3Normalize(&axesB[2], &axesB[2]);
+	_float3 halfB = { pTarget->m_StateDesc.fRadiusX, pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
 
-	// 타겟 객체의 반 크기
-	_float3 halfB = { pTarget->m_StateDesc.fRadiusX,pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
-
-	// 타겟 객체의 8개 꼭짓점 계산
-	_float3 cornersB[8];
-	for (int i = 0; i < 8; ++i)
+	// 정규화
+	for (int i = 0; i < 3; ++i)
 	{
-		float offsetX = (i & 1) ? halfB.x : -halfB.x;
-		float offsetY = (i & 2) ? halfB.y : -halfB.y;
-		float offsetZ = (i & 4) ? halfB.z : -halfB.z;
-		cornersB[i] = centerB + axesB[0] * offsetX +
-			axesB[1] * offsetY +
-			axesB[2] * offsetZ;
+		D3DXVec3Normalize(&axesA[i], &axesA[i]);
+		D3DXVec3Normalize(&axesB[i], &axesB[i]);
 	}
 
-	// SAT(Separating Axis Theorem)를 위한 테스트 축 설정
-	std::vector<_float3> testAxes;
-	// 각 객체의 로컬 축 3개씩
-	testAxes.push_back(axesA[0]);
-	testAxes.push_back(axesA[1]);
-	testAxes.push_back(axesA[2]);
-	testAxes.push_back(axesB[0]);
-	testAxes.push_back(axesB[1]);
-	testAxes.push_back(axesB[2]);
-	// 두 객체의 축 교차 결과 (길이가 매우 짧은 축은 제외)
+	// 8개 꼭짓점 계산
+	_float3 cornersA[8], cornersB[8];
+	for (int i = 0; i < 8; ++i)
+	{
+		float offsetX = (i & 1) ? halfA.x : -halfA.x;
+		float offsetY = (i & 2) ? halfA.y : -halfA.y;
+		float offsetZ = (i & 4) ? halfA.z : -halfA.z;
+		cornersA[i] = centerA + axesA[0] * offsetX + axesA[1] * offsetY + axesA[2] * offsetZ;
+
+		offsetX = (i & 1) ? halfB.x : -halfB.x;
+		offsetY = (i & 2) ? halfB.y : -halfB.y;
+		offsetZ = (i & 4) ? halfB.z : -halfB.z;
+		cornersB[i] = centerB + axesB[0] * offsetX + axesB[1] * offsetY + axesB[2] * offsetZ;
+	}
+
+	// SAT 충돌 검사
+	std::vector<_float3> testAxes = { axesA[0], axesA[1], axesA[2], axesB[0], axesB[1], axesB[2] };
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < 3; ++j)
@@ -285,58 +262,72 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _float3* pOutDist
 		}
 	}
 
-	// 각 축에 대해 투영 구간을 계산하고, 겹치는지 검사합니다.
 	float minPenetration = FLT_MAX;
 	_float3 smallestAxis(0, 0, 0);
 	for (const auto& axis : testAxes)
 	{
-		// this 객체 투영 구간
 		float minA = FLT_MAX, maxA = -FLT_MAX;
-		for (int i = 0; i < 8; ++i)
-		{
-			float proj = D3DXVec3Dot(&cornersA[i], &axis);
-			minA = min(minA, proj);
-			maxA = max(maxA, proj);
-		}
-		// 타겟 객체 투영 구간
 		float minB = FLT_MAX, maxB = -FLT_MAX;
+
 		for (int i = 0; i < 8; ++i)
 		{
-			float proj = D3DXVec3Dot(&cornersB[i], &axis);
-			minB = min(minB, proj);
-			maxB = max(maxB, proj);
+			float projA = D3DXVec3Dot(&cornersA[i], &axis);
+			minA = min(minA, projA);
+			maxA = max(maxA, projA);
+
+			float projB = D3DXVec3Dot(&cornersB[i], &axis);
+			minB = min(minB, projB);
+			maxB = max(maxB, projB);
 		}
 
-		// 투영 구간에 분리(갭)가 있다면 충돌 없음
 		if (maxA < minB || maxB < minA)
 			return false;
-		else
+
+		float overlap = min(maxA, maxB) - max(minA, minB);
+		if (overlap < minPenetration)
 		{
-			// 겹치는 정도(오버랩)를 계산
-			float overlap = min(maxA, maxB) - max(minA, minB);
-			if (overlap < minPenetration)
-			{
-				minPenetration = overlap;
-				smallestAxis = axis;
-			}
+			minPenetration = overlap;
+			smallestAxis = axis;
 		}
 	}
 
-	// 충돌이 발생한 경우, 옵션으로 최소 침투 깊이와 방향을 계산
+	// 충돌 방향 분석 (위/아래/옆 구분)
 	if (pOutDistance)
 	{
-		// 두 중심 간 벡터
 		_float3 d = centerB - centerA;
-		// 두 벡터의 방향이 반대면 최소 축의 방향을 반전
 		if (D3DXVec3Dot(&d, &smallestAxis) < 0)
 			smallestAxis = -smallestAxis;
-		*pOutDistance = _float3(smallestAxis.x * minPenetration,
-			smallestAxis.y * minPenetration,
-			smallestAxis.z * minPenetration);
+
+		*pOutDistance = smallestAxis * minPenetration;
+
+		// 충돌 방향 판정
+		if (fabs(smallestAxis.y) > fabs(smallestAxis.x) && fabs(smallestAxis.y) > fabs(smallestAxis.z))
+		{
+			if (smallestAxis.y > 0)
+				printf("바닥 충돌\n"); // B가 A 위에 있음
+			else
+				printf("천장 충돌\n"); // B가 A 아래에 있음
+		}
+		else if (fabs(smallestAxis.x) > fabs(smallestAxis.z))
+		{
+			if (smallestAxis.x > 0)
+				printf("왼쪽 충돌\n");
+			else
+				printf("오른쪽 충돌\n");
+		}
+		else
+		{
+			if (smallestAxis.z > 0)
+				printf("앞쪽 충돌\n");
+			else
+				printf("뒤쪽 충돌\n");
+		}
 	}
 
 	return true;
 }
+
+
 
 CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device/*, COLLRECTDESC& Des*/)
 {
