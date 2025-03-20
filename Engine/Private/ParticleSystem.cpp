@@ -51,8 +51,10 @@ void CParticleSystem::Update(_float fTimeDelta)
 			OnBoundingExit(data);
 		}
 
+		// 파티클 중력 적용중인지?.
 		if (data.IsAlive == true && data.IsGravity == true)
 		{
+			// 중력 적용 시 중력 받게.
 			float height = 0.f + data.fGravityJumpPower * data.fGravityTime - (1.f / 2.f) * data.fGravity * (data.fGravityTime * data.fGravityTime);
 			data.fGravityTime += fTimeDelta;
 
@@ -61,7 +63,7 @@ void CParticleSystem::Update(_float fTimeDelta)
 		}
 		else
 		{
-			// 파티클 이동.
+			// 중력 없을 시 단순 이동만.
 			data.vPosition += data.vVelocity * fTimeDelta;
 		}		
 	}
