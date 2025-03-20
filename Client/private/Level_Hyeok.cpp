@@ -40,6 +40,8 @@ void CLevel_Hyeok::Update(_float fTimeDelta)
 
 HRESULT CLevel_Hyeok::Render()
 {
+	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	SetWindowText(g_hWnd, TEXT("김동혁 레벨입니다."));
 
 	return S_OK;

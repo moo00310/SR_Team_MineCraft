@@ -117,7 +117,7 @@
     </Filter>
     <Filter Include="02.GameObjects\Particle">
       <UniqueIdentifier>{e76eac64-4f2c-48d7-a84d-80b3b509d737}</UniqueIdentifier>
-     </Filter>
+    </Filter>
     <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action">
       <UniqueIdentifier>{8e527e81-b6fa-45aa-a003-763b8c1f9c83}</UniqueIdentifier>
     </Filter>
@@ -317,7 +317,7 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleDash.h">
       <Filter>02.GameObjects\Particle</Filter>
- </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Check_Enemy_Node.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
     </ClInclude>

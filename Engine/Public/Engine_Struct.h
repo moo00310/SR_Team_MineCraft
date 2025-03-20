@@ -52,7 +52,7 @@ namespace Engine
 	typedef struct tagParticleAttribute
 	{
 		// 파티클 포지션.
-		_float3 vPosition;
+		_float3 vPosition;		
 
 		// 파티클 속도.
 		_float3 vVelocity;		
@@ -70,7 +70,19 @@ namespace Engine
 		float fEndTime;
 
 		// 파티클 타이머 활성화.
-		bool IsTime = false;		
+		bool IsTime = false;
+
+		// 파티클 중력 적용 활성화.
+		bool IsGravity = false;
+
+		// 시간.
+		float fGravityTime;
+
+		// 파티클 생성 시 첫 점프력.
+		float fJumpPower;
+
+		// 중력 가속도.
+		float fGravity;
 	}ParticleAttribute;
 
 	// 파티클 경계선.
