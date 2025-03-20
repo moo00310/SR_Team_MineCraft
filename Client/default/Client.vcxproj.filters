@@ -351,6 +351,9 @@
     <ClInclude Include="..\public\Edition.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleDig.h">
+      <Filter>02.GameObjects\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -530,6 +533,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Edition.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleDig.cpp">
+      <Filter>02.GameObjects\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

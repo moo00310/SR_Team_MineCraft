@@ -79,7 +79,7 @@ namespace Engine
 		float fGravityTime;
 
 		// 파티클 생성 시 첫 점프력.
-		float fJumpPower;
+		float fGravityJumpPower;
 
 		// 중력 가속도.
 		float fGravity;

@@ -25,6 +25,12 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pParticleDash = m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleDash"), 0);
 
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDig"),
+		LEVEL_HYEOK, TEXT("Layer_ParticleDig"))))
+		return E_FAIL;
+
+	m_pParticleDig = m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleDig"), 0);
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
@@ -62,6 +68,11 @@ void CPlayer::Update(_float fTimeDelta)
 	if (GetKeyState(VK_RIGHT) & 0x8000)
 	{
 		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
+	}
+
+	if (GetKeyState(VK_SPACE) & 0x8000)
+	{
+		static_cast<CParticleSystem*>(m_pParticleDig)->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 
 }

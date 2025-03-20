@@ -32,6 +32,7 @@ private:
 	CTransform*				m_pTransformCom = { nullptr };
 	CVIBuffer_Rect*			m_pVIBufferCom = { nullptr };
 	CGameObject*			m_pParticleDash = { nullptr };
+	CGameObject*			m_pParticleDig = { nullptr };
 
 private:
 	HRESULT SetUp_RenderState();

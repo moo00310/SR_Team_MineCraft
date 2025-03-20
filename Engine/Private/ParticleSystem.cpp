@@ -53,16 +53,16 @@ void CParticleSystem::Update(_float fTimeDelta)
 
 		if (data.IsAlive == true && data.IsGravity == true)
 		{
-			float height = 0.f + data.fJumpPower * data.fGravityTime - (1.f / 2.f) * data.fGravity * (data.fGravityTime * data.fGravityTime);
+			float height = 0.f + data.fGravityJumpPower * data.fGravityTime - (1.f / 2.f) * data.fGravity * (data.fGravityTime * data.fGravityTime);
 			data.fGravityTime += fTimeDelta;
 
 			data.vPosition += data.vVelocity * fTimeDelta;
 			data.vPosition.y += height;
 
-			if (data.fGravityTime >= 0.4f)
+			/*if (data.fGravityTime >= 0.4f)
 			{
 				data.fGravityTime = 0.4f;
-			}
+			}*/
 		}
 		else
 		{
@@ -173,6 +173,8 @@ void CParticleSystem::Replay(_float3 _position)
 		particle.fCurrentTime = 0.f;
 		particle.fGravityTime = 0.f;
 		particle.IsAlive = true;
+
+		OnReplay(particle);
 	}
 }
 

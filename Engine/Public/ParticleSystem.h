@@ -24,7 +24,7 @@ public:
 	HRESULT Bind_Buffers();
 
 	// 파티클 속성들 초기화.
-	virtual void Replay(_float3 _position);
+	void Replay(_float3 _position);
 
 protected:
 	// 렌더링 전 상태 셋팅.
@@ -32,6 +32,8 @@ protected:
 
 	// 렌더링 후 상태 셋팅.
 	virtual HRESULT EndRender();
+
+	virtual void OnReplay(ParticleAttribute& particle) {};
 
 protected:
 	HRESULT Create_VertexBuffer();
