@@ -46,6 +46,8 @@
 #include "StartButton.h"
 #include "Title.h"
 #include "Edition.h"
+#include "Inventory.h"
+#include "CheckBox.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -423,6 +425,18 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_GrassDirt"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassDirt%d.png"), 1))))
 		return E_FAIL;
+
+	/* 장현우 인벤토리 테스트용 Component */
+	/*================================================================================================*/
+	///* For.Prototype_Component_Texture_Inventory*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Inventory"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/inventory_%03d.png"), 2))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_CheckBox"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/CheckBox.png"), 1))))
+		return E_FAIL;
+	/*================================================================================================*/
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
@@ -473,6 +487,20 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+
+	/* 장현우 인벤토리 테스트용 GameObject */
+	/*================================================================================================*/
+	/* For.Prototype_GameObject_Inventory */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Inventory"),
+		CInventory::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_CheckBox"),
+		CCheckBox::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	/*================================================================================================*/
+
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -511,6 +539,17 @@ HRESULT CLoader::Loading_For_WOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_edition"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/title/edition.png"), 1))))
 		return E_FAIL;
+
+
+	///* For.Prototype_Component_Texture_Inventory*/
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Inventory"),
+	//	CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/inventory_%03d.png"), 2))))
+	//	return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CheckBox*/
+	/*if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_CheckBox"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/CheckBox.png"), 1))))
+		return E_FAIL;*/
 
 	#pragma endregion 
 
@@ -555,6 +594,15 @@ HRESULT CLoader::Loading_For_WOOPlay()
 		CEdition::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	///* For.Prototype_GameObject_Inventory */
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Inventory"),
+	//	CInventory::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
+
+	/* For.Prototype_GameObject_CheckBox */
+	/*if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_CheckBox"),
+		CCheckBox::Create(m_pGraphic_Device))))
+		return E_FAIL;*/
 
 	#pragma endregion 
 

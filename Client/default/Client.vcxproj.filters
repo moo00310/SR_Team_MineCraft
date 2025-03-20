@@ -117,7 +117,7 @@
     </Filter>
     <Filter Include="02.GameObjects\Particle">
       <UniqueIdentifier>{e76eac64-4f2c-48d7-a84d-80b3b509d737}</UniqueIdentifier>
-     </Filter>
+    </Filter>
     <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action">
       <UniqueIdentifier>{8e527e81-b6fa-45aa-a003-763b8c1f9c83}</UniqueIdentifier>
     </Filter>
@@ -168,6 +168,15 @@
     </Filter>
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\03.edition">
       <UniqueIdentifier>{bd44ce59-d87b-47ac-9a92-589a37bb1fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory">
+      <UniqueIdentifier>{b81d3eea-ee7c-4da5-9c6b-b3d81e2cebc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory">
+      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.CheckBox">
+      <UniqueIdentifier>{5249cb73-c614-4b68-bd82-7f86d3bf1f9f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -323,7 +332,7 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleDash.h">
       <Filter>02.GameObjects\Particle</Filter>
- </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Check_Enemy_Node.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
     </ClInclude>
@@ -356,12 +365,19 @@
     </ClInclude>
     <ClInclude Include="..\public\Item_Model.h">
       <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model</Filter>
-  </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Title.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Edition.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TestParticle.h" />
+    <ClInclude Include="..\public\Inventory.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CheckBox.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.CheckBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -542,12 +558,19 @@
     </ClCompile>
     <ClCompile Include="..\private\Item_Model.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\Title.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Edition.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TestParticle.cpp" />
+    <ClCompile Include="..\private\Inventory.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CheckBox.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.CheckBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
