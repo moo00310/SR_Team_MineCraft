@@ -20,7 +20,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	HRESULT Bind_Buffers();
+	virtual HRESULT Bind_Buffers();
 
 protected:
 	/*  정점 배열을 가지고 있는 컴 객체. */

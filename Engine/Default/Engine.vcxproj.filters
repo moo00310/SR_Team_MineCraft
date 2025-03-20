@@ -116,6 +116,9 @@
     <ClInclude Include="..\public\Rigidbody.h">
       <Filter>04.Components\Rigidbody</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_CubeInstance.h">
+      <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -302,9 +305,13 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Rect_Normal.cpp">
       <Filter>04.Components\VIBuffer\Rect</Filter>
+    </ClCompile>
  </ClCompile>
     <ClCompile Include="..\private\Rigidbody.cpp">
       <Filter>04.Components\Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_CubeInstance.cpp">
+      <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

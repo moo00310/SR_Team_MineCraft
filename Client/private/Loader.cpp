@@ -348,8 +348,9 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_BreakableCube"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+	/* For.Prototype_Component_VIBuffer_CubeInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeInstance"),
+		CVIBuffer_CubeInstance::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
