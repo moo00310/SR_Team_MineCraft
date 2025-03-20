@@ -29,7 +29,7 @@ HRESULT CHeroEnemy::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(static_cast<_float>(rand() % 10), 0.5f, static_cast<_float>(rand() % 10)));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, { 30.f, 0.5f, 30.f });
 
 	Ready_BehaviorTree();
 
@@ -56,7 +56,7 @@ void CHeroEnemy::Update(_float fTimeDelta)
 
 	//_float fRange;
 	
-	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_PLAYER, this, CCollider_Manager::COLLSIION_BOX);
+	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_PLAYER, m_pColliderCom, CCollider_Manager::COLLSIION_BOX);
 
 	/*if (!m_pTarget)
 	{

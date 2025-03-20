@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "ParticleDash.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -30,12 +31,15 @@ private:
 	CTexture*				m_pTextureCom = { nullptr };
 	CTransform*				m_pTransformCom = { nullptr };
 	CVIBuffer_Rect*			m_pVIBufferCom = { nullptr };
+	CGameObject*			m_pParticleDash = { nullptr };
 
 private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
 	HRESULT Ready_Components();
+
+	float m_count;
 
 
 public:

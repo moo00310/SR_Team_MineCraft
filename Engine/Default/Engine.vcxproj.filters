@@ -110,6 +110,12 @@
     <ClInclude Include="..\Public\Key_Manager.h">
       <Filter>07.KeyManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Rect_Normal.h">
+      <Filter>04.Components\VIBuffer\Rect</Filter>
+     </ClInclude>
+    <ClInclude Include="..\public\Rigidbody.h">
+      <Filter>04.Components\Rigidbody</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_CubeInstance.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClInclude>
@@ -208,6 +214,9 @@
     <Filter Include="07.KeyManager">
       <UniqueIdentifier>{3895b10e-a52a-42fb-8525-9483f3f5a450}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Components\Rigidbody">
+      <UniqueIdentifier>{f26046cc-7ed5-42d5-9511-811287ce1fc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -293,6 +302,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\Key_Manager.cpp">
       <Filter>07.KeyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Rect_Normal.cpp">
+      <Filter>04.Components\VIBuffer\Rect</Filter>
+    </ClCompile>
+ </ClCompile>
+    <ClCompile Include="..\private\Rigidbody.cpp">
+      <Filter>04.Components\Rigidbody</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_CubeInstance.cpp">
       <Filter>04.Components\VIBuffer\Cube</Filter>

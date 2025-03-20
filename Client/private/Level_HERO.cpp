@@ -105,9 +105,12 @@ HRESULT CLevel_HERO::Ready_Layer_HeroCube(const _wstring& strLayerTag)
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
 
-	/*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCubeNoMove"),
-		LEVEL_HERO, strLayerTag)))
-		return E_FAIL;*/
+	for (_uint i = 0; i < 30; i++)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_HeroCubeNoMove"),
+			LEVEL_HERO, strLayerTag)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

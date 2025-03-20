@@ -72,6 +72,12 @@ public:
 	void Turn(const _float3& vAxis, _float fTimeDelta);
 	void Rotation(const _float3& vAxis, _float fRadian);
 
+	void Quaternion_Turn(const _float3& vAngle);
+	void Quaternion_Rotation(const _float3& vAngle);
+	void Quaternion_Revolution(const _float3& vAxis, const _float3& vCenter, _float fAngle);
+	void Quaternion_Revolution_Pos(const _float3& vAxis, const _float3& vCenter, _float fAngle);
+	_float3 RotateVectorByQuaternion(const _float3& v, const D3DXQUATERNION& q);
+
 private:
 	_float4x4				m_WorldMatrix = {};
 	_float4x4				m_WorldMatrixInverse = {};

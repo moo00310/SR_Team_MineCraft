@@ -22,7 +22,7 @@ HRESULT CStartButton::Initialize(void* pArg)
     Desc.fSizeX = 450;
     Desc.fSizeY = 100;
     Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = g_iWinSizeY * 0.4f;
+    Desc.fY = g_iWinSizeY * 0.5f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -89,7 +89,6 @@ HRESULT CStartButton::Ready_Components()
         reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
         return E_FAIL;
 
-    CTransform::TRANSFORM_DESC TransformDesc{ 10.f, D3DXToRadian(90.f) };
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;

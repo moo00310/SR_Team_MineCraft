@@ -14,10 +14,8 @@ CParticleSystem::CParticleSystem(const CParticleSystem& Prototype) :
 
 HRESULT CParticleSystem::Initialize(void* pArg)
 {
- 	if (FAILED(Create_VertexBuffer()))
-	{
-		return E_FAIL;
-	}
+	// 파티클 속성 셋팅.
+	SetParticleAttribute();
 
 	return S_OK;
 }
@@ -25,6 +23,10 @@ HRESULT CParticleSystem::Initialize(void* pArg)
 HRESULT CParticleSystem::Initialize_Prototype()
 {
 	return S_OK;
+}
+
+void CParticleSystem::Priority_Update(_float fTimeDelta)
+{
 }
 
 void CParticleSystem::Update(_float fTimeDelta)
@@ -54,6 +56,11 @@ void CParticleSystem::Update(_float fTimeDelta)
 	}
 }
 
+void CParticleSystem::Late_Update(_float fTimeDelta)
+{
+	m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this);
+}
+
 HRESULT CParticleSystem::Render()
 {
 	if (m_ListParticleAttribute.size() <= 0)
@@ -65,6 +72,8 @@ HRESULT CParticleSystem::Render()
 	{
 		return E_FAIL;
 	}
+
+	m_pParticleTexture->Bind_Resource(0);
 
 	Bind_Buffers();
 
@@ -140,6 +149,16 @@ HRESULT CParticleSystem::Bind_Buffers()
 	return S_OK;
 }
 
+void CParticleSystem::Replay(_float3 _position)
+{
+	for (auto& particle : m_ListParticleAttribute)
+	{
+		particle.vPosition = _position;
+		particle.fCurrentTime = 0.f;
+		particle.IsAlive = true;
+	}
+}
+
 HRESULT CParticleSystem::PrevRender()
 {
 	// 포인트 스프라이트 활성화.
@@ -158,6 +177,11 @@ HRESULT CParticleSystem::PrevRender()
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_B, dwPointScaleB);
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_C, dwPointScaleC);
 
+	// 알파텍스쳐 활성화.
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 0);
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
 	return S_OK;
 }
 
@@ -165,6 +189,9 @@ HRESULT CParticleSystem::EndRender()
 {
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALEENABLE, false);
+
+	// 알파 텍스쳐 비활성화.
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
 	return S_OK;
 }
@@ -191,8 +218,7 @@ void CParticleSystem::SetParticleAttribute()
 {	
 	for (int i = 0; i < iParticleCount; i++)
 	{
-		ParticleAttribute att = OnSetAddParticle();
-		att.IsAlive = true;
+		ParticleAttribute att = OnSetAddParticle();		
 
 		m_ListParticleAttribute.push_back(att);
 	}	

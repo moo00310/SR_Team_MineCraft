@@ -32,7 +32,10 @@ private:
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom[6];
 	vector<BONE> vecBones;
+	CCollider_Cube* m_pCollider_CubeCom{ nullptr };
+	CRigidbody*		m_pRigidbodyCom{ nullptr };
 
+	_float              m_fMouseSensor = { 0.03f };
 	float Comput = {};
 	int  flag = { 1 };
 	int m_bisTPS = { 1 };
@@ -40,7 +43,9 @@ private:
 	// 바뀌면 스티브 클래스 내에서도 모델링 바꾸려고 해요
 	// 1인칭일떄 팔보여주고
 	// 3인칭일때 모델 보여주려고
-
+private:
+	void	Move(_float fTimeDelta);
+	void	Turn(_float fTimeDelta);
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone();

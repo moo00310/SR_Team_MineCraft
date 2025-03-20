@@ -12,11 +12,7 @@ private:
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
-	virtual void Priority_Update(_float fTimeDelta)override;
-	virtual void Update(_float fTimeDelta)override;
-	virtual void Late_Update(_float fTimeDelta)override;
-	virtual HRESULT Render() override;
+	virtual HRESULT Initialize(void* pArg) override;		
 
 	// CParticleSystem을(를) 통해 상속됨
 	CGameObject* Clone(void* pArg) override;

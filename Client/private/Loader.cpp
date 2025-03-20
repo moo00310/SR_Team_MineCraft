@@ -1,4 +1,4 @@
-#include "Loader.h"
+﻿#include "Loader.h"
 
 #include "GameInstance.h"
 
@@ -17,7 +17,7 @@
 #include "Tree.h"
 #include "Wood.h"
 #include "Leaf.h"
-
+#include "Sword.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -38,11 +38,14 @@
 //Hyock
 #include "HyockCube.h"
 #include "VIBuffer_Cube_Only.h"
-#include "TestParticle.h"
+#include "ParticleRain.h"
+#include "ParticleDash.h"
 
 //Woo
 #include "MainLogo.h"
 #include "StartButton.h"
+#include "Title.h"
+#include "Edition.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -138,13 +141,13 @@ HRESULT CLoader::Loading_For_Logo()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
-	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩딩중입니다."));
 
 
-	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩딩중입니다."));
 	
 
-	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩딩중입니다."));
 
 	/* For.Prototype_GameObject_BackGround */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
@@ -206,7 +209,6 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
 		return E_FAIL;
 
-
 	// 나무 텍스쳐
 	/* For.Prototype_Component_Texture_Leaf */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Leaf"),
@@ -217,6 +219,18 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Wood"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/wood0.png"), 1))))
 		return E_FAIL;
+
+	// 철검 택스쳐
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Sword"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Sword/iron_sword.png"), 1))))
+		return E_FAIL;
+
+
+	// 돌 곡괭이 택스쳐
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Texture_Pickaxe"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Pickaxe/stone_pickaxe.png"), 1))))
+		return E_FAIL;
+	
 
 	/*-----------------------------------
 	*  크리퍼 모델
@@ -290,6 +304,12 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Tree"),
 		CTree::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sword */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Sword"),
+		CSword::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
@@ -406,6 +426,12 @@ HRESULT CLoader::Loading_For_HEROPlay()
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
+
+	lstrcpy(m_szLoadingText, TEXT("리지드바디을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Rigidbody */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Rigidbody"),
+		CRigidbody::Create(m_pGraphic_Device))))
+		return E_FAIL;
  	
 #pragma region MODEL
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -456,21 +482,34 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 HRESULT CLoader::Loading_For_WOOPlay()
 {
-
 #pragma region Add_Prototype Component
 	
-
 	#pragma region Texture UI
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
+	///* For.Prototype_Component_Texture_Loading*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_Loading"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Loading/loading_%03d.png"), 10))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_MainLogo*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_MainLogo"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/isles2.png"), 1))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/MinecraftBanner.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_StartButton*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_StartButton"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/StartButton/StartButton1.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_title*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_title"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/title/minecraft.png"), 1))))
+		return E_FAIL;
+
+	///* For.Prototype_Component_Texture_edition*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_Component_Texture_edition"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/title/edition.png"), 1))))
 		return E_FAIL;
 
 	#pragma endregion 
@@ -496,13 +535,26 @@ HRESULT CLoader::Loading_For_WOOPlay()
 		return E_FAIL;
 
 	#pragma region UI Object
+	/* For.Prototype_GameObject_MainLogo */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_MainLogo"),
 		CMainLogo::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_StartButton */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_StartButton"),
 		CStartButton::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_title */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_title"),
+		CTitle::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Edition */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_WOO, TEXT("Prototype_GameObject_Edition"),
+		CEdition::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 
 	#pragma endregion 
 
@@ -530,6 +582,10 @@ HRESULT CLoader::Loading_For_HECKPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Rain"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/rain.png"), 1))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Dash"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/dash.png"), 1))))
 		return E_FAIL;
   
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
@@ -568,10 +624,14 @@ HRESULT CLoader::Loading_For_HECKPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_Hyock_Cube"),
 		CHyockCube::Create(m_pGraphic_Device))))
+		return E_FAIL;	
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleRain"),
+		CParticleRain::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_TestParticle"),
-		CTestParticle::Create(m_pGraphic_Device))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
+		CParticleDash::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT(" 원형객체을(를) 로딩중입니다."));

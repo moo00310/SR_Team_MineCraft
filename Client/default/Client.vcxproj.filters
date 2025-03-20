@@ -115,6 +115,9 @@
     <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy">
       <UniqueIdentifier>{95716bec-861e-49d5-bd33-aa5e8e8ea25e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Particle">
+      <UniqueIdentifier>{e76eac64-4f2c-48d7-a84d-80b3b509d737}</UniqueIdentifier>
+     </Filter>
     <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action">
       <UniqueIdentifier>{8e527e81-b6fa-45aa-a003-763b8c1f9c83}</UniqueIdentifier>
     </Filter>
@@ -139,9 +142,6 @@
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\01.StartButton">
       <UniqueIdentifier>{63beb701-9cd8-4e97-9eaa-fca31c7f74ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\02.Arm">
-      <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\02.Camera">
       <UniqueIdentifier>{ca227791-6c30-46ed-b75c-8604aeaf2b89}</UniqueIdentifier>
     </Filter>
@@ -153,6 +153,21 @@
     </Filter>
     <Filter Include="02.GameObjects\03.SkyBox">
       <UniqueIdentifier>{2e4902cf-7091-4917-b530-ae487272273e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\03.Item_Model">
+      <UniqueIdentifier>{1e031f01-cd2d-4456-a741-912be6a55e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\03.Item_Model\Sword">
+      <UniqueIdentifier>{a72c2b44-4733-4d4c-8d2f-171858e25944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Arm">
+      <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\02.title">
+      <UniqueIdentifier>{62fff89f-c69c-4580-8a86-a9bd56df71c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\03.edition">
+      <UniqueIdentifier>{bd44ce59-d87b-47ac-9a92-589a37bb1fe2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -282,9 +297,6 @@
     <ClInclude Include="..\public\HyockCube.h">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\TestParticle.h">
-      <Filter>02.GameObjects\96.HyockGameObj</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Tree.h">
       <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree</Filter>
     </ClInclude>
@@ -306,6 +318,12 @@
     <ClInclude Include="..\public\HeroEnemy.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleRain.h">
+      <Filter>02.GameObjects\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleDash.h">
+      <Filter>02.GameObjects\Particle</Filter>
+ </ClInclude>
     <ClInclude Include="..\public\Check_Enemy_Node.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
     </ClInclude>
@@ -328,10 +346,22 @@
       <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Arm_Steve.h">
-      <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Arm</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SkyBox.h">
       <Filter>02.GameObjects\03.SkyBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sword.h">
+      <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Item_Model.h">
+      <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model</Filter>
+  </ClInclude>
+    <ClInclude Include="..\public\Title.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Edition.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -474,8 +504,11 @@
     <ClCompile Include="..\private\HyockCube.cpp">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\TestParticle.cpp">
-      <Filter>02.GameObjects\96.HyockGameObj</Filter>
+    <ClCompile Include="..\private\ParticleRain.cpp">
+      <Filter>02.GameObjects\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleDash.cpp">
+      <Filter>02.GameObjects\Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Check_Enemy_Node.cpp">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
@@ -499,10 +532,22 @@
       <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Arm_Steve.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\02.Arm</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Arm</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SkyBox.cpp">
       <Filter>02.GameObjects\03.SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sword.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Item_Model.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model</Filter>
+     </ClCompile>
+    <ClCompile Include="..\private\Title.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Edition.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
