@@ -39,6 +39,7 @@ private:
 	void OffAllChunkLayer();
 
 	//플레이어 어디 청크에 있는지 들고오는 함수
+	void GetPlayerChunk3x3();
 	void GetPlayerChunk();
 
 

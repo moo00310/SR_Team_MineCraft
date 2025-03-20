@@ -123,9 +123,9 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 	
 	// 7. 바닥에 닿았을 때 반응 (간단한 처리 예시: 위치 보정 및 속도 감쇠)
 	vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
-	if (vPosition.y <= 0.0f) // Y축이 0 이하로 내려갔다면
+	if (vPosition.y <= 30.0f) // Y축이 0 이하로 내려갔다면
 	{
-		vPosition.y = 0.0f;
+		vPosition.y = 30.0f;
 		m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
 		  // 바닥에 닿았다면 위치를 0으로 고정
 		m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)

@@ -370,7 +370,7 @@ void CMCTerrain::OffAllChunkLayer()
     }
 }
 
-void CMCTerrain::GetPlayerChunk()
+void CMCTerrain::GetPlayerChunk3x3()
 {
     // 플레이어 위치 가져오기
     auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
@@ -415,6 +415,25 @@ void CMCTerrain::GetPlayerChunk()
         swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) + 1);
         m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
     }
+}
+
+void CMCTerrain::GetPlayerChunk()
+{
+    // 플레이어 위치 가져오기
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return;
+
+    _float3 playerPos = pSteve->GetPos();
+
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    int chunk = x + (width * z);
+
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
 }
 
 
