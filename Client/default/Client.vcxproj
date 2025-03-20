@@ -189,8 +189,10 @@
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\MCTerrain.h" />
     <ClInclude Include="..\public\ParticleDash.h" />
-    <ClInclude Include="..\public\ParticleDig.h" />
+    <ClInclude Include="..\public\BaseParticleMining.h" />
     <ClInclude Include="..\public\ParticleRain.h" />
+    <ClInclude Include="..\public\ParticleSandMining.h" />
+    <ClInclude Include="..\public\ParticleWoodMining.h" />
     <ClInclude Include="..\public\Patrol_Node.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\SkyBox.h" />
@@ -250,8 +252,10 @@
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\MCTerrain.cpp" />
     <ClCompile Include="..\private\ParticleDash.cpp" />
-    <ClCompile Include="..\private\ParticleDig.cpp" />
+    <ClCompile Include="..\private\BaseParticleMining.cpp" />
     <ClCompile Include="..\private\ParticleRain.cpp" />
+    <ClCompile Include="..\private\ParticleSandMining.cpp" />
+    <ClCompile Include="..\private\ParticleWoodMining.cpp" />
     <ClCompile Include="..\private\Patrol_Node.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp" />

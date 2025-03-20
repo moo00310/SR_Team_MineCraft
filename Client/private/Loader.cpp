@@ -40,7 +40,8 @@
 #include "VIBuffer_Cube_Only.h"
 #include "ParticleRain.h"
 #include "ParticleDash.h"
-#include "ParticleDig.h"
+#include "ParticleSandMining.h"
+#include "ParticleWoodMining.h"
 
 //Woo
 #include "MainLogo.h"
@@ -571,8 +572,12 @@ HRESULT CLoader::Loading_For_HECKPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/dash.png"), 1))))
 		return E_FAIL;	
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Dig"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/dig.png"), 1))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Sand_Mining"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/sand_mining.png"), 1))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Wood_Mining"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/wood_mining.png"), 1))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -618,9 +623,13 @@ HRESULT CLoader::Loading_For_HECKPlay()
 		CParticleDash::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDig"),
-		CParticleDig::Create(m_pGraphic_Device))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandMining"),
+		CParticleSandMining::Create(m_pGraphic_Device))))
 		return E_FAIL;	
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleWoodMining"),
+		CParticleWoodMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

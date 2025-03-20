@@ -23,13 +23,19 @@ HRESULT CPlayer::Initialize(void* pArg)
 		LEVEL_HYEOK, TEXT("Layer_ParticleDash"))))
 		return E_FAIL;
 
-	m_pParticleDash = m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleDash"), 0);
+	m_pParticleDash = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleDash"), 0);
 
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDig"),
-		LEVEL_HYEOK, TEXT("Layer_ParticleDig"))))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandMining"),
+		LEVEL_HYEOK, TEXT("Layer_ParticleSandMining"))))
 		return E_FAIL;
 
-	m_pParticleDig = m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleDig"), 0);
+	m_pParticleSandMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleSandMining"), 0);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleWoodMining"),
+		LEVEL_HYEOK, TEXT("Layer_ParticleWoodMining"))))
+		return E_FAIL;
+
+	m_pParticleWoodMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleWoodMining"), 0);
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -50,7 +56,7 @@ void CPlayer::Update(_float fTimeDelta)
 		m_count += fTimeDelta;
 		if (m_count >= 0.2f)
 		{
-			static_cast<CParticleSystem*>(m_pParticleDash)->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			m_pParticleDash->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
 			m_count = 0.f;
 		}		
@@ -72,9 +78,8 @@ void CPlayer::Update(_float fTimeDelta)
 
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
-		static_cast<CParticleSystem*>(m_pParticleDig)->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		m_pParticleWoodMining->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
-
 }
 
 void CPlayer::Late_Update(_float fTimeDelta)

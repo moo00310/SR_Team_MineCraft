@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 
 // 달리기 파티클.
-class CParticleDash : public CParticleSystem
+class CParticleDash final : public CParticleSystem
 {
 private:
 	CParticleDash(LPDIRECT3DDEVICE9 pGraphic_Device);

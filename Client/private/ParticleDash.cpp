@@ -1,5 +1,6 @@
 #include "ParticleDash.h"
 
+// 달리기 파티클.
 CParticleDash::CParticleDash(LPDIRECT3DDEVICE9 pGraphic_Device) :
 	CParticleSystem(pGraphic_Device)
 {

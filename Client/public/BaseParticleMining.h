@@ -2,24 +2,23 @@
 #include "ParticleSystem.h"
 #include "Client_Defines.h"
 
-class CParticleDig : public CParticleSystem
+// 블럭 캘 때 부모 파티클.
+class CBaseParticleMining abstract : public CParticleSystem
 {
-private:
-	CParticleDig(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CParticleDig(const CParticleDig& Prototype);
-	virtual ~CParticleDig() = default;
+protected:
+	CBaseParticleMining(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CBaseParticleMining(const CBaseParticleMining& Prototype);
+	virtual ~CBaseParticleMining() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 
-	// CParticleSystem을(를) 통해 상속됨
-	CGameObject* Clone(void* pArg) override;
-	static CParticleDig* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	// CParticleSystem을(를) 통해 상속됨	
 	virtual void Free();
 
 protected:
-	virtual HRESULT Ready_Components();
+	virtual HRESULT Ready_Components() = 0;
 
 	// 각 파티클 속성을 셋팅합니다.
 	virtual ParticleAttribute OnSetAddParticle() override;

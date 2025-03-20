@@ -57,12 +57,7 @@ void CParticleSystem::Update(_float fTimeDelta)
 			data.fGravityTime += fTimeDelta;
 
 			data.vPosition += data.vVelocity * fTimeDelta;
-			data.vPosition.y += height;
-
-			/*if (data.fGravityTime >= 0.4f)
-			{
-				data.fGravityTime = 0.4f;
-			}*/
+			data.vPosition.y += height;			
 		}
 		else
 		{
