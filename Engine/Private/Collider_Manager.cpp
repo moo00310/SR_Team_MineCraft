@@ -153,7 +153,7 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 	for (auto& iter : m_pGameObjects[eGroup])
 	{
 		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
-		CCollider_Cube::COLLRECTDESC& CubeDesc = pOtherCollider->Get_Desc();
+		CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
 		const _float4x4* pWorldMatrix = CubeDesc.pTransformCom->Get_WorldMatrix();
 		const _float3 halfSize = { CubeDesc.fRadiusX, CubeDesc.fRadiusY, CubeDesc.fRadiusZ };
 

@@ -28,8 +28,10 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom[6];
+	CCollider_Cube* m_pCollider_CubeCom{ nullptr };
 	vector<BONE> vecBones;
 
+private:
 	float Comput = {};
 	int  flag = { 1 };
 

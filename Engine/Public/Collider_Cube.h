@@ -10,12 +10,12 @@ class ENGINE_DLL CCollider_Cube final : public CComponent
 public:
 	enum class COLLSION_DIR { NONE, LEFT, RIGHT, UP, DOWN, FRONT,BACK };
 public:
-	typedef struct tagCollisionRectDesc
+	typedef struct tagCollisionCubeDesc
 	{
 		_float	fRadiusX = 0.5f, fRadiusY = 0.5f,  fRadiusZ = 0.5f;
 		_float	fOffSetX = 0.f, fOffSetY = 0.f,  fOffsetZ = 0.f;
 		class CTransform* pTransformCom = { nullptr };
-	}COLLRECTDESC;
+	}COLLCUBE_DESC;
 
 private:
 	CCollider_Cube(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -29,13 +29,13 @@ public:
 	HRESULT Render_ColliderBox(_bool isHit);
 	_bool	Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLSION_DIR* pOutDir = nullptr);
 public:
-	COLLRECTDESC& Get_Desc() { return m_StateDesc; }
+	COLLCUBE_DESC& Get_Desc() { return m_StateDesc; }
 
 private:
 	_float3						m_vPoint[8];
 
 protected:
-	COLLRECTDESC				m_StateDesc;
+	COLLCUBE_DESC				m_StateDesc;
 
 private:
 	class CTransform*			m_pTransformCom = { nullptr };

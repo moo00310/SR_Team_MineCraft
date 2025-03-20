@@ -306,7 +306,6 @@
     <ClCompile Include="..\private\VIBuffer_Rect_Normal.cpp">
       <Filter>04.Components\VIBuffer\Rect</Filter>
     </ClCompile>
- </ClCompile>
     <ClCompile Include="..\private\Rigidbody.cpp">
       <Filter>04.Components\Rigidbody</Filter>
     </ClCompile>

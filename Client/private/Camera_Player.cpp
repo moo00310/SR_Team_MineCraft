@@ -29,7 +29,7 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 	CAMERA_PLAYER_DESC Desc{ *static_cast<CAMERA_PLAYER_DESC*>(pArg) };
 	m_fMouseSensor = Desc.fMouseSensor;
 	if (!Desc.pTarget)
-		return E_FAIL;
+ 		return E_FAIL;
 
 	// 플레이어 트랜스폼 받기
 	m_pTargetTransformCom = static_cast<CTransform*>(Desc.pTarget->Find_Component(TEXT("Com_Transform")));
