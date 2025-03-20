@@ -1,7 +1,6 @@
 #pragma once
-
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Monster.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -9,7 +8,7 @@ class CTransform;
 class CVIBuffer_Cube;
 END
 
-class CCreeper : public CGameObject
+class CCreeper : public CMonster
 {
 private:
 	CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -25,7 +24,6 @@ public:
 	virtual HRESULT Render()override;
 
 private:
-	CTransform* m_pTransformCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom[6];
 	CCollider_Cube* m_pCollider_CubeCom{ nullptr };
@@ -37,7 +35,6 @@ private:
 
 	float elapsedTime = 0.f;
 	float maxAngle = D3DXToRadian(20.f);
-
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone();

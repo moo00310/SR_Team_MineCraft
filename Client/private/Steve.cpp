@@ -52,6 +52,17 @@ void CSteve::Update(_float fTimeDelta)
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
+
+	//CGameObject* pGameObject;
+	//_float fDist;
+	//m_pGameInstance->Ray_Cast
+	//(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+	//	m_pTransformCom->Get_State(CTransform::STATE_LOOK),
+	//	10.f,
+	//	COLLISION_PLAYER,
+	//	fDist,
+	//	&pGameObject
+	//);
 }
 
 void CSteve::Late_Update(_float fTimeDelta)

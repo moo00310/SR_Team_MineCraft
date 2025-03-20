@@ -6,7 +6,7 @@
 #include "GameInstance.h"
 
 CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
-    : CGameObject{ pGraphic_Device }
+    : CMonster{ pGraphic_Device }
 {
     for (int i = 0; i < 6; i++)
     {
@@ -15,7 +15,7 @@ CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CCreeper::CCreeper(const CCreeper& Prototype)
-    : CGameObject(Prototype)
+    : CMonster(Prototype)
 {
     for (int i = 0; i < 6; i++)
     {
@@ -30,8 +30,12 @@ HRESULT CCreeper::Initialize_Prototype()
 
 HRESULT CCreeper::Initialize(void* pArg)
 {
+    __super::Initialize(pArg);
+
     if (FAILED(Ready_Components()))
         return E_FAIL;
+
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, { -10.f, 0.f, -10.f });
 
     return S_OK;
 }
@@ -43,6 +47,8 @@ void CCreeper::Priority_Update(_float fTimeDelta)
 
 void CCreeper::Update(_float fTimeDelta)
 { 
+    __super::Update(fTimeDelta);
+
     // 걷는 모션
     if (GetKeyState('Q') & 0x8000)
     {
@@ -57,6 +63,17 @@ void CCreeper::Update(_float fTimeDelta)
     }
 
     m_pCollider_CubeCom->Update_ColliderBox();
+
+    CGameObject* pGameObject;
+    _float fDist;
+    m_pGameInstance->Ray_Cast
+    (   m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+        m_pTransformCom->Get_State(CTransform::STATE_LOOK),
+        10.f,
+        COLLISION_PLAYER,
+        fDist,
+        &pGameObject
+    );
 
 }
 
@@ -139,7 +156,7 @@ HRESULT CCreeper::Ready_Components()
 
 #pragma region 기능
     /* For.Com_Transform */
-    CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
+    CTransform::TRANSFORM_DESC		TransformDesc{ 3.f, D3DXToRadian(30.f) };
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
@@ -250,7 +267,6 @@ void CCreeper::Free()
     __super::Free();
 
     Safe_Release(m_pCollider_CubeCom);
-    Safe_Release(m_pTransformCom);
     Safe_Release(m_pTextureCom);
 
     for (int i = 0; i < 6; i++)

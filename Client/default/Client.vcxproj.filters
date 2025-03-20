@@ -91,9 +91,6 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn">
       <UniqueIdentifier>{078da7be-a447-487e-9317-64540e099a94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Creeper">
-      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Steve">
       <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
     </Filter>
@@ -117,7 +114,7 @@
     </Filter>
     <Filter Include="02.GameObjects\Particle">
       <UniqueIdentifier>{e76eac64-4f2c-48d7-a84d-80b3b509d737}</UniqueIdentifier>
-     </Filter>
+    </Filter>
     <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action">
       <UniqueIdentifier>{8e527e81-b6fa-45aa-a003-763b8c1f9c83}</UniqueIdentifier>
     </Filter>
@@ -169,6 +166,24 @@
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\03.edition">
       <UniqueIdentifier>{bd44ce59-d87b-47ac-9a92-589a37bb1fe2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster">
+      <UniqueIdentifier>{85c77c0b-6725-4c2e-b6c2-651cdd0b5d3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Creeper">
+      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks">
+      <UniqueIdentifier>{d16a0b49-37be-4fee-ba38-f43256748dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Detect_Enemy">
+      <UniqueIdentifier>{8862f7df-7ebb-492e-b952-c50812b2dedb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Chase">
+      <UniqueIdentifier>{d745473e-bb1e-4df3-9421-f566c900b8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Patrol">
+      <UniqueIdentifier>{2de4bdd5-e366-4266-b747-9345a0f6f79c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -214,7 +229,7 @@
       <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Creeper.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Creeper</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Creeper</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_TOOL.h">
       <Filter>01.Levels\100.Tool_Level</Filter>
@@ -323,7 +338,7 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleDash.h">
       <Filter>02.GameObjects\Particle</Filter>
- </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Check_Enemy_Node.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
     </ClInclude>
@@ -356,12 +371,25 @@
     </ClInclude>
     <ClInclude Include="..\public\Item_Model.h">
       <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model</Filter>
-  </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Title.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Edition.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\TestParticle.h" />
+    <ClInclude Include="..\public\Monster.h">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTTask_DetectEnemy.h">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Detect_Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTTask_Chase.h">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTTask_Patrol.h">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Patrol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -409,7 +437,7 @@
       <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Creeper.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Creeper</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Creeper</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Hyeok.cpp">
       <Filter>01.Levels\95.Huck_Level</Filter>
@@ -542,12 +570,25 @@
     </ClCompile>
     <ClCompile Include="..\private\Item_Model.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\Title.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Edition.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\TestParticle.cpp" />
+    <ClCompile Include="..\private\Monster.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_DetectEnemy.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Detect_Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_Chase.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_Patrol.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Patrol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
