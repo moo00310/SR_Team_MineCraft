@@ -52,7 +52,6 @@ void CCreeper::Update(_float fTimeDelta)
     // °È´Â ¸ð¼Ç
     if (GetKeyState('Q') & 0x8000)
     {
-
         elapsedTime += fTimeDelta;
         Comput = maxAngle * sin(elapsedTime * D3DXToRadian(2.5f));
 

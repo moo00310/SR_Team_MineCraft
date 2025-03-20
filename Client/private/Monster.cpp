@@ -3,6 +3,7 @@
 #include "BTTask_DetectEnemy.h"
 #include "BTTask_Chase.h"
 #include "BTTask_Patrol.h"
+#include "BTDecorator_IsTargetNear.h"
 
 
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -60,6 +61,7 @@ CGameObject*& CMonster::Get_Target()
 
 void CMonster::Set_Target(CGameObject* pGameObject)
 {
+    m_pTarget = pGameObject;
 }
 
 CTransform* CMonster::Get_Transform()
@@ -69,31 +71,35 @@ CTransform* CMonster::Get_Transform()
 
 HRESULT CMonster::Ready_BehaviorTree()
 {
-	// 루트 노드: Selector (적을 발견하면 따라가고, 아니면 순찰)
-	CSelectorNode* pRoot = new CSelectorNode(L"Root");
+    // 루트 노드: Selector (적을 발견하면 따라가고, 아니면 순찰)
+    CSelectorNode* pRoot = new CSelectorNode(L"Root");
 
-	// 조건 검사 노드: 적이 있는지 확인
-	CBTTask_DetectEnemy* pDetectEnemy = new CBTTask_DetectEnemy;
+    // 조건 검사 노드: 적이 있는지 확인
+    CBTTask_DetectEnemy* pDetectEnemy = new CBTTask_DetectEnemy;
 
-	// 행동 노드: 적을 따라가기
-	CBTTask_Chase* pChase = new CBTTask_Chase;
+    // 행동 노드: 적을 따라가기
+    CBTTask_Chase* pChase = new CBTTask_Chase;
 
-	// 행동 노드: 순찰하기
-	CBTTask_Patrol* pPatrol = new CBTTask_Patrol();
+    // 행동 노드: 순찰하기
+    CBTTask_Patrol* pPatrol = new CBTTask_Patrol;
 
-	// 적이 있다면 따라가는 시퀀스
-	CSequenceNode* pChaseSequence = new CSequenceNode(L"ChaseSequence");
-	pChaseSequence->Add_Node(pDetectEnemy);
-	pChaseSequence->Add_Node(pChase);
+    // 거리 제한 데코레이터 추가 (500 이상이면 FAIL 반환)
+    CBTDecorator_IsTargetNear* pCheckDistance = new CBTDecorator_IsTargetNear;
+    pCheckDistance->Set_DecoratorNodes(pChase, nullptr);
 
-	// 루트 노드에 추가
-	pRoot->Add_Node(pChaseSequence);
-	pRoot->Add_Node(pPatrol);
+    // 적이 있다면 따라가는 시퀀스
+    CSequenceNode* pChaseSequence = new CSequenceNode(L"ChaseSequence");
+    pChaseSequence->Add_Node(pDetectEnemy);
+    pChaseSequence->Add_Node(pCheckDistance); // 거리 체크 추가
 
-	// 최종 트리 설정
-	m_pBehaviorTree = pRoot;
+    // 루트 노드에 추가
+    pRoot->Add_Node(pChaseSequence);
+    pRoot->Add_Node(pPatrol);
 
-	return S_OK;
+    // 최종 트리 설정
+    m_pBehaviorTree = pRoot;
+
+    return S_OK;
 }
 
 HRESULT CMonster::Ready_Components()

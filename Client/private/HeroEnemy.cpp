@@ -39,6 +39,11 @@ HRESULT CHeroEnemy::Initialize(void* pArg)
 void CHeroEnemy::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);
+
+	if (m_pGameInstance->Key_Down('K'))
+	{
+		Destroy();
+	}
 }
 
 void CHeroEnemy::Update(_float fTimeDelta)

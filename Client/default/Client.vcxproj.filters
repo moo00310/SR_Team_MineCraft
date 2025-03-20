@@ -172,17 +172,26 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Creeper">
       <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks">
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode">
+      <UniqueIdentifier>{f7a56e8f-dd64-483b-80fd-ddc4b35d8bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks">
       <UniqueIdentifier>{d16a0b49-37be-4fee-ba38-f43256748dc3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Detect_Enemy">
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Detect_Enemy">
       <UniqueIdentifier>{8862f7df-7ebb-492e-b952-c50812b2dedb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Chase">
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Chase">
       <UniqueIdentifier>{d745473e-bb1e-4df3-9421-f566c900b8ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Patrol">
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Patrol">
       <UniqueIdentifier>{2de4bdd5-e366-4266-b747-9345a0f6f79c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator">
+      <UniqueIdentifier>{7c91c559-e996-42c0-afde-ab9f0232197e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance">
+      <UniqueIdentifier>{7a7aae3a-9527-4d67-9d44-d7b51a196bb6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -383,13 +392,16 @@
       <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_DetectEnemy.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Detect_Enemy</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Detect_Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_Chase.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Chase</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Chase</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_Patrol.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Patrol</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTDecorator_IsTargetNear.h">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -582,13 +594,16 @@
       <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_DetectEnemy.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Detect_Enemy</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Detect_Enemy</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_Chase.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Chase</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Chase</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_Patrol.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Tasks\Patrol</Filter>
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp">
+      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -156,6 +156,7 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
+    <ClInclude Include="..\public\BTDecorator_IsTargetNear.h" />
     <ClInclude Include="..\public\BTTask_Chase.h" />
     <ClInclude Include="..\public\BTTask_DetectEnemy.h" />
     <ClInclude Include="..\public\BTTask_Patrol.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
+    <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp" />
     <ClCompile Include="..\private\BTTask_Chase.cpp" />
     <ClCompile Include="..\private\BTTask_DetectEnemy.cpp" />
     <ClCompile Include="..\private\BTTask_Patrol.cpp" />
