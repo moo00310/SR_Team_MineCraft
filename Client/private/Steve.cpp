@@ -40,8 +40,9 @@ HRESULT CSteve::Initialize(void* pArg)
 void CSteve::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
-	Move(fTimeDelta);
-	Turn(fTimeDelta);
+
+	Input_Key(fTimeDelta);
+
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
@@ -121,6 +122,12 @@ void CSteve::SetPos(_float3 v3)
 _float3 CSteve::GetPos()
 {
 	return m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+}
+
+void CSteve::Input_Key(_float fTimeDelta)
+{
+	Move(fTimeDelta);
+	Turn(fTimeDelta);
 }
 
 void CSteve::Move(_float fTimeDelta)

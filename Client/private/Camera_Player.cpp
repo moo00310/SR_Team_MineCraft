@@ -55,6 +55,7 @@ void CCamera_Player::Priority_Update(_float fTimeDelta)
 
 void CCamera_Player::Update(_float fTimeDelta)
 {
+    Input_Key(fTimeDelta);
 
 	// 모드 전환
 	if (m_pGameInstance->Key_Down(VK_F5))
@@ -138,6 +139,30 @@ void CCamera_Player::Late_Update(_float fTimeDelta)
 HRESULT CCamera_Player::Render()
 {
 	return S_OK;
+}
+
+void CCamera_Player::Input_Key(_float fTimeDelta)
+{
+    if (m_pGameInstance->Key_Down(VK_LBUTTON))
+    {
+        _float fDist;
+        CGameObject* pGameObject;
+        _bool isHit;
+
+        isHit =  m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+            m_pTransformCom->Get_State(CTransform::STATE_LOOK),
+            5.f,
+            COLLISION_BLOCK,
+            fDist,
+            &pGameObject);
+
+        if (isHit)
+        {
+            if (pGameObject)
+                pGameObject->Destroy();
+        }
+
+    }
 }
 
 HRESULT CCamera_Player::Ready_Components()
