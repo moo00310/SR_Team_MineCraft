@@ -23,7 +23,7 @@ HRESULT CParticleDig::Initialize(void* pArg)
 	}
 
 	dwVpBatchSize = 6;
-	dwPointSize = GetScale(0.2f);	// 포인트 스프라이트 크기.
+	dwPointSize = GetScale(1.f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
 	dwPointScaleC = GetScale(1.f);

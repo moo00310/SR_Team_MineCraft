@@ -192,8 +192,13 @@ HRESULT CParticleSystem::PrevRender()
 	/*m_pGraphic_Device->SetRenderState(D3DRS_POINTSIZE_MIN, m_ParticleAttribute.dwPointSizeMin);
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSIZE_MAX, m_ParticleAttribute.dwPointSizeMax);*/
 
+	// 파티클이 카메라로부터 얼마나 떨어져있는지에 대한만큼 크기 (z축).
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_A, dwPointScaleA);
+
+	// 파티클이 카메라로부터 거리가 얼마나 떨어져있는지에 대한만큼 크기 (x랑 y축).
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_B, dwPointScaleB);
+
+	// 거리 상관없이 파티클 크기가 일정함.
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_C, dwPointScaleC);
 
 	// 알파텍스쳐 활성화.
