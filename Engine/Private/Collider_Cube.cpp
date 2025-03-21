@@ -32,7 +32,7 @@ HRESULT CCollider_Cube::Initialize(void* pArg)
 	if (pArg == nullptr)
 		return E_FAIL;
 
-	memcpy(&m_StateDesc, pArg, sizeof(COLLRECTDESC));
+	memcpy(&m_StateDesc, pArg, sizeof(COLLCUBE_DESC));
 	m_pTransformCom = m_StateDesc.pTransformCom;
 
 	if (!m_pTransformCom)

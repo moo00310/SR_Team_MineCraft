@@ -156,6 +156,10 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
+    <ClInclude Include="..\public\BTDecorator_IsTargetNear.h" />
+    <ClInclude Include="..\public\BTTask_Chase.h" />
+    <ClInclude Include="..\public\BTTask_DetectEnemy.h" />
+    <ClInclude Include="..\public\BTTask_Patrol.h" />
     <ClInclude Include="..\public\Camera_Player.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\Chase_Enemy_Node.h" />
@@ -191,6 +195,7 @@
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\MCTerrain.h" />
+    <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\public\ParticleDash.h" />
     <ClInclude Include="..\public\ParticleRain.h" />
     <ClInclude Include="..\public\Patrol_Node.h" />
@@ -224,6 +229,10 @@
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
+    <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp" />
+    <ClCompile Include="..\private\BTTask_Chase.cpp" />
+    <ClCompile Include="..\private\BTTask_DetectEnemy.cpp" />
+    <ClCompile Include="..\private\BTTask_Patrol.cpp" />
     <ClCompile Include="..\private\Camera_Player.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Chase_Enemy_Node.cpp" />
@@ -256,6 +265,7 @@
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\MCTerrain.cpp" />
+    <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\ParticleDash.cpp" />
     <ClCompile Include="..\private\ParticleRain.cpp" />
     <ClCompile Include="..\private\Patrol_Node.cpp" />

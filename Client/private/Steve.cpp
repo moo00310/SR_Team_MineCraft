@@ -40,8 +40,9 @@ HRESULT CSteve::Initialize(void* pArg)
 void CSteve::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
-	Move(fTimeDelta);
-	Turn(fTimeDelta);
+
+	Input_Key(fTimeDelta);
+
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
@@ -52,6 +53,17 @@ void CSteve::Update(_float fTimeDelta)
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
+
+	//CGameObject* pGameObject;
+	//_float fDist;
+	//m_pGameInstance->Ray_Cast
+	//(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+	//	m_pTransformCom->Get_State(CTransform::STATE_LOOK),
+	//	10.f,
+	//	COLLISION_PLAYER,
+	//	fDist,
+	//	&pGameObject
+	//);
 }
 
 void CSteve::Late_Update(_float fTimeDelta)
@@ -110,6 +122,12 @@ void CSteve::SetPos(_float3 v3)
 _float3 CSteve::GetPos()
 {
 	return m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+}
+
+void CSteve::Input_Key(_float fTimeDelta)
+{
+	Move(fTimeDelta);
+	Turn(fTimeDelta);
 }
 
 void CSteve::Move(_float fTimeDelta)
@@ -256,11 +274,11 @@ HRESULT CSteve::Ready_Components()
 
 	//콜라이더
 	/* For.Com_Collider */
-	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
+	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
 	Desc.fRadiusX = 0.5f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 0.5;
 	Desc.fOffSetY = 1.f;
 	Desc.pTransformCom = m_pTransformCom;
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
 		return E_FAIL;
 

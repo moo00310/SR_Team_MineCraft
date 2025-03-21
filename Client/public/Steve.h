@@ -44,6 +44,7 @@ private:
 	// 1인칭일떄 팔보여주고
 	// 3인칭일때 모델 보여주려고
 private:
+	void	Input_Key(_float fTimeDelta);
 	void	Move(_float fTimeDelta);
 	void	Turn(_float fTimeDelta);
 private:

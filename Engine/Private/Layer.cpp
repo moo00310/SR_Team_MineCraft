@@ -17,11 +17,21 @@ HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)
 
 void CLayer::Priority_Update(_float fTimeDelta)
 {
-	for (auto& pGameObject : m_GameObjects)
+	for (auto iter = m_GameObjects.begin(); iter != m_GameObjects.end();)
 	{
-		if (nullptr != pGameObject)
-			pGameObject->Priority_Update(fTimeDelta);
+		auto pGameObject = *iter;
 
+		// 게임 객체가 파괴되었으면 안전하게 해제하고 삭제
+		if (pGameObject->Get_isDestroy())
+		{
+			Safe_Release(pGameObject);
+			iter = m_GameObjects.erase(iter); // 삭제 후 반복자 업데이트
+		}
+		else
+		{
+			pGameObject->Priority_Update(fTimeDelta);
+			++iter; // 삭제되지 않으면 계속 진행
+		}
 	}
 
 }

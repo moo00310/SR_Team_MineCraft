@@ -78,10 +78,6 @@ HRESULT CLevel_HERO::Ready_Layer_Camera(const _wstring& strLayerTag)
 		LEVEL_HERO, strLayerTag, &Cam_Player_Desc)))
 		return E_FAIL;
 
-	//카메라 매니저에다가 카메라 Layer의 모든 카메라를 가져온다음
-	//특정 키를 누를 때마다 다음 카메라만 활성화시킨다.
-	//m_pCameraManager = CCameraManager::Create(LEVEL_HERO);
-
 	return S_OK;
 }
 
