@@ -7,6 +7,7 @@
 #include "Object_Manager.h"
 #include "Prototype_Manager.h"
 #include "Collider_Manager.h"
+#include "Sound_Manager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance);
 
@@ -48,6 +49,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 	if (nullptr == m_pKey_Manager)
 		return E_FAIL;
 
+	m_pSound_Manager = CSound_Manager::Create();
+	if (nullptr == m_pSound_Manager)
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -55,6 +59,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pKey_Manager->Update();
+	m_pSound_Manager->Update();
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
@@ -228,10 +233,16 @@ _bool CGameInstance::Key_Down(int _Key)
 {
 	return m_pKey_Manager->Key_Down(_Key);
 }
+void CGameInstance::Play_Sound(const char* _EventPath)
+{
+	m_pSound_Manager->PlayEvent(_EventPath);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pSound_Manager);
+
 	Safe_Release(m_pKey_Manager);
 
 	Safe_Release(m_pTimer_Manager);

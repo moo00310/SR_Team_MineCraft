@@ -43,7 +43,7 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_WOOInvenTest(TEXT("Layer_Inventory"))))
 		return E_FAIL;
 	
-
+	m_pGameInstance->Play_Sound("event:/0004 BGM_DOREMI");
 
 	return S_OK;
 }

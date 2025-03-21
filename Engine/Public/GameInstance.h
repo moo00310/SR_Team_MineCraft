@@ -71,6 +71,11 @@ public:
 	_bool		Key_Down(int _Key);		// 눌렀을 때
 #pragma endregion
 
+#pragma region SOUND_MANAGER
+	void		Play_Sound(const char* _EventPath); //패스값 입력하는거불편...
+#pragma endregion
+
+
 
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
@@ -81,6 +86,7 @@ private:
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 	class CKey_Manager*			m_pKey_Manager = { nullptr };
+	class CSound_Manager*		m_pSound_Manager = { nullptr };
 
 public:
 	void Release_Engine();
