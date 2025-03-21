@@ -51,8 +51,21 @@ void CParticleSystem::Update(_float fTimeDelta)
 			OnBoundingExit(data);
 		}
 
-		// 파티클 이동.
-		data.vPosition += data.vVelocity * fTimeDelta;		
+		// 파티클 중력 적용중인지?.
+		if (data.IsAlive == true && data.IsGravity == true)
+		{
+			// 중력 적용 시 중력 받게.
+			float height = 0.f + data.fGravityJumpPower * data.fGravityTime - (1.f / 2.f) * data.fGravity * (data.fGravityTime * data.fGravityTime);
+			data.fGravityTime += fTimeDelta;
+
+			data.vPosition += data.vVelocity * fTimeDelta;
+			data.vPosition.y += height;			
+		}
+		else
+		{
+			// 중력 없을 시 단순 이동만.
+			data.vPosition += data.vVelocity * fTimeDelta;
+		}		
 	}
 }
 
@@ -153,9 +166,12 @@ void CParticleSystem::Replay(_float3 _position)
 {
 	for (auto& particle : m_ListParticleAttribute)
 	{
-		particle.vPosition = _position;
+		particle.vPosition = _position;		
 		particle.fCurrentTime = 0.f;
+		particle.fGravityTime = 0.f;
 		particle.IsAlive = true;
+
+		OnReplay(particle);
 	}
 }
 
@@ -173,8 +189,13 @@ HRESULT CParticleSystem::PrevRender()
 	/*m_pGraphic_Device->SetRenderState(D3DRS_POINTSIZE_MIN, m_ParticleAttribute.dwPointSizeMin);
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSIZE_MAX, m_ParticleAttribute.dwPointSizeMax);*/
 
+	// 파티클이 카메라로부터 얼마나 떨어져있는지에 대한만큼 크기 (z축).
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_A, dwPointScaleA);
+
+	// 파티클이 카메라로부터 거리가 얼마나 떨어져있는지에 대한만큼 크기 (x랑 y축).
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_B, dwPointScaleB);
+
+	// 거리 상관없이 파티클 크기가 일정함.
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_C, dwPointScaleC);
 
 	// 알파텍스쳐 활성화.

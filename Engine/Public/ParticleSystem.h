@@ -24,7 +24,7 @@ public:
 	HRESULT Bind_Buffers();
 
 	// 파티클 속성들 초기화.
-	virtual void Replay(_float3 _position);
+	void Replay(_float3 _position);
 
 protected:
 	// 렌더링 전 상태 셋팅.
@@ -32,6 +32,8 @@ protected:
 
 	// 렌더링 후 상태 셋팅.
 	virtual HRESULT EndRender();
+
+	virtual void OnReplay(ParticleAttribute& particle) {};
 
 protected:
 	HRESULT Create_VertexBuffer();
@@ -87,12 +89,15 @@ protected:
 	DWORD dwPointSizeMax;
 
 	// 포인트 스프라이트 거리별 크기 A.
+	// 값이 높을수록 카메라랑 멀어지면 파티클은 크게 보임.
 	DWORD dwPointScaleA;
 
 	// 포인트 스프라이트 거리별 크기 B.
+	// 값이 높을수록 카메라랑 멀어지면 파티클이 작아보이게 함.
 	DWORD dwPointScaleB;
 
 	// 포인트 스프라이트 거리별 크기 C.
+	// 값이 높을수록 실제 거리에 따른 파티클 크기가 보정됨.
 	DWORD dwPointScaleC;	
 
 	// 파티클 경계선 활성화.

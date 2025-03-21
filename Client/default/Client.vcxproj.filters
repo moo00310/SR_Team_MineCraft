@@ -166,6 +166,12 @@
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\03.edition">
       <UniqueIdentifier>{bd44ce59-d87b-47ac-9a92-589a37bb1fe2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Particle\Mining">
+      <UniqueIdentifier>{b91c73a2-544b-4775-a503-c3052171b117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Particle\Base">
+      <UniqueIdentifier>{20a35114-1f2e-4e16-aae8-1af1303c0d72}</UniqueIdentifier>
+  </Filter>
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory">
       <UniqueIdentifier>{b81d3eea-ee7c-4da5-9c6b-b3d81e2cebc4}</UniqueIdentifier>
     </Filter>
@@ -351,9 +357,6 @@
     <ClInclude Include="..\public\HeroEnemy.h">
       <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ParticleRain.h">
-      <Filter>02.GameObjects\Particle</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ParticleDash.h">
       <Filter>02.GameObjects\Particle</Filter>
     </ClInclude>
@@ -396,6 +399,18 @@
     <ClInclude Include="..\public\Edition.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleSandMining.h">
+      <Filter>02.GameObjects\Particle\Mining</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleWoodMining.h">
+      <Filter>02.GameObjects\Particle\Mining</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BaseParticleMining.h">
+      <Filter>02.GameObjects\Particle\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleRain.h">
+      <Filter>02.GameObjects\Particle</Filter>
+     </ClInclude>
     <ClInclude Include="..\public\TestParticle.h" />
     </ClInclude>
     <ClInclude Include="..\public\Inventory.h">
@@ -560,9 +575,6 @@
     <ClCompile Include="..\private\HyockCube.cpp">
       <Filter>02.GameObjects\96.HyockGameObj</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ParticleRain.cpp">
-      <Filter>02.GameObjects\Particle</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ParticleDash.cpp">
       <Filter>02.GameObjects\Particle</Filter>
     </ClCompile>
@@ -605,6 +617,18 @@
     <ClCompile Include="..\private\Edition.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\ParticleSandMining.cpp">
+      <Filter>02.GameObjects\Particle\Mining</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleWoodMining.cpp">
+      <Filter>02.GameObjects\Particle\Mining</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BaseParticleMining.cpp">
+      <Filter>02.GameObjects\Particle\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleRain.cpp">
+      <Filter>02.GameObjects\Particle</Filter>
+ </ClCompile>
     <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\Inventory.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>

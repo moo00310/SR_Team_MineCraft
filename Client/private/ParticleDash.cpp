@@ -1,5 +1,6 @@
 #include "ParticleDash.h"
 
+// 달리기 파티클.
 CParticleDash::CParticleDash(LPDIRECT3DDEVICE9 pGraphic_Device) :
 	CParticleSystem(pGraphic_Device)
 {
@@ -87,12 +88,12 @@ HRESULT CParticleDash::Ready_Components()
 ParticleAttribute CParticleDash::OnSetAddParticle()
 {
 	ParticleAttribute att;
-	att.vPosition = {0.f, 0.f, 0.f};
+	att.vPosition = {0.f, 0.f, 0.f};	
 	att.vColor = {GetRandomFloat(0.1f, 0.5f), 0.f, 0.f, 1.f };
 	att.vVelocity = {GetRandomFloat(-1.f, 1.f), 0.f, GetRandomFloat(-3.f, -1.f) };
 	att.IsTime = true;
 	att.fCurrentTime = 0.f;
-	att.fEndTime = 0.4f;
+	att.fEndTime = 0.4f;	
 
 	// 첫 생성 시 파티클이 나오지 않게 비활성화.
 	att.IsAlive = false;
