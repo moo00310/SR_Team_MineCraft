@@ -7,6 +7,7 @@
 #include "Object_Manager.h"
 #include "Prototype_Manager.h"
 #include "Collider_Manager.h"
+#include "Sound_Manager.h"
 #include "PoolManager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -49,6 +50,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 	if (nullptr == m_pKey_Manager)
 		return E_FAIL;
 
+	m_pSound_Manager = CSound_Manager::Create();
+	if (nullptr == m_pSound_Manager)
+		return E_FAIL;
+
 	m_pPoolManager = CPoolManager::Create();
 	if (nullptr == m_pPoolManager)
 		return E_FAIL;
@@ -60,6 +65,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pKey_Manager->Update();
+	m_pSound_Manager->Update();
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
@@ -68,7 +74,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pLevel_Manager->Update(fTimeDelta);
 
-	m_pCollider_Manager->Reset_ColliderGroup(); // ¸¶Áö¸·¿¡ È£ÃâÇÏ¶ó°íÇÔ (±×·ì¿¡ ³Ö´Ù »¯´Ù ¹Ýº¹ ÇÏ´Â µí)
+	m_pCollider_Manager->Reset_ColliderGroup(); // ë§ˆì§€ë§‰ì— í˜¸ì¶œí•˜ë¼ê³ í•¨ (ê·¸ë£¹ì— ë„£ë‹¤ ëºë‹¤ ë°˜ë³µ í•˜ëŠ” ë“¯)
 }
 
 HRESULT CGameInstance::Draw()
@@ -91,12 +97,12 @@ HRESULT CGameInstance::Draw()
 
 void CGameInstance::Clear(_uint iLevelIndex)
 {
-	/* Æ¯Á¤ ·¹º§ÀÇ ÀÚ¿øÀ» »èÁ¦ÇÑ´Ù. */
+	/* íŠ¹ì • ë ˆë²¨ì˜ ìžì›ì„ ì‚­ì œí•œë‹¤. */
 	
-	/* Æ¯Á¤ ·¹º§ÀÇ °´Ã¼À» »èÁ¦ÇÑ´Ù. */
+	/* íŠ¹ì • ë ˆë²¨ì˜ ê°ì²´ì„ ì‚­ì œí•œë‹¤. */
 	m_pObject_Manager->Clear(iLevelIndex);
 
-	/* Æ¯Á¤ ·¹º§ÀÇ ¿øÇü°´À» »èÁ¦ÇÑ´Ù. */
+	/* íŠ¹ì • ë ˆë²¨ì˜ ì›í˜•ê°ì„ ì‚­ì œí•œë‹¤. */
 	m_pPrototype_Manager->Clear(iLevelIndex);
 }
 
@@ -212,18 +218,14 @@ _bool CGameInstance::Collision_with_Group(_uint eGroup, CComponent* pCollider, C
 	return m_pCollider_Manager->Collision_with_Group(eGroup, pCollider, eType, pOutDistance, pOutDir);
 }
 
-_bool CGameInstance::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint iGroup, _Out_ _float& fDist, _Out_ CGameObject** ppGameObject)
+CGameObject* CGameInstance::Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist)
 {
 	fDist = 0.f;
-	if (ppGameObject)
-	{
-		*ppGameObject = nullptr;
-	}
 
 	if (nullptr == m_pCollider_Manager)
-		return false;
+		return nullptr;
 
-	return m_pCollider_Manager->Ray_Cast(rayOrigin, rayDir, maxDistance, iGroup, fDist, ppGameObject);
+	return m_pCollider_Manager->Ray_Cast(vRayOrigin, vRayDir, fMaxDistance, iGroup, fDist);
 }
 #pragma endregion
 
@@ -241,6 +243,10 @@ _bool CGameInstance::Key_Up(int _Key)
 _bool CGameInstance::Key_Down(int _Key)
 {
 	return m_pKey_Manager->Key_Down(_Key);
+}
+void CGameInstance::Play_Sound(const char* _EventPath)
+{
+	m_pSound_Manager->PlayEvent(_EventPath);
 }
 #pragma endregion
 
@@ -261,6 +267,8 @@ void CGameInstance::Pop(CGameObject* _object)
 
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pSound_Manager);
+
 	Safe_Release(m_pKey_Manager);
 
 	Safe_Release(m_pTimer_Manager);

@@ -237,7 +237,7 @@ HRESULT CParticleSystem::Create_VertexBuffer()
 
 void CParticleSystem::SetParticleAttribute()
 {	
-	for (int i = 0; i < iParticleCount; i++)
+	for (_uint i = 0; i < iParticleCount; i++)
 	{
 		ParticleAttribute att = OnSetAddParticle();		
 

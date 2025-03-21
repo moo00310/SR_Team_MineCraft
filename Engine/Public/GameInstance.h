@@ -1,8 +1,8 @@
 #pragma once
 
-/* ¿£Áø°ú Å¬¶óÀÌ¾ğÆ® °£ÀÇ ¸µÅ©ÀÇ ¿ªÈ°À» ¼öÇàÇÑ´Ù. */
-/* ¿£Áø ³»¿¡ Á¸ÀçÇÏ´Â À¯ÀÏÇÑ ½Ì±ÛÅæ Å¬·¡½ºÀÌ´Ù. */
-/* ¿£Áø °³¹ßÀÚ°¡ Å¬¶ó°³“TÀÚ¿¡°Ô º¸¿©ÁÖ°í½ÍÀº ÇÔ¼ö¸¦ ... */
+/* ì—”ì§„ê³¼ í´ë¼ì´ì–¸íŠ¸ ê°„ì˜ ë§í¬ì˜ ì—­í™œì„ ìˆ˜í–‰í•œë‹¤. */
+/* ì—”ì§„ ë‚´ì— ì¡´ì¬í•˜ëŠ” ìœ ì¼í•œ ì‹±ê¸€í†¤ í´ë˜ìŠ¤ì´ë‹¤. */
+/* ì—”ì§„ ê°œë°œìê°€ í´ë¼ê°œÂ“Tìì—ê²Œ ë³´ì—¬ì£¼ê³ ì‹¶ì€ í•¨ìˆ˜ë¥¼ ... */
 #include "Renderer.h"
 #include "Prototype_Manager.h"
 #include "Collider_Manager.h"
@@ -40,7 +40,7 @@ public:
 	class CGameObject* Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
 	void ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag);
 	list<class CGameObject*> Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag);
-	// Ã»Å© È°¼ºÈ­ °ü·Ã (true¸é Ã»Å© È°¼ºÈ­, false¸é Ã»Å© ºñÈ°¼ºÈ­ ´À³¦)
+	// ì²­í¬ í™œì„±í™” ê´€ë ¨ (trueë©´ ì²­í¬ í™œì„±í™”, falseë©´ ì²­í¬ ë¹„í™œì„±í™” ëŠë‚Œ)
 	void SetLayerRenderActive(_uint iLevelIndex, const _tchar* pLayerTag, bool _b);
 #pragma endregion
 
@@ -55,34 +55,37 @@ public:
 #pragma endregion
 
 #pragma region COLLIDER_MANAGER
-	//Äİ¸®Àü ±×·ì¿¡ Ãß°¡
+	//ì½œë¦¬ì „ ê·¸ë£¹ì— ì¶”ê°€
 	HRESULT Add_CollisionGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
-	//Äİ¸®Àü ±×·ì¿¡¼­ »©±â
+	//ì½œë¦¬ì „ ê·¸ë£¹ì—ì„œ ë¹¼ê¸°
 	void Out_CollisiomGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
-	//Æ¯Á¤ ±×·ìÀÇ ¿ÀºêÁ§Æ®µé°ú Ãæµ¹ °Ë»ç
+	//íŠ¹ì • ê·¸ë£¹ì˜ ì˜¤ë¸Œì íŠ¸ë“¤ê³¼ ì¶©ëŒ ê²€ì‚¬
 	_bool Collision_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir = nullptr);
 
-	//·¹ÀÌÄÉ½ºÆ®
-	//_bool Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup);
-
-	_bool Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint iGroup, _Out_ _float& fDist, _Out_ CGameObject** ppGameObject = nullptr);
+	//ë ˆì´ì¼€ìŠ¤íŠ¸
+	CGameObject* Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist);
 #pragma endregion
 
 #pragma region KEY_MANAGER
 	_bool		Key_Pressing(int _Key);
-	_bool		Key_Up(int _Key);		// ´©¸£°í ÀÖ´Ù°¡ ¶ÃÀ» ¶§
-	_bool		Key_Down(int _Key);		// ´­·¶À» ¶§
+	_bool		Key_Up(int _Key);		// ëˆ„ë¥´ê³  ìˆë‹¤ê°€ ë—ì„ ë•Œ
+	_bool		Key_Down(int _Key);		// ëˆŒë €ì„ ë•Œ
 #pragma endregion
+
+#pragma region SOUND_MANAGER
+	void		Play_Sound(const char* _EventPath);
+#pragma endregion
+
 
 #pragma region POOL_MANAGER
 
-	// Ç®¸µ °´Ã¼ »ı¼º.
+	// í’€ë§ ê°ì²´ ìƒì„±.
 	void CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count = 1, void* pArg = nullptr);
 
-	// Ç®¸µ °´Ã¼ ²¨³»¿È.
+	// í’€ë§ ê°ì²´ êº¼ë‚´ì˜´.
 	CGameObject* Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
 
-	// Ç®¸µÀ¸·Î µ¹¾Æ°¨.
+	// í’€ë§ìœ¼ë¡œ ëŒì•„ê°.
 	void Pop(CGameObject* _object);
 	
 #pragma endregion
@@ -96,6 +99,7 @@ private:
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 	class CKey_Manager*			m_pKey_Manager = { nullptr };
+	class CSound_Manager*		m_pSound_Manager = { nullptr };
 	class CPoolManager*			m_pPoolManager = { nullptr };
 
 public:

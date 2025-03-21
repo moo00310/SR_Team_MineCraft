@@ -167,6 +167,7 @@
     <ClInclude Include="..\public\CheckBox.h" />
     <ClInclude Include="..\public\Check_Enemy_Node.h" />
     <ClInclude Include="..\public\Client_Struct.h" />
+    <ClInclude Include="..\public\Clouds.h" />
     <ClInclude Include="..\public\CoalOre.h" />
     <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\Client_Defines.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\public\StartButton.h" />
     <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
+    <ClInclude Include="..\public\Sun.h" />
     <ClInclude Include="..\public\Sword.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Title.h" />
@@ -243,6 +245,7 @@
     <ClCompile Include="..\private\Chase_Enemy_Node.cpp" />
     <ClCompile Include="..\private\CheckBox.cpp" />
     <ClCompile Include="..\private\Check_Enemy_Node.cpp" />
+    <ClCompile Include="..\private\Clouds.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
@@ -283,6 +286,7 @@
     <ClCompile Include="..\private\StartButton.cpp" />
     <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />
+    <ClCompile Include="..\private\Sun.cpp" />
     <ClCompile Include="..\private\Sword.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\Title.cpp" />

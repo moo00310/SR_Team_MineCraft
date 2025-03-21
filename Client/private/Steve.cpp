@@ -79,7 +79,7 @@ void CSteve::Late_Update(_float fTimeDelta)
 	}
 	if (m_bisTPS > 0)
 	{
-		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 			return;
 	}
 }
@@ -122,6 +122,13 @@ _float3 CSteve::GetPos()
 
 void CSteve::Input_Key(_float fTimeDelta)
 {
+	CURSORINFO tCursorInfo;
+	tCursorInfo.cbSize = sizeof(CURSORINFO);
+	GetCursorInfo(&tCursorInfo);
+
+	if (tCursorInfo.flags == CURSOR_SHOWING)
+		return;
+
 	Move(fTimeDelta);
 	Turn(fTimeDelta);
 }
@@ -147,9 +154,13 @@ void CSteve::Move(_float fTimeDelta)
 		//m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
 	}
 
-	if (m_pGameInstance->Key_Pressing(VK_SPACE))
+	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
-		m_pRigidbodyCom->Jump();
+		if (m_pRigidbodyCom->Jump())
+		{
+			m_pGameInstance->Play_Sound("event:/Built_Fail");
+		}
+		
 	}
 }
 

@@ -208,6 +208,12 @@
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance">
       <UniqueIdentifier>{7a7aae3a-9527-4d67-9d44-d7b51a196bb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\04.Sun">
+      <UniqueIdentifier>{083d9647-2504-46a1-bd01-76949a39a78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Cloud">
+      <UniqueIdentifier>{6bbb737d-2be1-42bb-9082-1ac35b533fef}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\Particle\Destroy">
       <UniqueIdentifier>{da5f4e4c-9a63-42a9-8f6c-7a9c2365eaa7}</UniqueIdentifier>
     </Filter>
@@ -435,6 +441,12 @@
     <ClInclude Include="..\public\BTDecorator_IsTargetNear.h">
       <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Sun.h">
+      <Filter>02.GameObjects\04.Sun</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Clouds.h">
+      <Filter>02.GameObjects\05.Cloud</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\BaseParticleDestroy.h">
       <Filter>02.GameObjects\Particle\Base</Filter>
     </ClInclude>
@@ -636,6 +648,7 @@
     <ClCompile Include="..\private\ParticleRain.cpp">
       <Filter>02.GameObjects\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\Inventory.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
     </ClCompile>
@@ -656,6 +669,12 @@
     </ClCompile>
     <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sun.cpp">
+      <Filter>02.GameObjects\04.Sun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Clouds.cpp">
+      <Filter>02.GameObjects\05.Cloud</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BaseParticleDestroy.cpp">
       <Filter>02.GameObjects\Particle\Base</Filter>
