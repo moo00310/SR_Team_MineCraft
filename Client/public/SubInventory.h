@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CCheckBox final : public CUIObject
+class CSubInventory final : public CUIObject
 {
 private:
-	CCheckBox(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CCheckBox(CCheckBox& Prototype);
-	virtual ~CCheckBox() = default;
+	CSubInventory(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CSubInventory(CSubInventory& Prototype);
+	virtual ~CSubInventory() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -25,9 +25,6 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-public:
-	UIOBJECT_DESC Desc{};
-
 private:
 	HRESULT Ready_Components();
 
@@ -36,11 +33,8 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
-private:
-	_float m_fCheckBox = { 0.f };
-
 public:
-	static CCheckBox* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CSubInventory* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

@@ -51,8 +51,11 @@
 #include "StartButton.h"
 #include "Title.h"
 #include "Edition.h"
-#include "Inventory.h"
+#include "MainInventory.h"
 #include "CheckBox.h"
+#include "SubInventory.h"
+#include "Item.h"
+#include "Inventory_Back.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -501,10 +504,22 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/inventory_%03d.png"), 2))))
 		return E_FAIL;
 
+	///* For.Prototype_Component_Texture_InventoryBack*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_InventoryBack"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/Inventory_Back_%03d.png"), 2))))
+		return E_FAIL;
+
+	///* For.Prototype_Component_Texture_CheckBox*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_CheckBox"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/CheckBox.png"), 1))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Item*/
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Item"),
+	//	CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/Item_%03d.png"), 1))))
+	//	return E_FAIL;
 	/*================================================================================================*/
+
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
@@ -568,14 +583,34 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 	/* 장현우 인벤토리 테스트용 GameObject */
 	/*================================================================================================*/
-	/* For.Prototype_GameObject_Inventory */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Inventory"),
-		CInventory::Create(m_pGraphic_Device))))
+	/* For.Prototype_GameObject_MainInventory */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_MainInventory"),
+		CMainInventory::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_SubInventory*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_SubInventory"),
+		CSubInventory::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_SubInventoryBack */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_InventoryBack"),
+		CInventory_Back::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_CheckBox */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_CheckBox"),
 		CCheckBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_CItem*/
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Item"),
+	//	CItem::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
+
 	/*================================================================================================*/
 
 #pragma endregion

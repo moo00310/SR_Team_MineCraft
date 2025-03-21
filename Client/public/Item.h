@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CInventory final : public CUIObject
+class CItem final : public CUIObject
 {
 private:
-	CInventory(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CInventory(CInventory& Prototype);
-	virtual ~CInventory() = default;
+	CItem(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CItem(CItem& Prototype);
+	virtual ~CItem() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -33,8 +33,12 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
+private:
+	_bool m_bSubInvnetoryOn = { false };
+	_bool m_bEKeyPressed = { false };
+
 public:
-	static CInventory* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CItem* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

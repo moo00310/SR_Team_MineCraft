@@ -179,8 +179,10 @@
     <ClInclude Include="..\public\Dirt.h" />
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
     <ClInclude Include="..\public\HyockCube.h" />
-    <ClInclude Include="..\public\Inventory.h" />
+    <ClInclude Include="..\public\Inventory_Back.h" />
+    <ClInclude Include="..\public\SubInventory.h" />
     <ClInclude Include="..\public\IronOre.h" />
+    <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\Item_Model.h" />
     <ClInclude Include="..\public\Leaf.h" />
     <ClInclude Include="..\public\HeroEnemy.h" />
@@ -210,6 +212,7 @@
     <ClInclude Include="..\public\StartButton.h" />
     <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
+    <ClInclude Include="..\public\MainInventory.h" />
     <ClInclude Include="..\public\Sun.h" />
     <ClInclude Include="..\public\Sword.h" />
     <ClInclude Include="..\public\Terrain.h" />
@@ -255,8 +258,10 @@
     <ClCompile Include="..\private\Dirt.cpp" />
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
     <ClCompile Include="..\private\HyockCube.cpp" />
-    <ClCompile Include="..\private\Inventory.cpp" />
+    <ClCompile Include="..\private\Inventory_Back.cpp" />
+    <ClCompile Include="..\private\SubInventory.cpp" />
     <ClCompile Include="..\private\IronOre.cpp" />
+    <ClCompile Include="..\private\Item.cpp" />
     <ClCompile Include="..\private\Item_Model.cpp" />
     <ClCompile Include="..\private\Leaf.cpp" />
     <ClCompile Include="..\private\HeroEnemy.cpp" />
@@ -286,6 +291,7 @@
     <ClCompile Include="..\private\StartButton.cpp" />
     <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />
+    <ClCompile Include="..\private\MainInventory.cpp" />
     <ClCompile Include="..\private\Sun.cpp" />
     <ClCompile Include="..\private\Sword.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
