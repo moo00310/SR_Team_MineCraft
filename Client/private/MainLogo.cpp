@@ -1,4 +1,4 @@
-#include "MainLogo.h"
+ï»¿#include "MainLogo.h"
 #include "GameInstance.h"
 
 CMainLogo::CMainLogo(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -44,7 +44,7 @@ void CMainLogo::Priority_Update(_float fTimeDelta)
 
 void CMainLogo::Update(_float fTimeDelta)
 {
-    // °æ°ú ½Ã°£ ´©Àû 
+    /* ì‹œê°„ ëˆ„ì  */
     elapsedTime += fTimeDelta;
 
     if (5.0f > elapsedTime)
@@ -63,7 +63,7 @@ void CMainLogo::Update(_float fTimeDelta)
 
 void CMainLogo::Late_Update(_float fTimeDelta)
 {
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 

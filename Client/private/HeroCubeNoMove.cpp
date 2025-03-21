@@ -91,10 +91,10 @@ HRESULT CHeroCubeNoMove::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Collider */
-	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
+	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
 	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f;
 	Desc.pTransformCom = m_pTransformCom;
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;
 

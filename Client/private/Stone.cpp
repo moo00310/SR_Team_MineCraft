@@ -67,8 +67,8 @@ HRESULT CStone::Ready_Components()
         return E_FAIL;
 
     /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_BreakableCube"),
-        TEXT("m_pVIBufferCom_BreakalbeCube"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeInstance"),
+        TEXT("m_pVIBufferCom_CubeInstance"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
         return E_FAIL;
 
     /* For.Com_Transform */

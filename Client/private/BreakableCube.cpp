@@ -78,4 +78,5 @@ CGameObject* CBreakableCube::Clone(void* pArg)
 void CBreakableCube::Free()
 {
     __super::Free();
+    Safe_Release(m_pVIBufferCom);
 }

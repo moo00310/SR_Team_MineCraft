@@ -28,7 +28,6 @@ public:
 protected:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
-	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 	virtual HRESULT Ready_Components();
 		
 public:

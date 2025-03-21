@@ -52,7 +52,7 @@ void CStartButton::Update(_float fTimeDelta)
 
 void CStartButton::Late_Update(_float fTimeDelta)
 {
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 

@@ -16,20 +16,23 @@ HRESULT CLevel_Moo::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
-
 	/*if (FAILED(Ready_Layer_Creeper(TEXT("Layer_Creeper"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Layer_Tree(TEXT("Layer_Trees"))))
-		return E_FAIL; 
+	//if (FAILED(Ready_Layer_Tree(TEXT("Layer_Trees"))))
+	//	return E_FAIL; 
 
 	//임무결 1인칭 확인용
 	if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
 		return E_FAIL;
 
+
+	//임무결 1인칭 확인용
+	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Arm"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -103,6 +106,15 @@ HRESULT CLevel_Moo::Ready_Laye_MooArm(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Arm_Steve"),
 		LEVEL_STATIC, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Moo::Ready_Laye_Sword(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Sword"),
+		LEVEL_MOO, strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

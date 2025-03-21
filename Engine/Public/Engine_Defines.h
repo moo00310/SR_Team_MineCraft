@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #pragma warning (disable : 4251)
 
@@ -7,6 +7,7 @@
 
 #include <string>
 #include <map>
+#include <unordered_map>
 #include <list>
 #include <vector>
 #include <algorithm>
