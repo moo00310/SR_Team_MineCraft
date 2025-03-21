@@ -2,9 +2,11 @@
 #include "ParticleSystem.h"
 #include "Client_Defines.h"
 
-BEGIN(Engine)
 
-// ºñ ÆÄÆ¼Å¬.
+BEGIN(Client)
+
+
+// ë¹„ íŒŒí‹°í´.
 class CParticleRain final : public CParticleSystem
 {
 private:
@@ -16,7 +18,7 @@ public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;		
 
-	// CParticleSystemÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+	// CParticleSystemì„(ë¥¼) í†µí•´ ìƒì†ë¨
 	CGameObject* Clone(void* pArg) override;
 	static CParticleRain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free();
@@ -24,12 +26,13 @@ public:
 protected:
 	virtual HRESULT Ready_Components();
 
-	// °¢ ÆÄÆ¼Å¬ ¼Ó¼ºÀ» ¼ÂÆÃÇÕ´Ï´Ù.
+	// ê° íŒŒí‹°í´ ì†ì„±ì„ ì…‹íŒ…í•©ë‹ˆë‹¤.
 	virtual ParticleAttribute OnSetAddParticle() override;
 	
-	// ÆÄÆ¼Å¬ °æ°è¼±(IsBounding)À» È°¼ºÈ­ ÇÑ »óÅÂ¿¡¼­
-	// m_boundingBox·Î ÁöÁ¤ÇÑ ¹üÀ§¸¦ ³Ñ¾î¼­¸é È£Ãâ.
+	// íŒŒí‹°í´ ê²½ê³„ì„ (IsBounding)ì„ í™œì„±í™” í•œ ìƒíƒœì—ì„œ
+	// m_boundingBoxë¡œ ì§€ì •í•œ ë²”ìœ„ë¥¼ ë„˜ì–´ì„œë©´ í˜¸ì¶œ.
 	virtual void OnBoundingExit(ParticleAttribute& particle) override;
 };
+
 
 END
