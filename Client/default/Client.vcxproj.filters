@@ -211,6 +211,9 @@
     <Filter Include="02.GameObjects\04.Sun">
       <UniqueIdentifier>{083d9647-2504-46a1-bd01-76949a39a78e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.Cloud">
+      <UniqueIdentifier>{6bbb737d-2be1-42bb-9082-1ac35b533fef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -438,6 +441,9 @@
     <ClInclude Include="..\public\Sun.h">
       <Filter>02.GameObjects\04.Sun</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Clouds.h">
+      <Filter>02.GameObjects\05.Cloud</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -657,6 +663,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Sun.cpp">
       <Filter>02.GameObjects\04.Sun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Clouds.cpp">
+      <Filter>02.GameObjects\05.Cloud</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
