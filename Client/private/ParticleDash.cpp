@@ -93,7 +93,7 @@ ParticleAttribute CParticleDash::OnSetAddParticle()
 	att.vVelocity = {GetRandomFloat(-1.f, 1.f), 0.f, GetRandomFloat(-3.f, -1.f) };
 	att.IsTime = true;
 	att.fCurrentTime = 0.f;
-	att.fEndTime = 4.4f;	
+	att.fEndTime = 0.4f;	
 
 	// 첫 생성 시 파티클이 나오지 않게 비활성화.
 	att.IsAlive = false;

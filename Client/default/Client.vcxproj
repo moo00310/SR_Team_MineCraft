@@ -285,7 +285,6 @@
     <ClCompile Include="..\private\Stone.cpp" />
     <ClCompile Include="..\private\Sword.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
-    <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\Title.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />

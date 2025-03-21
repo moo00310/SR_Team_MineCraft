@@ -93,7 +93,7 @@ void CPlayer::Update(_float fTimeDelta)
 		if (particle != nullptr)
 		{
 			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-			m_pGameInstance->Pop(particle);
+			//m_pGameInstance->Pop(particle);
 		}		
 	}
 
