@@ -32,7 +32,6 @@ HRESULT CItem_Model::Initialize(void* pArg)
     matrix.Set_State(matrix.STATE_POSITION, _float3(-1.5f, 0.2f, -0.3f));
 
 
-
     m_swing.push_back({ 0.f, mat });
     m_swing.push_back({ 0.3f, matrix * mat });
 

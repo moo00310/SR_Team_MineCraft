@@ -273,6 +273,11 @@ HRESULT CMainApp::Ready_Component()
 		CRigidbody::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_SkeletalAnimator */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
+		CSkeletalAnimator::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	//  노말이 들어간 렉트
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect_Normal"),
 		CVIBuffer_Rect_Normal::Create(m_pGraphic_Device))))
