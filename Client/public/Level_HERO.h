@@ -25,6 +25,7 @@ private:
 	HRESULT Ready_Layer_HeroEnemy(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_MooArm(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_SkyBox(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_Sun(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_WOOInvenTest(const _wstring& strLayerTag);
 
 

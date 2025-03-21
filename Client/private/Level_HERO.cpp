@@ -31,9 +31,11 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
 		return E_FAIL;
 
-	//BT 연습용 적
-	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
 		return E_FAIL;
+
+	/*if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;*/
 
 	//임무결 1인칭 확인용
 	/*if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
@@ -147,6 +149,15 @@ HRESULT CLevel_HERO::Ready_Laye_MooArm(const _wstring& strLayerTag)
 HRESULT CLevel_HERO::Ready_Layer_SkyBox(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_SkyBox"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_HERO::Ready_Layer_Sun(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Sun"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
 

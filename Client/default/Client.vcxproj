@@ -207,6 +207,7 @@
     <ClInclude Include="..\public\StartButton.h" />
     <ClInclude Include="..\public\Steve.h" />
     <ClInclude Include="..\public\Stone.h" />
+    <ClInclude Include="..\public\Sun.h" />
     <ClInclude Include="..\public\Sword.h" />
     <ClInclude Include="..\public\Terrain.h" />
     <ClInclude Include="..\public\Title.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="..\private\StartButton.cpp" />
     <ClCompile Include="..\private\Steve.cpp" />
     <ClCompile Include="..\private\Stone.cpp" />
+    <ClCompile Include="..\private\Sun.cpp" />
     <ClCompile Include="..\private\Sword.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
     <ClCompile Include="..\private\TestParticle.cpp" />

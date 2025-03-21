@@ -24,6 +24,7 @@
 #include "HeroCubeNoMove.h"
 #include "HeroEnemy.h"
 #include "SkyBox.h"
+#include "Sun.h"
 
 
 //지형 관련
@@ -455,6 +456,11 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassDirt%d.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Sun */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Sun"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/sun.png"), 1))))
+		return E_FAIL;
+
 	/* 장현우 인벤토리 테스트용 Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
@@ -485,6 +491,11 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+
+	/* For.Prototype_GameObject_Sun */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Sun"),
+		CSun::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Player"),

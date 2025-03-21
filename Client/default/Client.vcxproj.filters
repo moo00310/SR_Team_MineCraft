@@ -171,7 +171,7 @@
     </Filter>
     <Filter Include="02.GameObjects\Particle\Base">
       <UniqueIdentifier>{20a35114-1f2e-4e16-aae8-1af1303c0d72}</UniqueIdentifier>
-  </Filter>
+    </Filter>
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory">
       <UniqueIdentifier>{b81d3eea-ee7c-4da5-9c6b-b3d81e2cebc4}</UniqueIdentifier>
     </Filter>
@@ -180,7 +180,7 @@
     </Filter>
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.CheckBox">
       <UniqueIdentifier>{5249cb73-c614-4b68-bd82-7f86d3bf1f9f}</UniqueIdentifier>
-     </Filter>
+    </Filter>
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster">
       <UniqueIdentifier>{85c77c0b-6725-4c2e-b6c2-651cdd0b5d3d}</UniqueIdentifier>
     </Filter>
@@ -207,6 +207,9 @@
     </Filter>
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance">
       <UniqueIdentifier>{7a7aae3a-9527-4d67-9d44-d7b51a196bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.Sun">
+      <UniqueIdentifier>{083d9647-2504-46a1-bd01-76949a39a78e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -410,8 +413,7 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleRain.h">
       <Filter>02.GameObjects\Particle</Filter>
-     </ClInclude>
-    <ClInclude Include="..\public\TestParticle.h" />
+    </ClInclude>
     <ClInclude Include="..\public\Inventory.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
     </ClInclude>
@@ -432,6 +434,9 @@
     </ClInclude>
     <ClInclude Include="..\public\BTDecorator_IsTargetNear.h">
       <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Sun.h">
+      <Filter>02.GameObjects\04.Sun</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -627,14 +632,14 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleRain.cpp">
       <Filter>02.GameObjects\Particle</Filter>
- </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\Inventory.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CheckBox.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.CheckBox</Filter>
-  </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster</Filter>
     </ClCompile>
@@ -649,6 +654,9 @@
     </ClCompile>
     <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sun.cpp">
+      <Filter>02.GameObjects\04.Sun</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

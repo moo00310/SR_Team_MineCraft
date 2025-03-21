@@ -79,7 +79,7 @@ void CSteve::Late_Update(_float fTimeDelta)
 	}
 	if (m_bisTPS > 0)
 	{
-		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 			return;
 	}
 }
