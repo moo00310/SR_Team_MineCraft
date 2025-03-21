@@ -122,6 +122,13 @@ _float3 CSteve::GetPos()
 
 void CSteve::Input_Key(_float fTimeDelta)
 {
+	CURSORINFO tCursorInfo;
+	tCursorInfo.cbSize = sizeof(CURSORINFO);
+	GetCursorInfo(&tCursorInfo);
+
+	if (tCursorInfo.flags == CURSOR_SHOWING)
+		return;
+
 	Move(fTimeDelta);
 	Turn(fTimeDelta);
 }

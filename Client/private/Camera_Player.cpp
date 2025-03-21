@@ -19,7 +19,8 @@ HRESULT CCamera_Player::Initialize_Prototype()
 
 HRESULT CCamera_Player::Initialize(void* pArg)
 {
-	ShowCursor(false);
+    m_isActiveMouse = false;
+    ShowCursor(false);
 
 	/* TransformCom 생성 */
 	if (FAILED(Ready_Components()))
@@ -66,11 +67,74 @@ void CCamera_Player::Update(_float fTimeDelta)
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
-    if (!m_pTargetTransformCom)
+    Follow_Player();
+
+    __super::Update_VP_Matrices();
+}
+
+
+HRESULT CCamera_Player::Render()
+{
+	return S_OK;
+}
+
+void CCamera_Player::Input_Key(_float fTimeDelta)
+{
+    // 창이 활성화 상태가 아닐 경우 입력을 무시
+    if (!(GetForegroundWindow() == g_hWnd))
         return;
 
-    // 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
-    if (!(GetForegroundWindow() == g_hWnd))
+    if (!m_isActiveMouse)
+    {
+        On_MouseMove(fTimeDelta);
+    }
+
+    if (m_pGameInstance->Key_Down(VK_LBUTTON))
+    {
+        _float fDist;
+        CGameObject* pHitObject;
+
+        pHitObject =  m_pGameInstance->Ray_Cast(
+            m_vHeadPos,
+            m_pTransformCom->Get_State(CTransform::STATE_LOOK),
+            5.f,
+            COLLISION_BLOCK,
+            fDist);
+
+        if (pHitObject)
+        {
+            if (pHitObject)
+                pHitObject->Destroy();
+        }
+
+    }
+
+    if (m_pGameInstance->Key_Down(VK_ESCAPE))
+    {
+        if (m_isActiveMouse)
+        {
+            m_isActiveMouse = false;
+            ShowCursor(false);
+
+            RECT rc;
+            GetClientRect(g_hWnd, &rc);
+            POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
+
+            // 마우스를 다시 중앙으로 이동
+            ClientToScreen(g_hWnd, &ptCenter);
+            SetCursorPos(ptCenter.x, ptCenter.y);
+        }
+        else
+        {
+            m_isActiveMouse = true;
+            ShowCursor(true);
+        }
+    }
+}
+
+void CCamera_Player::Follow_Player()
+{
+    if (!m_pTargetTransformCom)
         return;
 
     // === 스티브의 Yaw 값 가져오기 ===
@@ -82,32 +146,12 @@ void CCamera_Player::Late_Update(_float fTimeDelta)
         m_fYaw = atan2f(vLook.x, vLook.z); // X, Z를 이용해 Yaw 값 추출
     }
 
-    // === 화면 중앙 좌표 계산 ===
-    RECT rc;
-    GetClientRect(g_hWnd, &rc);
-    POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
-
-    // 현재 마우스 좌표 가져오기
-    POINT ptMouse;
-    GetCursorPos(&ptMouse);
-    ScreenToClient(g_hWnd, &ptMouse);
-
-    // === 마우스가 창 내부에 있는지 확인 ===
-    if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
-        return;
-
-    // 마우스 이동량 계산 (중앙 기준)
-    _int iMouseMoveY = ptMouse.y - ptCenter.y;
-
-    // Pitch 값 업데이트 (상하 회전)
-    m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
-    m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch)); // 상하 회전 제한
-
     // === 카메라 회전 행렬 적용 ===
     _float3 vLook;
     vLook.x = cosf(m_fPitch) * sinf(m_fYaw);
     vLook.y = sinf(m_fPitch);
     vLook.z = cosf(m_fPitch) * cosf(m_fYaw);
+
 
     m_vHeadPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.5f, 0.f);
 
@@ -128,45 +172,39 @@ void CCamera_Player::Late_Update(_float fTimeDelta)
         m_pTransformCom->LookAt(m_vHeadPos);
     }
 
+}
+
+void CCamera_Player::On_MouseMove(_float fTimeDelta)
+{
+    // === 화면 중앙 좌표 계산 ===
+    RECT rc;
+    GetClientRect(g_hWnd, &rc);
+    POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
+
+    // 현재 마우스 좌표 가져오기
+    POINT ptMouse;
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    //// === 마우스가 창 내부에 있는지 확인 ===
+    //if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
+    //    return;
+
+    // 마우스 이동량 계산 (중앙 기준)
+    _int iMouseMoveY = ptMouse.y - ptCenter.y;
+
+    // Pitch 값 업데이트 (상하 회전)
+    m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
+    m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch)); // 상하 회전 제한
+
     // 마우스를 다시 중앙으로 이동
     ClientToScreen(g_hWnd, &ptCenter);
     SetCursorPos(ptCenter.x, ptCenter.y);
 
-    // 마우스를 창 내부에 가두기 (ClipCursor 사용)
-    RECT clipRect;
-    GetWindowRect(g_hWnd, &clipRect);
-    ClipCursor(&clipRect);
-
-    __super::Update_VP_Matrices();
-}
-
-
-HRESULT CCamera_Player::Render()
-{
-	return S_OK;
-}
-
-void CCamera_Player::Input_Key(_float fTimeDelta)
-{
-    if (m_pGameInstance->Key_Down(VK_LBUTTON))
-    {
-        _float fDist;
-        CGameObject* pHitObject;
-
-        pHitObject =  m_pGameInstance->Ray_Cast(
-            m_vHeadPos,
-            m_pTransformCom->Get_State(CTransform::STATE_LOOK),
-            5.f,
-            COLLISION_BLOCK,
-            fDist);
-
-        if (pHitObject)
-        {
-            if (pHitObject)
-                pHitObject->Destroy();
-        }
-
-    }
+    //// 마우스를 창 내부에 가두기 (ClipCursor 사용)
+    //RECT clipRect;
+    //GetWindowRect(g_hWnd, &clipRect);
+    //ClipCursor(&clipRect);
 }
 
 HRESULT CCamera_Player::Ready_Components()
