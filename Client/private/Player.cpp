@@ -18,7 +18,7 @@ HRESULT CPlayer::Initialize_Prototype()
 }
 
 HRESULT CPlayer::Initialize(void* pArg)
-{
+{		
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
 		LEVEL_HYEOK, TEXT("Layer_ParticleDash"))))
 		return E_FAIL;
@@ -37,6 +37,12 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pParticleWoodMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleWoodMining"), 0);
 
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandDestroy"),
+		LEVEL_HYEOK, TEXT("Layer_ParticleSandDestroy"))))
+		return E_FAIL;
+
+	m_pParticleSandDestroy = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleSandDestroy"), 0);
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
@@ -46,11 +52,11 @@ HRESULT CPlayer::Initialize(void* pArg)
 }
 
 void CPlayer::Priority_Update(_float fTimeDelta)
-{
+{	
 }
 
 void CPlayer::Update(_float fTimeDelta)
-{
+{	
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
 		m_count += fTimeDelta;
@@ -78,7 +84,22 @@ void CPlayer::Update(_float fTimeDelta)
 
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
-		m_pParticleWoodMining->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_HYEOK,	// 적용 씬.
+			TEXT("Prototype_GameObject_ParticleDash"),	// 가져올 프로토타입.
+			LEVEL_HYEOK,	// 가져올 씬.
+			TEXT("Layer_ParticleDash"));	// 애드오브젝트에 추가할 레이어
+
+		if (particle != nullptr)
+		{
+			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			//m_pGameInstance->Pop(particle);
+		}		
+	}
+
+	if (GetKeyState('Z') & 0x8000)
+	{
+		m_pParticleSandMining->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 }
 
@@ -88,9 +109,7 @@ void CPlayer::Late_Update(_float fTimeDelta)
 }
 
 HRESULT CPlayer::Render()
-{
-
-
+{	
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
@@ -190,6 +209,8 @@ void CPlayer::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
 
-
-
+	Safe_Release(m_pParticleDash);
+	Safe_Release(m_pParticleSandMining);
+	Safe_Release(m_pParticleWoodMining);
+	Safe_Release(m_pParticleSandDestroy);
 }

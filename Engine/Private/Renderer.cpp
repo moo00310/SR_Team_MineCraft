@@ -40,7 +40,13 @@ HRESULT CRenderer::Render_Priority()
 	for (auto& pGameObject : m_RenderObjects[RG_PRIORITY])
 	{
 		if (nullptr != pGameObject)
-			pGameObject->Render();
+		{
+			if (pGameObject->GetActive() == true)
+			{
+				// 오브젝트가 활성화 된 상태에서만 진행.
+				pGameObject->Render();
+			}			
+		}			
 
 		Safe_Release(pGameObject);
 	}
@@ -54,7 +60,13 @@ HRESULT CRenderer::Render_NonBlend()
 	for (auto& pGameObject : m_RenderObjects[RG_NONBLEND])
 	{
 		if (nullptr != pGameObject)
-			pGameObject->Render();
+		{
+			if (pGameObject->GetActive() == true)
+			{
+				// 오브젝트가 활성화 된 상태에서만 진행.
+				pGameObject->Render();
+			}
+		}			
 
 		Safe_Release(pGameObject);
 	}
@@ -68,7 +80,13 @@ HRESULT CRenderer::Render_Blend()
 	for (auto& pGameObject : m_RenderObjects[RG_BLEND])
 	{
 		if (nullptr != pGameObject)
-			pGameObject->Render();
+		{
+			if (pGameObject->GetActive() == true)
+			{
+				// 오브젝트가 활성화 된 상태에서만 진행.
+				pGameObject->Render();
+			}
+		}
 
 		Safe_Release(pGameObject);
 	}
@@ -82,7 +100,13 @@ HRESULT CRenderer::Render_UI()
 	for (auto& pGameObject : m_RenderObjects[RG_UI])
 	{
 		if (nullptr != pGameObject)
-			pGameObject->Render();
+		{
+			if (pGameObject->GetActive() == true)
+			{
+				// 오브젝트가 활성화 된 상태에서만 진행.
+				pGameObject->Render();
+			}
+		}
 
 		Safe_Release(pGameObject);
 	}

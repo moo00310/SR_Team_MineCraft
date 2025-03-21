@@ -40,11 +40,20 @@ void CTree::Priority_Update(_float fTimeDelta)
 
 void CTree::Update(_float fTimeDelta)
 {
+
 }
 
 void CTree::Late_Update(_float fTimeDelta)
 {
-    // 위치이동
+    for (auto object : m_vecWood) {
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, object)))
+            return;
+    }
+
+    for (auto object : m_vecLeaf) {
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, object)))
+            return;
+    }
 }
 
 HRESULT CTree::Render()
@@ -62,16 +71,15 @@ HRESULT CTree::Ready_Objects(int height, int iAddLeaf, int treeIndex)
     // Wood
     for (int i = 0; i <= height; i++)
     {
-        if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Wood"),
-            LEVEL_MOO, LayerName)))
-            return E_FAIL;
+        CBreakableCube* pGameObject = dynamic_cast<CBreakableCube*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, LEVEL_YU, TEXT("Prototype_GameObject_Wood")));
+
+        m_vecWood.push_back(pGameObject);
     }
 
     for (int i = 0; i <= 48 +iAddLeaf; i++)
     {
-        if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Leaf"),
-            LEVEL_MOO, LayerName)))
-            return E_FAIL;
+        CBreakableCube* pGameObject = dynamic_cast<CBreakableCube*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, LEVEL_YU, TEXT("Prototype_GameObject_Leaf")));
+        m_vecLeaf.push_back(pGameObject);
     }
 
 
@@ -82,55 +90,43 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
 {
     Matrix mat = {};
     wstring LayerName = L"Layer_Tree" + to_wstring(treeIndex);
-
+    int leafIndex = 0; // 각 잎 블록을 가져오기 위한 별도 인덱스
     // 줄기 배치
-    for (int i = 0; i <= height + 1; i++)  // height + 1까지 줄기 배치
+    for (int i = 0; i <= height+1; i++)  // height + 1까지 줄기 배치
     {
-        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_MOO, LayerName.c_str(), index));
-        if (pCube == nullptr) return E_FAIL;
-
-        pCube->SetPos(_float3(0.f, 0.5f + i, 0.f) + m_Pos);  // 줄기 위치 설정
-        index++;
+        if (i == height + 1) {
+            m_vecLeaf[leafIndex]->SetPos(_float3(0.f, 0.5f + i, 0.f) + m_Pos);
+            leafIndex++;
+            continue;
+        }
+        m_vecWood[i]->SetPos(_float3(0.f, 0.5f + i, 0.f) + m_Pos);
     }
+
 
     // 잎 배치
       // 잎(leaf) 생성
-    int leafIndex = 0; // 각 잎 블록을 가져오기 위한 별도 인덱스
     for (int j = 0; j < 20; j++)
     {
-        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_MOO, LayerName.c_str(), index));
-        if (pCube == nullptr) return E_FAIL;
-
-        pCube->SetPos(_float3(leaf[j].x, 0.5f + height - 2, leaf[j].y) + m_Pos);
-        index++;
+        m_vecLeaf[leafIndex]->SetPos(_float3(leaf[j].x, 0.5f + height - 2, leaf[j].y) + m_Pos);
+        leafIndex++;
     }
 
     for (int j = 0; j < 20; j++)
     {
-        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_MOO, LayerName.c_str(), index ));
-        if (pCube == nullptr) return E_FAIL;
-
-        pCube->SetPos(_float3(leaf[j].x, 0.5f + height - 1, leaf[j].y) + m_Pos);
-        index++;
+        m_vecLeaf[leafIndex]->SetPos(_float3(leaf[j].x, 0.5f + height - 1, leaf[j].y) + m_Pos);
+        leafIndex++;
     }
 
     for (int j = 0; j < 4; j++)
     {
-        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_MOO, LayerName.c_str(), index ));
-        if (pCube == nullptr) return E_FAIL;
-
-        pCube->SetPos(_float3(leaf[j].x, 0.5f + height, leaf[j].y) + m_Pos);
-        index++;
+        m_vecLeaf[leafIndex]->SetPos(_float3(leaf[j].x, 0.5f + height, leaf[j].y) + m_Pos);
+        leafIndex++;
     }
 
     for (int j = 0; j < 4; j++)
     {
-        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_MOO, LayerName.c_str(), index ));
-        if (pCube == nullptr)
-            return E_FAIL;
-
-        pCube->SetPos(_float3(leaf[j].x, 0.5f + height + 1, leaf[j].y)+ m_Pos);
-        index++;
+        m_vecLeaf[leafIndex]->SetPos(_float3(leaf[j].x, 0.5f + height + 1, leaf[j].y)+ m_Pos);
+        leafIndex++;
     }
 
     if (iAddLeaf == 0) return S_OK;
@@ -141,12 +137,8 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
 
     for (int j = 0; j < iAddLeaf; j++)
     {
-        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_MOO, LayerName.c_str(), index ));
-        if (pCube == nullptr)
-            return E_FAIL;
-
-        pCube->SetPos(_float3(vecAddLeadPos[j].x, 0.5f + vecAddLeadPos[j].y + height, vecAddLeadPos[j].z) + m_Pos);
-        index++;
+        m_vecLeaf[leafIndex]->SetPos(_float3(vecAddLeadPos[j].x, 0.5f + vecAddLeadPos[j].y + height, vecAddLeadPos[j].z) + m_Pos);
+        leafIndex++;
     }
 
     
@@ -182,4 +174,11 @@ CGameObject* CTree::Clone(void* pArg)
 void CTree::Free()
 {
     __super::Free();
+    for (auto object : m_vecWood) {
+        Safe_Release(object);
+    }
+
+    for (auto object : m_vecLeaf) {
+        Safe_Release(object);
+    }
 }

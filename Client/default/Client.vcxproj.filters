@@ -214,6 +214,9 @@
     <Filter Include="02.GameObjects\05.Cloud">
       <UniqueIdentifier>{6bbb737d-2be1-42bb-9082-1ac35b533fef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Particle\Destroy">
+      <UniqueIdentifier>{da5f4e4c-9a63-42a9-8f6c-7a9c2365eaa7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -444,6 +447,12 @@
     <ClInclude Include="..\public\Clouds.h">
       <Filter>02.GameObjects\05.Cloud</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BaseParticleDestroy.h">
+      <Filter>02.GameObjects\Particle\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleSandDestroy.h">
+      <Filter>02.GameObjects\Particle\Destroy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -666,6 +675,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Clouds.cpp">
       <Filter>02.GameObjects\05.Cloud</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BaseParticleDestroy.cpp">
+      <Filter>02.GameObjects\Particle\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleSandDestroy.cpp">
+      <Filter>02.GameObjects\Particle\Destroy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

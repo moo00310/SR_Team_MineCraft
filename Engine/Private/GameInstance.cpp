@@ -8,6 +8,7 @@
 #include "Prototype_Manager.h"
 #include "Collider_Manager.h"
 #include "Sound_Manager.h"
+#include "PoolManager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance);
 
@@ -53,6 +54,11 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 	if (nullptr == m_pSound_Manager)
 		return E_FAIL;
 
+	m_pPoolManager = CPoolManager::Create();
+	if (nullptr == m_pPoolManager)
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -68,7 +74,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 
 	m_pLevel_Manager->Update(fTimeDelta);
 
-	m_pCollider_Manager->Reset_ColliderGroup(); // ¸¶Áö¸·¿¡ È£ÃâÇÏ¶ó°íÇÔ (±×·ì¿¡ ³Ö´Ù »¯´Ù ¹Ýº¹ ÇÏ´Â µí)
+	m_pCollider_Manager->Reset_ColliderGroup(); // ë§ˆì§€ë§‰ì— í˜¸ì¶œí•˜ë¼ê³ í•¨ (ê·¸ë£¹ì— ë„£ë‹¤ ëºë‹¤ ë°˜ë³µ í•˜ëŠ” ë“¯)
 }
 
 HRESULT CGameInstance::Draw()
@@ -91,12 +97,12 @@ HRESULT CGameInstance::Draw()
 
 void CGameInstance::Clear(_uint iLevelIndex)
 {
-	/* Æ¯Á¤ ·¹º§ÀÇ ÀÚ¿øÀ» »èÁ¦ÇÑ´Ù. */
+	/* íŠ¹ì • ë ˆë²¨ì˜ ìžì›ì„ ì‚­ì œí•œë‹¤. */
 	
-	/* Æ¯Á¤ ·¹º§ÀÇ °´Ã¼À» »èÁ¦ÇÑ´Ù. */
+	/* íŠ¹ì • ë ˆë²¨ì˜ ê°ì²´ì„ ì‚­ì œí•œë‹¤. */
 	m_pObject_Manager->Clear(iLevelIndex);
 
-	/* Æ¯Á¤ ·¹º§ÀÇ ¿øÇü°´À» »èÁ¦ÇÑ´Ù. */
+	/* íŠ¹ì • ë ˆë²¨ì˜ ì›í˜•ê°ì„ ì‚­ì œí•œë‹¤. */
 	m_pPrototype_Manager->Clear(iLevelIndex);
 }
 
@@ -125,6 +131,11 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototypeType, _uint iPrototype
 HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
+}
+
+CGameObject* CGameInstance::Add_GameObjectReturnOBJ(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg)
+{
+	return m_pObject_Manager->Add_GameObjectReturnOBJ(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
 
 CGameObject* CGameInstance::Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex)
@@ -239,6 +250,21 @@ void CGameInstance::Play_Sound(const char* _EventPath)
 }
 #pragma endregion
 
+#pragma region POOL_MANAGER
+void CGameInstance::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
+{
+	m_pPoolManager->CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, count, pArg);
+}
+CGameObject* CGameInstance::Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
+{
+	return m_pPoolManager->Push(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag);
+}
+void CGameInstance::Pop(CGameObject* _object)
+{
+	m_pPoolManager->Pop(_object);
+}
+#pragma endregion
+
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pSound_Manager);
@@ -256,6 +282,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 
 	Safe_Release(m_pCollider_Manager);
+
+	Safe_Release(m_pPoolManager);
 
 	Safe_Release(m_pGraphic_Device);
 

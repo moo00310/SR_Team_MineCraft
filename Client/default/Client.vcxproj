@@ -154,6 +154,7 @@
     <ClInclude Include="..\..\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\public\Arm_Steve.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\public\BaseParticleDestroy.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\BTDecorator_IsTargetNear.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="..\public\ParticleDash.h" />
     <ClInclude Include="..\public\BaseParticleMining.h" />
     <ClInclude Include="..\public\ParticleRain.h" />
+    <ClInclude Include="..\public\ParticleSandDestroy.h" />
     <ClInclude Include="..\public\ParticleSandMining.h" />
     <ClInclude Include="..\public\ParticleWoodMining.h" />
     <ClInclude Include="..\public\Patrol_Node.h" />
@@ -231,6 +233,7 @@
     <ClCompile Include="..\..\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\Arm_Steve.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
+    <ClCompile Include="..\private\BaseParticleDestroy.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
     <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp" />
@@ -274,6 +277,7 @@
     <ClCompile Include="..\private\ParticleDash.cpp" />
     <ClCompile Include="..\private\BaseParticleMining.cpp" />
     <ClCompile Include="..\private\ParticleRain.cpp" />
+    <ClCompile Include="..\private\ParticleSandDestroy.cpp" />
     <ClCompile Include="..\private\ParticleSandMining.cpp" />
     <ClCompile Include="..\private\ParticleWoodMining.cpp" />
     <ClCompile Include="..\private\Patrol_Node.cpp" />
@@ -285,7 +289,6 @@
     <ClCompile Include="..\private\Sun.cpp" />
     <ClCompile Include="..\private\Sword.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
-    <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\Title.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
