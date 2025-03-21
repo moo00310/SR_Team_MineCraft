@@ -21,6 +21,8 @@ STATUS CCheck_Enemy_Node::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		fHitDist
 	);
 
+	pHeroEnemy->Set_Target(pHitObject);
+
 	if (pHitObject)
 	{
 		pHeroEnemy->Set_Target_Transform(static_cast<CTransform*>(pHeroEnemy->Get_Target()->Find_Component(TEXT("Com_Transform"))));

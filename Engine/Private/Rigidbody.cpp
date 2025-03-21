@@ -77,11 +77,11 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 	if (m_isGrounded)
 	{
-		printf_s("is Ground\n");
+		//printf_s("is Ground\n");
 	}
 	else
 	{
-		printf_s("is Air\n");
+		//printf_s("is Air\n");
 	}
 
 

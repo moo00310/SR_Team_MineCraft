@@ -20,6 +20,8 @@ STATUS CBTTask_DetectEnemy::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		fHitDist
 		);
 
+	pMonster->Set_Target(pHitOjbect);
+
 	if (pHitOjbect)
 	{
 		return STATUS::SUCCESS;

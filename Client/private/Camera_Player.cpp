@@ -66,6 +66,9 @@ void CCamera_Player::Update(_float fTimeDelta)
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
+    if (!m_pTargetTransformCom)
+        return;
+
     // 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
     if (!(GetForegroundWindow() == g_hWnd))
         return;
@@ -106,21 +109,23 @@ void CCamera_Player::Late_Update(_float fTimeDelta)
     vLook.y = sinf(m_fPitch);
     vLook.z = cosf(m_fPitch) * cosf(m_fYaw);
 
+    m_vHeadPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.5f, 0.f);
+
     if (m_eCameraMode == E_CAMERA_MODE::FPS)
     {
         // 1인칭(FPS) 모드
-        _float3 vCameraPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.8f, 0.f);
-        m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
-        m_pTransformCom->LookAt(vCameraPos + vLook);
+        //_float3 vCameraPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.8f, 0.f);
+        m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_vHeadPos);
+        m_pTransformCom->LookAt(m_vHeadPos + vLook);
     }
     else
     {
         // 3인칭(TPS) 모드
-        _float3 vPlayerPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
+        //_float3 vPlayerPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
         _float3 vCameraOffset = -vLook * 5.0f;
-        _float3 vCameraPos = vPlayerPos + vCameraOffset + _float3(0.f, 1.8f, 0.f);
+        _float3 vCameraPos = m_vHeadPos + vCameraOffset;
         m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
-        m_pTransformCom->LookAt(vPlayerPos + _float3(0.f, 1.5f, 0.f));
+        m_pTransformCom->LookAt(m_vHeadPos);
     }
 
     // 마우스를 다시 중앙으로 이동
@@ -148,7 +153,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         _float fDist;
         CGameObject* pHitObject;
 
-        pHitObject =  m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+        pHitObject =  m_pGameInstance->Ray_Cast(
+            m_vHeadPos,
             m_pTransformCom->Get_State(CTransform::STATE_LOOK),
             5.f,
             COLLISION_BLOCK,
