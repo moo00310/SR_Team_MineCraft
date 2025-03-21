@@ -52,11 +52,11 @@ HRESULT CPlayer::Initialize(void* pArg)
 }
 
 void CPlayer::Priority_Update(_float fTimeDelta)
-{
+{	
 }
 
 void CPlayer::Update(_float fTimeDelta)
-{
+{	
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
 		m_count += fTimeDelta;
@@ -84,7 +84,12 @@ void CPlayer::Update(_float fTimeDelta)
 
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
-		m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
+		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(TEXT("Prototype_GameObject_ParticleDash"));
+		if (particle != nullptr)
+		{
+			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		}		
 	}
 
 	if (GetKeyState('Z') & 0x8000)
@@ -99,9 +104,7 @@ void CPlayer::Late_Update(_float fTimeDelta)
 }
 
 HRESULT CPlayer::Render()
-{
-
-
+{	
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 

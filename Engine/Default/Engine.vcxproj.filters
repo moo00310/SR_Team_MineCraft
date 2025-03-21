@@ -122,6 +122,9 @@
     <ClInclude Include="..\public\SkeletalAnimator.h">
       <Filter>04.Components\SkeletalAnimator</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\PoolManager.h">
+      <Filter>08.Pooling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -323,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="..\private\SkeletalAnimator.cpp">
       <Filter>04.Components\SkeletalAnimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PoolManager.cpp">
+      <Filter>08.Pooling</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

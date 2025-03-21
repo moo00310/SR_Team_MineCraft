@@ -36,6 +36,7 @@ public:
 
 #pragma region OBJECT_MANAGER
 	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
+	CGameObject* Add_GameObjectReturnOBJ(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	class CGameObject* Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
 	void ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag);
 	list<class CGameObject*> Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag);
@@ -73,6 +74,15 @@ public:
 	_bool		Key_Down(int _Key);		// ´­·¶À» ¶§
 #pragma endregion
 
+#pragma region POOL_MANAGER
+
+	// Ç®¸µ °´Ã¼ »ý¼º.
+	void CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count = 1, void* pArg = nullptr);
+
+	// Ç®¸µ °´Ã¼ ²¨³»¿È.
+	CGameObject* Push(const _wstring& strPrototypeTag);
+	
+#pragma endregion
 
 private:
 	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
@@ -83,6 +93,7 @@ private:
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 	class CKey_Manager*			m_pKey_Manager = { nullptr };
+	class CPoolManager*			m_pPoolManager = { nullptr };
 
 public:
 	void Release_Engine();

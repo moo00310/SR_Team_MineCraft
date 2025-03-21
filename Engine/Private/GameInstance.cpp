@@ -7,6 +7,7 @@
 #include "Object_Manager.h"
 #include "Prototype_Manager.h"
 #include "Collider_Manager.h"
+#include "PoolManager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance);
 
@@ -46,6 +47,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 
 	m_pKey_Manager = CKey_Manager::Create();
 	if (nullptr == m_pKey_Manager)
+		return E_FAIL;
+
+	m_pPoolManager = CPoolManager::Create();
+	if (nullptr == m_pPoolManager)
 		return E_FAIL;
 
 
@@ -120,6 +125,11 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototypeType, _uint iPrototype
 HRESULT CGameInstance::Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg)
 {
 	return m_pObject_Manager->Add_GameObject(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
+}
+
+CGameObject* CGameInstance::Add_GameObjectReturnOBJ(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg)
+{
+	return m_pObject_Manager->Add_GameObjectReturnOBJ(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);
 }
 
 CGameObject* CGameInstance::Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex)
@@ -234,6 +244,17 @@ _bool CGameInstance::Key_Down(int _Key)
 }
 #pragma endregion
 
+#pragma region POOL_MANAGER
+void CGameInstance::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
+{
+	m_pPoolManager->CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, count, pArg);
+}
+CGameObject* CGameInstance::Push(const _wstring& strPrototypeTag)
+{
+	return m_pPoolManager->Push(strPrototypeTag);
+}
+#pragma endregion
+
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pKey_Manager);
@@ -249,6 +270,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 
 	Safe_Release(m_pCollider_Manager);
+
+	Safe_Release(m_pPoolManager);
 
 	Safe_Release(m_pGraphic_Device);
 
