@@ -125,4 +125,29 @@ namespace Engine
 
 		return result;
 	}
+
+	inline D3DXMATRIX InterpolateMatrix_Quat(const D3DXMATRIX& mat1, const D3DXMATRIX& mat2, float t)
+	{
+		// 위치 추출
+		D3DXVECTOR3 pos1(mat1._41, mat1._42, mat1._43);
+		D3DXVECTOR3 pos2(mat2._41, mat2._42, mat2._43);
+		D3DXVECTOR3 interpPos = Lerp(pos1, pos2, t);
+
+		// 회전 추출 (Matrix → Quaternion)
+		D3DXQUATERNION q1, q2, qInterp;
+		D3DXQuaternionRotationMatrix(&q1, &mat1);
+		D3DXQuaternionRotationMatrix(&q2, &mat2);
+		D3DXQuaternionSlerp(&qInterp, &q1, &q2, t);
+
+		// 쿼터니언 → 행렬
+		D3DXMATRIX rotMatrix;
+		D3DXMatrixRotationQuaternion(&rotMatrix, &qInterp);
+
+		// 위치 적용
+		rotMatrix._41 = interpPos.x;
+		rotMatrix._42 = interpPos.y;
+		rotMatrix._43 = interpPos.z;
+
+		return rotMatrix;
+	}
 }

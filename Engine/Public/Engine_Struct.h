@@ -134,9 +134,10 @@ namespace Engine
 	{
 		const char* name;
 		int parent;
-		Matrix localTransform; 
-		Matrix worldTransform;
-		Matrix Correction;
+		Matrix baseTransform;	// 처음 기본 위치 
+		Matrix localTransform;  // 본의 누적값
+		Matrix worldTransform;  // 최종 윌드 매트릭스
+		Matrix Correction;		// 최종 월드매트릭스와 매시 바인딩
 	}BONE;
 
 #pragma region Ray_Cast
@@ -152,26 +153,6 @@ namespace Engine
 	{
 		float fTime;
 		D3DXMATRIX matTransform;
-
-		// 기본 생성자
-		KEYFREAME()
-			: fTime(0.0f)
-		{
-			D3DXMatrixIdentity(&matTransform);
-		}
-
-		// 사용자 정의 생성자
-		KEYFREAME(float time, const D3DXMATRIX& transform)
-			: fTime(time), matTransform(transform) {
-		}
-
-		// 복사 생성자 (vector 복사 지원)
-		KEYFREAME(const KEYFREAME&) = default;
-		KEYFREAME& operator=(const KEYFREAME&) = default;
-
-		// 이동 생성자 (vector 이동 지원)
-		KEYFREAME(KEYFREAME&&) noexcept = default;
-		KEYFREAME& operator=(KEYFREAME&&) noexcept = default;
 	};
 #pragma endregion
 }
