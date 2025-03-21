@@ -29,6 +29,10 @@ public:
 public:
 	_bool	Get_isDestroy();
 	void	Destroy();
+
+	/// <summary>
+	/// Update쪽에 써야하는 경우 Priority_Update쪽에 쓰는걸 권장함.
+	/// </summary>	
 	void	SetActive(_bool isActive);
 	_bool	GetActive() const;
 

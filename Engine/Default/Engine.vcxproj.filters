@@ -223,6 +223,9 @@
     <Filter Include="04.Components\SkeletalAnimator">
       <UniqueIdentifier>{8676614a-8bc5-44bf-8b5b-9b5ca80ec73d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08.Pooling">
+      <UniqueIdentifier>{2311d2ac-4091-4a20-a361-dfa35054e017}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
