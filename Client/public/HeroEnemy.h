@@ -37,6 +37,7 @@ public: //Get
 	CTransform*			Get_Transform();
 	CTransform*			Get_Target_Transform();
 	CGameObject*&		Get_Target();
+	void				Set_Target(CGameObject* pGameObject);
 
 public: //Set
 	void				Set_Target_Transform(CTransform* pTransform);

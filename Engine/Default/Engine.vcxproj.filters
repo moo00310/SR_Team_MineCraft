@@ -122,6 +122,12 @@
     <ClInclude Include="..\public\SkeletalAnimator.h">
       <Filter>04.Components\SkeletalAnimator</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Sound_Manager.h">
+      <Filter>08.SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PoolManager.h">
+      <Filter>08.Pooling</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -223,6 +229,12 @@
     <Filter Include="04.Components\SkeletalAnimator">
       <UniqueIdentifier>{8676614a-8bc5-44bf-8b5b-9b5ca80ec73d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08.SoundManager">
+      <UniqueIdentifier>{4cd5db5c-7d8a-4e95-8c3f-a8e22b9f7b89}</UniqueIdentifier>
+     </Filter>
+    <Filter Include="08.Pooling">
+      <UniqueIdentifier>{2311d2ac-4091-4a20-a361-dfa35054e017}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -320,6 +332,12 @@
     </ClCompile>
     <ClCompile Include="..\private\SkeletalAnimator.cpp">
       <Filter>04.Components\SkeletalAnimator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Sound_Manager.cpp">
+      <Filter>08.SoundManager</Filter>
+     </ClCompile>
+    <ClCompile Include="..\private\PoolManager.cpp">
+      <Filter>08.Pooling</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

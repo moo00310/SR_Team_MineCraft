@@ -124,6 +124,11 @@ CGameObject*& CHeroEnemy::Get_Target()
 	return m_pTarget;
 }
 
+void CHeroEnemy::Set_Target(CGameObject* pGameObject)
+{
+	m_pTarget = pGameObject;
+}
+
 void CHeroEnemy::Set_Target_Transform(CTransform* pTransform)
 {
 	m_pTargetTransform = pTransform;

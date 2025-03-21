@@ -2,7 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
-#include "ParticleDash.h"
+#include "ParticleSystem.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -35,6 +35,7 @@ private:
 	CParticleSystem*			m_pParticleDash = { nullptr };
 	CParticleSystem*			m_pParticleSandMining = { nullptr };
 	CParticleSystem*			m_pParticleWoodMining = { nullptr };
+	CParticleSystem*			m_pParticleSandDestroy = { nullptr };
 
 private:
 	HRESULT SetUp_RenderState();

@@ -33,12 +33,11 @@ void CLeaf::Update(_float fTimeDelta)
 
 void CLeaf::Late_Update(_float fTimeDelta)
 {
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
-		return;
 }
 
 HRESULT CLeaf::Render()
 {
+	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
@@ -58,7 +57,7 @@ HRESULT CLeaf::Render()
 HRESULT CLeaf::Ready_Components()
 {
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_Texture_Leaf"),
+	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Leaf"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

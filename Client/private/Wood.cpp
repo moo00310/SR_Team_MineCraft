@@ -25,8 +25,6 @@ HRESULT CWood::Initialize(void* pArg)
 
 void CWood::Priority_Update(_float fTimeDelta)
 {
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
-		return;
 }
 
 void CWood::Update(_float fTimeDelta)
@@ -40,6 +38,7 @@ void CWood::Late_Update(_float fTimeDelta)
 
 HRESULT CWood::Render()
 {
+	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
@@ -61,7 +60,7 @@ HRESULT CWood::Render()
 HRESULT CWood::Ready_Components()
 {
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_MOO, TEXT("Prototype_Component_Texture_Wood"),
+	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Wood"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

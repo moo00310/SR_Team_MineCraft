@@ -2,7 +2,9 @@
 #include "ParticleSystem.h"
 #include "Client_Defines.h"
 
-// 블럭 캘 때 부모 파티클.
+BEGIN(Client)
+
+// 블럭 채굴 부모 파티클.
 class CBaseParticleMining abstract : public CParticleSystem
 {
 protected:
@@ -30,3 +32,4 @@ protected:
 	virtual void OnReplay(ParticleAttribute& particle) override;
 };
 
+END

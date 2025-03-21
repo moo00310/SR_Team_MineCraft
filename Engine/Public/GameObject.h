@@ -30,6 +30,12 @@ public:
 	_bool	Get_isDestroy();
 	void	Destroy();
 
+	/// <summary>
+	/// Update쪽에 써야하는 경우 Priority_Update쪽에 쓰는걸 권장함.
+	/// </summary>	
+	void	SetActive(_bool isActive);
+	_bool	GetActive() const;
+
 protected:
 	LPDIRECT3DDEVICE9				m_pGraphic_Device = { nullptr };
 	class CGameInstance*			m_pGameInstance = { nullptr };
@@ -39,6 +45,9 @@ protected:
 
 private:
 	_bool	m_isDestroyed{ false };
+
+	// 오브젝트 true = 활성화/ false = 비활성화.
+	_bool	m_isActive = { true };
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);

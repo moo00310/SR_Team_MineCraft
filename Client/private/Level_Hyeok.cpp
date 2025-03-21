@@ -30,8 +30,8 @@ HRESULT CLevel_Hyeok::Initialize()
 	/*if (FAILED(Ready_Layer_DigParticle(TEXT("Layer_ParticleDig"))))
 		return E_FAIL;*/
 
-	/*if (FAILED(Ready_Layer_DashParticle(TEXT("Layer_ParticleDash"))))
-		return E_FAIL;*/
+	if (FAILED(Ready_Layer_DashParticle(TEXT("Layer_ParticleDash"))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -109,9 +109,11 @@ HRESULT CLevel_Hyeok::Ready_Layer_RainParticle(const _wstring& strLayerTag)
 
 HRESULT CLevel_Hyeok::Ready_Layer_DashParticle(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
-		LEVEL_HYEOK, strLayerTag)))
-		return E_FAIL;
+	m_pGameInstance->CreatePool(LEVEL_HYEOK,	// 적용 씬.
+		TEXT("Prototype_GameObject_ParticleDash"),	// 가져올 프로토타입.
+		LEVEL_HYEOK,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3);				// 풀링 갯수.
 
 	return S_OK;
 }

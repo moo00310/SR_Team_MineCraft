@@ -4,6 +4,7 @@
 #include "CoalOre.h"
 
 #include "Steve.h"
+#include "Tree.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -53,7 +54,7 @@ void CMCTerrain::Update(_float fTimeDelta)
     prevF2State = currF2State;
 
     OffAllChunkLayer();
-    GetPlayerChunk();
+    GetPlayerChunk3x3();
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
@@ -123,59 +124,131 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
     BLOCKDESC eblockData;
     int index = 0;
 
-    vector<D3DXVECTOR3> stoneVec;
-    vector<D3DXVECTOR3> dirtVec;
-    vector<D3DXVECTOR3> grassVec;
-    vector<D3DXVECTOR3> ironVec;
-    vector<D3DXVECTOR3> coalVec;
-
     while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
     {
         CBreakableCube* pCube = nullptr;
-
+        CTree::DESC desc = {};
+        int percent = 999;
         EnterCriticalSection(&cs);  // 동기화 시작
         switch (eblockData.eBlockType)
         {
         case GRASSDIRT:
-            grassVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            
+            percent= rand() % 100;
+            if (percent < 1) {
+                int randWood = rand() % 3 + 4;
+                int ranLeaf = rand() % 8 + 4;
+
+                desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y+0.5, eblockData.fPosition.z),0 };
+                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"),LEVEL_YU, layerName, &desc)))
+                    return E_FAIL;
+                index++;
+            }
             break;
         case DIRT:
-            dirtVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
             break;
         case STONE:
-            stoneVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
             break;
         case IRONORE:
-            ironVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
             break;
         case COALORE:
-            coalVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
             break;
         default:
             break;
         }
+
         LeaveCriticalSection(&cs);  // 동기화 종료
     }
     CloseHandle(hFile);
 
+    //vector<D3DXVECTOR3> stoneVec;
+    //vector<D3DXVECTOR3> dirtVec;
+    //vector<D3DXVECTOR3> grassVec;
+    //vector<D3DXVECTOR3> ironVec;
+    //vector<D3DXVECTOR3> coalVec;
 
-    EnterCriticalSection(&cs);
-    vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
-        {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
-        {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
-        {TEXT("Prototype_GameObject_Stone"), &stoneVec},
-        {TEXT("Prototype_GameObject_IronOre"), &ironVec},
-        {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
-    };
+    //while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
+    //{
+    //    CBreakableCube* pCube = nullptr;
 
-    for (size_t i = 0; i < blockTypes.size(); ++i)
-    {
-        pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
-        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
-        if (pCube)
-            pCube->Set_InstanceBuffer(*(blockTypes[i].second));
-    }
-    LeaveCriticalSection(&cs);
+    //    EnterCriticalSection(&cs);  // 동기화 시작
+    //    switch (eblockData.eBlockType)
+    //    {
+    //    case GRASSDIRT:
+    //        grassVec.push_back(eblockData.fPosition);
+    //        break;
+    //    case DIRT:
+    //        dirtVec.push_back(eblockData.fPosition);
+    //        break;
+    //    case STONE:
+    //        stoneVec.push_back(eblockData.fPosition);
+    //        break;
+    //    case IRONORE:
+    //        ironVec.push_back(eblockData.fPosition);
+    //        break;
+    //    case COALORE:
+    //        coalVec.push_back(eblockData.fPosition);
+    //        break;
+    //    default:
+    //        break;
+    //    }
+    //    LeaveCriticalSection(&cs);  // 동기화 종료
+    //}
+    //CloseHandle(hFile);
+
+
+    //EnterCriticalSection(&cs);
+    //vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
+    //    {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
+    //    {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
+    //    {TEXT("Prototype_GameObject_Stone"), &stoneVec},
+    //    {TEXT("Prototype_GameObject_IronOre"), &ironVec},
+    //    {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
+    //};
+
+    //for (size_t i = 0; i < blockTypes.size(); ++i)
+    //{
+    //    pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
+    //    CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
+    //    if (pCube)
+    //        pCube->Set_InstanceBuffer(*(blockTypes[i].second));
+    //}
+    //LeaveCriticalSection(&cs);
 
     return 0;
 }
@@ -310,7 +383,7 @@ void CMCTerrain::OffAllChunkLayer()
     }
 }
 
-void CMCTerrain::GetPlayerChunk()
+void CMCTerrain::GetPlayerChunk3x3()
 {
     // 플레이어 위치 가져오기
     auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
@@ -355,6 +428,25 @@ void CMCTerrain::GetPlayerChunk()
         swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) + 1);
         m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
     }
+}
+
+void CMCTerrain::GetPlayerChunk()
+{
+    // 플레이어 위치 가져오기
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return;
+
+    _float3 playerPos = pSteve->GetPos();
+
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    int chunk = x + (width * z);
+
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
 }
 
 
