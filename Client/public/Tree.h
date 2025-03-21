@@ -1,6 +1,7 @@
 #pragma once
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "BreakableCube.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -38,6 +39,9 @@ private:
 	int m_iHeight = {};
 	int m_iAddLeaf = {};
 	int m_iTreeIndex = {};
+
+	vector<CBreakableCube*> m_vecWood;
+	vector<CBreakableCube*> m_vecLeaf;
 
 	_float3 m_Pos = {};
 

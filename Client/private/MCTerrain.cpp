@@ -4,6 +4,7 @@
 #include "CoalOre.h"
 
 #include "Steve.h"
+#include "Tree.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -53,7 +54,7 @@ void CMCTerrain::Update(_float fTimeDelta)
     prevF2State = currF2State;
 
     OffAllChunkLayer();
-    GetPlayerChunk();
+    GetPlayerChunk3x3();
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
@@ -126,7 +127,8 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
     while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
     {
         CBreakableCube* pCube = nullptr;
-
+        CTree::DESC desc = {};
+        int percent = 999;
         EnterCriticalSection(&cs);  // 동기화 시작
         switch (eblockData.eBlockType)
         {
@@ -138,6 +140,17 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
                 pCube->SetPos(_float3(eblockData.fPosition));
             }
             index++;
+            
+            percent= rand() % 100;
+            if (percent < 1) {
+                int randWood = rand() % 3 + 4;
+                int ranLeaf = rand() % 8 + 4;
+
+                desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y+0.5, eblockData.fPosition.z),0 };
+                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"),LEVEL_YU, layerName, &desc)))
+                    return E_FAIL;
+                index++;
+            }
             break;
         case DIRT:
             if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, layerName)))
