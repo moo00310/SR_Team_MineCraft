@@ -412,7 +412,6 @@
       <Filter>02.GameObjects\Particle</Filter>
      </ClInclude>
     <ClInclude Include="..\public\TestParticle.h" />
-    </ClInclude>
     <ClInclude Include="..\public\Inventory.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
     </ClInclude>
