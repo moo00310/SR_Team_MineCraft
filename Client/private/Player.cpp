@@ -18,7 +18,7 @@ HRESULT CPlayer::Initialize_Prototype()
 }
 
 HRESULT CPlayer::Initialize(void* pArg)
-{
+{		
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
 		LEVEL_HYEOK, TEXT("Layer_ParticleDash"))))
 		return E_FAIL;
