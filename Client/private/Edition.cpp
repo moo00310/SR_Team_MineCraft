@@ -48,7 +48,7 @@ void CEdition::Update(_float fTimeDelta)
 
 void CEdition::Late_Update(_float fTimeDelta)
 {
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
@@ -87,7 +87,7 @@ HRESULT CEdition::Ready_Components()
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
 
-    return S_OK;
+    return S_OK;   
 }
 
 CEdition* CEdition::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

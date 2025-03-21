@@ -1,65 +1,57 @@
-#include "StartButton.h"
+#include "Inventory.h"
 
-CStartButton::CStartButton(LPDIRECT3DDEVICE9 pGraphic_Device)
+CInventory::CInventory(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
 {
 }
 
-CStartButton::CStartButton(CStartButton& Prototype)
+CInventory::CInventory(CInventory& Prototype)
     : CUIObject( Prototype )
 {
 }
 
-HRESULT CStartButton::Initialize_Prototype()
+HRESULT CInventory::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CStartButton::Initialize(void* pArg)
+HRESULT CInventory::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = 450;
-    Desc.fSizeY = 100;
+    Desc.fSizeX = 600;
+    Desc.fSizeY = 150;
     Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = g_iWinSizeY * 0.5f;
+    Desc.fY = g_iWinSizeY;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
-    
- 	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
 
+    m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
 
     return S_OK;
 }
 
-void CStartButton::Priority_Update(_float fTimeDelta)
+void CInventory::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CStartButton::Update(_float fTimeDelta)
+void CInventory::Update(_float fTimeDelta)
 {
-    if (GetKeyState(VK_LBUTTON) & 0x8000)
-    {
-        if (true == __super::isPick(g_hWnd))
-            g_bChangeLevel = true;
-    }
 }
 
-void CStartButton::Late_Update(_float fTimeDelta)
+void CInventory::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
-HRESULT CStartButton::Render()
+HRESULT CInventory::Render()
 {
-    //m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
-
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
@@ -76,12 +68,12 @@ HRESULT CStartButton::Render()
 
     __super::End();
 
-    return S_OK;
+    return S_OK; 
 }
 
-HRESULT CStartButton::Ready_Components()
+HRESULT CInventory::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_WOO, TEXT("Prototype_Component_Texture_StartButton"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -93,38 +85,36 @@ HRESULT CStartButton::Ready_Components()
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
 
-        return S_OK;
+    return S_OK;
 }
 
-CStartButton* CStartButton::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CStartButton* pInstance = new CStartButton(pGraphic_Device);
+    CInventory* pInstance = new CInventory(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CStartButton");
+        MSG_BOX("Failed to Created : CInventory");
         Safe_Release(pInstance);
     }
     return pInstance;
-
 }
 
-CGameObject* CStartButton::Clone(void* pArg)
+CGameObject* CInventory::Clone(void* pArg)
 {
-    CStartButton* pInstance = new CStartButton(*this);
+    CInventory* pInstance = new CInventory(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CStartButton");
+        MSG_BOX("Failed to Created : CInventory");
         Safe_Release(pInstance);
     }
     return pInstance;
 }
 
-void CStartButton::Free()
+void CInventory::Free()
 {
     __super::Free();
-
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pTransformCom);
