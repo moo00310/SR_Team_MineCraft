@@ -86,6 +86,16 @@ void CGameObject::Destroy()
 	m_isDestroyed = true;
 }
 
+void CGameObject::SetActive(_bool isActive)
+{
+	m_isActive = isActive;
+}
+
+_bool CGameObject::GetActive() const
+{
+	return m_isActive;
+}
+
 void CGameObject::Free()
 {
 	__super::Free();

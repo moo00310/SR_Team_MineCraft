@@ -42,6 +42,7 @@
 #include "ParticleDash.h"
 #include "ParticleSandMining.h"
 #include "ParticleWoodMining.h"
+#include "ParticleSandDestroy.h"
 
 //Woo
 #include "MainLogo.h"
@@ -722,6 +723,10 @@ HRESULT CLoader::Loading_For_HECKPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleWoodMining"),
 		CParticleWoodMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandDestroy"),
+		CParticleSandDestroy::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
