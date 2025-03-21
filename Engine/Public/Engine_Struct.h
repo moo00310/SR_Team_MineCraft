@@ -52,7 +52,7 @@ namespace Engine
 	typedef struct tagParticleAttribute
 	{
 		// 파티클 포지션.
-		_float3 vPosition;
+		_float3 vPosition;		
 
 		// 파티클 속도.
 		_float3 vVelocity;		
@@ -70,7 +70,19 @@ namespace Engine
 		float fEndTime;
 
 		// 파티클 타이머 활성화.
-		bool IsTime = false;		
+		bool IsTime = false;
+
+		// 파티클 중력 적용 활성화.
+		bool IsGravity = false;
+
+		// 시간.
+		float fGravityTime;
+
+		// 파티클 생성 시 첫 점프력.
+		float fGravityJumpPower;
+
+		// 중력 가속도.
+		float fGravity;
 	}ParticleAttribute;
 
 	// 파티클 경계선.
@@ -121,9 +133,10 @@ namespace Engine
 	typedef struct tagbone
 	{
 		const char* name;
-		int index;
 		int parent;
-		Matrix transform;
+		Matrix localTransform; 
+		Matrix worldTransform;
+		Matrix Correction;
 	}BONE;
 
 #pragma region Ray_Cast
@@ -135,11 +148,31 @@ namespace Engine
 #pragma endregion
 
 #pragma region Anime_Keyfream
-	typedef struct tagKeyframe
+	struct KEYFREAME
 	{
-		float fTime;    // 키프레임의 시간 (초 단위)
-		D3DXMATRIX matTransform; // 키프레임에서의 변환 행렬
-	}KEYFREAME;
+		float fTime;
+		D3DXMATRIX matTransform;
+
+		// 기본 생성자
+		KEYFREAME()
+			: fTime(0.0f)
+		{
+			D3DXMatrixIdentity(&matTransform);
+		}
+
+		// 사용자 정의 생성자
+		KEYFREAME(float time, const D3DXMATRIX& transform)
+			: fTime(time), matTransform(transform) {
+		}
+
+		// 복사 생성자 (vector 복사 지원)
+		KEYFREAME(const KEYFREAME&) = default;
+		KEYFREAME& operator=(const KEYFREAME&) = default;
+
+		// 이동 생성자 (vector 이동 지원)
+		KEYFREAME(KEYFREAME&&) noexcept = default;
+		KEYFREAME& operator=(KEYFREAME&&) noexcept = default;
+	};
 #pragma endregion
 }
 

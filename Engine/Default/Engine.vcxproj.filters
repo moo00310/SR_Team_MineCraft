@@ -112,12 +112,15 @@
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Rect_Normal.h">
       <Filter>04.Components\VIBuffer\Rect</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Rigidbody.h">
       <Filter>04.Components\Rigidbody</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_CubeInstance.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SkeletalAnimator.h">
+      <Filter>04.Components\SkeletalAnimator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +220,9 @@
     <Filter Include="04.Components\Rigidbody">
       <UniqueIdentifier>{f26046cc-7ed5-42d5-9511-811287ce1fc0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Components\SkeletalAnimator">
+      <UniqueIdentifier>{8676614a-8bc5-44bf-8b5b-9b5ca80ec73d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -311,6 +317,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_CubeInstance.cpp">
       <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\SkeletalAnimator.cpp">
+      <Filter>04.Components\SkeletalAnimator</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

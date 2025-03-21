@@ -156,9 +156,14 @@
     <ClInclude Include="..\public\BackGround.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
+    <ClInclude Include="..\public\BTDecorator_IsTargetNear.h" />
+    <ClInclude Include="..\public\BTTask_Chase.h" />
+    <ClInclude Include="..\public\BTTask_DetectEnemy.h" />
+    <ClInclude Include="..\public\BTTask_Patrol.h" />
     <ClInclude Include="..\public\Camera_Player.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\Chase_Enemy_Node.h" />
+    <ClInclude Include="..\public\CheckBox.h" />
     <ClInclude Include="..\public\Check_Enemy_Node.h" />
     <ClInclude Include="..\public\Client_Struct.h" />
     <ClInclude Include="..\public\CoalOre.h" />
@@ -172,6 +177,7 @@
     <ClInclude Include="..\public\Dirt.h" />
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
     <ClInclude Include="..\public\HyockCube.h" />
+    <ClInclude Include="..\public\Inventory.h" />
     <ClInclude Include="..\public\IronOre.h" />
     <ClInclude Include="..\public\Item_Model.h" />
     <ClInclude Include="..\public\Leaf.h" />
@@ -189,8 +195,12 @@
     <ClInclude Include="..\public\Loader.h" />
     <ClInclude Include="..\public\MapTool.h" />
     <ClInclude Include="..\public\MCTerrain.h" />
+    <ClInclude Include="..\public\Monster.h" />
     <ClInclude Include="..\public\ParticleDash.h" />
+    <ClInclude Include="..\public\BaseParticleMining.h" />
     <ClInclude Include="..\public\ParticleRain.h" />
+    <ClInclude Include="..\public\ParticleSandMining.h" />
+    <ClInclude Include="..\public\ParticleWoodMining.h" />
     <ClInclude Include="..\public\Patrol_Node.h" />
     <ClInclude Include="..\public\Player.h" />
     <ClInclude Include="..\public\SkyBox.h" />
@@ -199,9 +209,7 @@
     <ClInclude Include="..\public\Stone.h" />
     <ClInclude Include="..\public\Sword.h" />
     <ClInclude Include="..\public\Terrain.h" />
-    <ClInclude Include="..\public\TestParticle.h" />
     <ClInclude Include="..\public\Title.h" />
-
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\Wood.h" />
@@ -223,9 +231,14 @@
     <ClCompile Include="..\Private\BackGround.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
+    <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp" />
+    <ClCompile Include="..\private\BTTask_Chase.cpp" />
+    <ClCompile Include="..\private\BTTask_DetectEnemy.cpp" />
+    <ClCompile Include="..\private\BTTask_Patrol.cpp" />
     <ClCompile Include="..\private\Camera_Player.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Chase_Enemy_Node.cpp" />
+    <ClCompile Include="..\private\CheckBox.cpp" />
     <ClCompile Include="..\private\Check_Enemy_Node.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
@@ -236,6 +249,7 @@
     <ClCompile Include="..\private\Dirt.cpp" />
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
     <ClCompile Include="..\private\HyockCube.cpp" />
+    <ClCompile Include="..\private\Inventory.cpp" />
     <ClCompile Include="..\private\IronOre.cpp" />
     <ClCompile Include="..\private\Item_Model.cpp" />
     <ClCompile Include="..\private\Leaf.cpp" />
@@ -253,8 +267,12 @@
     <ClCompile Include="..\private\Loader.cpp" />
     <ClCompile Include="..\private\MapTool.cpp" />
     <ClCompile Include="..\private\MCTerrain.cpp" />
+    <ClCompile Include="..\private\Monster.cpp" />
     <ClCompile Include="..\private\ParticleDash.cpp" />
+    <ClCompile Include="..\private\BaseParticleMining.cpp" />
     <ClCompile Include="..\private\ParticleRain.cpp" />
+    <ClCompile Include="..\private\ParticleSandMining.cpp" />
+    <ClCompile Include="..\private\ParticleWoodMining.cpp" />
     <ClCompile Include="..\private\Patrol_Node.cpp" />
     <ClCompile Include="..\private\Player.cpp" />
     <ClCompile Include="..\private\SkyBox.cpp" />
@@ -263,7 +281,6 @@
     <ClCompile Include="..\private\Stone.cpp" />
     <ClCompile Include="..\private\Sword.cpp" />
     <ClCompile Include="..\private\Terrain.cpp" />
-
     <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\Title.cpp" />
     <ClCompile Include="..\private\Tool.cpp" />

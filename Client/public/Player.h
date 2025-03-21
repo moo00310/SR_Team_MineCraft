@@ -31,7 +31,10 @@ private:
 	CTexture*				m_pTextureCom = { nullptr };
 	CTransform*				m_pTransformCom = { nullptr };
 	CVIBuffer_Rect*			m_pVIBufferCom = { nullptr };
-	CGameObject*			m_pParticleDash = { nullptr };
+	
+	CParticleSystem*			m_pParticleDash = { nullptr };
+	CParticleSystem*			m_pParticleSandMining = { nullptr };
+	CParticleSystem*			m_pParticleWoodMining = { nullptr };
 
 private:
 	HRESULT SetUp_RenderState();

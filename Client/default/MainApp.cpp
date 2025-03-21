@@ -263,14 +263,19 @@ HRESULT CMainApp::Ready_Component()
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
-	/* Prototype_Component_CCollider_Cube */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+	/* Prototype_Component_Collider_Cube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
 		CCollider_Cube::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Rigidbody */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
 		CRigidbody::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_SkeletalAnimator */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
+		CSkeletalAnimator::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	//  노말이 들어간 렉트

@@ -149,11 +149,13 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 	{
 		*ppGameObject = nullptr;
 	}
+	_float3 vNormalRayDir;
+	D3DXVec3Normalize(&vNormalRayDir, &rayDir);
 
 	for (auto& iter : m_pGameObjects[eGroup])
 	{
 		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
-		CCollider_Cube::COLLRECTDESC& CubeDesc = pOtherCollider->Get_Desc();
+		CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
 		const _float4x4* pWorldMatrix = CubeDesc.pTransformCom->Get_WorldMatrix();
 		const _float3 halfSize = { CubeDesc.fRadiusX, CubeDesc.fRadiusY, CubeDesc.fRadiusZ };
 
@@ -177,7 +179,7 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 		{
 			_float3 lValue = obbCenter - rayOrigin;
 			_float e = D3DXVec3Dot(&axes[i], &lValue);
-			_float f = D3DXVec3Dot(&axes[i], &rayDir);
+			_float f = D3DXVec3Dot(&axes[i], &vNormalRayDir);
 
 			if (fabs(f) > 1e-6f)  // 레이가 해당 축과 평행하지 않은 경우
 			{
@@ -208,7 +210,7 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 		// 현재 OBB와 충돌한 경우 거리 제한 추가
 		if (hit && fDist <= maxDistance)
 		{
-			m_pLineManager->Add_Line(rayOrigin, rayDir, maxDistance, true);
+			m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, maxDistance, true);
 
 			if (ppGameObject)
 			{
@@ -218,7 +220,7 @@ _bool CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDi
 			return true;
 		}
 	}
-	m_pLineManager->Add_Line(rayOrigin, rayDir, maxDistance, false);
+	m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, maxDistance, false);
 	return false;
 }
 

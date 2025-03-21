@@ -39,6 +39,8 @@ private:
     E_CAMERA_MODE       m_eCameraMode = E_CAMERA_MODE::TPS; // ±âº»°ª TPS
 
 private:
+    void    Input_Key(_float fTimeDelta);
+private:
     HRESULT Ready_Components();
 
 public:

@@ -40,8 +40,9 @@ HRESULT CSteve::Initialize(void* pArg)
 void CSteve::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
-	Move(fTimeDelta);
-	Turn(fTimeDelta);
+
+	Input_Key(fTimeDelta);
+
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
@@ -52,16 +53,25 @@ void CSteve::Update(_float fTimeDelta)
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
+
+	//CGameObject* pGameObject;
+	//_float fDist;
+	//m_pGameInstance->Ray_Cast
+	//(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+	//	m_pTransformCom->Get_State(CTransform::STATE_LOOK),
+	//	10.f,
+	//	COLLISION_PLAYER,
+	//	fDist,
+	//	&pGameObject
+	//);
 }
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
 	// 본의 매트릭스를 현재 트랜스폼으로 업데이트
-	vecBones[0].transform = *(m_pTransformCom->Get_WorldMatrix());
+	//[0].transform = *(m_pTransformCom->Get_WorldMatrix());
 
-	// 본이 적용된 매쉬 업데이트
-	Ready_Mesh();
-
+	UpdateBoneTransforms(0, *(m_pTransformCom->Get_WorldMatrix()));
 
 	if (m_pGameInstance->Key_Down(VK_F5))
 	{
@@ -81,8 +91,6 @@ HRESULT CSteve::Render()
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
-	/*if (FAILED(m_pTransformCom->Bind_Resource()))
-		return E_FAIL;*/
 	for (int i = 0; i < 6; i++)
 	{
 		if (FAILED(m_pVIBufferCom[i]->Bind_WorldMatrix()))
@@ -112,22 +120,17 @@ _float3 CSteve::GetPos()
 	return m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 }
 
+void CSteve::Input_Key(_float fTimeDelta)
+{
+	Move(fTimeDelta);
+	Turn(fTimeDelta);
+}
+
 void CSteve::Move(_float fTimeDelta)
 {
 	if (m_pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
-
-		if (Comput > 20)
-			flag *= -1;
-		if (Comput < -20)
-			flag *= -1;
-
-		vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
-		vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
-		vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-1.5f * flag));
-		vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(1.5f * flag));
-		Comput += 1.5f * flag;
 	}
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
@@ -221,15 +224,14 @@ HRESULT CSteve::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
+	// 몸통
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
+		TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[0]))))
+		return E_FAIL;
 
 	// 머리
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
-		TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[0]))))
-		return E_FAIL;
-	
-	// 몸통
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
-		TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[1]))))
+		TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[1]))))
 		return E_FAIL;
 
 	// 다리
@@ -249,18 +251,26 @@ HRESULT CSteve::Ready_Components()
 		return E_FAIL;
 
 
+	//// 본 + 애니메이션
+	//CSkeletalAnimator::DESC DescSekel = { 6, m_pVIBufferCom[0]};
+	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
+	//	TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
+	//	return E_FAIL;
+	//
+
 	if (FAILED(Ready_Bone()))
 		return E_FAIL;
-	if (FAILED(Ready_Mesh()))
-		return E_FAIL;
+	//if (FAILED(Ready_Mesh()))
+		//return E_FAIL;
+
 
 	//콜라이더
 	/* For.Com_Collider */
-	CCollider_Cube::COLLRECTDESC Desc{}; //콜라이더 크기 설정
+	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
 	Desc.fRadiusX = 0.5f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 0.5;
 	Desc.fOffSetY = 1.f;
 	Desc.pTransformCom = m_pTransformCom;
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_CCollider_Cube"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
 		return E_FAIL;
 
@@ -277,13 +287,13 @@ HRESULT CSteve::Ready_Bone()
 {
 	BONE bone[7] =
 	{
-		 { "Root"   ,0, -1,  MAtrixTranslation(0.f,              0.f,					0.f) },
-		 { "Pelvis" ,1,  0,  MAtrixTranslation(0.f,              12.f / 16.f,			0.f) },
-		 { "Neck"   ,2,  1,  MAtrixTranslation(0.f,              12.f / 16.f,			0.f) },
-		 { "Leg_R"	,3,  1,  MAtrixTranslation(2.f / 16.f,		  0,					0.f) },
-		 { "Leg_L"  ,4,  1,  MAtrixTranslation(-2.f / 16.f,       0,					0.f) },
-		 { "Arm_R"  ,5,  1,  MAtrixTranslation(6.f / 16.f,        12.f / 16.f,			0.f) },
-		 { "Arm_L"  ,6,  1,  MAtrixTranslation(-6.f / 16,         12.f / 16.f,			0.f) },
+		 { "Root"  , -1,  MAtrixTranslation(0.f,              0.f,					0.f), Matrix(), Matrix() },  // root
+		 { "Pelvis",  0,  MAtrixTranslation(0.f,              12.f / 16.f,			0.f), Matrix(), MAtrixTranslation(0, 6.f / 16.f, 0.f)},
+		 { "Neck"  ,  1,  MAtrixTranslation(0.f,              12.f / 16.f,			0.f), Matrix(), MAtrixTranslation(0, 4.f / 16.f, 0.f)},
+		 { "Leg_R",  1,	  MAtrixTranslation(2.f / 16.f,		  0,					0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,       0,					0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,        12.f / 16.f,			0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16,         12.f / 16.f,			0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 	};
 
 	for (int i = 0; i < 7; i++)
@@ -294,33 +304,31 @@ HRESULT CSteve::Ready_Bone()
 	return S_OK;
 }
 
-HRESULT CSteve::Ready_Mesh()
+void CSteve::UpdateBoneTransforms(int boneIndex, Matrix parentTransform)
 {
-	Matrix temp = {};
+	// 현재 bone의 변환을 부모 변환과 곱하기
+	vecBones[boneIndex].worldTransform = vecBones[boneIndex].localTransform * parentTransform;
 
-	// 머리
-	temp = MAtrixTranslation(0, 4.f / 16.f, 0.f) * vecBones[2].transform * vecBones[1].transform * vecBones[0].transform;
-	m_pVIBufferCom[0]->SetMatrix(temp);
+	// 모든 자식 bone에 대해 재귀적으로 업데이트
+	for (int i = 0; i < 7; i++)
+	{
+		if (vecBones[i].parent == boneIndex)
+		{
+			UpdateBoneTransforms(i, vecBones[boneIndex].worldTransform);
+		}
+	}
 
-	// 몸통
-	temp = MAtrixTranslation(0, 6.f / 16.f, 0.f) * vecBones[1].transform * vecBones[0].transform;
-	m_pVIBufferCom[1]->SetMatrix(temp);
+	Update_Mesh();
+}
 
-	// 다리
-	temp = MAtrixTranslation(0, -6.f / 16.f, 0.f) * vecBones[3].transform * vecBones[1].transform * vecBones[0].transform;
-	m_pVIBufferCom[2]->SetMatrix(temp);
 
-	temp = MAtrixTranslation(0, -6.f / 16.f, 0.f) * vecBones[4].transform * vecBones[1].transform * vecBones[0].transform;
-	m_pVIBufferCom[3]->SetMatrix(temp);
 
-	// 팔
-	temp = MAtrixTranslation(0, -6.f / 16.f, 0.f) * vecBones[5].transform * vecBones[1].transform * vecBones[0].transform;
-	m_pVIBufferCom[4]->SetMatrix(temp);
-
-	temp = MAtrixTranslation(0, -6.f / 16.f, 0.f) * vecBones[6].transform * vecBones[1].transform * vecBones[0].transform;
-	m_pVIBufferCom[5]->SetMatrix(temp);
-
-	return S_OK;
+void CSteve::Update_Mesh()
+{
+	for (int i = 0; i < 6; i++)
+	{
+		m_pVIBufferCom[i]->SetMatrix(vecBones[i + 1].Correction * vecBones[i + 1].worldTransform);
+	}
 }
 
 
@@ -358,11 +366,13 @@ void CSteve::Free()
 	Safe_Release(m_pCollider_CubeCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
-
+	
+	//Safe_Release(m_skelAnime);
 	for (int i = 0; i < 6; i++)
 	{
 		Safe_Release(m_pVIBufferCom[i]);
 	}
 
+	
 }
 

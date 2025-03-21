@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CTexture;
 class CTransform;
 class CVIBuffer_Cube;
+class CSkeletalAnimator;
 END
 
 class CSteve : public CGameObject
@@ -31,25 +32,24 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
 	CVIBuffer_Cube* m_pVIBufferCom[6];
+
 	vector<BONE> vecBones;
 	CCollider_Cube* m_pCollider_CubeCom{ nullptr };
 	CRigidbody*		m_pRigidbodyCom{ nullptr };
+	//CSkeletalAnimator* m_skelAnime = { nullptr };
 
 	_float              m_fMouseSensor = { 0.03f };
-	float Comput = {};
-	int  flag = { 1 };
 	int m_bisTPS = { 1 };
 
-	// 바뀌면 스티브 클래스 내에서도 모델링 바꾸려고 해요
-	// 1인칭일떄 팔보여주고
-	// 3인칭일때 모델 보여주려고
 private:
+	void	Input_Key(_float fTimeDelta);
 	void	Move(_float fTimeDelta);
 	void	Turn(_float fTimeDelta);
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone();
-	HRESULT Ready_Mesh();
+	void UpdateBoneTransforms(int boneIndex, Matrix parentTransform);
+	void Update_Mesh();
 
 
 public:

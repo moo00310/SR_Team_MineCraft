@@ -26,12 +26,19 @@ public:
 	class CComponent* Find_Component(const _tchar* pComponentTag);
 	class CGameInstance* Get_GameInstance();
 
+public:
+	_bool	Get_isDestroy();
+	void	Destroy();
+
 protected:
 	LPDIRECT3DDEVICE9				m_pGraphic_Device = { nullptr };
 	class CGameInstance*			m_pGameInstance = { nullptr };
 
 protected:
 	map<const _wstring, class CComponent*>	m_Components;
+
+private:
+	_bool	m_isDestroyed{ false };
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);

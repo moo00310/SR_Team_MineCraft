@@ -16,15 +16,14 @@ HRESULT CLevel_Moo::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
-
 	/*if (FAILED(Ready_Layer_Creeper(TEXT("Layer_Creeper"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Layer_Tree(TEXT("Layer_Trees"))))
-		return E_FAIL; 
+	//if (FAILED(Ready_Layer_Tree(TEXT("Layer_Trees"))))
+	//	return E_FAIL; 
 
 	//임무결 1인칭 확인용
 	if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))

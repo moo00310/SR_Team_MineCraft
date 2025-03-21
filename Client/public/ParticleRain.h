@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 
 // 비 파티클.
-class CParticleRain : public CParticleSystem
+class CParticleRain final : public CParticleSystem
 {
 private:
 	CParticleRain(LPDIRECT3DDEVICE9 pGraphic_Device);
