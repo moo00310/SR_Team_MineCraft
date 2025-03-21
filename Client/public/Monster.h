@@ -21,7 +21,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	CGameObject*&			Get_Target();
+	CGameObject*			Get_Target();
 	void					Set_Target(CGameObject* pGameObject);
 	CTransform*				Get_Transform();
 

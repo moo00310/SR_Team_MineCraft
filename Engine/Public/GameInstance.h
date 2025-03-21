@@ -62,9 +62,7 @@ public:
 	_bool Collision_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir = nullptr);
 
 	//레이케스트
-	//_bool Ray_Cast(const _float4x4* matWorld, _float3 vOrigin, _float3 vDir, _float fLength, CCollider_Manager::COLLISION_GROUP eGroup);
-
-	_bool Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint iGroup, _Out_ _float& fDist, _Out_ CGameObject** ppGameObject = nullptr);
+	CGameObject* Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist);
 #pragma endregion
 
 #pragma region KEY_MANAGER

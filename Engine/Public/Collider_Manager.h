@@ -24,13 +24,12 @@ public:
 	_bool Collision_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir = nullptr);
 	_bool Collision_Check_Group_Multi(_uint iGroupIndex, vector<class CGameObject*>& vecDamagedObj, class CGameObject* pDamageCauser, COLLISION_TYPE eCollisionType);
 
-	_bool Ray_Cast(
+	CGameObject* Ray_Cast(
 		const _float3& rayOrigin,					//레이 시작점
 		const _float3& rayDir,						//레이 방향
 		_float fMaxDistanc,							//최대 충돌 범위
 		_uint iGroupIndex,							//충돌 할 그룹
-		_Out_ _float& fDist,						//충돌 지점과의 거리
-		_Out_ CGameObject** ppGameObject = nullptr	//충돌한 오브젝트
+		_Out_ _float& fDist						//충돌 지점과의 거리
 	);
 
 	void  Render();

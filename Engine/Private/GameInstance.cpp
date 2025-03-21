@@ -202,18 +202,14 @@ _bool CGameInstance::Collision_with_Group(_uint eGroup, CComponent* pCollider, C
 	return m_pCollider_Manager->Collision_with_Group(eGroup, pCollider, eType, pOutDistance, pOutDir);
 }
 
-_bool CGameInstance::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint iGroup, _Out_ _float& fDist, _Out_ CGameObject** ppGameObject)
+CGameObject* CGameInstance::Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist)
 {
 	fDist = 0.f;
-	if (ppGameObject)
-	{
-		*ppGameObject = nullptr;
-	}
 
 	if (nullptr == m_pCollider_Manager)
-		return false;
+		return nullptr;
 
-	return m_pCollider_Manager->Ray_Cast(rayOrigin, rayDir, maxDistance, iGroup, fDist, ppGameObject);
+	return m_pCollider_Manager->Ray_Cast(vRayOrigin, vRayDir, fMaxDistance, iGroup, fDist);
 }
 #pragma endregion
 

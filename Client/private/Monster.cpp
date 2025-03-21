@@ -54,7 +54,7 @@ HRESULT CMonster::Render()
 //	return nullptr;
 //}
 
-CGameObject*& CMonster::Get_Target()
+CGameObject* CMonster::Get_Target()
 {
 	return m_pTarget;
 }

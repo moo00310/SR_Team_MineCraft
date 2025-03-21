@@ -146,20 +146,18 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     if (m_pGameInstance->Key_Down(VK_LBUTTON))
     {
         _float fDist;
-        CGameObject* pGameObject;
-        _bool isHit;
+        CGameObject* pHitObject;
 
-        isHit =  m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+        pHitObject =  m_pGameInstance->Ray_Cast(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
             m_pTransformCom->Get_State(CTransform::STATE_LOOK),
             5.f,
             COLLISION_BLOCK,
-            fDist,
-            &pGameObject);
+            fDist);
 
-        if (isHit)
+        if (pHitObject)
         {
-            if (pGameObject)
-                pGameObject->Destroy();
+            if (pHitObject)
+                pHitObject->Destroy();
         }
 
     }
