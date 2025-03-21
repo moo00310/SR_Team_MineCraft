@@ -19,17 +19,13 @@ HRESULT CSkeletalAnimator::Initialize_Prototype()
 HRESULT CSkeletalAnimator::Initialize(void* pArg)
 {
     DESC Desc = { *static_cast<DESC*>(pArg) };
-    m_imeshCount = Desc.iCount;
-#pragma push_macro("new")
-#undef new
-    void* rawMemory = operator new(sizeof(CVIBuffer_Cube) * Desc.iCount);
-    CVIBuffer_Cube* m_pVIBufferComs = static_cast<CVIBuffer_Cube*>(rawMemory);
 
-    if (m_pVIBufferComs == nullptr) return E_FAIL;
-
-    memcpy(m_pVIBufferComs, Desc.Cubes, Desc.iCount * sizeof(CVIBuffer_Cube));
-#pragma pop_macro("new")
-
+    for (int i = 0; i < Desc.Cubes.size(); ++i)
+    {
+        m_pVIBufferComs.push_back(Desc.Cubes[i]);
+        if (m_pVIBufferComs[i])
+            m_pVIBufferComs[i]->AddRef();
+    }
 
     return S_OK;
 }
@@ -51,7 +47,7 @@ void CSkeletalAnimator::Add_Animation(_int _type, const KEYFREAME& keyframe)
 
 HRESULT CSkeletalAnimator::Update_Bone(int boneIndex, const Matrix& parentTransform)
 {
-    // 현재 bone의 변환을 부모 변환과 곱하기
+    // 본의 최종 월드 행렬 = 현재 본의 로컬 행렬 × 부모의 월드 행렬
     vecBones[boneIndex].worldTransform = vecBones[boneIndex].localTransform * parentTransform;
 
     // 모든 자식 bone에 대해 재귀적으로 업데이트
@@ -70,17 +66,55 @@ HRESULT CSkeletalAnimator::Update_Bone(int boneIndex, const Matrix& parentTransf
 
 void CSkeletalAnimator::Update_Mesh()
 {
+    // 최종적으로 본의 위치와 매시의 중심을 보정 해준다.
     for (int i = 0; i < 6; i++)
     {
-        m_pVIBufferComs[i].SetMatrix(vecBones[i + 1].Correction * vecBones[i + 1].worldTransform);
+        m_pVIBufferComs[i]->SetMatrix(vecBones[i + 1].Correction * vecBones[i + 1].worldTransform);
     }
 }
 
-HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int boneIndex)
+HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int boneIndex , const Matrix& pWorldTransform)
 {
+    if (m_blendState.isBlending)
+    {
+        m_blendState.currentTime += fTimeDelta;
+        float blendT = m_blendState.currentTime / m_blendState.blendDuration;
+        if (blendT > 1.f)  blendT = 1.f;
+        else if(blendT < 0.f)  blendT = 0.f;
+       
+        // 현재 애니메이션 결과
+        Matrix fromMat = CalcCurrentMatrix(m_blendState.fromAnim, boneIndex);
+
+        // 다음 애니메이션 첫 프레임 또는 현재 시간 보간
+        Matrix toMat = CalcCurrentMatrix(m_blendState.toAnim, boneIndex);
+
+        // 보간해서 최종 행렬 만들기
+        Matrix blended = InterpolateMatrix_Quat(fromMat, toMat, blendT);
+        vecBones[boneIndex].localTransform = blended * vecBones[boneIndex].baseTransform;
+
+        if (blendT >= 1.f)
+        {
+            // 블렌딩 완료 → 다음 애니메이션으로 전환
+            m_blendState.isBlending = false;
+            m_CurrentAnim = m_blendState.toAnim;
+            fElapsedTime = 0.f;
+        }
+
+        return S_OK;
+    }
+
+    fElapsedTime += fTimeDelta;
+
     if (fElapsedTime >= m_Animations[_type].back().fTime)
     {
         fElapsedTime = 0.0f;  // 처음부터 재생
+    }
+
+    if (m_Animations[_type].size() < 2)
+    {
+        // 단일 키프레임만 있을 경우 그냥 그거 하나 적용
+        vecBones[boneIndex].localTransform = m_Animations[_type][0].matTransform * vecBones[boneIndex].baseTransform;
+        return S_OK;
     }
 
     // 키프레임 찾기
@@ -97,13 +131,23 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
 
     // 보간 비율 계산 (0~1 사이 값)
     float t = (fElapsedTime - key1.fTime) / (key2.fTime - key1.fTime);
-    // 행렬 보간
-    D3DXMATRIX interpolatedMatrix = InterpolateMatrix(key1.matTransform, key2.matTransform, t);
 
-    Update_Bone(boneIndex,interpolatedMatrix);
+    Matrix interpolatedMatrix = InterpolateMatrix_Quat(key1.matTransform , key2.matTransform, t);
+
+    vecBones[boneIndex].localTransform = interpolatedMatrix * vecBones[boneIndex].baseTransform;
 
     return S_OK;
 }
+
+void CSkeletalAnimator::Start_Blend(int fromAnim, int toAnim, float duration)
+{
+    m_blendState.isBlending = true;
+    m_blendState.fromAnim = fromAnim;
+    m_blendState.toAnim = toAnim;
+    m_blendState.blendDuration = duration;
+    m_blendState.currentTime = 0.f;
+}
+
 
 CSkeletalAnimator* CSkeletalAnimator::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
@@ -133,10 +177,43 @@ CComponent* CSkeletalAnimator::Clone(void* pArg)
 
 void CSkeletalAnimator::Free()
 {
-    // 이거 고민해야함
     __super::Free();
-    for (int i = 0; i < m_imeshCount; i++)
+
+    for (auto& buffer : m_pVIBufferComs)
+        Safe_Release(buffer);
+
+    m_pVIBufferComs.clear();
+
+}
+
+
+Matrix CSkeletalAnimator::CalcCurrentMatrix(int animType, int boneIndex)
+{
+    const auto& anim = m_Animations[animType];
+
+    // 예외 처리
+    if (anim.size() == 0)
+        return Matrix(); // 빈 애니메이션이면 단위 행렬
+
+    if (anim.size() == 1)
+        return anim[0].matTransform; // 키 하나면 그대로 리턴
+
+    // 루프 처리
+    if (animElapsedTime >= anim.back().fTime)
+        animElapsedTime = 0.f;
+
+    // 보간 키 찾기
+    KEYFREAME key1, key2;
+    for (size_t i = 0; i < anim.size() - 1; ++i)
     {
-        m_pVIBufferComs[i].Release();
+        if (animElapsedTime >= anim[i].fTime && animElapsedTime <= anim[i + 1].fTime)
+        {
+            key1 = anim[i];
+            key2 = anim[i + 1];
+            break;
+        }
     }
+
+    float t = (animElapsedTime - key1.fTime) / (key2.fTime - key1.fTime);
+    return InterpolateMatrix(key1.matTransform, key2.matTransform, t);
 }

@@ -2,6 +2,8 @@
 #include "ParticleSystem.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+
 // 달리기 파티클.
 class CParticleDash final : public CParticleSystem
 {
@@ -30,3 +32,4 @@ protected:
 	virtual void OnBoundingExit(ParticleAttribute& particle) override;
 };
 
+END
