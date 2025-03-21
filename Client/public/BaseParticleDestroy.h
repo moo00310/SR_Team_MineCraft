@@ -4,13 +4,13 @@
 
 BEGIN(Client)
 
-// 블럭 채굴 부모 파티클.
-class CBaseParticleMining abstract : public CParticleSystem
+// 블럭 파괴 될 때 부모 파티클.
+class CBaseParticleDestroy abstract : public CParticleSystem
 {
 protected:
-	CBaseParticleMining(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CBaseParticleMining(const CBaseParticleMining& Prototype);
-	virtual ~CBaseParticleMining() = default;
+	CBaseParticleDestroy(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CBaseParticleDestroy(const CBaseParticleDestroy& Prototype);
+	virtual ~CBaseParticleDestroy() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;

@@ -1,5 +1,8 @@
 #pragma once
 #include "BaseParticleMining.h"
+
+BEGIN(Client)
+
 class CParticleSandMining final : public CBaseParticleMining
 {
 private:	
@@ -16,3 +19,4 @@ protected:
 	virtual HRESULT Ready_Components() override;
 };
 
+END

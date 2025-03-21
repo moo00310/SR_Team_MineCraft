@@ -37,6 +37,12 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 	m_pParticleWoodMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleWoodMining"), 0);
 
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandDestroy"),
+		LEVEL_HYEOK, TEXT("Layer_ParticleSandDestroy"))))
+		return E_FAIL;
+
+	m_pParticleSandDestroy = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleSandDestroy"), 0);
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
@@ -78,7 +84,12 @@ void CPlayer::Update(_float fTimeDelta)
 
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
-		m_pParticleWoodMining->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
+	}
+
+	if (GetKeyState('Z') & 0x8000)
+	{
+		m_pParticleSandMining->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 }
 
@@ -190,6 +201,8 @@ void CPlayer::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
 
-
-
+	Safe_Release(m_pParticleDash);
+	Safe_Release(m_pParticleSandMining);
+	Safe_Release(m_pParticleWoodMining);
+	Safe_Release(m_pParticleSandDestroy);
 }
