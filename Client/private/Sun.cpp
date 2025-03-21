@@ -57,6 +57,8 @@ HRESULT CSun::Render()
 		return E_FAIL;
 
 	Release_RenderState();
+
+	return S_OK;
 }
 
 void CSun::Orbit_Around_Earth()

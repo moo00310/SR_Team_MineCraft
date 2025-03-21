@@ -33,28 +33,7 @@ void CClouds::Priority_Update(_float fTimeDelta)
 
 void CClouds::Update(_float fTimeDelta)
 {
-	//static float fOffsetU = 0.f;
-	//static float fOffsetV = 0.f;
 
-	//// UV 이동 속도 설정
-	//float fSpeedU = 1.01f;
-	//float fSpeedV = 1.00f; // 수직 이동이 필요하면 값 추가
-
-	//// 시간에 따라 UV 좌표를 이동
-	//fOffsetU += fSpeedU * fTimeDelta;
-	//fOffsetV += fSpeedV * fTimeDelta;
-
-	//// UV가 1을 넘으면 0으로 순환
-	//if (fOffsetU > 1.f) fOffsetU -= 1.f;
-	//if (fOffsetV > 1.f) fOffsetV -= 1.f;
-
-	//// 텍스처 변환 행렬 설정
-	//D3DXMATRIX matTexTransform;
-	//D3DXMatrixIdentity(&matTexTransform);
-	//matTexTransform._31 = fOffsetU; // U 방향 이동
-	//matTexTransform._32 = fOffsetV; // V 방향 이동
-
-	//m_pGraphic_Device->SetTransform(D3DTS_TEXTURE0, &matTexTransform);
 }
 
 
@@ -80,6 +59,8 @@ HRESULT CClouds::Render()
 		return E_FAIL;
 
 	Release_RenderState();
+
+	return S_OK;
 }
 
 HRESULT CClouds::SetUp_RenderState()

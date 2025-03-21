@@ -25,4 +25,6 @@ STATUS CBTDecorator_IsTargetNear::Excute(CGameObject* _Obj, _float _fTimeDelta)
         pMonster->Set_Target(nullptr);
         return STATUS::FAIL;
     }
+
+    return STATUS::FAIL;
 }
