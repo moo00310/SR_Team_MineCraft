@@ -7,7 +7,7 @@
 #include "Object_Manager.h"
 #include "Prototype_Manager.h"
 #include "Collider_Manager.h"
-#include "Sound_Manager.h"
+//#include "Sound_Manager.h"
 #include "PoolManager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -50,9 +50,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 	if (nullptr == m_pKey_Manager)
 		return E_FAIL;
 
-	m_pSound_Manager = CSound_Manager::Create();
+	/*m_pSound_Manager = CSound_Manager::Create();
 	if (nullptr == m_pSound_Manager)
-		return E_FAIL;
+		return E_FAIL;*/
 
 	m_pPoolManager = CPoolManager::Create();
 	if (nullptr == m_pPoolManager)
@@ -65,7 +65,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 	m_pKey_Manager->Update();
-	m_pSound_Manager->Update();
+	//m_pSound_Manager->Update();
 
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
@@ -244,10 +244,10 @@ _bool CGameInstance::Key_Down(int _Key)
 {
 	return m_pKey_Manager->Key_Down(_Key);
 }
-void CGameInstance::Play_Sound(const char* _EventPath)
-{
-	m_pSound_Manager->PlayEvent(_EventPath);
-}
+//void CGameInstance::Play_Sound(const char* _EventPath)
+//{
+//	m_pSound_Manager->PlayEvent(_EventPath);
+//}
 #pragma endregion
 
 #pragma region POOL_MANAGER
@@ -267,7 +267,7 @@ void CGameInstance::Pop(CGameObject* _object)
 
 void CGameInstance::Release_Engine()
 {
-	Safe_Release(m_pSound_Manager);
+	//Safe_Release(m_pSound_Manager);
 
 	Safe_Release(m_pKey_Manager);
 

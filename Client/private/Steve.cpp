@@ -176,7 +176,7 @@ void CSteve::Move(_float fTimeDelta)
 	{
 		if (m_pRigidbodyCom->Jump())
 		{
-			m_pGameInstance->Play_Sound("event:/Built_Fail");
+			//m_pGameInstance->Play_Sound("event:/Built_Fail");
 		}
 		
 	}
