@@ -174,7 +174,10 @@
     <ClInclude Include="..\public\Renderer.h" />
     <ClInclude Include="..\public\Rigidbody.h" />
     <ClInclude Include="..\public\SkeletalAnimator.h" />
-    <ClInclude Include="..\public\Sound_Manager.h" />
+    <ClInclude Include="..\public\Sound_Manager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\public\Texture.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\public\Timer_Manager.h" />
@@ -210,7 +213,10 @@
     <ClCompile Include="..\private\Renderer.cpp" />
     <ClCompile Include="..\private\Rigidbody.cpp" />
     <ClCompile Include="..\private\SkeletalAnimator.cpp" />
-    <ClCompile Include="..\private\Sound_Manager.cpp" />
+    <ClCompile Include="..\private\Sound_Manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\private\Texture.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\private\Timer_Manager.cpp" />

@@ -73,7 +73,7 @@ public:
 #pragma endregion
 
 #pragma region SOUND_MANAGER
-	void		Play_Sound(const char* _EventPath);
+	//void		Play_Sound(const char* _EventPath);
 #pragma endregion
 
 
@@ -99,7 +99,7 @@ private:
 	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
 	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
 	class CKey_Manager*			m_pKey_Manager = { nullptr };
-	class CSound_Manager*		m_pSound_Manager = { nullptr };
+	//class CSound_Manager*		m_pSound_Manager = { nullptr };
 	class CPoolManager*			m_pPoolManager = { nullptr };
 
 public:
