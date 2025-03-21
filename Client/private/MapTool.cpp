@@ -162,7 +162,7 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
 
     int index = 0;
 
-    if (SUCCEEDED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))){
+     if (SUCCEEDED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))){
        
         DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
 

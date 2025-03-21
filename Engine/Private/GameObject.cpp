@@ -76,6 +76,16 @@ CGameInstance* CGameObject::Get_GameInstance()
 	return m_pGameInstance;
 }
 
+_bool CGameObject::Get_isDestroy()
+{
+	return m_isDestroyed;
+}
+
+void CGameObject::Destroy()
+{
+	m_isDestroyed = true;
+}
+
 void CGameObject::Free()
 {
 	__super::Free();
