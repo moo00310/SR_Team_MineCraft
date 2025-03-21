@@ -24,7 +24,7 @@ public:
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
 
 public:
-	void Jump();
+	_bool Jump();
 private:
 	void Fall_With_Gravity(_float fTimeDelta);
 private:

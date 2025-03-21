@@ -90,13 +90,17 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 
 
-void CRigidbody::Jump()
+_bool CRigidbody::Jump()
 {
 	if (m_isGrounded) // 바닥에 닿아 있을 때만 점프 가능
 	{
 		m_vVelocity.y = m_fJumpForce; // Y축 방향으로 힘 추가
 		m_isGrounded = false; // 공중에 떠 있는 상태로 변경
+
+		return true;
 	}
+
+	return false;
 }
 
 void CRigidbody::Fall_With_Gravity(_float fTimeDelta)

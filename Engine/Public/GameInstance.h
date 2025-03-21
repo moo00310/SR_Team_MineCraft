@@ -72,7 +72,7 @@ public:
 #pragma endregion
 
 #pragma region SOUND_MANAGER
-	void		Play_Sound(const char* _EventPath); //패스값 입력하는거불편...
+	void		Play_Sound(const char* _EventPath);
 #pragma endregion
 
 

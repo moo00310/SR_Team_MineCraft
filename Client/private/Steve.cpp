@@ -154,9 +154,13 @@ void CSteve::Move(_float fTimeDelta)
 		//m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
 	}
 
-	if (m_pGameInstance->Key_Pressing(VK_SPACE))
+	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
-		m_pRigidbodyCom->Jump();
+		if (m_pRigidbodyCom->Jump())
+		{
+			m_pGameInstance->Play_Sound("event:/Built_Fail");
+		}
+		
 	}
 }
 

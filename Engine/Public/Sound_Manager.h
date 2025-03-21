@@ -2,13 +2,13 @@
 #include "fmod.hpp"
 #include "fmod_studio.hpp"
 
-// Debug 일 때
+#ifdef _DEBUG
 #pragma comment(lib, "fmodL_vc.lib")
 #pragma comment(lib, "fmodstudioL_vc.lib")
-
-// Release 일 때
+#else
 #pragma comment(lib, "fmod_vc.lib")
 #pragma comment(lib, "fmodstudio_vc.lib")
+#endif
 
 #include "Base.h"
 
