@@ -78,9 +78,12 @@ void CCheckBox::Update(_float fTimeDelta)
         Desc.fX = g_iWinSizeX * 0.707f;
     }
     
-    /* 낼 수정 예정*/
-    __super::Initialize(&Desc);
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
+    if(m_fCheckBox != Desc.fX)
+    {
+       m_fCheckBox = Desc.fX;
+       __super::Initialize(&Desc);
+       m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
+    }
 }
 
 void CCheckBox::Late_Update(_float fTimeDelta)

@@ -1,28 +1,30 @@
-#include "Inventory.h"
+#include "Item.h"
 
-CInventory::CInventory(LPDIRECT3DDEVICE9 pGraphic_Device)
+
+CItem::CItem(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
 {
 }
 
-CInventory::CInventory(CInventory& Prototype)
-    : CUIObject( Prototype )
+CItem::CItem(CItem& Prototype)
+    : CUIObject(Prototype)
 {
 }
 
-HRESULT CInventory::Initialize_Prototype()
+
+HRESULT CItem::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CInventory::Initialize(void* pArg)
+HRESULT CItem::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = 600;
-    Desc.fSizeY = 150;
+    Desc.fSizeX = 50;
+    Desc.fSizeY = 50;
     Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = g_iWinSizeY;
+    Desc.fY = g_iWinSizeY * 0.45f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -36,44 +38,49 @@ HRESULT CInventory::Initialize(void* pArg)
     return S_OK;
 }
 
-void CInventory::Priority_Update(_float fTimeDelta)
+void CItem::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CInventory::Update(_float fTimeDelta)
+void CItem::Update(_float fTimeDelta)
 {
+
 }
 
-void CInventory::Late_Update(_float fTimeDelta)
+void CItem::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
-HRESULT CInventory::Render()
+HRESULT CItem::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
-        return E_FAIL;
+    if (m_bSubInvnetoryOn)
+    {
+        if (FAILED(m_pTextureCom->Bind_Resource(0)))
+            return E_FAIL;
 
-    if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-        return E_FAIL;
+        if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+            return E_FAIL;
 
-    if (FAILED(m_pTransformCom->Bind_Resource()))
-        return E_FAIL;
+        if (FAILED(m_pTransformCom->Bind_Resource()))
+            return E_FAIL;
 
-    __super::Begin();
+        __super::Begin();
 
-    if (FAILED(m_pVIBufferCom->Render()))
-        return E_FAIL;
+        if (FAILED(m_pVIBufferCom->Render()))
+            return E_FAIL;
 
-    __super::End();
+        __super::End();
 
-    return S_OK; 
+    }
+
+    return S_OK;
 }
 
-HRESULT CInventory::Ready_Components()
+HRESULT CItem::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Item"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -88,9 +95,9 @@ HRESULT CInventory::Ready_Components()
     return S_OK;
 }
 
-CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CInventory* pInstance = new CInventory(pGraphic_Device);
+    CItem* pInstance = new CItem(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -100,9 +107,9 @@ CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
     return pInstance;
 }
 
-CGameObject* CInventory::Clone(void* pArg)
+CGameObject* CItem::Clone(void* pArg)
 {
-    CInventory* pInstance = new CInventory(*this);
+    CItem* pInstance = new CItem(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -112,10 +119,11 @@ CGameObject* CInventory::Clone(void* pArg)
     return pInstance;
 }
 
-void CInventory::Free()
+void CItem::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pTransformCom);
 }
+\
