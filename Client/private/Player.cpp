@@ -85,10 +85,15 @@ void CPlayer::Update(_float fTimeDelta)
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
 		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
-		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(TEXT("Prototype_GameObject_ParticleDash"));
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_HYEOK,	// 적용 씬.
+			TEXT("Prototype_GameObject_ParticleDash"),	// 가져올 프로토타입.
+			LEVEL_HYEOK,	// 가져올 씬.
+			TEXT("Layer_ParticleDash"));	// 애드오브젝트에 추가할 레이어
+
 		if (particle != nullptr)
 		{
 			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			m_pGameInstance->Pop(particle);
 		}		
 	}
 

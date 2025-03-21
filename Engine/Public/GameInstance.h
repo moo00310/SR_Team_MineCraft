@@ -80,7 +80,10 @@ public:
 	void CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count = 1, void* pArg = nullptr);
 
 	// Ç®¸µ °´Ã¼ ²¨³»¿È.
-	CGameObject* Push(const _wstring& strPrototypeTag);
+	CGameObject* Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
+
+	// Ç®¸µÀ¸·Î µ¹¾Æ°¨.
+	void Pop(CGameObject* _object);
 	
 #pragma endregion
 

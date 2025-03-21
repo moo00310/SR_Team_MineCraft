@@ -19,10 +19,10 @@ public:
 
 	// 해당 프로토타입 태그 오브젝트 풀매니저에서 가져와 객체화.
 	// 부족하면 추가 생성.
-	CGameObject* Push(const _wstring& strPrototypeTag);
+	CGameObject* Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
 
 	// 해당 오브젝트 풀매니저로 반환.
-	void Pop(CGameObject* _object, const _wstring& strPrototypeTag);
+	void Pop(CGameObject* _object);
 
 	virtual void Free() override;
 

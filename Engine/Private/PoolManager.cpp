@@ -67,7 +67,7 @@ CGameObject* CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring
 	CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, --count, pArg);
 }
 
-CGameObject* CPoolManager::Push(const _wstring& strPrototypeTag)
+CGameObject* CPoolManager::Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
 {	
 	// 키 찾음.
 	auto iter = m_mapPoolObjects->find(strPrototypeTag);
@@ -92,10 +92,14 @@ CGameObject* CPoolManager::Push(const _wstring& strPrototypeTag)
 	}
 
 	// 이미 풀에 가득찼다면 추가로 하나 더 생성하고 반환.	
-	return CreatePool(0, strPrototypeTag, 0, TEXT("asd"), 1);
+	return CreatePool(iPrototypeLevelIndex,
+		strPrototypeTag, 
+		iLevelIndex,
+		strLayerTag,
+		1);
 }
 
-void CPoolManager::Pop(CGameObject* _object, const _wstring& strPrototypeTag)
+void CPoolManager::Pop(CGameObject* _object)
 {
 	_object->SetActive(false);
 }
