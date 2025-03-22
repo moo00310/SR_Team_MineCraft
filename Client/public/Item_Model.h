@@ -31,21 +31,27 @@ protected:
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 
 protected:
+	BONE m_Bone = {};
+	map<_uint, vector<KEYFREAME>> m_Animations = {};
 	wstring m_TextureTag = {};
 	LEVEL m_TextureLevel = {};
-
-	vector<KEYFREAME> m_swing = {};
 	float fElapsedTime = 0.0f;
 
+protected:
 	virtual HRESULT Ready_Components();
+	HRESULT Update_Anime(_int _type, _float fTimeDelta);
+	HRESULT Update_BoneAndMesh(const Matrix& matrix);
+
 
 private:
 	HRESULT SetUp_RenderState();
 	HRESULT Release_RenderState();
 
+private:
+	virtual HRESULT Ready_Bone() = 0;
+	virtual HRESULT Ready_Anime() = 0;
+
 public:
-	static CItem_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };
 

@@ -20,21 +20,6 @@ HRESULT CItem_Model::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-
-    // 스윙 프레임 행렬을 벡터에 저장
-    Matrix mat = {};
-    mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(70));
-    mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(45));
-    mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
-
-    Matrix matrix = {};
-    matrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(100));
-    matrix.Set_State(matrix.STATE_POSITION, _float3(-1.5f, 0.2f, -0.3f));
-
-
-    m_swing.push_back({ 0.f, mat });
-    m_swing.push_back({ 0.3f, matrix * mat });
-
     return S_OK;
 
 }
@@ -46,51 +31,12 @@ void CItem_Model::Priority_Update(_float fTimeDelta)
 
 void CItem_Model::Update(_float fTimeDelta)
 {
-    Matrix		ViewMatrix = {};
-    m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
-    D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
-   
-
-    // 버튼 클릭 애니메이션
-    if (GetKeyState(VK_LBUTTON) & 0x8000)
-    {
-        fElapsedTime += fTimeDelta;
-    }
-    else
-    {
-        // 스윙하지 않으면 처음 위치를 따라다님
-        m_pTransformCom->Set_Matrix(m_swing[0].matTransform * ViewMatrix);
-    }  
-
-    if (fElapsedTime >= m_swing.back().fTime)
-    {
-        fElapsedTime = 0.0f;  // 처음부터 재생
-    }
-
-    // 키프레임 찾기
-    KEYFREAME key1, key2;
-    for (size_t i = 0; i < m_swing.size() - 1; ++i)
-    {
-        if (fElapsedTime >= m_swing[i].fTime && fElapsedTime <= m_swing[i + 1].fTime)
-        {
-            key1 = m_swing[i];
-            key2 = m_swing[i + 1];
-            break;
-        }
-    }
-
-     // 보간 비율 계산 (0~1 사이 값)
-    float t = (fElapsedTime - key1.fTime) / (key2.fTime - key1.fTime);
-
-    // 행렬 보간
-    D3DXMATRIX interpolatedMatrix = InterpolateMatrix(key1.matTransform, key2.matTransform, t);
-
-    // 최종 행렬 적용
-    m_pTransformCom->Set_Matrix(interpolatedMatrix * ViewMatrix);
+    
 }
 
 void CItem_Model::Late_Update(_float fTimeDelta)
 {
+    
 }
 
 HRESULT CItem_Model::Render()
@@ -106,7 +52,7 @@ HRESULT CItem_Model::Render()
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
-    /* 정점을 그린다. */
+
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
@@ -156,14 +102,49 @@ HRESULT CItem_Model::Release_RenderState()
     return S_OK;
 }
 
-CItem_Model* CItem_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+HRESULT CItem_Model::Update_Anime(_int _type, _float fTimeDelta)
 {
-	return nullptr;
+    fElapsedTime += fTimeDelta;
+
+    if (fElapsedTime >= m_Animations[_type].back().fTime)
+    {
+        fElapsedTime = 0.0f;  // 처음부터 재생
+    }
+
+    if (m_Animations[_type].size() < 2)
+    {
+        // 단일 키프레임만 있을 경우 그냥 그거 하나 적용
+        m_Bone.localTransform = m_Animations[_type][0].matTransform * m_Bone.baseTransform;
+        return S_OK;
+    }
+
+    // 키프레임 찾기
+    KEYFREAME key1, key2;
+    for (size_t i = 0; i < m_Animations[_type].size() - 1; ++i)
+    {
+        if (fElapsedTime >= m_Animations[_type][i].fTime && fElapsedTime <= m_Animations[_type][i + 1].fTime)
+        {
+            key1 = m_Animations[_type][i];
+            key2 = m_Animations[_type][i + 1];
+            break;
+        }
+    }
+
+    // 보간 비율 계산 (0~1 사이 값)
+    float t = (fElapsedTime - key1.fTime) / (key2.fTime - key1.fTime);
+
+    Matrix interpolatedMatrix = InterpolateMatrix_Quat(key1.matTransform, key2.matTransform, t);
+
+    m_Bone.localTransform = interpolatedMatrix * m_Bone.baseTransform;
+
+    return S_OK;
 }
 
-CGameObject* CItem_Model::Clone(void* pArg)
+HRESULT CItem_Model::Update_BoneAndMesh(const const Matrix& matrix)
 {
-	return nullptr;
+    m_Bone.worldTransform = m_Bone.localTransform * matrix;
+    m_pTransformCom->Set_Matrix(m_Bone.Correction * m_Bone.worldTransform);
+    return S_OK;
 }
 
 void CItem_Model::Free()

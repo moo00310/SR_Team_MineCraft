@@ -21,32 +21,63 @@ HRESULT CSword::Initialize(void* pArg)
     // 텍스쳐는 객체마다 달라지기 때문에 찾을 택스쳐 태그를
    // 부모 매개변수에 저장해야함
     m_TextureTag = TEXT("Prototype_Component_Texture_Pickaxe");
-    m_TextureLevel = LEVEL_MOO;
+    m_TextureLevel = LEVEL_YU;
     __super::Initialize(pArg);
+
+    if (FAILED(Ready_Bone()))
+        return E_FAIL;
+
+    if (FAILED(Ready_Anime()))
+        return E_FAIL;
 
     return S_OK;
 }
 
 void CSword::Priority_Update(_float fTimeDelta)
 {
+	__super::Priority_Update(fTimeDelta);
+
+
+    
 }
 
 void CSword::Update(_float fTimeDelta)
 {
-    // 휘두르는 모션
-    __super::Update(fTimeDelta);
-
+    
 }
 
 void CSword::Late_Update(_float fTimeDelta)
 {
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
-        return;
+
+    Matrix		ViewMatrix = {};
+    m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
+    D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+
+    Update_BoneAndMesh(ViewMatrix);
+
+    // 휘두르는 모션
+    __super::Update(fTimeDelta);
+
+    if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
+    {
+        Update_Anime(0, fTimeDelta);
+    }
+
+    if (m_pGameInstance->Key_Down(VK_F5))
+    {
+        m_bisTPS *= -1;
+    }
+    if (m_bisTPS > 0)
+    {
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+            return;
+    }
 }
 
 HRESULT CSword::Render()
 {
     __super::Render();
+
     return S_OK;
 }
 
@@ -79,4 +110,33 @@ CGameObject* CSword::Clone(void* pArg)
 void CSword::Free()
 {
     __super::Free();
+}
+
+HRESULT CSword::Ready_Bone()
+{
+    // 스윙 프레임 행렬을 벡터에 저장
+    Matrix mat = {};
+    mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(70));
+    mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(45));
+    mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
+
+
+    m_Bone = { "root", -1, mat, mat, Matrix(), Matrix() };
+
+
+    return S_OK;
+}
+
+HRESULT CSword::Ready_Anime()
+{
+    Matrix matrix = {};
+    matrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(100));
+    matrix.Set_State(matrix.STATE_POSITION, _float3(-1.5f, 0.2f, -0.3f));
+
+	m_swing.push_back({ 0.f, Matrix()});
+	m_swing.push_back({ 0.3f, matrix });
+   
+    m_Animations.emplace(0, m_swing);
+
+    return S_OK;
 }
