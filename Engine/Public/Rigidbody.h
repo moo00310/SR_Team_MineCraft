@@ -27,6 +27,7 @@ public:
 	_bool Jump();
 private:
 	void Fall_With_Gravity(_float fTimeDelta);
+	_bool isFalling() { return m_vVelocity.y < 0.f; };
 private:
 	class CTransform*		m_pTransform{ nullptr };
 	class CCollider_Cube*	m_pCollider_Cube{ nullptr };

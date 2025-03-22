@@ -43,6 +43,9 @@ HRESULT CRigidbody::Initialize(void* pArg)
 
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
+	/*if (m_isGrounded)
+		m_vVelocity.y = 0.f;*/
+
 	m_isGrounded = false;
 
 	Fall_With_Gravity(fTimeDelta);
@@ -50,30 +53,86 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 	// 충돌 검사
 	if (m_pCollider_Cube)
 	{
-		_float3 vDist;
-		CCollider_Cube::COLLSION_DIR eDir;
-		_bool isHit = m_pGameInstance->Collision_with_Group(iCollsionGroup, m_pCollider_Cube, CCollider_Manager::COLLSIION_BOX, &vDist, &eDir);
+		//_float3 vDist;
+		//CCollider_Cube::COLLSION_DIR eDir;
+
+		//_bool isHit = m_pGameInstance->Collision_with_Group(iCollsionGroup, m_pCollider_Cube, CCollider_Manager::COLLSIION_CUBE, &vDist, &eDir);
+
+		list< CCollider_Cube::COLLISION_INFO> Collision_Infos;
+		_bool isHit = m_pGameInstance->Collision_Check_Group_Multi(iCollsionGroup, Collision_Infos, m_pCollider_Cube, CCollider_Manager::COLLSIION_CUBE);
 
 		if (isHit)
 		{
+			//printf_s("Collision_Infos: %zu \n", Collision_Infos.size());
+
+			
+			_float fMinDist_Y{ 0.0f };
+
+			_float fMaxDist_X{ 0.0f };
+			_float fMinDist_X{ 0.0f };
+
+			_float fMaxDist_Z{ 0.0f };
+			_float fMinDist_Z{ 0.0f };
+
+			for (CCollider_Cube::COLLISION_INFO& tCollision_Info : Collision_Infos)
+			{
+				_float3 vDist = tCollision_Info.fDistance;
+				CCollider_Cube::COLLSION_DIR eDir = tCollision_Info.eCollisionDir;
+
+				if (eDir == CCollider_Cube::COLLSION_DIR::UP)
+				{
+					if (isFalling())
+						m_vVelocity.y = 0.0f;    // 속도 멈춤
+
+					m_isGrounded = true;
+
+					if (fMinDist_Y > vDist.y)
+						fMinDist_Y = vDist.y;
+				}
+				else
+				{
+					if (eDir == CCollider_Cube::COLLSION_DIR::LEFT)
+					{
+						if (fMaxDist_X < vDist.x)
+							fMaxDist_X = vDist.x;
+					}
+					else if (eDir == CCollider_Cube::COLLSION_DIR::RIGHT)
+					{
+						if (fMinDist_X == 0.f)
+							fMinDist_X = vDist.x;
+						else if (fMinDist_X > vDist.x)
+							fMinDist_X = vDist.x;
+					}
+					else if (eDir == CCollider_Cube::COLLSION_DIR::FRONT)
+					{
+						if (fMaxDist_Z < vDist.z)
+							fMaxDist_Z = vDist.z;
+					}
+					else if (eDir == CCollider_Cube::COLLSION_DIR::BACK)
+					{
+						if (fMinDist_Z == 0.f)
+							fMinDist_Z = vDist.z;
+						else if (fMinDist_Z > vDist.z)
+							fMinDist_Z = vDist.z;
+					}
+				}
+				
+			}
+
 			// 현재 위치 보정 (Y축은 바닥 충돌일 때만 적용)
 			_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 
-			if (eDir == CCollider_Cube::COLLSION_DIR::UP)
-			{
-				vPosition.y -= vDist.y;  // 바닥 충돌 시 Y축 보정
-				m_vVelocity.y = 0.0f;    // 속도 멈춤
-				m_isGrounded = true;
-			}
-			else
-			{
-				vPosition.x -= vDist.x;  // 벽 충돌 시 X축 보정
-				vPosition.z -= vDist.z;  // 벽 충돌 시 Z축 보정
-			}
+			vPosition.y -= fMinDist_Y;  // 바닥 충돌 시 Y축 보정
 
+			vPosition.x -= fMaxDist_X + fMinDist_X;  // 벽 충돌 시 X축 보정
+			vPosition.z -= fMaxDist_Z + fMinDist_Z;  // 벽 충돌 시 Z축 보정
+			
 			m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
 		}
 	}
+
+	printf_s("velocity: %f, %f, %f\n", m_vVelocity.x, m_vVelocity.y, m_vVelocity.z);
+
 
 	if (m_isGrounded)
 	{
@@ -83,7 +142,6 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 	{
 		//printf_s("is Air\n");
 	}
-
 
 	return S_OK;
 }
@@ -132,7 +190,10 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 		vPosition.y = 0.0f;
 		m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
 		  // 바닥에 닿았다면 위치를 0으로 고정
-		m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
+
+		if(isFalling())
+			m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
+
 		m_isGrounded = true;
 	}
 }

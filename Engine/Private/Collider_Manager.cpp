@@ -53,8 +53,12 @@ HRESULT CCollider_Manager::Reset_ColliderGroup()
 	return S_OK;
 }
 
-_bool  CCollider_Manager::Collision_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDistance, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir)
+CGameObject*  CCollider_Manager::Collision_Check_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDepth, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir)
 {
+	//초기화
+	if (pOutDepth) *pOutDepth = { 0.f, 0.f, 0.f };
+	if (pOutDir) *pOutDir = CCollider_Cube::COLLSION_DIR::NONE;
+
 	CComponent* pMyCollider = { pCollider };
 	CComponent* pOtherCollider = { nullptr };
 
@@ -65,24 +69,15 @@ _bool  CCollider_Manager::Collision_with_Group(_uint iGroupIndex, CComponent* pC
 		if (pOtherCollider == pMyCollider)
 			continue;
 
-		if (nullptr != iter /*&& CGameInstance::Get_Instance()->Is_In_Frustum(iter->Get_Position(), iter->Get_Radius()) == true*/)
+		if (nullptr != iter)
 		{
-
 			switch (eCollisionType)
 			{
-			/*case Engine::CCollider_Manager::COLLISION_RECT:
-				 DamageOwner = (CCollider_Rect*)pGameObject->Find_Component(TEXT("Com_Collider_Rect"));
-				 Target = (CCollider_Rect*)iter->Find_Component(TEXT("Com_Collider_Rect"));
-				if (Target == nullptr)
-					continue;
-				if (true == (dynamic_cast<CCollider_Rect*>(DamageOwner)->Collision_Check((CCollider_Rect*)Target, pOutDistance)))
-					return true;
-				break;*/
-			case Engine::CCollider_Manager::COLLSIION_BOX:
+			case Engine::CCollider_Manager::COLLSIION_CUBE:
 				if (pOtherCollider == nullptr)
 					continue;
-				if (true == ((dynamic_cast<CCollider_Cube*>(pMyCollider)->Collision_Check((CCollider_Cube*)pOtherCollider, pOutDistance, pOutDir))))
-					return true;
+				if (true == ((dynamic_cast<CCollider_Cube*>(pMyCollider)->Collision_Check((CCollider_Cube*)pOtherCollider, pOutDepth, pOutDir))))
+					return iter;
 				break;
 			default:
 				break;
@@ -91,55 +86,62 @@ _bool  CCollider_Manager::Collision_with_Group(_uint iGroupIndex, CComponent* pC
 		}
 	}
 
-	return false;
+	return nullptr;
 }
 
-_bool CCollider_Manager::Collision_Check_Group_Multi(_uint iGroupIndex, vector<class CGameObject*>& vecDamagedObj, CGameObject * pDamageCauser, COLLISION_TYPE eCollisionType)
+_bool CCollider_Manager::Collision_Check_Group_Multi(
+	_uint iGroupIndex,
+	list<CCollider_Cube::COLLISION_INFO>& Collision_Infos,
+	CComponent* pCollider,
+	COLLISION_TYPE eCollisionType
+)
 {
-	/*CComponent* Target = nullptr;
-	CComponent* DamageOwner = nullptr;
+	
+	_float3 OutDistance = { 0.f, 0.f, 0.f };
+	CCollider_Cube::COLLSION_DIR OutDir = CCollider_Cube::COLLSION_DIR::NONE;
 
-	for (auto& iter : m_GameObjects[eGroup])
+	CComponent* pMyCollider = pCollider;
+	CComponent* pOtherCollider = nullptr;
+
+	for (auto& iter : m_pGameObjects[iGroupIndex])
 	{
-		if (nullptr != iter && CGameInstance::Get_Instance()->Is_In_Frustum(iter->Get_Position(), iter->Get_Radius()) == true)
+		if (nullptr == iter)
+			continue;
+
+		pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
+
+		// 자기 자신과의 충돌 방지
+		if (pOtherCollider == pMyCollider)
+			continue;
+
+		switch (eCollisionType)
 		{
-			switch (eCollisionType)
+		case Engine::CCollider_Manager::COLLSIION_CUBE:
+			if (pOtherCollider == nullptr)
+				continue;
+
+			if (static_cast<CCollider_Cube*>(pMyCollider)->Collision_Check(
+				static_cast<CCollider_Cube*>(pOtherCollider), &OutDistance, &OutDir))
 			{
-			case Engine::CCollider_Manager::COLLISION_RECT:
-				DamageOwner = (CCollider_Rect*)pDamageCauser->Find_Component(TEXT("Com_Collider_Rect"));
-				Target = (CCollider_Rect*)iter->Find_Component(TEXT("Com_Collider_Rect"));
-				if (Target == nullptr)
-					continue;
+				// 충돌한 오브젝트와 충돌 방향을 저장
+				CCollider_Cube::COLLISION_INFO tInfo;
+				tInfo.pGameObject = iter;
+				tInfo.eCollisionDir = OutDir;  // 충돌 방향 저장
+				tInfo.fDistance = OutDistance;  // 충돌 거리 저장
 
-				if (true == (dynamic_cast<CCollider_Rect*>(DamageOwner)->Collision_Check((CCollider_Rect*)Target)))
-					vecDamagedObj.push_back(iter);
-				break;
-			case Engine::CCollider_Manager::COLLSIION_BOX:
-				DamageOwner = (CCollider_Cube*)pDamageCauser->Find_Component(TEXT("Com_Collider_Cube"));
-				Target = (CCollider_Cube*)iter->Find_Component(TEXT("Com_Collider_Cube"));
-				if (Target == nullptr)
-					continue;
-
-				if (true == (dynamic_cast<CCollider_Cube*>(DamageOwner)->Collision_Check((CCollider_Cube*)Target)))
-					vecDamagedObj.push_back(iter);
-				break;
-			default:
-				break;
+				Collision_Infos.push_back(tInfo); // 벡터에 추가
 			}
-			
+			break;
+
+		default:
+			break;
 		}
 	}
-	
-	if (vecDamagedObj.size() > 0)
-	{
-		return true;
-	}
-	else {
-		return false;
-	}*/
 
-	return false;
+	return !Collision_Infos.empty();  // 충돌된 오브젝트가 있다면 true
 }
+
+
 
 
 CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float& fDist)

@@ -207,15 +207,23 @@ void CGameInstance::Out_CollisiomGroup(_uint eCollisionGroup, CGameObject* pGame
 	m_pCollider_Manager->Out_CollisiomGroup(eCollisionGroup, pGameObject);
 }
 
-_bool CGameInstance::Collision_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDistance, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir)
+CGameObject* CGameInstance::Collision_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDepth, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir)
 {
-	if (pOutDistance) *pOutDistance = { 0.f, 0.f, 0.f };
+	if (pOutDepth) *pOutDepth = { 0.f, 0.f, 0.f };
 	if (pOutDir) *pOutDir = CCollider_Cube::COLLSION_DIR::NONE;
 
 	if (nullptr == m_pCollider_Manager)
+		return nullptr;
+
+	return m_pCollider_Manager->Collision_Check_with_Group(eGroup, pCollider, eType, pOutDepth, pOutDir);
+}
+
+_bool CGameInstance::Collision_Check_Group_Multi(_uint iGroupIndex, list<CCollider_Cube::COLLISION_INFO>& Collision_Infos, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eCollisionType)
+{
+	if (nullptr == m_pCollider_Manager)
 		return false;
 
-	return m_pCollider_Manager->Collision_with_Group(eGroup, pCollider, eType, pOutDistance, pOutDir);
+	return m_pCollider_Manager->Collision_Check_Group_Multi(iGroupIndex, Collision_Infos, pCollider, eCollisionType);
 }
 
 CGameObject* CGameInstance::Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist)
