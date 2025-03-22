@@ -154,7 +154,7 @@ void CCamera_Player::Follow_Player()
     vLook.z = cosf(m_fPitch) * cosf(m_fYaw);
 
 
-    m_vHeadPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.5f, 0.f);
+    m_vHeadPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.4f, 0.f);
 
     if (m_eCameraMode == E_CAMERA_MODE::FPS)
     {
