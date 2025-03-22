@@ -39,7 +39,7 @@ void CGrassDirt::Late_Update(_float fTimeDelta)
 	__super::Late_Update(fTimeDelta);
 
     if (m_bRenderActive) {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
             return;
     }
 }
