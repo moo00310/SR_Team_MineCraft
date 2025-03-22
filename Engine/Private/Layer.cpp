@@ -29,7 +29,11 @@ void CLayer::Priority_Update(_float fTimeDelta)
 		}
 		else
 		{
-			pGameObject->Priority_Update(fTimeDelta);
+			if (pGameObject->GetActive() == true)
+			{
+				// 오브젝트가 활성화 된 상태에서만 진행.
+				pGameObject->Priority_Update(fTimeDelta);
+			}			
 			++iter; // 삭제되지 않으면 계속 진행
 		}
 	}
@@ -41,8 +45,13 @@ void CLayer::Update(_float fTimeDelta)
 	for (auto& pGameObject : m_GameObjects)
 	{
 		if (nullptr != pGameObject)
-			pGameObject->Update(fTimeDelta);
-
+		{
+			if (pGameObject->GetActive() == true)
+			{
+				// 오브젝트가 활성화 된 상태에서만 진행.
+				pGameObject->Update(fTimeDelta);
+			}
+		}
 	}
 }
 
@@ -52,8 +61,13 @@ void CLayer::Late_Update(_float fTimeDelta)
 		for (auto& pGameObject : m_GameObjects)
 		{
 			if (nullptr != pGameObject)
-				pGameObject->Late_Update(fTimeDelta);
-
+			{
+				if (pGameObject->GetActive() == true)
+				{
+					// 오브젝트가 활성화 된 상태에서만 진행.
+					pGameObject->Late_Update(fTimeDelta);
+				}
+			}				
 		}
 	}
 }

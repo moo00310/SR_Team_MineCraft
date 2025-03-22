@@ -24,8 +24,16 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+private:
+	int m_bisTPS = { -1 };
+	vector<KEYFREAME> m_swing;
+
+
 public:
 	static CSword* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
+
+	HRESULT Ready_Bone() override;
+	HRESULT Ready_Anime() override;
 };

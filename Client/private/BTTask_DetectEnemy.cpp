@@ -10,17 +10,19 @@ STATUS CBTTask_DetectEnemy::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		return STATUS::SUCCESS;
 	}
 
-	_bool isHit{ false };
-	_float fHitDist;
+	_float fHitDist{};
+	CGameObject* pHitOjbect{ nullptr };
 
-	isHit = pMonster->Get_GameInstance()->Ray_Cast(pMonster->Get_Transform()->Get_State(CTransform::STATE_POSITION),
+	pHitOjbect = pMonster->Get_GameInstance()->Ray_Cast(pMonster->Get_Transform()->Get_State(CTransform::STATE_POSITION),
 		pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK),
 		10.f,
 		COLLISION_PLAYER,
-		fHitDist,
-		&pMonster->Get_Target());
+		fHitDist
+		);
 
-	if (isHit)
+	pMonster->Set_Target(pHitOjbect);
+
+	if (pHitOjbect)
 	{
 		return STATUS::SUCCESS;
 	}

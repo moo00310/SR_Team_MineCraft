@@ -31,9 +31,15 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
 		return E_FAIL;
 
-	//BT 연습용 적
-	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Clouds(TEXT("Layer_Clouds"))))
+		return E_FAIL;
+
+
+	/*if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;*/
 
 	//임무결 1인칭 확인용
 	/*if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
@@ -43,7 +49,7 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_WOOInvenTest(TEXT("Layer_Inventory"))))
 		return E_FAIL;
 	
-
+	//m_pGameInstance->Play_Sound("event:/0004 BGM_DOREMI");
 
 	return S_OK;
 }
@@ -153,15 +159,59 @@ HRESULT CLevel_HERO::Ready_Layer_SkyBox(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_HERO::Ready_Layer_WOOInvenTest(const _wstring& strLayerTag)
+HRESULT CLevel_HERO::Ready_Layer_Clouds(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Inventory"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Clouds"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_HERO::Ready_Layer_Sun(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Sun"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_HERO::Ready_Layer_WOOInvenTest(const _wstring& strLayerTag)
+{
+	/* 생성순서로 깊이? 적용*/
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_MainInventory"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_SubInventory"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
+
+	/* Prototype_GameObject_InventoryBack */
+	for (int i = 0; i < 11; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_InventoryBack"),
+			LEVEL_HERO, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
 
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_CheckBox"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
+
+
+	///* 인벤토리 수 */
+	//for (int i = 0; i < 56; ++i)
+	//{
+	//	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_SubInventory"),
+	//		LEVEL_HERO, strLayerTag)))
+	//		return E_FAIL;
+	//}
+
+	/*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Item"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;*/
 
 	return S_OK;
 }

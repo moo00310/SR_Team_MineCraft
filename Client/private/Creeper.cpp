@@ -63,15 +63,15 @@ void CCreeper::Update(_float fTimeDelta)
 
     m_pCollider_CubeCom->Update_ColliderBox();
 
-    CGameObject* pGameObject;
-    _float fDist;
-    m_pGameInstance->Ray_Cast
+    CGameObject* pHitObject{ nullptr };
+    _float fDist{};
+
+    pHitObject = m_pGameInstance->Ray_Cast
     (   m_pTransformCom->Get_State(CTransform::STATE_POSITION),
         m_pTransformCom->Get_State(CTransform::STATE_LOOK),
         10.f,
         COLLISION_PLAYER,
-        fDist,
-        &pGameObject
+        fDist
     );
 
 }

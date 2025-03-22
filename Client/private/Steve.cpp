@@ -9,19 +9,11 @@
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
 {
-	for (int i = 0; i < 6; i++)
-	{
-		m_pVIBufferCom[i] = nullptr;
-	}
 }
 
 CSteve::CSteve(const CSteve& Prototype)
 	: CGameObject(Prototype)
 {
-	for (int i = 0; i < 6; i++)
-	{
-		m_pVIBufferCom[i] = nullptr;
-	}
 }
 
 HRESULT CSteve::Initialize_Prototype()
@@ -33,7 +25,13 @@ HRESULT CSteve::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+	
+	if (FAILED(Ready_Bone()))
+		return E_FAIL;
 
+	if (FAILED(Ready_Animation()))
+		return E_FAIL;
+	
 	return S_OK;
 }
 
@@ -43,7 +41,6 @@ void CSteve::Priority_Update(_float fTimeDelta)
 
 	Input_Key(fTimeDelta);
 
-	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
 void CSteve::Update(_float fTimeDelta)
@@ -53,6 +50,8 @@ void CSteve::Update(_float fTimeDelta)
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
+
+	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
 	//CGameObject* pGameObject;
 	//_float fDist;
@@ -68,10 +67,6 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
-	// 본의 매트릭스를 현재 트랜스폼으로 업데이트
-	//[0].transform = *(m_pTransformCom->Get_WorldMatrix());
-
-	UpdateBoneTransforms(0, *(m_pTransformCom->Get_WorldMatrix()));
 
 	if (m_pGameInstance->Key_Down(VK_F5))
 	{
@@ -79,8 +74,32 @@ void CSteve::Late_Update(_float fTimeDelta)
 	}
 	if (m_bisTPS > 0)
 	{
-		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 			return;
+	}
+
+	m_skelAnime->Update_Bone(0, *m_pTransformCom->Get_WorldMatrix());
+
+	// 애니메이션 적용
+	if (m_AnimState == WALK)
+	{
+		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 3, *m_pTransformCom->Get_WorldMatrix());
+		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 4, *m_pTransformCom->Get_WorldMatrix());
+		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 5, *m_pTransformCom->Get_WorldMatrix());
+		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 6, *m_pTransformCom->Get_WorldMatrix());
+	}
+	else if (m_AnimState == IDLE)
+	{
+		if (!m_skelAnime->IsBlending() && m_skelAnime->GetCurrentAnim() != ANIM::IDLE)
+		{
+			m_skelAnime->Start_Blend(WALK_F, IDLE, 0.005f);
+			m_skelAnime->Start_Blend(WALK_B, IDLE, 9999999.f);
+		}
+
+		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 3, *m_pTransformCom->Get_WorldMatrix());
+		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 4, *m_pTransformCom->Get_WorldMatrix());
+		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 5, *m_pTransformCom->Get_WorldMatrix());
+		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 6, *m_pTransformCom->Get_WorldMatrix());
 	}
 }
 		
@@ -93,13 +112,13 @@ HRESULT CSteve::Render()
 
 	for (int i = 0; i < 6; i++)
 	{
-		if (FAILED(m_pVIBufferCom[i]->Bind_WorldMatrix()))
+		if (FAILED(m_pVIBufferComs[i]->Bind_WorldMatrix()))
 			return E_FAIL;
 
-		if (FAILED(m_pVIBufferCom[i]->Bind_Buffers()))
+		if (FAILED(m_pVIBufferComs[i]->Bind_Buffers()))
 			return E_FAIL;
 
-		if (FAILED(m_pVIBufferCom[i]->Render()))
+		if (FAILED(m_pVIBufferComs[i]->Render()))
 			return E_FAIL;
 	}
 
@@ -122,6 +141,13 @@ _float3 CSteve::GetPos()
 
 void CSteve::Input_Key(_float fTimeDelta)
 {
+	CURSORINFO tCursorInfo;
+	tCursorInfo.cbSize = sizeof(CURSORINFO);
+	GetCursorInfo(&tCursorInfo);
+
+	if (tCursorInfo.flags == CURSOR_SHOWING)
+		return;
+
 	Move(fTimeDelta);
 	Turn(fTimeDelta);
 }
@@ -131,7 +157,11 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
+		m_AnimState = WALK;
 	}
+	else
+		m_AnimState = IDLE;
+
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
 		m_pTransformCom->Go_Backward(fTimeDelta);
@@ -139,17 +169,19 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Pressing('A'))
 	{
 		m_pTransformCom->Go_Left(fTimeDelta);
-		//m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta * -1.f);
 	}
 	if (m_pGameInstance->Key_Pressing('D'))
 	{
 		m_pTransformCom->Go_Right(fTimeDelta);
-		//m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
 	}
 
-	if (m_pGameInstance->Key_Pressing(VK_SPACE))
+	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
-		m_pRigidbodyCom->Jump();
+		if (m_pRigidbodyCom->Jump())
+		{
+			//m_pGameInstance->Play_Sound("event:/Built_Fail");
+		}
+		
 	}
 }
 
@@ -224,44 +256,39 @@ HRESULT CSteve::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
+	m_pVIBufferComs.resize(6);
 	// 몸통
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
-		TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[0]))))
+		TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
 		return E_FAIL;
 
 	// 머리
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
-		TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[1]))))
+		TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[1]))))
 		return E_FAIL;
 
 	// 다리
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
-		TEXT("m_pVIBufferCom_Foot_R"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[2]))))
+		TEXT("m_pVIBufferCom_Foot_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[2]))))
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
-		TEXT("m_pVIBufferCom_Foot_L"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[3]))))
+		TEXT("m_pVIBufferCom_Foot_L"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[3]))))
 		return E_FAIL;
 
 	// 팔
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
-		TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[4]))))
+		TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[4]))))
 		return E_FAIL;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
-		TEXT("m_pVIBufferCom_Arm_L"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[5]))))
+		TEXT("m_pVIBufferCom_Arm_L"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[5]))))
 		return E_FAIL;
 
 
-	//// 본 + 애니메이션
-	//CSkeletalAnimator::DESC DescSekel = { 6, m_pVIBufferCom[0]};
-	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
-	//	TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
-	//	return E_FAIL;
-	//
-
-	if (FAILED(Ready_Bone()))
+	// 본 + 애니메이션
+	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
+		TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
 		return E_FAIL;
-	//if (FAILED(Ready_Mesh()))
-		//return E_FAIL;
 
 
 	//콜라이더
@@ -287,50 +314,73 @@ HRESULT CSteve::Ready_Bone()
 {
 	BONE bone[7] =
 	{
-		 { "Root"  , -1,  MAtrixTranslation(0.f,              0.f,					0.f), Matrix(), Matrix() },  // root
-		 { "Pelvis",  0,  MAtrixTranslation(0.f,              12.f / 16.f,			0.f), Matrix(), MAtrixTranslation(0, 6.f / 16.f, 0.f)},
-		 { "Neck"  ,  1,  MAtrixTranslation(0.f,              12.f / 16.f,			0.f), Matrix(), MAtrixTranslation(0, 4.f / 16.f, 0.f)},
-		 { "Leg_R",  1,	  MAtrixTranslation(2.f / 16.f,		  0,					0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
-		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,       0,					0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
-		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,        12.f / 16.f,			0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
-		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16,         12.f / 16.f,			0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Root"  , -1,  MAtrixTranslation(0.f, 0.f,0.f),	MAtrixTranslation(0.f	,0.f,	0.f),	Matrix(), Matrix() },  // root
+		 { "Pelvis",  0,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 6.f / 16.f, 0.f)},
+		 { "Neck"  ,  1,  MAtrixTranslation(0.f,  24.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 4.f / 16.f, 0.f)},
+		 { "Leg_R",  1,	  MAtrixTranslation(2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(2.f / 16.f,	 0,		0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     0,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(6.f / 16.f,   12.f / 16.f	,0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-6.f / 16,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 	};
 
 	for (int i = 0; i < 7; i++)
 	{
-		vecBones.push_back(bone[i]);
+		m_skelAnime->Add_Bone(bone[i]);
 	}
 
 	return S_OK;
 }
 
-void CSteve::UpdateBoneTransforms(int boneIndex, Matrix parentTransform)
+HRESULT CSteve::Ready_Animation()
 {
-	// 현재 bone의 변환을 부모 변환과 곱하기
-	vecBones[boneIndex].worldTransform = vecBones[boneIndex].localTransform * parentTransform;
+	/*----------
+	* 위치 초기화
+	------------*/
 
-	// 모든 자식 bone에 대해 재귀적으로 업데이트
-	for (int i = 0; i < 7; i++)
-	{
-		if (vecBones[i].parent == boneIndex)
-		{
-			UpdateBoneTransforms(i, vecBones[boneIndex].worldTransform);
-		}
-	}
+	Matrix mat99 = {};
+	mat99.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(0));
 
-	Update_Mesh();
+	KEYFREAME IDLE = { 1.f, mat99 };
+	m_skelAnime->Add_Animation(ANIM::IDLE, IDLE);
+
+	/*----------
+	* Walk 모션
+	------------*/
+	Matrix mat = {};
+	mat.Turn_Radian(_float3(1.f,0.f, 0.f), D3DXToRadian(0));
+
+	Matrix mat2 = {};
+	mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(60));
+
+	Matrix mat3 = {};
+	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(0));
+
+	Matrix mat4 = {};
+	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-60));
+	
+	KEYFREAME Walk_1_F = { 0.f, mat };
+	KEYFREAME Walk_2_F = { 1.0f, mat2 };
+	KEYFREAME Walk_3_F = { 2.0f, mat3 };
+	KEYFREAME Walk_4_F = { 3.0f, mat4 };
+
+	KEYFREAME Walk_1_B = { 0.f,  mat4 };
+	KEYFREAME Walk_2_B = { 1.0f, mat3 };
+	KEYFREAME Walk_3_B = { 2.0f, mat2 };
+	KEYFREAME Walk_4_B = { 3.0f, mat };
+
+
+	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_1_F);
+	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_2_F);
+	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_3_F);
+	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_4_F);
+
+	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_1_B);
+	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_2_B);
+	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_3_B);
+	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_4_B);
+
+	return S_OK;
 }
-
-
-
-void CSteve::Update_Mesh()
-{
-	for (int i = 0; i < 6; i++)
-	{
-		m_pVIBufferCom[i]->SetMatrix(vecBones[i + 1].Correction * vecBones[i + 1].worldTransform);
-	}
-}
-
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
@@ -366,13 +416,9 @@ void CSteve::Free()
 	Safe_Release(m_pCollider_CubeCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
-	
-	//Safe_Release(m_skelAnime);
-	for (int i = 0; i < 6; i++)
-	{
-		Safe_Release(m_pVIBufferCom[i]);
-	}
+	Safe_Release(m_skelAnime);
+	for (auto& buffer : m_pVIBufferComs)
+		Safe_Release(buffer);
 
-	
 }
 

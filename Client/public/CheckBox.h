@@ -36,8 +36,8 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
-//private:
-//	_float 
+private:
+	_float m_fCheckBox = { 0.f };
 
 public:
 	static CCheckBox* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

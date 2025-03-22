@@ -24,6 +24,8 @@
 #include "HeroCubeNoMove.h"
 #include "HeroEnemy.h"
 #include "SkyBox.h"
+#include "Sun.h"
+#include "Clouds.h"
 
 
 //지형 관련
@@ -42,14 +44,18 @@
 #include "ParticleDash.h"
 #include "ParticleSandMining.h"
 #include "ParticleWoodMining.h"
+#include "ParticleSandDestroy.h"
 
 //Woo
 #include "MainLogo.h"
 #include "StartButton.h"
 #include "Title.h"
 #include "Edition.h"
-#include "Inventory.h"
+#include "MainInventory.h"
 #include "CheckBox.h"
+#include "SubInventory.h"
+#include "Item.h"
+#include "Inventory_Back.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -352,6 +358,17 @@ HRESULT CLoader::Loading_For_MOOPlay()
 HRESULT CLoader::Loading_For_YUPlay()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	/* For.Prototype_Component_Texture_Sun */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Sun"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/sun.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clouds */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Clouds"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/clouds.png"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Dirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Dirt"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/dirt%d.png"), 1))))
@@ -387,6 +404,19 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Wood"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/wood0.png"), 1))))
 		return E_FAIL;
+
+
+	// 철검 택스쳐
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Sword"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Sword/iron_sword.png"), 1))))
+		return E_FAIL;
+
+
+	// 돌 곡괭이 택스쳐
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Pickaxe"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Pickaxe/stone_pickaxe.png"), 1))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
@@ -459,6 +489,22 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTree::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Sword */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Sword"),
+		CSword::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Sun */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Sun"),
+		CSun::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Clouds */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Clouds"),
+		CClouds::Create(m_pGraphic_Device))))
+
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -481,6 +527,16 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassDirt%d.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Sun */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Sun"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/sun.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Clouds */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Clouds"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/clouds.png"), 1))))
+		return E_FAIL;
+
 	/* 장현우 인벤토리 테스트용 Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
@@ -488,10 +544,22 @@ HRESULT CLoader::Loading_For_HEROPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/inventory_%03d.png"), 2))))
 		return E_FAIL;
 
+	///* For.Prototype_Component_Texture_InventoryBack*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_InventoryBack"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/Inventory_Back_%03d.png"), 2))))
+		return E_FAIL;
+
+	///* For.Prototype_Component_Texture_CheckBox*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_CheckBox"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/CheckBox.png"), 1))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Item*/
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Item"),
+	//	CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/Item_%03d.png"), 1))))
+	//	return E_FAIL;
 	/*================================================================================================*/
+
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("콜라이더을(를) 로딩중입니다."));
@@ -509,8 +577,18 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
-
+#pragma region PROTOTYPE
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+
+	/* For.Prototype_GameObject_Sun */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Sun"),
+		CSun::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Clouds */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Clouds"),
+		CClouds::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Camera_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Camera_Player"),
@@ -545,17 +623,37 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 	/* 장현우 인벤토리 테스트용 GameObject */
 	/*================================================================================================*/
-	/* For.Prototype_GameObject_Inventory */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Inventory"),
-		CInventory::Create(m_pGraphic_Device))))
+	/* For.Prototype_GameObject_MainInventory */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_MainInventory"),
+		CMainInventory::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_SubInventory*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_SubInventory"),
+		CSubInventory::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_SubInventoryBack */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_InventoryBack"),
+		CInventory_Back::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_CheckBox */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_CheckBox"),
 		CCheckBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_CItem*/
+	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Item"),
+	//	CItem::Create(m_pGraphic_Device))))
+	//	return E_FAIL;
+
 	/*================================================================================================*/
 
-
+#pragma endregion
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
 	m_isFinished = true;
@@ -748,6 +846,10 @@ HRESULT CLoader::Loading_For_HECKPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleWoodMining"),
 		CParticleWoodMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandDestroy"),
+		CParticleSandDestroy::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

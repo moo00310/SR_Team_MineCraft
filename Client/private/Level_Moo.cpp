@@ -29,8 +29,6 @@ HRESULT CLevel_Moo::Initialize()
 	if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
 		return E_FAIL;
 
-
-	//임무결 1인칭 확인용
 	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Arm"))))
 		return E_FAIL;
 
@@ -93,7 +91,7 @@ HRESULT CLevel_Moo::Ready_Layer_Tree(const _wstring& strLayerTag)
 		int randWood = rand() % 3 + 4;
 		int ranLeaf = rand() % 8 + 4;
 
-		CTree::DESC desc = { randWood, ranLeaf, _float3(static_cast<int>(rand() % 100) , 0.f, static_cast<int>(rand() % 100)), i};
+		CTree::DESC desc = { randWood, ranLeaf, _float3(static_cast<_float>(rand() % 100) , 0.f, static_cast<_float>(rand() % 100)), i};
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Tree"),
 			LEVEL_MOO, strLayerTag, &desc)))
 			return E_FAIL;

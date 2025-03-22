@@ -24,10 +24,10 @@ HRESULT CBaseParticleMining::Initialize(void* pArg)
 	}
 
 	dwVpBatchSize = 10;
-	dwPointSize = GetScale(1.f);	// 포인트 스프라이트 크기.
+	dwPointSize = GetScale(0.1f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
-	dwPointScaleC = GetScale(2.f);
+	dwPointScaleC = GetScale(1.f);
 
 	// 부모 Initialize 호출시켜서 버텍스 초기화 시키고 이거 호출 시킬 것.
 	if (FAILED(Create_VertexBuffer()))
@@ -63,7 +63,7 @@ ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 	att.IsGravity = true;
 	att.fGravityJumpPower = GetRandomFloat(1.8f, 2.f);
 	att.fGravityTime = 0.f;
-	att.fGravity = 8.8f;
+	att.fGravity = 9.8f;
 
 	return att;
 }

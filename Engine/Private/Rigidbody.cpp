@@ -77,11 +77,11 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 	if (m_isGrounded)
 	{
-		printf_s("is Ground\n");
+		//printf_s("is Ground\n");
 	}
 	else
 	{
-		printf_s("is Air\n");
+		//printf_s("is Air\n");
 	}
 
 
@@ -90,13 +90,17 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 
 
-void CRigidbody::Jump()
+_bool CRigidbody::Jump()
 {
 	if (m_isGrounded) // 바닥에 닿아 있을 때만 점프 가능
 	{
 		m_vVelocity.y = m_fJumpForce; // Y축 방향으로 힘 추가
 		m_isGrounded = false; // 공중에 떠 있는 상태로 변경
+
+		return true;
 	}
+
+	return false;
 }
 
 void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
@@ -123,9 +127,9 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 	
 	// 7. 바닥에 닿았을 때 반응 (간단한 처리 예시: 위치 보정 및 속도 감쇠)
 	vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
-	if (vPosition.y <= 10.0f) // Y축이 0 이하로 내려갔다면
+	if (vPosition.y <= 0.0f) // Y축이 0 이하로 내려갔다면
 	{
-		vPosition.y = 10.0f;
+		vPosition.y = 0.0f;
 		m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
 		  // 바닥에 닿았다면 위치를 0으로 고정
 		m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
