@@ -18,8 +18,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Tool(TEXT("Layer_Tool"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Tool(TEXT("Layer_Tool"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
