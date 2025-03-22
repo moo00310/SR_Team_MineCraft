@@ -33,6 +33,7 @@ void CLeaf::Update(_float fTimeDelta)
 
 void CLeaf::Late_Update(_float fTimeDelta)
 {
+	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CLeaf::Render()
@@ -50,6 +51,8 @@ HRESULT CLeaf::Render()
 	/* 정점을 그린다. */
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
+
+	__super::Render();
 
 	return S_OK;
 }
@@ -71,6 +74,8 @@ HRESULT CLeaf::Ready_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;
+
+	__super::Ready_Components();
 
 	return S_OK;
 }

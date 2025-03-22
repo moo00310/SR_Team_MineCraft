@@ -29,10 +29,11 @@ public:
 public:
 	CGameInstance* GetGameInstance();
 	int GetFileCount();
+	void CheckRenderLayerObjects();
 private:
 	HRESULT Ready_Layer_BackGround();
 	// 모든 물체 Render
-	void CheckRenderLayerObjects();
+
 	// 돌 빼고 Render
 	void RenderWithoutStone();
 	// 모든 청크 비활성화

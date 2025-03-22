@@ -36,6 +36,29 @@ HRESULT CTree::Initialize(void* pArg)
 
 void CTree::Priority_Update(_float fTimeDelta)
 {
+    //for (auto iter = m_vecWood.begin(); iter != m_vecWood.end();)
+    //{
+    //    auto pGameObject = *iter;
+
+    //    // 게임 객체가 파괴되었으면 안전하게 해제하고 삭제
+    //    if (pGameObject->Get_isDestroy())
+    //    {
+    //        Safe_Release(pGameObject);
+    //        iter = m_vecWood.erase(iter); // 삭제 후 반복자 업데이트
+    //    }
+    //}
+
+    //for (auto iter = m_vecLeaf.begin(); iter != m_vecLeaf.end();)
+    //{
+    //    auto pGameObject = *iter;
+
+    //    // 게임 객체가 파괴되었으면 안전하게 해제하고 삭제
+    //    if (pGameObject->Get_isDestroy())
+    //    {
+    //        Safe_Release(pGameObject);
+    //        iter = m_vecLeaf.erase(iter); // 삭제 후 반복자 업데이트
+    //    }
+    //}
 }
 
 void CTree::Update(_float fTimeDelta)
@@ -71,14 +94,14 @@ HRESULT CTree::Ready_Objects(int height, int iAddLeaf, int treeIndex)
     // Wood
     for (int i = 0; i <= height; i++)
     {
-        CBreakableCube* pGameObject = dynamic_cast<CBreakableCube*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, LEVEL_YU, TEXT("Prototype_GameObject_Wood")));
+        CGameObject* pGameObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, LEVEL_YU, TEXT("Prototype_GameObject_Wood")));
 
         m_vecWood.push_back(pGameObject);
     }
 
     for (int i = 0; i <= 48 +iAddLeaf; i++)
     {
-        CBreakableCube* pGameObject = dynamic_cast<CBreakableCube*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, LEVEL_YU, TEXT("Prototype_GameObject_Leaf")));
+        CGameObject* pGameObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, LEVEL_YU, TEXT("Prototype_GameObject_Leaf")));
         m_vecLeaf.push_back(pGameObject);
     }
 
@@ -95,11 +118,11 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
     for (int i = 0; i <= height+1; i++)  // height + 1까지 줄기 배치
     {
         if (i == height + 1) {
-            m_vecLeaf[leafIndex]->SetPos(_float3(0.f, 0.5f + i, 0.f) + m_Pos);
+            dynamic_cast<CBreakableCube*>(m_vecLeaf[leafIndex])->SetPos(_float3(0.f, 0.5f + i, 0.f) + m_Pos);
             leafIndex++;
             continue;
         }
-        m_vecWood[i]->SetPos(_float3(0.f, 0.5f + i, 0.f) + m_Pos);
+        dynamic_cast<CBreakableCube*>(m_vecWood[i])->SetPos(_float3(0.f, 0.5f + i, 0.f) + m_Pos);
     }
 
 
@@ -107,25 +130,25 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
       // 잎(leaf) 생성
     for (int j = 0; j < 20; j++)
     {
-        m_vecLeaf[leafIndex]->SetPos(_float3(leaf[j].x, 0.5f + height - 2, leaf[j].y) + m_Pos);
+        dynamic_cast<CBreakableCube*>(m_vecLeaf[leafIndex])->SetPos(_float3(leaf[j].x, 0.5f + height - 2, leaf[j].y) + m_Pos);
         leafIndex++;
     }
 
     for (int j = 0; j < 20; j++)
     {
-        m_vecLeaf[leafIndex]->SetPos(_float3(leaf[j].x, 0.5f + height - 1, leaf[j].y) + m_Pos);
+        dynamic_cast<CBreakableCube*>(m_vecLeaf[leafIndex])->SetPos(_float3(leaf[j].x, 0.5f + height - 1, leaf[j].y) + m_Pos);
         leafIndex++;
     }
 
     for (int j = 0; j < 4; j++)
     {
-        m_vecLeaf[leafIndex]->SetPos(_float3(leaf[j].x, 0.5f + height, leaf[j].y) + m_Pos);
+        dynamic_cast<CBreakableCube*>(m_vecLeaf[leafIndex])->SetPos(_float3(leaf[j].x, 0.5f + height, leaf[j].y) + m_Pos);
         leafIndex++;
     }
 
     for (int j = 0; j < 4; j++)
     {
-        m_vecLeaf[leafIndex]->SetPos(_float3(leaf[j].x, 0.5f + height + 1, leaf[j].y)+ m_Pos);
+        dynamic_cast<CBreakableCube*>(m_vecLeaf[leafIndex])->SetPos(_float3(leaf[j].x, 0.5f + height + 1, leaf[j].y)+ m_Pos);
         leafIndex++;
     }
 
@@ -137,7 +160,7 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
 
     for (int j = 0; j < iAddLeaf; j++)
     {
-        m_vecLeaf[leafIndex]->SetPos(_float3(vecAddLeadPos[j].x, 0.5f + vecAddLeadPos[j].y + height, vecAddLeadPos[j].z) + m_Pos);
+        dynamic_cast<CBreakableCube*>(m_vecLeaf[leafIndex])->SetPos(_float3(vecAddLeadPos[j].x, 0.5f + vecAddLeadPos[j].y + height, vecAddLeadPos[j].z) + m_Pos);
         leafIndex++;
     }
 

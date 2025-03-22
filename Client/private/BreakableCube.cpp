@@ -1,4 +1,5 @@
 #include "BreakableCube.h"
+#include "MCTerrain.h"
 #include "GameInstance.h"
 
 CBreakableCube::CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -93,4 +94,6 @@ void CBreakableCube::Free()
     __super::Free();
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pColliderCom);
+
+    dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))->CheckRenderLayerObjects();
 }

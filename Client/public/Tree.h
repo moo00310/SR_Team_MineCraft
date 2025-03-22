@@ -34,14 +34,17 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+	vector<CGameObject*> Get_WoodInfo() { return m_vecWood; }
+	vector<CGameObject*> Get_LeafInfo() { return m_vecLeaf; }
+
 private:
 	int index = {};
 	int m_iHeight = {};
 	int m_iAddLeaf = {};
 	int m_iTreeIndex = {};
 
-	vector<CBreakableCube*> m_vecWood;
-	vector<CBreakableCube*> m_vecLeaf;
+	vector<CGameObject*> m_vecWood;
+	vector<CGameObject*> m_vecLeaf;
 
 	_float3 m_Pos = {};
 
