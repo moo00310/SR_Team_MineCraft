@@ -20,7 +20,13 @@ HRESULT CArm_Steve::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
-	
+
+	if (FAILED(Ready_Bone()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Animation()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -30,31 +36,24 @@ void CArm_Steve::Priority_Update(_float fTimeDelta)
 
 void CArm_Steve::Update(_float fTimeDelta)
 {
-	Matrix		ViewMatrix = {};
-	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
-	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
-	Matrix mat = {};
-	mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-115));
-	mat.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-20));
-	mat.Set_State(mat.STATE_POSITION, _float3(0.4f, -0.4f, 0.6f));
-
-	if (GetKeyState(VK_LBUTTON) & 0x8000)
-	{
-		Matrix matrix = {};
-		matrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-30));
-		matrix.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-15));
-		matrix.Go_Vector(matrix.STATE_UP, fTimeDelta, -25.f);
-		matrix.Go_Straight(fTimeDelta, -15.f);
-		m_pTransformCom->Set_Matrix(matrix * mat * ViewMatrix);
-	}
-	else
-	{
-		m_pTransformCom->Set_Matrix(mat * ViewMatrix);
-	}
+	
 }
 
 void CArm_Steve::Late_Update(_float fTimeDelta)
 {
+	Matrix		ViewMatrix = {};
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
+	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+
+	// 팔이 따라오게 하는 코드임
+	m_pSkeletalAnimator->Update_Bone(0, ViewMatrix);
+
+	// 애니메이션
+
+	if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
+		m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0, ViewMatrix);
+
+
 	if (m_pGameInstance->Key_Down(VK_F5))
 	{
 		m_bisTPS *= -1;
@@ -67,17 +66,17 @@ void CArm_Steve::Late_Update(_float fTimeDelta)
 }
 
 HRESULT CArm_Steve::Render()
-{
+{ 
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
-	if (FAILED(m_pTransformCom->Bind_Resource()))
+	if (FAILED(m_pVIBufferComs[0]->Bind_WorldMatrix()))
 		return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+	if (FAILED(m_pVIBufferComs[0]->Bind_Buffers()))
 		return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Render()))
+	if (FAILED(m_pVIBufferComs[0]->Render()))
 		return E_FAIL;
 
 	return S_OK;
@@ -91,20 +90,57 @@ HRESULT CArm_Steve::Ready_Components()
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
-	/* For.Com_Transform */
-	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
-		return E_FAIL;
+	m_pVIBufferComs.resize(1);
 
 	// 팔
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
-		TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+		TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
+		return E_FAIL;
+
+	// 본 + 애니메이션
+	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs};
+	int a = 10;
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
+		TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_pSkeletalAnimator), &DescSekel)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
+HRESULT CArm_Steve::Ready_Bone()
+{
+	Matrix mat = {};
+	mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-115));
+	mat.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-20));
+	mat.Set_State(mat.STATE_POSITION, _float3(0.8f, -0.5f, 0.8f));
+
+	BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
+
+	m_pSkeletalAnimator->Add_Bone(bone);
+
+	return S_OK;
+}
+
+HRESULT CArm_Steve::Ready_Animation()
+{
+	Matrix matrix = {};
+	matrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-30));
+	matrix.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-15));
+	matrix.Set_State(matrix.STATE_POSITION, _float3(0.f, -0.5f, -0.3f));
+
+	Matrix matrix2 = { matrix };
+	matrix2.Set_State(matrix2.STATE_POSITION, _float3(0.1f, 0.5f, -0.3f));
+
+	KEYFREAME keyframe = { 0.f, Matrix() };
+	KEYFREAME keyframe2 = { 0.1f, matrix };
+	KEYFREAME keyframe3 = { 0.3f, matrix2 };
+
+	m_pSkeletalAnimator->Add_Animation(SWING, keyframe);
+	m_pSkeletalAnimator->Add_Animation(SWING, keyframe2);
+	m_pSkeletalAnimator->Add_Animation(SWING, keyframe3);
+
+	return S_OK;
+}
 
 CArm_Steve* CArm_Steve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
@@ -136,8 +172,10 @@ void CArm_Steve::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pVIBufferCom);
+	Safe_Release(m_pSkeletalAnimator);
+
+	for (auto& pVIBuffer : m_pVIBufferComs)
+		Safe_Release(pVIBuffer);
 
 }

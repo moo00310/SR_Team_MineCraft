@@ -36,7 +36,12 @@ void CItem_Model::Update(_float fTimeDelta)
 
 void CItem_Model::Late_Update(_float fTimeDelta)
 {
-    
+    Matrix		ViewMatrix = {};
+    m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
+    D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+
+    Update_BoneAndMesh(ViewMatrix);
+
 }
 
 HRESULT CItem_Model::Render()
@@ -140,7 +145,7 @@ HRESULT CItem_Model::Update_Anime(_int _type, _float fTimeDelta)
     return S_OK;
 }
 
-HRESULT CItem_Model::Update_BoneAndMesh(const const Matrix& matrix)
+HRESULT CItem_Model::Update_BoneAndMesh(const Matrix& matrix)
 {
     m_Bone.worldTransform = m_Bone.localTransform * matrix;
     m_pTransformCom->Set_Matrix(m_Bone.Correction * m_Bone.worldTransform);

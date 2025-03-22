@@ -6,11 +6,16 @@ BEGIN(Engine)
 class CTexture;
 class CTransform;
 class CVIBuffer_Cube;
+class CSkeletalAnimator;
 END
 
 class CArm_Steve : public CGameObject
 {
 public:
+	enum ANIM {
+		IDLE, SWING, ANIM_END
+	};
+
 	typedef struct tagArmesc 
 	{
 		CGameObject* pTarget = { nullptr };
@@ -30,9 +35,9 @@ public:
 	virtual HRESULT Render()override;
 
 private:
-	CTransform* m_pTransformCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
-	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
+	vector<CVIBuffer_Cube*> m_pVIBufferComs = { nullptr };
+	CSkeletalAnimator* m_pSkeletalAnimator = { nullptr };
 
 	float Comput = {};
 	int  flag = { 1 };
@@ -40,6 +45,8 @@ private:
 
 private:
 	HRESULT Ready_Components();
+	HRESULT Ready_Bone();
+	HRESULT Ready_Animation();
 
 public:
 	static CArm_Steve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
