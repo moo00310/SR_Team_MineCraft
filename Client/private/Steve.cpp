@@ -41,7 +41,6 @@ void CSteve::Priority_Update(_float fTimeDelta)
 
 	Input_Key(fTimeDelta);
 
-	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
 void CSteve::Update(_float fTimeDelta)
@@ -51,6 +50,8 @@ void CSteve::Update(_float fTimeDelta)
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
+
+	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
 	//CGameObject* pGameObject;
 	//_float fDist;

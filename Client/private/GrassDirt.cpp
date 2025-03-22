@@ -26,14 +26,18 @@ HRESULT CGrassDirt::Initialize(void* pArg)
 
 void CGrassDirt::Priority_Update(_float fTimeDelta)
 {
+    //__super::Priority_Update(fTimeDelta);
 }
 
 void CGrassDirt::Update(_float fTimeDelta)
 {
+	//__super::Update(fTimeDelta);
 }
 
 void CGrassDirt::Late_Update(_float fTimeDelta)
 {
+	__super::Late_Update(fTimeDelta);
+
     if (m_bRenderActive) {
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
             return;
@@ -42,6 +46,7 @@ void CGrassDirt::Late_Update(_float fTimeDelta)
 
 HRESULT CGrassDirt::Render()
 {
+
     m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
@@ -55,6 +60,9 @@ HRESULT CGrassDirt::Render()
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
+
+    __super::Render();
+
 
     return S_OK;
 }
@@ -76,6 +84,8 @@ HRESULT CGrassDirt::Ready_Components()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
+
+    __super::Ready_Components();
 
     return S_OK;
 }

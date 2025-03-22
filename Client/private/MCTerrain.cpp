@@ -33,6 +33,8 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
+    OffAllChunkLayer();
+    GetPlayerChunk();
 }
 
 void CMCTerrain::Update(_float fTimeDelta)
@@ -53,8 +55,7 @@ void CMCTerrain::Update(_float fTimeDelta)
     prevF1State = currF1State;
     prevF2State = currF2State;
 
-    OffAllChunkLayer();
-    GetPlayerChunk3x3();
+
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
@@ -447,6 +448,17 @@ void CMCTerrain::GetPlayerChunk()
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
     m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    for (CGameObject* pGameObject : objlist)
+    {
+        if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pGameObject)) 
+        {
+            if (pBreakableCube->Get_RenderActive()) {
+                m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
+            }
+            
+        }
+    }
 }
 
 
