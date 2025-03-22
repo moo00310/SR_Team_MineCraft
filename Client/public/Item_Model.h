@@ -12,6 +12,13 @@ END
 
 class CItem_Model abstract : public CGameObject
 {
+public:
+	typedef struct tagItemDesc
+	{
+		wstring TextureTag = {};
+		LEVEL TextureLevel = {};
+	}DESC;
+
 protected:
 	CItem_Model(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CItem_Model(const CItem_Model& Prototype);
@@ -31,10 +38,12 @@ protected:
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 
 protected:
-	BONE m_Bone = {};
-	map<_uint, vector<KEYFREAME>> m_Animations = {};
 	wstring m_TextureTag = {};
 	LEVEL m_TextureLevel = {};
+
+protected:
+	BONE m_Bone = {};
+	map<_uint, vector<KEYFREAME>> m_Animations = {};
 	float fElapsedTime = 0.0f;
 
 protected:

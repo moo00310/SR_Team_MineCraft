@@ -51,7 +51,7 @@ HRESULT CSkeletalAnimator::Update_Bone(int boneIndex, const Matrix& parentTransf
     vecBones[boneIndex].worldTransform = vecBones[boneIndex].localTransform * parentTransform;
 
     // 모든 자식 bone에 대해 재귀적으로 업데이트
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < vecBones.size(); i++)
     {
         if (vecBones[i].parent == boneIndex)
         {
@@ -67,10 +67,17 @@ HRESULT CSkeletalAnimator::Update_Bone(int boneIndex, const Matrix& parentTransf
 void CSkeletalAnimator::Update_Mesh()
 {
     // 최종적으로 본의 위치와 매시의 중심을 보정 해준다.
-    for (int i = 0; i < 6; i++)
+    if (m_pVIBufferComs.size() == 1)
     {
-        m_pVIBufferComs[i]->SetMatrix(vecBones[i + 1].Correction * vecBones[i + 1].worldTransform);
+		m_pVIBufferComs[0]->SetMatrix(vecBones[0].Correction * vecBones[0].worldTransform);
     }
+    else
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            m_pVIBufferComs[i]->SetMatrix(vecBones[i + 1].Correction * vecBones[i + 1].worldTransform);
+        }
+    }  
 }
 
 HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int boneIndex , const Matrix& pWorldTransform)

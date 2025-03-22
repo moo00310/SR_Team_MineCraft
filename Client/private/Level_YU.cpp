@@ -3,6 +3,7 @@
 #include "MapTool.h"
 
 #include "Camera_Player.h"
+#include "Item_Model.h"
 
 
 #include "Steve.h"
@@ -109,8 +110,14 @@ HRESULT CLevel_YU::Ready_Layer_Clouds(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Laye_Sword(const _wstring& strLayerTag)
 {
+	CItem_Model::DESC desc
+	{
+		TEXT("Prototype_Component_Texture_Pickaxe"),
+		LEVEL_YU
+	};
+
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Sword"),
-		LEVEL_YU, strLayerTag)))
+		LEVEL_YU, strLayerTag, &desc)))
 		return E_FAIL;
 
 	return S_OK;

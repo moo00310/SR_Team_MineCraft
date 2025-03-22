@@ -11,6 +11,11 @@ END
 
 class CSword final : public CItem_Model
 {
+public:
+	enum ANIM {
+		IDLE, SWING, ANIM_END
+	};
+
 private:
 	CSword(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CSword(const CSword& Prototype);

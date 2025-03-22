@@ -1,6 +1,7 @@
 ﻿#include "Level_Moo.h"
 #include "GameInstance.h"
 #include "Tree.h"
+#include "Item_Model.h"
 
 CLevel_Moo::CLevel_Moo(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel{ pGraphic_Device }
@@ -26,10 +27,10 @@ HRESULT CLevel_Moo::Initialize()
 	//	return E_FAIL; 
 
 	//임무결 1인칭 확인용
-	if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
-		return E_FAIL;
+	/*if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
+		return E_FAIL;*/
 
-	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Arm"))))
+	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -111,8 +112,14 @@ HRESULT CLevel_Moo::Ready_Laye_MooArm(const _wstring& strLayerTag)
 
 HRESULT CLevel_Moo::Ready_Laye_Sword(const _wstring& strLayerTag)
 {
+	CItem_Model::DESC desc
+	{
+		TEXT("Prototype_Component_Texture_Pickaxe"),
+		LEVEL_MOO
+	};
+
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Sword"),
-		LEVEL_MOO, strLayerTag)))
+		LEVEL_MOO, strLayerTag, &desc)))
 		return E_FAIL;
 
 	return S_OK;
