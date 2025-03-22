@@ -36,6 +36,7 @@
 #include "IronOre.h"
 #include "MCTerrain.h"
 #include "MapTool.h"
+#include "Grass.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -56,6 +57,7 @@
 #include "SubInventory.h"
 #include "Item.h"
 #include "Inventory_Back.h"
+
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -857,10 +859,16 @@ HRESULT CLoader::Loading_For_HECKPlay()
 HRESULT CLoader::Loading_For_TOOL()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
-
+	/* For.Prototype_Component_Texture_Grass */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Grass"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grass0.png"), 1))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
-
+	/* For.Prototype_Component_VIBuffer_Rect */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Rect"),
+		CVIBuffer_Rect::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
@@ -869,6 +877,11 @@ HRESULT CLoader::Loading_For_TOOL()
 	/* For.Prototype_GameObject_Camera_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Camera_Player"),
 		CCamera_Player::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Grass */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Grass"),
+		CGrass::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 

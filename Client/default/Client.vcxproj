@@ -157,6 +157,7 @@
     <ClInclude Include="..\public\BaseParticleDestroy.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
+    <ClInclude Include="..\public\BreakableRect.h" />
     <ClInclude Include="..\public\BTDecorator_IsTargetNear.h" />
     <ClInclude Include="..\public\BTTask_Chase.h" />
     <ClInclude Include="..\public\BTTask_DetectEnemy.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Creeper.h" />
     <ClInclude Include="..\public\Edition.h" />
+    <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\GrassDirt.h" />
     <ClInclude Include="..\public\HeroCube.h" />
     <ClInclude Include="..\public\Dirt.h" />
@@ -239,6 +241,7 @@
     <ClCompile Include="..\private\BaseParticleDestroy.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
+    <ClCompile Include="..\private\BreakableRect.cpp" />
     <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp" />
     <ClCompile Include="..\private\BTTask_Chase.cpp" />
     <ClCompile Include="..\private\BTTask_DetectEnemy.cpp" />
@@ -253,6 +256,7 @@
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
+    <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\GrassDirt.cpp" />
     <ClCompile Include="..\private\HeroCube.cpp" />
     <ClCompile Include="..\private\Dirt.cpp" />

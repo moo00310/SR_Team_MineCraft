@@ -437,9 +437,6 @@
     </ClInclude>
     <ClInclude Include="..\public\SubInventory.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.SubInventory</Filter>
-     </ClInclude>
-    <ClInclude Include="..\public\Inventory.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CheckBox.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\02.CheckBox</Filter>
@@ -467,7 +464,7 @@
     </ClInclude>
     <ClInclude Include="..\public\Inventory_Back.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\03.Inventory_Back</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Sun.h">
       <Filter>02.GameObjects\04.Sun</Filter>
     </ClInclude>
@@ -479,6 +476,12 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleSandDestroy.h">
       <Filter>02.GameObjects\Particle\Destroy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BreakableRect.h">
+      <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Grass.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -675,7 +678,6 @@
     <ClCompile Include="..\private\ParticleRain.cpp">
       <Filter>02.GameObjects\Particle</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\TestParticle.cpp" />
     <ClCompile Include="..\private\SubInventory.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.SubInventory</Filter>
     </ClCompile>
@@ -706,7 +708,7 @@
     </ClCompile>
     <ClCompile Include="..\private\Inventory_Back.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\03.Inventory_Back</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\Sun.cpp">
       <Filter>02.GameObjects\04.Sun</Filter>
     </ClCompile>
@@ -718,6 +720,12 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleSandDestroy.cpp">
       <Filter>02.GameObjects\Particle\Destroy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BreakableRect.cpp">
+      <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Grass.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
