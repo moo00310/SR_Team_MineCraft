@@ -46,12 +46,12 @@ void CTree::Update(_float fTimeDelta)
 void CTree::Late_Update(_float fTimeDelta)
 {
     for (auto object : m_vecWood) {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, object)))
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, object)))
             return;
     }
 
     for (auto object : m_vecLeaf) {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, object)))
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, object)))
             return;
     }
 }

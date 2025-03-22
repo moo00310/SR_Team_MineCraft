@@ -35,7 +35,7 @@ void CDirt::Update(_float fTimeDelta)
 void CDirt::Late_Update(_float fTimeDelta)
 {
     if (m_bRenderActive) {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
             return;
     }
 

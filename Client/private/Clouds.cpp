@@ -65,8 +65,8 @@ HRESULT CClouds::Render()
 
 HRESULT CClouds::SetUp_RenderState()
 {
-	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, FALSE);
-	m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	//m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, FALSE);
+	//m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -86,8 +86,8 @@ HRESULT CClouds::Release_RenderState()
 
 	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
-	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
-	m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	//m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
+	//m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
 
 	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
@@ -97,7 +97,7 @@ HRESULT CClouds::Release_RenderState()
 HRESULT CClouds::Ready_Components()
 {
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Clouds"),
+	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Clouds"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
