@@ -1,4 +1,5 @@
 #include "Sword.h"
+#include "GameInstance.h"
 
 CSword::CSword(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CItem_Model{ pGraphic_Device }
@@ -49,8 +50,12 @@ void CSword::Late_Update(_float fTimeDelta)
     
     if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
     {
-        Update_Anime(SWING, fTimeDelta);
+		m_eCurAnim = ANIM::SWING;
     }
+
+     //애니메이션 적용
+    if (m_eCurAnim != ANIM::NONE)
+        Update_Motion(m_eCurAnim, fTimeDelta);
     
     if (m_pGameInstance->Key_Down(VK_F5))
     {
@@ -58,7 +63,7 @@ void CSword::Late_Update(_float fTimeDelta)
     }
     if (m_bisTPS > 0)
     {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_BLEND, this)))
             return;
     }
 }
@@ -68,6 +73,52 @@ HRESULT CSword::Render()
     __super::Render();
 
     return S_OK;
+}
+
+HRESULT CSword::Update_Motion(_int _type, _float fTimeDelta)
+{
+    switch (_type)
+    {
+    case CSword::IDLE:
+        Idle_Sword(fTimeDelta);
+        return S_OK;
+    case CSword::SWING:
+        Swing_Sword(fTimeDelta);
+        return S_OK;
+    case CSword::ANIM_END:
+    default:
+        return S_OK;
+    }
+}
+
+void CSword::Swing_Sword(_float fTimeDelta)
+{
+	if (m_Animations[SWING].empty())
+		return;
+
+	if (FAILED(Update_Anime(SWING, fTimeDelta)))
+		return;
+
+	if (m_Animations[SWING].back().fTime < fElapsedTime)
+	{
+		fElapsedTime = 0.f;
+		m_eCurAnim = ANIM::IDLE;
+	}
+
+}
+
+void CSword::Idle_Sword(_float fTimeDelta)
+{
+	if (m_Animations[IDLE].empty())
+		return;
+
+	if (FAILED(Update_Anime(IDLE, fTimeDelta)))
+		return;
+
+	if (m_Animations[IDLE].back().fTime < fElapsedTime)
+	{
+		fElapsedTime = 0.f;
+	}
 }
 
 CSword* CSword::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -98,7 +149,10 @@ CGameObject* CSword::Clone(void* pArg)
 
 void CSword::Free()
 {
+	m_eCurAnim = ANIM::NONE;
     __super::Free();
+
+
 }
 
 HRESULT CSword::Ready_Bone()
@@ -118,6 +172,10 @@ HRESULT CSword::Ready_Bone()
 
 HRESULT CSword::Ready_Anime()
 {
+    /*------------------------
+    * 스윙 애니메이션
+    ----------------------------*/
+
     Matrix matrix = {};
     matrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(100));
     matrix.Set_State(matrix.STATE_POSITION, _float3(-1.5f, 0.2f, -0.3f));
@@ -131,6 +189,12 @@ HRESULT CSword::Ready_Anime()
 	m_swing.push_back({ 1.f, Matrix() });
    
     m_Animations.emplace(SWING, m_swing);
+
+    /*------------------------
+    * 대기 애니메이션
+    ----------------------------*/
+	m_IDLE.push_back({ 0.f, Matrix() });
+    m_Animations.emplace(IDLE, m_IDLE);
 
     return S_OK;
 }

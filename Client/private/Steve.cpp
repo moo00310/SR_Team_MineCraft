@@ -84,8 +84,8 @@ void CSteve::Late_Update(_float fTimeDelta)
 	// 애니메이션 적용
 	if (m_AnimState == WALK)
 	{
-		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 3, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 4, *m_pTransformCom->Get_WorldMatrix());
+		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 3, *m_pTransformCom->Get_WorldMatrix());
+		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 4, *m_pTransformCom->Get_WorldMatrix());
 		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 5, *m_pTransformCom->Get_WorldMatrix());
 		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 6, *m_pTransformCom->Get_WorldMatrix());
 	}

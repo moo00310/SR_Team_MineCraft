@@ -13,7 +13,7 @@ class CSword final : public CItem_Model
 {
 public:
 	enum ANIM {
-		IDLE, SWING, ANIM_END
+		IDLE, SWING, ANIM_END, NONE
 	};
 
 private:
@@ -29,10 +29,18 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+
+private:
+	HRESULT Update_Motion(_int _type, _float fTimeDelta);
+	void Swing_Sword(_float fTimeDelta);
+	void Idle_Sword(_float fTimeDelta);
+
+
 private:
 	int m_bisTPS = { -1 };
 	vector<KEYFREAME> m_swing;
-
+	vector<KEYFREAME> m_IDLE;
+	ANIM m_eCurAnim = IDLE;
 
 public:
 	static CSword* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

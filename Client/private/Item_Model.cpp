@@ -111,11 +111,6 @@ HRESULT CItem_Model::Update_Anime(_int _type, _float fTimeDelta)
 {
     fElapsedTime += fTimeDelta;
 
-    if (fElapsedTime >= m_Animations[_type].back().fTime)
-    {
-        fElapsedTime = 0.0f;  // 처음부터 재생
-    }
-
     if (m_Animations[_type].size() < 2)
     {
         // 단일 키프레임만 있을 경우 그냥 그거 하나 적용
