@@ -43,6 +43,11 @@ void CGrass::Late_Update(_float fTimeDelta)
 
 HRESULT CGrass::Render()
 {
+    m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 254);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
@@ -55,10 +60,10 @@ HRESULT CGrass::Render()
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
-
-
     __super::Render();
 
+    m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
     return S_OK;
 }
 
@@ -70,8 +75,8 @@ HRESULT CGrass::Ready_Components()
         return E_FAIL;
 
     /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Rect"),
-        TEXT("m_pVIBufferCom_Rect"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+    if (FAILED(__super::Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Rect3D"),
+        TEXT("m_pVIBufferCom_Rect3D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
         return E_FAIL;
 
     /* For.Com_Transform */

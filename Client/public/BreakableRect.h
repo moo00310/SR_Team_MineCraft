@@ -6,7 +6,7 @@
 #include "Transform.h"
 
 BEGIN(Engine)
-class CVIBuffer_Rect;
+class CVIBuffer_Rect3D;
 class CCollider_Cube;
 END
 
@@ -35,7 +35,7 @@ protected:
 	HRESULT Ready_Components();
 	bool m_bRenderActive = true;
 
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr};
+	CVIBuffer_Rect3D* m_pVIBufferCom = { nullptr};
 	CCollider_Cube* m_pColliderCom = { nullptr };
 	
 public:
