@@ -35,9 +35,11 @@ void CDirt::Update(_float fTimeDelta)
 void CDirt::Late_Update(_float fTimeDelta)
 {
     if (m_bRenderActive) {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
             return;
     }
+
+	__super::Late_Update(fTimeDelta);
 }
 
 HRESULT CDirt::Render()
@@ -54,6 +56,8 @@ HRESULT CDirt::Render()
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
+
+    __super::Render();
 
     return S_OK;
 }
@@ -75,6 +79,8 @@ HRESULT CDirt::Ready_Components()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
+
+	__super::Ready_Components();
 
     return S_OK;
 }

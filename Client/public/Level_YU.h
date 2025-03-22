@@ -22,6 +22,8 @@ private:
 	HRESULT Ready_Layer_Terrain(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Tool(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Steve(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_Sun(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_Clouds(const _wstring& strLayerTag);
 
 public:
 	static CLevel_YU* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -15,6 +15,9 @@ CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_YU::Initialize()
 {
+	if (FAILED(Ready_Layer_Clouds(TEXT("Layer_Clouds"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
@@ -26,6 +29,11 @@ HRESULT CLevel_YU::Initialize()
 	
 	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
+		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -67,6 +75,24 @@ HRESULT CLevel_YU::Ready_Layer_Steve(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(0, 20, 0));
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Sun(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Sun"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Clouds(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Clouds"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }
