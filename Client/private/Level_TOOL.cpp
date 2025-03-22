@@ -1,5 +1,6 @@
 #include "Level_TOOL.h"
 #include "GameInstance.h"
+#include "Camera_Player.h"
 
 CLevel_TOOL::CLevel_TOOL(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -9,16 +10,10 @@ CLevel_TOOL::CLevel_TOOL(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_TOOL::Initialize()
 {
+	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Player(TEXT("Layer_Player"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
-		return E_FAIL;
-	
-	if (FAILED(Ready_Layer_Tool(TEXT("Layer_Tool"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -38,39 +33,27 @@ HRESULT CLevel_TOOL::Render()
 
 HRESULT CLevel_TOOL::Ready_Layer_Camera(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, TEXT("Prototype_GameObject_Camera_Free"),
+	CCamera_Player::CAMERA_PLAYER_DESC Cam_Player_Desc{};
+	Cam_Player_Desc.vEye = _float3(0.f, 10.f, -10.f);
+	Cam_Player_Desc.vAt = _float3(0.f, 0.f, 0.f);
+	Cam_Player_Desc.fFov = D3DXToRadian(60.f);
+	Cam_Player_Desc.fNear = 0.1f;
+	Cam_Player_Desc.fFar = 300.f;
+	Cam_Player_Desc.fMouseSensor = 0.1f;
+	Cam_Player_Desc.pTarget = m_pGameInstance->Get_Object(LEVEL_TOOL, TEXT("Layer_Steve"), 0);//게임인스턴스-> Find Layer-> Steve Layer에서 GameObject* 가져와야 할 듯
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, TEXT("Prototype_GameObject_Camera_Player"),
+		LEVEL_TOOL, strLayerTag, &Cam_Player_Desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_TOOL::Ready_Layer_Steve(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
 		LEVEL_TOOL, strLayerTag)))
 		return E_FAIL;
 
-	return S_OK;
-}
-
-HRESULT CLevel_TOOL::Ready_Layer_Player(const _wstring& strLayerTag)
-{
-	for (size_t i = 0; i < 50; i++)
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, TEXT("Prototype_GameObject_Player"),
-			LEVEL_TOOL, strLayerTag)))
-			return E_FAIL;
-	}
-	
-
-	return S_OK;
-}
-HRESULT CLevel_TOOL::Ready_Layer_BackGround(const _wstring& strLayerTag)
-{
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, TEXT("Prototype_GameObject_Terrain"),
-		LEVEL_TOOL, strLayerTag)))
-		return E_FAIL;
-
-	return S_OK;
-}
-
-HRESULT CLevel_TOOL::Ready_Layer_Tool(const _wstring& strLayerTag)
-{
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_GAMEPLAY, TEXT("Prototype_GameObject_Tool"),
-		LEVEL_GAMEPLAY, strLayerTag)))
-		return E_FAIL;
 
 	return S_OK;
 }
