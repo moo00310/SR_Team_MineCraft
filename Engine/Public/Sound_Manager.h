@@ -15,7 +15,7 @@
 #define MAX_SFX_CHANNEL 31
 FMOD_RESULT F_CALLBACK AutoRelease(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* eventInstance, void* parameters);
 
-BEGIN(Engine)
+BEGIN(Engine) 
 
 class CSound_Manager : public CBase
 {

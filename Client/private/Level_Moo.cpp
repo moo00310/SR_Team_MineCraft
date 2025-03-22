@@ -29,8 +29,6 @@ HRESULT CLevel_Moo::Initialize()
 	if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
 		return E_FAIL;
 
-
-	//임무결 1인칭 확인용
 	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Arm"))))
 		return E_FAIL;
 
