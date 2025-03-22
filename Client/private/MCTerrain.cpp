@@ -34,7 +34,7 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
     OffAllChunkLayer();
-    GetPlayerChunk();
+    GetPlayerChunk3x3();
 }
 
 void CMCTerrain::Update(_float fTimeDelta)
@@ -398,36 +398,35 @@ void CMCTerrain::GetPlayerChunk3x3()
     int width = static_cast<int>(sqrt(m_iChunkCount));
     int chunk = x + (width * z);
 
-    wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
-    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunk - width); 
-    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunk + width);
-    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-    if (chunk% width != 0) {
-        swprintf(layerName, 100, L"Layer_Chunk%d", chunk - 1);
+    auto ActivateChunkLayer = [&](int chunkIndex) {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
         m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
 
-        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk - width) - 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+        for (CGameObject* pGameObject : m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName)) {
+            if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pGameObject)) {
+                if (pBreakableCube->Get_RenderActive()) {
+                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
+                }
+            }
+        }
+        };
 
-        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) - 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    // 3x3 영역 활성화
+    ActivateChunkLayer(chunk);
+    ActivateChunkLayer(chunk - width);
+    ActivateChunkLayer(chunk + width);
+
+    if (chunk % width != 0) {
+        ActivateChunkLayer(chunk - 1);
+        ActivateChunkLayer(chunk - width - 1);
+        ActivateChunkLayer(chunk + width - 1);
     }
 
-    if ((chunk +1) % width != 0) {
-        swprintf(layerName, 100, L"Layer_Chunk%d", chunk + 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk - width) + 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) + 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    if ((chunk + 1) % width != 0) {
+        ActivateChunkLayer(chunk + 1);
+        ActivateChunkLayer(chunk - width + 1);
+        ActivateChunkLayer(chunk + width + 1);
     }
 }
 
