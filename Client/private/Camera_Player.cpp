@@ -103,8 +103,9 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
         if (pHitObject)
         {
-            if (pHitObject)
+            if (pHitObject) {
                 pHitObject->Destroy();
+            }
         }
 
     }

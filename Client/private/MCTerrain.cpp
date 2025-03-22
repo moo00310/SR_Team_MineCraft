@@ -310,49 +310,57 @@ struct Float3Hash {
 
 void CMCTerrain::CheckRenderLayerObjects()
 {
-    for (int i = 0; i < m_iChunkCount; ++i) {
-        wchar_t layerName[100];
-        swprintf(layerName, 100, L"Layer_Chunk%d", i);
 
-        list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return;
 
-        // 블록 위치 정보를 저장할 unordered_set
-        std::unordered_set<_float3, Float3Hash> blockPositions;
+    _float3 playerPos = pSteve->GetPos();
 
-        // 먼저 모든 블록의 위치를 저장
-        for (auto _object : _copyObjectList) {
-            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
-                _break->Set_RenderActive(true);
-                blockPositions.insert(_break->GetPos());
-            }
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    int chunk = x + (width * z);
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
+
+    list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+
+    // 블록 위치 정보를 저장할 unordered_set
+    std::unordered_set<_float3, Float3Hash> blockPositions;
+
+    // 먼저 모든 블록의 위치를 저장
+    for (auto _object : _copyObjectList) {
+        if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+            _break->Set_RenderActive(true);
+            blockPositions.insert(_break->GetPos());
         }
+    }
 
-        // 블록의 렌더링 여부 확인
-        for (auto _object : _copyObjectList) {
-            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
-                _float3 pos = _break->GetPos();
-                
-                // 6방향 확인
-                static const _float3 offsets[] = {
-                    {-1, 0, 0}, {1, 0, 0}, {0, 1, 0},
-                    {0, -1, 0}, {0, 0, 1}, {0, 0, -1}
-                };
+    // 블록의 렌더링 여부 확인
+    for (auto _object : _copyObjectList) {
+        if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+            _float3 pos = _break->GetPos();
 
-                bool isSurrounded = true;
-                for (const auto& offset : offsets) {
-                    if (blockPositions.find({ pos.x + offset.x, pos.y + offset.y, pos.z + offset.z }) == blockPositions.end()) {
-                        isSurrounded = false;
-                        break;
-                    }
+            // 6방향 확인
+            static const _float3 offsets[] = {
+                {-1, 0, 0}, {1, 0, 0}, {0, 1, 0},
+                {0, -1, 0}, {0, 0, 1}, {0, 0, -1}
+            };
+
+            bool isSurrounded = true;
+            for (const auto& offset : offsets) {
+                if (blockPositions.find({ pos.x + offset.x, pos.y + offset.y, pos.z + offset.z }) == blockPositions.end()) {
+                    isSurrounded = false;
+                    break;
                 }
+            }
 
-                if (isSurrounded) {
-                    _break->Set_RenderActive(false);
-                }
+            if (isSurrounded) {
+                _break->Set_RenderActive(false);
             }
         }
     }
-   
 }
 
 void CMCTerrain::RenderWithoutStone()
@@ -398,36 +406,35 @@ void CMCTerrain::GetPlayerChunk3x3()
     int width = static_cast<int>(sqrt(m_iChunkCount));
     int chunk = x + (width * z);
 
-    wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
-    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunk - width); 
-    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunk + width);
-    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-    if (chunk% width != 0) {
-        swprintf(layerName, 100, L"Layer_Chunk%d", chunk - 1);
+    auto ActivateChunkLayer = [&](int chunkIndex) {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
         m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
 
-        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk - width) - 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+        for (CGameObject* pGameObject : m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName)) {
+            if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pGameObject)) {
+                if (pBreakableCube->Get_RenderActive()) {
+                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
+                }
+            }
+        }
+        };
 
-        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) - 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    // 3x3 영역 활성화
+    ActivateChunkLayer(chunk);
+    ActivateChunkLayer(chunk - width);
+    ActivateChunkLayer(chunk + width);
+
+    if (chunk % width != 0) {
+        ActivateChunkLayer(chunk - 1);
+        ActivateChunkLayer(chunk - width - 1);
+        ActivateChunkLayer(chunk + width - 1);
     }
 
-    if ((chunk +1) % width != 0) {
-        swprintf(layerName, 100, L"Layer_Chunk%d", chunk + 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk - width) + 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-        swprintf(layerName, 100, L"Layer_Chunk%d", (chunk + width) + 1);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    if ((chunk + 1) % width != 0) {
+        ActivateChunkLayer(chunk + 1);
+        ActivateChunkLayer(chunk - width + 1);
+        ActivateChunkLayer(chunk + width + 1);
     }
 }
 
@@ -456,7 +463,20 @@ void CMCTerrain::GetPlayerChunk()
             if (pBreakableCube->Get_RenderActive()) {
                 m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
             }
-            
+        }
+        else {
+            //지금은 나무만 임
+            if (CTree* pTree = dynamic_cast<CTree*>(pGameObject)) {
+                vector<CGameObject*> _copyVec = pTree->Get_WoodInfo();
+                for (auto copy : _copyVec) {
+                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
+                }
+                _copyVec = pTree->Get_LeafInfo();
+                for (auto copy : _copyVec) {
+                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
+                }
+            }
+
         }
     }
 }

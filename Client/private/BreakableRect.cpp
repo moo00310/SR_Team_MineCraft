@@ -1,24 +1,23 @@
-#include "BreakableCube.h"
-#include "MCTerrain.h"
+#include "BreakableRect.h"
 #include "GameInstance.h"
 
-CBreakableCube::CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device)
+CBreakableRect::CBreakableRect(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
 {
 }
 
-CBreakableCube::CBreakableCube(const CBreakableCube& Prototype)
+CBreakableRect::CBreakableRect(const CBreakableRect& Prototype)
     : CCube(Prototype)
 {
 }
 
-HRESULT CBreakableCube::Initialize_Prototype()
+HRESULT CBreakableRect::Initialize_Prototype()
 {
 
     return S_OK;
 }
 
-HRESULT CBreakableCube::Initialize(void* pArg)
+HRESULT CBreakableRect::Initialize(void* pArg)
 {
     if (FAILED(Ready_Components()))
         return E_FAIL;
@@ -26,30 +25,30 @@ HRESULT CBreakableCube::Initialize(void* pArg)
     return S_OK;
 }
 
-void CBreakableCube::Priority_Update(_float fTimeDelta)
+void CBreakableRect::Priority_Update(_float fTimeDelta)
 {
 
 }
 
-void CBreakableCube::Update(_float fTimeDelta)
+void CBreakableRect::Update(_float fTimeDelta)
 {
 
 }
 
-void CBreakableCube::Late_Update(_float fTimeDelta)
+void CBreakableRect::Late_Update(_float fTimeDelta)
 {
     if (m_pColliderCom)
         m_pColliderCom->Update_ColliderBox();
 }
 
-HRESULT CBreakableCube::Render()
+HRESULT CBreakableRect::Render()
 {
     if (m_pColliderCom)
         m_pColliderCom->Render_ColliderBox(false);
     return S_OK;
 }
 
-HRESULT CBreakableCube::Ready_Components()
+HRESULT CBreakableRect::Ready_Components()
 {
     /* For.Com_Collider */
     CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
@@ -63,37 +62,35 @@ HRESULT CBreakableCube::Ready_Components()
 }
 
 
-CBreakableCube* CBreakableCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CBreakableRect* CBreakableRect::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CBreakableCube* pInstance = new CBreakableCube(pGraphic_Device);
+    CBreakableRect* pInstance = new CBreakableRect(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBreakableCube");
+        MSG_BOX("Failed to Created : CBreakableRect");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBreakableCube::Clone(void* pArg)
+CGameObject* CBreakableRect::Clone(void* pArg)
 {
-    CBreakableCube* pInstance = new CBreakableCube(*this);
+    CBreakableRect* pInstance = new CBreakableRect(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CBreakableCube");
+        MSG_BOX("Failed to Created : CBreakableRect");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBreakableCube::Free()
+void CBreakableRect::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pColliderCom);
-
-    dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))->CheckRenderLayerObjects();
 }
