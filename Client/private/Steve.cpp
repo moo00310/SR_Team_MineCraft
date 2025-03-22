@@ -251,7 +251,7 @@ HRESULT CSteve::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Transform */
-	CTransform::TRANSFORM_DESC		TransformDesc{ 5.f, D3DXToRadian(90.f) };
+	CTransform::TRANSFORM_DESC		TransformDesc{ 4.f, D3DXToRadian(90.f) };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;
@@ -295,8 +295,8 @@ HRESULT CSteve::Ready_Components()
 	//콜라이더
 	/* For.Com_Collider */
 	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	Desc.fRadiusX = 0.3f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 0.3;
-	Desc.fOffSetY = 1.f;
+	Desc.fRadiusX = 0.3f; Desc.fRadiusY = 0.8f; Desc.fRadiusZ = 0.3;
+	Desc.fOffSetY = 0.8f;
 	Desc.pTransformCom = m_pTransformCom;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))

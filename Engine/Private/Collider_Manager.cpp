@@ -127,7 +127,7 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 				CCollider_Cube::COLLISION_INFO tInfo;
 				tInfo.pGameObject = iter;
 				tInfo.eCollisionDir = OutDir;  // 충돌 방향 저장
-				tInfo.fDistance = OutDistance;  // 충돌 거리 저장
+				tInfo.vDepth = OutDistance;  // 충돌 거리 저장
 
 				Collision_Infos.push_back(tInfo); // 벡터에 추가
 			}

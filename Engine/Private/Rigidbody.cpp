@@ -41,11 +41,10 @@ HRESULT CRigidbody::Initialize(void* pArg)
 	return S_OK;
 }
 
+#include <algorithm> // std::clamp 사용
+
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
-	/*if (m_isGrounded)
-		m_vVelocity.y = 0.f;*/
-
 	m_isGrounded = false;
 
 	Fall_With_Gravity(fTimeDelta);
@@ -53,98 +52,82 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 	// 충돌 검사
 	if (m_pCollider_Cube)
 	{
-		//_float3 vDist;
-		//CCollider_Cube::COLLSION_DIR eDir;
-
-		//_bool isHit = m_pGameInstance->Collision_with_Group(iCollsionGroup, m_pCollider_Cube, CCollider_Manager::COLLSIION_CUBE, &vDist, &eDir);
-
-		list< CCollider_Cube::COLLISION_INFO> Collision_Infos;
+		list<CCollider_Cube::COLLISION_INFO> Collision_Infos;
 		_bool isHit = m_pGameInstance->Collision_Check_Group_Multi(iCollsionGroup, Collision_Infos, m_pCollider_Cube, CCollider_Manager::COLLSIION_CUBE);
 
 		if (isHit)
 		{
-			//printf_s("Collision_Infos: %zu \n", Collision_Infos.size());
-
-			
-			_float fMinDist_Y{ 0.0f };
-
-			_float fMaxDist_X{ 0.0f };
-			_float fMinDist_X{ 0.0f };
-
-			_float fMaxDist_Z{ 0.0f };
-			_float fMinDist_Z{ 0.0f };
+			_float fMaxDepth_Y = 0.0f, fMinDepth_Y = 0.0f;
+			_float fMaxDepth_X = 0.0f, fMinDepth_X = 0.0f;
+			_float fMaxDepth_Z = 0.0f, fMinDepth_Z = 0.0f;
 
 			for (CCollider_Cube::COLLISION_INFO& tCollision_Info : Collision_Infos)
 			{
-				_float3 vDist = tCollision_Info.fDistance;
+				_float3 vDepth = tCollision_Info.vDepth;
 				CCollider_Cube::COLLSION_DIR eDir = tCollision_Info.eCollisionDir;
+
+				if (eDir == CCollider_Cube::COLLSION_DIR::DOWN)
+				{
+					m_vVelocity.y = 0.0f;
+					fMaxDepth_Y = max(fMaxDepth_Y, vDepth.y);
+				}
 
 				if (eDir == CCollider_Cube::COLLSION_DIR::UP)
 				{
 					if (isFalling())
-						m_vVelocity.y = 0.0f;    // 속도 멈춤
+						m_vVelocity.y = 0.0f;
 
 					m_isGrounded = true;
-
-					if (fMinDist_Y > vDist.y)
-						fMinDist_Y = vDist.y;
+					fMinDepth_Y = min(fMinDepth_Y, vDepth.y);
 				}
 				else
 				{
-					if (eDir == CCollider_Cube::COLLSION_DIR::LEFT)
+					switch (eDir)
 					{
-						if (fMaxDist_X < vDist.x)
-							fMaxDist_X = vDist.x;
-					}
-					else if (eDir == CCollider_Cube::COLLSION_DIR::RIGHT)
-					{
-						if (fMinDist_X == 0.f)
-							fMinDist_X = vDist.x;
-						else if (fMinDist_X > vDist.x)
-							fMinDist_X = vDist.x;
-					}
-					else if (eDir == CCollider_Cube::COLLSION_DIR::FRONT)
-					{
-						if (fMaxDist_Z < vDist.z)
-							fMaxDist_Z = vDist.z;
-					}
-					else if (eDir == CCollider_Cube::COLLSION_DIR::BACK)
-					{
-						if (fMinDist_Z == 0.f)
-							fMinDist_Z = vDist.z;
-						else if (fMinDist_Z > vDist.z)
-							fMinDist_Z = vDist.z;
+					case CCollider_Cube::COLLSION_DIR::LEFT:
+						fMaxDepth_X = max(fMaxDepth_X, vDepth.x);
+						break;
+					case CCollider_Cube::COLLSION_DIR::RIGHT:
+						fMinDepth_X = (fMinDepth_X == 0.f) ? vDepth.x : min(fMinDepth_X, vDepth.x);
+						break;
+					case CCollider_Cube::COLLSION_DIR::FRONT:
+						fMaxDepth_Z = max(fMaxDepth_Z, vDepth.z);
+						break;
+					case CCollider_Cube::COLLSION_DIR::BACK:
+						fMinDepth_Z = (fMinDepth_Z == 0.f) ? vDepth.z : min(fMinDepth_Z, vDepth.z);
+						break;
+					default:
+						break;
 					}
 				}
-				
 			}
 
-			// 현재 위치 보정 (Y축은 바닥 충돌일 때만 적용)
+			// 현재 위치 보정 (최대 ±0.5f 제한)
 			_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 
-			vPosition.y -= fMinDist_Y;  // 바닥 충돌 시 Y축 보정
+			//const _float fClamp = 0.5f;//의미 없는 듯???
 
-			vPosition.x -= fMaxDist_X + fMinDist_X;  // 벽 충돌 시 X축 보정
-			vPosition.z -= fMaxDist_Z + fMinDist_Z;  // 벽 충돌 시 Z축 보정
-			
+			//_float fTotalDepth_Y = clamp(fMinDepth_Y + fMaxDepth_Y, -fClamp, fClamp);
+			//vPosition.y -= fTotalDepth_Y;
+			vPosition.y -= fMinDepth_Y + fMaxDepth_Y;
+
+			/*_float fTotalDepth_X = clamp(fMaxDepth_X + fMinDepth_X, -fClamp, fClamp);
+			vPosition.x -= fTotalDepth_X;*/
+			vPosition.x -= fMaxDepth_X + fMinDepth_X;
+
+			/*_float fTotalDepth_Z = clamp(fMaxDepth_Z + fMinDepth_Z, -fClamp, fClamp);
+			vPosition.z -= fTotalDepth_Z;*/
+			vPosition.z -= fMaxDepth_Z + fMinDepth_Z;
+
 			m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
 		}
 	}
 
 	printf_s("velocity: %f, %f, %f\n", m_vVelocity.x, m_vVelocity.y, m_vVelocity.z);
 
-
-	if (m_isGrounded)
-	{
-		//printf_s("is Ground\n");
-	}
-	else
-	{
-		//printf_s("is Air\n");
-	}
-
 	return S_OK;
 }
+
 
 
 

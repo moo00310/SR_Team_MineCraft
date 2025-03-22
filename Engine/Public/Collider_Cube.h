@@ -16,7 +16,7 @@ public:
 	{
 		class CGameObject* pGameObject{ nullptr };   // 충돌한 오브젝트
 		CCollider_Cube::COLLSION_DIR eCollisionDir{ CCollider_Cube::COLLSION_DIR::NONE };  // 충돌 방향
-		_float3 fDistance{ 0.f, 0.f, 0.f };  // 충돌 거리
+		_float3 vDepth{ 0.f, 0.f, 0.f };  // 충돌 깊이
 	}COLLISION_INFO;
 
 public:
