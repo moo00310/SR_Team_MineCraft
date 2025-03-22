@@ -215,7 +215,15 @@ _bool CGameInstance::Collision_with_Group(_uint eGroup, CComponent* pCollider, C
 	if (nullptr == m_pCollider_Manager)
 		return false;
 
-	return m_pCollider_Manager->Collision_with_Group(eGroup, pCollider, eType, pOutDistance, pOutDir);
+	return m_pCollider_Manager->Collision_Check_with_Group(eGroup, pCollider, eType, pOutDistance, pOutDir);
+}
+
+_bool CGameInstance::Collision_Check_Group_Multi(_uint iGroupIndex, list<CCollider_Cube::COLLISION_INFO>& Collision_Infos, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eCollisionType)
+{
+	if (nullptr == m_pCollider_Manager)
+		return false;
+
+	return m_pCollider_Manager->Collision_Check_Group_Multi(iGroupIndex, Collision_Infos, pCollider, eCollisionType);
 }
 
 CGameObject* CGameInstance::Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist)

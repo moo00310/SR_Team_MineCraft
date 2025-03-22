@@ -61,7 +61,8 @@ public:
 	void Out_CollisiomGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
 	//특정 그룹의 오브젝트들과 충돌 검사
 	_bool Collision_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir = nullptr);
-
+	//특정 그룹의 오브젝트들과 충돌 검사(여러개의 오브젝트와 충돌 검사)
+	_bool Collision_Check_Group_Multi(_uint iGroupIndex, list<CCollider_Cube::COLLISION_INFO>& CollisionObjects, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eCollisionType);
 	//레이케스트
 	CGameObject* Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist);
 #pragma endregion

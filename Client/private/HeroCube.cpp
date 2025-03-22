@@ -80,7 +80,7 @@ void CHeroCube::Update(_float fTimeDelta)
 	}
 
 	_float3 vDist;
-	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_BLOCK, m_pColliderCom, CCollider_Manager::COLLSIION_BOX, &vDist);
+	m_bHit = m_pGameInstance->Collision_with_Group(COLLISION_BLOCK, m_pColliderCom, CCollider_Manager::COLLSIION_CUBE, &vDist);
 	if (m_bHit)
 	{
 		int a = 10;

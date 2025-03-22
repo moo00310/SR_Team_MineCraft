@@ -7,8 +7,18 @@ BEGIN(Engine)
 
 class ENGINE_DLL CCollider_Cube final : public CComponent
 {
+
 public:
 	enum class COLLSION_DIR { NONE, LEFT, RIGHT, UP, DOWN, FRONT,BACK };
+
+public:
+	typedef struct tagCollisionInfo
+	{
+		class CGameObject* pGameObject{ nullptr };   // 충돌한 오브젝트
+		CCollider_Cube::COLLSION_DIR eCollisionDir{ CCollider_Cube::COLLSION_DIR::NONE };  // 충돌 방향
+		_float3 fDistance{ 0.f, 0.f, 0.f };  // 충돌 거리
+	}COLLISION_INFO;
+
 public:
 	typedef struct tagCollisionCubeDesc
 	{
