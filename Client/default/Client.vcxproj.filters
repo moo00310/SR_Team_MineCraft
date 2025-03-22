@@ -85,9 +85,6 @@
     <Filter Include="02.GameObjects\Tool\MapTool">
       <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="99.Headers\98.Default">
-      <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn">
       <UniqueIdentifier>{078da7be-a447-487e-9317-64540e099a94}</UniqueIdentifier>
     </Filter>
@@ -232,19 +229,22 @@
     <Filter Include="02.GameObjects\Particle\Destroy">
       <UniqueIdentifier>{da5f4e4c-9a63-42a9-8f6c-7a9c2365eaa7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.Default">
+      <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
-      <Filter>99.Headers\98.Default</Filter>
+      <Filter>98.Default</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>99.Headers\98.Default</Filter>
+      <Filter>98.Default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>99.Headers\98.Default</Filter>
+      <Filter>98.Default</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>99.Headers\98.Default</Filter>
+      <Filter>98.Default</Filter>
     </ClInclude>
     <ClInclude Include="MainApp.h">
       <Filter>00.MainApp</Filter>
@@ -486,20 +486,20 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
-      <Filter>99.Headers\98.Default</Filter>
+      <Filter>98.Default</Filter>
     </Image>
     <Image Include="small.ico">
-      <Filter>99.Headers\98.Default</Filter>
+      <Filter>98.Default</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
-      <Filter>99.Headers\98.Default</Filter>
+      <Filter>98.Default</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
-      <Filter>99.Headers\98.Default</Filter>
+      <Filter>98.Default</Filter>
     </ClCompile>
     <ClCompile Include="MainApp.cpp">
       <Filter>00.MainApp</Filter>
