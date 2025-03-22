@@ -53,10 +53,10 @@ HRESULT CCollider_Manager::Reset_ColliderGroup()
 	return S_OK;
 }
 
-_bool  CCollider_Manager::Collision_Check_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDistance, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir)
+CGameObject*  CCollider_Manager::Collision_Check_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDepth, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir)
 {
 	//√ ±‚»≠
-	if (pOutDistance) *pOutDistance = { 0.f, 0.f, 0.f };
+	if (pOutDepth) *pOutDepth = { 0.f, 0.f, 0.f };
 	if (pOutDir) *pOutDir = CCollider_Cube::COLLSION_DIR::NONE;
 
 	CComponent* pMyCollider = { pCollider };
@@ -76,8 +76,8 @@ _bool  CCollider_Manager::Collision_Check_with_Group(_uint iGroupIndex, CCompone
 			case Engine::CCollider_Manager::COLLSIION_CUBE:
 				if (pOtherCollider == nullptr)
 					continue;
-				if (true == ((dynamic_cast<CCollider_Cube*>(pMyCollider)->Collision_Check((CCollider_Cube*)pOtherCollider, pOutDistance, pOutDir))))
-					return true;
+				if (true == ((dynamic_cast<CCollider_Cube*>(pMyCollider)->Collision_Check((CCollider_Cube*)pOtherCollider, pOutDepth, pOutDir))))
+					return iter;
 				break;
 			default:
 				break;
@@ -86,7 +86,7 @@ _bool  CCollider_Manager::Collision_Check_with_Group(_uint iGroupIndex, CCompone
 		}
 	}
 
-	return false;
+	return nullptr;
 }
 
 _bool CCollider_Manager::Collision_Check_Group_Multi(

@@ -21,7 +21,7 @@ public:
 
 	HRESULT Reset_ColliderGroup();
 
-	_bool Collision_Check_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir = nullptr);
+	class CGameObject* Collision_Check_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDepth = nullptr, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir = nullptr);
 	
 	_bool Collision_Check_Group_Multi(
 		_uint iGroupIndex,
