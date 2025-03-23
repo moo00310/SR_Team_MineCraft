@@ -22,7 +22,7 @@ public:
 	virtual void Free();
 
 protected:
-	virtual HRESULT Ready_Components();
+	virtual HRESULT Ready_Components() override;
 
 	// 각 파티클 속성을 셋팅합니다.
 	virtual ParticleAttribute OnSetAddParticle() override;

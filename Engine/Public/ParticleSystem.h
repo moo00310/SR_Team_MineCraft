@@ -26,6 +26,8 @@ public:
 	// 파티클 속성들 초기화.
 	void Replay(_float3 _position);
 
+	CTransform* GetTransform() const;
+
 protected:
 	// 렌더링 전 상태 셋팅.
 	virtual HRESULT PrevRender();
@@ -34,6 +36,8 @@ protected:
 	virtual HRESULT EndRender();
 
 	virtual void OnReplay(ParticleAttribute& particle) {};
+
+	virtual HRESULT Ready_Components();
 
 protected:
 	HRESULT Create_VertexBuffer();
@@ -105,6 +109,9 @@ protected:
 
 	// 파티클 텍스쳐.
 	CTexture* m_pParticleTexture = { nullptr };
+
+	// 파티클 트랜스폼.
+	CTransform* m_pTransform = { nullptr };
 	
 private:
 	list<ParticleAttribute> m_ListParticleAttribute;

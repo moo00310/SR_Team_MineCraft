@@ -92,6 +92,9 @@ void CPlayer::Update(_float fTimeDelta)
 
 		if (particle != nullptr)
 		{
+			particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
 			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 			//m_pGameInstance->Pop(particle);
 		}		
