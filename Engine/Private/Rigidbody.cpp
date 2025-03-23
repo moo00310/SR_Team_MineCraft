@@ -123,7 +123,7 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 		}
 	}
 
-	printf_s("velocity: %f, %f, %f\n", m_vVelocity.x, m_vVelocity.y, m_vVelocity.z);
+	Compute_Velocity(fTimeDelta);
 
 	return S_OK;
 }
@@ -158,8 +158,9 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 	// 4. 가속도 계산 (F = ma -> a = F/m)
 	_float3 acceleration = gravityForce / m_fMass;
 
+
 	// 5. 속도 업데이트 (v = v + a * dt)
-	m_vVelocity = m_vVelocity + acceleration * fTimeDelta;
+	m_vVelocity.y = m_vVelocity.y + acceleration.y * fTimeDelta;
 
 	// 6. 위치 업데이트 (p = p + v * dt)
 	_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
@@ -180,6 +181,22 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 		m_isGrounded = true;
 	}
 }
+
+void CRigidbody::Compute_Velocity(_float fTimeDelta)
+{
+	if (fTimeDelta <= 0.f) return; // 델타 타임이 0이면 계산하지 않음
+
+	//속도는 위치 변화량 / 시간
+	_float3 vCurrentPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
+	m_vReadOnly_Velocity = (vCurrentPosition - m_vPrevPosition) / fTimeDelta;
+
+	printf_s("velocity: %f, %f, %f\n", m_vReadOnly_Velocity.x, m_vReadOnly_Velocity.y, m_vReadOnly_Velocity.z);
+
+	m_vPrevPosition = vCurrentPosition;
+
+}
+
+
 
 CRigidbody* CRigidbody::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {

@@ -133,6 +133,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/;../../EngineSDK/Inc/</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -168,6 +169,7 @@
     <ClInclude Include="..\public\CheckBox.h" />
     <ClInclude Include="..\public\Check_Enemy_Node.h" />
     <ClInclude Include="..\public\Client_Struct.h" />
+    <ClInclude Include="..\public\Client_Tag.h" />
     <ClInclude Include="..\public\Clouds.h" />
     <ClInclude Include="..\public\CoalOre.h" />
     <ClInclude Include="..\public\Cube.h" />

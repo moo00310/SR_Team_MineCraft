@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "ParticleSystem.h"
 
 BEGIN(Engine)
 class CTexture;

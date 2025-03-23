@@ -148,31 +148,39 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 {
 	fDist = 0.f;
 
+	// 레이 방향 벡터 정규화
 	_float3 vNormalRayDir;
 	D3DXVec3Normalize(&vNormalRayDir, &rayDir);
 
+	CGameObject* closestObject = nullptr;
+	_float closestDist = FLT_MAX;
+
+	// 해당 그룹에 속한 모든 오브젝트 검사
 	for (auto& iter : m_pGameObjects[eGroup])
 	{
+		// 오브젝트의 OBB(Collider) 정보 가져오기
 		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
 		CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
 		const _float4x4* pWorldMatrix = CubeDesc.pTransformCom->Get_WorldMatrix();
 		const _float3 halfSize = { CubeDesc.fRadiusX, CubeDesc.fRadiusY, CubeDesc.fRadiusZ };
 
-		// OBB의 중심 및 로컬 축 추출
+		// OBB 중심 및 로컬 축 추출
 		_float3 obbCenter(pWorldMatrix->_41, pWorldMatrix->_42, pWorldMatrix->_43);
 		_float3 axes[3] = {
 			_float3(pWorldMatrix->_11, pWorldMatrix->_12, pWorldMatrix->_13),
 			_float3(pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23),
 			_float3(pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33)
 		};
+
+		// 각 축 정규화
 		D3DXVec3Normalize(&axes[0], &axes[0]);
 		D3DXVec3Normalize(&axes[1], &axes[1]);
 		D3DXVec3Normalize(&axes[2], &axes[2]);
 
 		// 레이와 OBB의 교차 검사 (Slab 방식)
-		fDist = 0.f;
+		_float tMin = 0.f;
 		_float tMax = FLT_MAX;
-		_bool hit = true;  // 현재 OBB에 대해 충돌 판정
+		_bool hit = true; // OBB와의 충돌 여부
 
 		for (int i = 0; i < 3; ++i)
 		{
@@ -180,24 +188,25 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 			_float e = D3DXVec3Dot(&axes[i], &lValue);
 			_float f = D3DXVec3Dot(&axes[i], &vNormalRayDir);
 
-			if (fabs(f) > 1e-6f)  // 레이가 해당 축과 평행하지 않은 경우
+			if (fabs(f) > 1e-5f) // 레이가 축과 평행하지 않다면
 			{
 				_float t1 = (e - halfSize[i]) / f;
 				_float t2 = (e + halfSize[i]) / f;
+
 				if (t1 > t2)
 					std::swap(t1, t2);
-				fDist = max(fDist, t1);
+
+				tMin = max(tMin, t1);
 				tMax = min(tMax, t2);
 
-				if (fDist > tMax)  // 슬랩 간에 교차가 없으면 충돌 없음
+				if (tMin > tMax) // 교차 없음
 				{
 					hit = false;
 					break;
 				}
 			}
-			else // 레이가 해당 축과 평행한 경우
+			else // 레이가 축과 평행한 경우
 			{
-				// 만약 레이 원점이 슬랩 밖에 있다면 충돌 없음
 				if (-e - halfSize[i] > 0.0f || -e + halfSize[i] < 0.0f)
 				{
 					hit = false;
@@ -206,16 +215,27 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 			}
 		}
 
-		// 현재 OBB와 충돌한 경우 거리 제한 추가
-		if (hit && fDist <= maxDistance)
+		// 가장 가까운 충돌 지점 찾기
+		if (hit && tMin <= maxDistance && tMin < closestDist)
 		{
-			m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, maxDistance, true);
-			return iter;
+			closestDist = tMin;
+			closestObject = iter;
 		}
 	}
+
+	// 충돌한 경우
+	if (closestObject)
+	{
+		fDist = closestDist;
+		m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, maxDistance, true);
+		return closestObject;
+	}
+
+	// 충돌하지 않은 경우
 	m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, maxDistance, false);
 	return nullptr;
 }
+
 
 
 

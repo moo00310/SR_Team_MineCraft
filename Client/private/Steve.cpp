@@ -40,15 +40,17 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 
 
-	// Áö±İ ¾÷µ¥ÀÌÆ®¼ø¼­ 
-	// ÇÃ·¹ÀÌ¾î -> Ä«¸Ş¶ó
+	// ì§€ê¸ˆ ì—…ë°ì´íŠ¸ìˆœì„œ 
+	// í”Œë ˆì´ì–´ -> ì¹´ë©”ë¼
 
-	// ¾Ö°¡ Á¦ÀÏ ¸ÕÀú µÇ¾ß ÇÏÁö
+	// ì• ê°€ ì œì¼ ë¨¼ì € ë˜ì•¼ í•˜ì§€
 	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
+	Input_Key(fTimeDelta);
+
 	if (FAILED(m_pCollider_CubeCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
@@ -72,7 +74,7 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
-	//4. ¿©±â
+	//4. ì—¬ê¸°
 
 	Matrix		mat = {};
 	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
@@ -80,15 +82,15 @@ void CSteve::Late_Update(_float fTimeDelta)
 	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
 	m_skelAnime->Set_BoneLocalMatrix(2, mat);
 
-	// ¾Ö´Ï¸ŞÀÌ¼Ç »óÅÂ º¯°æ
+	// ì• ë‹ˆë©”ì´ì…˜ ìƒíƒœ ë³€ê²½
 	Update_State(fTimeDelta);
 
-	// ¸ğµ¨ÀÇ ·çÆ®º» ¾÷µ¥ÀÌÆ® ( Position ¸¸)
+	// ëª¨ë¸ì˜ ë£¨íŠ¸ë³¸ ì—…ë°ì´íŠ¸ ( Position ë§Œ)
 	Matrix matrix = *m_pTransformCom->Get_WorldMatrix();
 	m_skelAnime->Update_RootBone(MAtrixTranslation(matrix._41, matrix._42, matrix._43));
 
 
-	// f5·Î ·£´õ ±×·ì º¯°æ
+	// f5ë¡œ ëœë” ê·¸ë£¹ ë³€ê²½
 	if (m_pGameInstance->Key_Down(VK_F5))
 	{
 		m_bisTPS *= -1;
@@ -152,6 +154,32 @@ void CSteve::Move(_float fTimeDelta)
 {
 	bool isMoving = false;
 
+	CGameObject* collider{ nullptr };
+	// ë¸”ëŸ­ ì¶©ëŒ ì—¬ë¶€ í™•ì¸.	
+	collider = m_pGameInstance->Collision_with_Group(
+		COLLISION_BLOCK,		
+		m_pCollider_CubeCom,	
+		CCollider_Manager::COLLSIION_CUBE
+		);	
+
+	if (collider != nullptr)
+	{
+		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// ì ìš© ì”¬.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// ê°€ì ¸ì˜¬ í”„ë¡œí† íƒ€ì….
+			LEVEL_STATIC,	// ê°€ì ¸ì˜¬ ì”¬.
+			LAYER_PARTICLE_DASH);	// ì• ë“œì˜¤ë¸Œì íŠ¸ì— ì¶”ê°€í•  ë ˆì´ì–´
+
+		if (particle != nullptr)
+		{
+			/*particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));*/
+			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			//m_pGameInstance->Pop(particle);
+		}
+	}
+
 	if (m_pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
@@ -190,29 +218,29 @@ void CSteve::Turn(_float fTimeDelta)
 	if (GetForegroundWindow() != g_hWnd)
 		return;
 
-	// È­¸é Áß¾Ó ÁÂÇ¥ °è»ê
+	// í™”ë©´ ì¤‘ì•™ ì¢Œí‘œ ê³„ì‚°
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 	POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
 
-	// ÇöÀç ¸¶¿ì½º ÁÂÇ¥ °¡Á®¿À±â
+	// í˜„ì¬ ë§ˆìš°ìŠ¤ ì¢Œí‘œ ê°€ì ¸ì˜¤ê¸°
 	POINT ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
-	// ¸¶¿ì½º°¡ Ã¢ ³»ºÎ¿¡ ÀÖ´ÂÁö È®ÀÎ
+	// ë§ˆìš°ìŠ¤ê°€ ì°½ ë‚´ë¶€ì— ìˆëŠ”ì§€ í™•ì¸
 	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
 		return;
 
-	// ¸¶¿ì½º ÀÌµ¿·® °è»ê
+	// ë§ˆìš°ìŠ¤ ì´ë™ëŸ‰ ê³„ì‚°
 	_int iMouseMoveX = ptMouse.x - ptCenter.x;
 
 	if (iMouseMoveX != 0)
 	{
-		// È¸Àü Àû¿ë
+		// íšŒì „ ì ìš©
 		m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * 0.5f);
 
-		// ¸¶¿ì½º Áß¾ÓÀ¸·Î ¸®¼Â
+		// ë§ˆìš°ìŠ¤ ì¤‘ì•™ìœ¼ë¡œ ë¦¬ì…‹
 		ClientToScreen(g_hWnd, &ptCenter);
 		SetCursorPos(ptCenter.x, ptCenter.y);
 	}
@@ -220,7 +248,7 @@ void CSteve::Turn(_float fTimeDelta)
 
 HRESULT CSteve::Ready_Components()
 {
-	// ½ºÆ¼ºê ÅØ½ºÃ³
+	// ìŠ¤í‹°ë¸Œ í…ìŠ¤ì²˜
   /* For.Com_Texture */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Steve"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
@@ -234,17 +262,17 @@ HRESULT CSteve::Ready_Components()
 
 	/* For.Com_VIBuffer */
 	m_pVIBufferComs.resize(6);
-	// ¸öÅë
+	// ëª¸í†µ
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
 		TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
 		return E_FAIL;
 
-	// ¸Ó¸®
+	// ë¨¸ë¦¬
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
 		TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[1]))))
 		return E_FAIL;
 
-	// ´Ù¸®
+	// ë‹¤ë¦¬
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
 		TEXT("m_pVIBufferCom_Foot_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[2]))))
 		return E_FAIL;
@@ -252,7 +280,7 @@ HRESULT CSteve::Ready_Components()
 		TEXT("m_pVIBufferCom_Foot_L"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[3]))))
 		return E_FAIL;
 
-	// ÆÈ
+	// íŒ”
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
 		TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[4]))))
 		return E_FAIL;
@@ -261,16 +289,16 @@ HRESULT CSteve::Ready_Components()
 		return E_FAIL;
 
 
-	// º» + ¾Ö´Ï¸ŞÀÌ¼Ç
+	// ë³¸ + ì• ë‹ˆë©”ì´ì…˜
 	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
 		TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
 		return E_FAIL;
 
 
-	//Äİ¶óÀÌ´õ
+	//ì½œë¼ì´ë”
 	/* For.Com_Collider */
-	CCollider_Cube::COLLCUBE_DESC Desc{}; //Äİ¶óÀÌ´õ Å©±â ¼³Á¤
+	CCollider_Cube::COLLCUBE_DESC Desc{}; //ì½œë¼ì´ë” í¬ê¸° ì„¤ì •
 	Desc.fRadiusX = 0.3f; Desc.fRadiusY = 0.8f; Desc.fRadiusZ = 0.3;
 	Desc.fOffSetY = 0.8f;
 	Desc.pTransformCom = m_pTransformCom;
@@ -278,7 +306,7 @@ HRESULT CSteve::Ready_Components()
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
 		return E_FAIL;
 
-	//¸®Áöµå¹Ùµğ
+	//ë¦¬ì§€ë“œë°”ë””
 	/* For.Com_Rigidbody */
 	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CubeCom, 1.f };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
@@ -311,14 +339,14 @@ HRESULT CSteve::Ready_Bone()
 HRESULT CSteve::Ready_Animation()
 {
 	/*----------
-	* INIT ¸ğ¼Ç
+	* INIT ëª¨ì…˜
 	------------*/
 	Matrix mat = {};
 	KEYFREAME Init = { 0.f, mat };
 	m_skelAnime->Add_Animation(ANIM_type::INIT, Init);
 
 	/*----------
-	* Walk ¸ğ¼Ç
+	* Walk ëª¨ì…˜
 	------------*/
 	mat.Turn_Radian(_float3(1.f,0.f, 0.f), D3DXToRadian(0));
 
