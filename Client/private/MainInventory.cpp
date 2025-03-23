@@ -44,10 +44,10 @@ void CMainInventory::Update(_float fTimeDelta)
 {
     if (GetKeyState('E') & 0x8000 && !m_bEKeyPressed)
     {
-        if (!m_bSubInvnetoryOn)
-            m_bSubInvnetoryOn = true;
+        if (!m_bMainInvnetoryOn)
+            m_bMainInvnetoryOn = true;
         else
-            m_bSubInvnetoryOn = false;
+            m_bMainInvnetoryOn = false;
 
         m_bEKeyPressed = true;
     }
@@ -65,7 +65,7 @@ void CMainInventory::Late_Update(_float fTimeDelta)
 
 HRESULT CMainInventory::Render()
 {
-    if (m_bSubInvnetoryOn)
+    if (m_bMainInvnetoryOn)
     {
         if (FAILED(m_pTextureCom->Bind_Resource(1)))
             return E_FAIL;
@@ -90,7 +90,7 @@ HRESULT CMainInventory::Render()
 
 HRESULT CMainInventory::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 

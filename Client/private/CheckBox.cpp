@@ -41,43 +41,16 @@ void CCheckBox::Priority_Update(_float fTimeDelta)
 
 void CCheckBox::Update(_float fTimeDelta)
 {
-    if (GetKeyState('1') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.293f;
-    }
-    if (GetKeyState('2') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.346f;
-    }
-    if (GetKeyState('3') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.397f; 
-    }
-    if (GetKeyState('4') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.450f;
-    }
-    if (GetKeyState('5') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.502f;
-    }
-    if (GetKeyState('6') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.554f;
-    }
-    if (GetKeyState('7') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.604f;
-    }
-    if (GetKeyState('8') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.655f;
-    }
-    if (GetKeyState('9') & 0x8000)
-    {
-        Desc.fX = g_iWinSizeX * 0.707f;
-    }
-    
+    if (GetKeyState('1') & 0x8000) Desc.fX = g_iWinSizeX * 0.293f;
+    if (GetKeyState('2') & 0x8000) Desc.fX = g_iWinSizeX * 0.346f;    
+    if (GetKeyState('3') & 0x8000) Desc.fX = g_iWinSizeX * 0.397f;
+    if (GetKeyState('4') & 0x8000) Desc.fX = g_iWinSizeX * 0.450f;
+    if (GetKeyState('5') & 0x8000) Desc.fX = g_iWinSizeX * 0.502f;
+    if (GetKeyState('6') & 0x8000) Desc.fX = g_iWinSizeX * 0.554f;
+    if (GetKeyState('7') & 0x8000) Desc.fX = g_iWinSizeX * 0.604f;
+    if (GetKeyState('8') & 0x8000) Desc.fX = g_iWinSizeX * 0.655f;
+    if (GetKeyState('9') & 0x8000) Desc.fX = g_iWinSizeX * 0.707f;
+
     if(m_fCheckBox != Desc.fX)
     {
        m_fCheckBox = Desc.fX;
@@ -115,7 +88,7 @@ HRESULT CCheckBox::Render()
 
 HRESULT CCheckBox::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_CheckBox"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_CheckBox"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 

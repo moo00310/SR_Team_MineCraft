@@ -11,7 +11,12 @@ CLevel_Logo::CLevel_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_Logo::Initialize()
 {
+	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
+
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Logo(TEXT("Layer_Logo"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -68,6 +73,15 @@ void CLevel_Logo::Update(_float fTimeDelta)
 			return;
 	}
 
+	/* 레벨 전환 */
+	if (g_bChangeLevel)
+	{
+		g_bChangeLevel = false;
+
+		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_YU))))
+			return;
+	}
 
 }
 
@@ -81,6 +95,27 @@ HRESULT CLevel_Logo::Render()
 HRESULT CLevel_Logo::Ready_Layer_BackGround(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_BackGround"),
+		LEVEL_LOGO, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Logo::Ready_Layer_Logo(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_MainLogo"),
+		LEVEL_LOGO, strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_StartButton"),
+		LEVEL_LOGO, strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_title"),
+		LEVEL_LOGO, strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_LOGO, TEXT("Prototype_GameObject_Edition"),
 		LEVEL_LOGO, strLayerTag)))
 		return E_FAIL;
 

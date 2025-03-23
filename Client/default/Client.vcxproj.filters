@@ -175,9 +175,6 @@
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory">
       <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.CheckBox">
-      <UniqueIdentifier>{5249cb73-c614-4b68-bd82-7f86d3bf1f9f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster">
       <UniqueIdentifier>{85c77c0b-6725-4c2e-b6c2-651cdd0b5d3d}</UniqueIdentifier>
     </Filter>
@@ -483,6 +480,9 @@
     <ClInclude Include="..\public\Grass.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Inventory_Mgr.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -681,10 +681,6 @@
     <ClCompile Include="..\private\SubInventory.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.SubInventory</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\CheckBox.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\02.CheckBox</Filter>
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.CheckBox</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster</Filter>
     </ClCompile>
@@ -726,6 +722,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Grass.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CheckBox.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\02.CheckBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Inventory_Mgr.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

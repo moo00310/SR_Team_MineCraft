@@ -81,7 +81,7 @@ HRESULT CStartButton::Render()
 
 HRESULT CStartButton::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_WOO, TEXT("Prototype_Component_Texture_StartButton"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_LOGO, TEXT("Prototype_Component_Texture_StartButton"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 

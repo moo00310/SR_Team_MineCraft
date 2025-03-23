@@ -25,6 +25,13 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+public:
+	void Set_ItemType(ITEMNAME itemType) { m_ItemType = itemType; }
+
+public:
+	ITEMNAME	Get_ItemType() { return m_ItemType; }
+	_int		Get_SlotIndex() { return m_iSlotIndexNum; }
+
 private:
 	HRESULT Ready_Components();
 
@@ -34,8 +41,12 @@ private:
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 private:
-	_bool m_bSubInvnetoryOn = { false };
-	_bool m_bEKeyPressed = { false };
+	UIOBJECT_DESC Desc{};
+	ITEMNAME m_ItemType = ITEMNAME_END;
+
+private:
+	_int* m_iSlotIndex = { nullptr };
+	_int m_iSlotIndexNum;
 
 public:
 	static CItem* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

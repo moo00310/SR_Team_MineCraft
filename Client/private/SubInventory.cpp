@@ -73,7 +73,7 @@ HRESULT CSubInventory::Render()
 
 HRESULT CSubInventory::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
