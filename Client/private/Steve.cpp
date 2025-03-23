@@ -39,12 +39,13 @@ void CSteve::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 
-	Input_Key(fTimeDelta);
 
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
+	Input_Key(fTimeDelta);
+
 	if (FAILED(m_pCollider_CubeCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
@@ -155,6 +156,32 @@ void CSteve::Input_Key(_float fTimeDelta)
 
 void CSteve::Move(_float fTimeDelta)
 {
+	CGameObject* collider{ nullptr };
+	// 블럭 충돌 여부 확인.	
+	collider = m_pGameInstance->Collision_with_Group(
+		COLLISION_BLOCK,		
+		m_pCollider_CubeCom,	
+		CCollider_Manager::COLLSIION_CUBE
+		);	
+
+	if (collider != nullptr)
+	{
+		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// 적용 씬.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
+			LEVEL_STATIC,	// 가져올 씬.
+			LAYER_PARTICLE_DASH);	// 애드오브젝트에 추가할 레이어
+
+		if (particle != nullptr)
+		{
+			/*particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));*/
+			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			//m_pGameInstance->Pop(particle);
+		}
+	}
+
 	if (m_pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
