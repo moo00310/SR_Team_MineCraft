@@ -33,7 +33,10 @@ HRESULT CCamera_Player::Initialize(void* pArg)
  		return E_FAIL;
 
 	// 플레이어 트랜스폼 받기
-	m_pTargetTransformCom = static_cast<CTransform*>(Desc.pTarget->Find_Component(TEXT("Com_Transform")));
+	m_pTarget_Transform_Com = static_cast<CTransform*>(Desc.pTarget->Find_Component(TEXT("Com_Transform")));
+    
+    // 플레이어 리지드바디 받기
+    m_pTarget_Rigidbody_Com = static_cast<CRigidbody*>(Desc.pTarget->Find_Component(TEXT("Com_Rigidbody")));
 
 	// 카메라 기본 값 세팅
 	if (FAILED(__super::Initialize(&Desc)))
@@ -67,7 +70,7 @@ void CCamera_Player::Update(_float fTimeDelta)
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
-    Follow_Player();
+    Follow_Player(fTimeDelta);
 
     __super::Update_VP_Matrices();
 }
@@ -133,47 +136,76 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     }
 }
 
-void CCamera_Player::Follow_Player()
+void CCamera_Player::Follow_Player(_float fTimeDelta)
 {
-    if (!m_pTargetTransformCom)
+    if (!m_pTarget_Transform_Com)
         return;
 
-    // === 스티브의 Yaw 값 가져오기 ===
-    if (m_pTargetTransformCom) // 스티브의 Transform 컴포넌트가 존재하는지 확인
-    {
-        _float3 vLook = m_pTargetTransformCom->Get_State(CTransform::STATE_LOOK); // Look 벡터 가져오기
+    // === 플레이어의 회전 각도 가져오기 ===
+    _float3 vLook = m_pTarget_Transform_Com->Get_State(CTransform::STATE_LOOK);
+    m_fYaw = atan2f(vLook.x, vLook.z); // X, Z를 이용해 Yaw 값 추출
 
-        // Yaw 값 계산 (atan2 사용)
-        m_fYaw = atan2f(vLook.x, vLook.z); // X, Z를 이용해 Yaw 값 추출
+    // === 카메라 회전 벡터 생성 ===
+    _float3 vLookDir;
+    vLookDir.x = cosf(m_fPitch) * sinf(m_fYaw);
+    vLookDir.y = sinf(m_fPitch);
+    vLookDir.z = cosf(m_fPitch) * cosf(m_fYaw);
+
+    // === 걷는 애니메이션 타이머 ===
+    _float3 vVelocity = m_pTarget_Rigidbody_Com->Get_Velocity();
+    _float fSpeed = sqrtf(vVelocity.x * vVelocity.x + vVelocity.z * vVelocity.z); // XY 속도 크기
+
+    // === 좌우 흔들림 계산 ===
+    _float fShakeOffset_X = 0.f;
+    _float fShakeOffset_Y = 0.f;
+
+    // 걷는 속도에 따라 m_fWalkTime 증가
+    m_fWalkTime += 2.f * fSpeed * fTimeDelta;
+
+    // m_fWalkTime이 너무 커지지 않도록 제한 (0 ~ 2π 범위로)
+    if (m_fWalkTime > 2.f * 3.14159f)  // 2π (한 주기) 이후에는 초기화
+    {
+        m_fWalkTime -= 2.f * 3.14159f; // 한 주기만큼 감소시켜서 시간 값이 계속 반복되게 함
     }
 
-    // === 카메라 회전 행렬 적용 ===
-    _float3 vLook;
-    vLook.x = cosf(m_fPitch) * sinf(m_fYaw);
-    vLook.y = sinf(m_fPitch);
-    vLook.z = cosf(m_fPitch) * cosf(m_fYaw);
+    // 좌우 흔들림 (cosine 함수로 부드럽게)
+    fShakeOffset_X = cosf(m_fWalkTime) * 0.05f; // -1 ~ 1 범위 내에서 좌우 흔들림
 
+    // 위아래 흔들림 (기존 방식)
+    fShakeOffset_Y = fabs(sinf(m_fWalkTime) * 0.05f); // -1 ~ 1 범위 내에서 위아래 흔들림
 
-    m_vHeadPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.4f, 0.f);
+    // === 오른쪽 방향 (Right 벡터) 구하기 ===
+    _float3 vRight;
+    vRight.x = cosf(m_fYaw);  // 카메라의 오른쪽 방향 (Yaw 기준)
+    vRight.y = 0.f;
+    vRight.z = -sinf(m_fYaw);
+
+    // === 플레이어의 기본 머리 위치 ===
+    _float3 playerPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION);
+    _float headHeight = 1.4f; // 플레이어의 머리 높이
+
+    // === 머리 위치 설정 (좌우 흔들림 적용) ===
+    m_vHeadPos = playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f);
 
     if (m_eCameraMode == E_CAMERA_MODE::FPS)
     {
         // 1인칭(FPS) 모드
-        //_float3 vCameraPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0.f, 1.8f, 0.f);
         m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_vHeadPos);
-        m_pTransformCom->LookAt(m_vHeadPos + vLook);
+        m_pTransformCom->LookAt(m_vHeadPos + vLookDir);
     }
     else
     {
         // 3인칭(TPS) 모드
-        //_float3 vPlayerPos = m_pTargetTransformCom->Get_State(CTransform::STATE_POSITION);
-        _float3 vCameraOffset = -vLook * 5.0f;
+        _float3 vCameraOffset = -vLookDir * 5.0f;
         _float3 vCameraPos = m_vHeadPos + vCameraOffset;
         m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
         m_pTransformCom->LookAt(m_vHeadPos);
     }
-
 }
+
+
+
+
 
 void CCamera_Player::On_MouseMove(_float fTimeDelta)
 {

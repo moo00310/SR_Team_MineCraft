@@ -156,3 +156,10 @@ template <typename T>
 constexpr const T& clamp(const T& v, const T& lo, const T& hi) {
 	return (v < lo) ? lo : (v > hi) ? hi : v;
 }
+
+// 선형 보간 함수 (lerp)
+template <typename T>
+T Lerp(T a, T b, T t)
+{
+	return a + t * (b - a);
+}

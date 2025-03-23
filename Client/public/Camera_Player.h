@@ -29,7 +29,8 @@ public:
 private:
     POINT               m_ptOldMousePos = {};
     _float              m_fMouseSensor = {};
-    CTransform*         m_pTargetTransformCom = { nullptr };
+    CTransform*         m_pTarget_Transform_Com = { nullptr };
+	CRigidbody*         m_pTarget_Rigidbody_Com = { nullptr };
     _float              m_fYaw{};
     _float              m_fPitch{};
     _float              m_fRoll{};
@@ -40,9 +41,10 @@ private:
 private:
     _float3             m_vHeadPos{};
     _bool               m_isActiveMouse{ false };
+	_float			    m_fWalkTime{};
 private:
     void    Input_Key(_float fTimeDelta);
-    void    Follow_Player();
+    void    Follow_Player(_float fTimeDelta);
     void    On_MouseMove(_float fTimeDelta);
 private:
     HRESULT Ready_Components();
