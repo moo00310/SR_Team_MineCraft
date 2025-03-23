@@ -26,6 +26,7 @@ private:
 	HRESULT Ready_Layer_Clouds(const _wstring& strLayerTag);
 
 	HRESULT Ready_Layer_DashParticle(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_SandDestroyParticle(const _wstring& strLayerTag);
 
 public:
 	static CLevel_YU* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
