@@ -41,11 +41,6 @@
 //Hyock
 #include "HyockCube.h"
 #include "VIBuffer_Cube_Only.h"
-#include "ParticleRain.h"
-#include "ParticleDash.h"
-#include "ParticleSandMining.h"
-#include "ParticleWoodMining.h"
-#include "ParticleSandDestroy.h"
 
 //Woo
 #include "MainLogo.h"
@@ -752,27 +747,7 @@ HRESULT CLoader::Loading_For_HECKPlay()
 	lstrcpy(m_szLoadingText, TEXT(" 텍스쳐을(를) 로딩중입니다."));
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Destroy"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/destroy_stage_%d.png"), 10))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Smoke"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/big_smoke_4.png"), 1))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Rain"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/rain.png"), 1))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Dash"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/dash.png"), 1))))
 		return E_FAIL;	
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Sand_Mining"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/sand_mining.png"), 1))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Wood_Mining"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/wood_mining.png"), 1))))
-		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 
@@ -807,27 +782,7 @@ HRESULT CLoader::Loading_For_HECKPlay()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_Hyock_Cube"),
 		CHyockCube::Create(m_pGraphic_Device))))
-		return E_FAIL;	
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleRain"),
-		CParticleRain::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
-		CParticleDash::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandMining"),
-		CParticleSandMining::Create(m_pGraphic_Device))))
-		return E_FAIL;	
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleWoodMining"),
-		CParticleWoodMining::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandDestroy"),
-		CParticleSandDestroy::Create(m_pGraphic_Device))))
-		return E_FAIL;
+		return E_FAIL;		
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

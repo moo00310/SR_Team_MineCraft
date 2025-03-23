@@ -78,7 +78,7 @@ void CParticleDash::Free()
 
 HRESULT CParticleDash::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Dash"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DASH,
 		TEXT("Com_Component_Dash"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 

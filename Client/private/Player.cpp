@@ -19,29 +19,29 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {		
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleDash"),
-		LEVEL_HYEOK, TEXT("Layer_ParticleDash"))))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,
+		LEVEL_STATIC, LAYER_PARTICLE_DASH)))
 		return E_FAIL;
 
-	m_pParticleDash = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleDash"), 0);
+	m_pParticleDash = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_DASH.c_str(), 0);
 
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandMining"),
-		LEVEL_HYEOK, TEXT("Layer_ParticleSandMining"))))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
+		LEVEL_STATIC, LAYER_PARTICLE_SAND_MINING)))
 		return E_FAIL;
 
-	m_pParticleSandMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleSandMining"), 0);
+	m_pParticleSandMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_SAND_MINING.c_str(), 0);
 
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleWoodMining"),
-		LEVEL_HYEOK, TEXT("Layer_ParticleWoodMining"))))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING,
+		LEVEL_STATIC, LAYER_PARTICLE_WOOD_MINING)))
 		return E_FAIL;
 
-	m_pParticleWoodMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleWoodMining"), 0);
+	m_pParticleWoodMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_WOOD_MINING.c_str(), 0);
 
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HYEOK, TEXT("Prototype_GameObject_ParticleSandDestroy"),
-		LEVEL_HYEOK, TEXT("Layer_ParticleSandDestroy"))))
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+		LEVEL_STATIC, LAYER_PARTICLE_SAND_DESTROY)))
 		return E_FAIL;
 
-	m_pParticleSandDestroy = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_HYEOK, TEXT("Layer_ParticleSandDestroy"), 0);
+	m_pParticleSandDestroy = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_SAND_DESTROY.c_str(), 0);
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -85,10 +85,10 @@ void CPlayer::Update(_float fTimeDelta)
 	if (GetKeyState(VK_SPACE) & 0x8000)
 	{
 		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
-		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_HYEOK,	// 적용 씬.
-			TEXT("Prototype_GameObject_ParticleDash"),	// 가져올 프로토타입.
-			LEVEL_HYEOK,	// 가져올 씬.
-			TEXT("Layer_ParticleDash"));	// 애드오브젝트에 추가할 레이어
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// 적용 씬.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
+			LEVEL_STATIC,	// 가져올 씬.
+			LAYER_PARTICLE_DASH);	// 애드오브젝트에 추가할 레이어
 
 		if (particle != nullptr)
 		{

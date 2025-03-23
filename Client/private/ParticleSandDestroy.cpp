@@ -38,7 +38,7 @@ CParticleSandDestroy* CParticleSandDestroy::Create(LPDIRECT3DDEVICE9 pGraphic_De
 
 HRESULT CParticleSandDestroy::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Sand_Mining"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SAND_MINING,
 		TEXT("Com_Component_Sand_Mining"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 

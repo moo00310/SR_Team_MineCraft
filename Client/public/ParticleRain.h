@@ -2,9 +2,7 @@
 #include "ParticleSystem.h"
 #include "Client_Defines.h"
 
-
 BEGIN(Client)
-
 
 // 비 파티클.
 class CParticleRain final : public CParticleSystem
