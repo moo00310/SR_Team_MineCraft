@@ -15,7 +15,11 @@ class CSteve : public CGameObject
 public:
 	enum ANIM
 	{
-		IDLE, RUN, WALK, WALK_F, WALK_B, ATTACK, JUMP, ANIM_END
+		IDLE, RUN, WALK, ATTACK, JUMP, ANIM_END
+	};
+	enum ANIM_type
+	{
+		Swing_F, Swing_B, Swing_R, Swing_L, INIT,
 	};
 
 private:

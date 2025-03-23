@@ -320,19 +320,15 @@ HRESULT CSteve::Ready_Bone()
 HRESULT CSteve::Ready_Animation()
 {
 	/*----------
-	* 위치 초기화
+	* INIT 모션
 	------------*/
-
-	Matrix mat99 = {};
-	mat99.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(0));
-
-	KEYFREAME IDLE = { 1.f, mat99 };
-	m_skelAnime->Add_Animation(ANIM::IDLE, IDLE);
+	Matrix mat = {};
+	KEYFREAME Init = { 0.f, mat };
+	m_skelAnime->Add_Animation(ANIM_type::INIT, Init);
 
 	/*----------
 	* Walk 모션
 	------------*/
-	Matrix mat = {};
 	mat.Turn_Radian(_float3(1.f,0.f, 0.f), D3DXToRadian(0));
 
 	Matrix mat2 = {};
@@ -345,25 +341,54 @@ HRESULT CSteve::Ready_Animation()
 	KEYFREAME Walk_2_F = { 1.0f, mat2 }; //60
 	KEYFREAME Walk_3_F = { 2.0f, mat }; // 0
 	KEYFREAME Walk_4_F = { 3.0f, mat3 }; // -60
-	KEYFREAME Walk_5_F = { 4.0f, mat }; // 0
+	KEYFREAME Walk_5_F = { 3.999f, mat }; // 0
 
 	KEYFREAME Walk_1_B = { 0.f,  mat };
 	KEYFREAME Walk_2_B = { 1.0f, mat3 };
 	KEYFREAME Walk_3_B = { 2.0f, mat };
 	KEYFREAME Walk_4_B = { 3.0f, mat2 };
-	KEYFREAME Walk_5_B = { 4.0f, mat };
+	KEYFREAME Walk_5_B = { 3.999f, mat };
 
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_1_F);
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_2_F);
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_3_F);
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_4_F);
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_5_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_1_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_2_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_3_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_4_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_5_F);
 
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_1_B);
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_2_B);
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_3_B);
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_4_B);
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_5_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_1_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_2_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_3_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_4_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_5_B);
+
+
+/*----------
+* IDEL 
+------------*/
+	mat = Matrix();
+	mat.Turn_Radian(_float3(0.f, 0.f, 0.f), D3DXToRadian(0));
+
+	mat2 = Matrix();
+	mat2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-3));
+
+	mat3 = Matrix();
+	mat3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(3));
+
+	KEYFREAME IDLE1_R = { 0.f, mat };
+	KEYFREAME IDLE2_R = { 5.f, mat2 };
+	KEYFREAME IDLE3_R = { 9.999f, mat };
+
+	KEYFREAME IDLE1_L = { 0.f, mat };
+	KEYFREAME IDLE2_L = { 5.f, mat3 };
+	KEYFREAME IDLE3_L = { 9.999f, mat };
+
+	m_skelAnime->Add_Animation(ANIM_type::Swing_R, IDLE1_R);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_R, IDLE2_R);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_R, IDLE3_R);
+
+	m_skelAnime->Add_Animation(ANIM_type::Swing_L, IDLE1_L);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_L, IDLE2_L);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_L, IDLE3_L);
 
 	return S_OK;
 }
@@ -399,10 +424,10 @@ void CSteve::Motion_Idle(_float fTimeDelta)
 		m_skelAnime->Start_Blend(WALK_B, IDLE, 9999999.f);
 	}*/
 
-	m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 3);
-	m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 4);
-	m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 5);
-	m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 6);
+	m_skelAnime->Update_Animetion(INIT, fTimeDelta, 3);
+	m_skelAnime->Update_Animetion(INIT, fTimeDelta, 4);
+	m_skelAnime->Update_Animetion(Swing_L, fTimeDelta, 5);
+	m_skelAnime->Update_Animetion(Swing_R, fTimeDelta, 6);
 }
 
 void CSteve::Motion_Walk(_float fTimeDelta)
@@ -412,10 +437,11 @@ void CSteve::Motion_Walk(_float fTimeDelta)
 		m_eCurAnim = WALK;
 	}
 
-	m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 3);
-	m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 4);
-	m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 5);
-	m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 6);
+	m_skelAnime->Update_Animetion(Swing_B, fTimeDelta, 3);
+	m_skelAnime->Update_Animetion(Swing_F, fTimeDelta, 4);
+	m_skelAnime->Update_Animetion(Swing_F, fTimeDelta, 5);
+	m_skelAnime->Update_Animetion(Swing_B, fTimeDelta, 6);
+
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
