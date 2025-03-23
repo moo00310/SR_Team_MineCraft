@@ -24,15 +24,22 @@ public:
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
 
 public:
-	_bool Jump();
+	_bool	Jump();
+	const _float3& Get_Velocity() { return m_vReadOnly_Velocity; }
 private:
-	void Fall_With_Gravity(_float fTimeDelta);
-	_bool isFalling() { return m_vVelocity.y < 0.f; };
+	void	Fall_With_Gravity(_float fTimeDelta);
+	_bool	isFalling() { return m_vVelocity.y < 0.f; };
+	void	Compute_Velocity(_float fTimeDelta);
 private:
 	class CTransform*		m_pTransform{ nullptr };
 	class CCollider_Cube*	m_pCollider_Cube{ nullptr };
 	_float					m_fMass{ 1.f };
 	_float3					m_vVelocity{ 0.f, 0.f, 0.f };
+
+	//이전 프레임 위치와 현재 위치를 비교해서 속도 계산 용도
+	_float3					m_vPrevPosition{ 0.f, 0.f, 0.f };
+	_float3					m_vReadOnly_Velocity{ 0.f, 0.f, 0.f };
+
 
 	//점프
 private:
