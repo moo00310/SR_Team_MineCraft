@@ -54,8 +54,7 @@ void CSword::Late_Update(_float fTimeDelta)
     }
 
      //애니메이션 적용
-    if (m_eCurAnim != ANIM::NONE)
-        Update_Motion(m_eCurAnim, fTimeDelta);
+     Update_Motion(fTimeDelta);
     
     if (m_pGameInstance->Key_Down(VK_F5))
     {
@@ -75,9 +74,9 @@ HRESULT CSword::Render()
     return S_OK;
 }
 
-HRESULT CSword::Update_Motion(_int _type, _float fTimeDelta)
+HRESULT CSword::Update_Motion(_float fTimeDelta)
 {
-    switch (_type)
+    switch (m_eCurAnim)
     {
     case CSword::IDLE:
         Idle_Sword(fTimeDelta);
@@ -88,6 +87,20 @@ HRESULT CSword::Update_Motion(_int _type, _float fTimeDelta)
     case CSword::ANIM_END:
     default:
         return S_OK;
+    }
+}
+
+void CSword::Idle_Sword(_float fTimeDelta)
+{
+    if (m_Animations[IDLE].empty())
+        return;
+
+    if (FAILED(Update_Anime(IDLE, fTimeDelta)))
+        return;
+
+    if (m_Animations[IDLE].back().fTime < fElapsedTime)
+    {
+        fElapsedTime = 0.f;
     }
 }
 
@@ -105,20 +118,6 @@ void CSword::Swing_Sword(_float fTimeDelta)
 		m_eCurAnim = ANIM::IDLE;
 	}
 
-}
-
-void CSword::Idle_Sword(_float fTimeDelta)
-{
-	if (m_Animations[IDLE].empty())
-		return;
-
-	if (FAILED(Update_Anime(IDLE, fTimeDelta)))
-		return;
-
-	if (m_Animations[IDLE].back().fTime < fElapsedTime)
-	{
-		fElapsedTime = 0.f;
-	}
 }
 
 CSword* CSword::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -149,10 +148,7 @@ CGameObject* CSword::Clone(void* pArg)
 
 void CSword::Free()
 {
-	m_eCurAnim = ANIM::NONE;
     __super::Free();
-
-
 }
 
 HRESULT CSword::Ready_Bone()

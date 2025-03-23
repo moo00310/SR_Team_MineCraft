@@ -132,9 +132,7 @@ HRESULT CItem_Model::Update_Anime(_int _type, _float fTimeDelta)
 
     // 보간 비율 계산 (0~1 사이 값)
     float t = (fElapsedTime - key1.fTime) / (key2.fTime - key1.fTime);
-
     Matrix interpolatedMatrix = InterpolateMatrix_Quat(key1.matTransform, key2.matTransform, t);
-
     m_Bone.localTransform = interpolatedMatrix * m_Bone.baseTransform;
 
     return S_OK;

@@ -31,7 +31,7 @@ public:
 
 
 private:
-	HRESULT Update_Motion(_int _type, _float fTimeDelta);
+	HRESULT Update_Motion(_float fTimeDelta);
 	void Swing_Sword(_float fTimeDelta);
 	void Idle_Sword(_float fTimeDelta);
 

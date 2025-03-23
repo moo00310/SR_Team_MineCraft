@@ -29,8 +29,11 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 	
-	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
-		return E_FAIL;
+	if (FAILED(Ready_Laye_TPS_Arm(TEXT("Layer_TPS_Arm"))))
+	return E_FAIL;
+
+	/*if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
+		return E_FAIL;*/
 
 	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
 		return E_FAIL;
@@ -102,6 +105,12 @@ HRESULT CLevel_YU::Ready_Layer_Clouds(const _wstring& strLayerTag)
 
 	return S_OK;
 }
+
+HRESULT CLevel_YU::Ready_Laye_TPS_Arm(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 
 HRESULT CLevel_YU::Ready_Layer_DashParticle(const _wstring& strLayerTag)
 {

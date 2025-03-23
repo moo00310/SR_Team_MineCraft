@@ -56,7 +56,6 @@ namespace Engine
         operator D3DXMATRIX* () { return reinterpret_cast<D3DXMATRIX*>(this); }
         operator const D3DXMATRIX* () const { return reinterpret_cast<const D3DXMATRIX*>(this); }
      
-        // [] ¿¬»ê
         D3DXVECTOR4& operator[](int index)
         {
             return *reinterpret_cast<D3DXVECTOR4*>(m[index]);
@@ -73,6 +72,7 @@ namespace Engine
         {
             return _float3(m[eState][0], m[eState][1], m[eState][2]);
         }
+
         void Set_State(TRANSFORMSTATE eState, const _float3& vState) {
             m[eState][0] = vState.x;
             m[eState][1] = vState.y;

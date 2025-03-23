@@ -41,19 +41,20 @@ void CArm_Steve::Update(_float fTimeDelta)
 
 void CArm_Steve::Late_Update(_float fTimeDelta)
 {
-	Matrix		ViewMatrix = {};
-	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
-	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+	// 루트본이 따라가는 곳
+	if (FAILED(Update_Root(fTimeDelta)))
+		return;
 
-	// 팔이 따라오게 하는 코드임
-	m_pSkeletalAnimator->Update_Bone(0, ViewMatrix);
+	// 애니메이션 바꾸기
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		m_eCurAnim = SWING;
+	}
+		
+	// 애니메이션 체인지 반영
+	Update_State(fTimeDelta);
 
-	// 애니메이션
-
-	if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
-		m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0, ViewMatrix);
-
-
+	// 카메라 시점에따라 랜더에 올릴지 반영
 	if (m_pGameInstance->Key_Down(VK_F5))
 	{
 		m_bisTPS *= -1;
@@ -123,6 +124,10 @@ HRESULT CArm_Steve::Ready_Bone()
 
 HRESULT CArm_Steve::Ready_Animation()
 {
+
+	/*-------------------
+	 팔 스윙 모션
+	--------------------*/
 	Matrix matrix = {};
 	matrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-30));
 	matrix.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-15));
@@ -139,7 +144,71 @@ HRESULT CArm_Steve::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(SWING, keyframe2);
 	m_pSkeletalAnimator->Add_Animation(SWING, keyframe3);
 
+
+	/*-------------------
+	  팔 IDLE 모션
+	--------------------*/
+
+	keyframe = { 0.f, Matrix() };
+	m_pSkeletalAnimator->Add_Animation(IDLE, keyframe);
+
 	return S_OK;
+}
+
+HRESULT CArm_Steve::Update_Root(_float fTimeDelta)
+{
+	Matrix		ViewMatrix = {};
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
+	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+
+	// 카메라 위치로 따라오게 하는 코드임
+	m_pSkeletalAnimator->Update_RootBone(ViewMatrix);
+
+	return S_OK;
+}
+
+void CArm_Steve::Update_State(_float fTimeDelta)
+{
+	switch (m_eCurAnim)
+	{
+	case CArm_Steve::IDLE:
+		Motion_Idle(fTimeDelta);
+		break;
+	case CArm_Steve::SWING:
+		Motion_Swing(fTimeDelta);
+		break;
+	case CArm_Steve::ANIM_END:
+		break;
+	default:
+		break;
+	}
+}
+
+void CArm_Steve::Motion_Idle(_float fTimeDelta)
+{
+	Matrix		ViewMatrix = {};
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
+	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+
+
+	if (m_pSkeletalAnimator->is_AnimtionEND())
+	{
+		m_eCurAnim = IDLE;
+	}
+
+	m_pSkeletalAnimator->Update_Animetion(IDLE, fTimeDelta, 0);
+}
+
+void CArm_Steve::Motion_Swing(_float fTimeDelta)
+{
+
+	m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0);
+
+	if (m_pSkeletalAnimator->is_AnimtionEND())
+	{
+		m_eCurAnim = IDLE;
+	}
+
 }
 
 CArm_Steve* CArm_Steve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

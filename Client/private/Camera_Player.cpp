@@ -22,31 +22,31 @@ HRESULT CCamera_Player::Initialize(void* pArg)
     m_isActiveMouse = false;
     ShowCursor(false);
 
-	/* TransformCom »ı¼º */
+	/* TransformCom ìƒì„± */
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	// ¾Æ±Ô¸ÕÆ® ¹Ş±â
+	// ì•„ê·œë¨¼íŠ¸ ë°›ê¸°
 	CAMERA_PLAYER_DESC Desc{ *static_cast<CAMERA_PLAYER_DESC*>(pArg) };
 	m_fMouseSensor = Desc.fMouseSensor;
 	if (!Desc.pTarget)
  		return E_FAIL;
 
-	// ÇÃ·¹ÀÌ¾î Æ®·£½ºÆû ¹Ş±â
+	// í”Œë ˆì´ì–´ íŠ¸ëœìŠ¤í¼ ë°›ê¸°
 	m_pTarget_Transform_Com = static_cast<CTransform*>(Desc.pTarget->Find_Component(TEXT("Com_Transform")));
     
-    // ÇÃ·¹ÀÌ¾î ¸®Áöµå¹Ùµğ ¹Ş±â
+    // í”Œë ˆì´ì–´ ë¦¬ì§€ë“œë°”ë”” ë°›ê¸°
     m_pTarget_Rigidbody_Com = static_cast<CRigidbody*>(Desc.pTarget->Find_Component(TEXT("Com_Rigidbody")));
 
-	// Ä«¸Ş¶ó ±âº» °ª ¼¼ÆÃ
+	// ì¹´ë©”ë¼ ê¸°ë³¸ ê°’ ì„¸íŒ…
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
 
-	// ¸¶¿ì½º ¿Ãµå°ª ¼¼ÆÃ
+	// ë§ˆìš°ìŠ¤ ì˜¬ë“œê°’ ì„¸íŒ…
 	GetCursorPos(&m_ptOldMousePos);
 	ScreenToClient(g_hWnd, &m_ptOldMousePos);
 
-	// ±âº» ¸ğµå¸¦ TPS·Î ¼³Á¤
+	// ê¸°ë³¸ ëª¨ë“œë¥¼ TPSë¡œ ì„¤ì •
 	m_eCameraMode = E_CAMERA_MODE::TPS;
 
 	return S_OK;
@@ -54,27 +54,29 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 
 void CCamera_Player::Priority_Update(_float fTimeDelta)
 {
-
+    // ì™œ ì¹´ë©”ë¼ê°€ ë¨¼ì €ë¶ˆë ¸ì–´
+    Input_Key(fTimeDelta);
 }
 
 void CCamera_Player::Update(_float fTimeDelta)
 {
-    Input_Key(fTimeDelta);
-
-	// ¸ğµå ÀüÈ¯
-	if (m_pGameInstance->Key_Down(VK_F5))
-	{
-		m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
-	}
+    //3. ì—¬ê¸° 
+    __super::Update_VP_Matrices();
 }
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
     Follow_Player(fTimeDelta);
 
-    __super::Update_VP_Matrices();
-}
 
+    // ëª¨ë“œ ì „í™˜
+    if (m_pGameInstance->Key_Down(VK_F5))
+    {
+        m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
+    }
+
+    // 6. ì—¬ê¸°ê°€ ë
+}
 
 HRESULT CCamera_Player::Render()
 {
@@ -83,7 +85,7 @@ HRESULT CCamera_Player::Render()
 
 void CCamera_Player::Input_Key(_float fTimeDelta)
 {
-    // Ã¢ÀÌ È°¼ºÈ­ »óÅÂ°¡ ¾Æ´Ò °æ¿ì ÀÔ·ÂÀ» ¹«½Ã
+    // ì°½ì´ í™œì„±í™” ìƒíƒœê°€ ì•„ë‹ ê²½ìš° ì…ë ¥ì„ ë¬´ì‹œ
     if (!(GetForegroundWindow() == g_hWnd))
         return;
 
@@ -124,7 +126,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             GetClientRect(g_hWnd, &rc);
             POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
 
-            // ¸¶¿ì½º¸¦ ´Ù½Ã Áß¾ÓÀ¸·Î ÀÌµ¿
+            // ë§ˆìš°ìŠ¤ë¥¼ ë‹¤ì‹œ ì¤‘ì•™ìœ¼ë¡œ ì´ë™
             ClientToScreen(g_hWnd, &ptCenter);
             SetCursorPos(ptCenter.x, ptCenter.y);
         }
@@ -141,61 +143,61 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     if (!m_pTarget_Transform_Com)
         return;
 
-    // === ÇÃ·¹ÀÌ¾îÀÇ È¸Àü °¢µµ °¡Á®¿À±â ===
+    // === í”Œë ˆì´ì–´ì˜ íšŒì „ ê°ë„ ê°€ì ¸ì˜¤ê¸° ===
     _float3 vLook = m_pTarget_Transform_Com->Get_State(CTransform::STATE_LOOK);
-    m_fYaw = atan2f(vLook.x, vLook.z); // X, Z¸¦ ÀÌ¿ëÇØ Yaw °ª ÃßÃâ
+    m_fYaw = atan2f(vLook.x, vLook.z); // X, Zë¥¼ ì´ìš©í•´ Yaw ê°’ ì¶”ì¶œ
 
-    // === Ä«¸Ş¶ó È¸Àü º¤ÅÍ »ı¼º ===
+    // === ì¹´ë©”ë¼ íšŒì „ ë²¡í„° ìƒì„± ===
     _float3 vLookDir;
     vLookDir.x = cosf(m_fPitch) * sinf(m_fYaw);
     vLookDir.y = sinf(m_fPitch);
     vLookDir.z = cosf(m_fPitch) * cosf(m_fYaw);
 
-    // === °È´Â ¾Ö´Ï¸ŞÀÌ¼Ç Å¸ÀÌ¸Ó ===
+    // === ê±·ëŠ” ì• ë‹ˆë©”ì´ì…˜ íƒ€ì´ë¨¸ ===
     _float3 vVelocity = m_pTarget_Rigidbody_Com->Get_Velocity();
-    _float fSpeed = sqrtf(vVelocity.x * vVelocity.x + vVelocity.z * vVelocity.z); // XY ¼Óµµ Å©±â
+    _float fSpeed = sqrtf(vVelocity.x * vVelocity.x + vVelocity.z * vVelocity.z); // XY ì†ë„ í¬ê¸°
 
-    // === ÁÂ¿ì Èçµé¸² °è»ê ===
+    // === ì¢Œìš° í”ë“¤ë¦¼ ê³„ì‚° ===
     _float fShakeOffset_X = 0.f;
     _float fShakeOffset_Y = 0.f;
 
-    // °È´Â ¼Óµµ¿¡ µû¶ó m_fWalkTime Áõ°¡
+    // ê±·ëŠ” ì†ë„ì— ë”°ë¼ m_fWalkTime ì¦ê°€
     m_fWalkTime += 2.f * fSpeed * fTimeDelta;
 
-    // m_fWalkTimeÀÌ ³Ê¹« Ä¿ÁöÁö ¾Êµµ·Ï Á¦ÇÑ (0 ~ 2¥ğ ¹üÀ§·Î)
-    if (m_fWalkTime > 2.f * 3.14159f)  // 2¥ğ (ÇÑ ÁÖ±â) ÀÌÈÄ¿¡´Â ÃÊ±âÈ­
+    // m_fWalkTimeì´ ë„ˆë¬´ ì»¤ì§€ì§€ ì•Šë„ë¡ ì œí•œ (0 ~ 2Ï€ ë²”ìœ„ë¡œ)
+    if (m_fWalkTime > 2.f * 3.14159f)  // 2Ï€ (í•œ ì£¼ê¸°) ì´í›„ì—ëŠ” ì´ˆê¸°í™”
     {
-        m_fWalkTime -= 2.f * 3.14159f; // ÇÑ ÁÖ±â¸¸Å­ °¨¼Ò½ÃÄÑ¼­ ½Ã°£ °ªÀÌ °è¼Ó ¹İº¹µÇ°Ô ÇÔ
+        m_fWalkTime -= 2.f * 3.14159f; // í•œ ì£¼ê¸°ë§Œí¼ ê°ì†Œì‹œì¼œì„œ ì‹œê°„ ê°’ì´ ê³„ì† ë°˜ë³µë˜ê²Œ í•¨
     }
 
-    // ÁÂ¿ì Èçµé¸² (cosine ÇÔ¼ö·Î ºÎµå·´°Ô)
-    fShakeOffset_X = cosf(m_fWalkTime) * 0.05f; // -1 ~ 1 ¹üÀ§ ³»¿¡¼­ ÁÂ¿ì Èçµé¸²
+    // ì¢Œìš° í”ë“¤ë¦¼ (cosine í•¨ìˆ˜ë¡œ ë¶€ë“œëŸ½ê²Œ)
+    fShakeOffset_X = cosf(m_fWalkTime) * 0.05f; // -1 ~ 1 ë²”ìœ„ ë‚´ì—ì„œ ì¢Œìš° í”ë“¤ë¦¼
 
-    // À§¾Æ·¡ Èçµé¸² (±âÁ¸ ¹æ½Ä)
-    fShakeOffset_Y = fabs(sinf(m_fWalkTime) * 0.05f); // -1 ~ 1 ¹üÀ§ ³»¿¡¼­ À§¾Æ·¡ Èçµé¸²
+    // ìœ„ì•„ë˜ í”ë“¤ë¦¼ (ê¸°ì¡´ ë°©ì‹)
+    fShakeOffset_Y = fabs(sinf(m_fWalkTime) * 0.05f); // -1 ~ 1 ë²”ìœ„ ë‚´ì—ì„œ ìœ„ì•„ë˜ í”ë“¤ë¦¼
 
-    // === ¿À¸¥ÂÊ ¹æÇâ (Right º¤ÅÍ) ±¸ÇÏ±â ===
+    // === ì˜¤ë¥¸ìª½ ë°©í–¥ (Right ë²¡í„°) êµ¬í•˜ê¸° ===
     _float3 vRight;
-    vRight.x = cosf(m_fYaw);  // Ä«¸Ş¶óÀÇ ¿À¸¥ÂÊ ¹æÇâ (Yaw ±âÁØ)
+    vRight.x = cosf(m_fYaw);  // ì¹´ë©”ë¼ì˜ ì˜¤ë¥¸ìª½ ë°©í–¥ (Yaw ê¸°ì¤€)
     vRight.y = 0.f;
     vRight.z = -sinf(m_fYaw);
 
-    // === ÇÃ·¹ÀÌ¾îÀÇ ±âº» ¸Ó¸® À§Ä¡ ===
+    // === í”Œë ˆì´ì–´ì˜ ê¸°ë³¸ ë¨¸ë¦¬ ìœ„ì¹˜ ===
     _float3 playerPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION);
-    _float headHeight = 1.4f; // ÇÃ·¹ÀÌ¾îÀÇ ¸Ó¸® ³ôÀÌ
+    _float headHeight = 1.4f; // í”Œë ˆì´ì–´ì˜ ë¨¸ë¦¬ ë†’ì´
 
-    // === ¸Ó¸® À§Ä¡ ¼³Á¤ (ÁÂ¿ì Èçµé¸² Àû¿ë) ===
+    // === ë¨¸ë¦¬ ìœ„ì¹˜ ì„¤ì • (ì¢Œìš° í”ë“¤ë¦¼ ì ìš©) ===
     m_vHeadPos = playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f);
 
     if (m_eCameraMode == E_CAMERA_MODE::FPS)
     {
-        // 1ÀÎÄª(FPS) ¸ğµå
+        // 1ì¸ì¹­(FPS) ëª¨ë“œ
         m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_vHeadPos);
         m_pTransformCom->LookAt(m_vHeadPos + vLookDir);
     }
     else
     {
-        // 3ÀÎÄª(TPS) ¸ğµå
+        // 3ì¸ì¹­(TPS) ëª¨ë“œ
         _float3 vCameraOffset = -vLookDir * 5.0f;
         _float3 vCameraPos = m_vHeadPos + vCameraOffset;
         m_pTransformCom->Set_State(CTransform::STATE_POSITION, vCameraPos);
@@ -209,32 +211,32 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
 
 void CCamera_Player::On_MouseMove(_float fTimeDelta)
 {
-    // === È­¸é Áß¾Ó ÁÂÇ¥ °è»ê ===
+    // === í™”ë©´ ì¤‘ì•™ ì¢Œí‘œ ê³„ì‚° ===
     RECT rc;
     GetClientRect(g_hWnd, &rc);
     POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
 
-    // ÇöÀç ¸¶¿ì½º ÁÂÇ¥ °¡Á®¿À±â
+    // í˜„ì¬ ë§ˆìš°ìŠ¤ ì¢Œí‘œ ê°€ì ¸ì˜¤ê¸°
     POINT ptMouse;
     GetCursorPos(&ptMouse);
     ScreenToClient(g_hWnd, &ptMouse);
 
-    //// === ¸¶¿ì½º°¡ Ã¢ ³»ºÎ¿¡ ÀÖ´ÂÁö È®ÀÎ ===
+    //// === ë§ˆìš°ìŠ¤ê°€ ì°½ ë‚´ë¶€ì— ìˆëŠ”ì§€ í™•ì¸ ===
     //if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
     //    return;
 
-    // ¸¶¿ì½º ÀÌµ¿·® °è»ê (Áß¾Ó ±âÁØ)
+    // ë§ˆìš°ìŠ¤ ì´ë™ëŸ‰ ê³„ì‚° (ì¤‘ì•™ ê¸°ì¤€)
     _int iMouseMoveY = ptMouse.y - ptCenter.y;
 
-    // Pitch °ª ¾÷µ¥ÀÌÆ® (»óÇÏ È¸Àü)
+    // Pitch ê°’ ì—…ë°ì´íŠ¸ (ìƒí•˜ íšŒì „)
     m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
-    m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch)); // »óÇÏ È¸Àü Á¦ÇÑ
+    m_fPitch = max(-XM_PIDIV2 + 0.1f, min(XM_PIDIV2 - 0.1f, m_fPitch)); // ìƒí•˜ íšŒì „ ì œí•œ
 
-    // ¸¶¿ì½º¸¦ ´Ù½Ã Áß¾ÓÀ¸·Î ÀÌµ¿
+    // ë§ˆìš°ìŠ¤ë¥¼ ë‹¤ì‹œ ì¤‘ì•™ìœ¼ë¡œ ì´ë™
     ClientToScreen(g_hWnd, &ptCenter);
     SetCursorPos(ptCenter.x, ptCenter.y);
 
-    //// ¸¶¿ì½º¸¦ Ã¢ ³»ºÎ¿¡ °¡µÎ±â (ClipCursor »ç¿ë)
+    //// ë§ˆìš°ìŠ¤ë¥¼ ì°½ ë‚´ë¶€ì— ê°€ë‘ê¸° (ClipCursor ì‚¬ìš©)
     //RECT clipRect;
     //GetWindowRect(g_hWnd, &clipRect);
     //ClipCursor(&clipRect);

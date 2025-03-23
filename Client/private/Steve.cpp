@@ -40,6 +40,11 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 
 
+	// ì§€ê¸ˆ ì—…ë°ì´íŠ¸ìˆœì„œ 
+	// í”Œë ˆì´ì–´ -> ì¹´ë©”ë¼
+
+	// ì• ê°€ ì œì¼ ë¨¼ì € ë˜ì•¼ í•˜ì§€
+	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
@@ -69,7 +74,23 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
+	//4. ì—¬ê¸°
 
+	Matrix		mat = {};
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
+	D3DXMatrixInverse(&mat, nullptr, &mat);
+	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
+	m_skelAnime->Set_BoneLocalMatrix(2, mat);
+
+	// ì• ë‹ˆë©”ì´ì…˜ ìƒíƒœ ë³€ê²½
+	Update_State(fTimeDelta);
+
+	// ëª¨ë¸ì˜ ë£¨íŠ¸ë³¸ ì—…ë°ì´íŠ¸ ( Position ë§Œ)
+	Matrix matrix = *m_pTransformCom->Get_WorldMatrix();
+	m_skelAnime->Update_RootBone(MAtrixTranslation(matrix._41, matrix._42, matrix._43));
+
+
+	// f5ë¡œ ëœë” ê·¸ë£¹ ë³€ê²½
 	if (m_pGameInstance->Key_Down(VK_F5))
 	{
 		m_bisTPS *= -1;
@@ -78,30 +99,6 @@ void CSteve::Late_Update(_float fTimeDelta)
 	{
 		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 			return;
-	}
-
-	m_skelAnime->Update_Bone(0, *m_pTransformCom->Get_WorldMatrix());
-
-	// ¾Ö´Ï¸ŞÀÌ¼Ç Àû¿ë
-	if (m_AnimState == WALK)
-	{
-		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 3, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 4, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 5, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 6, *m_pTransformCom->Get_WorldMatrix());
-	}
-	else if (m_AnimState == IDLE)
-	{
-		if (!m_skelAnime->IsBlending() && m_skelAnime->GetCurrentAnim() != ANIM::IDLE)
-		{
-			m_skelAnime->Start_Blend(WALK_F, IDLE, 0.005f);
-			m_skelAnime->Start_Blend(WALK_B, IDLE, 9999999.f);
-		}
-
-		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 3, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 4, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 5, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 6, *m_pTransformCom->Get_WorldMatrix());
 	}
 }
 		
@@ -123,7 +120,6 @@ HRESULT CSteve::Render()
 		if (FAILED(m_pVIBufferComs[i]->Render()))
 			return E_FAIL;
 	}
-
 
 	if (FAILED(m_pCollider_CubeCom->Render_ColliderBox(false)))
 		return E_FAIL;
@@ -156,8 +152,10 @@ void CSteve::Input_Key(_float fTimeDelta)
 
 void CSteve::Move(_float fTimeDelta)
 {
+	bool isMoving = false;
+
 	CGameObject* collider{ nullptr };
-	// ºí·° Ãæµ¹ ¿©ºÎ È®ÀÎ.	
+	// ë¸”ëŸ­ ì¶©ëŒ ì—¬ë¶€ í™•ì¸.	
 	collider = m_pGameInstance->Collision_with_Group(
 		COLLISION_BLOCK,		
 		m_pCollider_CubeCom,	
@@ -167,10 +165,10 @@ void CSteve::Move(_float fTimeDelta)
 	if (collider != nullptr)
 	{
 		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
-		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// Àû¿ë ¾À.
-			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// °¡Á®¿Ã ÇÁ·ÎÅäÅ¸ÀÔ.
-			LEVEL_STATIC,	// °¡Á®¿Ã ¾À.
-			LAYER_PARTICLE_DASH);	// ¾Öµå¿ÀºêÁ§Æ®¿¡ Ãß°¡ÇÒ ·¹ÀÌ¾î
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// ì ìš© ì”¬.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// ê°€ì ¸ì˜¬ í”„ë¡œí† íƒ€ì….
+			LEVEL_STATIC,	// ê°€ì ¸ì˜¬ ì”¬.
+			LAYER_PARTICLE_DASH);	// ì• ë“œì˜¤ë¸Œì íŠ¸ì— ì¶”ê°€í•  ë ˆì´ì–´
 
 		if (particle != nullptr)
 		{
@@ -185,23 +183,25 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
-		m_AnimState = WALK;
+		isMoving = true;
 	}
-	else
-		m_AnimState = IDLE;
-
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
 		m_pTransformCom->Go_Backward(fTimeDelta);
+		isMoving = true;
 	}
 	if (m_pGameInstance->Key_Pressing('A'))
 	{
 		m_pTransformCom->Go_Left(fTimeDelta);
+		isMoving = true;
 	}
 	if (m_pGameInstance->Key_Pressing('D'))
 	{
 		m_pTransformCom->Go_Right(fTimeDelta);
+		isMoving = true;
 	}
+
+	m_eCurAnim = isMoving ? WALK : IDLE;
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
@@ -215,63 +215,40 @@ void CSteve::Move(_float fTimeDelta)
 
 void CSteve::Turn(_float fTimeDelta)
 {
-	// Ã¢ÀÌ È°¼ºÈ­ »óÅÂ°¡ ¾Æ´Ò °æ¿ì ¸¶¿ì½º ÀÔ·ÂÀ» ¹«½Ã
-	if (!(GetForegroundWindow() == g_hWnd))
+	if (GetForegroundWindow() != g_hWnd)
 		return;
 
-	// È­¸é Áß¾Ó ÁÂÇ¥ °è»ê
+	// í™”ë©´ ì¤‘ì•™ ì¢Œí‘œ ê³„ì‚°
 	RECT rc;
 	GetClientRect(g_hWnd, &rc);
 	POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
 
-	// ÇöÀç ¸¶¿ì½º ÁÂÇ¥ °¡Á®¿À±â
+	// í˜„ì¬ ë§ˆìš°ìŠ¤ ì¢Œí‘œ ê°€ì ¸ì˜¤ê¸°
 	POINT ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
-	// === ¸¶¿ì½º°¡ Ã¢ ³»ºÎ¿¡ ÀÖ´ÂÁö È®ÀÎ ===
+	// ë§ˆìš°ìŠ¤ê°€ ì°½ ë‚´ë¶€ì— ìˆëŠ”ì§€ í™•ì¸
 	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
 		return;
 
-	// ¸¶¿ì½º ÀÌµ¿·® °è»ê (Áß¾Ó ±âÁØ)
+	// ë§ˆìš°ìŠ¤ ì´ë™ëŸ‰ ê³„ì‚°
 	_int iMouseMoveX = ptMouse.x - ptCenter.x;
 
-	// Ä«¸Ş¶óÀÇ yaw °ªÀ» »ç¿ëÇÏ¿© ½ºÆ¼ºêÀÇ È¸Àü°ªÀ» ¼³Á¤
-	m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * m_fMouseSensor);
+	if (iMouseMoveX != 0)
+	{
+		// íšŒì „ ì ìš©
+		m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * 0.5f);
 
-	// ½ºÆ¼ºêÀÇ ¿ùµå ¸ÅÆ®¸¯½º¸¦ °¡Á®¿È
-	const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
-
-	// 'Look' º¤ÅÍ¸¦ ¾ò±â À§ÇØ, ¿ùµå ¸ÅÆ®¸¯½º¿¡¼­ ¹æÇâ º¤ÅÍ¸¦ ÃßÃâ
-	_float3 vLook = { pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33 };
-	_float3 vUp = { pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23 };
-
-	// 'Right' º¤ÅÍ °è»ê: Look°ú UpÀÇ ¿ÜÀû
-	_float3 vRight;
-	D3DXVec3Cross(&vRight, &vUp, &vLook);
-
-	// ¸¶¿ì½º ÀÌµ¿¿¡ µû¸¥ È¸Àü°ª Àû¿ë
-	_float fYaw = iMouseMoveX * fTimeDelta * m_fMouseSensor;  // È¸Àü °¢µµ °è»ê (yaw)
-
-	// È¸Àü Çà·Ä »ı¼º (YÃà ±âÁØ È¸Àü)
-	_float4x4 matRotation;
-	D3DXMatrixRotationAxis(&matRotation, &vUp, fYaw);  // YÃà ±âÁØÀ¸·Î È¸Àü
-
-	// ±âÁ¸ ¿ùµå ¸ÅÆ®¸¯½º¸¦ È¸Àü Çà·Ä·Î °»½Å
-	_float4x4 matNewWorld = *pWorldMatrix;
-	matNewWorld = matRotation * matNewWorld;
-
-	// »õ·Î¿î ¿ùµå ¸ÅÆ®¸¯½º¸¦ ¼³Á¤
-	m_pTransformCom->Set_Matrix(matNewWorld);
-
-	//// ¸¶¿ì½º¸¦ Áß¾ÓÀ¸·Î ÀÌµ¿
-	//ClientToScreen(g_hWnd, &ptCenter);
-	//SetCursorPos(ptCenter.x, ptCenter.y);
+		// ë§ˆìš°ìŠ¤ ì¤‘ì•™ìœ¼ë¡œ ë¦¬ì…‹
+		ClientToScreen(g_hWnd, &ptCenter);
+		SetCursorPos(ptCenter.x, ptCenter.y);
+	}
 }
 
 HRESULT CSteve::Ready_Components()
 {
-	// ½ºÆ¼ºê ÅØ½ºÃ³
+	// ìŠ¤í‹°ë¸Œ í…ìŠ¤ì²˜
   /* For.Com_Texture */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Steve"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
@@ -285,17 +262,17 @@ HRESULT CSteve::Ready_Components()
 
 	/* For.Com_VIBuffer */
 	m_pVIBufferComs.resize(6);
-	// ¸öÅë
+	// ëª¸í†µ
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
 		TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
 		return E_FAIL;
 
-	// ¸Ó¸®
+	// ë¨¸ë¦¬
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
 		TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[1]))))
 		return E_FAIL;
 
-	// ´Ù¸®
+	// ë‹¤ë¦¬
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
 		TEXT("m_pVIBufferCom_Foot_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[2]))))
 		return E_FAIL;
@@ -303,7 +280,7 @@ HRESULT CSteve::Ready_Components()
 		TEXT("m_pVIBufferCom_Foot_L"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[3]))))
 		return E_FAIL;
 
-	// ÆÈ
+	// íŒ”
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
 		TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[4]))))
 		return E_FAIL;
@@ -312,16 +289,16 @@ HRESULT CSteve::Ready_Components()
 		return E_FAIL;
 
 
-	// º» + ¾Ö´Ï¸ŞÀÌ¼Ç
+	// ë³¸ + ì• ë‹ˆë©”ì´ì…˜
 	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
 		TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
 		return E_FAIL;
 
 
-	//Äİ¶óÀÌ´õ
+	//ì½œë¼ì´ë”
 	/* For.Com_Collider */
-	CCollider_Cube::COLLCUBE_DESC Desc{}; //Äİ¶óÀÌ´õ Å©±â ¼³Á¤
+	CCollider_Cube::COLLCUBE_DESC Desc{}; //ì½œë¼ì´ë” í¬ê¸° ì„¤ì •
 	Desc.fRadiusX = 0.3f; Desc.fRadiusY = 0.8f; Desc.fRadiusZ = 0.3;
 	Desc.fOffSetY = 0.8f;
 	Desc.pTransformCom = m_pTransformCom;
@@ -329,7 +306,7 @@ HRESULT CSteve::Ready_Components()
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
 		return E_FAIL;
 
-	//¸®Áöµå¹Ùµğ
+	//ë¦¬ì§€ë“œë°”ë””
 	/* For.Com_Rigidbody */
 	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CubeCom, 1.f };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
@@ -344,7 +321,7 @@ HRESULT CSteve::Ready_Bone()
 	{
 		 { "Root"  , -1,  MAtrixTranslation(0.f, 0.f,0.f),	MAtrixTranslation(0.f	,0.f,	0.f),	Matrix(), Matrix() },  // root
 		 { "Pelvis",  0,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 6.f / 16.f, 0.f)},
-		 { "Neck"  ,  1,  MAtrixTranslation(0.f,  24.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 4.f / 16.f, 0.f)},
+		 { "Neck"  ,  1,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 4.f / 16.f, 0.f)},
 		 { "Leg_R",  1,	  MAtrixTranslation(2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(2.f / 16.f,	 0,		0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     0,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(6.f / 16.f,   12.f / 16.f	,0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
@@ -362,52 +339,128 @@ HRESULT CSteve::Ready_Bone()
 HRESULT CSteve::Ready_Animation()
 {
 	/*----------
-	* À§Ä¡ ÃÊ±âÈ­
-	------------*/
-
-	Matrix mat99 = {};
-	mat99.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(0));
-
-	KEYFREAME IDLE = { 1.f, mat99 };
-	m_skelAnime->Add_Animation(ANIM::IDLE, IDLE);
-
-	/*----------
-	* Walk ¸ğ¼Ç
+	* INIT ëª¨ì…˜
 	------------*/
 	Matrix mat = {};
+	KEYFREAME Init = { 0.f, mat };
+	m_skelAnime->Add_Animation(ANIM_type::INIT, Init);
+
+	/*----------
+	* Walk ëª¨ì…˜
+	------------*/
 	mat.Turn_Radian(_float3(1.f,0.f, 0.f), D3DXToRadian(0));
 
 	Matrix mat2 = {};
 	mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(60));
 
 	Matrix mat3 = {};
-	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(0));
-
-	Matrix mat4 = {};
 	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-60));
 	
-	KEYFREAME Walk_1_F = { 0.f, mat };
-	KEYFREAME Walk_2_F = { 1.0f, mat2 };
-	KEYFREAME Walk_3_F = { 2.0f, mat3 };
-	KEYFREAME Walk_4_F = { 3.0f, mat4 };
+	KEYFREAME Walk_1_F = { 0.f, mat }; //0
+	KEYFREAME Walk_2_F = { 1.0f, mat2 }; //60
+	KEYFREAME Walk_3_F = { 2.0f, mat }; // 0
+	KEYFREAME Walk_4_F = { 3.0f, mat3 }; // -60
+	KEYFREAME Walk_5_F = { 3.999f, mat }; // 0
 
-	KEYFREAME Walk_1_B = { 0.f,  mat4 };
+	KEYFREAME Walk_1_B = { 0.f,  mat };
 	KEYFREAME Walk_2_B = { 1.0f, mat3 };
-	KEYFREAME Walk_3_B = { 2.0f, mat2 };
-	KEYFREAME Walk_4_B = { 3.0f, mat };
+	KEYFREAME Walk_3_B = { 2.0f, mat };
+	KEYFREAME Walk_4_B = { 3.0f, mat2 };
+	KEYFREAME Walk_5_B = { 3.999f, mat };
+
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_1_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_2_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_3_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_4_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_5_F);
+
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_1_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_2_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_3_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_4_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_5_B);
 
 
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_1_F);
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_2_F);
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_3_F);
-	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_4_F);
+/*----------
+* IDEL 
+------------*/
+	mat = Matrix();
+	mat.Turn_Radian(_float3(0.f, 0.f, 0.f), D3DXToRadian(0));
 
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_1_B);
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_2_B);
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_3_B);
-	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_4_B);
+	mat2 = Matrix();
+	mat2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-3));
+
+	mat3 = Matrix();
+	mat3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(3));
+
+	KEYFREAME IDLE1_R = { 0.f, mat };
+	KEYFREAME IDLE2_R = { 5.f, mat2 };
+	KEYFREAME IDLE3_R = { 9.999f, mat };
+
+	KEYFREAME IDLE1_L = { 0.f, mat };
+	KEYFREAME IDLE2_L = { 5.f, mat3 };
+	KEYFREAME IDLE3_L = { 9.999f, mat };
+
+	m_skelAnime->Add_Animation(ANIM_type::Swing_R, IDLE1_R);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_R, IDLE2_R);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_R, IDLE3_R);
+
+	m_skelAnime->Add_Animation(ANIM_type::Swing_L, IDLE1_L);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_L, IDLE2_L);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_L, IDLE3_L);
 
 	return S_OK;
+}
+
+void CSteve::Update_State(_float fTimeDelta)
+{
+	switch (m_eCurAnim)
+	{
+	case CSteve::IDLE:
+		Motion_Idle(fTimeDelta);
+		break;
+	case CSteve::WALK:
+		Motion_Walk(fTimeDelta);
+		break;
+	case CSteve::ANIM_END:
+		break;
+	default:
+		break;
+	}
+
+}
+
+void CSteve::Motion_Idle(_float fTimeDelta)
+{
+	if (m_skelAnime->is_AnimtionEND())
+	{
+		m_eCurAnim = IDLE;
+	}
+
+	/*if (!m_skelAnime->IsBlending() && m_skelAnime->GetCurrentAnim() != ANIM::IDLE)
+	{
+		m_skelAnime->Start_Blend(WALK_F, IDLE, 0.005f);
+		m_skelAnime->Start_Blend(WALK_B, IDLE, 9999999.f);
+	}*/
+
+	m_skelAnime->Update_Animetion(INIT, fTimeDelta, 3);
+	m_skelAnime->Update_Animetion(INIT, fTimeDelta, 4);
+	m_skelAnime->Update_Animetion(Swing_L, fTimeDelta, 5);
+	m_skelAnime->Update_Animetion(Swing_R, fTimeDelta, 6);
+}
+
+void CSteve::Motion_Walk(_float fTimeDelta)
+{
+	if (m_skelAnime->is_AnimtionEND())
+	{
+		m_eCurAnim = WALK;
+	}
+
+	m_skelAnime->Update_Animetion(Swing_B, fTimeDelta, 3);
+	m_skelAnime->Update_Animetion(Swing_F, fTimeDelta, 4);
+	m_skelAnime->Update_Animetion(Swing_F, fTimeDelta, 5);
+	m_skelAnime->Update_Animetion(Swing_B, fTimeDelta, 6);
+
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
