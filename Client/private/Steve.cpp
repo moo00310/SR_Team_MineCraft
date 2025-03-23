@@ -40,7 +40,6 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 
 	Input_Key(fTimeDelta);
-
 }
 
 void CSteve::Update(_float fTimeDelta)
@@ -68,7 +67,13 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
+	// 모델의 루트본 업데이트
+	m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
+	// 애니메이션 상태 변경
+	Update_State(fTimeDelta);
+
+	// f5로 랜더 그룹 변경
 	if (m_pGameInstance->Key_Down(VK_F5))
 	{
 		m_bisTPS *= -1;
@@ -77,30 +82,6 @@ void CSteve::Late_Update(_float fTimeDelta)
 	{
 		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 			return;
-	}
-
-	m_skelAnime->Update_Bone(0, *m_pTransformCom->Get_WorldMatrix());
-
-	// 애니메이션 적용
-	if (m_AnimState == WALK)
-	{
-		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 3, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 4, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 5, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 6, *m_pTransformCom->Get_WorldMatrix());
-	}
-	else if (m_AnimState == IDLE)
-	{
-		if (!m_skelAnime->IsBlending() && m_skelAnime->GetCurrentAnim() != ANIM::IDLE)
-		{
-			m_skelAnime->Start_Blend(WALK_F, IDLE, 0.005f);
-			m_skelAnime->Start_Blend(WALK_B, IDLE, 9999999.f);
-		}
-
-		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 3, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 4, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 5, *m_pTransformCom->Get_WorldMatrix());
-		m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 6, *m_pTransformCom->Get_WorldMatrix());
 	}
 }
 		
@@ -122,7 +103,6 @@ HRESULT CSteve::Render()
 		if (FAILED(m_pVIBufferComs[i]->Render()))
 			return E_FAIL;
 	}
-
 
 	if (FAILED(m_pCollider_CubeCom->Render_ColliderBox(false)))
 		return E_FAIL;
@@ -155,26 +135,30 @@ void CSteve::Input_Key(_float fTimeDelta)
 
 void CSteve::Move(_float fTimeDelta)
 {
+	bool isMoving = false;
+
 	if (m_pGameInstance->Key_Pressing('W'))
 	{
 		m_pTransformCom->Go_Straight(fTimeDelta);
-		m_AnimState = WALK;
+		isMoving = true;
 	}
-	else
-		m_AnimState = IDLE;
-
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
 		m_pTransformCom->Go_Backward(fTimeDelta);
+		isMoving = true;
 	}
 	if (m_pGameInstance->Key_Pressing('A'))
 	{
 		m_pTransformCom->Go_Left(fTimeDelta);
+		isMoving = true;
 	}
 	if (m_pGameInstance->Key_Pressing('D'))
 	{
 		m_pTransformCom->Go_Right(fTimeDelta);
+		isMoving = true;
 	}
+
+	m_eCurAnim = isMoving ? WALK : IDLE;
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
@@ -212,34 +196,35 @@ void CSteve::Turn(_float fTimeDelta)
 	// 카메라의 yaw 값을 사용하여 스티브의 회전값을 설정
 	m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * m_fMouseSensor);
 
-	// 스티브의 월드 매트릭스를 가져옴
-	const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
+	//// 스티브의 월드 매트릭스를 가져옴
+	//const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
 
-	// 'Look' 벡터를 얻기 위해, 월드 매트릭스에서 방향 벡터를 추출
-	_float3 vLook = { pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33 };
-	_float3 vUp = { pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23 };
+	//// 'Look' 벡터를 얻기 위해, 월드 매트릭스에서 방향 벡터를 추출
+	//_float3 vLook = { pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33 };
+	//_float3 vUp = { pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23 };
 
-	// 'Right' 벡터 계산: Look과 Up의 외적
-	_float3 vRight;
-	D3DXVec3Cross(&vRight, &vUp, &vLook);
+	//// 'Right' 벡터 계산: Look과 Up의 외적
+	//_float3 vRight;
+	//D3DXVec3Cross(&vRight, &vUp, &vLook);
 
-	// 마우스 이동에 따른 회전값 적용
-	_float fYaw = iMouseMoveX * fTimeDelta * m_fMouseSensor;  // 회전 각도 계산 (yaw)
+	//// 마우스 이동에 따른 회전값 적용
+	//_float fYaw = iMouseMoveX * fTimeDelta * m_fMouseSensor;  // 회전 각도 계산 (yaw)
 
-	// 회전 행렬 생성 (Y축 기준 회전)
-	_float4x4 matRotation;
-	D3DXMatrixRotationAxis(&matRotation, &vUp, fYaw);  // Y축 기준으로 회전
+	//// 회전 행렬 생성 (Y축 기준 회전)
+	//_float4x4 matRotation;
+	//D3DXMatrixRotationAxis(&matRotation, &vUp, fYaw);  // Y축 기준으로 회전
 
-	// 기존 월드 매트릭스를 회전 행렬로 갱신
-	_float4x4 matNewWorld = *pWorldMatrix;
-	matNewWorld = matRotation * matNewWorld;
+	//// 기존 월드 매트릭스를 회전 행렬로 갱신
+	//_float4x4 matNewWorld = *pWorldMatrix;
+	//matNewWorld = matRotation * matNewWorld;
 
-	// 새로운 월드 매트릭스를 설정
-	m_pTransformCom->Set_Matrix(matNewWorld);
+	//// 새로운 월드 매트릭스를 설정
+	//m_pTransformCom->Set_Matrix(matNewWorld);
 
-	//// 마우스를 중앙으로 이동
-	//ClientToScreen(g_hWnd, &ptCenter);
-	//SetCursorPos(ptCenter.x, ptCenter.y);
+
+	//Matrix mat = *m_pTransformCom->Get_WorldMatrix();
+	//m_skelAnime->Update_Bone(2, mat.Turn(_float3(0.f, 1.f, 0.f), fTimeDelta, iMouseMoveX * m_fMouseSensor));
+
 }
 
 HRESULT CSteve::Ready_Components()
@@ -354,33 +339,83 @@ HRESULT CSteve::Ready_Animation()
 	mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(60));
 
 	Matrix mat3 = {};
-	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(0));
-
-	Matrix mat4 = {};
 	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-60));
 	
-	KEYFREAME Walk_1_F = { 0.f, mat };
-	KEYFREAME Walk_2_F = { 1.0f, mat2 };
-	KEYFREAME Walk_3_F = { 2.0f, mat3 };
-	KEYFREAME Walk_4_F = { 3.0f, mat4 };
+	KEYFREAME Walk_1_F = { 0.f, mat }; //0
+	KEYFREAME Walk_2_F = { 1.0f, mat2 }; //60
+	KEYFREAME Walk_3_F = { 2.0f, mat }; // 0
+	KEYFREAME Walk_4_F = { 3.0f, mat3 }; // -60
+	KEYFREAME Walk_5_F = { 4.0f, mat }; // 0
 
-	KEYFREAME Walk_1_B = { 0.f,  mat4 };
+	KEYFREAME Walk_1_B = { 0.f,  mat };
 	KEYFREAME Walk_2_B = { 1.0f, mat3 };
-	KEYFREAME Walk_3_B = { 2.0f, mat2 };
-	KEYFREAME Walk_4_B = { 3.0f, mat };
-
+	KEYFREAME Walk_3_B = { 2.0f, mat };
+	KEYFREAME Walk_4_B = { 3.0f, mat2 };
+	KEYFREAME Walk_5_B = { 4.0f, mat };
 
 	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_1_F);
 	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_2_F);
 	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_3_F);
 	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_4_F);
+	m_skelAnime->Add_Animation(ANIM::WALK_F, Walk_5_F);
 
 	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_1_B);
 	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_2_B);
 	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_3_B);
 	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_4_B);
+	m_skelAnime->Add_Animation(ANIM::WALK_B, Walk_5_B);
 
 	return S_OK;
+}
+
+void CSteve::Update_State(_float fTimeDelta)
+{
+	switch (m_eCurAnim)
+	{
+	case CSteve::IDLE:
+		Motion_Idle(fTimeDelta);
+		break;
+	case CSteve::WALK:
+		Motion_Walk(fTimeDelta);
+		break;
+	case CSteve::ANIM_END:
+		break;
+	default:
+		break;
+	}
+
+}
+
+void CSteve::Motion_Idle(_float fTimeDelta)
+{
+	if (m_skelAnime->is_AnimtionEND())
+	{
+		m_eCurAnim = IDLE;
+	}
+
+	/*if (!m_skelAnime->IsBlending() && m_skelAnime->GetCurrentAnim() != ANIM::IDLE)
+	{
+		m_skelAnime->Start_Blend(WALK_F, IDLE, 0.005f);
+		m_skelAnime->Start_Blend(WALK_B, IDLE, 9999999.f);
+	}*/
+
+	m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 3);
+	m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 4);
+	m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 5);
+	m_skelAnime->Update_Animetion(IDLE, fTimeDelta, 6);
+}
+
+void CSteve::Motion_Walk(_float fTimeDelta)
+{
+	if (m_skelAnime->is_AnimtionEND())
+	{
+		m_eCurAnim = WALK;
+	}
+
+	m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 3);
+	m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 4);
+	m_skelAnime->Update_Animetion(WALK_F, fTimeDelta, 5);
+	m_skelAnime->Update_Animetion(WALK_B, fTimeDelta, 6);
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

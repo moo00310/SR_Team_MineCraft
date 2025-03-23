@@ -260,7 +260,7 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Pickaxe/stone_pickaxe.png"), 1))))
 		return E_FAIL;
 	
-
+#pragma region 크리퍼
 	/*-----------------------------------
 	*  크리퍼 모델
 	-----------------------------*/
@@ -284,16 +284,7 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
 		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
-
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	//// 터레인 큐브
-	//cube = { _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
-	///* For.Prototype_Component_Com_mVIBCubeTerrain */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_Component_Com_mVIBCubeTerrain"),
-	//	CVIBuffer_CubeTerrain::Create(m_pGraphic_Device, cube))))
-	//	return E_FAIL;
+#pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
@@ -317,11 +308,6 @@ HRESULT CLoader::Loading_For_MOOPlay()
 	/* For.Prototype_GameObject_Steve */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Steve"),
 		CSteve::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_Wood */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Wood"),
-		CWood::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sword */

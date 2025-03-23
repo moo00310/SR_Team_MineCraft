@@ -42,10 +42,12 @@ private:
 	CRigidbody*		m_pRigidbodyCom{ nullptr };
 	CSkeletalAnimator* m_skelAnime = { nullptr };
 	vector<CVIBuffer_Cube*> m_pVIBufferComs;
-	ANIM m_AnimState = { ANIM_END };
+
 private:
 	_float              m_fMouseSensor = { 0.03f };
 	int m_bisTPS = { 1 };
+	ANIM m_eCurAnim = { ANIM_END };
+
 
 
 private:
@@ -58,10 +60,17 @@ private:
 	HRESULT Ready_Bone();
 	HRESULT Ready_Animation();
 
+private:
+	void Update_State(_float fTimeDelta);
+	void Motion_Idle(_float fTimeDelta);
+	void Motion_Walk(_float fTimeDelta);
+
 public:
 	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };
+
+
 
 

@@ -28,20 +28,25 @@ private:
 	CSkeletalAnimator(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CSkeletalAnimator(const CSkeletalAnimator& Prototype);
 	virtual ~CSkeletalAnimator() = default;
+
 public:
 	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
 
 public:
+	int GetCurrentAnim() { return m_CurrentAnim; }
+	bool is_AnimtionEND();
+
+public:
 	void Add_Bone(const BONE& bone);
 	void Add_Animation(_int _type, const KEYFREAME& keyframe);
 	bool IsBlending() { return m_blendState.isBlending; }
-	int GetCurrentAnim() { return m_CurrentAnim; }
 
 public:
+	HRESULT Update_Animetion(_int _type, float fTimeDelta, int boneIndex);
 	HRESULT Update_Bone(int BoneIndex, const Matrix& Matrix);
-	HRESULT Update_Animetion(_int _type, float fTimeDelta, int boneIndex, const Matrix& pTransform);
+	HRESULT Update_RootBone(const Matrix& matrix);
 	void Start_Blend(int fromAnim, int toAnim, float duration);
 
 private:
@@ -52,11 +57,11 @@ private:
 	float animElapsedTime = 0.0f;
 	int m_imeshCount = 0;
 
-
 	int m_CurrentAnim = { 0 };
 	BlendState m_blendState = {};
 
 private:
+	void Blend_Animations(float fTimeDelta, int boneIndex);
 	void Update_Mesh();
 	Matrix CalcCurrentMatrix(int animType, int boneIndex);
 

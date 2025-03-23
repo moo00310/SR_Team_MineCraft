@@ -13,7 +13,7 @@ class CArm_Steve : public CGameObject
 {
 public:
 	enum ANIM {
-		IDLE, SWING, ANIM_END
+		IDLE, SWING, WALK ,ANIM_END
 	};
 
 	typedef struct tagArmesc 
@@ -38,15 +38,21 @@ private:
 	CTexture* m_pTextureCom = { nullptr };
 	vector<CVIBuffer_Cube*> m_pVIBufferComs = { nullptr };
 	CSkeletalAnimator* m_pSkeletalAnimator = { nullptr };
-
-	float Comput = {};
-	int  flag = { 1 };
+	
+private:
+	ANIM m_eCurAnim = { IDLE };
 	int m_bisTPS = { -1 };
 
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone();
 	HRESULT Ready_Animation();
+
+private:
+	HRESULT Update_Root(_float fTimeDelta);
+	void Update_State(_float fTimeDelta);
+	void Motion_Idle(_float fTimeDelta);
+	void Motion_Swing(_float fTimeDelta);
 
 public:
 	static CArm_Steve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

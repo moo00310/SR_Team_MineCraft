@@ -35,6 +35,19 @@ HRESULT CSkeletalAnimator::Update(_float fTimeDelta, _uint iCollsionGroup)
     return S_OK;
 }
 
+bool CSkeletalAnimator::is_AnimtionEND()
+{
+    if (fElapsedTime >= m_Animations[m_CurrentAnim].back().fTime)
+    {
+        fElapsedTime = 0.0f;  // 처음부터 재생
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void CSkeletalAnimator::Add_Bone(const BONE& bone)
 {
     vecBones.push_back(bone);
@@ -80,42 +93,43 @@ void CSkeletalAnimator::Update_Mesh()
     }  
 }
 
-HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int boneIndex , const Matrix& pWorldTransform)
+void CSkeletalAnimator::Blend_Animations(float fTimeDelta, int boneIndex)
+{
+    m_blendState.currentTime += fTimeDelta;
+
+    float blendT = m_blendState.currentTime / m_blendState.blendDuration;
+    if (blendT > 1.f)  blendT = 1.f;
+    else if (blendT < 0.f)  blendT = 0.f;
+
+    // 현재 애니메이션 결과
+    Matrix fromMat = CalcCurrentMatrix(m_blendState.fromAnim, boneIndex);
+
+    // 다음 애니메이션 첫 프레임 또는 현재 시간 보간
+    Matrix toMat = CalcCurrentMatrix(m_blendState.toAnim, boneIndex);
+
+    // 보간해서 최종 행렬 만들기
+    Matrix blended = InterpolateMatrix_Quat(fromMat, toMat, blendT);
+    vecBones[boneIndex].localTransform = blended * vecBones[boneIndex].baseTransform;
+
+    if (blendT >= 1.f)
+    {
+        // 블렌딩 완료 → 다음 애니메이션으로 전환
+        m_blendState.isBlending = false;
+        m_CurrentAnim = m_blendState.toAnim;
+        fElapsedTime = 0.f;
+    }
+}
+
+HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int boneIndex)
 {
     if (m_blendState.isBlending)
     {
-        m_blendState.currentTime += fTimeDelta;
-        float blendT = m_blendState.currentTime / m_blendState.blendDuration;
-        if (blendT > 1.f)  blendT = 1.f;
-        else if(blendT < 0.f)  blendT = 0.f;
-       
-        // 현재 애니메이션 결과
-        Matrix fromMat = CalcCurrentMatrix(m_blendState.fromAnim, boneIndex);
-
-        // 다음 애니메이션 첫 프레임 또는 현재 시간 보간
-        Matrix toMat = CalcCurrentMatrix(m_blendState.toAnim, boneIndex);
-
-        // 보간해서 최종 행렬 만들기
-        Matrix blended = InterpolateMatrix_Quat(fromMat, toMat, blendT);
-        vecBones[boneIndex].localTransform = blended * vecBones[boneIndex].baseTransform;
-
-        if (blendT >= 1.f)
-        {
-            // 블렌딩 완료 → 다음 애니메이션으로 전환
-            m_blendState.isBlending = false;
-            m_CurrentAnim = m_blendState.toAnim;
-            fElapsedTime = 0.f;
-        }
-
-        return S_OK;
+        Blend_Animations(fTimeDelta, boneIndex);
+		return S_OK;
     }
 
+    m_CurrentAnim = _type;
     fElapsedTime += fTimeDelta;
-
-    if (fElapsedTime >= m_Animations[_type].back().fTime)
-    {
-        fElapsedTime = 0.0f;  // 처음부터 재생
-    }
 
     if (m_Animations[_type].size() < 2)
     {
@@ -138,11 +152,17 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
 
     // 보간 비율 계산 (0~1 사이 값)
     float t = (fElapsedTime - key1.fTime) / (key2.fTime - key1.fTime);
-
     Matrix interpolatedMatrix = InterpolateMatrix_Quat(key1.matTransform , key2.matTransform, t);
-
     vecBones[boneIndex].localTransform = interpolatedMatrix * vecBones[boneIndex].baseTransform;
 
+    return S_OK;
+}
+
+HRESULT CSkeletalAnimator::Update_RootBone(const Matrix& matrix)
+{
+    if (FAILED(Update_Bone(0, matrix)))
+        return E_FAIL;
+ 
     return S_OK;
 }
 
