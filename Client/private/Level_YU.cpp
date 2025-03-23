@@ -111,6 +111,7 @@ HRESULT CLevel_YU::Ready_Laye_TPS_Arm(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+}
 
 HRESULT CLevel_YU::Ready_Layer_DashParticle(const _wstring& strLayerTag)
 {
