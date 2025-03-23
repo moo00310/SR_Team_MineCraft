@@ -31,12 +31,11 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
+	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_Clouds(TEXT("Layer_Clouds"))))
-		return E_FAIL;
-
+	//if (FAILED(Ready_Layer_Clouds(TEXT("Layer_Clouds"))))
+	//	return E_FAIL;
 
 	/*if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;*/

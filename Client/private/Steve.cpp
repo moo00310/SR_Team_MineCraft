@@ -39,6 +39,11 @@ void CSteve::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 
+
+	// 지금 업데이트순서 
+	// 플레이어 -> 카메라
+
+	// 애가 제일 먼저 되야 하지
 	Input_Key(fTimeDelta);
 }
 
@@ -67,11 +72,21 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
-	// 모델의 루트본 업데이트
-	m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+	//4. 여기
+
+	Matrix		mat = {};
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
+	D3DXMatrixInverse(&mat, nullptr, &mat);
+	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
+	m_skelAnime->Set_BoneLocalMatrix(2, mat);
 
 	// 애니메이션 상태 변경
 	Update_State(fTimeDelta);
+
+	// 모델의 루트본 업데이트 ( Position 만)
+	Matrix matrix = *m_pTransformCom->Get_WorldMatrix();
+	m_skelAnime->Update_RootBone(MAtrixTranslation(matrix._41, matrix._42, matrix._43));
+
 
 	// f5로 랜더 그룹 변경
 	if (m_pGameInstance->Key_Down(VK_F5))
@@ -172,8 +187,7 @@ void CSteve::Move(_float fTimeDelta)
 
 void CSteve::Turn(_float fTimeDelta)
 {
-	// 창이 활성화 상태가 아닐 경우 마우스 입력을 무시
-	if (!(GetForegroundWindow() == g_hWnd))
+	if (GetForegroundWindow() != g_hWnd)
 		return;
 
 	// 화면 중앙 좌표 계산
@@ -186,45 +200,22 @@ void CSteve::Turn(_float fTimeDelta)
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
-	// === 마우스가 창 내부에 있는지 확인 ===
+	// 마우스가 창 내부에 있는지 확인
 	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
 		return;
 
-	// 마우스 이동량 계산 (중앙 기준)
+	// 마우스 이동량 계산
 	_int iMouseMoveX = ptMouse.x - ptCenter.x;
 
-	// 카메라의 yaw 값을 사용하여 스티브의 회전값을 설정
-	m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * m_fMouseSensor);
+	if (iMouseMoveX != 0)
+	{
+		// 회전 적용
+		m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * 0.5f);
 
-	//// 스티브의 월드 매트릭스를 가져옴
-	//const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
-
-	//// 'Look' 벡터를 얻기 위해, 월드 매트릭스에서 방향 벡터를 추출
-	//_float3 vLook = { pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33 };
-	//_float3 vUp = { pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23 };
-
-	//// 'Right' 벡터 계산: Look과 Up의 외적
-	//_float3 vRight;
-	//D3DXVec3Cross(&vRight, &vUp, &vLook);
-
-	//// 마우스 이동에 따른 회전값 적용
-	//_float fYaw = iMouseMoveX * fTimeDelta * m_fMouseSensor;  // 회전 각도 계산 (yaw)
-
-	//// 회전 행렬 생성 (Y축 기준 회전)
-	//_float4x4 matRotation;
-	//D3DXMatrixRotationAxis(&matRotation, &vUp, fYaw);  // Y축 기준으로 회전
-
-	//// 기존 월드 매트릭스를 회전 행렬로 갱신
-	//_float4x4 matNewWorld = *pWorldMatrix;
-	//matNewWorld = matRotation * matNewWorld;
-
-	//// 새로운 월드 매트릭스를 설정
-	//m_pTransformCom->Set_Matrix(matNewWorld);
-
-
-	//Matrix mat = *m_pTransformCom->Get_WorldMatrix();
-	//m_skelAnime->Update_Bone(2, mat.Turn(_float3(0.f, 1.f, 0.f), fTimeDelta, iMouseMoveX * m_fMouseSensor));
-
+		// 마우스 중앙으로 리셋
+		ClientToScreen(g_hWnd, &ptCenter);
+		SetCursorPos(ptCenter.x, ptCenter.y);
+	}
 }
 
 HRESULT CSteve::Ready_Components()
@@ -302,7 +293,7 @@ HRESULT CSteve::Ready_Bone()
 	{
 		 { "Root"  , -1,  MAtrixTranslation(0.f, 0.f,0.f),	MAtrixTranslation(0.f	,0.f,	0.f),	Matrix(), Matrix() },  // root
 		 { "Pelvis",  0,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 6.f / 16.f, 0.f)},
-		 { "Neck"  ,  1,  MAtrixTranslation(0.f,  24.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 4.f / 16.f, 0.f)},
+		 { "Neck"  ,  1,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 4.f / 16.f, 0.f)},
 		 { "Leg_R",  1,	  MAtrixTranslation(2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(2.f / 16.f,	 0,		0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     0,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(6.f / 16.f,   12.f / 16.f	,0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},

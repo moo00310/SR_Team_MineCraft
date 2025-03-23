@@ -170,9 +170,14 @@ void CSkeletalAnimator::Start_Blend(int fromAnim, int toAnim, float duration)
 {
     m_blendState.isBlending = true;
     m_blendState.fromAnim = fromAnim;
-    m_blendState.toAnim = toAnim;
+    m_blendState.toAnim = toAnim; 
     m_blendState.blendDuration = duration;
     m_blendState.currentTime = 0.f;
+}
+
+void CSkeletalAnimator::Set_BoneLocalMatrix(int boneIndex, D3DMATRIX& mat)
+{
+    vecBones[boneIndex].localTransform = mat * vecBones[boneIndex].baseTransform;
 }
 
 

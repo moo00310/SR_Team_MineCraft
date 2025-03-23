@@ -51,27 +51,28 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 
 void CCamera_Player::Priority_Update(_float fTimeDelta)
 {
-
+    // 왜 카메라가 먼저불렸어
+    Input_Key(fTimeDelta);
 }
 
 void CCamera_Player::Update(_float fTimeDelta)
 {
-    Input_Key(fTimeDelta);
-
-	// 모드 전환
-	if (m_pGameInstance->Key_Down(VK_F5))
-	{
-		m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
-	}
+    //3. 여기 
+    Follow_Player();
+    __super::Update_VP_Matrices();
 }
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
-    Follow_Player();
 
-    __super::Update_VP_Matrices();
+    // 모드 전환
+    if (m_pGameInstance->Key_Down(VK_F5))
+    {
+        m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
+    }
+
+    // 6. 여기가 끝
 }
-
 
 HRESULT CCamera_Player::Render()
 {

@@ -53,7 +53,6 @@ private:
 	ANIM m_eCurAnim = { ANIM_END };
 
 
-
 private:
 	void	Input_Key(_float fTimeDelta);
 	void	Move(_float fTimeDelta);
