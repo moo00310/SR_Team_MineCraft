@@ -175,6 +175,11 @@ void CParticleSystem::Replay(_float3 _position)
 	}
 }
 
+CTransform* CParticleSystem::GetTransform() const
+{
+	return m_pTransform;
+}
+
 HRESULT CParticleSystem::PrevRender()
 {
 	// 포인트 스프라이트 활성화.
@@ -214,6 +219,11 @@ HRESULT CParticleSystem::EndRender()
 	// 알파 텍스쳐 비활성화.
 	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
+	return S_OK;
+}
+
+HRESULT CParticleSystem::Ready_Components()
+{
 	return S_OK;
 }
 

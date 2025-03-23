@@ -35,7 +35,11 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE_DASH)))
+		return E_FAIL;
 
+	if (FAILED(Ready_Layer_SandDestroyParticle(LAYER_PARTICLE_SAND_DESTROY)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -95,6 +99,28 @@ HRESULT CLevel_YU::Ready_Layer_Clouds(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Clouds"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_DashParticle(const _wstring& strLayerTag)
+{
+	m_pGameInstance->CreatePool(LEVEL_STATIC,	// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3);				// 풀링 갯수.
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_SandDestroyParticle(const _wstring& strLayerTag)
+{
+	m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3);				// 풀링 갯수.
 
 	return S_OK;
 }

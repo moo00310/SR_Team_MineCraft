@@ -14,6 +14,12 @@
 #include "Steve.h"
 #include "Arm_Steve.h"
 
+#include "ParticleRain.h"
+#include "ParticleDash.h"
+#include "ParticleSandMining.h"
+#include "ParticleWoodMining.h"
+#include "ParticleSandDestroy.h"
+
 
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
@@ -221,7 +227,6 @@ HRESULT CMainApp::Ready_Steve()
 
 HRESULT CMainApp::Ready_Texture()
 {
-
 	// 피카츄 이미지
 	/* For.Prototype_Component_Texture_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Player"),
@@ -232,6 +237,56 @@ HRESULT CMainApp::Ready_Texture()
 	/* For.Prototype_Component_Texture_Terrain */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Terrain"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Terrain/Tile0.jpg"), 1))))
+		return E_FAIL;
+
+	// TODO : 파티클 텍스쳐.	
+	// 더미 구름 텍스쳐. (쓸모없음 나중에 지울 것).
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Smoke"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/big_smoke_4.png"), 1))))
+		return E_FAIL;
+
+	// 비 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_RAIN,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/rain.png"), 1))))
+		return E_FAIL;	
+
+	// 이동 시 바닥 튀는 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DASH,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/dash.png"), 1))))
+		return E_FAIL;
+
+	// TODO : 블럭 채굴/파괴 텍스쳐.
+	// 흙.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SAND_MINING,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/sand_mining.png"), 1))))
+		return E_FAIL;
+
+	// 나무.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_WOOD_MINING,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/wood_mining.png"), 1))))
+		return E_FAIL;
+
+	// TODO : 파티클.
+	// 비 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
+		CParticleRain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	
+	// 달리기 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,
+		CParticleDash::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
+		CParticleSandMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING,
+		CParticleWoodMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+		CParticleSandDestroy::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;

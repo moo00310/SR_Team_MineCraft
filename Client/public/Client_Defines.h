@@ -6,6 +6,7 @@
 #include <process.h>
 #include "Client_Enum.h"
 #include "Client_Struct.h"
+#include "Client_Tag.h"
 
 
 namespace Client

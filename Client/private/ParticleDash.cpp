@@ -74,12 +74,23 @@ CParticleDash* CParticleDash::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 void CParticleDash::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pTransform);
+}
+
+CTransform* CParticleDash::GetTransform()
+{
+	return m_pTransform;
 }
 
 HRESULT CParticleDash::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Dash"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DASH,
 		TEXT("Com_Component_Dash"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		TEXT("Com_Component_Transform"), reinterpret_cast<CComponent**>(&m_pTransform))))
 		return E_FAIL;
 
 	return S_OK;

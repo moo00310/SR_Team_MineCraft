@@ -85,9 +85,9 @@ void CParticleRain::Free()
 
 HRESULT CParticleRain::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Rain"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_RAIN,
 		TEXT("Com_Component_Rain"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
-		return E_FAIL;
+		return E_FAIL;	
 
 	return S_OK;
 }

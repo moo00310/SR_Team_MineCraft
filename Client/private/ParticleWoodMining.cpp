@@ -38,7 +38,7 @@ CParticleWoodMining* CParticleWoodMining::Create(LPDIRECT3DDEVICE9 pGraphic_Devi
 
 HRESULT CParticleWoodMining::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Wood_Mining"),
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_WOOD_MINING,
 		TEXT("Com_Component_Wood_Mining"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 

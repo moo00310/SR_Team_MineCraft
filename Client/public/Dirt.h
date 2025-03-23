@@ -1,5 +1,6 @@
 #pragma once
 #include "BreakableCube.h"
+#include "ParticleSystem.h"
 class CDirt : public CBreakableCube
 {
 protected:
