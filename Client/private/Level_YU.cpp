@@ -116,7 +116,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	/* Prototype_GameObject_InventoryBack */
-	for (int i = 0; i < 11; ++i)
+	for (int i = 0; i < 18; ++i)
 	{
 
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_InventoryBack"),
@@ -125,22 +125,12 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	}
 
 	/* Prototype_GameObject_Item */
-	for (int i = 0; i < 11; ++i)
+	for (int i = 0; i < 18; ++i)
 	{
 
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
-
-		CItem* pPrototypeItem = (CItem*)m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Inventory"), i);
-		if (!pPrototypeItem)
-			continue;
-
-		CItem* pNewItem = (CItem*)pPrototypeItem->Clone((void*)&i);
-		if (!pNewItem)
-			continue;
-
-		CInventory_Mgr::Get_Instance()->Add_Item(pNewItem);
 	}
 
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CheckBox"),

@@ -1,5 +1,7 @@
 #include "MainInventory.h"
 
+_bool g_bMainInventoryOpen = false;
+
 CMainInventory::CMainInventory(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
 {
@@ -44,10 +46,10 @@ void CMainInventory::Update(_float fTimeDelta)
 {
     if (GetKeyState('E') & 0x8000 && !m_bEKeyPressed)
     {
-        if (!m_bMainInvnetoryOn)
-            m_bMainInvnetoryOn = true;
+        if (!g_bMainInventoryOpen)
+            g_bMainInventoryOpen = true;
         else
-            m_bMainInvnetoryOn = false;
+            g_bMainInventoryOpen = false;
 
         m_bEKeyPressed = true;
     }
@@ -65,7 +67,7 @@ void CMainInventory::Late_Update(_float fTimeDelta)
 
 HRESULT CMainInventory::Render()
 {
-    if (m_bMainInvnetoryOn)
+    if (g_bMainInventoryOpen)
     {
         if (FAILED(m_pTextureCom->Bind_Resource(1)))
             return E_FAIL;

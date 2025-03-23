@@ -465,7 +465,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	/* For.Prototype_Component_Texture_Item*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Item"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Item/Item_%03d.png"), 1))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Item/Item_%03d.png"), 2))))
 		return E_FAIL;
 	/*================================================================================================*/
 

@@ -45,8 +45,9 @@ private:
 	ITEMNAME m_ItemType = ITEMNAME_END;
 
 private:
-	_int* m_iSlotIndex = { nullptr };
-	_int m_iSlotIndexNum;
+	_int*		m_iSlotIndex = { nullptr };
+	_int		m_iSlotIndexNum;
+	_bool		m_bTest = {true};
 
 public:
 	static CItem* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

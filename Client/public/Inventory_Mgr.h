@@ -40,5 +40,7 @@ private:
 	list<CSubInventory*>	m_SubInventorylist;
 	list<CInventory_Back*>	m_InventoryBacklist;
 
+public:
+	virtual void Free();
 };
 

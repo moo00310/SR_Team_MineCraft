@@ -2,7 +2,7 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 
-_bool g_bChangeLevel = false;
+
 
 CLevel_WOO::CLevel_WOO(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }

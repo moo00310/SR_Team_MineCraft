@@ -303,6 +303,8 @@ void CMainApp::Free()
 {
 	__super::Free();
 
+	CInventory_Mgr::Get_Instance()->Free();
+
 	// Cleanup
 	ImGui_ImplDX9_Shutdown();
 	ImGui_ImplWin32_Shutdown();

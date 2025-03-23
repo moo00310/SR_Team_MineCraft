@@ -17,7 +17,7 @@ namespace Client
 extern HWND g_hWnd;
 
 extern _bool g_bChangeLevel;
-
+extern _bool g_bMainInventoryOpen;
 
 using namespace Client;
 
