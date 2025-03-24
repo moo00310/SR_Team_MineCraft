@@ -108,7 +108,10 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 		if (nullptr == iter)
 			continue;
 
-		pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
+		pOtherCollider = dynamic_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
+		
+		if (!pOtherCollider)
+			continue;
 
 		// 자기 자신과의 충돌 방지
 		if (pOtherCollider == pMyCollider)

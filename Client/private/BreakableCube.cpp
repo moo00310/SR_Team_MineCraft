@@ -91,9 +91,12 @@ CGameObject* CBreakableCube::Clone(void* pArg)
 
 void CBreakableCube::Free()
 {
+    if (CMCTerrain* _copy = dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))){
+       _copy->CheckRenderLayerObjects();
+    }
+
     __super::Free();
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pColliderCom);
 
-    dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))->CheckRenderLayerObjects();
 }
