@@ -54,14 +54,10 @@ void CMCTerrain::Update(_float fTimeDelta)
 
     prevF1State = currF1State;
     prevF2State = currF2State;
-
-
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
 {	
-	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-		return;
 }
 
 HRESULT CMCTerrain::Render()
@@ -331,9 +327,11 @@ void CMCTerrain::CheckRenderLayerObjects()
 
     // 먼저 모든 블록의 위치를 저장
     for (auto _object : _copyObjectList) {
-        if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
-            _break->Set_RenderActive(true);
-            blockPositions.insert(_break->GetPos());
+        if (_object->Get_isDestroy() == false) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                _break->Set_RenderActive(true);
+                blockPositions.insert(_break->GetPos());
+            }
         }
     }
 
@@ -469,10 +467,20 @@ void CMCTerrain::GetPlayerChunk()
             if (CTree* pTree = dynamic_cast<CTree*>(pGameObject)) {
                 vector<CGameObject*> _copyVec = pTree->Get_WoodInfo();
                 for (auto copy : _copyVec) {
+                    if (copy == nullptr) {
+                        if (copy->Get_isDestroy()) {
+                            continue;
+                        }
+                    }
                     m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
                 }
                 _copyVec = pTree->Get_LeafInfo();
                 for (auto copy : _copyVec) {
+                    if (copy == nullptr) {
+                        if (copy->Get_isDestroy()) {
+                            continue;
+                        }
+                    }
                     m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
                 }
             }
