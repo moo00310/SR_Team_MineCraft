@@ -144,7 +144,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	CGameObject* collider{ nullptr };
 	// 블럭 충돌 여부 확인.	
-	collider = m_pGameInstance->Collision_with_Group(
+	collider = m_pGameInstance->Collision_Check_with_Group(
 		COLLISION_BLOCK,		
 		m_pCollider_CubeCom,	
 		CCollider_Manager::COLLSIION_CUBE

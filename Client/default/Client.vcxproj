@@ -186,6 +186,7 @@
     <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Inventory_Back.h" />
     <ClInclude Include="..\public\Inventory_Mgr.h" />
+    <ClInclude Include="..\public\RedTulip.h" />
     <ClInclude Include="..\public\SubInventory.h" />
     <ClInclude Include="..\public\IronOre.h" />
     <ClInclude Include="..\public\Item.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="..\private\HyockCube.cpp" />
     <ClCompile Include="..\private\Inventory_Back.cpp" />
     <ClCompile Include="..\private\Inventory_Mgr.cpp" />
+    <ClCompile Include="..\private\RedTulip.cpp" />
     <ClCompile Include="..\private\SubInventory.cpp" />
     <ClCompile Include="..\private\IronOre.cpp" />
     <ClCompile Include="..\private\Item.cpp" />
