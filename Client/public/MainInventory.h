@@ -34,7 +34,7 @@ private:
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 private:
-	_bool m_bSubInvnetoryOn = {false};
+	_bool m_bMainInvnetoryOn = {false};
 	_bool m_bEKeyPressed = { false };
 
 public:

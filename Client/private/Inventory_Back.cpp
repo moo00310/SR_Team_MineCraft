@@ -35,52 +35,21 @@ HRESULT CInventory_Back::Initialize(void* pArg)
 		Desc.fY = g_iWinSizeY * 0.741f;
 	}
 
+	/* 하단 인벤토리 */
+	if (m_iSlotIndexNum == 0) { Desc.fX = g_iWinSizeX * 0.293f; }
+	if (m_iSlotIndexNum == 1) { Desc.fX = g_iWinSizeX * 0.346f; }
+	if (m_iSlotIndexNum == 2) { Desc.fX = g_iWinSizeX * 0.397f; }
+	if (m_iSlotIndexNum == 3) { Desc.fX = g_iWinSizeX * 0.450f; }
+	if (m_iSlotIndexNum == 4) { Desc.fX = g_iWinSizeX * 0.502f; }
+	if (m_iSlotIndexNum == 5) { Desc.fX = g_iWinSizeX * 0.554f; }
+	if (m_iSlotIndexNum == 6) { Desc.fX = g_iWinSizeX * 0.604f; }
+	if (m_iSlotIndexNum == 7) { Desc.fX = g_iWinSizeX * 0.655f; }
+	if (m_iSlotIndexNum == 8) { Desc.fX = g_iWinSizeX * 0.707f; }
 
-	if (m_iSlotIndexNum == 0)
-	{
-		Desc.fX = g_iWinSizeX * 0.293f;
-	}
-	if (m_iSlotIndexNum == 1)
-	{
-		Desc.fX = g_iWinSizeX * 0.346f;
-	}
-	if (m_iSlotIndexNum == 2)
-	{
-		Desc.fX = g_iWinSizeX * 0.397f;
-	}
-	if (m_iSlotIndexNum == 3)
-	{
-		Desc.fX = g_iWinSizeX * 0.450f;
-	}
-	if (m_iSlotIndexNum == 4)
-	{
-		Desc.fX = g_iWinSizeX * 0.502f;
-	}
-	if (m_iSlotIndexNum == 5)
-	{
-		Desc.fX = g_iWinSizeX * 0.554f;
-	}
-	if (m_iSlotIndexNum == 6)
-	{
-		Desc.fX = g_iWinSizeX * 0.604f;
-	}
-	if (m_iSlotIndexNum == 7)
-	{
-		Desc.fX = g_iWinSizeX * 0.655f;
-	}
-	if (m_iSlotIndexNum == 8)
-	{
-		Desc.fX = g_iWinSizeX * 0.707f;
-	}
-	if (m_iSlotIndexNum == 9)
-	{
-		Desc.fX = g_iWinSizeX * 0.666;
-	}
-	if (m_iSlotIndexNum == 10)
-	{
-		Desc.fX = g_iWinSizeX * 0.3;
-	}
-	
+	/* 메인 인벤토리 */
+	if (m_iSlotIndexNum == 9)	{ Desc.fX = g_iWinSizeX * 0.336; }
+	if (m_iSlotIndexNum == 10)	{ Desc.fX = g_iWinSizeX * 0.666; }
+
 
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
@@ -110,28 +79,28 @@ void CInventory_Back::Late_Update(_float fTimeDelta)
 
 HRESULT CInventory_Back::Render()
 {
-	//if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
-	//	return E_FAIL;
+	/*if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
+		return E_FAIL;
 
-	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-	//	return E_FAIL;
+	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+		return E_FAIL;
 
-	//if (FAILED(m_pTransformCom->Bind_Resource()))
-	//	return E_FAIL;
+	if (FAILED(m_pTransformCom->Bind_Resource()))
+		return E_FAIL;
 
-	//__super::Begin();
+	__super::Begin();
 
-	//if (FAILED(m_pVIBufferCom->Render()))
-	//	return E_FAIL;
+	if (FAILED(m_pVIBufferCom->Render()))
+		return E_FAIL;
 
-	//__super::End();
+	__super::End();*/
 
 	return S_OK;
 }
 
 HRESULT CInventory_Back::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_InventoryBack"), TEXT("Com_Texture"),
+	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_InventoryBack"), TEXT("Com_Texture"),
 		reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

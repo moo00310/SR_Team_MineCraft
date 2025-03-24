@@ -14,6 +14,7 @@
 #include "Steve.h"
 #include "Arm_Steve.h"
 
+#include "Inventory_Mgr.h"
 #include "ParticleRain.h"
 #include "ParticleDash.h"
 #include "ParticleSandMining.h"
@@ -121,11 +122,11 @@ HRESULT CMainApp::Initialize()
 void CMainApp::Update(_float fTimeDelta)
 {
 	m_pGameInstance->Update_Engine(fTimeDelta);
+	CInventory_Mgr::Get_Instance()->Update(fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
 {
-
 	m_pGameInstance->Draw();
 
 	return S_OK;
@@ -356,6 +357,8 @@ void CMainApp::Free()
 {
 	__super::Free();
 
+	CInventory_Mgr::Get_Instance()->Free();
+
 	// Cleanup
 	ImGui_ImplDX9_Shutdown();
 	ImGui_ImplWin32_Shutdown();
@@ -367,5 +370,4 @@ void CMainApp::Free()
 
 	/* 내멤버를 정리한다.*/	
 	Safe_Release(m_pGameInstance);
-
 }
