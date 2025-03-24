@@ -150,6 +150,12 @@ namespace Engine
 
 		return rotMatrix;
 	}
+
+
+	inline int Sign(float x) {
+		return (x >= 0.f) ? 1 : -1;
+	}
+
 }
 
 template <typename T>

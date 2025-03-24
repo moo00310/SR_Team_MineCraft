@@ -67,6 +67,7 @@ private:
 	void Update_State(_float fTimeDelta);
 	void Motion_Idle(_float fTimeDelta);
 	void Motion_Walk(_float fTimeDelta);
+	void Turn(_float fTimeDelta);
 
 public:
 	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -70,18 +70,14 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
-	// 5. 역행렬을 가져와서 본 회전
-	Matrix		mat = {};
-	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
-	D3DXMatrixInverse(&mat, nullptr, &mat);
-	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
-	m_skelAnime->Set_BoneLocalMatrix(2, mat);
-	
+	// 회전
+	Turn(fTimeDelta);
 	Update_State(fTimeDelta);
 
 	// 모델의 루트본 업데이트 ( Position 만)
 	Matrix matrix = *m_pTransformCom->Get_WorldMatrix();
 	m_skelAnime->Update_RootBone(MAtrixTranslation(matrix._41, matrix._42, matrix._43));
+
 
 	// f5로 랜더 그룹 변경
 	if (m_pGameInstance->Key_Down(VK_F5))
@@ -205,7 +201,6 @@ void CSteve::Move(_float fTimeDelta)
 	}
 }
 
-
 HRESULT CSteve::Ready_Components()
 {
 	// 스티브 텍스처
@@ -285,7 +280,7 @@ HRESULT CSteve::Ready_Bone()
 		 { "Leg_R",  1,	  MAtrixTranslation(2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(2.f / 16.f,	 0,		0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     0,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(6.f / 16.f,   12.f / 16.f	,0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
-		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-6.f / 16,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-6.f / 16.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 	};
 
 	for (int i = 0; i < 7; i++)
@@ -308,13 +303,11 @@ HRESULT CSteve::Ready_Animation()
 	/*----------
 	* Walk 모션
 	------------*/
-	mat.Turn_Radian(_float3(1.f,0.f, 0.f), D3DXToRadian(0));
-
 	Matrix mat2 = {};
-	mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(60));
+	mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(60.f));
 
 	Matrix mat3 = {};
-	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-60));
+	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-60.f));
 	
 	KEYFREAME Walk_1_F = { 0.f, mat }; //0
 	KEYFREAME Walk_2_F = { 1.0f, mat2 }; //60
@@ -344,14 +337,12 @@ HRESULT CSteve::Ready_Animation()
 /*----------
 * IDEL 
 ------------*/
-	mat = Matrix();
-	mat.Turn_Radian(_float3(0.f, 0.f, 0.f), D3DXToRadian(0));
 
 	mat2 = Matrix();
-	mat2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-3));
+	mat2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-3.f));
 
 	mat3 = Matrix();
-	mat3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(3));
+	mat3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(3.f));
 
 	KEYFREAME IDLE1_R = { 0.f, mat };
 	KEYFREAME IDLE2_R = { 5.f, mat2 };
@@ -421,6 +412,21 @@ void CSteve::Motion_Walk(_float fTimeDelta)
 	m_skelAnime->Update_Animetion(Swing_F, fTimeDelta, 5);
 	m_skelAnime->Update_Animetion(Swing_B, fTimeDelta, 6);
 
+}
+
+void CSteve::Turn(_float fTimeDelta)
+{
+	// 역행렬을 가져와서 본 회전
+	Matrix		mat = {};
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
+	D3DXMatrixInverse(&mat, nullptr, &mat);
+	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
+
+	// 본(Neck) 회전
+	m_skelAnime->Set_BoneLocalMatrix(2, mat);
+
+	// 몸(Root) 회전
+	m_skelAnime->IkLookAt(fTimeDelta, 0, mat);
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
