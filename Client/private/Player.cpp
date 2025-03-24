@@ -19,13 +19,13 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize(void* pArg)
 {		
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,
+	/*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,
 		LEVEL_STATIC, LAYER_PARTICLE_DASH)))
 		return E_FAIL;
 
-	m_pParticleDash = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_DASH.c_str(), 0);
+	m_pParticleDash = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_DASH.c_str(), 0);*/
 
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
+	/*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
 		LEVEL_STATIC, LAYER_PARTICLE_SAND_MINING)))
 		return E_FAIL;
 
@@ -35,13 +35,13 @@ HRESULT CPlayer::Initialize(void* pArg)
 		LEVEL_STATIC, LAYER_PARTICLE_WOOD_MINING)))
 		return E_FAIL;
 
-	m_pParticleWoodMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_WOOD_MINING.c_str(), 0);
+	m_pParticleWoodMining = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_WOOD_MINING.c_str(), 0);*/
 
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+	/*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
 		LEVEL_STATIC, LAYER_PARTICLE_SAND_DESTROY)))
 		return E_FAIL;
 
-	m_pParticleSandDestroy = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_SAND_DESTROY.c_str(), 0);
+	m_pParticleSandDestroy = (CParticleSystem*)m_pGameInstance->Get_Object(LEVEL_STATIC, LAYER_PARTICLE_SAND_DESTROY.c_str(), 0);*/
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -59,13 +59,13 @@ void CPlayer::Update(_float fTimeDelta)
 {	
 	if (GetKeyState(VK_UP) & 0x8000)
 	{
-		m_count += fTimeDelta;
+		/*m_count += fTimeDelta;
 		if (m_count >= 0.2f)
 		{
 			m_pParticleDash->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
 			m_count = 0.f;
-		}		
+		}*/
 
 		m_pTransformCom->Go_Straight(fTimeDelta);
 	}
@@ -82,7 +82,7 @@ void CPlayer::Update(_float fTimeDelta)
 		m_pTransformCom->Turn(_float3(0.f, 1.f, 0.f), fTimeDelta);
 	}
 
-	if (GetKeyState(VK_SPACE) & 0x8000)
+	if (GetKeyState('X') & 0x8000)
 	{
 		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
 		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// 적용 씬.
@@ -95,14 +95,25 @@ void CPlayer::Update(_float fTimeDelta)
 			particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
 			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
 			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));			
 			//m_pGameInstance->Pop(particle);
 		}		
 	}
 
 	if (GetKeyState('Z') & 0x8000)
-	{
-		m_pParticleSandMining->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	{	
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// 적용 씬.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// 가져올 프로토타입.
+			LEVEL_STATIC,	// 가져올 씬.
+			LAYER_PARTICLE_SAND_DESTROY);	// 애드오브젝트에 추가할 레이어		
+
+		if (particle != nullptr)
+		{
+			particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));								
+		}
 	}
 }
 
@@ -212,8 +223,8 @@ void CPlayer::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
 
-	Safe_Release(m_pParticleDash);
+	/*Safe_Release(m_pParticleDash);
 	Safe_Release(m_pParticleSandMining);
 	Safe_Release(m_pParticleWoodMining);
-	Safe_Release(m_pParticleSandDestroy);
+	Safe_Release(m_pParticleSandDestroy);*/
 }
