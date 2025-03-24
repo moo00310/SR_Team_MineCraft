@@ -22,9 +22,7 @@ public:
 	static CParticleDash* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free();
 
-	CTransform* GetTransform() const;
-
-	virtual HRESULT Render() override;
+	CTransform* GetTransform() const;	
 
 protected:
 	virtual HRESULT Ready_Components() override;

@@ -87,6 +87,11 @@ HRESULT CParticleSystem::Render()
 		return E_FAIL;
 	}
 
+	if (m_pTransform == nullptr || FAILED(m_pTransform->Bind_Resource()))
+	{
+		return E_FAIL;
+	}
+
 	if (FAILED(m_pParticleTexture->Bind_Resource(0)))
 	{
 		return E_FAIL;
