@@ -52,7 +52,10 @@ namespace Engine
 	typedef struct tagParticleAttribute
 	{
 		// 파티클 포지션.
-		_float3 vPosition;		
+		_float3 vPosition;	
+
+		// 파티클 방향.
+		_float3 vDirection;
 
 		// 파티클 속도.
 		_float3 vVelocity;		

@@ -24,7 +24,7 @@ public:
 	HRESULT Bind_Buffers();
 
 	// 파티클 속성들 초기화.
-	void Replay(_float3 _position);
+	void Replay(_float3 _position, _float* _direction = nullptr);
 
 	CTransform* GetTransform() const;
 
