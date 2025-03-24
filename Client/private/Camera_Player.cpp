@@ -49,6 +49,8 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 	// 기본 모드를 TPS로 설정
 	m_eCameraMode = E_CAMERA_MODE::TPS;
 
+    //m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION));
+
     //m_vCurrentCameraPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION);
 
 	return S_OK;
@@ -188,8 +190,7 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
         // Ray_Cast 결과 확인
         if (pGameObject)
         {
-            // 충돌이 있을 경우, 최소 거리 보장
-            fTargetDist = max(fTargetDist, 0.5f);
+            fTargetDist = clamp(fTargetDist, 0.5f, m_fSpringArmLength);
         }
         else
         {
@@ -197,31 +198,14 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
             fTargetDist = m_fSpringArmLength;
         }
 
-        //// === 거리 부드럽게 보간 ===
-        //if (m_fCurrentSpringArmLength < 0.1f) // 초기값 보정
-        //    m_fCurrentSpringArmLength = m_fSpringArmLength;
-
-        // 카메라 거리 부드럽게 보간 (Lerp)
-        m_fCurrentSpringArmLength = Lerp(m_fCurrentSpringArmLength, fTargetDist, fTimeDelta * 5.0f);
-
         // === 최종 카메라 위치 계산 ===
-        _float3 vFinalCameraPos = m_vHeadPos + (-vLookDir * m_fCurrentSpringArmLength);
+        _float3 vFinalCameraPos = m_vHeadPos + (-vLookDir * fTargetDist);
 
-        // === 부드러운 이동 (Lerp) ===
-        D3DXVec3Lerp(&m_vCurrentCameraPos, &m_vCurrentCameraPos, &vFinalCameraPos, fTimeDelta * 5.0f);
-
-        // === 카메라 적용 ===
-        m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_vCurrentCameraPos);
+        // === 카메라 위치 바로 적용 ===
+        m_pTransformCom->Set_State(CTransform::STATE_POSITION, vFinalCameraPos);
         m_pTransformCom->LookAt(m_vHeadPos);
-
-        printf_s("%f\n", m_fCurrentSpringArmLength);
     }
 }
-
-
-
-
-
 
 void CCamera_Player::On_MouseMove(_float fTimeDelta)
 {

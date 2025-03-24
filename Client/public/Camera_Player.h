@@ -39,10 +39,8 @@ private:
 private:
     _float3             m_vHeadPos{};
     _bool               m_isActiveMouse{ false };
-    _float			    m_fWalkTime{};
+    _float              m_fWalkTime{};
     _float              m_fSpringArmLength{ 5.f };
-    _float3             m_vCurrentCameraPos{ 0.f, 0.f, 0.f };
-    _float              m_fCurrentSpringArmLength{ m_fSpringArmLength };
 
 private:
     void    Input_Key(_float fTimeDelta);
