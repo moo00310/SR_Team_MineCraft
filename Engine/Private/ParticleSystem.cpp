@@ -169,7 +169,6 @@ HRESULT CParticleSystem::Bind_Buffers()
 void CParticleSystem::Replay(_float3 _position)
 {
 	m_pTransform->Set_State(CTransform::STATE_POSITION, _position);
-	_float3 transPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 
 	for (auto& particle : m_ListParticleAttribute)
 	{

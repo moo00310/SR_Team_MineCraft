@@ -13,6 +13,8 @@ private:
 	virtual ~CParticleSandDestroy() = default;
 
 public:
+	virtual HRESULT Render() override;
+
 	// CParticleSystem을(를) 통해 상속됨
 	CGameObject* Clone(void* pArg) override;
 	static CParticleSandDestroy* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
