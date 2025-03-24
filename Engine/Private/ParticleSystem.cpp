@@ -58,13 +58,13 @@ void CParticleSystem::Update(_float fTimeDelta)
 			float height = 0.f + data.fGravityJumpPower * data.fGravityTime - (1.f / 2.f) * data.fGravity * (data.fGravityTime * data.fGravityTime);
 			data.fGravityTime += fTimeDelta;
 
-			data.vPosition += (data.vVelocity + data.vDirection) * fTimeDelta;
+			data.vPosition += data.vVelocity * fTimeDelta;
 			data.vPosition.y += height;			
 		}
 		else
 		{
 			// 중력 없을 시 단순 이동만.
-			data.vPosition += (data.vVelocity + data.vDirection) * fTimeDelta;
+			data.vPosition += data.vVelocity * fTimeDelta;
 		}		
 	}
 }
@@ -162,12 +162,11 @@ HRESULT CParticleSystem::Bind_Buffers()
 	return S_OK;
 }
 
-void CParticleSystem::Replay(_float3 _position, _float* _direction)
+void CParticleSystem::Replay(_float3 _position)
 {
 	for (auto& particle : m_ListParticleAttribute)
 	{
-		particle.vPosition = _position;	
-		particle.vDirection = _direction;
+		particle.vPosition = _position;		
 		particle.fCurrentTime = 0.f;
 		particle.fGravityTime = 0.f;
 		particle.IsAlive = true;
