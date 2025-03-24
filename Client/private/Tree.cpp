@@ -36,6 +36,31 @@ HRESULT CTree::Initialize(void* pArg)
 
 void CTree::Priority_Update(_float fTimeDelta)
 {
+    for (auto it = m_vecWood.begin(); it != m_vecWood.end(); )
+    {
+        if ((*it != nullptr) && (*it)->Get_isDestroy())
+        {
+            Safe_Release(*it);
+            it = m_vecWood.erase(it);  // erase는 삭제된 요소 다음 반복자를 반환함
+        }
+        else
+        {
+            ++it;  // 삭제하지 않은 경우에만 반복자 증가
+        }
+    }
+
+    for (auto it = m_vecLeaf.begin(); it != m_vecLeaf.end(); )
+    {
+        if ((*it != nullptr) && (*it)->Get_isDestroy())
+        {
+            Safe_Release(*it);
+            it = m_vecLeaf.erase(it);  // erase는 삭제된 요소 다음 반복자를 반환함
+        }
+        else
+        {
+            ++it;  // 삭제하지 않은 경우에만 반복자 증가
+        }
+    }
 }
 
 void CTree::Update(_float fTimeDelta)
@@ -45,33 +70,16 @@ void CTree::Update(_float fTimeDelta)
 
 void CTree::Late_Update(_float fTimeDelta)
 {
-    int woodDead=0;
-    for (auto object : m_vecWood) {
-        if (object->Get_isDestroy()) {
-            woodDead++;
-        }
-    }
-    int leafDead = 0;
-    for (auto object : m_vecLeaf) {
-        if (object->Get_isDestroy()) {
-            leafDead++;
-        }
-    }
-
-    if ((m_vecWood.size() == woodDead) && (m_vecLeaf.size() == leafDead)){
+    if ((m_vecWood.size() == 0) && (m_vecLeaf.size() == 0)){
         Destroy();
     } 
 
     for (auto object : m_vecWood) {
-        if (object->Get_isDestroy())
-            continue;
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, object)))
             return;
     }
 
     for (auto object : m_vecLeaf) {
-        if (object->Get_isDestroy())
-            continue;
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, object)))
             return;
     }
