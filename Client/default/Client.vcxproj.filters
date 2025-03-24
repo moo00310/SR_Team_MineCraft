@@ -486,6 +486,9 @@
     <ClInclude Include="..\public\Client_Tag.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RedTulip.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -731,6 +734,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Inventory_Mgr.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RedTulip.cpp">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

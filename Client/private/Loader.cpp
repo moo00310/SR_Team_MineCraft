@@ -37,6 +37,7 @@
 #include "MCTerrain.h"
 #include "MapTool.h"
 #include "Grass.h"
+#include "RedTulip.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -759,6 +760,11 @@ HRESULT CLoader::Loading_For_TOOL()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grass0.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_RedTulip */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_RedTulip"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/redTulip0.png"), 1))))
+		return E_FAIL;
+
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	/* For.Prototype_Component_VIBuffer_Rect3D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Rect3D"),
@@ -777,6 +783,11 @@ HRESULT CLoader::Loading_For_TOOL()
 	/* For.Prototype_GameObject_Grass */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Grass"),
 		CGrass::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_RedTulip */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_RedTulip"),
+		CRedTulip::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 
