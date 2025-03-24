@@ -10,6 +10,7 @@ CParticleSystem::CParticleSystem(const CParticleSystem& Prototype) :
 	ZeroMemory(&m_boundingBox, sizeof(ParticleBoundingBox));
 	Safe_AddRef(m_pVB);		
 	Safe_AddRef(m_pParticleTexture);
+	Safe_AddRef(m_pTransform);
 }
 
 HRESULT CParticleSystem::Initialize(void* pArg)
@@ -86,7 +87,10 @@ HRESULT CParticleSystem::Render()
 		return E_FAIL;
 	}
 
-	m_pParticleTexture->Bind_Resource(0);
+	if (FAILED(m_pParticleTexture->Bind_Resource(0)))
+	{
+		return E_FAIL;
+	}	
 
 	Bind_Buffers();
 
@@ -164,9 +168,11 @@ HRESULT CParticleSystem::Bind_Buffers()
 
 void CParticleSystem::Replay(_float3 _position)
 {
+	m_pTransform->Set_State(CTransform::STATE_POSITION, _position);
+	_float3 transPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
+
 	for (auto& particle : m_ListParticleAttribute)
 	{
-		particle.vPosition = _position;		
 		particle.fCurrentTime = 0.f;
 		particle.fGravityTime = 0.f;
 		particle.IsAlive = true;
@@ -286,4 +292,5 @@ void CParticleSystem::Free()
 
 	Safe_Release(m_pVB);
 	Safe_Release(m_pParticleTexture);
+	Safe_Release(m_pTransform);
 }

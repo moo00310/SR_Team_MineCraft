@@ -78,9 +78,28 @@ void CParticleDash::Free()
 	Safe_Release(m_pTransform);
 }
 
-CTransform* CParticleDash::GetTransform()
+CTransform* CParticleDash::GetTransform() const
 {
 	return m_pTransform;
+}
+
+HRESULT CParticleDash::Render()
+{
+	if (FAILED(__super::Render()))
+	{
+		return E_FAIL;
+	}
+
+	// 왠지 모르겠는데 이 조건문 부모 렌더쪽에 두면 오류남
+	// 장치 없다면서
+	// 같은 원리면 부모에 있는
+	// m_pParticleTexture->Bind_Resource(0)도 오류나야하는거 정상아닌가
+ 	if (FAILED(m_pTransform->Bind_Resource()))
+	{
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 HRESULT CParticleDash::Ready_Components()
@@ -89,8 +108,9 @@ HRESULT CParticleDash::Ready_Components()
 		TEXT("Com_Component_Dash"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
+	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Component_Transform"), reinterpret_cast<CComponent**>(&m_pTransform))))
+		TEXT("Com_Component_Transform"), reinterpret_cast<CComponent**>(&m_pTransform), &TransformDesc)))
 		return E_FAIL;
 
 	return S_OK;
