@@ -20,6 +20,9 @@ HRESULT CRedTulip::Initialize(void* pArg)
 {
     if (FAILED(Ready_Components()))
         return E_FAIL;
+
+    m_pTransformCom->Scaling(0.5, 0.7, 0.5);
+
     return S_OK;
 }
 
@@ -43,6 +46,7 @@ void CRedTulip::Late_Update(_float fTimeDelta)
 
 HRESULT CRedTulip::Render()
 {
+    m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
     m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 254);
@@ -64,18 +68,19 @@ HRESULT CRedTulip::Render()
 
     m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+    m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, TRUE);
     return S_OK;
 }
 
 HRESULT CRedTulip::Ready_Components()
 {
     /* For.Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_Texture_RedTulip"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_RedTulip"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
     /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Rect3D"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Rect3D"),
         TEXT("m_pVIBufferCom_Rect3D"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
         return E_FAIL;
 
