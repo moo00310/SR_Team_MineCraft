@@ -190,7 +190,7 @@ void CRigidbody::Compute_Velocity(_float fTimeDelta)
 	_float3 vCurrentPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	m_vReadOnly_Velocity = (vCurrentPosition - m_vPrevPosition) / fTimeDelta;
 
-	printf_s("velocity: %f, %f, %f\n", m_vReadOnly_Velocity.x, m_vReadOnly_Velocity.y, m_vReadOnly_Velocity.z);
+	//printf_s("velocity: %f, %f, %f\n", m_vReadOnly_Velocity.x, m_vReadOnly_Velocity.y, m_vReadOnly_Velocity.z);
 
 	m_vPrevPosition = vCurrentPosition;
 
