@@ -1,5 +1,6 @@
 #include "SkeletalAnimator.h"
 #include "VIBuffer_Cube.h"
+#include "Transform.h"
 
 CSkeletalAnimator::CSkeletalAnimator(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CComponent{ pGraphic_Device }
@@ -46,6 +47,43 @@ bool CSkeletalAnimator::is_AnimtionEND()
     {
         return false;
     }
+}
+
+void CSkeletalAnimator::IkLookAt(float fTimeDelta, int boneIndex, const Matrix& matrix)
+{
+    // 변화 시키고자 하는 본의 LOOK 방향과 카메라 방향 사이의 차이를 계산
+    // 그 각도가 45도 이상이면 그 방향으로 회전
+
+    _float3 vLook = matrix.Get_State(matrix.STATE_LOOK);
+    float fCamYaw = atan2f(vLook.x, vLook.z);
+
+    _float3 vSpineLook = vecBones[boneIndex].localTransform.Get_State(Matrix::STATE_LOOK);
+    float fSpineYaw = atan2f(vSpineLook.x, vSpineLook.z);
+
+    // yaw 차이 비교
+    float fYawDelta = fCamYaw - fSpineYaw;
+
+    // -PI ~ +PI 사이로 정규화
+    while (fYawDelta > PI) fYawDelta -= 2 * PI;
+    while (fYawDelta < -PI) fYawDelta += 2 * PI;
+
+    float fThreshold = D3DXToRadian(15.f); // 45도 이상 벌어지면 회전
+    if (fabs(fYawDelta) > fThreshold)
+    {
+        float fFollowSpeed = 5.f; // 회전 속도
+        float fTargetYaw = fSpineYaw + (fYawDelta - Sign(fYawDelta) * fThreshold); // 따라갈 각도
+
+        // 보간
+        float fNewYaw = fSpineYaw + fFollowSpeed * fTimeDelta * (fTargetYaw - fSpineYaw);
+
+        // Spine 회전 행렬 갱신
+        Matrix matNewSpine;
+        D3DXMatrixRotationY(&matNewSpine, fNewYaw);
+
+
+        vecBones[boneIndex].localTransform = matNewSpine * vecBones[boneIndex].baseTransform;
+    }
+
 }
 
 void CSkeletalAnimator::Add_Bone(const BONE& bone)

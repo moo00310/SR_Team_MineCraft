@@ -72,4 +72,5 @@ CItem* CInventory_Mgr::Get_Item(int slotIndex)
 void CInventory_Mgr::Free()
 {
 	m_vecItemlist.clear();
+
 }

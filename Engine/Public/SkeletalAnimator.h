@@ -39,6 +39,9 @@ public:
 	bool is_AnimtionEND();
 
 public:
+	void IkLookAt(float fTimeDelta, int boneIndex, const Matrix& matrix);
+
+public:
 	void Add_Bone(const BONE& bone);
 	void Add_Animation(_int _type, const KEYFREAME& keyframe);
 	bool IsBlending() { return m_blendState.isBlending; }

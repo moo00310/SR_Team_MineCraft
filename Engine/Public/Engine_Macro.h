@@ -3,6 +3,8 @@
 #define BEGIN(NAMESPACE) namespace NAMESPACE { 
 #define END }
 
+#define PI 3.14159
+
 #ifdef ENGINE_EXPORTS
 #define ENGINE_DLL _declspec(dllexport)
 #else
