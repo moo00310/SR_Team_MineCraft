@@ -43,13 +43,11 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	// 지금 업데이트순서 
 	// 플레이어 -> 카메라
 
-	// 애가 제일 먼저 되야 하지
 	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
-	Input_Key(fTimeDelta);
 
 	if (FAILED(m_pCollider_CubeCom->Update_ColliderBox()))
 	{
@@ -238,7 +236,7 @@ void CSteve::Turn(_float fTimeDelta)
 	if (iMouseMoveX != 0)
 	{
 		// 회전 적용
-		m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * 0.5f);
+		m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * 0.05f);
 
 		// 마우스 중앙으로 리셋
 		ClientToScreen(g_hWnd, &ptCenter);
