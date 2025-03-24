@@ -467,19 +467,15 @@ void CMCTerrain::GetPlayerChunk()
             if (CTree* pTree = dynamic_cast<CTree*>(pGameObject)) {
                 vector<CGameObject*> _copyVec = pTree->Get_WoodInfo();
                 for (auto copy : _copyVec) {
-                    if (copy == nullptr) {
-                        if (copy->Get_isDestroy()) {
-                            continue;
-                        }
+                    if (copy->Get_isDestroy()) {
+                        continue;
                     }
                     m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
                 }
                 _copyVec = pTree->Get_LeafInfo();
                 for (auto copy : _copyVec) {
-                    if (copy == nullptr) {
-                        if (copy->Get_isDestroy()) {
-                            continue;
-                        }
+                    if (copy->Get_isDestroy()) {
+                        continue;
                     }
                     m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
                 }

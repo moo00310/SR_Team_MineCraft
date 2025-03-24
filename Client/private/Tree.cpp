@@ -36,19 +36,6 @@ HRESULT CTree::Initialize(void* pArg)
 
 void CTree::Priority_Update(_float fTimeDelta)
 {
-    for (auto obj : m_vecWood) {
-        if ((obj != nullptr) && obj->Get_isDestroy()) {
-            Safe_Release(obj);
-            obj = nullptr;
-        }
-    }
-
-    for (auto obj : m_vecLeaf) {
-        if ((obj != nullptr) && obj->Get_isDestroy()) {
-            Safe_Release(obj);
-            obj = nullptr;
-        }
-    }
 }
 
 void CTree::Update(_float fTimeDelta)
@@ -58,15 +45,32 @@ void CTree::Update(_float fTimeDelta)
 
 void CTree::Late_Update(_float fTimeDelta)
 {
+    int woodDead=0;
     for (auto object : m_vecWood) {
-        if ((object != nullptr) && object->Get_isDestroy())
+        if (object->Get_isDestroy()) {
+            woodDead++;
+        }
+    }
+    int leafDead = 0;
+    for (auto object : m_vecLeaf) {
+        if (object->Get_isDestroy()) {
+            leafDead++;
+        }
+    }
+
+    if ((m_vecWood.size() == woodDead) && (m_vecLeaf.size() == leafDead)){
+        Destroy();
+    } 
+
+    for (auto object : m_vecWood) {
+        if (object->Get_isDestroy())
             continue;
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, object)))
             return;
     }
 
     for (auto object : m_vecLeaf) {
-        if ((object != nullptr) && object->Get_isDestroy())
+        if (object->Get_isDestroy())
             continue;
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, object)))
             return;
@@ -120,8 +124,8 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
     }
 
 
-    // 濟 寡纂
-      // 濟(leaf) 儅撩
+     //濟 寡纂
+     //  濟(leaf) 儅撩
     for (int j = 0; j < 20; j++)
     {
         dynamic_cast<CBreakableCube*>(m_vecLeaf[leafIndex])->SetPos(_float3(leaf[j].x, 0.5f + height - 2, leaf[j].y) + m_Pos);
