@@ -1,37 +1,40 @@
-#include "Grass.h"
+#include "RedTulip.h"
 #include "GameInstance.h"
 
-CGrass::CGrass(LPDIRECT3DDEVICE9 pGraphic_Device)
+CRedTulip::CRedTulip(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CBreakableRect(pGraphic_Device)
 {
 }
 
-CGrass::CGrass(const CGrass& Prototype)
+CRedTulip::CRedTulip(const CRedTulip& Prototype)
     : CBreakableRect(Prototype)
 {
 }
 
-HRESULT CGrass::Initialize_Prototype()
+HRESULT CRedTulip::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CGrass::Initialize(void* pArg)
+HRESULT CRedTulip::Initialize(void* pArg)
 {
     if (FAILED(Ready_Components()))
         return E_FAIL;
+
+    m_pTransformCom->Scaling(0.5, 0.7, 0.5);
+
     return S_OK;
 }
 
-void CGrass::Priority_Update(_float fTimeDelta)
+void CRedTulip::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CGrass::Update(_float fTimeDelta)
+void CRedTulip::Update(_float fTimeDelta)
 {
 }
 
-void CGrass::Late_Update(_float fTimeDelta)
+void CRedTulip::Late_Update(_float fTimeDelta)
 {
     if (m_bRenderActive) {
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
@@ -41,7 +44,7 @@ void CGrass::Late_Update(_float fTimeDelta)
 	__super::Late_Update(fTimeDelta);
 }
 
-HRESULT CGrass::Render()
+HRESULT CRedTulip::Render()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
     m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -69,10 +72,10 @@ HRESULT CGrass::Render()
     return S_OK;
 }
 
-HRESULT CGrass::Ready_Components()
+HRESULT CRedTulip::Ready_Components()
 {
     /* For.Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Grass"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_RedTulip"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -93,33 +96,33 @@ HRESULT CGrass::Ready_Components()
 }
 
 
-CGrass* CGrass::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CRedTulip* CRedTulip::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CGrass* pInstance = new CGrass(pGraphic_Device);
+    CRedTulip* pInstance = new CRedTulip(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CGrass");
+        MSG_BOX("Failed to Created : CRedTulip");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CGrass::Clone(void* pArg)
+CGameObject* CRedTulip::Clone(void* pArg)
 {
-    CGrass* pInstance = new CGrass(*this);
+    CRedTulip* pInstance = new CRedTulip(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CGrass");
+        MSG_BOX("Failed to Created : CRedTulip");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CGrass::Free()
+void CRedTulip::Free()
 {
     __super::Free();
 }

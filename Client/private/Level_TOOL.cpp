@@ -16,7 +16,10 @@ HRESULT CLevel_TOOL::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Grass(TEXT("Layer_Grass"))))
+	//if (FAILED(Ready_Layer_Grass(TEXT("Layer_Grass"))))
+	//	return E_FAIL;
+
+	if (FAILED(Ready_Layer_RedTulip(TEXT("Layer_RedTulip"))))
 		return E_FAIL;
 
 	return S_OK;
@@ -64,6 +67,15 @@ HRESULT CLevel_TOOL::Ready_Layer_Steve(const _wstring& strLayerTag)
 HRESULT CLevel_TOOL::Ready_Layer_Grass(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, TEXT("Prototype_GameObject_Grass"),
+		LEVEL_TOOL, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_TOOL::Ready_Layer_RedTulip(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_TOOL, TEXT("Prototype_GameObject_RedTulip"),
 		LEVEL_TOOL, strLayerTag)))
 		return E_FAIL;
 

@@ -36,17 +36,29 @@ HRESULT CTree::Initialize(void* pArg)
 
 void CTree::Priority_Update(_float fTimeDelta)
 {
-    for (auto obj : m_vecWood) {
-        if ((obj != nullptr) && obj->Get_isDestroy()) {
-            Safe_Release(obj);
-            obj = nullptr;
+    for (auto it = m_vecWood.begin(); it != m_vecWood.end(); )
+    {
+        if ((*it != nullptr) && (*it)->Get_isDestroy())
+        {
+            Safe_Release(*it);
+            it = m_vecWood.erase(it);  // erase는 삭제된 요소 다음 반복자를 반환함
+        }
+        else
+        {
+            ++it;  // 삭제하지 않은 경우에만 반복자 증가
         }
     }
 
-    for (auto obj : m_vecLeaf) {
-        if ((obj != nullptr) && obj->Get_isDestroy()) {
-            Safe_Release(obj);
-            obj = nullptr;
+    for (auto it = m_vecLeaf.begin(); it != m_vecLeaf.end(); )
+    {
+        if ((*it != nullptr) && (*it)->Get_isDestroy())
+        {
+            Safe_Release(*it);
+            it = m_vecLeaf.erase(it);  // erase는 삭제된 요소 다음 반복자를 반환함
+        }
+        else
+        {
+            ++it;  // 삭제하지 않은 경우에만 반복자 증가
         }
     }
 }
@@ -58,16 +70,16 @@ void CTree::Update(_float fTimeDelta)
 
 void CTree::Late_Update(_float fTimeDelta)
 {
+    if ((m_vecWood.size() == 0) && (m_vecLeaf.size() == 0)){
+        Destroy();
+    } 
+
     for (auto object : m_vecWood) {
-        if ((object != nullptr) && object->Get_isDestroy())
-            continue;
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, object)))
             return;
     }
 
     for (auto object : m_vecLeaf) {
-        if ((object != nullptr) && object->Get_isDestroy())
-            continue;
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, object)))
             return;
     }
@@ -120,8 +132,8 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
     }
 
 
-    // 잎 배치
-      // 잎(leaf) 생성
+     //잎 배치
+     //  잎(leaf) 생성
     for (int j = 0; j < 20; j++)
     {
         dynamic_cast<CBreakableCube*>(m_vecLeaf[leafIndex])->SetPos(_float3(leaf[j].x, 0.5f + height - 2, leaf[j].y) + m_Pos);
