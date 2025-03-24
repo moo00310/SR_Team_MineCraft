@@ -54,29 +54,23 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 
 void CCamera_Player::Priority_Update(_float fTimeDelta)
 {
-    
-   
+
 }
 
 void CCamera_Player::Update(_float fTimeDelta)
 {
-    //3. 여기 
-    
-   
+    Input_Key(fTimeDelta);
+    Follow_Player(fTimeDelta);
+    __super::Update_VP_Matrices();
 }
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
-    Follow_Player(fTimeDelta);
-    Input_Key(fTimeDelta);
-    __super::Update_VP_Matrices();
     
-    // 모드 전환
     if (m_pGameInstance->Key_Down(VK_F5))
     {
         m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
     }
-
 }
 
 HRESULT CCamera_Player::Render()
@@ -207,9 +201,6 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
 }
 
 
-
-
-
 void CCamera_Player::On_MouseMove(_float fTimeDelta)
 {
     // === 화면 중앙 좌표 계산 ===
@@ -222,12 +213,11 @@ void CCamera_Player::On_MouseMove(_float fTimeDelta)
     GetCursorPos(&ptMouse);
     ScreenToClient(g_hWnd, &ptMouse);
 
-    //// === 마우스가 창 내부에 있는지 확인 ===
-    //if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
-    //    return;
-
     // 마우스 이동량 계산 (중앙 기준)
     _int iMouseMoveY = ptMouse.y - ptCenter.y;
+    _int iMouseMoveX = ptMouse.x - ptCenter.x;
+
+    m_pTarget_Transform_Com->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * 0.05f);
 
     // Pitch 값 업데이트 (상하 회전)
     m_fPitch -= iMouseMoveY * fTimeDelta * m_fMouseSensor;
@@ -237,10 +227,6 @@ void CCamera_Player::On_MouseMove(_float fTimeDelta)
     ClientToScreen(g_hWnd, &ptCenter);
     SetCursorPos(ptCenter.x, ptCenter.y);
 
-    //// 마우스를 창 내부에 가두기 (ClipCursor 사용)
-    //RECT clipRect;
-    //GetWindowRect(g_hWnd, &clipRect);
-    //ClipCursor(&clipRect);
 }
 
 HRESULT CCamera_Player::Ready_Components()

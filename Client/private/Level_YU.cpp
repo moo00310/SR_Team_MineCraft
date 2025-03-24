@@ -44,6 +44,7 @@ HRESULT CLevel_YU::Initialize()
 
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;
+
 	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE_DASH)))
 		return E_FAIL;
 

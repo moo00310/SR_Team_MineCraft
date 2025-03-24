@@ -57,7 +57,6 @@ private:
 private:
 	void	Input_Key(_float fTimeDelta);
 	void	Move(_float fTimeDelta);
-	void	Turn(_float fTimeDelta);
 
 private:
 	HRESULT Ready_Components();

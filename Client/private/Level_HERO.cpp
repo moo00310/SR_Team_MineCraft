@@ -17,8 +17,8 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
   		return E_FAIL;
 
-	if (FAILED(Ready_Layer_HeroCube(TEXT("Layer_HeroCube"))))
- 		return E_FAIL;
+	//if (FAILED(Ready_Layer_HeroCube(TEXT("Layer_HeroCube"))))
+ //		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
@@ -27,9 +27,9 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	//BT 연습용 적
-	if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
-		return E_FAIL;
+	////BT 연습용 적
+	//if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
+	//	return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
 	//	return E_FAIL;
@@ -45,8 +45,8 @@ HRESULT CLevel_HERO::Initialize()
 		return E_FAIL;*/
 
 	/* 장현우 인벤토리 확인용 */
-	if (FAILED(Ready_Layer_WOOInvenTest(TEXT("Layer_Inventory"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_WOOInvenTest(TEXT("Layer_Inventory"))))
+	//	return E_FAIL;
 	
 	//m_pGameInstance->Play_Sound("event:/0004 BGM_DOREMI");
 

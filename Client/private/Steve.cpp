@@ -39,16 +39,13 @@ void CSteve::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 
-
-	// 지금 업데이트순서 
-	// 플레이어 -> 카메라
-
+	 //1. 키입력에 따른 회전
 	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
-
+	
 	if (FAILED(m_pCollider_CubeCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
@@ -57,6 +54,7 @@ void CSteve::Update(_float fTimeDelta)
 
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
+	// 애니메이션 상태 변경
 
 	//CGameObject* pGameObject;
 	//_float fDist;
@@ -72,21 +70,18 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
-	//4. 여기
-
+	// 5. 역행렬을 가져와서 본 회전
 	Matrix		mat = {};
 	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
 	D3DXMatrixInverse(&mat, nullptr, &mat);
 	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
 	m_skelAnime->Set_BoneLocalMatrix(2, mat);
-
-	// 애니메이션 상태 변경
+	
 	Update_State(fTimeDelta);
 
 	// 모델의 루트본 업데이트 ( Position 만)
 	Matrix matrix = *m_pTransformCom->Get_WorldMatrix();
 	m_skelAnime->Update_RootBone(MAtrixTranslation(matrix._41, matrix._42, matrix._43));
-
 
 	// f5로 랜더 그룹 변경
 	if (m_pGameInstance->Key_Down(VK_F5))
@@ -145,7 +140,6 @@ void CSteve::Input_Key(_float fTimeDelta)
 		return;
 
 	Move(fTimeDelta);
-	Turn(fTimeDelta);
 }
 
 void CSteve::Move(_float fTimeDelta)
@@ -211,38 +205,6 @@ void CSteve::Move(_float fTimeDelta)
 	}
 }
 
-void CSteve::Turn(_float fTimeDelta)
-{
-	if (GetForegroundWindow() != g_hWnd)
-		return;
-
-	// 화면 중앙 좌표 계산
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
-	POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
-
-	// 현재 마우스 좌표 가져오기
-	POINT ptMouse;
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
-
-	// 마우스가 창 내부에 있는지 확인
-	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
-		return;
-
-	// 마우스 이동량 계산
-	_int iMouseMoveX = ptMouse.x - ptCenter.x;
-
-	if (iMouseMoveX != 0)
-	{
-		// 회전 적용
-		m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * 0.05f);
-
-		// 마우스 중앙으로 리셋
-		ClientToScreen(g_hWnd, &ptCenter);
-		SetCursorPos(ptCenter.x, ptCenter.y);
-	}
-}
 
 HRESULT CSteve::Ready_Components()
 {
