@@ -53,10 +53,10 @@ HRESULT CCoalOre::Render()
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
 
-    m_pTransformCom->Bind_Resource(m_pShaderCom);
+   /* m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 
-    m_pShaderCom->Begin(0);
+    m_pShaderCom->Begin(0);*/
 
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
@@ -64,7 +64,7 @@ HRESULT CCoalOre::Render()
 
     __super::Render();
 
-    m_pShaderCom->End();
+    //m_pShaderCom->End();
 
     return S_OK;
 }

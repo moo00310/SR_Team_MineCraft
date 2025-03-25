@@ -122,150 +122,150 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
     BLOCKDESC eblockData;
     int index = 0;
 
-    //while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
-    //{
-    //    CBreakableCube* pCube = nullptr;
-    //    CBreakableRect* pRect = nullptr;
-    //    CTree::DESC desc = {};
-    //    int percent = 999;
-    //    EnterCriticalSection(&cs);  // 동기화 시작
-    //    switch (eblockData.eBlockType)
-    //    {
-    //    case GRASSDIRT:
-    //        if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, layerName)))
-    //            return 1;
-    //        pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-    //        if (pCube) {
-    //            pCube->SetPos(_float3(eblockData.fPosition));
-    //        }
-    //        index++;
-    //        
-    //        percent= rand() % 100;
-    //        if (percent < 1) {
-    //            int randWood = rand() % 3 + 4;
-    //            int ranLeaf = rand() % 8 + 4;
-
-    //            desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y+0.5, eblockData.fPosition.z),0 };
-    //            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"),LEVEL_YU, layerName, &desc)))
-    //                return E_FAIL;
-    //            index++;
-    //        }
-    //        else if (1 <= percent && percent < 5) {
-    //            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Grass"), LEVEL_YU, layerName)))
-    //                return 1;
-    //            pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-    //            if (pRect) {
-    //                pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y+1, eblockData.fPosition.z));
-    //            }
-    //            index++;
-    //        }
-    //        else if (5 <= percent && percent < 6) {
-    //            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_RedTulip"), LEVEL_YU, layerName)))
-    //                return 1;
-    //            pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-    //            if (pRect) {
-    //                pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.7, eblockData.fPosition.z));
-    //            }
-    //            index++;
-    //        }
-    //        break;
-    //    case DIRT:
-    //        if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, layerName)))
-    //            return 1;
-    //        pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-    //        if (pCube) {
-    //            pCube->SetPos(_float3(eblockData.fPosition));
-    //        }
-    //        index++;
-    //        break;
-    //    case STONE:
-    //        if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, layerName)))
-    //            return 1;
-    //        pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-    //        if (pCube) {
-    //            pCube->SetPos(_float3(eblockData.fPosition));
-    //        }
-    //        index++;
-    //        break;
-    //    case IRONORE:
-    //        if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"), LEVEL_YU, layerName)))
-    //            return 1;
-    //        pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-    //        if (pCube) {
-    //            pCube->SetPos(_float3(eblockData.fPosition));
-    //        }
-    //        index++;
-    //        break;
-    //    case COALORE:
-    //        if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"), LEVEL_YU, layerName)))
-    //            return 1;
-    //        pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-    //        if (pCube) {
-    //            pCube->SetPos(_float3(eblockData.fPosition));
-    //        }
-    //        index++;
-    //        break;
-    //    default:
-    //        break;
-    //    }
-
-    //    LeaveCriticalSection(&cs);  // 동기화 종료
-    //}
-    //CloseHandle(hFile);
-
-    vector<D3DXVECTOR3> stoneVec;
-    vector<D3DXVECTOR3> dirtVec;
-    vector<D3DXVECTOR3> grassVec;
-    vector<D3DXVECTOR3> ironVec;
-    vector<D3DXVECTOR3> coalVec;
-
     while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
     {
         CBreakableCube* pCube = nullptr;
-
+        CBreakableRect* pRect = nullptr;
+        CTree::DESC desc = {};
+        int percent = 999;
         EnterCriticalSection(&cs);  // 동기화 시작
         switch (eblockData.eBlockType)
         {
         case GRASSDIRT:
-            grassVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
+            
+            percent= rand() % 100;
+            if (percent < 1) {
+                int randWood = rand() % 3 + 4;
+                int ranLeaf = rand() % 8 + 4;
+
+                desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y+0.5, eblockData.fPosition.z),0 };
+                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"),LEVEL_YU, layerName, &desc)))
+                    return E_FAIL;
+                index++;
+            }
+            else if (1 <= percent && percent < 5) {
+                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Grass"), LEVEL_YU, layerName)))
+                    return 1;
+                pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+                if (pRect) {
+                    pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y+1, eblockData.fPosition.z));
+                }
+                index++;
+            }
+            else if (5 <= percent && percent < 6) {
+                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_RedTulip"), LEVEL_YU, layerName)))
+                    return 1;
+                pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+                if (pRect) {
+                    pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.7, eblockData.fPosition.z));
+                }
+                index++;
+            }
             break;
         case DIRT:
-            dirtVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
             break;
         case STONE:
-            stoneVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
             break;
         case IRONORE:
-            ironVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
             break;
         case COALORE:
-            coalVec.push_back(eblockData.fPosition);
+            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"), LEVEL_YU, layerName)))
+                return 1;
+            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+            if (pCube) {
+                pCube->SetPos(_float3(eblockData.fPosition));
+            }
+            index++;
             break;
         default:
             break;
         }
+
         LeaveCriticalSection(&cs);  // 동기화 종료
     }
     CloseHandle(hFile);
 
+    //vector<D3DXVECTOR3> stoneVec;
+    //vector<D3DXVECTOR3> dirtVec;
+    //vector<D3DXVECTOR3> grassVec;
+    //vector<D3DXVECTOR3> ironVec;
+    //vector<D3DXVECTOR3> coalVec;
 
-    EnterCriticalSection(&cs);
-    vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
-        {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
-        {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
-        {TEXT("Prototype_GameObject_Stone"), &stoneVec},
-        {TEXT("Prototype_GameObject_IronOre"), &ironVec},
-        {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
-    };
+    //while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
+    //{
+    //    CBreakableCube* pCube = nullptr;
 
-    for (size_t i = 0; i < blockTypes.size(); ++i)
-    {
-        pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
-        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
-        if (pCube)
-            pCube->Set_InstanceBuffer(*(blockTypes[i].second));
-    }
-    LeaveCriticalSection(&cs);
+    //    EnterCriticalSection(&cs);  // 동기화 시작
+    //    switch (eblockData.eBlockType)
+    //    {
+    //    case GRASSDIRT:
+    //        grassVec.push_back(eblockData.fPosition);
+    //        break;
+    //    case DIRT:
+    //        dirtVec.push_back(eblockData.fPosition);
+    //        break;
+    //    case STONE:
+    //        stoneVec.push_back(eblockData.fPosition);
+    //        break;
+    //    case IRONORE:
+    //        ironVec.push_back(eblockData.fPosition);
+    //        break;
+    //    case COALORE:
+    //        coalVec.push_back(eblockData.fPosition);
+    //        break;
+    //    default:
+    //        break;
+    //    }
+    //    LeaveCriticalSection(&cs);  // 동기화 종료
+    //}
+    //CloseHandle(hFile);
+
+
+    //EnterCriticalSection(&cs);
+    //vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
+    //    {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
+    //    {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
+    //    {TEXT("Prototype_GameObject_Stone"), &stoneVec},
+    //    {TEXT("Prototype_GameObject_IronOre"), &ironVec},
+    //    {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
+    //};
+
+    //for (size_t i = 0; i < blockTypes.size(); ++i)
+    //{
+    //    pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
+    //    CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
+    //    if (pCube)
+    //        pCube->Set_InstanceBuffer(*(blockTypes[i].second));
+    //}
+    //LeaveCriticalSection(&cs);
 
     return 0;
 }
