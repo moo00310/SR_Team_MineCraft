@@ -84,10 +84,10 @@ public:
 	void CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count = 1, void* pArg = nullptr);
 
 	// 풀링 객체 꺼내옴.
-	CGameObject* Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
+	CGameObject* PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
 
 	// 풀링으로 돌아감.
-	void Pop(CGameObject* _object);
+	void PopPool(CGameObject* _object);
 	
 #pragma endregion
 

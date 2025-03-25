@@ -27,8 +27,14 @@ CPoolManager* CPoolManager::Create()
 	return pInstance;
 }
 
-CGameObject* CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
+void CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
 {	
+	// 재귀 함수 종료.
+	if (count <= 0)
+	{
+		return;
+	}
+
 	// 오브젝트 매니저에 생성.
 	CGameObject* obj = m_pGameInstance->Add_GameObjectReturnOBJ(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, pArg);	
 
@@ -36,7 +42,7 @@ CGameObject* CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring
 	if (obj == nullptr)
 	{
 		MSG_BOX("Failed to PoolManager CreatePool !!!");
-		return nullptr;
+		return;
 	}	
 
 	// 비활성화.
@@ -55,19 +61,13 @@ CGameObject* CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring
 		iter = m_mapPoolObjects->find(strPrototypeTag);
 	}
 
-	iter->second.push_back(obj);
-
-	// 재귀 함수 종료.
-	if (count <= 1)
-	{
-		return obj;
-	}
+	iter->second.push_back(obj);	
 
 	// 재귀.
 	CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, --count, pArg);
 }
 
-CGameObject* CPoolManager::Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
+CGameObject* CPoolManager::PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
 {	
 	// 키 찾음.
 	auto iter = m_mapPoolObjects->find(strPrototypeTag);
@@ -92,14 +92,19 @@ CGameObject* CPoolManager::Push(_uint iPrototypeLevelIndex, const _wstring& strP
 	}
 
 	// 이미 풀에 가득찼다면 추가로 하나 더 생성하고 반환.	
-	return CreatePool(iPrototypeLevelIndex,
-		strPrototypeTag, 
+	CreatePool(iPrototypeLevelIndex,
+		strPrototypeTag,
 		iLevelIndex,
 		strLayerTag,
 		1);
+
+	return PushPool(iPrototypeLevelIndex,
+		strPrototypeTag,
+		iLevelIndex,
+		strLayerTag);
 }
 
-void CPoolManager::Pop(CGameObject* _object)
+void CPoolManager::PopPool(CGameObject* _object)
 {
 	_object->SetActive(false);
 }
