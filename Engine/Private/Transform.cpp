@@ -36,7 +36,7 @@ HRESULT CTransform::Bind_Resource()
 	return m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_WorldMatrix);	
 }
 
-HRESULT CTransform::Bind_Resource(CShader* pShader, D3DXHANDLE hParameters, _uint iIndex)
+HRESULT CTransform::Bind_Resource(CShader* pShader)
 {
 	D3DXMATRIX viewMatrix, projMatrix;
 	// 디바이스에서 뷰 행렬 가져오기

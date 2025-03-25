@@ -54,11 +54,18 @@ HRESULT CStone::Render()
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
 
+    m_pTransformCom->Bind_Resource(m_pShaderCom);
+    m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+
+    m_pShaderCom->Begin(0);
+
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
     __super::Render();
+
+    m_pShaderCom->End();
 
     return S_OK;
 }
@@ -68,17 +75,6 @@ HRESULT CStone::Ready_Components()
     /* For.Com_Texture */
     if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Stone"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-        return E_FAIL;
-
-    /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeInstance"),
-        TEXT("m_pVIBufferCom_CubeInstance"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-        return E_FAIL;
-
-    /* For.Com_Transform */
-    CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-        TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
 
     __super::Ready_Components();
