@@ -110,20 +110,20 @@ CGameObject* CDirt::Clone(void* pArg)
 
 void CDirt::Free()
 {
-    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
+    // 병합과정에서 뭐가 날아간건지 빌드 에러나서 임의로 수정했어요
+    // 확인 부탁해용
+    // -무결-
+
+    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,
+        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+        LEVEL_STATIC,
+        LAYER_PARTICLE_SAND_DESTROY);
 
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemDirt"), LEVEL_YU, layerName)))
         return;
     dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-
-
-    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// 적용 씬.
-
-        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// 가져올 프로토타입.
-        LEVEL_STATIC,	// 가져올 씬.
-        LAYER_PARTICLE_SAND_DESTROY);	// 애드오브젝트에 추가할 레이어
 
     if (particle != nullptr)
     {        

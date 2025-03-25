@@ -198,7 +198,6 @@
     <ClInclude Include="..\public\PlayerHP.h" />
     <ClInclude Include="..\public\PlayerHP_Back.h" />
     <ClInclude Include="..\public\UI_Mgr.h" />
-    <ClInclude Include="..\public\Inventory_Mgr.h" />
     <ClInclude Include="..\public\ItemCube.h" />
     <ClInclude Include="..\public\ItemIronOre.h" />
     <ClInclude Include="..\public\ItemWood.h" />
@@ -288,7 +287,6 @@
     <ClCompile Include="..\private\Inventory_Back.cpp" />
     <ClCompile Include="..\private\PlayerHP_Back.cpp" />
     <ClCompile Include="..\private\UI_Mgr.cpp" />
-    <ClCompile Include="..\private\Inventory_Mgr.cpp" />
     <ClCompile Include="..\private\ItemCube.cpp" />
     <ClCompile Include="..\private\ItemIronOre.cpp" />
     <ClCompile Include="..\private\ItemWood.cpp" />
