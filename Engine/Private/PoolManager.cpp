@@ -92,7 +92,7 @@ CGameObject* CPoolManager::PushPool(_uint iPrototypeLevelIndex, const _wstring& 
 		if (object->GetActive() == false)
 		{			
 			// init 해주고 활성화.
-			object->Initialize(nullptr);
+			object->OnPushPool();
 			object->SetActive(true);					
 
 			// 이 새기 반환함.

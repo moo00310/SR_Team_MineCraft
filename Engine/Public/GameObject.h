@@ -22,6 +22,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	// 풀링에서 Push시 호출.
+	virtual void OnPushPool(){}
+
 public:
 	class CComponent* Find_Component(const _tchar* pComponentTag);
 	class CGameInstance* Get_GameInstance();
