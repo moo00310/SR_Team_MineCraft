@@ -124,5 +124,10 @@ void CPoolManager::Free()
 		
 	Safe_Delete(m_mapPoolObjects);
 
+	// m_mapPoolObjects를 순회하면서 삭제하지 않는 이유는
+	// m_mapPoolObjects는 오브젝트 매니저랑 공유해서 쓴다
+	// 오브젝트 매니저가 이미 삭제시키니 여기서도 삭제하면
+	// 이중 해제 오류뜸.
+
 	Safe_Release(m_pGameInstance);
 }
