@@ -229,6 +229,9 @@
     <Filter Include="98.Default">
       <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.ShaderFiles">
+      <UniqueIdentifier>{558c5abc-bfba-4142-ab35-998956f6d037}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -485,7 +488,7 @@
     </ClInclude>
     <ClInclude Include="..\public\Item.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\RedTulip.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
@@ -741,5 +744,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Rect.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

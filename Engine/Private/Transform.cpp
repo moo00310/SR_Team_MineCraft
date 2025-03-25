@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "Shader.h"
 
 CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent { pGraphic_Device }
@@ -33,6 +34,27 @@ HRESULT CTransform::Initialize(void* pArg)
 HRESULT CTransform::Bind_Resource()
 {
 	return m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_WorldMatrix);	
+}
+
+HRESULT CTransform::Bind_Resource(CShader* pShader, D3DXHANDLE hParameters, _uint iIndex)
+{
+	D3DXMATRIX viewMatrix, projMatrix;
+	// 디바이스에서 뷰 행렬 가져오기
+	if (FAILED(m_pGraphic_Device->GetTransform(D3DTS_VIEW, &viewMatrix)))
+		return E_FAIL;
+
+	// 디바이스에서 투영 행렬 가져오기
+	if (FAILED(m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &projMatrix)))
+		return E_FAIL;
+
+	if (FAILED(pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
+		return E_FAIL;
+	if (FAILED(pShader->Bind_Matrix("g_ViewMatrix", &viewMatrix)))
+		return E_FAIL;
+	if (FAILED(pShader->Bind_Matrix("g_ProjMatrix", &projMatrix)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 _float3 CTransform::Compute_Scaled() const

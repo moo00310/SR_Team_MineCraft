@@ -58,6 +58,7 @@ public:
 
 public:
 	HRESULT Bind_Resource();
+	HRESULT Bind_Resource(class CShader* pShader, D3DXHANDLE hParameters, _uint iIndex);
 
 public:
 	_float3 Compute_Scaled() const;

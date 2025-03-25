@@ -123,6 +123,10 @@
       <AdditionalDependencies>Engine.lib;d3dx9.LIB;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -144,6 +148,10 @@
       <AdditionalDependencies>Engine.lib;d3dx9.LIB;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Imgui\imconfig.h" />
@@ -322,6 +330,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Rect.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
