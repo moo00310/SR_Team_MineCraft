@@ -57,7 +57,6 @@ private:
 private:
 	void	Input_Key(_float fTimeDelta);
 	void	Move(_float fTimeDelta);
-	void	Turn(_float fTimeDelta);
 
 private:
 	HRESULT Ready_Components();
@@ -68,6 +67,7 @@ private:
 	void Update_State(_float fTimeDelta);
 	void Motion_Idle(_float fTimeDelta);
 	void Motion_Walk(_float fTimeDelta);
+	void Turn(_float fTimeDelta);
 
 public:
 	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

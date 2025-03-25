@@ -20,14 +20,13 @@ CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_YU::Initialize()
 {
-
-	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_Clouds(TEXT("Layer_Clouds"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
@@ -44,6 +43,7 @@ HRESULT CLevel_YU::Initialize()
 
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;
+
 	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE_DASH)))
 		return E_FAIL;
 

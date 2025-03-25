@@ -5,6 +5,7 @@
 
 #include "Steve.h"
 #include "Tree.h"
+#include "BreakableRect.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -124,6 +125,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
     while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
     {
         CBreakableCube* pCube = nullptr;
+        CBreakableRect* pRect = nullptr;
         CTree::DESC desc = {};
         int percent = 999;
         EnterCriticalSection(&cs);  // 동기화 시작
@@ -146,6 +148,24 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
                 desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y+0.5, eblockData.fPosition.z),0 };
                 if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"),LEVEL_YU, layerName, &desc)))
                     return E_FAIL;
+                index++;
+            }
+            else if (1 <= percent && percent < 5) {
+                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Grass"), LEVEL_YU, layerName)))
+                    return 1;
+                pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+                if (pRect) {
+                    pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y+1, eblockData.fPosition.z));
+                }
+                index++;
+            }
+            else if (5 <= percent && percent < 6) {
+                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_RedTulip"), LEVEL_YU, layerName)))
+                    return 1;
+                pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+                if (pRect) {
+                    pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.7, eblockData.fPosition.z));
+                }
                 index++;
             }
             break;
@@ -463,25 +483,22 @@ void CMCTerrain::GetPlayerChunk()
             }
         }
         else {
-            //지금은 나무만 임
+            //나무
             if (CTree* pTree = dynamic_cast<CTree*>(pGameObject)) {
                 vector<CGameObject*> _copyVec = pTree->Get_WoodInfo();
                 for (auto copy : _copyVec) {
-                    if (copy == nullptr) {
-                        if (copy->Get_isDestroy()) {
-                            continue;
-                        }
-                    }
                     m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
                 }
                 _copyVec = pTree->Get_LeafInfo();
                 for (auto copy : _copyVec) {
-                    if (copy == nullptr) {
-                        if (copy->Get_isDestroy()) {
-                            continue;
-                        }
-                    }
                     m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
+                }
+            }
+
+            //잔디 & 꽃
+            if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pGameObject)) {
+                if (pBreakableRect->Get_RenderActive()) {
+                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
                 }
             }
 
