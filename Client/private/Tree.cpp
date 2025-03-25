@@ -23,7 +23,7 @@ HRESULT CTree::Initialize(void* pArg)
     m_iHeight = pDesc->iHeight;
     m_iAddLeaf = pDesc->AddLeaf;
     m_Pos = pDesc->pos;
-    m_iTreeIndex = pDesc->TreeIndex;
+    m_iMyChunk = pDesc->myChunk;
 
     if (FAILED(Ready_Objects(m_iHeight, m_iAddLeaf, m_iTreeIndex)))
         return E_FAIL; 
@@ -40,6 +40,7 @@ void CTree::Priority_Update(_float fTimeDelta)
     {
         if ((*it != nullptr) && (*it)->Get_isDestroy())
         {
+
             Safe_Release(*it);
             it = m_vecWood.erase(it);  // erase는 삭제된 요소 다음 반복자를 반환함
         }
@@ -61,11 +62,22 @@ void CTree::Priority_Update(_float fTimeDelta)
             ++it;  // 삭제하지 않은 경우에만 반복자 증가
         }
     }
+
+    if (m_vecWood.size() == 0) {
+        m_bWoodZero = true;
+    }
 }
 
 void CTree::Update(_float fTimeDelta)
 {
+    if (m_bWoodZero)
+        m_iRemoveFrame++;
 
+    if (m_iRemoveFrame > 10) {
+        m_iRemoveFrame = 0;
+        int random = rand() % m_vecLeaf.size();
+        m_vecLeaf[random]->Destroy();
+    }
 }
 
 void CTree::Late_Update(_float fTimeDelta)
@@ -101,13 +113,18 @@ HRESULT CTree::Ready_Objects(int height, int iAddLeaf, int treeIndex)
     for (int i = 0; i <= height; i++)
     {
         CGameObject* pGameObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, LEVEL_YU, TEXT("Prototype_GameObject_Wood")));
-
+        if (CBreakableCube* pBreakableObj = dynamic_cast<CBreakableCube*>(pGameObject)) {
+            pBreakableObj->Set_MyChunk(m_iMyChunk);
+        }
         m_vecWood.push_back(pGameObject);
     }
 
     for (int i = 0; i <= 48 +iAddLeaf; i++)
     {
         CGameObject* pGameObject = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::TYPE_GAMEOBJECT, LEVEL_YU, TEXT("Prototype_GameObject_Leaf")));
+        if (CBreakableCube* pBreakableObj = dynamic_cast<CBreakableCube*>(pGameObject)) {
+            pBreakableObj->Set_MyChunk(m_iMyChunk);
+        }
         m_vecLeaf.push_back(pGameObject);
     }
 

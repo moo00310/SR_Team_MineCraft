@@ -30,6 +30,7 @@
 
 //지형 관련
 #include "Dirt.h"
+#include "ItemDirt.h"
 #include "Stone.h"
 #include "GrassDirt.h"
 #include "CoalOre.h"
@@ -38,6 +39,9 @@
 #include "MapTool.h"
 #include "Grass.h"
 #include "RedTulip.h"
+#include "ItemCobbleStone.h"
+#include "ItemIronOre.h"
+#include "ItemWood.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -49,12 +53,12 @@
 #include "Title.h"
 #include "Edition.h"
 #include "MainInventory.h"
-#include "CheckBox.h"
 #include "SubInventory.h"
-#include "Item.h"
 #include "Inventory_Back.h"
-
-
+#include "Item.h"
+#include "CheckBox.h"
+#include "PlayerHP_Back.h"
+#include "PlayerHP.h"
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -395,6 +399,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/stone%d.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_CobbleStone */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_CobbleStone"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/cobbleStone%d.png"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_CoalOre */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_CoalOre"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/coalOre%d.png"), 1))))
@@ -458,6 +467,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Item"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Item/Item_%03d.png"), 2))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerHP*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerHP"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/PlayerState/Hp_%03d.png"), 3))))
+		return E_FAIL;
 	/*================================================================================================*/
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -486,9 +500,19 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CGrassDirt::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Dirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemDirt"),
+		CItemDirt::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/* For.Prototype_GameObject_Stone */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Stone"),
 		CStone::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CobbleStoneItem */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemCobbleStone"),
+		CItemCobbleStone::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_CoalOre */
@@ -499,6 +523,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_IronOre */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"),
 		CIronOre::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ItemIronOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemIronOre"),
+		CItemIronOre::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_MCTerrain */
@@ -519,6 +548,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Wood */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Wood"),
 		CWood::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ItemWood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemWood"),
+		CItemWood::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Leaf */
@@ -574,15 +608,24 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CInventory_Back::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-
 	/* For.Prototype_GameObject_CheckBox */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CheckBox"),
 		CCheckBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_CItem*/
+	/* For.Prototype_GameObject_Item*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 		CItem::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_PlayerHP_Back*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP_Back"),
+		CPlayerHP_Back::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_PlayerHP*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP"),
+		CPlayerHP::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/*================================================================================================*/

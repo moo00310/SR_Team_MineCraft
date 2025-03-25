@@ -87,6 +87,11 @@ HRESULT CParticleSystem::Render()
 		return E_FAIL;
 	}
 
+	if (m_pTransform == nullptr || FAILED(m_pTransform->Bind_Resource()))
+	{
+		return E_FAIL;
+	}
+
 	if (FAILED(m_pParticleTexture->Bind_Resource(0)))
 	{
 		return E_FAIL;
@@ -252,12 +257,13 @@ HRESULT CParticleSystem::Create_VertexBuffer()
 
 void CParticleSystem::SetParticleAttribute()
 {	
+	// 파티클 리스트가 하나도 없다면 생성.
 	for (_uint i = 0; i < iParticleCount; i++)
 	{
-		ParticleAttribute att = OnSetAddParticle();		
+		ParticleAttribute att = OnSetAddParticle();
 
 		m_ListParticleAttribute.push_back(att);
-	}	
+	}
 }
 
 void CParticleSystem::SetParticleBoundingBox(ParticleBoundingBox box)
@@ -292,4 +298,15 @@ void CParticleSystem::Free()
 	Safe_Release(m_pVB);
 	Safe_Release(m_pParticleTexture);
 	Safe_Release(m_pTransform);
+}
+
+void CParticleSystem::OnPushPool()
+{
+	// 재생성 시 기존에 값 덮어씀.
+	for (auto& particle : m_ListParticleAttribute)
+	{
+		ParticleAttribute att = OnSetAddParticle();
+
+		particle = att;
+	}
 }

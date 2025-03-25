@@ -5,6 +5,7 @@
 #include "VIBuffer_Cube.h"
 #include "GameInstance.h"
 #include <iostream>
+#include "UI_Mgr.h"
 
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
@@ -153,7 +154,7 @@ void CSteve::Move(_float fTimeDelta)
 	if (collider != nullptr)
 	{
 		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
-		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// 적용 씬.
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
 			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
 			LEVEL_STATIC,	// 가져올 씬.
 			LAYER_PARTICLE_DASH);	// 애드오브젝트에 추가할 레이어
@@ -198,6 +199,12 @@ void CSteve::Move(_float fTimeDelta)
 			//m_pGameInstance->Play_Sound("event:/Built_Fail");
 		}
 		
+	}
+
+	/* 현우 Test */
+	if (m_pGameInstance->Key_Pressing('Z'))
+	{
+		CUI_Mgr::Get_Instance()->TakeDamge();
 	}
 }
 

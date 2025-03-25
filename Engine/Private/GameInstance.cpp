@@ -146,6 +146,13 @@ CGameObject* CGameInstance::Get_Object(_uint iLevelIndex, const _tchar* pLayerTa
 	return m_pObject_Manager->Find_Objects(iLevelIndex, pLayerTag, iIndex);
 }
 
+CGameObject* CGameInstance::Get_LastObject(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+	return m_pObject_Manager->Find_LastObject(iLevelIndex, pLayerTag);
+}
+
 void CGameInstance::ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag)
 {
 	m_pObject_Manager->ClearLayer(iLevelIndex, pLayerTag);
@@ -263,13 +270,13 @@ void CGameInstance::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPr
 {
 	m_pPoolManager->CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, count, pArg);
 }
-CGameObject* CGameInstance::Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
+CGameObject* CGameInstance::PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pPoolManager->Push(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag);
+	return m_pPoolManager->PushPool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag);
 }
-void CGameInstance::Pop(CGameObject* _object)
+void CGameInstance::PopPool(CGameObject* _object)
 {
-	m_pPoolManager->Pop(_object);
+	m_pPoolManager->PopPool(_object);
 }
 #pragma endregion
 

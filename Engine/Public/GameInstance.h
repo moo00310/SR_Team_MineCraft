@@ -38,6 +38,7 @@ public:
 	HRESULT Add_GameObject(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	CGameObject* Add_GameObjectReturnOBJ(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 	class CGameObject* Get_Object(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
+	class CGameObject* Get_LastObject(_uint iLevelIndex, const _tchar* pLayerTag);
 	void ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag);
 	list<class CGameObject*> Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag);
 	// 청크 활성화 관련 (true면 청크 활성화, false면 청크 비활성화 느낌)
@@ -84,10 +85,10 @@ public:
 	void CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count = 1, void* pArg = nullptr);
 
 	// 풀링 객체 꺼내옴.
-	CGameObject* Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
+	CGameObject* PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
 
 	// 풀링으로 돌아감.
-	void Pop(CGameObject* _object);
+	void PopPool(CGameObject* _object);
 	
 #pragma endregion
 

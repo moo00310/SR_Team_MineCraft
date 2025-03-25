@@ -66,6 +66,9 @@ protected:
 public:
 	virtual void Free() override;
 
+	// 풀링에서 Push시 호출.
+	virtual void OnPushPool() override;
+
 private:
 	// 파티클 세그먼트 당 종료.
 	DWORD dwVpOffset = 0;
