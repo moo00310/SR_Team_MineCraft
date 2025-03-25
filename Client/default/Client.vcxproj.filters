@@ -456,9 +456,6 @@
     <ClInclude Include="..\public\MainInventory.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Item.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\05.Item</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Inventory_Back.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\03.Inventory_Back</Filter>
     </ClInclude>
@@ -486,6 +483,9 @@
     <ClInclude Include="..\public\Client_Tag.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Item.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
+     </ClInclude>
     <ClInclude Include="..\public\RedTulip.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>

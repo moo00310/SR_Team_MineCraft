@@ -61,7 +61,7 @@ void CHeroEnemy::Update(_float fTimeDelta)
 
 	//_float fRange;
 	
-	if (m_pGameInstance->Collision_with_Group(COLLISION_PLAYER, m_pColliderCom, CCollider_Manager::COLLSIION_CUBE))
+	if (m_pGameInstance->Collision_Check_with_Group(COLLISION_PLAYER, m_pColliderCom, CCollider_Manager::COLLSIION_CUBE))
 	{
 		m_bHit = true;
 	}

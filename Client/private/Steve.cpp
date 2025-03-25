@@ -39,16 +39,13 @@ void CSteve::Priority_Update(_float fTimeDelta)
 {
 	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 
-
-	// 지금 업데이트순서 
-	// 플레이어 -> 카메라
-
+	 //1. 키입력에 따른 회전
 	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
-
+	
 	if (FAILED(m_pCollider_CubeCom->Update_ColliderBox()))
 	{
 		MSG_BOX("Update_ColliderBox()");
@@ -57,6 +54,7 @@ void CSteve::Update(_float fTimeDelta)
 
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
+	// 애니메이션 상태 변경
 
 	//CGameObject* pGameObject;
 	//_float fDist;
@@ -72,15 +70,8 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
-	//4. 여기
-
-	Matrix		mat = {};
-	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
-	D3DXMatrixInverse(&mat, nullptr, &mat);
-	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
-	m_skelAnime->Set_BoneLocalMatrix(2, mat);
-
-	// 애니메이션 상태 변경
+	// 회전
+	Turn(fTimeDelta);
 	Update_State(fTimeDelta);
 
 	// 모델의 루트본 업데이트 ( Position 만)
@@ -145,7 +136,6 @@ void CSteve::Input_Key(_float fTimeDelta)
 		return;
 
 	Move(fTimeDelta);
-	Turn(fTimeDelta);
 }
 
 void CSteve::Move(_float fTimeDelta)
@@ -154,7 +144,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	CGameObject* collider{ nullptr };
 	// 블럭 충돌 여부 확인.	
-	collider = m_pGameInstance->Collision_with_Group(
+	collider = m_pGameInstance->Collision_Check_with_Group(
 		COLLISION_BLOCK,		
 		m_pCollider_CubeCom,	
 		CCollider_Manager::COLLSIION_CUBE
@@ -208,39 +198,6 @@ void CSteve::Move(_float fTimeDelta)
 			//m_pGameInstance->Play_Sound("event:/Built_Fail");
 		}
 		
-	}
-}
-
-void CSteve::Turn(_float fTimeDelta)
-{
-	if (GetForegroundWindow() != g_hWnd)
-		return;
-
-	// 화면 중앙 좌표 계산
-	RECT rc;
-	GetClientRect(g_hWnd, &rc);
-	POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
-
-	// 현재 마우스 좌표 가져오기
-	POINT ptMouse;
-	GetCursorPos(&ptMouse);
-	ScreenToClient(g_hWnd, &ptMouse);
-
-	// 마우스가 창 내부에 있는지 확인
-	if (ptMouse.x < 0 || ptMouse.x >= rc.right || ptMouse.y < 0 || ptMouse.y >= rc.bottom)
-		return;
-
-	// 마우스 이동량 계산
-	_int iMouseMoveX = ptMouse.x - ptCenter.x;
-
-	if (iMouseMoveX != 0)
-	{
-		// 회전 적용
-		m_pTransformCom->Turn({ 0.f, 1.f, 0.f }, fTimeDelta * iMouseMoveX * 0.05f);
-
-		// 마우스 중앙으로 리셋
-		ClientToScreen(g_hWnd, &ptCenter);
-		SetCursorPos(ptCenter.x, ptCenter.y);
 	}
 }
 
@@ -323,7 +280,7 @@ HRESULT CSteve::Ready_Bone()
 		 { "Leg_R",  1,	  MAtrixTranslation(2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(2.f / 16.f,	 0,		0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     0,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(6.f / 16.f,   12.f / 16.f	,0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
-		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-6.f / 16,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-6.f / 16.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 	};
 
 	for (int i = 0; i < 7; i++)
@@ -346,13 +303,11 @@ HRESULT CSteve::Ready_Animation()
 	/*----------
 	* Walk 모션
 	------------*/
-	mat.Turn_Radian(_float3(1.f,0.f, 0.f), D3DXToRadian(0));
-
 	Matrix mat2 = {};
-	mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(60));
+	mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(60.f));
 
 	Matrix mat3 = {};
-	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-60));
+	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-60.f));
 	
 	KEYFREAME Walk_1_F = { 0.f, mat }; //0
 	KEYFREAME Walk_2_F = { 1.0f, mat2 }; //60
@@ -382,14 +337,12 @@ HRESULT CSteve::Ready_Animation()
 /*----------
 * IDEL 
 ------------*/
-	mat = Matrix();
-	mat.Turn_Radian(_float3(0.f, 0.f, 0.f), D3DXToRadian(0));
 
 	mat2 = Matrix();
-	mat2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-3));
+	mat2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-3.f));
 
 	mat3 = Matrix();
-	mat3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(3));
+	mat3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(3.f));
 
 	KEYFREAME IDLE1_R = { 0.f, mat };
 	KEYFREAME IDLE2_R = { 5.f, mat2 };
@@ -459,6 +412,21 @@ void CSteve::Motion_Walk(_float fTimeDelta)
 	m_skelAnime->Update_Animetion(Swing_F, fTimeDelta, 5);
 	m_skelAnime->Update_Animetion(Swing_B, fTimeDelta, 6);
 
+}
+
+void CSteve::Turn(_float fTimeDelta)
+{
+	// 역행렬을 가져와서 본 회전
+	Matrix		mat = {};
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
+	D3DXMatrixInverse(&mat, nullptr, &mat);
+	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
+
+	// 본(Neck) 회전
+	m_skelAnime->Set_BoneLocalMatrix(2, mat);
+
+	// 몸(Root) 회전
+	m_skelAnime->IkLookAt(fTimeDelta, 0, mat);
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
