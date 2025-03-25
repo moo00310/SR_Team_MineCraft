@@ -257,12 +257,26 @@ HRESULT CParticleSystem::Create_VertexBuffer()
 
 void CParticleSystem::SetParticleAttribute()
 {	
-	for (_uint i = 0; i < iParticleCount; i++)
+	if (m_ListParticleAttribute.size() == 0)
 	{
-		ParticleAttribute att = OnSetAddParticle();		
+		// 파티클 리스트가 하나도 없다면 생성.
+		for (_uint i = 0; i < iParticleCount; i++)
+		{
+			ParticleAttribute att = OnSetAddParticle();
 
-		m_ListParticleAttribute.push_back(att);
-	}	
+			m_ListParticleAttribute.push_back(att);
+		}
+	}
+	else
+	{
+		// 재생성 시 기존에 값 덮어씀.
+		for (auto& particle : m_ListParticleAttribute)
+		{
+			ParticleAttribute att = OnSetAddParticle();
+
+			particle = att;
+		}
+	}
 }
 
 void CParticleSystem::SetParticleBoundingBox(ParticleBoundingBox box)
