@@ -13,15 +13,6 @@
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{fc197735-46d5-4551-ad66-96d8601cef85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\BackGround">
-      <UniqueIdentifier>{cacde4f5-7fc7-406d-9ed5-7a738becec0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Terrain">
-      <UniqueIdentifier>{9de21c46-a0f5-43b6-8a26-1378d9bcc1aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Player">
-      <UniqueIdentifier>{16d06422-a5ba-4e2c-af8a-628d2d2a5dc0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\02.GamePlay">
       <UniqueIdentifier>{efb49076-2627-4a87-abf5-c51f865b5c61}</UniqueIdentifier>
     </Filter>
@@ -33,9 +24,6 @@
     </Filter>
     <Filter Include="01.Levels\00.Loading\Loader">
       <UniqueIdentifier>{a4567c73-3efb-4ce1-a29b-da4945a9cb93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj">
-      <UniqueIdentifier>{cc9af935-1bfa-41fe-b2fb-a606983dd2eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Levels\98.Woo_Level">
       <UniqueIdentifier>{1c9b8337-13a5-45f4-9928-2e9fabb769ee}</UniqueIdentifier>
@@ -55,86 +43,11 @@
     <Filter Include="01.Levels\97.Yu_Level">
       <UniqueIdentifier>{7a1c36c3-72e4-420c-977f-871f02cb77a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.YUGameObj">
-      <UniqueIdentifier>{94f75442-4443-4798-94a7-e6320d1b41ac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.Cube">
       <UniqueIdentifier>{f69e9ec9-7769-4022-a924-c73c6795056c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.Cube\BreakableCube">
-      <UniqueIdentifier>{0488b03f-b5b7-40b8-8574-6c042e114251}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\01.EnvironmentCube">
-      <UniqueIdentifier>{36d3484c-9877-44fd-9f1d-2faf9ee790fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="100.Imgui">
       <UniqueIdentifier>{358cf3bf-282b-49f9-9823-cbcd4151d38f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Tool">
-      <UniqueIdentifier>{8dd9bcae-8454-402f-a09d-f9a622e50806}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\97.HeroGameObj">
-      <UniqueIdentifier>{1d6eeeac-132a-43a9-ba2c-c1c4fb854509}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\97.HeroGameObj\HeroCube">
-      <UniqueIdentifier>{ff815d71-a06f-4679-a898-8934e72fc6b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\97.HeroGameObj\HeroCubeNoMove">
-      <UniqueIdentifier>{ddb7df8e-096e-4719-91f9-4051854f1245}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Tool\MapTool">
-      <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn">
-      <UniqueIdentifier>{078da7be-a447-487e-9317-64540e099a94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Steve">
-      <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\96.HyockGameObj">
-      <UniqueIdentifier>{8a31c5af-11ec-412f-8e80-5543a28f4aab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\01.Model">
-      <UniqueIdentifier>{870df70a-a72c-44f8-90a4-dc74afb89282}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Tree">
-      <UniqueIdentifier>{c6d205d6-2c92-49c2-8609-9aa9ee73e31d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Tree\Block">
-      <UniqueIdentifier>{b8e50c1c-9e44-4cd6-b43a-8d3c1860d3ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Behavior_Tree">
-      <UniqueIdentifier>{6c2d2db5-6575-4350-96b5-f1680963c5d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy">
-      <UniqueIdentifier>{95716bec-861e-49d5-bd33-aa5e8e8ea25e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Particle">
-      <UniqueIdentifier>{e76eac64-4f2c-48d7-a84d-80b3b509d737}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action">
-      <UniqueIdentifier>{8e527e81-b6fa-45aa-a003-763b8c1f9c83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy">
-      <UniqueIdentifier>{9bad2947-082a-42c1-9cb4-36c8a1bc8580}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy">
-      <UniqueIdentifier>{12324777-f39b-4cc0-ac76-3363161effb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol">
-      <UniqueIdentifier>{3786004d-b6e0-4a00-83c8-215590c82138}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj">
-      <UniqueIdentifier>{684ac113-50e1-4f66-ae17-bf8550ddf509}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI">
-      <UniqueIdentifier>{7d7790ef-549e-406c-a782-a1beb097846a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\00.MainLogo">
-      <UniqueIdentifier>{b828998a-4569-4d8c-9de0-8e447ba86c1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\01.StartButton">
-      <UniqueIdentifier>{63beb701-9cd8-4e97-9eaa-fca31c7f74ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\02.Camera">
       <UniqueIdentifier>{ca227791-6c30-46ed-b75c-8604aeaf2b89}</UniqueIdentifier>
@@ -145,89 +58,176 @@
     <Filter Include="02.GameObjects\02.Camera\Player">
       <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\03.SkyBox">
-      <UniqueIdentifier>{2e4902cf-7091-4917-b530-ae487272273e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\03.Item_Model">
-      <UniqueIdentifier>{1e031f01-cd2d-4456-a741-912be6a55e4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\03.Item_Model\Sword">
-      <UniqueIdentifier>{a72c2b44-4733-4d4c-8d2f-171858e25944}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\01.Model\Arm">
-      <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\02.title">
-      <UniqueIdentifier>{62fff89f-c69c-4580-8a86-a9bd56df71c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\03.edition">
-      <UniqueIdentifier>{bd44ce59-d87b-47ac-9a92-589a37bb1fe2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Particle\Mining">
-      <UniqueIdentifier>{b91c73a2-544b-4775-a503-c3052171b117}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Particle\Base">
-      <UniqueIdentifier>{20a35114-1f2e-4e16-aae8-1af1303c0d72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory">
-      <UniqueIdentifier>{b81d3eea-ee7c-4da5-9c6b-b3d81e2cebc4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory">
-      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster">
-      <UniqueIdentifier>{85c77c0b-6725-4c2e-b6c2-651cdd0b5d3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Creeper">
-      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode">
-      <UniqueIdentifier>{f7a56e8f-dd64-483b-80fd-ddc4b35d8bd3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks">
-      <UniqueIdentifier>{d16a0b49-37be-4fee-ba38-f43256748dc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Detect_Enemy">
-      <UniqueIdentifier>{8862f7df-7ebb-492e-b952-c50812b2dedb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Chase">
-      <UniqueIdentifier>{d745473e-bb1e-4df3-9421-f566c900b8ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Patrol">
-      <UniqueIdentifier>{2de4bdd5-e366-4266-b747-9345a0f6f79c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator">
-      <UniqueIdentifier>{7c91c559-e996-42c0-afde-ab9f0232197e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance">
-      <UniqueIdentifier>{7a7aae3a-9527-4d67-9d44-d7b51a196bb6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory">
       <UniqueIdentifier>{7dd752b6-bd42-4474-9459-30a00d24875d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\02.CheckBox">
-      <UniqueIdentifier>{5249cb73-c614-4b68-bd82-7f86d3bf1f9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.SubInventory">
-      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\03.Inventory_Back">
-      <UniqueIdentifier>{b21708e2-0b09-473f-ad1f-34ff0d083809}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\05.Item">
-      <UniqueIdentifier>{7bcd92a0-958a-4574-a45f-9d3fd6353c56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\04.Sun">
-      <UniqueIdentifier>{083d9647-2504-46a1-bd01-76949a39a78e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\05.Cloud">
-      <UniqueIdentifier>{6bbb737d-2be1-42bb-9082-1ac35b533fef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\Particle\Destroy">
-      <UniqueIdentifier>{da5f4e4c-9a63-42a9-8f6c-7a9c2365eaa7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98.Default">
       <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI">
+      <UniqueIdentifier>{dfbb2e79-d75a-4621-9897-e29f74edbd01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\00.MainLogo">
+      <UniqueIdentifier>{b828998a-4569-4d8c-9de0-8e447ba86c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\01.StartButton">
+      <UniqueIdentifier>{63beb701-9cd8-4e97-9eaa-fca31c7f74ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\02.title">
+      <UniqueIdentifier>{62fff89f-c69c-4580-8a86-a9bd56df71c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\03.edition">
+      <UniqueIdentifier>{bd44ce59-d87b-47ac-9a92-589a37bb1fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Inventory">
+      <UniqueIdentifier>{b81d3eea-ee7c-4da5-9c6b-b3d81e2cebc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Inventory\00.MainInventory">
+      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Inventory\02.CheckBox">
+      <UniqueIdentifier>{5249cb73-c614-4b68-bd82-7f86d3bf1f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Inventory\01.SubInventory">
+      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Inventory\03.Inventory_Back">
+      <UniqueIdentifier>{b21708e2-0b09-473f-ad1f-34ff0d083809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Inventory\05.Item">
+      <UniqueIdentifier>{7bcd92a0-958a-4574-a45f-9d3fd6353c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree">
+      <UniqueIdentifier>{6c2d2db5-6575-4350-96b5-f1680963c5d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.Teacher">
+      <UniqueIdentifier>{4acf7002-5e5e-4492-ad61-63fd6a228b8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.Teacher\Player">
+      <UniqueIdentifier>{16d06422-a5ba-4e2c-af8a-628d2d2a5dc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.Teacher\Terrain">
+      <UniqueIdentifier>{9de21c46-a0f5-43b6-8a26-1378d9bcc1aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.Teacher\BackGround">
+      <UniqueIdentifier>{cacde4f5-7fc7-406d-9ed5-7a738becec0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Cube\01.EnvironmentCube">
+      <UniqueIdentifier>{36d3484c-9877-44fd-9f1d-2faf9ee790fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Cube\00.BreakableCube">
+      <UniqueIdentifier>{0488b03f-b5b7-40b8-8574-6c042e114251}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Cube\02.HyockCube">
+      <UniqueIdentifier>{5226c012-2fd7-466f-9a92-c4c285e06ec3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Cube\03.HeroCube">
+      <UniqueIdentifier>{ff815d71-a06f-4679-a898-8934e72fc6b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor">
+      <UniqueIdentifier>{cc9af935-1bfa-41fe-b2fb-a606983dd2eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn">
+      <UniqueIdentifier>{078da7be-a447-487e-9317-64540e099a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\01.NoMove">
+      <UniqueIdentifier>{870df70a-a72c-44f8-90a4-dc74afb89282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\01.NoMove\00.Tree">
+      <UniqueIdentifier>{c6d205d6-2c92-49c2-8609-9aa9ee73e31d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\01.NoMove\00.Tree\Block">
+      <UniqueIdentifier>{b8e50c1c-9e44-4cd6-b43a-8d3c1860d3ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\01.NoMove\01.HeroCubeNoMove">
+      <UniqueIdentifier>{ddb7df8e-096e-4719-91f9-4051854f1245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\03.Item_Model">
+      <UniqueIdentifier>{1e031f01-cd2d-4456-a741-912be6a55e4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\03.Item_Model\Sword">
+      <UniqueIdentifier>{a72c2b44-4733-4d4c-8d2f-171858e25944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\00.Steve">
+      <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Arm">
+      <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster">
+      <UniqueIdentifier>{85c77c0b-6725-4c2e-b6c2-651cdd0b5d3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\Creeper">
+      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode">
+      <UniqueIdentifier>{f7a56e8f-dd64-483b-80fd-ddc4b35d8bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks">
+      <UniqueIdentifier>{d16a0b49-37be-4fee-ba38-f43256748dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Detect_Enemy">
+      <UniqueIdentifier>{8862f7df-7ebb-492e-b952-c50812b2dedb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Chase">
+      <UniqueIdentifier>{d745473e-bb1e-4df3-9421-f566c900b8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Patrol">
+      <UniqueIdentifier>{2de4bdd5-e366-4266-b747-9345a0f6f79c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Decorator">
+      <UniqueIdentifier>{7c91c559-e996-42c0-afde-ab9f0232197e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Decorator\Check_Distance">
+      <UniqueIdentifier>{7a7aae3a-9527-4d67-9d44-d7b51a196bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy">
+      <UniqueIdentifier>{95716bec-861e-49d5-bd33-aa5e8e8ea25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action">
+      <UniqueIdentifier>{8e527e81-b6fa-45aa-a003-763b8c1f9c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Check_Enemy">
+      <UniqueIdentifier>{9bad2947-082a-42c1-9cb4-36c8a1bc8580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Chase_Enemy">
+      <UniqueIdentifier>{12324777-f39b-4cc0-ac76-3363161effb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Patrol">
+      <UniqueIdentifier>{3786004d-b6e0-4a00-83c8-215590c82138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Sky">
+      <UniqueIdentifier>{e738a63a-859f-43d0-9662-698698f5c1da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Sky\01.SkyBox">
+      <UniqueIdentifier>{2e4902cf-7091-4917-b530-ae487272273e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Sky\02.Cloud">
+      <UniqueIdentifier>{6bbb737d-2be1-42bb-9082-1ac35b533fef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\03.Sky\00.Sun">
+      <UniqueIdentifier>{083d9647-2504-46a1-bd01-76949a39a78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\04.MCTerrain">
+      <UniqueIdentifier>{449cd4be-918f-4f9f-aa1f-14f21b6f05e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Particle">
+      <UniqueIdentifier>{e76eac64-4f2c-48d7-a84d-80b3b509d737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Particle\Mining">
+      <UniqueIdentifier>{b91c73a2-544b-4775-a503-c3052171b117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Particle\Base">
+      <UniqueIdentifier>{20a35114-1f2e-4e16-aae8-1af1303c0d72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Particle\Destroy">
+      <UniqueIdentifier>{da5f4e4c-9a63-42a9-8f6c-7a9c2365eaa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Tool">
+      <UniqueIdentifier>{8dd9bcae-8454-402f-a09d-f9a622e50806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\06.Tool\MapTool">
+      <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -265,16 +265,16 @@
       <Filter>01.Levels\02.GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BackGround.h">
-      <Filter>02.GameObjects\BackGround</Filter>
+      <Filter>02.GameObjects\99.Teacher\BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Terrain.h">
-      <Filter>02.GameObjects\Terrain</Filter>
+      <Filter>02.GameObjects\99.Teacher\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Player.h">
-      <Filter>02.GameObjects\Player</Filter>
+      <Filter>02.GameObjects\99.Teacher\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Creeper.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Creeper</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\Creeper</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_TOOL.h">
       <Filter>01.Levels\100.Tool_Level</Filter>
@@ -316,55 +316,49 @@
       <Filter>100.Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool.h">
-      <Filter>02.GameObjects\Tool</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\MCTerrain.h">
-      <Filter>02.GameObjects\99.YUGameObj</Filter>
+      <Filter>02.GameObjects\06.Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Cube.h">
       <Filter>02.GameObjects\00.Cube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BreakableCube.h">
-      <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
+      <Filter>02.GameObjects\00.Cube\00.BreakableCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Dirt.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\HeroCube.h">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroCube</Filter>
+      <Filter>02.GameObjects\00.Cube\03.HeroCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\HeroCubeNoMove.h">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroCubeNoMove</Filter>
+      <Filter>02.GameObjects\01.Actor\01.NoMove\01.HeroCubeNoMove</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MapTool.h">
-      <Filter>02.GameObjects\Tool\MapTool</Filter>
+      <Filter>02.GameObjects\06.Tool\MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Stone.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\GrassDirt.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_Moo.h">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Steve.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Steve</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\00.Steve</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Client_Struct.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\HyockCube.h">
-      <Filter>02.GameObjects\96.HyockGameObj</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Tree.h">
-      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree</Filter>
+      <Filter>02.GameObjects\01.Actor\01.NoMove\00.Tree</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Wood.h">
-      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
+      <Filter>02.GameObjects\01.Actor\01.NoMove\00.Tree\Block</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Leaf.h">
-      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
+      <Filter>02.GameObjects\01.Actor\01.NoMove\00.Tree\Block</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Free.h">
       <Filter>02.GameObjects\02.Camera\Free</Filter>
@@ -373,121 +367,127 @@
       <Filter>02.GameObjects\02.Camera\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Behavior_Tree.h">
-      <Filter>03.Behavior_Tree</Filter>
+      <Filter>04.Behavior_Tree</Filter>
     </ClInclude>
     <ClInclude Include="..\public\HeroEnemy.h">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleDash.h">
-      <Filter>02.GameObjects\Particle</Filter>
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Check_Enemy_Node.h">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Check_Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Chase_Enemy_Node.h">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Chase_Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Patrol_Node.h">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Patrol</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MainLogo.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\00.MainLogo</Filter>
+      <Filter>03.UI\00.MainLogo</Filter>
     </ClInclude>
     <ClInclude Include="..\public\IronOre.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CoalOre.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\StartButton.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
+      <Filter>03.UI\01.StartButton</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Arm_Steve.h">
-      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Arm</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Arm</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SkyBox.h">
-      <Filter>02.GameObjects\03.SkyBox</Filter>
+      <Filter>02.GameObjects\03.Sky\01.SkyBox</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Sword.h">
-      <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model\Sword</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\03.Item_Model\Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item_Model.h">
-      <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\03.Item_Model</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Title.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
+      <Filter>03.UI\02.title</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Edition.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
+      <Filter>03.UI\03.edition</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleSandMining.h">
-      <Filter>02.GameObjects\Particle\Mining</Filter>
+      <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleWoodMining.h">
-      <Filter>02.GameObjects\Particle\Mining</Filter>
+      <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BaseParticleMining.h">
-      <Filter>02.GameObjects\Particle\Base</Filter>
+      <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleRain.h">
-      <Filter>02.GameObjects\Particle</Filter>
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SubInventory.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.SubInventory</Filter>
+      <Filter>03.UI\04.Inventory\01.SubInventory</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CheckBox.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\02.CheckBox</Filter>
+      <Filter>03.UI\04.Inventory\02.CheckBox</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_DetectEnemy.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Detect_Enemy</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Detect_Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_Chase.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Chase</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Chase</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_Patrol.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Patrol</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Patrol</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTDecorator_IsTargetNear.h">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Decorator\Check_Distance</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MainInventory.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
+      <Filter>03.UI\04.Inventory\00.MainInventory</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Inventory_Back.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\03.Inventory_Back</Filter>
+      <Filter>03.UI\04.Inventory\03.Inventory_Back</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Sun.h">
-      <Filter>02.GameObjects\04.Sun</Filter>
+      <Filter>02.GameObjects\03.Sky\00.Sun</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Clouds.h">
-      <Filter>02.GameObjects\05.Cloud</Filter>
+      <Filter>02.GameObjects\03.Sky\02.Cloud</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BaseParticleDestroy.h">
-      <Filter>02.GameObjects\Particle\Base</Filter>
+      <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleSandDestroy.h">
-      <Filter>02.GameObjects\Particle\Destroy</Filter>
+      <Filter>02.GameObjects\05.Particle\Destroy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BreakableRect.h">
-      <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
+      <Filter>02.GameObjects\00.Cube\00.BreakableCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Grass.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Inventory_Mgr.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
+      <Filter>03.UI\04.Inventory</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Client_Tag.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Item.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
-     </ClInclude>
+      <Filter>03.UI\04.Inventory</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\RedTulip.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\HyockCube.h">
+      <Filter>02.GameObjects\00.Cube\02.HyockCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MCTerrain.h">
+      <Filter>02.GameObjects\04.MCTerrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -523,19 +523,19 @@
       <Filter>01.Levels\02.GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BackGround.cpp">
-      <Filter>02.GameObjects\BackGround</Filter>
+      <Filter>02.GameObjects\99.Teacher\BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Terrain.cpp">
-      <Filter>02.GameObjects\Terrain</Filter>
+      <Filter>02.GameObjects\99.Teacher\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Free.cpp">
       <Filter>02.GameObjects\02.Camera\Free</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Player.cpp">
-      <Filter>02.GameObjects\Player</Filter>
+      <Filter>02.GameObjects\99.Teacher\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Creeper.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\Creeper</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\Creeper</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Hyeok.cpp">
       <Filter>01.Levels\95.Huck_Level</Filter>
@@ -574,169 +574,169 @@
       <Filter>100.Imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool.cpp">
-      <Filter>02.GameObjects\Tool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\MCTerrain.cpp">
-      <Filter>02.GameObjects\99.YUGameObj</Filter>
+      <Filter>02.GameObjects\06.Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Cube.cpp">
       <Filter>02.GameObjects\00.Cube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BreakableCube.cpp">
-      <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
+      <Filter>02.GameObjects\00.Cube\00.BreakableCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Dirt.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\HeroCube.cpp">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroCube</Filter>
+      <Filter>02.GameObjects\00.Cube\03.HeroCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\HeroCubeNoMove.cpp">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroCubeNoMove</Filter>
+      <Filter>02.GameObjects\01.Actor\01.NoMove\01.HeroCubeNoMove</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MapTool.cpp">
-      <Filter>02.GameObjects\Tool\MapTool</Filter>
+      <Filter>02.GameObjects\06.Tool\MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Stone.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\GrassDirt.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Moo.cpp">
       <Filter>01.Levels\99.Moo_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Steve.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Steve</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\00.Steve</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tree.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree</Filter>
+      <Filter>02.GameObjects\01.Actor\01.NoMove\00.Tree</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Wood.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
+      <Filter>02.GameObjects\01.Actor\01.NoMove\00.Tree\Block</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Leaf.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Tree\Block</Filter>
+      <Filter>02.GameObjects\01.Actor\01.NoMove\00.Tree\Block</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Player.cpp">
       <Filter>02.GameObjects\02.Camera\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Behavior_Tree.cpp">
-      <Filter>03.Behavior_Tree</Filter>
+      <Filter>04.Behavior_Tree</Filter>
     </ClCompile>
     <ClCompile Include="..\private\HeroEnemy.cpp">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\HyockCube.cpp">
-      <Filter>02.GameObjects\96.HyockGameObj</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleDash.cpp">
-      <Filter>02.GameObjects\Particle</Filter>
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Check_Enemy_Node.cpp">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Check_Enemy</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Check_Enemy</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Chase_Enemy_Node.cpp">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Chase_Enemy</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Chase_Enemy</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Patrol_Node.cpp">
-      <Filter>02.GameObjects\97.HeroGameObj\HeroEnemy\Action\Patrol</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy\Action\Patrol</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MainLogo.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\00.MainLogo</Filter>
+      <Filter>03.UI\00.MainLogo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\IronOre.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CoalOre.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\StartButton.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\01.StartButton</Filter>
+      <Filter>03.UI\01.StartButton</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Arm_Steve.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\01.Model\Arm</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Arm</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SkyBox.cpp">
-      <Filter>02.GameObjects\03.SkyBox</Filter>
+      <Filter>02.GameObjects\03.Sky\01.SkyBox</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Sword.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model\Sword</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\03.Item_Model\Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item_Model.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\03.Item_Model</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\03.Item_Model</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Title.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\02.title</Filter>
+      <Filter>03.UI\02.title</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Edition.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\03.edition</Filter>
+      <Filter>03.UI\03.edition</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleSandMining.cpp">
-      <Filter>02.GameObjects\Particle\Mining</Filter>
+      <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleWoodMining.cpp">
-      <Filter>02.GameObjects\Particle\Mining</Filter>
+      <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BaseParticleMining.cpp">
-      <Filter>02.GameObjects\Particle\Base</Filter>
+      <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleRain.cpp">
-      <Filter>02.GameObjects\Particle</Filter>
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SubInventory.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\01.SubInventory</Filter>
+      <Filter>03.UI\04.Inventory\01.SubInventory</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_DetectEnemy.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Detect_Enemy</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Detect_Enemy</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_Chase.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Chase</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Chase</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_Patrol.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Tasks\Patrol</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Tasks\Patrol</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp">
-      <Filter>02.GameObjects\99.MooGameOBj\00.Pawn\Monster\BTNode\Decorator\Check_Distance</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\BTNode\Decorator\Check_Distance</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MainInventory.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory</Filter>
+      <Filter>03.UI\04.Inventory\00.MainInventory</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Item.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\05.Item</Filter>
+      <Filter>03.UI\04.Inventory\05.Item</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Inventory_Back.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\03.Inventory_Back</Filter>
+      <Filter>03.UI\04.Inventory\03.Inventory_Back</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Sun.cpp">
-      <Filter>02.GameObjects\04.Sun</Filter>
+      <Filter>02.GameObjects\03.Sky\00.Sun</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Clouds.cpp">
-      <Filter>02.GameObjects\05.Cloud</Filter>
+      <Filter>02.GameObjects\03.Sky\02.Cloud</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BaseParticleDestroy.cpp">
-      <Filter>02.GameObjects\Particle\Base</Filter>
+      <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleSandDestroy.cpp">
-      <Filter>02.GameObjects\Particle\Destroy</Filter>
+      <Filter>02.GameObjects\05.Particle\Destroy</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BreakableRect.cpp">
-      <Filter>02.GameObjects\00.Cube\BreakableCube</Filter>
+      <Filter>02.GameObjects\00.Cube\00.BreakableCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Grass.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CheckBox.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\02.CheckBox</Filter>
+      <Filter>03.UI\04.Inventory\02.CheckBox</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Inventory_Mgr.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
+      <Filter>03.UI\04.Inventory</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RedTulip.cpp">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\HyockCube.cpp">
+      <Filter>02.GameObjects\00.Cube\02.HyockCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MCTerrain.cpp">
+      <Filter>02.GameObjects\04.MCTerrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
