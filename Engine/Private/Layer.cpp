@@ -90,6 +90,11 @@ list<class CGameObject*> CLayer::Get_GameObjectList()
 	return m_GameObjects;
 }
 
+CGameObject* CLayer::Get_LastObject()
+{
+	return m_GameObjects.back();
+}
+
 void CLayer::SetLayerRenderActive(bool _b)
 {
 	m_bLayerActive = _b;

@@ -15,6 +15,7 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 public:
 	HRESULT Bind_Resource(_uint iIndex);
+	HRESULT Bind_Resource(class CShader* pShader, D3DXHANDLE hParameters, _uint iIndex);
 private:
 	_uint							m_iNumTextures = { };
 	vector<LPDIRECT3DTEXTURE9>		m_Textures;

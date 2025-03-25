@@ -10,6 +10,7 @@
 #include "SkeletalAnimator.h"
 #include "Texture.h"
 #include "Collider_Cube.h"
+#include "Shader.h"
 
 #include "Rigidbody.h"
 

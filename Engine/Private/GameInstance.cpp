@@ -146,6 +146,13 @@ CGameObject* CGameInstance::Get_Object(_uint iLevelIndex, const _tchar* pLayerTa
 	return m_pObject_Manager->Find_Objects(iLevelIndex, pLayerTag, iIndex);
 }
 
+CGameObject* CGameInstance::Get_LastObject(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	if (nullptr == m_pObject_Manager)
+		return nullptr;
+	return m_pObject_Manager->Find_LastObject(iLevelIndex, pLayerTag);
+}
+
 void CGameInstance::ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag)
 {
 	m_pObject_Manager->ClearLayer(iLevelIndex, pLayerTag);
