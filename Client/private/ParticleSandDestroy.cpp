@@ -10,21 +10,6 @@ CParticleSandDestroy::CParticleSandDestroy(const CParticleSandDestroy& Prototype
 {
 }
 
-HRESULT CParticleSandDestroy::Render()
-{
-	if (FAILED(__super::Render()))
-	{
-		return E_FAIL;
-	}
-
-	if (FAILED(m_pTransform->Bind_Resource()))
-	{
-		return E_FAIL;
-	}
-
-	return S_OK;
-}
-
 CGameObject* CParticleSandDestroy::Clone(void* pArg)
 {
 	CParticleSandDestroy* pInstance = new CParticleSandDestroy(*this);

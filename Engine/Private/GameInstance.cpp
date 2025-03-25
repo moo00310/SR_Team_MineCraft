@@ -270,13 +270,13 @@ void CGameInstance::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPr
 {
 	m_pPoolManager->CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, count, pArg);
 }
-CGameObject* CGameInstance::Push(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
+CGameObject* CGameInstance::PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
 {
-	return m_pPoolManager->Push(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag);
+	return m_pPoolManager->PushPool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag);
 }
-void CGameInstance::Pop(CGameObject* _object)
+void CGameInstance::PopPool(CGameObject* _object)
 {
-	m_pPoolManager->Pop(_object);
+	m_pPoolManager->PopPool(_object);
 }
 #pragma endregion
 

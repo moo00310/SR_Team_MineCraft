@@ -58,7 +58,7 @@ HRESULT CDirt::Render()
 
     //m_pShaderCom->Begin(0);
 
-    /* Á¤Á¡À» ±×¸°´Ù. */
+    /* ì •ì ì„ ê·¸ë¦°ë‹¤. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
@@ -110,6 +110,8 @@ CGameObject* CDirt::Clone(void* pArg)
 
 void CDirt::Free()
 {
+    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// ì ìš© ì”¬.
+
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
     if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemDirt"), LEVEL_YU, layerName)))
@@ -117,10 +119,11 @@ void CDirt::Free()
     dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
 
-    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// Àû¿ë ¾À.
-        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// °¡Á®¿Ã ÇÁ·ÎÅäÅ¸ÀÔ.
-        LEVEL_STATIC,	// °¡Á®¿Ã ¾À.
-        LAYER_PARTICLE_SAND_DESTROY);	// ¾Öµå¿ÀºêÁ§Æ®¿¡ Ãß°¡ÇÒ ·¹ÀÌ¾î
+    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// ì ìš© ì”¬.
+
+        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// ê°€ì ¸ì˜¬ í”„ë¡œí† íƒ€ìž….
+        LEVEL_STATIC,	// ê°€ì ¸ì˜¬ ì”¬.
+        LAYER_PARTICLE_SAND_DESTROY);	// ì• ë“œì˜¤ë¸Œì íŠ¸ì— ì¶”ê°€í•  ë ˆì´ì–´
 
     if (particle != nullptr)
     {        
