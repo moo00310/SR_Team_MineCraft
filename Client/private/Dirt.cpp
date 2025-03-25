@@ -53,11 +53,18 @@ HRESULT CDirt::Render()
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
 
-    /* Á¤Á¡À» ±×¸°´Ù. */
+    //m_pTransformCom->Bind_Resource(m_pShaderCom);
+    //m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+
+    //m_pShaderCom->Begin(0);
+
+    /* ì •ì ì„ ê·¸ë¦°ë‹¤. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
     __super::Render();
+
+    //m_pShaderCom->End();
 
     return S_OK;
 }
@@ -67,17 +74,6 @@ HRESULT CDirt::Ready_Components()
     /* For.Com_Texture */
     if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Dirt"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-        return E_FAIL;
-
-    /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeInstance"),
-        TEXT("m_pVIBufferCom_CubeInstance"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-        return E_FAIL;
-
-    /* For.Com_Transform */
-    CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-        TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
 
 	__super::Ready_Components();
@@ -114,10 +110,20 @@ CGameObject* CDirt::Clone(void* pArg)
 
 void CDirt::Free()
 {
-    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// Àû¿ë ¾À.
-        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// °¡Á®¿Ã ÇÁ·ÎÅäÅ¸ÀÔ.
-        LEVEL_STATIC,	// °¡Á®¿Ã ¾À.
-        LAYER_PARTICLE_SAND_DESTROY);	// ¾Öµå¿ÀºêÁ§Æ®¿¡ Ãß°¡ÇÒ ·¹ÀÌ¾î
+    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// ì ìš© ì”¬.
+
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemDirt"), LEVEL_YU, layerName)))
+        return;
+    dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+
+    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->Push(LEVEL_STATIC,	// ì ìš© ì”¬.
+
+        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// ê°€ì ¸ì˜¬ í”„ë¡œí† íƒ€ì….
+        LEVEL_STATIC,	// ê°€ì ¸ì˜¬ ì”¬.
+        LAYER_PARTICLE_SAND_DESTROY);	// ì• ë“œì˜¤ë¸Œì íŠ¸ì— ì¶”ê°€í•  ë ˆì´ì–´
 
     if (particle != nullptr)
     {        

@@ -5,6 +5,7 @@
 #include "VIBuffer_Cube.h"
 #include "GameInstance.h"
 #include <iostream>
+#include "UI_Mgr.h"
 
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
@@ -198,6 +199,12 @@ void CSteve::Move(_float fTimeDelta)
 			//m_pGameInstance->Play_Sound("event:/Built_Fail");
 		}
 		
+	}
+
+	/* 현우 Test */
+	if (m_pGameInstance->Key_Pressing('Z'))
+	{
+		CUI_Mgr::Get_Instance()->TakeDamge();
 	}
 }
 

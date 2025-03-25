@@ -123,6 +123,10 @@
       <AdditionalDependencies>Engine.lib;d3dx9.LIB;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -144,6 +148,10 @@
       <AdditionalDependencies>Engine.lib;d3dx9.LIB;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../EngineSDK/Lib/</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderModel>2.0</ShaderModel>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Imgui\imconfig.h" />
@@ -173,10 +181,12 @@
     <ClInclude Include="..\public\Client_Tag.h" />
     <ClInclude Include="..\public\Clouds.h" />
     <ClInclude Include="..\public\CoalOre.h" />
+    <ClInclude Include="..\public\ItemCobbleStone.h" />
     <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\Client_Defines.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Creeper.h" />
+    <ClInclude Include="..\public\ItemDirt.h" />
     <ClInclude Include="..\public\Edition.h" />
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\GrassDirt.h" />
@@ -185,7 +195,13 @@
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
     <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Inventory_Back.h" />
+    <ClInclude Include="..\public\PlayerHP.h" />
+    <ClInclude Include="..\public\PlayerHP_Back.h" />
+    <ClInclude Include="..\public\UI_Mgr.h" />
     <ClInclude Include="..\public\Inventory_Mgr.h" />
+    <ClInclude Include="..\public\ItemCube.h" />
+    <ClInclude Include="..\public\ItemIronOre.h" />
+    <ClInclude Include="..\public\ItemWood.h" />
     <ClInclude Include="..\public\RedTulip.h" />
     <ClInclude Include="..\public\SubInventory.h" />
     <ClInclude Include="..\public\IronOre.h" />
@@ -258,8 +274,10 @@
     <ClCompile Include="..\private\Check_Enemy_Node.cpp" />
     <ClCompile Include="..\private\Clouds.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
+    <ClCompile Include="..\private\ItemCobbleStone.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
+    <ClCompile Include="..\private\ItemDirt.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\GrassDirt.cpp" />
@@ -268,7 +286,12 @@
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
     <ClCompile Include="..\private\HyockCube.cpp" />
     <ClCompile Include="..\private\Inventory_Back.cpp" />
+    <ClCompile Include="..\private\PlayerHP_Back.cpp" />
+    <ClCompile Include="..\private\UI_Mgr.cpp" />
     <ClCompile Include="..\private\Inventory_Mgr.cpp" />
+    <ClCompile Include="..\private\ItemCube.cpp" />
+    <ClCompile Include="..\private\ItemIronOre.cpp" />
+    <ClCompile Include="..\private\ItemWood.cpp" />
     <ClCompile Include="..\private\RedTulip.cpp" />
     <ClCompile Include="..\private\SubInventory.cpp" />
     <ClCompile Include="..\private\IronOre.cpp" />
@@ -310,6 +333,7 @@
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\Wood.cpp" />
+    <ClCompile Include="..\public\PlayerHP.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="MainApp.cpp" />
   </ItemGroup>
@@ -322,6 +346,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Rect.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -69,8 +69,6 @@ void CMainLogo::Late_Update(_float fTimeDelta)
 
 HRESULT CMainLogo::Render()
 {
-   // m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
-
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 

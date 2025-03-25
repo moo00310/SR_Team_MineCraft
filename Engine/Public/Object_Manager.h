@@ -26,6 +26,7 @@ public:
 	void Clear(_uint iLevelIndex);
 	void ClearLayer(_uint iLevelIndex, const _tchar* pLayerTag);
 	class CGameObject* Find_Objects(_uint iLevelIndex, const _tchar* pLayerTag, _uint iIndex);
+	class CGameObject* Find_LastObject(_uint iLevelIndex, const _tchar* pLayerTag);
 	list<class CGameObject*> Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag);
 	void SetLayerRenderActive(_uint iLevelIndex, const _tchar* pLayerTag, bool _b);
 private:	
