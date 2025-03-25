@@ -45,6 +45,8 @@ private:
 
 	vector<CGameObject*> m_vecWood;
 	vector<CGameObject*> m_vecLeaf;
+	bool m_bWoodZero = false;
+	int m_iRemoveFrame = 0;
 
 	_float3 m_Pos = {};
 

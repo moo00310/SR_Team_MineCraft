@@ -61,11 +61,22 @@ void CTree::Priority_Update(_float fTimeDelta)
             ++it;  // 삭제하지 않은 경우에만 반복자 증가
         }
     }
+
+    if (m_vecWood.size() == 0) {
+        m_bWoodZero = true;
+    }
 }
 
 void CTree::Update(_float fTimeDelta)
 {
+    if (m_bWoodZero)
+        m_iRemoveFrame++;
 
+    if (m_iRemoveFrame > 50) {
+        m_iRemoveFrame = 0;
+        int random = rand() % m_vecLeaf.size();
+        m_vecLeaf[random]->Destroy();
+    }
 }
 
 void CTree::Late_Update(_float fTimeDelta)
