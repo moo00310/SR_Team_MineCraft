@@ -1,5 +1,5 @@
 #include "Item.h"
-#include "Inventory_Mgr.h"
+#include "UI_Mgr.h"
 
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
@@ -19,12 +19,10 @@ HRESULT CItem::Initialize_Prototype()
 
 HRESULT CItem::Initialize(void* pArg)
 {
-    CItem* pItem = this;
-
     m_iSlotIndex = (int*)pArg;
 	m_iSlotIndexNum = *m_iSlotIndex;
-    Desc.fSizeX = 44;
-    Desc.fSizeY = 44;
+    Desc.fSizeX = 42.f;
+    Desc.fSizeY = 42.f;
 
 	if (m_iSlotIndexNum < 9)
 	{
@@ -47,7 +45,7 @@ HRESULT CItem::Initialize(void* pArg)
     if (m_iSlotIndexNum == 8) { Desc.fX = g_iWinSizeX * 0.707f; /* m_ItemType = ITEMNAME_AXE;*/}
 
     /* 메인 인벤토리 */
-    if (m_iSlotIndexNum == 9) { Desc.fX = g_iWinSizeX * 0.336;  /* m_ItemType = ITEMNAME_WOOD; */ }
+    if (m_iSlotIndexNum == 9) { Desc.fX = 428.f;  /* m_ItemType = ITEMNAME_WOOD; */ }
     if (m_iSlotIndexNum == 10) { Desc.fX = g_iWinSizeX * 0.666; /*m_ItemType = ITEMNAME_AXE;*/ }
 
 
@@ -71,21 +69,17 @@ void CItem::Priority_Update(_float fTimeDelta)
 void CItem::Update(_float fTimeDelta)
 {
  
-
 }
 
 void CItem::Late_Update(_float fTimeDelta)
 {
-
-  
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
 		return;
-
-   
 }
 
 HRESULT CItem::Render()
 {
+    /* 메인 인벤토리 활성화일때만 렌더*/
     if ((m_iSlotIndexNum == 9 || m_iSlotIndexNum == 10) && !g_bMainInventoryOpen)
     {
         return S_OK;
@@ -149,7 +143,7 @@ CGameObject* CItem::Clone(void* pArg)
         Safe_Release(pInstance);
     }
 
-    CInventory_Mgr::Get_Instance()->Add_Item(pInstance);
+    CUI_Mgr::Get_Instance()->Add_Item(pInstance);
 
     return pInstance;
 }

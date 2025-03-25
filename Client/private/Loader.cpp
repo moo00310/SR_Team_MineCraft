@@ -49,12 +49,12 @@
 #include "Title.h"
 #include "Edition.h"
 #include "MainInventory.h"
-#include "CheckBox.h"
 #include "SubInventory.h"
-#include "Item.h"
 #include "Inventory_Back.h"
-
-
+#include "Item.h"
+#include "CheckBox.h"
+#include "PlayerHP_Back.h"
+#include "PlayerHP.h"
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -458,6 +458,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Item"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Item/Item_%03d.png"), 2))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerHP*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerHP"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/PlayerState/Hp_%03d.png"), 3))))
+		return E_FAIL;
 	/*================================================================================================*/
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -574,15 +579,24 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CInventory_Back::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-
 	/* For.Prototype_GameObject_CheckBox */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CheckBox"),
 		CCheckBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_CItem*/
+	/* For.Prototype_GameObject_Item*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 		CItem::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_PlayerHP_Back*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP_Back"),
+		CPlayerHP_Back::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_PlayerHP*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP"),
+		CPlayerHP::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/*================================================================================================*/

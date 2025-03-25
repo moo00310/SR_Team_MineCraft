@@ -84,7 +84,6 @@ HRESULT CMainInventory::Render()
             return E_FAIL;
 
         __super::End();
-
     }
 
     return S_OK;
