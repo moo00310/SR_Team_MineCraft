@@ -58,9 +58,6 @@
     <Filter Include="02.GameObjects\02.Camera\Player">
       <UniqueIdentifier>{b084cd19-32be-487a-b696-d299b5cdfed4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\04.Inventory\00.MainInventory">
-      <UniqueIdentifier>{7dd752b6-bd42-4474-9459-30a00d24875d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="98.Default">
       <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
     </Filter>
@@ -223,24 +220,6 @@
     <Filter Include="02.GameObjects\05.Particle\Destroy">
       <UniqueIdentifier>{da5f4e4c-9a63-42a9-8f6c-7a9c2365eaa7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\06.Tool">
-      <UniqueIdentifier>{8dd9bcae-8454-402f-a09d-f9a622e50806}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\06.Tool\MapTool">
-      <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\05.PlayerState">
-      <UniqueIdentifier>{57619edd-773e-4ba0-9eb4-57b2d84bd8a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP">
-      <UniqueIdentifier>{321ec17a-48ea-4fd1-8da7-645f423d5af8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\00.PlayerHP_Back">
-      <UniqueIdentifier>{55a1c50a-2c97-484c-a629-e4b54ae7b164}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\01.PlayerHP_Front">
-      <UniqueIdentifier>{48b1eb45-77a5-4e83-a259-52c9f6374efe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{558c5abc-bfba-4142-ab35-998956f6d037}</UniqueIdentifier>
     </Filter>
@@ -249,6 +228,12 @@
     </Filter>
     <Filter Include="02.GameObjects\00.Cube\ItemCube">
       <UniqueIdentifier>{ce8c2ebb-f3bb-40a8-92ce-87cef72f8883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Tool">
+      <UniqueIdentifier>{8dd9bcae-8454-402f-a09d-f9a622e50806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\07.Tool\MapTool">
+      <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -337,7 +322,7 @@
       <Filter>100.Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Tool.h">
-      <Filter>02.GameObjects\06.Tool</Filter>
+      <Filter>02.GameObjects\07.Tool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Cube.h">
       <Filter>02.GameObjects\00.Cube</Filter>
@@ -355,7 +340,7 @@
       <Filter>02.GameObjects\01.Actor\01.NoMove\01.HeroCubeNoMove</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MapTool.h">
-      <Filter>02.GameObjects\06.Tool\MapTool</Filter>
+      <Filter>02.GameObjects\07.Tool\MapTool</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Stone.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
@@ -492,33 +477,8 @@
     <ClInclude Include="..\public\Grass.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Inventory_Mgr.h">
-      <Filter>03.UI\04.Inventory</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Client_Tag.h">
       <Filter>99.Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\RedTulip.h">
-      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Item.h">
-      <Filter>03.UI\04.Inventory</Filter>
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\05.Item</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\UI_Mgr.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\PlayerHP.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\01.PlayerHP_Front</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\PlayerHP_Back.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\00.PlayerHP_Back</Filter>
-     </ClInclude>
-    <ClInclude Include="..\public\Item.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\RedTulip.h">
-      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\HyockCube.h">
       <Filter>02.GameObjects\00.Cube\02.HyockCube</Filter>
@@ -540,6 +500,23 @@
     </ClInclude>
     <ClInclude Include="..\public\ItemWood.h">
       <Filter>02.GameObjects\06.Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RedTulip.h" />
+    <ClInclude Include="..\public\UI_Mgr.h">
+      <Filter>03.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Item.h" />
+    <ClInclude Include="..\public\RedTulip.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerHP_Back.h">
+      <Filter>03.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerHP.h">
+      <Filter>03.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Item.h">
+      <Filter>03.UI\04.Inventory\05.Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -626,7 +603,7 @@
       <Filter>100.Imgui</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Tool.cpp">
-      <Filter>02.GameObjects\06.Tool</Filter>
+      <Filter>02.GameObjects\07.Tool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Cube.cpp">
       <Filter>02.GameObjects\00.Cube</Filter>
@@ -644,7 +621,7 @@
       <Filter>02.GameObjects\01.Actor\01.NoMove\01.HeroCubeNoMove</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MapTool.cpp">
-      <Filter>02.GameObjects\06.Tool\MapTool</Filter>
+      <Filter>02.GameObjects\07.Tool\MapTool</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Stone.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
@@ -778,9 +755,6 @@
     <ClCompile Include="..\private\CheckBox.cpp">
       <Filter>03.UI\04.Inventory\02.CheckBox</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Inventory_Mgr.cpp">
-      <Filter>03.UI\04.Inventory</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\RedTulip.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
@@ -789,15 +763,6 @@
     </ClCompile>
     <ClCompile Include="..\private\MCTerrain.cpp">
       <Filter>02.GameObjects\04.MCTerrain</Filter>
-    </ClCompile>
-    <ClCompile Include="..\public\PlayerHP.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\01.PlayerHP_Front</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\PlayerHP_Back.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\00.PlayerHP_Back</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\UI_Mgr.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ItemCube.cpp">
       <Filter>02.GameObjects\00.Cube\ItemCube</Filter>
@@ -813,6 +778,15 @@
     </ClCompile>
     <ClCompile Include="..\private\ItemWood.cpp">
       <Filter>02.GameObjects\06.Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Mgr.cpp">
+      <Filter>03.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerHP_Back.cpp">
+      <Filter>03.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\public\PlayerHP.cpp">
+      <Filter>03.UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
