@@ -39,7 +39,7 @@ public:
 	bool is_AnimtionEND();
 
 public:
-	void IkLookAt(float fTimeDelta, int boneIndex, const Matrix& matrix);
+	void IkLookAt(float fTimeDelta, int boneIndex, int targetInex);
 
 public:
 	void Add_Bone(const BONE& bone);
@@ -52,6 +52,7 @@ public:
 	HRESULT Update_RootBone(const Matrix& matrix);
 	void Start_Blend(int fromAnim, int toAnim, float duration);
 	void Set_BoneLocalMatrix(int boneIndex, D3DMATRIX& mat);
+	Matrix CalcWorldTransform(int boneIndex);
 
 private:
 	vector<BONE> vecBones;

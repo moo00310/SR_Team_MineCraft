@@ -423,7 +423,7 @@ void CSteve::Motion_Walk(_float fTimeDelta)
 
 void CSteve::Turn(_float fTimeDelta)
 {
-	// 역행렬을 가져와서 본 회전
+	// 역행렬을 가져와서 머리 회전
 	Matrix		mat = {};
 	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
 	D3DXMatrixInverse(&mat, nullptr, &mat);
@@ -433,7 +433,8 @@ void CSteve::Turn(_float fTimeDelta)
 	m_skelAnime->Set_BoneLocalMatrix(2, mat);
 
 	// 몸(Root) 회전
-	m_skelAnime->IkLookAt(fTimeDelta, 0, mat);
+	m_skelAnime->IkLookAt(fTimeDelta, 0, 2);
+
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
