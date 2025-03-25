@@ -4,31 +4,33 @@
 #include "MainInventory.h"
 #include "SubInventory.h"
 #include "Inventory_Back.h"
+#include "PlayerHP.h"
 
+BEGIN(Client)
 
-class CInventory_Mgr final : public CBase
+class CUI_Mgr final : public CBase
 {
-	DECLARE_SINGLETON(CInventory_Mgr);
+	DECLARE_SINGLETON(CUI_Mgr);
 
 private:
-	CInventory_Mgr();
-	virtual ~CInventory_Mgr() = default;
-
+	CUI_Mgr();
+	virtual ~CUI_Mgr() = default;
 
 public:
 	void Priority_Update(_float fTimeDelta);
 	void Update(_float fTimeDelta);
 	void Late_Update(_float fTimeDelta);
 
+public:
+	void Add_Item(CItem* pItem);
+
+public:
+	CItem* Get_Item(int slotIndex);
+	list<CPlayerHP*>* Get_PlayerHPlist(void) { return &m_PlayerHPlist; }
 
 public:
 	void Synchronize_Slots();
-	void Add_Item(CItem* pItem);
-	CItem* Get_Item(int slotIndex);
-
-public:
-	_int		Get_SlotIndex() { return m_iSlotIndex; }
-	ITEMNAME	Get_ItemTexture() { return m_ItemTextureNum; }
+	void TakeDamge();
 
 private:
 	_int		m_iSlotIndex;
@@ -40,7 +42,11 @@ private:
 	list<CSubInventory*>	m_SubInventorylist;
 	list<CInventory_Back*>	m_InventoryBacklist;
 
+	list<CPlayerHP*>		m_PlayerHPlist;
+
+
 public:
 	virtual void Free();
 };
 
+END

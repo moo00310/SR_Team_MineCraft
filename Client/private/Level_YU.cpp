@@ -9,7 +9,7 @@
 #include "Steve.h"
 
 #include "Item.h"
-#include "Inventory_Mgr.h"
+#include "UI_Mgr.h"
 
 
 CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -43,6 +43,10 @@ HRESULT CLevel_YU::Initialize()
 
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;
+
+	if(FAILED(Ready_Layer_PlayerState(TEXT("Layer_PlayerState"))))
+		return E_FAIL;
+
 
 	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE_DASH)))
 		return E_FAIL;
@@ -114,10 +118,12 @@ HRESULT CLevel_YU::Ready_Layer_Clouds(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 {
+	/* Prototype_GameObject_MainInventory */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MainInventory"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
+	/* Prototype_GameObject_SubInventory */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_SubInventory"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
@@ -140,23 +146,32 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 			return E_FAIL;
 	}
 
+	/* Prototype_GameObject_CheckBox */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CheckBox"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
+	return S_OK;
+}
 
-	///* 인벤토리 수 */
-	//for (int i = 0; i < 56; ++i)
-	//{
-	//	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_SubInventory"),
-	//		LEVEL_YU, strLayerTag)))
-	//		return E_FAIL;
-	//}
+HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
+{
+	/* Prototype_GameObject_PlayerHP_Back */
+	for (int i = 0; i < 2; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP_Back"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
 
-	/*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
-		LEVEL_YU, strLayerTag)))
-		return E_FAIL;*/
-
+	/* Prototype_GameObject_PlayerHP */
+	for (int i = 0; i < 2; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+	
 	return S_OK;
 }
 

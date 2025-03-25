@@ -195,6 +195,9 @@
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
     <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Inventory_Back.h" />
+    <ClInclude Include="..\public\PlayerHP.h" />
+    <ClInclude Include="..\public\PlayerHP_Back.h" />
+    <ClInclude Include="..\public\UI_Mgr.h" />
     <ClInclude Include="..\public\Inventory_Mgr.h" />
     <ClInclude Include="..\public\ItemCube.h" />
     <ClInclude Include="..\public\ItemIronOre.h" />
@@ -283,6 +286,8 @@
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
     <ClCompile Include="..\private\HyockCube.cpp" />
     <ClCompile Include="..\private\Inventory_Back.cpp" />
+    <ClCompile Include="..\private\PlayerHP_Back.cpp" />
+    <ClCompile Include="..\private\UI_Mgr.cpp" />
     <ClCompile Include="..\private\Inventory_Mgr.cpp" />
     <ClCompile Include="..\private\ItemCube.cpp" />
     <ClCompile Include="..\private\ItemIronOre.cpp" />
@@ -328,6 +333,7 @@
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\Wood.cpp" />
+    <ClCompile Include="..\public\PlayerHP.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="MainApp.cpp" />
   </ItemGroup>

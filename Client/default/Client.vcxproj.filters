@@ -229,6 +229,18 @@
     <Filter Include="98.Default">
       <UniqueIdentifier>{c71aa598-32ef-4232-87ce-4a5d4dad2483}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\05.PlayerState">
+      <UniqueIdentifier>{57619edd-773e-4ba0-9eb4-57b2d84bd8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP">
+      <UniqueIdentifier>{321ec17a-48ea-4fd1-8da7-645f423d5af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\00.PlayerHP_Back">
+      <UniqueIdentifier>{55a1c50a-2c97-484c-a629-e4b54ae7b164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\01.PlayerHP_Front">
+      <UniqueIdentifier>{48b1eb45-77a5-4e83-a259-52c9f6374efe}</UniqueIdentifier>
+    </Filter>
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{558c5abc-bfba-4142-ab35-998956f6d037}</UniqueIdentifier>
     </Filter>
@@ -486,12 +498,24 @@
     <ClInclude Include="..\public\Grass.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Inventory_Mgr.h">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Client_Tag.h">
       <Filter>99.Headers</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\RedTulip.h">
+      <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Item.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\05.Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UI_Mgr.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerHP.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\01.PlayerHP_Front</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerHP_Back.h">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\00.PlayerHP_Back</Filter>
+     </ClInclude>
     <ClInclude Include="..\public\Item.h">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
     </ClInclude>
@@ -756,11 +780,17 @@
     <ClCompile Include="..\private\CheckBox.cpp">
       <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory\02.CheckBox</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Inventory_Mgr.cpp">
-      <Filter>02.GameObjects\95.WooGameObj\00.UI\04.Inventory</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\RedTulip.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\public\PlayerHP.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\01.PlayerHP_Front</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerHP_Back.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI\05.PlayerState\01.PlayerHP\00.PlayerHP_Back</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UI_Mgr.cpp">
+      <Filter>02.GameObjects\95.WooGameObj\00.UI</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ItemCube.cpp">
       <Filter>02.GameObjects\00.Cube\ItemCube</Filter>
