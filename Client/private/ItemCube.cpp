@@ -1,24 +1,23 @@
-#include "BreakableCube.h"
-#include "MCTerrain.h"
+#include "ItemCube.h"
 #include "GameInstance.h"
 
-CBreakableCube::CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device)
+CItemCube::CItemCube(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
 {
 }
 
-CBreakableCube::CBreakableCube(const CBreakableCube& Prototype)
+CItemCube::CItemCube(const CItemCube& Prototype)
     : CCube(Prototype)
 {
 }
 
-HRESULT CBreakableCube::Initialize_Prototype()
+HRESULT CItemCube::Initialize_Prototype()
 {
 
     return S_OK;
 }
 
-HRESULT CBreakableCube::Initialize(void* pArg)
+HRESULT CItemCube::Initialize(void* pArg)
 {
     if (FAILED(Ready_Components()))
         return E_FAIL;
@@ -26,30 +25,28 @@ HRESULT CBreakableCube::Initialize(void* pArg)
     return S_OK;
 }
 
-void CBreakableCube::Priority_Update(_float fTimeDelta)
+void CItemCube::Priority_Update(_float fTimeDelta)
 {
-
 }
 
-void CBreakableCube::Update(_float fTimeDelta)
+void CItemCube::Update(_float fTimeDelta)
 {
-
 }
 
-void CBreakableCube::Late_Update(_float fTimeDelta)
+void CItemCube::Late_Update(_float fTimeDelta)
 {
     if (m_pColliderCom)
         m_pColliderCom->Update_ColliderBox();
 }
 
-HRESULT CBreakableCube::Render()
+HRESULT CItemCube::Render()
 {
     if (m_pColliderCom)
         m_pColliderCom->Render_ColliderBox(false);
     return S_OK;
 }
 
-HRESULT CBreakableCube::Ready_Components()
+HRESULT CItemCube::Ready_Components()
 {
     /* For.Com_VIBuffer */
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
@@ -70,49 +67,39 @@ HRESULT CBreakableCube::Ready_Components()
         TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
         return E_FAIL;
 
-    /* For.Com_Shader */
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect"),
-        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-        return E_FAIL;
-
     return S_OK;
 }
 
 
-CBreakableCube* CBreakableCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CItemCube* CItemCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CBreakableCube* pInstance = new CBreakableCube(pGraphic_Device);
+    CItemCube* pInstance = new CItemCube(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CBreakableCube");
+        MSG_BOX("Failed to Created : CItemCube");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CBreakableCube::Clone(void* pArg)
+CGameObject* CItemCube::Clone(void* pArg)
 {
-    CBreakableCube* pInstance = new CBreakableCube(*this);
+    CItemCube* pInstance = new CItemCube(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CBreakableCube");
+        MSG_BOX("Failed to Created : CItemCube");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-void CBreakableCube::Free()
+void CItemCube::Free()
 {
-    if (CMCTerrain* _copy = dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))){
-       _copy->CheckRenderLayerObjects();
-    }
-
     __super::Free();
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pColliderCom);
-    Safe_Release(m_pShaderCom);
 }
