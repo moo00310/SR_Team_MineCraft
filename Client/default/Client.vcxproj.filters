@@ -232,6 +232,12 @@
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{558c5abc-bfba-4142-ab35-998956f6d037}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.Items">
+      <UniqueIdentifier>{f3cdfcf1-295e-4bcc-876c-14a508ae7b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.Cube\ItemCube">
+      <UniqueIdentifier>{ce8c2ebb-f3bb-40a8-92ce-87cef72f8883}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -492,6 +498,21 @@
     <ClInclude Include="..\public\RedTulip.h">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ItemCube.h">
+      <Filter>02.GameObjects\00.Cube\ItemCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ItemDirt.h">
+      <Filter>02.GameObjects\06.Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ItemCobbleStone.h">
+      <Filter>02.GameObjects\06.Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ItemIronOre.h">
+      <Filter>02.GameObjects\06.Items</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ItemWood.h">
+      <Filter>02.GameObjects\06.Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -740,6 +761,21 @@
     </ClCompile>
     <ClCompile Include="..\private\RedTulip.cpp">
       <Filter>02.GameObjects\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ItemCube.cpp">
+      <Filter>02.GameObjects\00.Cube\ItemCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ItemDirt.cpp">
+      <Filter>02.GameObjects\06.Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ItemCobbleStone.cpp">
+      <Filter>02.GameObjects\06.Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ItemIronOre.cpp">
+      <Filter>02.GameObjects\06.Items</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ItemWood.cpp">
+      <Filter>02.GameObjects\06.Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

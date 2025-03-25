@@ -6,16 +6,22 @@
 #include "Transform.h"
 
 BEGIN(Engine)
-class CVIBuffer_Rect3D;
+class CVIBuffer_Cube;
 class CCollider_Cube;
+class CShader;
 END
 
-class CBreakableRect : public CCube
+class CItemCube : public CCube
 {
 public:
-	CBreakableRect(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CBreakableRect(const CBreakableRect& Prototype);
-	virtual ~CBreakableRect() = default;
+	typedef struct ItemPosition
+	{
+		_float3 position;
+	}DESC;
+public:
+	CItemCube(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CItemCube(const CItemCube& Prototype);
+	virtual ~CItemCube() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -31,20 +37,17 @@ public:
 	void SetMatrix(const _float4x4& mat) { m_pTransformCom->MultiplyMatrix(mat); }
 	void Set_RenderActive(bool _b) { m_bRenderActive = _b; }
 	bool Get_RenderActive() { return m_bRenderActive; }
-	void Set_MyChunk(int _num) { m_iMyChunk = _num; } //아이템 어떤 청크레이어에 생성할 지 필요
 protected:
 	HRESULT Ready_Components();
 	bool m_bRenderActive = true;
 
-	CVIBuffer_Rect3D* m_pVIBufferCom = { nullptr};
+	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
 	CCollider_Cube* m_pColliderCom = { nullptr };
-	
-	int m_iMyChunk = 0;
 
-	bool m_bItemSpawn = false;
-
+	int m_iUpDownFrame;
+	float m_fUpDownSpeed;
 public:
-	static CBreakableRect* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CItemCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

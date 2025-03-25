@@ -133,6 +133,15 @@ CGameObject* CObject_Manager::Find_Objects(_uint iLevelIndex, const _tchar* pLay
 	return pLayer->Get_Object(iIndex);
 }
 
+CGameObject* CObject_Manager::Find_LastObject(_uint iLevelIndex, const _tchar* pLayerTag)
+{
+	CLayer* pLayer = Find_Layer(iLevelIndex, pLayerTag);
+	if (pLayer == nullptr)
+		return nullptr;
+
+	return pLayer->Get_LastObject();
+}
+
 list<class CGameObject*> CObject_Manager::Get_GameObjectList(_uint iLevelIndex, const _tchar* pLayerTag)
 {
 	CLayer* pLayer = Find_Layer(iLevelIndex, pLayerTag);

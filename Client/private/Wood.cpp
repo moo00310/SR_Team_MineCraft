@@ -97,6 +97,13 @@ CGameObject* CWood::Clone(void* pArg)
 
 void CWood::Free()
 {
+	wchar_t layerName[100];
+	swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemWood"), LEVEL_YU, layerName)))
+		return;
+	dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
 	__super::Free();
 }
 

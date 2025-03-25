@@ -18,7 +18,7 @@ public:
 		int iHeight;
 		int AddLeaf;
 		_float3 pos;
-		int TreeIndex;
+		int myChunk;
 	}DESC;
 
 private:
@@ -42,6 +42,8 @@ private:
 	int m_iHeight = {};
 	int m_iAddLeaf = {};
 	int m_iTreeIndex = {};
+	
+	int m_iMyChunk = 0;
 
 	vector<CGameObject*> m_vecWood;
 	vector<CGameObject*> m_vecLeaf;

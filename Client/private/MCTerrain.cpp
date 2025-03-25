@@ -137,6 +137,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
             pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
             if (pCube) {
                 pCube->SetPos(_float3(eblockData.fPosition));
+                pCube->Set_MyChunk(chunkIndex);
             }
             index++;
             
@@ -145,7 +146,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
                 int randWood = rand() % 3 + 4;
                 int ranLeaf = rand() % 8 + 4;
 
-                desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y+0.5, eblockData.fPosition.z),0 };
+                desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y+0.5, eblockData.fPosition.z),chunkIndex };
                 if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"),LEVEL_YU, layerName, &desc)))
                     return E_FAIL;
                 index++;
@@ -156,6 +157,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
                 pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
                 if (pRect) {
                     pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y+1, eblockData.fPosition.z));
+                    pRect->Set_MyChunk(chunkIndex);
                 }
                 index++;
             }
@@ -165,6 +167,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
                 pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
                 if (pRect) {
                     pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.7, eblockData.fPosition.z));
+                    pRect->Set_MyChunk(chunkIndex);
                 }
                 index++;
             }
@@ -175,6 +178,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
             pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
             if (pCube) {
                 pCube->SetPos(_float3(eblockData.fPosition));
+                pCube->Set_MyChunk(chunkIndex);
             }
             index++;
             break;
@@ -184,6 +188,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
             pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
             if (pCube) {
                 pCube->SetPos(_float3(eblockData.fPosition));
+                pCube->Set_MyChunk(chunkIndex);
             }
             index++;
             break;
@@ -193,6 +198,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
             pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
             if (pCube) {
                 pCube->SetPos(_float3(eblockData.fPosition));
+                pCube->Set_MyChunk(chunkIndex);
             }
             index++;
             break;
@@ -202,6 +208,7 @@ DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
             pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
             if (pCube) {
                 pCube->SetPos(_float3(eblockData.fPosition));
+                pCube->Set_MyChunk(chunkIndex);
             }
             index++;
             break;
