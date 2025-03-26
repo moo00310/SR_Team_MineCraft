@@ -37,8 +37,8 @@ HRESULT CUIParticleRain::Initialize(void* pArg)
 	dwPointSize = GetScale(300.f);	// 포인트 스프라이트 크기.
 
 	ParticleBoundingBox box;
-	box.vMinPosition = { -2000.f, 0.f, -30.f };		// 최소 범위.
-	box.vMaxPosition = { 2000.f, 500.f, 30.f };		// 최대 범위.
+	box.vMinPosition = { -2000.f, -500.f, -30.f };		// 최소 범위.
+	box.vMaxPosition = { 2000.f, 800.f, 30.f };		// 최대 범위.
 
 	// 파티클 경계선 셋팅 작업.
 	SetParticleBoundingBox(box);
@@ -86,9 +86,9 @@ CGameObject* CUIParticleRain::Clone(void* pArg)
 ParticleAttribute CUIParticleRain::OnSetAddParticle()
 {
 	ParticleAttribute att;
-	att.vPosition = { GetRandomFloat(float(0.f - g_iWinSizeX), float(g_iWinSizeX)), 500.f, 0.f};
+	att.vPosition = { GetRandomFloat(float(0.f - g_iWinSizeX), float(g_iWinSizeX)), GetRandomFloat(200.f, 700.f), 0.f};
 	att.vColor = { 0.1f, 0.f, 0.f, 1.f };
-	att.vVelocity = { 0.f, GetRandomFloat(-180.f, -10.f), 0.f };	
+	att.vVelocity = { 0.f, GetRandomFloat(-1200.f, -900.f), 0.f };	
 	att.IsAlive = true;
 
 	return att;
