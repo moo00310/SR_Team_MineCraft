@@ -26,7 +26,6 @@ public:
 	virtual HRESULT Render()override;
 
 public:
-	_int Get_HpCount() { return m_iHpCount; }
 	_int Get_TextureNum() { return m_iTextureNum;}
 
 public:
@@ -38,8 +37,8 @@ private:
 	void	End();
 
 private:
-	_int*	m_iHpIndex = { nullptr };
-	_int	m_iHpCount;
+	_int*	m_iHpCount = { nullptr };
+	_int	m_iHpIndex;
 	_int	m_iTextureNum;
 
 private:

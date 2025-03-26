@@ -1,6 +1,5 @@
 #include "UI_Mgr.h"
 #include "GameInstance.h"
-#include "PlayerHP.h"
 
 IMPLEMENT_SINGLETON(CUI_Mgr)
 
@@ -19,7 +18,7 @@ void CUI_Mgr::Update(_float fTimeDelta)
 
 void CUI_Mgr::Late_Update(_float fTimeDelta)
 {
-
+	PlayerHunger_Set(fTimeDelta);
 }
 
 void CUI_Mgr::Synchronize_Slots()
@@ -43,19 +42,57 @@ void CUI_Mgr::Synchronize_Slots()
 	}
 }
 
-
 void CUI_Mgr::TakeDamge()
 {
 	if (!m_PlayerHPlist.empty())
 	{
 		for (auto iter = m_PlayerHPlist.rbegin(); iter != m_PlayerHPlist.rend(); ++iter)
 		{
+
+			if ((*iter)->Get_TextureNum() == 2)
+			{
+				(*iter)->Set_TextureNum(0);
+				break;
+			}
 			if ((*iter)->Get_TextureNum() == 1)
 			{
 				(*iter)->Set_TextureNum(2);
 				break;
 			}
 		}
+	}
+}
+
+void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
+{
+	m_fHungerTime += fTimeDelta;
+
+	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 5.f)
+	{
+		m_fHungerTime = 0.f;
+		
+		for (auto iter = m_PlayerHungerlist.rbegin(); iter != m_PlayerHungerlist.rend(); ++iter)
+		{
+			if ((*iter)->Get_TextureNum() == 2)
+			{
+				(*iter)->Set_TextureNum(0);
+				m_iallZeroCount++;
+				break;
+			}
+			if ((*iter)->Get_TextureNum() == 1)
+			{
+				(*iter)->Set_TextureNum(2);
+				break;
+			}
+		}
+
+		if (m_iallZeroCount == 10)
+		{
+			TakeDamge();
+			
+			/* 음식 먹어서 배고픔 회복?하면 m_iallZeroCount 초기화 */
+		}
+		
 	}
 }
 
@@ -77,5 +114,6 @@ CItem* CUI_Mgr::Get_Item(int slotIndex)
 void CUI_Mgr::Free()
 {
 	m_vecItemlist.clear();
+	m_PlayerHPlist.clear();
 }
 

@@ -80,7 +80,7 @@ void CItem::Late_Update(_float fTimeDelta)
 HRESULT CItem::Render()
 {
     /* 메인 인벤토리 활성화일때만 렌더*/
-    if ((m_iSlotIndexNum == 9 || m_iSlotIndexNum == 10) && !g_bMainInventoryOpen)
+   /* if ((m_iSlotIndexNum == 9 || m_iSlotIndexNum == 10) && !g_bMainInventoryOpen)
     {
         return S_OK;
     }
@@ -99,7 +99,7 @@ HRESULT CItem::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	__super::End();
+	__super::End();*/
 
 	return S_OK;
 }

@@ -1,28 +1,30 @@
-#include "SubInventory.h"
+#include "PlayerExp.h"
+#include "UI_Mgr.h"
 
-CSubInventory::CSubInventory(LPDIRECT3DDEVICE9 pGraphic_Device)
+CPlayerExp::CPlayerExp(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
 {
 }
 
-CSubInventory::CSubInventory(CSubInventory& Prototype)
-    : CUIObject( Prototype )
+CPlayerExp::CPlayerExp(CPlayerExp& Prototype)
+    : CUIObject(Prototype)
 {
 }
 
-HRESULT CSubInventory::Initialize_Prototype()
+HRESULT CPlayerExp::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CSubInventory::Initialize(void* pArg)
+HRESULT CPlayerExp::Initialize(void* pArg)
 {
-    UIOBJECT_DESC Desc{};
+    m_iExpCount = (int*)pArg;
+    m_iExpIndex = *m_iExpCount;
 
-    Desc.fSizeX = g_iWinSizeX * 0.5f;
-    Desc.fSizeY = 100.f;
-    Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = 672.f;
+    Desc.fSizeX = 36.f;
+    Desc.fSizeY = 25.f;
+    Desc.fX = 332.f + (m_iExpIndex * Desc.fSizeX);
+    Desc.fY = 600.f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -36,23 +38,23 @@ HRESULT CSubInventory::Initialize(void* pArg)
     return S_OK;
 }
 
-void CSubInventory::Priority_Update(_float fTimeDelta)
+void CPlayerExp::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CSubInventory::Update(_float fTimeDelta)
+void CPlayerExp::Update(_float fTimeDelta)
 {
 }
 
-void CSubInventory::Late_Update(_float fTimeDelta)
+void CPlayerExp::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
-HRESULT CSubInventory::Render()
+HRESULT CPlayerExp::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
+    if (FAILED(m_pTextureCom->Bind_Resource(5)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -62,22 +64,20 @@ HRESULT CSubInventory::Render()
         return E_FAIL;
 
     __super::Begin();
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 170);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+    Begin();
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
     __super::End();
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    End();
 
-    return S_OK; 
+    return S_OK;
 }
 
-HRESULT CSubInventory::Ready_Components()
+HRESULT CPlayerExp::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerExp"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -92,31 +92,44 @@ HRESULT CSubInventory::Ready_Components()
     return S_OK;
 }
 
-CSubInventory* CSubInventory::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+void CPlayerExp::Begin()
 {
-    CSubInventory* pInstance = new CSubInventory(pGraphic_Device);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 160);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+}
+
+void CPlayerExp::End()
+{
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+}
+
+CPlayerExp* CPlayerExp::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+{
+    CPlayerExp* pInstance = new CPlayerExp(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CSubInventory");
+        MSG_BOX("Failed to Created : CPlayerExp");
         Safe_Release(pInstance);
     }
     return pInstance;
 }
 
-CGameObject* CSubInventory::Clone(void* pArg)
+CGameObject* CPlayerExp::Clone(void* pArg)
 {
-    CSubInventory* pInstance = new CSubInventory(*this);
+    CPlayerExp* pInstance = new CPlayerExp(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CSubInventory");
+        MSG_BOX("Failed to Created : CPlayerExp");
         Safe_Release(pInstance);
     }
+
     return pInstance;
 }
 
-void CSubInventory::Free()
+void CPlayerExp::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);

@@ -1,28 +1,29 @@
-#include "SubInventory.h"
+#include "PlayerHunger_Back.h"
 
-CSubInventory::CSubInventory(LPDIRECT3DDEVICE9 pGraphic_Device)
+CPlayerHunger_Back::CPlayerHunger_Back(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
 {
 }
 
-CSubInventory::CSubInventory(CSubInventory& Prototype)
+CPlayerHunger_Back::CPlayerHunger_Back(CPlayerHunger_Back& Prototype)
     : CUIObject( Prototype )
 {
 }
 
-HRESULT CSubInventory::Initialize_Prototype()
+HRESULT CPlayerHunger_Back::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CSubInventory::Initialize(void* pArg)
+HRESULT CPlayerHunger_Back::Initialize(void* pArg)
 {
-    UIOBJECT_DESC Desc{};
+    m_iHungerCount = (int*)pArg;
+    m_iHungerIndex = *m_iHungerCount;
 
-    Desc.fSizeX = g_iWinSizeX * 0.5f;
-    Desc.fSizeY = 100.f;
-    Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = 672.f;
+    Desc.fSizeX = 30.f;
+    Desc.fSizeY = 30.f;
+    Desc.fX = 680.f + (m_iHungerIndex * Desc.fSizeX);
+    Desc.fY = 570.f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -36,21 +37,21 @@ HRESULT CSubInventory::Initialize(void* pArg)
     return S_OK;
 }
 
-void CSubInventory::Priority_Update(_float fTimeDelta)
+void CPlayerHunger_Back::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CSubInventory::Update(_float fTimeDelta)
+void CPlayerHunger_Back::Update(_float fTimeDelta)
 {
 }
 
-void CSubInventory::Late_Update(_float fTimeDelta)
+void CPlayerHunger_Back::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
-HRESULT CSubInventory::Render()
+HRESULT CPlayerHunger_Back::Render()
 {
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
@@ -62,22 +63,20 @@ HRESULT CSubInventory::Render()
         return E_FAIL;
 
     __super::Begin();
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 170);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+    Begin();
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
     __super::End();
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    End();
 
-    return S_OK; 
+    return S_OK;
 }
 
-HRESULT CSubInventory::Ready_Components()
+HRESULT CPlayerHunger_Back::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerHunger"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -92,31 +91,43 @@ HRESULT CSubInventory::Ready_Components()
     return S_OK;
 }
 
-CSubInventory* CSubInventory::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+void CPlayerHunger_Back::Begin()
 {
-    CSubInventory* pInstance = new CSubInventory(pGraphic_Device);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 100);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+}
+
+void CPlayerHunger_Back::End()
+{
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+}
+
+CPlayerHunger_Back* CPlayerHunger_Back::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+{
+    CPlayerHunger_Back* pInstance = new CPlayerHunger_Back(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CSubInventory");
+        MSG_BOX("Failed to Created : CPlayerHunger_Back");
         Safe_Release(pInstance);
     }
     return pInstance;
 }
 
-CGameObject* CSubInventory::Clone(void* pArg)
+CGameObject* CPlayerHunger_Back::Clone(void* pArg)
 {
-    CSubInventory* pInstance = new CSubInventory(*this);
+    CPlayerHunger_Back* pInstance = new CPlayerHunger_Back(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CSubInventory");
+        MSG_BOX("Failed to Created : CPlayerHunger_Back");
         Safe_Release(pInstance);
     }
     return pInstance;
 }
 
-void CSubInventory::Free()
+void CPlayerHunger_Back::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);
