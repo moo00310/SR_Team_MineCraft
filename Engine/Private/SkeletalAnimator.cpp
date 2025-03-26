@@ -1,6 +1,7 @@
 #include "SkeletalAnimator.h"
 #include "VIBuffer_Cube.h"
 #include "Transform.h"
+#include <iostream>
 
 CSkeletalAnimator::CSkeletalAnimator(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CComponent{ pGraphic_Device }
@@ -188,6 +189,7 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
 
     // 보간 비율 계산 (0~1 사이 값)
     float t = (fElapsedTime - key1.fTime) / (key2.fTime - key1.fTime);
+    cout << t << " " << key2.fTime << " " << key1.fTime << endl;
     Matrix interpolatedMatrix = InterpolateMatrix_Quat(key1.matTransform , key2.matTransform, t);
     vecBones[boneIndex].localTransform = interpolatedMatrix * vecBones[boneIndex].baseTransform;
 
@@ -214,6 +216,13 @@ void CSkeletalAnimator::Start_Blend(int fromAnim, int toAnim, float duration)
 void CSkeletalAnimator::Set_BoneLocalMatrix(int boneIndex, D3DMATRIX& mat)
 {
     vecBones[boneIndex].localTransform = mat * vecBones[boneIndex].baseTransform;
+}
+
+void CSkeletalAnimator::DeBugBone(int BoneIndex)
+{
+    Matrix mat = vecBones[BoneIndex].worldTransform;
+
+    cout << mat._41 << " " << mat._42 << " " << mat._43 << endl;
 }
 
 

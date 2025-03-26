@@ -29,6 +29,30 @@ HRESULT CLevel_Moo::Initialize()
 	//if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
 	//	return E_FAIL;
 
+#ifdef _DEBUG
+
+	if (::AllocConsole() == TRUE)
+	{
+		FILE* nfp[3];
+		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+		std::ios::sync_with_stdio();
+	}
+
+	// :one: 콘솔 핸들 가져오기
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	// :two: 콘솔 버퍼 크기 먼저 조정
+	COORD bufferSize = { 20, 20 }; // 가로 80, 세로 20
+	SetConsoleScreenBufferSize(hConsole, bufferSize);
+
+	// :three: 콘솔 창 크기 조정
+	SMALL_RECT windowSize = { 0, 0, 80 - 1, 20 - 1 };
+	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+
+#endif // _DEBUG
+
 	return S_OK;
 }
 
