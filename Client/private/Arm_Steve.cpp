@@ -36,29 +36,17 @@ void CArm_Steve::Priority_Update(_float fTimeDelta)
 
 void CArm_Steve::Update(_float fTimeDelta)
 {
-	
+	KeyInput();
 }
 
 void CArm_Steve::Late_Update(_float fTimeDelta)
 {
+	// 애니메이션 체인지 반영
+	Update_State(fTimeDelta);
+
 	// 루트본이 따라가는 곳
 	if (FAILED(Update_Root(fTimeDelta)))
 		return;
-
-	// 애니메이션 바꾸기
-	if (m_pGameInstance->Key_Down(VK_LBUTTON))
-	{
-		m_eCurAnim = SWING;
-	}
-
-	if (m_pGameInstance->Key_Down('W'))
-	{
-		m_eCurAnim = WALK;
-	}
-
-		
-	// 애니메이션 체인지 반영
-	Update_State(fTimeDelta);
 
 	// 카메라 시점에따라 랜더에 올릴지 반영
 	if (m_pGameInstance->Key_Down(VK_F5))
@@ -130,7 +118,6 @@ HRESULT CArm_Steve::Ready_Bone()
 
 HRESULT CArm_Steve::Ready_Animation()
 {
-
 	/*-------------------
 	 팔 스윙 모션
 	--------------------*/
@@ -216,41 +203,59 @@ void CArm_Steve::Update_State(_float fTimeDelta)
 
 void CArm_Steve::Motion_Idle(_float fTimeDelta)
 {
-	Matrix		ViewMatrix = {};
-	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
-	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
+	m_pSkeletalAnimator->Update_Animetion(IDLE, fTimeDelta, 0);
 
-
-	if (m_pSkeletalAnimator->is_AnimtionEND())
+	if (m_pSkeletalAnimator->is_AnimtionEND(IDLE))
 	{
 		m_eCurAnim = IDLE;
 	}
-
-	m_pSkeletalAnimator->Update_Animetion(IDLE, fTimeDelta, 0);
 }
 
 void CArm_Steve::Motion_Swing(_float fTimeDelta)
 {
-
 	m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0);
 
-	if (m_pSkeletalAnimator->is_AnimtionEND())
+	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
 		m_eCurAnim = IDLE;
+		isAttack = false;
 	}
-
 }
 
 void CArm_Steve::Motion_Walk(_float fTimeDelta)
 {
 	m_pSkeletalAnimator->Update_Animetion(WALK, fTimeDelta, 0);
 
-	if (m_pSkeletalAnimator->is_AnimtionEND())
+	if (m_pSkeletalAnimator->is_AnimtionEND(WALK))
 	{
 		m_eCurAnim = WALK;
 	}
+}
 
-	//m_pSkeletalAnimator->DeBugBone(0);
+void CArm_Steve::KeyInput()
+{
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		m_eCurAnim = SWING;
+		isAttack = true;
+		return;
+	}
+
+	if (m_eCurAnim == SWING)
+		return;
+	
+	// 애니메이션 바꾸기
+	if (m_pGameInstance->Key_Pressing('W') ||
+		m_pGameInstance->Key_Pressing('A') ||
+		m_pGameInstance->Key_Pressing('S') ||
+		m_pGameInstance->Key_Pressing('D'))
+	{
+		m_eCurAnim = WALK;
+	}
+	else
+	{
+		m_eCurAnim = IDLE;
+	}
 }
 
 CArm_Steve* CArm_Steve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

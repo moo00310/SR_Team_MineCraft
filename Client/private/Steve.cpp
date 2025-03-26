@@ -351,10 +351,10 @@ HRESULT CSteve::Ready_Animation()
 ------------*/
 
 	mat2 = Matrix();
-	mat2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-3.f));
+	mat2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-5.f));
 
 	mat3 = Matrix();
-	mat3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(3.f));
+	mat3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(5.f));
 
 	KEYFREAME IDLE1_R = { 0.f, mat };
 	KEYFREAME IDLE2_R = { 5.f, mat2 };
@@ -395,16 +395,12 @@ void CSteve::Update_State(_float fTimeDelta)
 
 void CSteve::Motion_Idle(_float fTimeDelta)
 {
-	if (m_skelAnime->is_AnimtionEND())
+	if (m_skelAnime->is_AnimtionEND(INIT) &&
+		m_skelAnime->is_AnimtionEND(Swing_L) &&
+		m_skelAnime->is_AnimtionEND(Swing_R))
 	{
 		m_eCurAnim = IDLE;
 	}
-
-	/*if (!m_skelAnime->IsBlending() && m_skelAnime->GetCurrentAnim() != ANIM::IDLE)
-	{
-		m_skelAnime->Start_Blend(WALK_F, IDLE, 0.005f);
-		m_skelAnime->Start_Blend(WALK_B, IDLE, 9999999.f);
-	}*/
 
 	m_skelAnime->Update_Animetion(INIT, fTimeDelta, 3);
 	m_skelAnime->Update_Animetion(INIT, fTimeDelta, 4);
@@ -414,7 +410,8 @@ void CSteve::Motion_Idle(_float fTimeDelta)
 
 void CSteve::Motion_Walk(_float fTimeDelta)
 {
-	if (m_skelAnime->is_AnimtionEND())
+	if (m_skelAnime->is_AnimtionEND(Swing_B) &&
+		m_skelAnime->is_AnimtionEND(Swing_F))
 	{
 		m_eCurAnim = WALK;
 	}

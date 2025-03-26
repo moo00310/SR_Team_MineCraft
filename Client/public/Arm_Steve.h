@@ -40,6 +40,7 @@ private:
 	CSkeletalAnimator* m_pSkeletalAnimator = { nullptr };
 	
 private:
+	bool isAttack = { false }; 
 	ANIM m_eCurAnim = { IDLE };
 	int m_bisTPS = { -1 };
 
@@ -54,6 +55,7 @@ private:
 	void Motion_Idle(_float fTimeDelta);
 	void Motion_Swing(_float fTimeDelta);
 	void Motion_Walk(_float fTimeDelta);
+	void KeyInput();
 
 public:
 	static CArm_Steve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
