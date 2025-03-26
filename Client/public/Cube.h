@@ -7,7 +7,6 @@
 BEGIN(Engine)
 class CTexture;
 class CTransform;
-class CVIBuffer_Cube;
 END
 
 class CCube : public CGameObject

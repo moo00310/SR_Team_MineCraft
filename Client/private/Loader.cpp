@@ -30,7 +30,6 @@
 
 //지형 관련
 #include "Dirt.h"
-#include "ItemDirt.h"
 #include "Stone.h"
 #include "GrassDirt.h"
 #include "CoalOre.h"
@@ -39,9 +38,8 @@
 #include "MapTool.h"
 #include "Grass.h"
 #include "RedTulip.h"
-#include "ItemCobbleStone.h"
-#include "ItemIronOre.h"
-#include "ItemWood.h"
+#include "ItemCube.h"
+#include "ItemRect.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -409,15 +407,36 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/coalOre%d.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Coal */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Coal"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/coal%d.png"), 1))))
+		return E_FAIL;
+
+
 	/* For.Prototype_Component_Texture_IronOre */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_IronOre"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/ironOre%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_RawIron */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_RawIron"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/rawIron%d.png"), 1))))
 		return E_FAIL;
 
 	// 나무 텍스쳐
 /* For.Prototype_Component_Texture_Leaf */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Leaf"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/leaves0.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Sapling */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Sapling"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/oakSapling%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Apple */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Apple"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/apple%d.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Wood */
@@ -428,6 +447,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_Component_Texture_Grass */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Grass"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grass0.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Seed */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Seed"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/seed%d.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_RedTulip */
@@ -500,19 +524,9 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CGrassDirt::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Dirt */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemDirt"),
-		CItemDirt::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
 	/* For.Prototype_GameObject_Stone */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Stone"),
 		CStone::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_CobbleStoneItem */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemCobbleStone"),
-		CItemCobbleStone::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_CoalOre */
@@ -523,11 +537,6 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_IronOre */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"),
 		CIronOre::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_ItemIronOre */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemIronOre"),
-		CItemIronOre::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_MCTerrain */
@@ -548,11 +557,6 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Wood */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Wood"),
 		CWood::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	/* For.Prototype_GameObject_ItemWood */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemWood"),
-		CItemWood::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Leaf */
@@ -588,6 +592,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Clouds */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Clouds"),
 		CClouds::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ItemCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"),
+		CItemCube::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_ItemRect */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"),
+		CItemRect::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* 장현우 인벤토리 테스트용 GameObject */

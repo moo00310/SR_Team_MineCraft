@@ -115,10 +115,10 @@ void CGrassDirt::Free()
 {
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
-
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemDirt"), LEVEL_YU, layerName)))
+    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"), LEVEL_YU, layerName)))
         return;
     dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+    dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_DIRT);
 
     __super::Free();
 }

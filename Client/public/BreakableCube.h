@@ -5,6 +5,7 @@
 #include "Cube.h"
 #include "Transform.h"
 #include "ItemCube.h"
+#include "ItemRect.h"
 
 BEGIN(Engine)
 class CVIBuffer_Cube;
