@@ -5,8 +5,10 @@
 #include "Texture.h"
 #include "Transform.h"
 
+BEGIN(Engine)
+
 // UI용 파티클.
-class CUIParticleSystem : public CUIObject
+class ENGINE_DLL CUIParticleSystem : public CUIObject
 {
 protected:
 	CUIParticleSystem(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -92,3 +94,4 @@ private:
 	list<ParticleAttribute> m_ListParticleAttribute;
 };
 
+END
