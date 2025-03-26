@@ -2,6 +2,8 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
+#include "BreakableCube.h"
+
 CCamera_Player::CCamera_Player(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CCamera{ pGraphic_Device }
 {
@@ -95,31 +97,46 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
     if (m_pGameInstance->Key_Down(VK_LBUTTON))
     {
-        _float fDist;
-        CGameObject* pHitObject;
-		CComponent* pHitComponent;
+        _float fDist;                  // 광선과 오브젝트 간의 거리
+        CGameObject* pHitObject;       // 충돌한 오브젝트
+        CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
 
+        // Ray Casting: Instancing된 오브젝트와 충돌 검사
         pHitObject = m_pGameInstance->Ray_Cast_InstancingObject(
-            m_vHeadPos,
-            m_pTransformCom->Get_State(CTransform::STATE_LOOK),
-            5.f,
-            COLLISION_BLOCK,
-            fDist, &pHitComponent);
+            m_vHeadPos, // 시작 위치 (카메라 또는 플레이어의 머리 위치)
+            m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
+            5.f, // 최대 탐색 거리
+            COLLISION_BLOCK, // 충돌 그룹
+            fDist, // 충돌한 거리 저장
+            &pHitComponent // 충돌한 콜라이더 저장
+        );
 
         if (pHitObject)
         {
-            pHitComponent;//어떤 콜라이더를 건들였는지 알 수 있음
-			//근데 ... 이걸 어떻게 쓸지는 모르겠다
+            // 충돌한 오브젝트가 CBreakableCube인지 확인 후 형변환
+            CBreakableCube* pBreakableCube = static_cast<CBreakableCube*>(pHitObject);
+            if (!pBreakableCube)
+                return;
 
+            // 충돌한 콜라이더를 CCollider_Cube로 형변환
+            CCollider_Cube* pCollider_Cube = static_cast<CCollider_Cube*>(pHitComponent);
+            if (!pCollider_Cube)
+                return;
 
-            int a = 10;
-            /*if (!pHitObject->Get_isDestroy())  //이거 하면 청크(?)별로 사라지드라
+            // 충돌한 콜라이더의 위치를 가져와 해당 블록 삭제
+            _float3 hitPosition = {
+                pCollider_Cube->Get_Desc().fOffSetX,
+                pCollider_Cube->Get_Desc().fOffSetY,
+                pCollider_Cube->Get_Desc().fOffsetZ
+            };
+
+            if (FAILED(pBreakableCube->Delete_Cube(hitPosition)))
             {
-                pHitObject->Destroy();
-            }*/
+                MSG_BOX("Delete_Cube: Fail");
+            }
         }
-
     }
+
 
     if (m_pGameInstance->Key_Down(VK_ESCAPE))
     {

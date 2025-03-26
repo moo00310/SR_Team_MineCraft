@@ -38,6 +38,8 @@ public:
 	void Set_MyChunk(int _num) { m_iMyChunk = _num; } //아이템 어떤 청크레이어에 생성할 지 필요
 	void Set_BlockPositions(vector<_float3> position);
 
+	HRESULT Delete_Cube(_float3 fPos);
+
 protected:
 	HRESULT Ready_Components();
 	bool m_bRenderActive = true;
@@ -48,7 +50,7 @@ protected:
 	//CCollider_Cube* m_pColliderCom2 = { nullptr };
 
 	int m_iMyChunk = 0;
-	list<_float3> m_vecPositions;
+	vector<_float3> m_vecPositions;
 	vector<CCollider_Cube*> m_Colliders;
 	// 리스트로 콜라이더 큐브 만들고 late_update에서 반복문으로 충돌 매니저에 올려주덩가덩가
 	

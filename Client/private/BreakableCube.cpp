@@ -97,6 +97,36 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
     }
 }
 
+HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
+{
+    for (size_t i = 0; i < m_vecPositions.size(); ++i)
+    {
+        if (m_vecPositions[i].x == fPos.x &&
+            m_vecPositions[i].y == fPos.y &&
+            m_vecPositions[i].z == fPos.z)
+        {
+            if(FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
+                return E_FAIL;
+
+            // 2. 벡터에서 해당 위치 제거
+            m_vecPositions.erase(m_vecPositions.begin() + i);
+
+            // 3. 콜라이더 제거
+            Safe_Release(m_Colliders[i]);
+            m_Colliders.erase(m_Colliders.begin() + i);
+
+            // 4. 인스턴스 버퍼 업데이트
+            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
+
+            return S_OK;
+        }
+    }
+
+    return E_FAIL;
+}
+
+
+
 HRESULT CBreakableCube::Ready_Components()
 {
     /* For.Com_VIBuffer */

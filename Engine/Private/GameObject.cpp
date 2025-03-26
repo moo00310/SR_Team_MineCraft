@@ -62,6 +62,25 @@ HRESULT CGameObject::Add_Component(_uint iLevelIndex, const _wstring& strPrototy
 	return S_OK;
 }
 
+HRESULT CGameObject::Delete_Component(const _wstring& strComponentTag, CComponent* pComponent)
+{
+	auto range = m_Components.equal_range(strComponentTag); // 해당 태그의 모든 요소 찾기
+
+	for (auto iter = range.first; iter != range.second; ++iter)
+	{
+		if (iter->second == pComponent) // 포인터 비교
+		{
+			Safe_Release(iter->second); // 안전하게 해제
+			m_Components.erase(iter);   // multimap에서 해당 요소 삭제
+			return S_OK; // multimap에서 같은 태그를 가진 요소가 여러 개 있을 수 있으므로, 하나만 삭제 후 종료
+		}
+	}
+
+	return E_FAIL;
+}
+
+
+
 CComponent* CGameObject::Find_Component(const _tchar* pComponentTag)
 {
 	auto	iter = find_if(m_Components.begin(), m_Components.end(), CTag_Finder(pComponentTag));
