@@ -131,7 +131,6 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	/* Prototype_GameObject_InventoryBack */
 	for (int i = 0; i < 18; ++i)
 	{
-
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_InventoryBack"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
@@ -140,7 +139,6 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	/* Prototype_GameObject_Item */
 	for (int i = 0; i < 18; ++i)
 	{
-
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
@@ -157,7 +155,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 {
 	/* Prototype_GameObject_PlayerHP_Back */
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP_Back"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -165,13 +163,45 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 	}
 
 	/* Prototype_GameObject_PlayerHP */
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
 	}
 	
+	/* Prototype_GameObject_PlayerHunger_Back */
+	for (int i = 0; i < 10; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHunger_Back"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+
+	/* Prototype_GameObject_PlayerHunger*/
+	for (int i = 0; i < 10; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHunger"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+
+	/* Prototype_GameObject_PlayerExp_Back*/
+	for (int i = 0; i < 18; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerExp_Back"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+
+	/* Prototype_GameObject_PlayerExp*/
+	for (int i = 0; i < 18; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerExp"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+
 	return S_OK;
 }
 

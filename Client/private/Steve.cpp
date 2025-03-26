@@ -207,7 +207,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 
 	/* 현우 Test */
-	if (m_pGameInstance->Key_Pressing('Z'))
+	if (m_pGameInstance->Key_Down('Z'))
 	{
 		CUI_Mgr::Get_Instance()->TakeDamge();
 	}

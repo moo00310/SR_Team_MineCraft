@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CPlayerHP_Back final : public CUIObject
+class CPlayerHunger final : public CUIObject
 {
 private:
-	CPlayerHP_Back(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CPlayerHP_Back(CPlayerHP_Back& Prototype);
-	virtual ~CPlayerHP_Back() = default;
+	CPlayerHunger(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CPlayerHunger(CPlayerHunger& Prototype);
+	virtual ~CPlayerHunger() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -25,19 +25,24 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-private:
-	HRESULT Ready_Components();
+public:
+	_int Get_TextureNum() { return m_iTextureNum; }
+
+public:
+	void Set_TextureNum(_int TextureNum) { m_iTextureNum = TextureNum; }
 
 private:
+	HRESULT Ready_Components();
 	void	Begin();
 	void	End();
 
 private:
-	UIOBJECT_DESC Desc{};
+	_int*	m_iHungerCount = { nullptr };
+	_int	m_iHungerIndex = {0};
+	_int	m_iTextureNum = {0};
 
 private:
-	_int*	m_iHpCount = { nullptr };
-	_int	m_iHpIndex;
+	UIOBJECT_DESC Desc{};
 
 private:
 	CTexture* m_pTextureCom = { nullptr };
@@ -45,7 +50,7 @@ private:
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 public:
-	static CPlayerHP_Back* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CPlayerHunger* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

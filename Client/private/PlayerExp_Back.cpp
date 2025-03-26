@@ -1,29 +1,42 @@
-#include "PlayerHP_Back.h"
+#include "PlayerExp_Back.h"
 
-CPlayerHP_Back::CPlayerHP_Back(LPDIRECT3DDEVICE9 pGraphic_Device)
+CPlayerExp_Back::CPlayerExp_Back(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
 {
 }
 
-CPlayerHP_Back::CPlayerHP_Back(CPlayerHP_Back& Prototype)
+CPlayerExp_Back::CPlayerExp_Back(CPlayerExp_Back& Prototype)
     : CUIObject(Prototype)
 {
 }
 
-HRESULT CPlayerHP_Back::Initialize_Prototype()
+HRESULT CPlayerExp_Back::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CPlayerHP_Back::Initialize(void* pArg)
+HRESULT CPlayerExp_Back::Initialize(void* pArg)
 {
-    m_iHpCount = (int*)pArg;
-    m_iHpIndex = *m_iHpCount;
+    m_iExpCount = (int*)pArg;
+    m_iExpIndex = *m_iExpCount;
 
-    Desc.fSizeX = 30.f;
-    Desc.fSizeY = 30.f;
-    Desc.fX = 330.f + (m_iHpIndex * Desc.fSizeX);
-    Desc.fY = 570.f;
+    Desc.fSizeX = 36.f;
+    Desc.fSizeY = 25.f;
+    Desc.fX = 332.f + (m_iExpIndex * Desc.fSizeX);
+    Desc.fY = 600.f;
+
+    if (m_iExpIndex == 0)
+    {
+        m_iTextureNum = 0;
+    }
+    else if (m_iExpIndex == 17)
+    {
+        m_iTextureNum = 2;
+    }
+    else
+    {
+        m_iTextureNum = 1;
+    }
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -37,23 +50,23 @@ HRESULT CPlayerHP_Back::Initialize(void* pArg)
     return S_OK;
 }
 
-void CPlayerHP_Back::Priority_Update(_float fTimeDelta)
+void CPlayerExp_Back::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CPlayerHP_Back::Update(_float fTimeDelta)
+void CPlayerExp_Back::Update(_float fTimeDelta)
 {
 }
 
-void CPlayerHP_Back::Late_Update(_float fTimeDelta)
+void CPlayerExp_Back::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
-HRESULT CPlayerHP_Back::Render()
+HRESULT CPlayerExp_Back::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
+    if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -74,9 +87,9 @@ HRESULT CPlayerHP_Back::Render()
     return S_OK;
 }
 
-HRESULT CPlayerHP_Back::Ready_Components()
+HRESULT CPlayerExp_Back::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerHP"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerExp"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -91,43 +104,43 @@ HRESULT CPlayerHP_Back::Ready_Components()
     return S_OK;
 }
 
-void CPlayerHP_Back::Begin()
+void CPlayerExp_Back::Begin()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 100);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 }
 
-void CPlayerHP_Back::End()
+void CPlayerExp_Back::End()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
-CPlayerHP_Back* CPlayerHP_Back::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CPlayerExp_Back* CPlayerExp_Back::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CPlayerHP_Back* pInstance = new CPlayerHP_Back(pGraphic_Device);
+    CPlayerExp_Back* pInstance = new CPlayerExp_Back(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CPlayerHP_Back");
+        MSG_BOX("Failed to Created : CPlayerExp_Back");
         Safe_Release(pInstance);
     }
     return pInstance;
 }
 
-CGameObject* CPlayerHP_Back::Clone(void* pArg)
+CGameObject* CPlayerExp_Back::Clone(void* pArg)
 {
-    CPlayerHP_Back* pInstance = new CPlayerHP_Back(*this);
+    CPlayerExp_Back* pInstance = new CPlayerExp_Back(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CPlayerHP_Back");
+        MSG_BOX("Failed to Created : CPlayerExp_Back");
         Safe_Release(pInstance);
     }
     return pInstance;
 }
 
-void CPlayerHP_Back::Free()
+void CPlayerExp_Back::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);

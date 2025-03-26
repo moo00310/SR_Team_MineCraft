@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CPlayerHP_Back final : public CUIObject
+class CPlayerExp_Back final : public CUIObject
 {
 private:
-	CPlayerHP_Back(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CPlayerHP_Back(CPlayerHP_Back& Prototype);
-	virtual ~CPlayerHP_Back() = default;
+	CPlayerExp_Back(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CPlayerExp_Back(CPlayerExp_Back& Prototype);
+	virtual ~CPlayerExp_Back() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -36,16 +36,16 @@ private:
 	UIOBJECT_DESC Desc{};
 
 private:
-	_int*	m_iHpCount = { nullptr };
-	_int	m_iHpIndex;
-
+	_int* m_iExpCount = { nullptr };
+	_int  m_iExpIndex = { 0 };
+	_int  m_iTextureNum = { 0 };
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 public:
-	static CPlayerHP_Back* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CPlayerExp_Back* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

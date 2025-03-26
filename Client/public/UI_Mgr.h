@@ -5,6 +5,8 @@
 #include "SubInventory.h"
 #include "Inventory_Back.h"
 #include "PlayerHP.h"
+#include "PlayerHunger.h"
+#include "PlayerExp.h"
 
 BEGIN(Client)
 
@@ -23,18 +25,19 @@ public:
 
 public:
 	void Add_Item(CItem* pItem);
-
-public:
-	CItem* Get_Item(int slotIndex);
-	list<CPlayerHP*>* Get_PlayerHPlist(void) { return &m_PlayerHPlist; }
-
-public:
 	void Synchronize_Slots();
 	void TakeDamge();
+	void PlayerHunger_Set(_float fTimeDelta);
+
+public:
+	CItem*					Get_Item(int slotIndex);
+	list<CPlayerHP*>*		Get_PlayerHPlist(void)		{ return &m_PlayerHPlist; }
+	list<CPlayerHunger*>*	Get_PlayerHungerlist(void)	{ return &m_PlayerHungerlist; }
+	list<CPlayerExp*>*		Get_PlayerExplist(void)		{ return &m_PlayerExplist; }
 
 private:
-	_int		m_iSlotIndex;
-	ITEMNAME	m_ItemTextureNum = ITEMNAME_END;
+	_float	m_fHungerTime = { 0.f };
+	_int	m_iallZeroCount = { 0 };
 
 private:
 	vector<CItem*>			m_vecItemlist;
@@ -43,7 +46,8 @@ private:
 	list<CInventory_Back*>	m_InventoryBacklist;
 
 	list<CPlayerHP*>		m_PlayerHPlist;
-
+	list<CPlayerHunger*>	m_PlayerHungerlist;
+	list<CPlayerExp*>		m_PlayerExplist;
 
 public:
 	virtual void Free();
