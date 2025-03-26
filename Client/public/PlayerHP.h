@@ -27,21 +27,23 @@ public:
 
 public:
 	_int Get_HpCount() { return m_iHpCount; }
+	_int Get_TextureNum() { return m_iTextureNum;}
 
 public:
-	_int	m_iTextureNum;
-	UIOBJECT_DESC Desc{};
+	void Set_TextureNum(_int TextureNum) { m_iTextureNum = TextureNum; }
 
 private:
 	HRESULT Ready_Components();
 	void	Begin();
 	void	End();
 
-
-
 private:
 	_int*	m_iHpIndex = { nullptr };
 	_int	m_iHpCount;
+	_int	m_iTextureNum;
+
+private:
+	UIOBJECT_DESC Desc{};
 
 private:
 	CTexture* m_pTextureCom = { nullptr };

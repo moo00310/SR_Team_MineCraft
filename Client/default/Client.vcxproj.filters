@@ -229,6 +229,12 @@
     <Filter Include="02.GameObjects\07.Tool\MapTool">
       <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\05.PlayerState">
+      <UniqueIdentifier>{b9eb9284-00aa-4678-9b29-dfaf4238d7c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.PlayerState\00.PlayerHP">
+      <UniqueIdentifier>{2e6789bb-fc12-40c1-9880-f3f0e15053d1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02.GameObjects\00.Cube\ItemObj">
       <UniqueIdentifier>{ce8c2ebb-f3bb-40a8-92ce-87cef72f8883}</UniqueIdentifier>
     </Filter>
@@ -494,14 +500,14 @@
     <ClInclude Include="..\public\RedTulip.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\PlayerHP_Back.h">
-      <Filter>03.UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\PlayerHP.h">
-      <Filter>03.UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Item.h">
       <Filter>03.UI\04.Inventory\05.Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerHP.h">
+      <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerHP_Back.h">
+      <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ItemRect.h">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
@@ -758,11 +764,11 @@
     <ClCompile Include="..\private\UI_Mgr.cpp">
       <Filter>03.UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\PlayerHP_Back.cpp">
-      <Filter>03.UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\public\PlayerHP.cpp">
-      <Filter>03.UI</Filter>
+      <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerHP_Back.cpp">
+      <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ItemRect.cpp">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
