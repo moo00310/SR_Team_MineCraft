@@ -21,10 +21,10 @@ HRESULT CMainInventory::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = 500;
-    Desc.fSizeY = 500;
+    Desc.fSizeX = 500.f;
+    Desc.fSizeY = 500.f;
     Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = g_iWinSizeY * 0.45f;
+    Desc.fY = 300.f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;

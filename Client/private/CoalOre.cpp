@@ -44,7 +44,7 @@ void CCoalOre::Late_Update(_float fTimeDelta)
 
 HRESULT CCoalOre::Render()
 {
-
+    m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
