@@ -47,6 +47,8 @@ HRESULT CLevel_YU::Initialize()
 	if(FAILED(Ready_Layer_PlayerState(TEXT("Layer_PlayerState"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE)))
 		return E_FAIL;
@@ -210,6 +212,15 @@ HRESULT CLevel_YU::Ready_Laye_TPS_Arm(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+}
+
+HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CLevel_YU::Ready_Layer_DashParticle(const _wstring& strLayerTag)

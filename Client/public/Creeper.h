@@ -10,6 +10,12 @@ END
 
 class CCreeper : public CMonster
 {
+public:
+	enum ANIM_type
+	{
+		Swing_FF, Swing_BF, Swing_BA, Swing_FA, Swing_R, Swing_L, Attack, INIT,
+	};
+
 private:
 	CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CCreeper(const CCreeper& Prototype);
@@ -24,28 +30,30 @@ public:
 	virtual HRESULT Render()override;
 
 private:
-	CTexture* m_pTextureCom = { nullptr };
-	CVIBuffer_Cube* m_pVIBufferCom[6];
-	CCollider_Cube* m_pCollider_CubeCom{ nullptr };
-	vector<BONE> vecBones;
-
-private:
-	float Comput = {};
-	int  flag = { 1 };
-
-	float elapsedTime = 0.f;
-	float maxAngle = D3DXToRadian(20.f);
-private:
 	HRESULT Ready_Components();
-	HRESULT Ready_Bone();
-	HRESULT Ready_Mesh();
+	HRESULT Ready_Bone() override;
+	HRESULT Ready_Animation() override;
 
-	HRESULT UpDate_Mesh();
+private:
+	void Update_State(_float fTimeDelta) override;
+	void Motion_Idle(_float fTimeDelta) override;
+	void Motion_Walk(_float fTimeDelta) override;
+	void Turn(_float fTimeDelta) override;
+
+private:
+	CTexture* m_pTextureCom = { nullptr };
+	//CCollider_Cube* m_pCollider_CubeCom{ nullptr };
+
+private:
+	ANIM m_eCurAnim = { ANIM_END };
 
 
 public:
 	static CCreeper* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
+
+
+
 };
 

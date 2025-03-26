@@ -18,14 +18,12 @@ CMonster::CMonster(const CMonster& Prototype)
 
 HRESULT CMonster::Initialize_Prototype()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CMonster::Initialize(void* pArg)
 {
-	Ready_Components();
-	Ready_BehaviorTree();
-	return E_NOTIMPL;
+    return S_OK;
 }
 
 void CMonster::Priority_Update(_float fTimeDelta)
@@ -34,10 +32,10 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-	if (m_pBehaviorTree)
+	/*if (m_pBehaviorTree)
 	{
 		m_pBehaviorTree->Excute(this, fTimeDelta);
-	}
+	}*/
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
@@ -46,7 +44,7 @@ void CMonster::Late_Update(_float fTimeDelta)
 
 HRESULT CMonster::Render()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 //CGameObject*& CMonster::Get_Target()
@@ -97,15 +95,12 @@ HRESULT CMonster::Ready_BehaviorTree()
     pRoot->Add_Node(pPatrol);
 
     // 최종 트리 설정
-    m_pBehaviorTree = pRoot;
+    //m_pBehaviorTree = pRoot;
 
     return S_OK;
 }
 
-HRESULT CMonster::Ready_Components()
-{
-	return S_OK;
-}
+
 
 CGameObject* CMonster::Clone(void* pArg)
 {
@@ -116,6 +111,9 @@ void CMonster::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pBehaviorTree);
+	//Safe_Release(m_pBehaviorTree);
 	Safe_Release(m_pTransformCom);
+    Safe_Release(m_skelAnime);
+    for (auto& buffer : m_pVIBufferComs)
+        Safe_Release(buffer);
 }
