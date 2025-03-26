@@ -162,8 +162,12 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         {
             m_pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
             CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
-            if (pCube)
+            if (pCube) {
                 pCube->Set_InstanceBuffer(*(blockTypes[i].second));
+                pCube->Set_MyChunk(i);
+                pCube->Set_BlockPositions(*(blockTypes[i].second));
+            }
+                
         }
 
 

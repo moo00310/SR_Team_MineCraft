@@ -16,6 +16,7 @@ public:
 	virtual HRESULT Render()override;
 protected:
 	HRESULT Ready_Components();
+	
 
 public:
 	static CCoalOre* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

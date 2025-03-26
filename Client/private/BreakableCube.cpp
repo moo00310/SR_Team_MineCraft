@@ -8,10 +8,7 @@ CBreakableCube::CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CBreakableCube::CBreakableCube(const CBreakableCube& Prototype)
-    : CCube(Prototype),
-     m_pVIBufferCom(Prototype.m_pVIBufferCom),
-    m_pColliderCom(Prototype.m_pColliderCom),
-    m_pShaderCom(Prototype.m_pShaderCom)
+    : CCube(Prototype)
 {
 }
 
@@ -41,18 +38,29 @@ void CBreakableCube::Update(_float fTimeDelta)
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
 {
-    if (m_pColliderCom)
-        m_pColliderCom->Update_ColliderBox();
+    //if (m_pColliderCom)
+    //    m_pColliderCom->Update_ColliderBox();
 }
 
 HRESULT CBreakableCube::Render()
 {
-    
-    if (m_pColliderCom)
-        m_pColliderCom->Render_ColliderBox(false);
+    //
+    //if (m_pColliderCom)
+    //    m_pColliderCom->Render_ColliderBox(false);
     return S_OK;
 }
 
+
+void CBreakableCube::Set_BlockPositions(vector<_float3> position)
+{
+    for (int i = 0; i < position.size(); ++i) {
+        m_vecPositions.push_back(position[i]); //위치 넣어줌
+
+        // 위치 대로 콜라이더 큐브 생성해줘야 함
+        // 지형은 움직이는게 아니니까 transfrom 없이 콜라이더 큐브 
+
+    }
+}
 
 HRESULT CBreakableCube::Ready_Components()
 {
@@ -69,13 +77,13 @@ HRESULT CBreakableCube::Ready_Components()
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
 
-    /* For.Com_Collider */
-    CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-    Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
-    Desc.pTransformCom = m_pTransformCom;
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-        TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
-        return E_FAIL;
+    ///* For.Com_Collider */
+    //CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
+    //Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
+    //Desc.pTransformCom = m_pTransformCom;
+    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+    //    TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
+    //    return E_FAIL;
 
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect"),
@@ -120,6 +128,6 @@ void CBreakableCube::Free()
 
     __super::Free();
     Safe_Release(m_pVIBufferCom);
-    Safe_Release(m_pColliderCom);
+    //Safe_Release(m_pColliderCom);
     Safe_Release(m_pShaderCom);
 }
