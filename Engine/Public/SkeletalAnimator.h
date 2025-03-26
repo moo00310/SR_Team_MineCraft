@@ -52,7 +52,9 @@ public:
 	HRESULT Update_RootBone(const Matrix& matrix);
 	void Start_Blend(int fromAnim, int toAnim, float duration);
 	void Set_BoneLocalMatrix(int boneIndex, D3DMATRIX& mat);
-	Matrix CalcWorldTransform(int boneIndex);
+
+public:
+	void DeBugBone(int BoneIndex);
 
 private:
 	vector<BONE> vecBones;

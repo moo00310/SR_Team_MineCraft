@@ -50,6 +50,12 @@ void CArm_Steve::Late_Update(_float fTimeDelta)
 	{
 		m_eCurAnim = SWING;
 	}
+
+	if (m_pGameInstance->Key_Down('W'))
+	{
+		m_eCurAnim = WALK;
+	}
+
 		
 	// 애니메이션 체인지 반영
 	Update_State(fTimeDelta);
@@ -148,9 +154,30 @@ HRESULT CArm_Steve::Ready_Animation()
 	/*-------------------
 	  팔 IDLE 모션
 	--------------------*/
-
 	keyframe = { 0.f, Matrix() };
 	m_pSkeletalAnimator->Add_Animation(IDLE, keyframe);
+
+	/*-------------------
+	 팔 WALK 모션
+	--------------------*/
+
+	matrix = {};
+	matrix.Set_State(matrix.STATE_POSITION, _float3(-0.01f, -0.08f, -0.01f));
+
+	matrix2 = {};
+	matrix2.Set_State(matrix.STATE_POSITION, _float3(-0.08f, 0.01f, -0.08f));
+
+	keyframe =  { 0.f, Matrix() };
+	keyframe2 = { 0.4f, matrix };
+	keyframe3 = { 0.6f, matrix2 };
+	KEYFREAME keyframe4 = { 0.8f,	matrix };
+	KEYFREAME keyframe5 = { 1.f, Matrix()};
+
+	m_pSkeletalAnimator->Add_Animation(WALK, keyframe);
+	m_pSkeletalAnimator->Add_Animation(WALK, keyframe2);
+	m_pSkeletalAnimator->Add_Animation(WALK, keyframe3);
+	m_pSkeletalAnimator->Add_Animation(WALK, keyframe4);
+	m_pSkeletalAnimator->Add_Animation(WALK, keyframe5);
 
 	return S_OK;
 }
@@ -176,6 +203,9 @@ void CArm_Steve::Update_State(_float fTimeDelta)
 		break;
 	case CArm_Steve::SWING:
 		Motion_Swing(fTimeDelta);
+		break;
+	case CArm_Steve::WALK:
+		Motion_Walk(fTimeDelta);
 		break;
 	case CArm_Steve::ANIM_END:
 		break;
@@ -209,6 +239,18 @@ void CArm_Steve::Motion_Swing(_float fTimeDelta)
 		m_eCurAnim = IDLE;
 	}
 
+}
+
+void CArm_Steve::Motion_Walk(_float fTimeDelta)
+{
+	m_pSkeletalAnimator->Update_Animetion(WALK, fTimeDelta, 0);
+
+	if (m_pSkeletalAnimator->is_AnimtionEND())
+	{
+		m_eCurAnim = WALK;
+	}
+
+	//m_pSkeletalAnimator->DeBugBone(0);
 }
 
 CArm_Steve* CArm_Steve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

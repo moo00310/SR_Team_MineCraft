@@ -157,7 +157,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 {
 	/* Prototype_GameObject_PlayerHP_Back */
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP_Back"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -165,7 +165,7 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 	}
 
 	/* Prototype_GameObject_PlayerHP */
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP"),
 			LEVEL_YU, strLayerTag, (int*)&i)))

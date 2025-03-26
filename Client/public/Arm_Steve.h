@@ -53,6 +53,7 @@ private:
 	void Update_State(_float fTimeDelta);
 	void Motion_Idle(_float fTimeDelta);
 	void Motion_Swing(_float fTimeDelta);
+	void Motion_Walk(_float fTimeDelta);
 
 public:
 	static CArm_Steve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
