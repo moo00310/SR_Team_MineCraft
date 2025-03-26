@@ -48,10 +48,10 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 
-	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE_DASH)))
+	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_SandDestroyParticle(LAYER_PARTICLE_SAND_DESTROY)))
+	if (FAILED(Ready_Layer_SandDestroyParticle(LAYER_PARTICLE)))
 		return E_FAIL;
 
 	return S_OK;

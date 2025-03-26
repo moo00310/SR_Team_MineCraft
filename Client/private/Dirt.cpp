@@ -124,8 +124,8 @@ void CDirt::Free()
 
     CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,
         PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
-        LEVEL_STATIC,
-        LAYER_PARTICLE_SAND_DESTROY);
+        LEVEL_YU,
+        LAYER_PARTICLE);
 
 
     if (particle != nullptr)

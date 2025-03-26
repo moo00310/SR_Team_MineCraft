@@ -238,6 +238,9 @@
     <Filter Include="02.GameObjects\00.Cube\ItemObj">
       <UniqueIdentifier>{ce8c2ebb-f3bb-40a8-92ce-87cef72f8883}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\06.UIParticle">
+      <UniqueIdentifier>{1b18e013-c1c8-40bf-99cf-d90c6df75a78}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03.UI\05.PlayerState\01.PlayerHunger">
       <UniqueIdentifier>{e70a954c-2a10-44ae-84f8-d638694a60fb}</UniqueIdentifier>
     </Filter>
@@ -518,6 +521,9 @@
     <ClInclude Include="..\public\ItemRect.h">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UIParticleRain.h">
+      <Filter>03.UI\06.UIParticle</Filter>
+     </ClInclude>
     <ClInclude Include="..\public\PlayerHunger.h">
       <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
     </ClInclude>
@@ -791,6 +797,9 @@
     <ClCompile Include="..\private\ItemRect.cpp">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\UIParticleRain.cpp">
+      <Filter>03.UI\06.UIParticle</Filter>
+     </ClCompile>
     <ClCompile Include="..\private\PlayerHunger.cpp">
       <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
     </ClCompile>

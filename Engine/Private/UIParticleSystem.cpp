@@ -1,36 +1,40 @@
-#include "ParticleSystem.h"
+#include "UIParticleSystem.h"
 
-CParticleSystem::CParticleSystem(LPDIRECT3DDEVICE9 pGraphic_Device) : CGameObject(pGraphic_Device)
+CUIParticleSystem::CUIParticleSystem(LPDIRECT3DDEVICE9 pGraphic_Device) :
+	CUIObject(pGraphic_Device)
 {
 }
 
-CParticleSystem::CParticleSystem(const CParticleSystem& Prototype) : 
-	CGameObject(Prototype)
+CUIParticleSystem::CUIParticleSystem(const CUIParticleSystem& Prototype) :
+	CUIObject(Prototype)
 {
 	ZeroMemory(&m_boundingBox, sizeof(ParticleBoundingBox));
-	Safe_AddRef(m_pVB);		
+	Safe_AddRef(m_pVB);
 	Safe_AddRef(m_pParticleTexture);
 	Safe_AddRef(m_pTransform);
 }
 
-HRESULT CParticleSystem::Initialize(void* pArg)
+HRESULT CUIParticleSystem::Initialize(void* pArg)
 {
+	// 직교 셋팅.
+	__super::Initialize(pArg);
+
 	// 파티클 속성 셋팅.
 	SetParticleAttribute();
 
 	return S_OK;
 }
 
-HRESULT CParticleSystem::Initialize_Prototype()
+HRESULT CUIParticleSystem::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-void CParticleSystem::Priority_Update(_float fTimeDelta)
+void CUIParticleSystem::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CParticleSystem::Update(_float fTimeDelta)
+void CUIParticleSystem::Update(_float fTimeDelta)
 {
 	for (auto& data : m_ListParticleAttribute)
 	{
@@ -60,22 +64,22 @@ void CParticleSystem::Update(_float fTimeDelta)
 			data.fGravityTime += fTimeDelta;
 
 			data.vPosition += data.vVelocity * fTimeDelta;
-			data.vPosition.y += height;			
+			data.vPosition.y += height;
 		}
 		else
 		{
 			// 중력 없을 시 단순 이동만.
 			data.vPosition += data.vVelocity * fTimeDelta;
-		}		
+		}
 	}
 }
 
-void CParticleSystem::Late_Update(_float fTimeDelta)
+void CUIParticleSystem::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this);
+	m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this);
 }
 
-HRESULT CParticleSystem::Render()
+HRESULT CUIParticleSystem::Render()
 {
 	if (m_ListParticleAttribute.size() <= 0)
 	{
@@ -95,7 +99,7 @@ HRESULT CParticleSystem::Render()
 	if (FAILED(m_pParticleTexture->Bind_Resource(0)))
 	{
 		return E_FAIL;
-	}	
+	}
 
 	Bind_Buffers();
 
@@ -149,8 +153,8 @@ HRESULT CParticleSystem::Render()
 
 			// 현재 세그먼트의 단계 초기화.
 			currentSegmentVertexIndex = 0;
-		}		
-	}	
+		}
+	}
 
 	if (FAILED(EndRender()))
 	{
@@ -160,7 +164,7 @@ HRESULT CParticleSystem::Render()
 	return S_OK;
 }
 
-HRESULT CParticleSystem::Bind_Buffers()
+HRESULT CUIParticleSystem::Bind_Buffers()
 {
 	m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, sizeof(VTXPARTICLE));
 
@@ -171,73 +175,65 @@ HRESULT CParticleSystem::Bind_Buffers()
 	return S_OK;
 }
 
-void CParticleSystem::Replay(_float3 _position)
+void CUIParticleSystem::Free()
 {
-	m_pTransform->Set_State(CTransform::STATE_POSITION, _position);
+	__super::Free();
 
+	Safe_Release(m_pVB);
+	Safe_Release(m_pParticleTexture);
+	Safe_Release(m_pTransform);
+}
+
+void CUIParticleSystem::OnPushPool()
+{
+	// 재생성 시 기존에 값 덮어씀.
 	for (auto& particle : m_ListParticleAttribute)
 	{
-		particle.fCurrentTime = 0.f;
-		particle.fGravityTime = 0.f;
-		particle.IsAlive = true;
+		ParticleAttribute att = OnSetAddParticle();
 
-		OnReplay(particle);
+		particle = att;
 	}
 }
 
-CTransform* CParticleSystem::GetTransform() const
+void CUIParticleSystem::SetParticleAttribute()
 {
-	return m_pTransform;
+	for (_uint i = 0; i < iParticleCount; i++)
+	{
+		ParticleAttribute att = OnSetAddParticle();
+
+		m_ListParticleAttribute.push_back(att);
+	}
 }
 
-HRESULT CParticleSystem::PrevRender()
+HRESULT CUIParticleSystem::PrevRender()
 {
 	// 포인트 스프라이트 활성화.
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
-	
-	// 포인트 스프라이트 크기를 뷰 스페이스 단위로 해석.
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALEENABLE, true);
+
+	// 포인트 스프라이트 크기를 스크린 스페이스 단위로 해석.
+	// 즉 크기를 5로 잡으면 5픽셀로 나오게하겠단 의미이다.
+	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALEENABLE, false);
 
 	// 포인트 스프라이트 크기.
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSIZE, dwPointSize);
 
-	/*m_pGraphic_Device->SetRenderState(D3DRS_POINTSIZE_MIN, m_ParticleAttribute.dwPointSizeMin);
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSIZE_MAX, m_ParticleAttribute.dwPointSizeMax);*/
-
-	// 파티클이 카메라로부터 얼마나 떨어져있는지에 대한만큼 크기 (z축).
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_A, dwPointScaleA);
-
-	// 파티클이 카메라로부터 거리가 얼마나 떨어져있는지에 대한만큼 크기 (x랑 y축).
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_B, dwPointScaleB);
-
-	// 거리 상관없이 파티클 크기가 일정함.
-	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALE_C, dwPointScaleC);
-
-	// 알파텍스쳐 활성화.
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 0);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	// 알파텍스쳐 활성화가 여기 안에 있음.
+	__super::Begin();
 
 	return S_OK;
 }
 
-HRESULT CParticleSystem::EndRender()
+HRESULT CUIParticleSystem::EndRender()
 {
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSCALEENABLE, false);
 
-	// 알파 텍스쳐 비활성화.
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	__super::End();
 
 	return S_OK;
 }
 
-HRESULT CParticleSystem::Ready_Components()
-{
-	return S_OK;
-}
-
-HRESULT CParticleSystem::Create_VertexBuffer()
+HRESULT CUIParticleSystem::Create_VertexBuffer()
 {
 	m_iFVF = D3DFVF_XYZ | D3DFVF_DIFFUSE;
 
@@ -255,27 +251,17 @@ HRESULT CParticleSystem::Create_VertexBuffer()
 	return S_OK;
 }
 
-void CParticleSystem::SetParticleAttribute()
-{
-	for (_uint i = 0; i < iParticleCount; i++)
-	{
-		ParticleAttribute att = OnSetAddParticle();
-
-		m_ListParticleAttribute.push_back(att);
-	}
-}
-
-void CParticleSystem::SetParticleBoundingBox(ParticleBoundingBox box)
+void CUIParticleSystem::SetParticleBoundingBox(ParticleBoundingBox box)
 {
 	m_boundingBox = box;
 }
 
-DWORD CParticleSystem::GetScale(float f)
+DWORD CUIParticleSystem::GetScale(float f)
 {
 	return *((DWORD*)&f);
 }
 
-float CParticleSystem::GetRandomFloat(float lowBound, float highBound)
+float CUIParticleSystem::GetRandomFloat(float lowBound, float highBound)
 {
 	// 잘못된 입력 
 	if (lowBound >= highBound)
@@ -290,22 +276,7 @@ float CParticleSystem::GetRandomFloat(float lowBound, float highBound)
 	return (f * (highBound - lowBound)) + lowBound;
 }
 
-void CParticleSystem::Free()
+HRESULT CUIParticleSystem::Ready_Components()
 {
-	__super::Free();
-
-	Safe_Release(m_pVB);
-	Safe_Release(m_pParticleTexture);
-	Safe_Release(m_pTransform);
-}
-
-void CParticleSystem::OnPushPool()
-{
-	// 재생성 시 기존에 값 덮어씀.
-	for (auto& particle : m_ListParticleAttribute)
-	{
-		ParticleAttribute att = OnSetAddParticle();
-
-		particle = att;
-	}
+	return S_OK;
 }
