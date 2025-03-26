@@ -20,7 +20,7 @@ public:
 	};
 	enum ANIM_type
 	{
-		Swing_F, Swing_B, Swing_R, Swing_L, INIT,
+		Swing_FF, Swing_BF, Swing_BA, Swing_FA, Swing_R, Swing_L, Attack ,INIT,
 	};
 
 private:
@@ -52,6 +52,7 @@ private:
 	_float              m_fMouseSensor = { 0.03f };
 	int m_bisTPS = { 1 };
 	ANIM m_eCurAnim = { ANIM_END };
+	bool isAttack = { false };
 
 
 private:
