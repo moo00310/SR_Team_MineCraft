@@ -24,15 +24,15 @@ void CUI_Mgr::Late_Update(_float fTimeDelta)
 
 void CUI_Mgr::Synchronize_Slots()
 {
-	
 	if (m_vecItemlist.size() != 0)
 	{
 		CItem* pItem9 = m_vecItemlist[9];
 		CItem* pItem10 = m_vecItemlist[10];
-
+		/*=====================================*/
+		/* 테스트용 */
 		pItem9->Set_ItemType(ITEMNAME_WOOD);
 		pItem10->Set_ItemType(ITEMNAME_AXE);
-
+		/*=====================================*/
 		for (int i = 0; i < 9; ++i)
 		{
 			if (m_vecItemlist[i] && m_vecItemlist[i + 9])
@@ -48,14 +48,14 @@ void CUI_Mgr::TakeDamge()
 {
 	if (!m_PlayerHPlist.empty())
 	{
-		for (auto& iter : m_PlayerHPlist)
+		for (auto iter = m_PlayerHPlist.rbegin(); iter != m_PlayerHPlist.rend(); ++iter)
 		{
-			if (iter->Get_HpCount() == 0)
+			if ((*iter)->Get_TextureNum() == 1)
 			{
-				iter->m_iTextureNum = 2;
+				(*iter)->Set_TextureNum(2);
+				break;
 			}
 		}
-
 	}
 }
 
