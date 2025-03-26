@@ -1,6 +1,19 @@
 ﻿#include "VIBuffer_CubeInstance.h"
 #define MAX_INSTANCE_COUNT 10000
 
+D3DVERTEXELEMENT9 vertexDecl[] =
+{
+    // 정점 버퍼 (Stream 0)
+    { 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 }, // vPosition
+    { 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0 },   // vNormal
+    { 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 }, // vTexcoord
+
+    // 인스턴스 버퍼 (Stream 1)
+    { 1, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 }, // vInstancePos (인스턴스 위치)
+
+    D3DDECL_END()
+};
+
 CVIBuffer_CubeInstance::CVIBuffer_CubeInstance(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CVIBuffer{ pGraphic_Device }
 {
@@ -11,6 +24,7 @@ CVIBuffer_CubeInstance::CVIBuffer_CubeInstance(const CVIBuffer_CubeInstance& Pro
     ,m_pInstanceVB{ Prototype.m_pInstanceVB }
     , m_iNumInstances {Prototype.m_iNumInstances}
     , m_iInstanceStride{Prototype.m_iInstanceStride }
+    , pVertexDecl{Prototype.pVertexDecl }
 
 {
     D3DXMatrixIdentity(&m_WorldMatrix);
@@ -173,6 +187,14 @@ HRESULT CVIBuffer_CubeInstance::Initialize_Prototype(CUBE& tInfo)
     /* 인스턴싱 버퍼 생성*/
     if (FAILED(Create_InstanceBuffer()))
         return E_FAIL;
+
+
+     HRESULT hr = m_pGraphic_Device->CreateVertexDeclaration(vertexDecl, &pVertexDecl);
+    if (FAILED(hr) || pVertexDecl == nullptr)
+    {
+        MessageBox(0, L"Failed to create Vertex Declaration!", L"Error", MB_OK);
+    }
+    
     return S_OK;
 }
 
@@ -195,15 +217,6 @@ void CVIBuffer_CubeInstance::SetMatrix(const D3DXMATRIX& mat)
 HRESULT CVIBuffer_CubeInstance::Render()
 {
 
-    // 4. 정점 선언 및 버퍼 바인딩
-    m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iVertexStride);
-    m_pGraphic_Device->SetStreamSource(1, m_pInstanceVB, 0, m_iInstanceStride);
-    m_pGraphic_Device->SetIndices(m_pIB);
-
-    // 5. 인스턴스 그리기
-    m_pGraphic_Device->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | m_iNumInstances);
-    m_pGraphic_Device->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
-
     HRESULT hr = m_pGraphic_Device->DrawIndexedPrimitive(
         D3DPT_TRIANGLELIST,  // 삼각형 리스트
         0,                   // 정점 시작 인덱스
@@ -213,8 +226,8 @@ HRESULT CVIBuffer_CubeInstance::Render()
         m_iNumPritimive      // 삼각형 개수
     );
 
-    m_pGraphic_Device->SetStreamSourceFreq(0, 1);
-    m_pGraphic_Device->SetStreamSourceFreq(1, 1);
+    //m_pGraphic_Device->SetStreamSourceFreq(0, 1);
+    //m_pGraphic_Device->SetStreamSourceFreq(1, 1);
 
     return hr;
 }
@@ -242,6 +255,8 @@ HRESULT CVIBuffer_CubeInstance::Bind_Buffers()
     if (!m_pGraphic_Device)
         return E_FAIL;
 
+    m_pGraphic_Device->SetVertexDeclaration(pVertexDecl);
+
     // 정점 버퍼 바인딩 (기본 버퍼)
     m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iVertexStride);
     m_pGraphic_Device->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | m_iNumInstances);
@@ -252,6 +267,7 @@ HRESULT CVIBuffer_CubeInstance::Bind_Buffers()
 
     // 인덱스 버퍼 설정
     m_pGraphic_Device->SetIndices(m_pIB);
+
     
     return S_OK;
 }
@@ -306,4 +322,5 @@ void CVIBuffer_CubeInstance::Free()
 	__super::Free();
 
     Safe_Release(m_pInstanceVB);
+    Safe_Release(pVertexDecl);
 }

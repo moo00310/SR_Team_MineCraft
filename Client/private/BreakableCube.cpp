@@ -8,7 +8,10 @@ CBreakableCube::CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CBreakableCube::CBreakableCube(const CBreakableCube& Prototype)
-    : CCube(Prototype)
+    : CCube(Prototype),
+     m_pVIBufferCom(Prototype.m_pVIBufferCom),
+    m_pColliderCom(Prototype.m_pColliderCom),
+    m_pShaderCom(Prototype.m_pShaderCom)
 {
 }
 
@@ -44,17 +47,21 @@ void CBreakableCube::Late_Update(_float fTimeDelta)
 
 HRESULT CBreakableCube::Render()
 {
+    
     if (m_pColliderCom)
         m_pColliderCom->Render_ColliderBox(false);
     return S_OK;
 }
 
+
 HRESULT CBreakableCube::Ready_Components()
 {
     /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Cube"),
-        TEXT("m_pVIBufferCom_Cube"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
-        return E_FAIL;
+    Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
+    m_pVIBufferCom = CVIBuffer_CubeInstance::Create(m_pGraphic_Device, cube);
+    //if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeInstance"),
+    //    TEXT("m_pVIBufferCom_CubeInstance"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+    //    return E_FAIL;
 
     /* For.Com_Transform */
     CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };

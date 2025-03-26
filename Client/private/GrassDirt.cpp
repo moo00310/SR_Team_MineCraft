@@ -46,8 +46,7 @@ void CGrassDirt::Late_Update(_float fTimeDelta)
 
 HRESULT CGrassDirt::Render()
 {
-
-    m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
+    
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
@@ -57,10 +56,10 @@ HRESULT CGrassDirt::Render()
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
 
-    //m_pTransformCom->Bind_Resource(m_pShaderCom);
-    //m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+    m_pTransformCom->Bind_Resource(m_pShaderCom);
+    m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 
-    //m_pShaderCom->Begin(0);
+    m_pShaderCom->Begin(0);
 
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
@@ -68,7 +67,8 @@ HRESULT CGrassDirt::Render()
 
     __super::Render();
 
-    //m_pShaderCom->End();
+    m_pShaderCom->End();
+
     return S_OK;
 }
 
