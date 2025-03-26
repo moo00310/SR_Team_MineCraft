@@ -30,9 +30,7 @@ HRESULT CMapTool::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsLight();
 
 	return S_OK;
 }
@@ -153,14 +151,42 @@ HRESULT CMapTool::Render()
     return S_OK;
 }
 
+BLOCKTYPE GetBlockType(int heightValue) {
+    struct BlockProbability {
+        int minHeight, maxHeight;
+        int probability;
+        BLOCKTYPE oreType;
+    };
+
+    static const BlockProbability blockTable[] = {
+        { -3, -1, 3, COALORE },   // 석탄 5%
+        { -6, -4, 7, IRONORE }    // 철광석 10%
+    };
+
+    for (const auto& entry : blockTable) {
+        if (entry.minHeight <= heightValue && heightValue <= entry.maxHeight) {
+            if (rand() % 100 < entry.probability) {
+                return entry.oreType;
+            }
+        }
+    }
+
+    return STONE; // 기본값: 돌
+}
+
 // 지형 생성 함수 
 HRESULT CMapTool::TerrainGenerationWithNoise()
 {
-    m_pGameInstance->ClearLayer(LEVEL_YU, TEXT("Layer_Environment"));
+    m_pGameInstance->ClearLayer(LEVEL_TOOL, TEXT("Layer_Environment"));
 
     D3DLOCKED_RECT heightLockedRect;
 
     int index = 0;
+    vector<_float3> m_vecGrassDirt;
+    vector<_float3> m_vecDirt;
+    vector<_float3> m_vecStone;
+    vector<_float3> m_vecCoal;
+    vector<_float3> m_vecIron;
 
      if (SUCCEEDED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))){
        
@@ -170,58 +196,68 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
 
         const int width = m_iMapX;
         const int height = m_iMapZ;
-
-
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 DWORD heightColor = heightPixels[y * pitchHeight + x];
                 int heightValue = (heightColor & 0xFF) / 15;
 
-                // 지형 블록 추가 (지표면)
-                if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, TEXT("Layer_Environment"))))
-                    return E_FAIL;
+                m_vecGrassDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                
 
-                // 생성된 객체를 캐싱해서 사용
-                CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
-                if (pCube) {
-                    pCube->SetPos(_float3((float)x, (float)heightValue, (float)y));
-                }
-                index++;
-
-                int a = m_iDirtDeep;
-                int kk = m_iStoneDeep;
-
-                while (heightValue > kk) {
+                int depth = m_iDirtDeep;
+                int minDepth = m_iStoneDeep;
+                while (heightValue > minDepth) {
                     heightValue--;
-                    if (a > 0) {
-                        if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, TEXT("Layer_Environment"))))
-                            return E_FAIL;
+                    BLOCKDESC eblockData2;
+                    eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
+                    eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
 
-                        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
-                        if (pCube) {
-                            pCube->SetPos(_float3((float)x, (float)heightValue, (float)y));
-                        }
+                    switch (eblockData2.eBlockType)
+                    {
+                    case DIRT:
+                        m_vecDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                        break;
+                    case STONE:
+                        m_vecStone.push_back(_float3((float)x, (float)heightValue, (float)y));
+                        break;
+                    case IRONORE:
+                        m_vecIron.push_back(_float3((float)x, (float)heightValue, (float)y));
+                        break;
+                    case COALORE:
+                        m_vecCoal.push_back(_float3((float)x, (float)heightValue, (float)y));
+                        break;
+                    default:
+                        break;
                     }
-                    else {
-                        if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, TEXT("Layer_Environment"))))
-                            return E_FAIL;
-
-                        CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Environment"), index));
-                        if (pCube) {
-                            pCube->SetPos(_float3((float)x, (float)heightValue, (float)y));
-                        }
-                    }
-
-                    a--;
-                    index++;
-
-                }  
+                    depth--;
+                }
             }
         }
 
         // 텍스처 해제
         heightMapTexture->UnlockRect(0);
     }
+
+     vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
+        {TEXT("Prototype_GameObject_GrassDirt"), &m_vecGrassDirt},
+        {TEXT("Prototype_GameObject_Dirt"), &m_vecDirt},
+        {TEXT("Prototype_GameObject_Stone"), &m_vecStone},
+        {TEXT("Prototype_GameObject_IronOre"), &m_vecIron},
+        {TEXT("Prototype_GameObject_CoalOre"), &m_vecCoal}
+     };
+
+
+     for (size_t i = 0; i < blockTypes.size(); ++i)
+     {
+         m_pGameInstance->Add_GameObject(LEVEL_TOOL, blockTypes[i].first, LEVEL_TOOL, TEXT("Layer_Environment"));
+         CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_TOOL, TEXT("Layer_Environment"), static_cast<int>(i)));
+         if (pCube) {
+             pCube->Set_InstanceBuffer(*(blockTypes[i].second));
+             //pCube->Set_MyChunk(i);
+             //pCube->Set_BlockPositions(*(blockTypes[i].second));
+         }
+     }
+
     return S_OK;
 }
 
@@ -269,28 +305,6 @@ struct SaveThreadParams {
     int m_iDirtDeep, m_iStoneDeep;
 };
 
-BLOCKTYPE GetBlockType(int heightValue) {
-    struct BlockProbability {
-        int minHeight, maxHeight;
-        int probability;
-        BLOCKTYPE oreType;
-    };
-
-    static const BlockProbability blockTable[] = {
-        { -3, -1, 3, COALORE },   // 석탄 5%
-        { -6, -4, 7, IRONORE }    // 철광석 10%
-    };
-
-    for (const auto& entry : blockTable) {
-        if (entry.minHeight <= heightValue && heightValue <= entry.maxHeight) {
-            if (rand() % 100 < entry.probability) {
-                return entry.oreType;
-            }
-        }
-    }
-
-    return STONE; // 기본값: 돌
-}
 
 DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
     SaveThreadParams* params = (SaveThreadParams*)lpParam;

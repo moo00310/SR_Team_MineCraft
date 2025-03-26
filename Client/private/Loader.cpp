@@ -544,11 +544,6 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CMCTerrain::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Tool */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MapTool"),
-		CMapTool::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
 	/* For.Prototype_GameObject_Camera_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Player"),
 		CCamera_Player::Create(m_pGraphic_Device))))
@@ -836,9 +831,76 @@ HRESULT CLoader::Loading_For_HECKPlay()
 HRESULT CLoader::Loading_For_TOOL()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+	/* For.Prototype_Component_Texture_Dirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Dirt"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/dirt%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_GrassDirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_GrassDirt"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grassDirt%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Stone */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Stone"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/stone%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CobbleStone */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_CobbleStone"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/cobbleStone%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CoalOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_CoalOre"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/coalOre%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Coal */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Coal"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/coal%d.png"), 1))))
+		return E_FAIL;
+
+
+	/* For.Prototype_Component_Texture_IronOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_IronOre"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/ironOre%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_RawIron */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_RawIron"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/rawIron%d.png"), 1))))
+		return E_FAIL;
+
+	// 나무 텍스쳐
+/* For.Prototype_Component_Texture_Leaf */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Leaf"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/leaves0.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Sapling */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Sapling"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/oakSapling%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Apple */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Apple"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/apple%d.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Wood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Wood"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/wood0.png"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Grass */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Grass"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/grass0.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Seed */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_Texture_Seed"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/seed%d.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_RedTulip */
@@ -846,7 +908,15 @@ HRESULT CLoader::Loading_For_TOOL()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/redTulip0.png"), 1))))
 		return E_FAIL;
 
+
+
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
+	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
+	/* For.Prototype_Component_VIBuffer_CubeInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_CubeInstance"),
+		CVIBuffer_CubeInstance::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_VIBuffer_Rect3D */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Rect3D"),
 		CVIBuffer_Rect3D::Create(m_pGraphic_Device))))
@@ -859,6 +929,52 @@ HRESULT CLoader::Loading_For_TOOL()
 	/* For.Prototype_GameObject_Camera_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Camera_Player"),
 		CCamera_Player::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tool */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_MapTool"),
+		CMapTool::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Dirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Dirt"),
+		CDirt::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_GrassDirt */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_GrassDirt"),
+		CGrassDirt::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Stone */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Stone"),
+		CStone::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CoalOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_CoalOre"),
+		CCoalOre::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_IronOre */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_IronOre"),
+		CIronOre::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_Wood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Wood"),
+		CWood::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Leaf */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Leaf"),
+		CLeaf::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Tree */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_GameObject_Tree"),
+		CTree::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Grass */
