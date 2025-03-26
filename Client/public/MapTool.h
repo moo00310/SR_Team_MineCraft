@@ -22,6 +22,7 @@ public:
 private:
 	HRESULT TerrainGenerationWithNoise();
 	void GeneratePerlinNoiseTexture(int width, int height);
+	void GeneratePerlinNoiseTextureCave(int width, int height);
 	HRESULT SaveData();
 
 	bool m_bMainFrame = true;
@@ -34,6 +35,8 @@ private:
 	LPDIRECT3DTEXTURE9 caveTexture = nullptr;
 	float m_fFrequency = 0.01f; //작을수록 부드러움, 클수록 더 세밀함
 	int m_iSeed = 12345; //다양한 종류의 맵
+	float m_fcaveFrequency = 0.01f; //작을수록 부드러움, 클수록 더 세밀함
+	int m_icaveSeed = 12345; //다양한 종류의 맵
 
 	int m_iDirtDeep=2;
 	int m_iStoneDeep=-2;

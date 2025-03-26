@@ -144,15 +144,15 @@ HRESULT CMapTool::Render()
             m_bMainFrame = true;
         }
 
-        ImGui::SliderInt("Seed", &m_iSeed, 0, 99999);
-        ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
+        ImGui::SliderInt("Seed", &m_icaveSeed, 0, 99999);
+        ImGui::SliderFloat("Frequency", &m_fcaveFrequency, 0.001f, 0.1f);
 
         if (ImGui::Button("Show Cave Gray Img", ImVec2(200, 50))) {
             if (caveTexture) {
                 caveTexture->Release();
-                heightMapTexture = nullptr;
+                caveTexture = nullptr;
             }
-            GeneratePerlinNoiseTexture(m_iMapX, m_iMapZ);
+            GeneratePerlinNoiseTextureCave(m_iMapX, m_iMapZ);
             m_bMapCaveFrame = true;
         }
 
@@ -170,9 +170,9 @@ HRESULT CMapTool::Render()
     }
 
     if (m_bMapCaveFrame) {
-        ImGui::Begin("Cave Map 2D", &m_bMapHeightFrame);
-        if (heightMapTexture) {
-            ImGui::Image((ImTextureID)heightMapTexture, ImVec2(256, 256));
+        ImGui::Begin("Cave Map 2D", &m_bMapCaveFrame);
+        if (m_bMapCaveFrame) {
+            ImGui::Image((ImTextureID)caveTexture, ImVec2(256, 256));
         }
         ImGui::End();
     }
@@ -218,6 +218,7 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
     m_pGameInstance->ClearLayer(LEVEL_TOOL, TEXT("Layer_Environment"));
 
     D3DLOCKED_RECT heightLockedRect;
+    D3DLOCKED_RECT caveLockedRect;
 
     int index = 0;
     vector<_float3> m_vecGrassDirt;
@@ -226,52 +227,61 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
     vector<_float3> m_vecCoal;
     vector<_float3> m_vecIron;
 
-     if (SUCCEEDED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))){
-       
-        DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
+    if (SUCCEEDED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))) {
+        if (SUCCEEDED(caveTexture->LockRect(0, &caveLockedRect, NULL, D3DLOCK_READONLY))) {
 
-        int pitchHeight = heightLockedRect.Pitch / 4;
+            DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
+            DWORD* cavePixels = (DWORD*)caveLockedRect.pBits;
 
-        const int width = m_iMapX;
-        const int height = m_iMapZ;
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                DWORD heightColor = heightPixels[y * pitchHeight + x];
-                int heightValue = (heightColor & 0xFF) / 15;
+            int pitchHeight = heightLockedRect.Pitch / 4;
+            int pitchCave = caveLockedRect.Pitch / 4;
 
-                m_vecGrassDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
-                
+            const int width = m_iMapX;
+            const int height = m_iMapZ;
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
+                    DWORD heightColor = heightPixels[y * pitchHeight + x];
+                    int heightValue = (heightColor & 0xFF) / 15;
 
-                int depth = m_iDirtDeep;
-                int minDepth = m_iStoneDeep;
-                while (heightValue > minDepth) {
-                    heightValue--;
-                    BLOCKDESC eblockData2;
-                    eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                    eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
+                    DWORD caveColor = cavePixels[y * pitchCave + x];
+                    int caveValue = (caveColor & 0xFF) %20;
 
-                    switch (eblockData2.eBlockType)
-                    {
-                    case DIRT:
-                        m_vecDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
-                        break;
-                    case STONE:
-                        m_vecStone.push_back(_float3((float)x, (float)heightValue, (float)y));
-                        break;
-                    case IRONORE:
-                        m_vecIron.push_back(_float3((float)x, (float)heightValue, (float)y));
-                        break;
-                    case COALORE:
-                        m_vecCoal.push_back(_float3((float)x, (float)heightValue, (float)y));
-                        break;
-                    default:
-                        break;
+                    m_vecGrassDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+
+
+                    int depth = m_iDirtDeep;
+                    int minDepth = m_iStoneDeep;
+                    while (heightValue > minDepth) {
+                        heightValue--;
+                        BLOCKDESC eblockData2;
+                        eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
+                        eblockData2.eBlockType = (depth > 0) ? DIRT : STONE;
+
+                        switch (eblockData2.eBlockType)
+                        {
+                        case DIRT:
+                            m_vecDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                            break;
+                        case STONE:
+                            if (!(caveValue-2 < -heightValue && -heightValue < caveValue +2)) {
+                                m_vecStone.push_back(_float3((float)x, (float)heightValue, (float)y));
+                            }
+                            break;
+                        case IRONORE:
+                            m_vecIron.push_back(_float3((float)x, (float)heightValue, (float)y));
+                            break;
+                        case COALORE:
+                            m_vecCoal.push_back(_float3((float)x, (float)heightValue, (float)y));
+                            break;
+                        default:
+                            break;
+                        }
+                        depth--;
                     }
-                    depth--;
                 }
             }
+            caveTexture->UnlockRect(0);
         }
-
         // 텍스처 해제
         heightMapTexture->UnlockRect(0);
     }
@@ -332,6 +342,39 @@ void CMapTool::GeneratePerlinNoiseTexture(int width, int height) {
     return;
 }
 
+// 동굴 텍스처 생성 함수
+void CMapTool::GeneratePerlinNoiseTextureCave(int width, int height) {
+    FastNoiseLite noise;
+    //noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+    noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
+    noise.SetFrequency(m_fcaveFrequency);
+    noise.SetSeed(m_icaveSeed);
+
+    // DirectX9 텍스처 생성
+    if (FAILED(m_pGraphic_Device->CreateTexture(width, height, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &caveTexture, NULL))) {
+        return;
+    }
+
+    D3DLOCKED_RECT lockedRect;
+    if (FAILED(caveTexture->LockRect(0, &lockedRect, NULL, 0))) {
+        caveTexture->Release();
+        return;
+    }
+
+    // 픽셀 데이터 채우기
+    DWORD* pixels = (DWORD*)lockedRect.pBits;
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            float noiseValue = noise.GetNoise((float)x, (float)y);
+            int gray = (int)((noiseValue + 1.0f) * 127.5f); // [-1, 1] → [0, 255]
+            pixels[y * (lockedRect.Pitch / 4) + x] = D3DCOLOR_ARGB(255, gray, gray, gray);
+        }
+    }
+
+    caveTexture->UnlockRect(0);
+    return;
+}
+
 #pragma region 파일 저장 with 쓰레드
 CRITICAL_SECTION cs2;
 
@@ -340,6 +383,8 @@ struct SaveThreadParams {
     int numChunksX;
     DWORD* heightPixels;
     int pitchHeight;
+    DWORD* cavePixels;
+    int pitchCave;
     int m_iDirtDeep, m_iStoneDeep;
 };
 
@@ -362,6 +407,9 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
             DWORD heightColor = params->heightPixels[y * params->pitchHeight + x];
             int heightValue = (heightColor & 0xFF) / 15;
 
+            DWORD caveColor = params->cavePixels[y * params->pitchCave + x];
+            int caveValue = (caveColor & 0xFF) / 15;
+
             BLOCKDESC eblockData;
             eblockData.eBlockType = GRASSDIRT;
             eblockData.fPosition = _float3((float)x, (float)heightValue, (float)y);
@@ -373,8 +421,19 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
                 heightValue--;
                 BLOCKDESC eblockData2;
                 eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
-                WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+                //eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
+                eblockData2.eBlockType = (depth > 0) ? DIRT : STONE;
+
+                if (eblockData2.eBlockType == STONE) {
+                    if (!(caveValue - 3 < -heightValue -2 && -heightValue -2< caveValue + 3)) {
+                        WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+                    }
+                }
+                else {
+                    WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+                }
+
+                
                 depth--;
             }
         }
@@ -392,12 +451,21 @@ HRESULT CMapTool::SaveData() {
     const int numChunksZ = m_iMapZ / CHUNK_SIZE;
 
     D3DLOCKED_RECT heightLockedRect;
+    D3DLOCKED_RECT caveLockedRect;
     if (FAILED(heightMapTexture->LockRect(0, &heightLockedRect, NULL, D3DLOCK_READONLY))) {
         return E_FAIL;
     }
 
+    if (FAILED(caveTexture->LockRect(0, &caveLockedRect, NULL, D3DLOCK_READONLY))) {
+        return E_FAIL;
+    }
+
+
     DWORD* heightPixels = (DWORD*)heightLockedRect.pBits;
     int pitchHeight = heightLockedRect.Pitch / 4;
+
+    DWORD* cavePixels = (DWORD*)caveLockedRect.pBits;
+    int pitchCave = caveLockedRect.Pitch / 4;
 
     HANDLE* hThreads = new HANDLE[numChunksX * numChunksZ];
     SaveThreadParams* params = new SaveThreadParams[numChunksX * numChunksZ];
@@ -405,7 +473,7 @@ HRESULT CMapTool::SaveData() {
     for (int chunkZ = 0; chunkZ < numChunksZ; chunkZ++) {
         for (int chunkX = 0; chunkX < numChunksX; chunkX++) {
             int index = chunkZ * numChunksX + chunkX;
-            params[index] = { chunkX, chunkZ, numChunksX, heightPixels, pitchHeight, m_iDirtDeep, m_iStoneDeep };
+            params[index] = { chunkX, chunkZ, numChunksX, heightPixels, pitchHeight, cavePixels,pitchCave,m_iDirtDeep, m_iStoneDeep };
 
             hThreads[index] = CreateThread(NULL, 0, SaveChunkThread, &params[index], 0, NULL);
             if (!hThreads[index]) {
