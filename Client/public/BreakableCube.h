@@ -44,9 +44,12 @@ protected:
 
 	CVIBuffer_CubeInstance* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
+	//CCollider_Cube* m_pColliderCom = { nullptr };
+	//CCollider_Cube* m_pColliderCom2 = { nullptr };
 
 	int m_iMyChunk = 0;
 	list<_float3> m_vecPositions;
+	vector<CCollider_Cube*> m_Colliders;
 	// 리스트로 콜라이더 큐브 만들고 late_update에서 반복문으로 충돌 매니저에 올려주덩가덩가
 	
 public:

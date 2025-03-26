@@ -18,14 +18,18 @@ HRESULT CStone::Initialize_Prototype()
 
 HRESULT CStone::Initialize(void* pArg)
 {
+
     if (FAILED(Ready_Components()))
         return E_FAIL;
+
+    __super::Initialize(pArg);
 
     return S_OK;
 }
 
 void CStone::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
 }
 
 void CStone::Update(_float fTimeDelta)

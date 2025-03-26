@@ -26,12 +26,12 @@ HRESULT CGrassDirt::Initialize(void* pArg)
 
 void CGrassDirt::Priority_Update(_float fTimeDelta)
 {
-    //__super::Priority_Update(fTimeDelta);
+    __super::Priority_Update(fTimeDelta);
 }
 
 void CGrassDirt::Update(_float fTimeDelta)
 {
-	//__super::Update(fTimeDelta);
+	__super::Update(fTimeDelta);
 }
 
 void CGrassDirt::Late_Update(_float fTimeDelta)

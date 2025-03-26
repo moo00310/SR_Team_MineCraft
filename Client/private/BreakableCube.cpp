@@ -20,15 +20,22 @@ HRESULT CBreakableCube::Initialize_Prototype()
 
 HRESULT CBreakableCube::Initialize(void* pArg)
 {
-    if (FAILED(Ready_Components()))
-        return E_FAIL;
+    //if (FAILED(Ready_Components()))
+    //    return E_FAIL;
+
+    //CCollider_Cube::COLLCUBE_DESC Desc = m_pColliderCom2->Get_Desc();//콜라이더 크기 설정
+    //Desc.fOffSetY = 1.f;
+
+    //m_pColliderCom2->Set_Desc(Desc);
+
 
     return S_OK;
 }
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
-
+	//이놈이 관리하는 모든 콜라이더 박스를 충돌 매니저에 등록 하겠다는건데...
+    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);
 }
 
 void CBreakableCube::Update(_float fTimeDelta)
@@ -38,26 +45,54 @@ void CBreakableCube::Update(_float fTimeDelta)
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
 {
-    //if (m_pColliderCom)
-    //    m_pColliderCom->Update_ColliderBox();
+    /*if (m_pColliderCom)
+        m_pColliderCom->Update_ColliderBox();
+
+    if (m_pColliderCom2)
+        m_pColliderCom2->Update_ColliderBox();*/
+
+	for (int i = 0; i < m_Colliders.size(); ++i)
+	{
+		m_Colliders[i]->Update_ColliderBox();
+	}
 }
 
 HRESULT CBreakableCube::Render()
 {
-    //
+    
     //if (m_pColliderCom)
     //    m_pColliderCom->Render_ColliderBox(false);
+
+    //if (m_pColliderCom2)
+    //    m_pColliderCom2->Render_ColliderBox(false);
+
+    for (int i = 0; i < m_Colliders.size(); ++i)
+    {
+        m_Colliders[i]->Render_ColliderBox(true);
+    }
+
     return S_OK;
 }
 
 
 void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 {
+    m_Colliders.clear();
+    m_Colliders.resize(position.size());
+
     for (int i = 0; i < position.size(); ++i) {
         m_vecPositions.push_back(position[i]); //위치 넣어줌
 
-        // 위치 대로 콜라이더 큐브 생성해줘야 함
-        // 지형은 움직이는게 아니니까 transfrom 없이 콜라이더 큐브 
+        /* For.Com_Collider */
+        CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
+        Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
+		Desc.fOffSetX = position[i].x; Desc.fOffSetY = position[i].y; Desc.fOffsetZ = position[i].z;
+        Desc.pTransformCom = m_pTransformCom;
+        if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+            TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_Colliders[i]), &Desc)))
+        {
+
+        }
 
     }
 }
@@ -76,14 +111,6 @@ HRESULT CBreakableCube::Ready_Components()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
-
-    ///* For.Com_Collider */
-    //CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-    //Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
-    //Desc.pTransformCom = m_pTransformCom;
-    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-    //    TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
-    //    return E_FAIL;
 
     /* For.Com_Shader */
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect"),
@@ -129,5 +156,9 @@ void CBreakableCube::Free()
     __super::Free();
     Safe_Release(m_pVIBufferCom);
     //Safe_Release(m_pColliderCom);
+
+	for (CCollider_Cube* m_Colliders : m_Colliders)
+		Safe_Release(m_Colliders);
+
     Safe_Release(m_pShaderCom);
 }

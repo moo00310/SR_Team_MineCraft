@@ -26,8 +26,9 @@ public:
 	virtual void OnPushPool(){}
 
 public:
-	class CComponent* Find_Component(const _tchar* pComponentTag);
-	class CGameInstance* Get_GameInstance();
+	class CComponent*		Find_Component(const _tchar* pComponentTag);
+	class list<CComponent*> Find_Component_All(const _tchar* pComponentTag);
+	class CGameInstance*	Get_GameInstance();
 
 public:
 	_bool	Get_isDestroy();
@@ -44,7 +45,7 @@ protected:
 	class CGameInstance*			m_pGameInstance = { nullptr };
 
 protected:
-	map<const _wstring, class CComponent*>	m_Components;
+	multimap<const _wstring, class CComponent*>	m_Components;
 
 private:
 	_bool	m_isDestroyed{ false };

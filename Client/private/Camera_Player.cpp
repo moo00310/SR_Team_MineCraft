@@ -97,19 +97,26 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     {
         _float fDist;
         CGameObject* pHitObject;
+		CComponent* pHitComponent;
 
-        pHitObject =  m_pGameInstance->Ray_Cast(
+        pHitObject = m_pGameInstance->Ray_Cast_InstancingObject(
             m_vHeadPos,
             m_pTransformCom->Get_State(CTransform::STATE_LOOK),
             5.f,
             COLLISION_BLOCK,
-            fDist);
+            fDist, &pHitComponent);
 
         if (pHitObject)
         {
-            if (!pHitObject->Get_isDestroy()) {
+            pHitComponent;//어떤 콜라이더를 건들였는지 알 수 있음
+			//근데 ... 이걸 어떻게 쓸지는 모르겠다
+
+
+            int a = 10;
+            /*if (!pHitObject->Get_isDestroy())  //이거 하면 청크(?)별로 사라지드라
+            {
                 pHitObject->Destroy();
-            }
+            }*/
         }
 
     }

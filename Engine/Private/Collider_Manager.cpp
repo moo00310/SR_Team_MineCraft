@@ -101,7 +101,8 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 	CCollider_Cube::COLLSION_DIR OutDir = CCollider_Cube::COLLSION_DIR::NONE;
 
 	CComponent* pMyCollider = pCollider;
-	CComponent* pOtherCollider = nullptr;
+	//CComponent* pOtherCollider = nullptr;
+	list<CComponent*> ColliderList;
 
 	for (auto& iter : m_pGameObjects[iGroupIndex])
 	{
@@ -110,36 +111,32 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 
 		if (iter->Get_isDestroy())
 			continue;
-		pOtherCollider = dynamic_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
+		ColliderList = iter->Find_Component_All(TEXT("Com_Collider_Cube"));
 		
-		if (!pOtherCollider)
-			continue;
-
-		// 자기 자신과의 충돌 방지
-		if (pOtherCollider == pMyCollider)
-			continue;
-
-		switch (eCollisionType)
+		for (auto& pCollider : ColliderList)
 		{
-		case Engine::CCollider_Manager::COLLSIION_CUBE:
-			if (pOtherCollider == nullptr)
+			if (pCollider == nullptr)
 				continue;
-
-			if (static_cast<CCollider_Cube*>(pMyCollider)->Collision_Check(
-				static_cast<CCollider_Cube*>(pOtherCollider), &OutDistance, &OutDir))
+			if (pCollider == pMyCollider)
+				continue;
+			switch (eCollisionType)
 			{
-				// 충돌한 오브젝트와 충돌 방향을 저장
-				CCollider_Cube::COLLISION_INFO tInfo;
-				tInfo.pGameObject = iter;
-				tInfo.eCollisionDir = OutDir;  // 충돌 방향 저장
-				tInfo.vDepth = OutDistance;  // 충돌 거리 저장
-
-				Collision_Infos.push_back(tInfo); // 벡터에 추가
+			case Engine::CCollider_Manager::COLLSIION_CUBE:
+				if (pCollider == nullptr)
+					continue;
+				if (static_cast<CCollider_Cube*>(pMyCollider)->Collision_Check(
+					static_cast<CCollider_Cube*>(pCollider), &OutDistance, &OutDir))
+				{
+					CCollider_Cube::COLLISION_INFO tInfo;
+					tInfo.pGameObject = iter;
+					tInfo.eCollisionDir = OutDir;
+					tInfo.vDepth = OutDistance;
+					Collision_Infos.push_back(tInfo);
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-
-		default:
-			break;
 		}
 	}
 
@@ -164,67 +161,78 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 	for (auto& iter : m_pGameObjects[eGroup])
 	{
 		// 오브젝트의 OBB(Collider) 정보 가져오기
-		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter->Find_Component(TEXT("Com_Collider_Cube")));
-		CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
-		const _float4x4* pWorldMatrix = CubeDesc.pTransformCom->Get_WorldMatrix();
-		const _float3 halfSize = { CubeDesc.fRadiusX, CubeDesc.fRadiusY, CubeDesc.fRadiusZ };
+		list<CComponent*> Colliders = iter->Find_Component_All(TEXT("Com_Collider_Cube"));
 
-		// OBB 중심 및 로컬 축 추출
-		_float3 obbCenter(pWorldMatrix->_41, pWorldMatrix->_42, pWorldMatrix->_43);
-		_float3 axes[3] = {
-			_float3(pWorldMatrix->_11, pWorldMatrix->_12, pWorldMatrix->_13),
-			_float3(pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23),
-			_float3(pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33)
-		};
+		if (Colliders.empty())
+			continue;
 
-		// 각 축 정규화
-		D3DXVec3Normalize(&axes[0], &axes[0]);
-		D3DXVec3Normalize(&axes[1], &axes[1]);
-		D3DXVec3Normalize(&axes[2], &axes[2]);
-
-		// 레이와 OBB의 교차 검사 (Slab 방식)
-		_float tMin = 0.f;
-		_float tMax = FLT_MAX;
-		_bool hit = true; // OBB와의 충돌 여부
-
-		for (int i = 0; i < 3; ++i)
+		for (CComponent* pCollider : Colliders)
 		{
-			_float3 lValue = obbCenter - rayOrigin;
-			_float e = D3DXVec3Dot(&axes[i], &lValue);
-			_float f = D3DXVec3Dot(&axes[i], &vNormalRayDir);
+			CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(pCollider);
+			if (nullptr == pOtherCollider)
+				continue;
 
-			if (fabs(f) > 1e-5f) // 레이가 축과 평행하지 않다면
+			CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
+			const _float4x4* pWorldMatrix = CubeDesc.pTransformCom->Get_WorldMatrix();
+			const _float3 halfSize = { CubeDesc.fRadiusX, CubeDesc.fRadiusY, CubeDesc.fRadiusZ };
+
+			// OBB 중심 및 로컬 축 추출
+			_float3 obbCenter(pWorldMatrix->_41, pWorldMatrix->_42, pWorldMatrix->_43);
+			_float3 axes[3] = {
+				_float3(pWorldMatrix->_11, pWorldMatrix->_12, pWorldMatrix->_13),
+				_float3(pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23),
+				_float3(pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33)
+			};
+
+			// 각 축 정규화
+			D3DXVec3Normalize(&axes[0], &axes[0]);
+			D3DXVec3Normalize(&axes[1], &axes[1]);
+			D3DXVec3Normalize(&axes[2], &axes[2]);
+
+			// 레이와 OBB의 교차 검사 (Slab 방식)
+			_float tMin = 0.f;
+			_float tMax = FLT_MAX;
+			_bool hit = true; // OBB와의 충돌 여부
+
+			for (int i = 0; i < 3; ++i)
 			{
-				_float t1 = (e - halfSize[i]) / f;
-				_float t2 = (e + halfSize[i]) / f;
+				_float3 lValue = obbCenter - rayOrigin;
+				_float e = D3DXVec3Dot(&axes[i], &lValue);
+				_float f = D3DXVec3Dot(&axes[i], &vNormalRayDir);
 
-				if (t1 > t2)
-					std::swap(t1, t2);
-
-				tMin = max(tMin, t1);
-				tMax = min(tMax, t2);
-
-				if (tMin > tMax) // 교차 없음
+				if (fabs(f) > 1e-5f) // 레이가 축과 평행하지 않다면
 				{
-					hit = false;
-					break;
+					_float t1 = (e - halfSize[i]) / f;
+					_float t2 = (e + halfSize[i]) / f;
+
+					if (t1 > t2)
+						std::swap(t1, t2);
+
+					tMin = max(tMin, t1);
+					tMax = min(tMax, t2);
+
+					if (tMin > tMax) // 교차 없음
+					{
+						hit = false;
+						break;
+					}
+				}
+				else // 레이가 축과 평행한 경우
+				{
+					if (-e - halfSize[i] > 0.0f || -e + halfSize[i] < 0.0f)
+					{
+						hit = false;
+						break;
+					}
 				}
 			}
-			else // 레이가 축과 평행한 경우
-			{
-				if (-e - halfSize[i] > 0.0f || -e + halfSize[i] < 0.0f)
-				{
-					hit = false;
-					break;
-				}
-			}
-		}
 
-		// 가장 가까운 충돌 지점 찾기
-		if (hit && tMin <= maxDistance && tMin < closestDist)
-		{
-			closestDist = tMin;
-			closestObject = iter;
+			// 가장 가까운 충돌 지점 찾기
+			if (hit && tMin <= maxDistance && tMin < closestDist)
+			{
+				closestDist = tMin;
+				closestObject = iter;
+			}
 		}
 	}
 
@@ -241,6 +249,113 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 	return nullptr;
 }
 
+
+CGameObject* CCollider_Manager::Ray_Cast_InstancingObject(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, _uint iGroupIndex, _Out_ _float& fDist, _Out_ CComponent**  ppOutCollider)
+{
+	fDist = 0.f;
+
+	if (ppOutCollider)
+		*ppOutCollider = nullptr;
+
+	// 레이 방향 벡터 정규화
+	_float3 vNormalRayDir;
+	D3DXVec3Normalize(&vNormalRayDir, &rayDir);
+
+	CGameObject* closestObject = nullptr;
+	_float closestDist = FLT_MAX;
+	CComponent* closestCollider = nullptr; // 충돌한 콜라이더를 저장할 변수
+
+	// 해당 그룹에 속한 모든 오브젝트 검사
+	for (auto& iter : m_pGameObjects[iGroupIndex])
+	{
+		// 오브젝트의 OBB(Collider) 정보 가져오기
+		list<CComponent*> Colliders = iter->Find_Component_All(TEXT("Com_Collider_Cube"));
+
+		if (Colliders.empty())
+			continue;
+
+		for (CComponent* pCollider : Colliders)
+		{
+			CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(pCollider);
+			if (nullptr == pOtherCollider)
+				continue;
+
+			CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
+
+			// 오프셋을 이용한 OBB의 중심 계산
+			_float3 obbCenter = { CubeDesc.fOffSetX, CubeDesc.fOffSetY, CubeDesc.fOffsetZ };
+			const _float3 halfSize = { CubeDesc.fRadiusX, CubeDesc.fRadiusY, CubeDesc.fRadiusZ };
+
+			// 각 축 정규화
+			_float3 axes[3] = {
+				_float3(1.f, 0.f, 0.f),  // X축
+				_float3(0.f, 1.f, 0.f),  // Y축
+				_float3(0.f, 0.f, 1.f)   // Z축
+			};
+
+			// 레이와 OBB의 교차 검사 (Slab 방식)
+			_float tMin = 0.f;
+			_float tMax = FLT_MAX;
+			_bool hit = true; // OBB와의 충돌 여부
+
+			for (int i = 0; i < 3; ++i)
+			{
+				_float3 lValue = obbCenter - rayOrigin;
+				_float e = D3DXVec3Dot(&axes[i], &lValue);
+				_float f = D3DXVec3Dot(&axes[i], &vNormalRayDir);
+
+				if (fabs(f) > 1e-5f) // 레이가 축과 평행하지 않다면
+				{
+					_float t1 = (e - halfSize[i]) / f;
+					_float t2 = (e + halfSize[i]) / f;
+
+					if (t1 > t2)
+						std::swap(t1, t2);
+
+					tMin = max(tMin, t1);
+					tMax = min(tMax, t2);
+
+					if (tMin > tMax) // 교차 없음
+					{
+						hit = false;
+						break;
+					}
+				}
+				else // 레이가 축과 평행한 경우
+				{
+					if (-e - halfSize[i] > 0.0f || -e + halfSize[i] < 0.0f)
+					{
+						hit = false;
+						break;
+					}
+				}
+			}
+
+			// 가장 가까운 충돌 지점 찾기
+			if (hit && tMin <= fMaxDistanc && tMin < closestDist)
+			{
+				closestDist = tMin;
+				closestObject = iter;
+				closestCollider = pCollider;  // 충돌한 콜라이더 저장
+			}
+		}
+	}
+
+	// 충돌한 경우
+	if (closestObject)
+	{
+		fDist = closestDist;
+		if (ppOutCollider)  // 충돌한 콜라이더를 반환
+			*ppOutCollider = closestCollider;
+
+		m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, fMaxDistanc, true);
+		return closestObject;
+	}
+
+	// 충돌하지 않은 경우
+	m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, fMaxDistanc, false);
+	return nullptr;
+}
 
 
 
