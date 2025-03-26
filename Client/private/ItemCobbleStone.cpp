@@ -44,6 +44,7 @@ void CItemCobbleStone::Priority_Update(_float fTimeDelta)
 
 void CItemCobbleStone::Update(_float fTimeDelta)
 {
+	__super::Update(fTimeDelta);
 }
 
 void CItemCobbleStone::Late_Update(_float fTimeDelta)

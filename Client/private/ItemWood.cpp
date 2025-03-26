@@ -44,6 +44,8 @@ void CItemWood::Priority_Update(_float fTimeDelta)
 
 void CItemWood::Update(_float fTimeDelta)
 {
+    __super::Update(fTimeDelta);
+
 }
 
 void CItemWood::Late_Update(_float fTimeDelta)

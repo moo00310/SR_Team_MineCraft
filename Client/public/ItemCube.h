@@ -42,7 +42,8 @@ protected:
 	bool m_bRenderActive = true;
 
 	CVIBuffer_Cube* m_pVIBufferCom = { nullptr };
-	CCollider_Cube* m_pColliderCom = { nullptr };
+	//CCollider_Cube* m_pColliderCom = { nullptr };
+	CRigidbody* m_pRigidbodyCom = { nullptr };	
 
 	int m_iUpDownFrame;
 	float m_fUpDownSpeed;

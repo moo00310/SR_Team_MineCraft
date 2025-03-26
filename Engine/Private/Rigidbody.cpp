@@ -41,10 +41,12 @@ HRESULT CRigidbody::Initialize(void* pArg)
 	return S_OK;
 }
 
-#include <algorithm> // std::clamp 사용
+//#include <algorithm> // std::clamp 사용
 
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
+	/*아 이것도 충돌먼저 체크하고 떨어지는 부분을 뒤로 두고 싶은데 점프가 안되서... 일단 냅둠*/
+
 	m_isGrounded = false;
 
 	Fall_With_Gravity(fTimeDelta);
@@ -121,6 +123,29 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 			m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
 		}
+	}
+
+	Compute_Velocity(fTimeDelta);
+
+	return S_OK;
+}
+
+HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist)
+{
+	m_isGrounded = false;
+
+	_float fDist{ 0.f };
+	CGameObject* pGameObject{ nullptr };
+	//레이케스트로 땅 검사
+	pGameObject = m_pGameInstance->Ray_Cast(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup, fDist);
+	if (pGameObject)
+	{
+		m_isGrounded = true;
+		m_vVelocity.y = 0.f;
+	}
+	else
+	{
+		Fall_With_Gravity(fTimeDelta);
 	}
 
 	Compute_Velocity(fTimeDelta);

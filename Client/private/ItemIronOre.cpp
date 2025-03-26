@@ -44,6 +44,8 @@ void CItemIronOre::Priority_Update(_float fTimeDelta)
 
 void CItemIronOre::Update(_float fTimeDelta)
 {
+    __super::Update(fTimeDelta);
+
 }
 
 void CItemIronOre::Late_Update(_float fTimeDelta)
