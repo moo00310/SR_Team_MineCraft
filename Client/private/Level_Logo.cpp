@@ -13,8 +13,6 @@ CLevel_Logo::CLevel_Logo(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_Logo::Initialize()
 {
-	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, false);
-
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 

@@ -21,7 +21,7 @@ HRESULT CPlayerHP::Initialize(void* pArg)
     m_iHpIndex = (int*)pArg;
     m_iHpCount= *m_iHpIndex;
 
-    /* m_iTextureNum == 1*/
+    m_iTextureNum = 1;
     Desc.fSizeX = 30.f;
     Desc.fSizeY = 30.f;
     Desc.fX = 350.f + (m_iHpCount * 35.f);
