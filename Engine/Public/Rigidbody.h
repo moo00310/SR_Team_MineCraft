@@ -22,6 +22,7 @@ public:
 	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
+	HRESULT Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist);
 
 public:
 	_bool	Jump();

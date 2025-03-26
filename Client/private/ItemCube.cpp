@@ -44,6 +44,7 @@ void CItemCube::Priority_Update(_float fTimeDelta)
 
 void CItemCube::Update(_float fTimeDelta)
 {
+    m_pRigidbodyCom->Update_RayCast(fTimeDelta, COLLISION_BLOCK, 0.5f);
 }
 
 void CItemCube::Late_Update(_float fTimeDelta)
@@ -127,6 +128,24 @@ HRESULT CItemCube::Ready_Components()
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
 
+    ///* For.Com_Collider */
+    //CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
+    //Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
+    //Desc.pTransformCom = m_pTransformCom;
+    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+    //    TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
+    //    return E_FAIL;
+
+	/* For.Com_Rigidbody */
+	CRigidbody::RIGIDBODY_DESC RigidbodyDesc{};
+	RigidbodyDesc.pTransform = m_pTransformCom;
+	//RigidbodyDesc.pCollider_Cube = m_pColliderCom;
+	RigidbodyDesc.fMass = 1.f;
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
+		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
+		return E_FAIL;
+
+
 
     return S_OK;
 }
@@ -162,4 +181,5 @@ void CItemCube::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);
+    //Safe_Release(m_pColliderCom);
 }

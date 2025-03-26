@@ -41,6 +41,8 @@ void CItemDirt::Priority_Update(_float fTimeDelta)
 
 void CItemDirt::Update(_float fTimeDelta)
 {
+    __super::Update(fTimeDelta);
+
 }
 
 void CItemDirt::Late_Update(_float fTimeDelta)
