@@ -21,10 +21,7 @@ HRESULT CItemDirt::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-    m_fUpDownSpeed = 0.005f;
-    m_iUpDownFrame = 0;
 
-    m_pTransformCom->Scaling(0.3, 0.3, 0.3);
     return S_OK;
 }
 

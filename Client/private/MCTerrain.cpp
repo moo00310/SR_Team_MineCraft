@@ -28,14 +28,14 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
-    CheckRenderLayerObjects();
+    //CheckRenderLayerObjects();
     return S_OK;
 }
 
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
-    OffAllChunkLayer();
-    GetPlayerChunk();
+    //OffAllChunkLayer();
+    //GetPlayerChunk();
 }
 
 void CMCTerrain::Update(_float fTimeDelta)
@@ -72,9 +72,6 @@ CGameInstance* CMCTerrain::GetGameInstance()
    return m_pGameInstance; 
 }
 
-#pragma region 파일 읽기 with 쓰레드
-CRITICAL_SECTION cs;
-
 int CMCTerrain::GetFileCount()
 {
     WIN32_FIND_DATA findFileData;
@@ -92,194 +89,8 @@ int CMCTerrain::GetFileCount()
     return m_iChunkCount;
 }
 
-struct ThreadParams
-{
-    int chunkIndex;
-    CMCTerrain* pTerrain;
-};
-
-DWORD WINAPI ProcessFileReadThread(LPVOID lpParam)
-{
-    ThreadParams* params = (ThreadParams*)lpParam;
-    int chunkIndex = params->chunkIndex;
-    CMCTerrain* pTerrain = params->pTerrain;
-
-    if (!pTerrain) return 1;
-    CGameInstance* pGameInstance = pTerrain->GetGameInstance();
-
-    wchar_t filename[100];
-    swprintf(filename, 100, L"../bin/Resources/DataFiles/BlockDataChunk%d.txt", chunkIndex);
-
-    wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
-
-    HANDLE hFile = CreateFile(filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (hFile == INVALID_HANDLE_VALUE) {
-        return 1;
-    }
-
-    DWORD dwBytesRead;
-    BLOCKDESC eblockData;
-    int index = 0;
-
-    while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
-    {
-        CBreakableCube* pCube = nullptr;
-        CBreakableRect* pRect = nullptr;
-        CTree::DESC desc = {};
-        int percent = 999;
-        EnterCriticalSection(&cs);  // 동기화 시작
-        switch (eblockData.eBlockType)
-        {
-        case GRASSDIRT:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GrassDirt"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-                pCube->Set_MyChunk(chunkIndex);
-            }
-            index++;
-            
-            percent= rand() % 100;
-            if (percent < 1) {
-                int randWood = rand() % 3 + 4;
-                int ranLeaf = rand() % 8 + 4;
-
-                desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y+0.5, eblockData.fPosition.z),chunkIndex };
-                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"),LEVEL_YU, layerName, &desc)))
-                    return E_FAIL;
-                index++;
-            }
-            else if (1 <= percent && percent < 5) {
-                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Grass"), LEVEL_YU, layerName)))
-                    return 1;
-                pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-                if (pRect) {
-                    pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y+1, eblockData.fPosition.z));
-                    pRect->Set_MyChunk(chunkIndex);
-                }
-                index++;
-            }
-            else if (5 <= percent && percent < 6) {
-                if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_RedTulip"), LEVEL_YU, layerName)))
-                    return 1;
-                pRect = dynamic_cast<CBreakableRect*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-                if (pRect) {
-                    pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.7, eblockData.fPosition.z));
-                    pRect->Set_MyChunk(chunkIndex);
-                }
-                index++;
-            }
-            break;
-        case DIRT:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-                pCube->Set_MyChunk(chunkIndex);
-            }
-            index++;
-            break;
-        case STONE:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Stone"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-                pCube->Set_MyChunk(chunkIndex);
-            }
-            index++;
-            break;
-        case IRONORE:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_IronOre"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-                pCube->Set_MyChunk(chunkIndex);
-            }
-            index++;
-            break;
-        case COALORE:
-            if (FAILED(pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CoalOre"), LEVEL_YU, layerName)))
-                return 1;
-            pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-            if (pCube) {
-                pCube->SetPos(_float3(eblockData.fPosition));
-                pCube->Set_MyChunk(chunkIndex);
-            }
-            index++;
-            break;
-        default:
-            break;
-        }
-
-        LeaveCriticalSection(&cs);  // 동기화 종료
-    }
-    CloseHandle(hFile);
-
-    //vector<D3DXVECTOR3> stoneVec;
-    //vector<D3DXVECTOR3> dirtVec;
-    //vector<D3DXVECTOR3> grassVec;
-    //vector<D3DXVECTOR3> ironVec;
-    //vector<D3DXVECTOR3> coalVec;
-
-    //while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
-    //{
-    //    CBreakableCube* pCube = nullptr;
-
-    //    EnterCriticalSection(&cs);  // 동기화 시작
-    //    switch (eblockData.eBlockType)
-    //    {
-    //    case GRASSDIRT:
-    //        grassVec.push_back(eblockData.fPosition);
-    //        break;
-    //    case DIRT:
-    //        dirtVec.push_back(eblockData.fPosition);
-    //        break;
-    //    case STONE:
-    //        stoneVec.push_back(eblockData.fPosition);
-    //        break;
-    //    case IRONORE:
-    //        ironVec.push_back(eblockData.fPosition);
-    //        break;
-    //    case COALORE:
-    //        coalVec.push_back(eblockData.fPosition);
-    //        break;
-    //    default:
-    //        break;
-    //    }
-    //    LeaveCriticalSection(&cs);  // 동기화 종료
-    //}
-    //CloseHandle(hFile);
-
-
-    //EnterCriticalSection(&cs);
-    //vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
-    //    {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
-    //    {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
-    //    {TEXT("Prototype_GameObject_Stone"), &stoneVec},
-    //    {TEXT("Prototype_GameObject_IronOre"), &ironVec},
-    //    {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
-    //};
-
-    //for (size_t i = 0; i < blockTypes.size(); ++i)
-    //{
-    //    pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
-    //    CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
-    //    if (pCube)
-    //        pCube->Set_InstanceBuffer(*(blockTypes[i].second));
-    //}
-    //LeaveCriticalSection(&cs);
-
-    return 0;
-}
-
 HRESULT CMCTerrain::Ready_Layer_BackGround()
 {
-    InitializeCriticalSection(&cs); // CRITICAL_SECTION 초기화
 
     int fileCount = GetFileCount();
     if (fileCount == 0) {
@@ -287,38 +98,85 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         return S_OK;
     }
 
-    HANDLE* hThreads = new HANDLE[fileCount];
-    ThreadParams* params = new ThreadParams[fileCount];
-
     for (int i = 0; i < fileCount; ++i)
     {
-        params[i].chunkIndex = i;
-        params[i].pTerrain = this;
+        wchar_t filename[100];
+        swprintf(filename, 100, L"../bin/Resources/DataFiles/BlockDataChunk%d.txt", i);
 
-        hThreads[i] = CreateThread(NULL, 0, ProcessFileReadThread, &params[i], 0, NULL);
-        if (!hThreads[i]) {
-            delete[] hThreads;
-            delete[] params;
-            return E_FAIL;
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", i);
+
+        HANDLE hFile = CreateFile(filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (hFile == INVALID_HANDLE_VALUE) {
+            return 1;
         }
+
+
+        DWORD dwBytesRead;
+        BLOCKDESC eblockData;
+        int index = 0;
+
+        vector<D3DXVECTOR3> stoneVec;
+        vector<D3DXVECTOR3> dirtVec;
+        vector<D3DXVECTOR3> grassVec;
+        vector<D3DXVECTOR3> ironVec;
+        vector<D3DXVECTOR3> coalVec;
+
+        while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
+        {
+
+            switch (eblockData.eBlockType)
+            {
+            case GRASSDIRT:
+                grassVec.push_back(eblockData.fPosition);
+                break;
+            case DIRT:
+                dirtVec.push_back(eblockData.fPosition);
+                break;
+            case STONE:
+                stoneVec.push_back(eblockData.fPosition);
+                break;
+            case IRONORE:
+                ironVec.push_back(eblockData.fPosition);
+                break;
+            case COALORE:
+                coalVec.push_back(eblockData.fPosition);
+                break;
+            default:
+                break;
+            }
+        }
+        CloseHandle(hFile);
+
+
+        vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
+            {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
+            {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
+            {TEXT("Prototype_GameObject_Stone"), &stoneVec},
+            {TEXT("Prototype_GameObject_IronOre"), &ironVec},
+            {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
+        };
+
+
+        for (size_t i = 0; i < blockTypes.size(); ++i)
+        {
+            m_pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
+            CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
+            if (pCube) {
+                pCube->Set_InstanceBuffer(*(blockTypes[i].second));
+                pCube->Set_MyChunk(i);
+                pCube->Set_BlockPositions(*(blockTypes[i].second));
+            }
+                
+        }
+
+
+
     }
-
-    WaitForMultipleObjects(fileCount, hThreads, TRUE, INFINITE);
-
-    for (int i = 0; i < fileCount; ++i)
-    {
-        CloseHandle(hThreads[i]);
-    }
-
-    delete[] hThreads;
-    delete[] params;
-
-    DeleteCriticalSection(&cs); // CRITICAL_SECTION 삭제
 
     MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
     return S_OK;
 }
-#pragma endregion
 
 #include <unordered_set>
 

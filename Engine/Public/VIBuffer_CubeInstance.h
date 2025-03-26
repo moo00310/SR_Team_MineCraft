@@ -28,6 +28,8 @@ private:
 	IDirect3DVertexBuffer9* m_pInstanceVB = nullptr;
 	UINT m_iNumInstances = 0;
 	UINT m_iInstanceStride = 0;
+
+	IDirect3DVertexDeclaration9* pVertexDecl = nullptr;
 public:
 	static CVIBuffer_CubeInstance* Create(LPDIRECT3DDEVICE9 pGraphic_Device, CUBE tInfo);
 	virtual CComponent* Clone(void* pArg) override;

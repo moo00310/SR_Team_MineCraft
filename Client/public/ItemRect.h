@@ -4,21 +4,23 @@
 #include "Client_Defines.h"
 #include "Cube.h"
 #include "Transform.h"
-#include "ItemCube.h"
-#include "ItemRect.h"
-
 
 BEGIN(Engine)
-class CVIBuffer_Rect3D;
-class CCollider_Cube;
+class CVIBuffer_Rect;
+class CShader;
 END
 
-class CBreakableRect : public CCube
+class CItemRect : public CCube
 {
 public:
-	CBreakableRect(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CBreakableRect(const CBreakableRect& Prototype);
-	virtual ~CBreakableRect() = default;
+	typedef struct ItemPosition
+	{
+		_float3 position;
+	}DESC;
+public:
+	CItemRect(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CItemRect(const CItemRect& Prototype);
+	virtual ~CItemRect() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -27,27 +29,22 @@ public:
 	virtual void Update(_float fTimeDelta)override; 
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
-
 public:
 	void SetPos(_float3 v3) { m_pTransformCom->Set_State(CTransform::STATE_POSITION, v3); }
 	_float3 GetPos() { return m_pTransformCom->Get_State(CTransform::STATE_POSITION); }
 	void SetMatrix(const _float4x4& mat) { m_pTransformCom->MultiplyMatrix(mat); }
-	void Set_RenderActive(bool _b) { m_bRenderActive = _b; }
-	bool Get_RenderActive() { return m_bRenderActive; }
-	void Set_MyChunk(int _num) { m_iMyChunk = _num; } //아이템 어떤 청크레이어에 생성할 지 필요
+	HRESULT Set_ItemTypeAndBindTexture(ITEMTYPE _type);
 protected:
 	HRESULT Ready_Components();
-	bool m_bRenderActive = true;
 
-	CVIBuffer_Rect3D* m_pVIBufferCom = { nullptr};
-	CCollider_Cube* m_pColliderCom = { nullptr };
-	
-	int m_iMyChunk = 0;
+	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
-	bool m_bItemSpawn = false;
+	int m_iUpDownFrame;
+	float m_fUpDownSpeed;
 
+	ITEMTYPE m_eItemType;
 public:
-	static CBreakableRect* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CItemRect* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };
