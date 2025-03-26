@@ -10,6 +10,9 @@ static const _wstring PROTOTYPE_COMPONENT_TEXTURE_RAIN = TEXT("Prototype_Compone
 // 비 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN = TEXT("Prototype_GameObject_ParticleRain");
 
+// 비 UI파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_UI_PARTICLE_RAIN = TEXT("Prototype_GameObject_UIParticleRain");
+
 // 달리기 텍스쳐.
 static const _wstring PROTOTYPE_COMPONENT_TEXTURE_DASH = TEXT("Prototype_Component_Texture_Dash");
 
@@ -37,6 +40,9 @@ static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING = TEXT("Prototyp
 
 // 비 파티클 레이어.
 static const _wstring LAYER_PARTICLE_RAIN = TEXT("Layer_ParticleRain");
+
+// UI비 파티클 레이어.
+static const _wstring LAYER_UI_PARTICLE_RAIN = TEXT("Layer_UIParticleRain");
 
 // 달리기 파티클 레이어.
 static const _wstring LAYER_PARTICLE_DASH = TEXT("Layer_ParticleDash");

@@ -19,7 +19,7 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_Logo(TEXT("Layer_Logo"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_RainParticle(LAYER_PARTICLE_RAIN)))
+	if (FAILED(Ready_Layer_RainParticle(LAYER_UI_PARTICLE_RAIN)))
 		return E_FAIL;
 
 	return S_OK;
@@ -127,7 +127,7 @@ HRESULT CLevel_Logo::Ready_Layer_Logo(const _wstring& strLayerTag)
 
 HRESULT CLevel_Logo::Ready_Layer_RainParticle(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_UI_PARTICLE_RAIN,
 		LEVEL_LOGO, strLayerTag)))
 		return E_FAIL;
 

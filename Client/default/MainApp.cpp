@@ -20,6 +20,7 @@
 #include "ParticleSandMining.h"
 #include "ParticleWoodMining.h"
 #include "ParticleSandDestroy.h"
+#include "UIParticleRain.h"
 
 
 CMainApp::CMainApp()
@@ -246,6 +247,11 @@ HRESULT CMainApp::Ready_Texture()
 	// 비 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
 		CParticleRain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// UI 비 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_UI_PARTICLE_RAIN,
+		CUIParticleRain::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	
 	// 달리기 파티클.

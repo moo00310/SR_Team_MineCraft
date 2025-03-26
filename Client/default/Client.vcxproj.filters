@@ -238,6 +238,9 @@
     <Filter Include="02.GameObjects\00.Cube\ItemObj">
       <UniqueIdentifier>{ce8c2ebb-f3bb-40a8-92ce-87cef72f8883}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\06.UIParticle">
+      <UniqueIdentifier>{1b18e013-c1c8-40bf-99cf-d90c6df75a78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -512,6 +515,9 @@
     <ClInclude Include="..\public\ItemRect.h">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UIParticleRain.h">
+      <Filter>03.UI\06.UIParticle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -772,6 +778,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ItemRect.cpp">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UIParticleRain.cpp">
+      <Filter>03.UI\06.UIParticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
