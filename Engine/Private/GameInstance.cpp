@@ -242,6 +242,16 @@ CGameObject* CGameInstance::Ray_Cast(const _float3& vRayOrigin, const _float3& v
 
 	return m_pCollider_Manager->Ray_Cast(vRayOrigin, vRayDir, fMaxDistance, iGroup, fDist);
 }
+
+CGameObject* CGameInstance::Ray_Cast_InstancingObject(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist, _Out_ CComponent** ppOutCollider)
+{
+	fDist = 0.f;
+
+	if (nullptr == m_pCollider_Manager)
+		return nullptr;
+
+	return m_pCollider_Manager->Ray_Cast_InstancingObject(vRayOrigin, vRayDir, fMaxDistance, iGroup, fDist, ppOutCollider);
+}
 #pragma endregion
 
 #pragma region KEY_MANAGER

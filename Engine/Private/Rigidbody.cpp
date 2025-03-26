@@ -45,6 +45,13 @@ HRESULT CRigidbody::Initialize(void* pArg)
 
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
+	// 델타타임이 너무 크면 리턴 (예: 0.2f 이상일 경우)
+	const _float MAX_DELTA_TIME = 0.2f;
+	if (fTimeDelta > MAX_DELTA_TIME)
+	{
+		return S_OK;  // 델타타임이 너무 크면 처리하지 않고 리턴
+	}
+
 	/*아 이것도 충돌먼저 체크하고 떨어지는 부분을 뒤로 두고 싶은데 점프가 안되서... 일단 냅둠*/
 
 	m_isGrounded = false;

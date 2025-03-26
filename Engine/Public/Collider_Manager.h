@@ -38,6 +38,16 @@ public:
 		_Out_ _float& fDist						//충돌 지점과의 거리
 	);
 
+	//인스턴싱된 블럭들은 트랜스폼으 이용해서 충돌 처리불가
+	CGameObject* Ray_Cast_InstancingObject(
+		const _float3& rayOrigin,					//레이 시작점
+		const _float3& rayDir,						//레이 방향
+		_float fMaxDistanc,							//최대 충돌 범위
+		_uint iGroupIndex,							//충돌 할 그룹
+		_Out_ _float& fDist,					//충돌 지점과의 거리
+		_Out_ CComponent** ppOutCollider
+	);
+
 	void  Render();
 private:
 	CLineManager*	m_pLineManager{ nullptr };

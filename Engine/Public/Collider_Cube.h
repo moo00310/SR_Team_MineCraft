@@ -36,10 +36,13 @@ public:
 	HRESULT Initialize_Prototype();
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update_ColliderBox();
+	HRESULT SetUp_RenderState();
+	HRESULT Release_RenderState();
 	HRESULT Render_ColliderBox(_bool isHit);
 	_bool	Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLSION_DIR* pOutDir = nullptr);
 public:
-	COLLCUBE_DESC& Get_Desc() { return m_StateDesc; }
+	COLLCUBE_DESC&	Get_Desc() { return m_StateDesc; }
+	void			Set_Desc(COLLCUBE_DESC& Desc) { m_StateDesc = Desc; }
 
 private:
 	_float3						m_vPoint[8];
