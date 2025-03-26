@@ -24,16 +24,16 @@ HRESULT CLevel_Hyeok::Initialize()
 	/*if (FAILED(Ready_Layer_TestParticle(TEXT("Layer_TestParticle"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Layer_RainParticle(LAYER_PARTICLE_RAIN)))
+	if (FAILED(Ready_Layer_RainParticle(LAYER_PARTICLE)))
 		return E_FAIL;
 
 	/*if (FAILED(Ready_Layer_DigParticle(TEXT("Layer_ParticleDig"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE_DASH)))
+	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Sand_DestroyParticle(LAYER_PARTICLE_SAND_DESTROY)))
+	if (FAILED(Ready_Layer_Sand_DestroyParticle(LAYER_PARTICLE)))
 		return E_FAIL;
 
 	return S_OK;

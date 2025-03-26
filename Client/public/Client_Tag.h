@@ -38,22 +38,7 @@ static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING = TEXT("Prototyp
 
 #pragma region LAYER_TAG
 
-// 비 파티클 레이어.
-static const _wstring LAYER_PARTICLE_RAIN = TEXT("Layer_ParticleRain");
-
-// UI비 파티클 레이어.
-static const _wstring LAYER_UI_PARTICLE_RAIN = TEXT("Layer_UIParticleRain");
-
-// 달리기 파티클 레이어.
-static const _wstring LAYER_PARTICLE_DASH = TEXT("Layer_ParticleDash");
-
-// 흙 채굴 레이어.
-static const _wstring LAYER_PARTICLE_SAND_MINING = TEXT("Layer_ParticleSandMining");
-
-// 흙 파괴 레이어.
-static const _wstring LAYER_PARTICLE_SAND_DESTROY = TEXT("Layer_ParticleSandDestroy");
-
-// 나무 채굴 레이어.
-static const _wstring LAYER_PARTICLE_WOOD_MINING = TEXT("Layer_ParticleWoodMining");
+// 파티클 레이어.
+static const _wstring LAYER_PARTICLE = TEXT("Layer_Particle");
 
 #pragma endregion

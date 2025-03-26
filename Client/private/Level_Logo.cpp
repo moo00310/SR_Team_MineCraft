@@ -19,7 +19,7 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_Logo(TEXT("Layer_Logo"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_RainParticle(LAYER_UI_PARTICLE_RAIN)))
+	if (FAILED(Ready_Layer_RainParticle(LAYER_PARTICLE)))
 		return E_FAIL;
 
 	return S_OK;
