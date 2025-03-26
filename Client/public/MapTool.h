@@ -26,9 +26,12 @@ private:
 
 	bool m_bMainFrame = true;
 	bool m_bMapFrame = false;
+	bool m_bCaveFrame = false;
+	bool m_bMapCaveFrame = false;
 	bool m_bMapHeightFrame = false;
 
 	LPDIRECT3DTEXTURE9 heightMapTexture = nullptr;
+	LPDIRECT3DTEXTURE9 caveTexture = nullptr;
 	float m_fFrequency = 0.01f; //작을수록 부드러움, 클수록 더 세밀함
 	int m_iSeed = 12345; //다양한 종류의 맵
 

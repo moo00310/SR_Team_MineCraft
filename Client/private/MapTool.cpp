@@ -60,13 +60,46 @@ HRESULT CMapTool::Render()
 
 #pragma region MainFrame
     if (m_bMainFrame) {
-        ImGui::SetNextWindowSize(ImVec2(300, 300));
+        ImGui::SetNextWindowSize(ImVec2(400, 300));
         ImGui::Begin("Map Tool");
 
-        if (ImGui::Button("Make Height Map", ImVec2(150, 150))) {
+        if (ImGui::Button("X -"))
+            m_iMapX = max(4, m_iMapX - 16);
+        ImGui::SameLine();
+        ImGui::Text("MapX Size: %d", m_iMapX);
+        ImGui::SameLine();
+        if (ImGui::Button("X +"))
+            m_iMapX = min(256, m_iMapX + 16);
+
+        if (ImGui::Button("Z -"))
+            m_iMapZ = max(4, m_iMapZ - 16);
+        ImGui::SameLine();
+        ImGui::Text("MapZ Size: %d", m_iMapZ);
+        ImGui::SameLine();
+        if (ImGui::Button("Z +"))
+            m_iMapZ = min(256, m_iMapZ + 16);
+
+        if (ImGui::Button("Make Height Map", ImVec2(150, 50))) {
             m_bMainFrame = false;
             m_bMapFrame = true;
         }
+
+        if (ImGui::Button("Make Cave Map", ImVec2(150, 50))) {
+            m_bMainFrame = false;
+            m_bCaveFrame = true;
+        }
+
+        if (ImGui::Button("Generation", ImVec2(200, 50))) {
+            TerrainGenerationWithNoise();
+        }
+        ImGui::SameLine();
+        ImGui::Text("less than 64x64 Good");
+
+        if (ImGui::Button("SaveData", ImVec2(200, 50))) {
+            SaveData();
+        }
+        ImGui::SameLine();
+        ImGui::Text("Save To File");
 
         ImGui::End();
     }
@@ -81,22 +114,6 @@ HRESULT CMapTool::Render()
             m_bMapFrame = false;
             m_bMainFrame = true;
         }
-
-        if (ImGui::Button("X -"))
-            m_iMapX = max(4, m_iMapX -16);
-        ImGui::SameLine();
-        ImGui::Text("MapX Size: %d", m_iMapX);
-        ImGui::SameLine();
-        if (ImGui::Button("X +"))
-            m_iMapX = min(256, m_iMapX +16);
-
-        if (ImGui::Button("Z -"))
-            m_iMapZ = max(4, m_iMapZ -16);
-        ImGui::SameLine();
-        ImGui::Text("MapZ Size: %d", m_iMapZ);
-        ImGui::SameLine();
-        if (ImGui::Button("Z +"))
-            m_iMapZ = min(256, m_iMapZ +16);
 
         ImGui::SliderInt("Seed", &m_iSeed, 0, 99999);
         ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
@@ -113,18 +130,31 @@ HRESULT CMapTool::Render()
             m_bMapHeightFrame = true;
         }
 
-        if (ImGui::Button("Generation", ImVec2(200, 50))) {
-            TerrainGenerationWithNoise();
-        }
-        ImGui::SameLine();
-        ImGui::Text("less than 64x64 Good");
+        ImGui::End();
+    }
+#pragma endregion
 
-        if (ImGui::Button("SaveData", ImVec2(200, 50))) {
-            SaveData();
-        }
-        ImGui::SameLine();
-        ImGui::Text("Save To File");
+#pragma region CaveFrame
+    if (m_bCaveFrame) {
+        ImGui::SetNextWindowSize(ImVec2(400, 400));
+        ImGui::Begin("Cave Map");
 
+        if (ImGui::Button("To Main", ImVec2(200, 50))) {
+            m_bMapFrame = false;
+            m_bMainFrame = true;
+        }
+
+        ImGui::SliderInt("Seed", &m_iSeed, 0, 99999);
+        ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
+
+        if (ImGui::Button("Show Cave Gray Img", ImVec2(200, 50))) {
+            if (caveTexture) {
+                caveTexture->Release();
+                heightMapTexture = nullptr;
+            }
+            GeneratePerlinNoiseTexture(m_iMapX, m_iMapZ);
+            m_bMapCaveFrame = true;
+        }
 
         ImGui::End();
     }
@@ -133,6 +163,14 @@ HRESULT CMapTool::Render()
 #pragma region 2D이미지창 관련
     if (m_bMapHeightFrame) {
         ImGui::Begin("Height Map 2D", &m_bMapHeightFrame);
+        if (heightMapTexture) {
+            ImGui::Image((ImTextureID)heightMapTexture, ImVec2(256, 256));
+        }
+        ImGui::End();
+    }
+
+    if (m_bMapCaveFrame) {
+        ImGui::Begin("Cave Map 2D", &m_bMapHeightFrame);
         if (heightMapTexture) {
             ImGui::Image((ImTextureID)heightMapTexture, ImVec2(256, 256));
         }
@@ -264,8 +302,8 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
 // 높이 텍스처 생성 함수
 void CMapTool::GeneratePerlinNoiseTexture(int width, int height) {
     FastNoiseLite noise;
-    //noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-    noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
+    noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+    //noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
     noise.SetFrequency(m_fFrequency);
     noise.SetSeed(m_iSeed);
 
@@ -429,5 +467,9 @@ void CMapTool::Free()
     if (heightMapTexture) {
         heightMapTexture->Release();
         heightMapTexture = nullptr;
+    }
+    if (caveTexture) {
+        caveTexture->Release();
+        caveTexture = nullptr;
     }
 }
