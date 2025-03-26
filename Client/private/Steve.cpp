@@ -4,7 +4,6 @@
 #include "Texture.h"
 #include "VIBuffer_Cube.h"
 #include "GameInstance.h"
-#include <iostream>
 #include "UI_Mgr.h"
 
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -132,6 +131,11 @@ void CSteve::Input_Key(_float fTimeDelta)
 
 	if (tCursorInfo.flags == CURSOR_SHOWING)
 		return;
+
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		isAttack = true;
+	}
 
 	Move(fTimeDelta);
 }
@@ -322,29 +326,40 @@ HRESULT CSteve::Ready_Animation()
 	mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-60.f));
 	
 	KEYFREAME Walk_1_F = { 0.f, mat }; //0
-	KEYFREAME Walk_2_F = { 1.0f, mat2 }; //60
-	KEYFREAME Walk_3_F = { 2.0f, mat }; // 0
-	KEYFREAME Walk_4_F = { 3.0f, mat3 }; // -60
-	KEYFREAME Walk_5_F = { 3.999f, mat }; // 0
+	KEYFREAME Walk_2_F = { 0.5f, mat2 }; //60
+	KEYFREAME Walk_3_F = { 1.0f, mat }; // 0
+	KEYFREAME Walk_4_F = { 1.5f, mat3 }; // -60
+	KEYFREAME Walk_5_F = { 2.0f, mat }; // 0
 
 	KEYFREAME Walk_1_B = { 0.f,  mat };
-	KEYFREAME Walk_2_B = { 1.0f, mat3 };
-	KEYFREAME Walk_3_B = { 2.0f, mat };
-	KEYFREAME Walk_4_B = { 3.0f, mat2 };
-	KEYFREAME Walk_5_B = { 3.999f, mat };
+	KEYFREAME Walk_2_B = { 0.5f, mat3 };
+	KEYFREAME Walk_3_B = { 1.0f, mat };
+	KEYFREAME Walk_4_B = { 1.5f, mat2 };
+	KEYFREAME Walk_5_B = { 2.f, mat };
 
-	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_1_F);
-	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_2_F);
-	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_3_F);
-	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_4_F);
-	m_skelAnime->Add_Animation(ANIM_type::Swing_F, Walk_5_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_1_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_2_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_3_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_4_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_5_F);
 
-	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_1_B);
-	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_2_B);
-	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_3_B);
-	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_4_B);
-	m_skelAnime->Add_Animation(ANIM_type::Swing_B, Walk_5_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_1_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_2_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_3_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_4_F);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_5_F);
 
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_1_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_2_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_3_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_4_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_5_B);
+
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_1_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_2_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_3_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_4_B);
+	m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_5_B);
 
 /*----------
 * IDEL 
@@ -372,6 +387,34 @@ HRESULT CSteve::Ready_Animation()
 	m_skelAnime->Add_Animation(ANIM_type::Swing_L, IDLE2_L);
 	m_skelAnime->Add_Animation(ANIM_type::Swing_L, IDLE3_L);
 
+	/*----------
+	* Attack 모션
+	------------*/
+	mat2 = {};
+	mat2.Turn_Radian(_float3(-1.f, 0.f, 0.f), D3DXToRadian(80));
+	mat2.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(30));
+
+	mat3 = {};
+	mat3.Turn_Radian(_float3(-1.f, 0.f, 0.f), D3DXToRadian(60));
+	mat3.Turn_Radian(_float3(0.f, -1.f, 0.f), D3DXToRadian(30));
+
+	Matrix mat4 = {};
+	mat4.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(10));
+	mat4.Turn_Radian(_float3(0.f, -1.f, 0.f), D3DXToRadian(30));
+
+	KEYFREAME Attack_1 = { 0.f, mat };
+	KEYFREAME Attack_2 = { 0.1f, mat2 };
+	KEYFREAME Attack_3 = { 0.2f, mat3 };
+	KEYFREAME Attack_4 = { 0.3f, mat4 };
+	KEYFREAME Attack_5 = { 0.4f, mat };
+
+	m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_1);
+	m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_2);
+	m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_3);
+	m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_4);
+	m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_5);
+
+
 	return S_OK;
 }
 
@@ -391,6 +434,17 @@ void CSteve::Update_State(_float fTimeDelta)
 		break;
 	}
 
+	if (isAttack)
+	{
+		if (m_skelAnime->is_AnimtionEND(Attack))
+		{
+			isAttack = false;
+			m_skelAnime->Reset_fElapsedTime(Swing_FA, Swing_BA);
+		}
+
+		m_skelAnime->Update_Animetion(Attack, fTimeDelta, 5);
+	}
+		
 }
 
 void CSteve::Motion_Idle(_float fTimeDelta)
@@ -404,23 +458,27 @@ void CSteve::Motion_Idle(_float fTimeDelta)
 
 	m_skelAnime->Update_Animetion(INIT, fTimeDelta, 3);
 	m_skelAnime->Update_Animetion(INIT, fTimeDelta, 4);
-	m_skelAnime->Update_Animetion(Swing_L, fTimeDelta, 5);
 	m_skelAnime->Update_Animetion(Swing_R, fTimeDelta, 6);
+	if (!isAttack)
+		m_skelAnime->Update_Animetion(Swing_L, fTimeDelta, 5);
 }
 
 void CSteve::Motion_Walk(_float fTimeDelta)
 {
-	if (m_skelAnime->is_AnimtionEND(Swing_B) &&
-		m_skelAnime->is_AnimtionEND(Swing_F))
+	if (m_skelAnime->is_AnimtionEND(Swing_BF) &&
+		m_skelAnime->is_AnimtionEND(Swing_FF) &&
+		m_skelAnime->is_AnimtionEND(Swing_BA) &&
+		m_skelAnime->is_AnimtionEND(Swing_FA)
+		)
 	{
 		m_eCurAnim = WALK;
 	}
 
-	m_skelAnime->Update_Animetion(Swing_B, fTimeDelta, 3);
-	m_skelAnime->Update_Animetion(Swing_F, fTimeDelta, 4);
-	m_skelAnime->Update_Animetion(Swing_F, fTimeDelta, 5);
-	m_skelAnime->Update_Animetion(Swing_B, fTimeDelta, 6);
-
+	m_skelAnime->Update_Animetion(Swing_BF, fTimeDelta, 3);
+	m_skelAnime->Update_Animetion(Swing_FF, fTimeDelta, 4);
+	m_skelAnime->Update_Animetion(Swing_BA, fTimeDelta, 6);
+	if(!isAttack)
+		m_skelAnime->Update_Animetion(Swing_FA, fTimeDelta, 5);
 }
 
 void CSteve::Turn(_float fTimeDelta)

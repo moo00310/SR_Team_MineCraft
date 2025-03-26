@@ -39,6 +39,7 @@ public:
 public:
 	int GetCurrentAnim() { return m_CurrentAnim; }
 	bool is_AnimtionEND(int type);
+	void Reset_fElapsedTime(int index, int targetIndex ) { fElapsedTime[index] = fElapsedTime[targetIndex]; }
 
 public:
 	void IkLookAt(float fTimeDelta, int boneIndex, int targetInex);
