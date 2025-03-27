@@ -139,5 +139,17 @@ namespace Engine
             return *this;
         }
 
+        _float4x4 Scaling(_float fX, _float fY, _float fZ)
+        {
+            _float3		vRight = Get_State(STATE_RIGHT);
+            _float3		vUp = Get_State(STATE_UP);
+            _float3		vLook = Get_State(STATE_LOOK);
+
+            Set_State(STATE_RIGHT, *D3DXVec3Normalize(&vRight, &vRight) * fX);
+            Set_State(STATE_UP, *D3DXVec3Normalize(&vUp, &vUp) * fY);
+            Set_State(STATE_LOOK, *D3DXVec3Normalize(&vLook, &vLook) * fZ);
+
+            return *this;
+        }
     };
 }

@@ -16,6 +16,7 @@ public:
     _bool   m_isTurning{ false };
     _float  m_fTurnElapsedTime{ 0.0f }; // 회전 진행 시간
     _float  m_fTurnDuration{ 0.0f };    // 회전 지속 시간
+    _float  m_fToIdle = { 0.f};
 };
 END
 

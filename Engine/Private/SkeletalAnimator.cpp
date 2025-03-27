@@ -1,7 +1,6 @@
 #include "SkeletalAnimator.h"
 #include "VIBuffer_Cube.h"
 #include "Transform.h"
-#include <iostream>
 
 CSkeletalAnimator::CSkeletalAnimator(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CComponent{ pGraphic_Device }
@@ -167,7 +166,6 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
 
     m_CurrentAnim = _type;
     fElapsedTime[_type] += fTimeDelta;
-    cout << _type << " "<<fElapsedTime[_type] << endl;
 
     if (m_Animations[_type].size() < 2)
     {

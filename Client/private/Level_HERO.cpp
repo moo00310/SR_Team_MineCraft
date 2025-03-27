@@ -27,6 +27,9 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
+		return E_FAIL;
+
 	////BT 연습용 적
 	//if (FAILED(Ready_Layer_HeroEnemy(TEXT("Layer_HeroEnemy"))))
 	//	return E_FAIL;
@@ -236,6 +239,15 @@ HRESULT CLevel_HERO::Ready_Layer_WOOInvenTest(const _wstring& strLayerTag)
 	/*if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Item"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;*/
+
+	return S_OK;
+}
+
+HRESULT CLevel_HERO::Ready_Laye_Creeper(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Creeper"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }

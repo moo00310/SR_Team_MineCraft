@@ -2,7 +2,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "Behavior_Tree.h"
-
+#include <iostream>
 BEGIN(Client)
 
 class CMonster abstract : public CGameObject
@@ -10,7 +10,7 @@ class CMonster abstract : public CGameObject
 public:
 	enum ANIM
 	{
-		IDLE, RUN, WALK, ATTACK, JUMP, ANIM_END
+		IDLE, RUN, WALK, ATTACK, DEAD, ANIM_END
 	};
 
 protected:
@@ -27,31 +27,35 @@ public:
 	virtual HRESULT Render();
 
 public:
-	CGameObject*			Get_Target();
-	void					Set_Target(CGameObject* pGameObject);
-	CTransform*				Get_Transform();
+	CGameObject* Get_Target() { return m_pTargetGameObject;}
+	void Set_Target(CGameObject* object) { m_pTargetGameObject = object;}
+	CTransform* Get_Transform(){ return m_pTransformCom; }
+	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 
 protected:
-	CGameObject* m_pTarget{ nullptr };
+	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CSkeletalAnimator* m_skelAnime = { nullptr };
 	vector<CVIBuffer_Cube*> m_pVIBufferComs;
 
 protected:
-	//CNode* m_pBehaviorTree{ nullptr };
-	HRESULT Ready_BehaviorTree();
+	CGameObject* m_pTargetGameObject = nullptr;
 
 protected:
-	virtual HRESULT Ready_Components() = 0;
-	virtual HRESULT Ready_Bone() =0;
+	CNode* m_pBehaviorTree{ nullptr };
+	ANIM m_eCurAnim = { ANIM_END };
+
+protected:
+	virtual HRESULT Ready_Components();
+	virtual HRESULT Ready_Bone()= 0;
 	virtual HRESULT Ready_Animation() = 0;
+	HRESULT Ready_BehaviorTree();
 
 protected:
 	virtual void Update_State(_float fTimeDelta) = 0;
 	virtual void Motion_Idle(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
 	virtual void Turn(_float fTimeDelta) = 0;
-
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

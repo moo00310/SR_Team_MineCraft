@@ -26,8 +26,6 @@ private:
 	HRESULT Ready_Layer_Clouds(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_TPS_Arm(const _wstring& strLayerTag);
 
-	HRESULT Ready_Laye_Creeper(const _wstring& strLayerTag);
-
 	HRESULT Ready_Layer_DashParticle(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_SandDestroyParticle(const _wstring& strLayerTag);
 
