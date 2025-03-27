@@ -247,6 +247,9 @@
     <Filter Include="03.UI\05.PlayerState\02.PlayerExp">
       <UniqueIdentifier>{be029a2e-92dc-4ce0-83b6-400ee3eb2035}</UniqueIdentifier>
     </Filter>
+    <Filter Include="101.ObserverPattern">
+      <UniqueIdentifier>{c5b9c737-054a-4e33-bdce-ca55acc70337}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -523,7 +526,7 @@
     </ClInclude>
     <ClInclude Include="..\public\UIParticleRain.h">
       <Filter>03.UI\06.UIParticle</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\PlayerHunger.h">
       <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
     </ClInclude>
@@ -535,6 +538,12 @@
     </ClInclude>
     <ClInclude Include="..\public\PlayerExp_Back.h">
       <Filter>03.UI\05.PlayerState\02.PlayerExp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\IObserver.h">
+      <Filter>101.ObserverPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ISubject.h">
+      <Filter>101.ObserverPattern</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -799,7 +808,7 @@
     </ClCompile>
     <ClCompile Include="..\private\UIParticleRain.cpp">
       <Filter>03.UI\06.UIParticle</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\PlayerHunger.cpp">
       <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
     </ClCompile>
@@ -811,6 +820,12 @@
     </ClCompile>
     <ClCompile Include="..\private\PlayerExp_Back.cpp">
       <Filter>03.UI\05.PlayerState\02.PlayerExp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\IObserver.cpp">
+      <Filter>101.ObserverPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ISubject.cpp">
+      <Filter>101.ObserverPattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
