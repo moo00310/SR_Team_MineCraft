@@ -128,27 +128,34 @@ namespace Engine
 
 	inline D3DXMATRIX InterpolateMatrix_Quat(const D3DXMATRIX& mat1, const D3DXMATRIX& mat2, float t)
 	{
-		// 위치 추출
+		/// 위치 보간
 		D3DXVECTOR3 pos1(mat1._41, mat1._42, mat1._43);
 		D3DXVECTOR3 pos2(mat2._41, mat2._42, mat2._43);
 		D3DXVECTOR3 interpPos = Lerp(pos1, pos2, t);
 
-		// 회전 추출 (Matrix → Quaternion)
+		// 회전 보간
 		D3DXQUATERNION q1, q2, qInterp;
 		D3DXQuaternionRotationMatrix(&q1, &mat1);
 		D3DXQuaternionRotationMatrix(&q2, &mat2);
 		D3DXQuaternionSlerp(&qInterp, &q1, &q2, t);
 
-		// 쿼터니언 → 행렬
-		D3DXMATRIX rotMatrix;
-		D3DXMatrixRotationQuaternion(&rotMatrix, &qInterp);
+		// 스케일 추출
+		D3DXVECTOR3 scale1, scale2;
+		D3DXVECTOR3 dummyTrans;
+		D3DXQUATERNION dummyRot;
 
-		// 위치 적용
-		rotMatrix._41 = interpPos.x;
-		rotMatrix._42 = interpPos.y;
-		rotMatrix._43 = interpPos.z;
+		D3DXMatrixDecompose(&scale1, &dummyRot, &dummyTrans, &mat1);
+		D3DXMatrixDecompose(&scale2, &dummyRot, &dummyTrans, &mat2);
+		D3DXVECTOR3 interpScale = Lerp(scale1, scale2, t);
 
-		return rotMatrix;
+		// 최종 변환 행렬 구성
+		D3DXMATRIX scaleMat, rotMat, transMat, result;
+		D3DXMatrixScaling(&scaleMat, interpScale.x, interpScale.y, interpScale.z);
+		D3DXMatrixRotationQuaternion(&rotMat, &qInterp);
+		D3DXMatrixTranslation(&transMat, interpPos.x, interpPos.y, interpPos.z);
+
+		result = scaleMat * rotMat * transMat;
+		return result;
 	}
 
 

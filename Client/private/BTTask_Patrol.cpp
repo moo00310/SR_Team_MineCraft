@@ -6,17 +6,21 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
     if (!_Obj) return STATUS::FAIL;
 
     CMonster* pMonster = static_cast<CMonster*>(_Obj);
+    pMonster->Set_Animation(CMonster::WALK);
 
     // Transform 컴포넌트 가져오기
     CTransform* pTransform = pMonster->Get_Transform();
     if (!pTransform) return STATUS::FAIL;
 
-    //m_fElapsedTime = 0.0f;
-    //m_fTargetRotation = 0.0f; // 목표 회전 각도
-    //m_fTurnElapsedTime = 0.0f; // 회전 진행 시간
-    //m_fTurnDuration = 0.0f;    // 회전 지속 시간
-
     m_fElapsedTime += _fTimeDelta;
+    m_fToIdle += _fTimeDelta;
+
+    if (m_fToIdle > 12.f)
+    {
+        m_fToIdle = 0.f;
+        m_fElapsedTime = 0.f;
+        return STATUS::FAIL;
+    }
 
     // 일정 시간이 지나면 새로운 랜덤 회전 설정
     if (m_fElapsedTime > 3.0f && !m_isTurning)
@@ -42,7 +46,7 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
 
     // 직진 이동
     pTransform->Go_Straight(_fTimeDelta);
-
+    cout << "패트롤" << endl;
     return STATUS::RUNNING;
 }
 

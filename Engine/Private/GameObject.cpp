@@ -80,7 +80,6 @@ HRESULT CGameObject::Delete_Component(const _wstring& strComponentTag, CComponen
 }
 
 
-
 CComponent* CGameObject::Find_Component(const _tchar* pComponentTag)
 {
 	auto	iter = find_if(m_Components.begin(), m_Components.end(), CTag_Finder(pComponentTag));

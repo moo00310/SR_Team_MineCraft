@@ -1,8 +1,4 @@
 #include "Creeper.h"
-
-#include "Transform.h"
-#include "Texture.h"
-#include "VIBuffer_Cube.h"
 #include "GameInstance.h"
 
 CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -22,7 +18,7 @@ HRESULT CCreeper::Initialize_Prototype()
 
 HRESULT CCreeper::Initialize(void* pArg)
 {
-    __super::Initialize(pArg);
+    __super::Initialize(pArg); 
 
     if (FAILED(Ready_Components()))
         return E_FAIL;
@@ -44,29 +40,11 @@ void CCreeper::Priority_Update(_float fTimeDelta)
 void CCreeper::Update(_float fTimeDelta)
 { 
     __super::Update(fTimeDelta);
-
-    //m_pCollider_CubeCom->Update_Collider();
-
-    //CGameObject* pHitObject{ nullptr };
-    //_float fDist{};
-
-    //pHitObject = m_pGameInstance->Ray_Cast
-    //(   m_pTransformCom->Get_State(CTransform::STATE_POSITION),
-    //    m_pTransformCom->Get_State(CTransform::STATE_LOOK),
-    //    10.f,
-    //    COLLISION_PLAYER,
-    //    fDist
-    //);
-
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
 {
-    if (m_pGameInstance->Key_Down('Q'))
-    {
-        m_eCurAnim = WALK;
-    }
-
+    
     Update_State(fTimeDelta);
     m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
@@ -76,20 +54,7 @@ void CCreeper::Late_Update(_float fTimeDelta)
 
 HRESULT CCreeper::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
-        return E_FAIL;
-
-    for (int i = 0; i < 6; i++)
-    {
-        if (FAILED(m_pVIBufferComs[i]->Bind_WorldMatrix()))
-            return E_FAIL;
-
-        if (FAILED(m_pVIBufferComs[i]->Bind_Buffers()))
-            return E_FAIL;
-
-        if (FAILED(m_pVIBufferComs[i]->Render()))
-            return E_FAIL;
-    }
+    __super::Render();
 
     //m_pCollider_CubeCom->Render_ColliderBox(false);
 
@@ -98,49 +63,40 @@ HRESULT CCreeper::Render()
 
 HRESULT CCreeper::Ready_Components()
 {
-    /* For.Com_Transform */
-    CTransform::TRANSFORM_DESC		TransformDesc{ 3.f, D3DXToRadian(30.f) };
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-        TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
-        return E_FAIL;
-
-#pragma region ø‹«¸
-    // ≈©∏Æ∆€ ≈ÿΩ∫√≥
+#pragma region Ïô∏Ìòï
+    // ÌÅ¨Î¶¨Ìçº ÌÖçÏä§Ï≤ò
    /* For.Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Creeper"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Creeper"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
     m_pVIBufferComs.resize(6);
     /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
         TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
         TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[1]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
         TEXT("m_pVIBufferCom_Foot_LF"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[2]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
         TEXT("m_pVIBufferCom_Foot_RF"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[3]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
         TEXT("m_pVIBufferCom_Foot_LB"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[4]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
         TEXT("m_pVIBufferCom_Foot_RB"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[5]))))
         return E_FAIL;
 #pragma endregion
 
-    // ∫ª + æ÷¥œ∏ﬁ¿Ãº«
-    CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
-        TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
+    //Î≤ÑÌçº Ïó∞Í≤∞ ÌïòÍ≥† TransformÍ≥º AinmaitonCom Ïó∞Í≤∞
+    if (FAILED(__super::Ready_Components()))
         return E_FAIL;
 
-
-    ///* For.Com_Collider_Cube */
+    /* For.Com_Collider_Cube */
     //CCollider_Cube::COLLCUBE_DESC		ColliderCubeDesc;
     //ColliderCubeDesc.fRadiusY = 1.f;
     //ColliderCubeDesc.fOffSetY = 1.f;
@@ -176,14 +132,14 @@ HRESULT CCreeper::Ready_Bone()
 HRESULT CCreeper::Ready_Animation()
 {
     /*----------
-    * INIT ∏º«
+    * INIT Î™®ÏÖò
     - -----------*/
     Matrix mat = {};
     KEYFREAME Init = { 0.f, mat };
     m_skelAnime->Add_Animation(ANIM_type::INIT, Init);
 
     /*----------
-    * Walk ∏º«
+    * Walk Î™®ÏÖò
     ------------*/
     Matrix mat2 = {};
     mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(25.f));
@@ -227,6 +183,32 @@ HRESULT CCreeper::Ready_Animation()
     m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_4_B);
     m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_5_B);
 
+/*----------
+* Attack Î™®ÏÖò
+------------*/
+    mat2 = {};
+    mat2.Scaling(6.f, 6.f, 6.f);
+
+    mat3 = {};
+    mat3.Scaling(0.2f, 0.2, 0.2f);
+
+
+    KEYFREAME Attack_1 = { 0.f, mat };
+    KEYFREAME Attack_2 = { 1.f, mat2 };
+    KEYFREAME Attack_3 = { 2.f, mat3 };
+    KEYFREAME Attack_4 = { 3.f, mat };
+
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_1);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_2);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_3);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_4);
+
+/*----------
+* Dead Î™®ÏÖò
+------------*/
+
+
+
     return S_OK;
 }
 
@@ -240,6 +222,9 @@ void CCreeper::Update_State(_float fTimeDelta)
     case CCreeper::WALK:
         Motion_Walk(fTimeDelta);
         break;
+    case  CCreeper::ATTACK:
+        Motion_Attack(fTimeDelta);
+        break;
     case CCreeper::ANIM_END:
         break;
     default:
@@ -249,6 +234,10 @@ void CCreeper::Update_State(_float fTimeDelta)
 
 void CCreeper::Motion_Idle(_float fTimeDelta)
 {
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 3);
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 4);
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 6);
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 5);
 }
 
 void CCreeper::Motion_Walk(_float fTimeDelta)
@@ -266,6 +255,17 @@ void CCreeper::Motion_Walk(_float fTimeDelta)
     m_skelAnime->Update_Animetion(Swing_FF, fTimeDelta, 4);
     m_skelAnime->Update_Animetion(Swing_BA, fTimeDelta, 6);
     m_skelAnime->Update_Animetion(Swing_FA, fTimeDelta, 5);
+}
+
+void CCreeper::Motion_Attack(_float fTimeDelta)
+{
+    m_skelAnime->Update_Animetion(Attack, fTimeDelta, 2);
+    
+    if (m_skelAnime->is_AnimtionEND(Attack))
+    {
+        m_eCurAnim = IDLE;
+    }
+
 }
 
 void CCreeper::Turn(_float fTimeDelta)

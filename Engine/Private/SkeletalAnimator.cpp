@@ -1,7 +1,6 @@
 #include "SkeletalAnimator.h"
 #include "VIBuffer_Cube.h"
 #include "Transform.h"
-#include <iostream>
 
 CSkeletalAnimator::CSkeletalAnimator(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CComponent{ pGraphic_Device }
@@ -41,7 +40,7 @@ bool CSkeletalAnimator::is_AnimtionEND(int type)
 {
     if (fElapsedTime[type] >= m_Animations[type].back().fTime)
     {
-        fElapsedTime[type] = 0.0f;  // Ã³À½ºÎÅÍ Àç»ı
+        fElapsedTime[type] = 0.0f;  // ì²˜ìŒë¶€í„° ì¬ìƒ
         return true;
     }
     else
@@ -58,26 +57,26 @@ void CSkeletalAnimator::IkLookAt(float fTimeDelta, int boneIndex, int targetInex
     _float3 vSpineLook = vecBones[boneIndex].localTransform.Get_State(Matrix::STATE_LOOK);
     float fSpineYaw = atan2f(vSpineLook.x, vSpineLook.z);
 
-    // yaw Â÷ÀÌ ºñ±³
+    // yaw ì°¨ì´ ë¹„êµ
     float fYawDelta = fCamYaw - fSpineYaw;
 
-    // -PI ~ +PI »çÀÌ·Î Á¤±ÔÈ­
+    // -PI ~ +PI ì‚¬ì´ë¡œ ì •ê·œí™”
     while (fYawDelta > PI) fYawDelta -= 2 * PI;
     while (fYawDelta < -PI) fYawDelta += 2 * PI;
 
     float fThreshold = D3DXToRadian(25.f); 
 
-    float fFollowSpeed = 5.f; // È¸Àü ¼Óµµ
-    float fTargetYaw = fSpineYaw + (fYawDelta - Sign(fYawDelta) * fThreshold); // µû¶ó°¥ °¢µµ
+    float fFollowSpeed = 5.f; // íšŒì „ ì†ë„
+    float fTargetYaw = fSpineYaw + (fYawDelta - Sign(fYawDelta) * fThreshold); // ë”°ë¼ê°ˆ ê°ë„
 
-    // º¸°£
+    // ë³´ê°„
     float fNewYaw = fSpineYaw + fFollowSpeed * fTimeDelta * (fTargetYaw - fSpineYaw);
 
-    // Spine È¸Àü Çà·Ä °»½Å
+    // Spine íšŒì „ í–‰ë ¬ ê°±ì‹ 
     Matrix matNewSpine;
     D3DXMatrixRotationY(&matNewSpine, fNewYaw);
 
-    // Å¸°Ù º¸Á¤ Çà·Ä
+    // íƒ€ê²Ÿ ë³´ì • í–‰ë ¬
     Matrix matNewTarget;
     D3DXMatrixRotationY(&matNewTarget, -fNewYaw);
 
@@ -97,10 +96,10 @@ void CSkeletalAnimator::Add_Animation(_int _type, const KEYFREAME& keyframe)
 
 HRESULT CSkeletalAnimator::Update_Bone(int boneIndex, const Matrix& parentTransform)
 {
-    // º»ÀÇ ÃÖÁ¾ ¿ùµå Çà·Ä = ÇöÀç º»ÀÇ ·ÎÄÃ Çà·Ä ¡¿ ºÎ¸ğÀÇ ¿ùµå Çà·Ä
+    // ë³¸ì˜ ìµœì¢… ì›”ë“œ í–‰ë ¬ = í˜„ì¬ ë³¸ì˜ ë¡œì»¬ í–‰ë ¬ Ã— ë¶€ëª¨ì˜ ì›”ë“œ í–‰ë ¬
     vecBones[boneIndex].worldTransform = vecBones[boneIndex].localTransform * parentTransform;
 
-    // ¸ğµç ÀÚ½Ä bone¿¡ ´ëÇØ Àç±ÍÀûÀ¸·Î ¾÷µ¥ÀÌÆ®
+    // ëª¨ë“  ìì‹ boneì— ëŒ€í•´ ì¬ê·€ì ìœ¼ë¡œ ì—…ë°ì´íŠ¸
     for (int i = 0; i < vecBones.size(); i++)
     {
         if (vecBones[i].parent == boneIndex)
@@ -116,7 +115,7 @@ HRESULT CSkeletalAnimator::Update_Bone(int boneIndex, const Matrix& parentTransf
 
 void CSkeletalAnimator::Update_Mesh()
 {
-    // ÃÖÁ¾ÀûÀ¸·Î º»ÀÇ À§Ä¡¿Í ¸Å½ÃÀÇ Áß½ÉÀ» º¸Á¤ ÇØÁØ´Ù.
+    // ìµœì¢…ì ìœ¼ë¡œ ë³¸ì˜ ìœ„ì¹˜ì™€ ë§¤ì‹œì˜ ì¤‘ì‹¬ì„ ë³´ì • í•´ì¤€ë‹¤.
     if (m_pVIBufferComs.size() == 1)
     {
 		m_pVIBufferComs[0]->SetMatrix(vecBones[0].Correction * vecBones[0].worldTransform);
@@ -138,19 +137,19 @@ void CSkeletalAnimator::Blend_Animations(float fTimeDelta, int boneIndex)
     if (blendT > 1.f)  blendT = 1.f;
     else if (blendT < 0.f)  blendT = 0.f;
 
-    // ÇöÀç ¾Ö´Ï¸ŞÀÌ¼Ç °á°ú
+    // í˜„ì¬ ì• ë‹ˆë©”ì´ì…˜ ê²°ê³¼
     Matrix fromMat = CalcCurrentMatrix(m_blendState.fromAnim, boneIndex);
 
-    // ´ÙÀ½ ¾Ö´Ï¸ŞÀÌ¼Ç Ã¹ ÇÁ·¹ÀÓ ¶Ç´Â ÇöÀç ½Ã°£ º¸°£
+    // ë‹¤ìŒ ì• ë‹ˆë©”ì´ì…˜ ì²« í”„ë ˆì„ ë˜ëŠ” í˜„ì¬ ì‹œê°„ ë³´ê°„
     Matrix toMat = CalcCurrentMatrix(m_blendState.toAnim, boneIndex);
 
-    // º¸°£ÇØ¼­ ÃÖÁ¾ Çà·Ä ¸¸µé±â
+    // ë³´ê°„í•´ì„œ ìµœì¢… í–‰ë ¬ ë§Œë“¤ê¸°
     Matrix blended = InterpolateMatrix_Quat(fromMat, toMat, blendT);
     vecBones[boneIndex].localTransform = blended * vecBones[boneIndex].baseTransform;
 
     if (blendT >= 1.f)
     {
-        // ºí·»µù ¿Ï·á ¡æ ´ÙÀ½ ¾Ö´Ï¸ŞÀÌ¼ÇÀ¸·Î ÀüÈ¯
+        // ë¸”ë Œë”© ì™„ë£Œ â†’ ë‹¤ìŒ ì• ë‹ˆë©”ì´ì…˜ìœ¼ë¡œ ì „í™˜
         m_blendState.isBlending = false;
         m_CurrentAnim = m_blendState.toAnim;
         //fElapsedTime[_type] = 0.f;
@@ -167,16 +166,16 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
 
     m_CurrentAnim = _type;
     fElapsedTime[_type] += fTimeDelta;
-    //cout << _type << " "<<fElapsedTime[_type] << endl;
+
 
     if (m_Animations[_type].size() < 2)
     {
-        // ´ÜÀÏ Å°ÇÁ·¹ÀÓ¸¸ ÀÖÀ» °æ¿ì ±×³É ±×°Å ÇÏ³ª Àû¿ë
+        // ë‹¨ì¼ í‚¤í”„ë ˆì„ë§Œ ìˆì„ ê²½ìš° ê·¸ëƒ¥ ê·¸ê±° í•˜ë‚˜ ì ìš©
         vecBones[boneIndex].localTransform = m_Animations[_type][0].matTransform * vecBones[boneIndex].baseTransform;
         return S_OK;
     }
 
-    // Å°ÇÁ·¹ÀÓ Ã£±â
+    // í‚¤í”„ë ˆì„ ì°¾ê¸°
     KEYFREAME key1{}, key2{};
     bool found = false;
 
@@ -192,7 +191,7 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
     }
     if (!found) return S_OK;
 
-    // º¸°£ ºñÀ² °è»ê (0~1 »çÀÌ °ª)
+    // ë³´ê°„ ë¹„ìœ¨ ê³„ì‚° (0~1 ì‚¬ì´ ê°’)
     float t = (fElapsedTime[_type] - key1.fTime) / (key2.fTime - key1.fTime);
     Matrix interpolatedMatrix = InterpolateMatrix_Quat(key1.matTransform , key2.matTransform, t);
     vecBones[boneIndex].localTransform = interpolatedMatrix * vecBones[boneIndex].baseTransform;
@@ -271,18 +270,18 @@ Matrix CSkeletalAnimator::CalcCurrentMatrix(int animType, int boneIndex)
 {
     const auto& anim = m_Animations[animType];
 
-    // ¿¹¿Ü Ã³¸®
+    // ì˜ˆì™¸ ì²˜ë¦¬
     if (anim.size() == 0)
-        return Matrix(); // ºó ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ¸é ´ÜÀ§ Çà·Ä
+        return Matrix(); // ë¹ˆ ì• ë‹ˆë©”ì´ì…˜ì´ë©´ ë‹¨ìœ„ í–‰ë ¬
 
     if (anim.size() == 1)
-        return anim[0].matTransform; // Å° ÇÏ³ª¸é ±×´ë·Î ¸®ÅÏ
+        return anim[0].matTransform; // í‚¤ í•˜ë‚˜ë©´ ê·¸ëŒ€ë¡œ ë¦¬í„´
 
-    // ·çÇÁ Ã³¸®
+    // ë£¨í”„ ì²˜ë¦¬
     if (animElapsedTime >= anim.back().fTime)
         animElapsedTime = 0.f;
 
-    // º¸°£ Å° Ã£±â
+    // ë³´ê°„ í‚¤ ì°¾ê¸°
     KEYFREAME key1, key2;
     for (size_t i = 0; i < anim.size() - 1; ++i)
     {

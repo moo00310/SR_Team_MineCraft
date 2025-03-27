@@ -6,7 +6,6 @@
 BEGIN(Client)
 enum class STATUS { NOT_STARTED, SUCCESS, FAIL, RUNNING, STATUS_END };
 
-
 //Node
 class CNode : public CBase
 {
@@ -23,6 +22,7 @@ class CCompositeNode abstract : public CNode
 {
 protected:
 	virtual ~CCompositeNode() = default;
+	int m_iRunningIndex = -1;
 public:
 	vector<CNode*> Get_VecNodes(void) { return m_vecNodes; }
 	void Add_Node(CNode* _pNode) { m_vecNodes.push_back(_pNode); }
@@ -33,7 +33,7 @@ protected:
 		random_shuffle(vecTemp.begin(), vecTemp.end());
 		return vecTemp;
 	}
-private:
+protected:
 	vector<CNode*> m_vecNodes;
 public:
 	virtual void Free() override
@@ -73,6 +73,7 @@ public:
 		}
 		return STATUS::SUCCESS;
 	}
+
 public:
 	virtual void Free() override
 	{
