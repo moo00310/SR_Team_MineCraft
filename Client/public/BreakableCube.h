@@ -33,22 +33,30 @@ public:
 	_float3 GetPos() { return m_pTransformCom->Get_State(CTransform::STATE_POSITION); }
 	void SetMatrix(const _float4x4& mat) { m_pTransformCom->MultiplyMatrix(mat); }
 	
+	// 인스턴싱 버퍼 업데이트
 	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects) { m_pVIBufferCom->Update_InstanceBuffer(_objects); }
 	
-	void Set_MyChunk(int _num) { m_iMyChunk = _num; } //아이템 어떤 청크레이어에 생성할 지 필요
+	//아이템 어떤 청크레이어에 생성할 지 필요
+	void Set_MyChunk(int _num) { m_iMyChunk = _num; } 
+
+	// 충돌 큐브 생성 & 위치 설정
 	void Set_BlockPositions(vector<_float3> position);
 
-	virtual HRESULT Delete_Cube(_float3 fPos);
-
+	// 충돌 활성화 & 비활성화 관리를 위함
 	vector<CCollider_Cube*> Get_ColliderCube() { return m_Colliders; }
 	vector<_float3> Get_Positions() { return m_vecPositions; }
 
-	// 몸 충돌용 ??
-	void Set_RenderActive(bool _b) { m_bRenderActive = _b; }
-	bool Get_RenderActive() { return m_bRenderActive; }
+	// 충돌할 청크만 활성화 시킴
+	void Set_ChunkColliderActive(bool _b) { m_bChunkColliderActive = _b; }
+	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
+
+	//충돌된 큐브 삭제
+	virtual HRESULT Delete_Cube(_float3 fPos);
 protected:
 	HRESULT Ready_Components();
-	bool m_bRenderActive = false;
+
+	// 현재 청크를 충돌 매니저에 올릴지 
+	bool m_bChunkColliderActive = false;
 
 	CVIBuffer_CubeInstance* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
