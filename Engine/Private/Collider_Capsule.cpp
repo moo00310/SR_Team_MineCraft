@@ -48,23 +48,23 @@ HRESULT CCollider_Capsule::Initialize(void* pArg)
     VTXCUBETEX* pVertices = nullptr;
     m_pVB->Lock(0, 0, (void**)&pVertices, 0);
 
-    // 캡슐의 양 끝 원을 구성하는 점들을 계산
-    _float3 vOffset = _float3(m_StateDesc.fOffsetX, m_StateDesc.fOffsetY, m_StateDesc.fOffsetZ);
+    // 캡슐의 중심을 기준으로 반지름과 높이를 설정
+    float radius = m_StateDesc.fRadius;
+    float fHeight = m_StateDesc.fHeight;
+    D3DXVECTOR3 vecOffset = { m_StateDesc.fOffsetX, m_StateDesc.fOffsetY, m_StateDesc.fOffsetZ };
 
-    for (int i = 0; i < 8; ++i)
-    {
-        _float angle = D3DX_PI * 2 * (i / 8.0f);
-        _float x = m_StateDesc.fRadius * cosf(angle);
-        _float z = m_StateDesc.fRadius * sinf(angle);
-
-        // 상단 원
-        pVertices[i].vPosition = m_vPoint[i] = _float3(x, m_StateDesc.fHeight / 2.0f, z) + vOffset;
-        // 하단 원
-        pVertices[i + 8].vPosition = m_vPoint[i + 8] = _float3(x, -m_StateDesc.fHeight / 2.0f, z) + vOffset;
+    // 원기둥의 중간을 생성 (옆으로 펼쳐진 원)
+    for (int i = 0; i < 8; ++i) {
+        float angle = (i * D3DX_PI * 2.0f) / 8;
+        pVertices[i].vPosition = D3DXVECTOR3(radius * cos(angle), 0, radius * sin(angle)) + vecOffset;
+        //pVertices[i].vTex = D3DXVECTOR2(cos(angle), sin(angle)); // 텍스처 좌표 (각도 기반)
     }
-    // 캡슐의 반구 부분을 위한 중앙 점 추가
-    pVertices[16].vPosition = m_vPoint[16] = _float3(0, m_StateDesc.fHeight / 2.0f + m_StateDesc.fRadius, 0) + vOffset; // 위쪽
-    pVertices[17].vPosition = m_vPoint[17] = _float3(0, -m_StateDesc.fHeight / 2.0f - m_StateDesc.fRadius, 0) + vOffset; // 아래쪽
+
+    // 캡슐의 위쪽과 아래쪽 반구를 추가
+    for (int i = 8; i < 10; ++i) {
+        pVertices[i].vPosition = D3DXVECTOR3(0, (i == 8 ? fHeight / 2.0f : -fHeight / 2.0f), 0) + vecOffset;
+        //pVertices[i].vTex = D3DXVECTOR2(0.5f, 0.5f); // 중앙 위치
+    }
 
     m_pVB->Unlock();
 
@@ -78,37 +78,30 @@ HRESULT CCollider_Capsule::Initialize(void* pArg)
     FACEINDICES16* pIndices = nullptr;
     m_pIB->Lock(0, 0, (void**)&pIndices, 0);
 
-    int index = 0;
-
-    // 측면 원기둥 부분
-    for (int i = 0; i < 7; ++i)
-    {
-        pIndices[index++] = { static_cast<_ushort>(i), static_cast<_ushort>(i + 1), static_cast<_ushort>(i + 8) };
-        pIndices[index++] = { static_cast<_ushort>(i + 1), static_cast<_ushort>(i + 9), static_cast<_ushort>(i + 8) };
+    // 원기둥의 몸통 부분의 인덱스 설정
+    for (int i = 0; i < 8; ++i) {
+        int next = (i + 1) % 8;
+        pIndices[i * 6 + 0] = { (unsigned short)i, (unsigned short)next, 8 }; // 원기둥 +Y면
+        pIndices[i * 6 + 1] = { (unsigned short)next, (unsigned short)i, 9 }; // 원기둥 -Y면
     }
-    // 마지막 측면 삼각형 연결
-    pIndices[index++] = { 7, 0, 15 };
-    pIndices[index++] = { 0, 8, 15 };
 
-    // 상단 반구
-    for (int i = 0; i < 7; ++i)
-    {
-        pIndices[index++] = { 16, static_cast<_ushort>(i), static_cast<_ushort>(i + 1) };
+    // 위쪽 반구와 아래쪽 반구의 삼각형 인덱스 설정
+    // 위쪽 반구
+    for (int i = 0; i < 8; ++i) {
+        int next = (i + 1) % 8;
+        pIndices[i * 6 + 16] = { (unsigned short)i, 8, (unsigned short)next }; // 위쪽 반구
     }
-    pIndices[index++] = { 16, 7, 0 };
 
-    // 하단 반구
-    for (int i = 0; i < 7; ++i)
-    {
-        pIndices[index++] = { 17, static_cast<_ushort>(i + 8), static_cast<_ushort>(i + 9) };
+    // 아래쪽 반구
+    for (int i = 0; i < 8; ++i) {
+        int next = (i + 1) % 8;
+        pIndices[i * 6 + 24] = { (unsigned short)i, 9, (unsigned short)next }; // 아래쪽 반구
     }
-    pIndices[index++] = { 17, 15, 8 };
 
     m_pIB->Unlock();
 
     return S_OK;
 }
-
 
 
 
@@ -181,47 +174,62 @@ HRESULT CCollider_Capsule::Render_Collider(_bool isHit)
 }
 
 
-//_bool CCollider_Capsule::Collision_Check(CCollider_Capsule* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLISION_DIR* pOutDir)
-//{
-//    // 충돌 체크 로직을 작성합니다.
-//    return false;
-//}
-
-_bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLISION_DIR* pOutDir)
+_bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDepth, _Out_ CCollider::COLLISION_DIR* pOutDir)
 {
     if (!pTarget)
         return false;
 
-    if (pOutDistance)
-        *pOutDistance = { 0.f, 0.f, 0.f };
+    if (pOutDepth)
+        *pOutDepth = { 0.f, 0.f, 0.f };
 
     COLLISION_DIR Collision_Dir = COLLISION_DIR::NONE;
     if (pOutDir)
         *pOutDir = Collision_Dir;
 
-    // 캡슐 중심 위치
+    // 캡슐의 중심 위치 (오프셋을 고려하여 계산)
     _float3 vCapsuleCenter = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+    vCapsuleCenter.x += m_StateDesc.fOffsetX;
+    vCapsuleCenter.y += m_StateDesc.fOffsetY;
+    vCapsuleCenter.z += m_StateDesc.fOffsetZ;
 
-    // 상대 AABB의 월드 변환 행렬을 고려하여 월드 좌표로 변환
-    const _float4x4* matWorld = pTarget->Get_Transform()->Get_WorldMatrix();
+    // 큐브의 월드 변환 행렬을 가져와 큐브의 월드 좌표 계산
+    _float3 vCubeCenter = pTarget->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+    // 큐브의 오프셋을 적용 (오프셋은 위치에 더하는 형태)
+    vCubeCenter.x += pTarget->Get_Desc().fOffSetX;
+    vCubeCenter.y += pTarget->Get_Desc().fOffSetY;
+    vCubeCenter.z += pTarget->Get_Desc().fOffsetZ;
+
+    // AABB의 최소/최대 좌표 계산
     _float3 vTargetMin = pTarget->GetMin();
     _float3 vTargetMax = pTarget->GetMax();
 
-    // 월드 공간에서 AABB의 최소/최대 좌표 계산
+    // AABB에 오프셋 적용 (큐브의 월드 좌표에 오프셋을 더한 후)
+    vTargetMin.x += pTarget->Get_Desc().fOffSetX;
+    vTargetMin.y += pTarget->Get_Desc().fOffSetY;
+    vTargetMin.z += pTarget->Get_Desc().fOffsetZ;
+
+    vTargetMax.x += pTarget->Get_Desc().fOffSetX;
+    vTargetMax.y += pTarget->Get_Desc().fOffSetY;
+    vTargetMax.z += pTarget->Get_Desc().fOffsetZ;
+
+    // AABB의 월드 좌표를 계산 (오프셋을 고려하여 월드 공간에 적용)
+    const _float4x4* matWorld = pTarget->Get_Transform()->Get_WorldMatrix();
     D3DXVec3TransformCoord(&vTargetMin, &vTargetMin, matWorld);
     D3DXVec3TransformCoord(&vTargetMax, &vTargetMax, matWorld);
 
-    // AABB에서 캡슐 중심에 가장 가까운 점 찾기
+    // AABB에서 캡슐의 원형 부분에 가장 가까운 점 찾기
     _float3 vClosestPoint;
     vClosestPoint.x = max(vTargetMin.x, min(vCapsuleCenter.x, vTargetMax.x));
     vClosestPoint.y = max(vTargetMin.y, min(vCapsuleCenter.y, vTargetMax.y));
     vClosestPoint.z = max(vTargetMin.z, min(vCapsuleCenter.z, vTargetMax.z));
 
-    // 가장 가까운 점과 캡슐의 중심 거리 계산
-    _float3 vDiff = vCapsuleCenter - vClosestPoint;
+    // 캡슐의 원형 부분과의 거리 계산
+    _float3 vDiff = vClosestPoint - vCapsuleCenter;
     float fDistanceSquared = vDiff.x * vDiff.x + vDiff.y * vDiff.y + vDiff.z * vDiff.z;
     float fCapsuleRadiusSquared = m_StateDesc.fRadius * m_StateDesc.fRadius;
 
+    // 충돌 여부 확인
     if (fDistanceSquared > fCapsuleRadiusSquared)
         return false; // 충돌 없음
 
@@ -229,7 +237,7 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
     if (pOutDir)
     {
         if (fabs(vDiff.y) >= fabs(vDiff.x) && fabs(vDiff.y) >= fabs(vDiff.z))
-            Collision_Dir = (vDiff.y > 0) ? COLLISION_DIR::UP : COLLISION_DIR::DOWN;
+            Collision_Dir = (vDiff.y > 0) ? COLLISION_DIR::DOWN : COLLISION_DIR::UP;
         else if (fabs(vDiff.x) >= fabs(vDiff.z))
             Collision_Dir = (vDiff.x > 0) ? COLLISION_DIR::RIGHT : COLLISION_DIR::LEFT;
         else
@@ -238,11 +246,13 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
         *pOutDir = Collision_Dir;
     }
 
-    if (pOutDistance)
-        *pOutDistance = vDiff;
+    if (pOutDepth)
+        *pOutDepth = vDiff;
 
     return true;
 }
+
+
 CCollider_Capsule* CCollider_Capsule::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
     CCollider_Capsule* pInstance = new CCollider_Capsule(pGraphic_Device);

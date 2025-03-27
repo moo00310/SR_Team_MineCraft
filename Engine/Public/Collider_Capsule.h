@@ -38,7 +38,7 @@ public:
     //_bool Collision_Check(CCollider_Capsule* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLISION_DIR* pOutDir = nullptr);
 
     //Ä¸½¶ vs AABB
-    _bool Collision_Check(class CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLISION_DIR* pOutDir) override;
+    _bool Collision_Check(class CCollider_Cube* pTarget, _Out_ _float3* pOutDepth, _Out_ COLLISION_DIR* pOutDir) override;
 
 
 public:
@@ -49,7 +49,7 @@ public:
     void Set_bColliderActive(bool _b) { m_bColliderActive = _b; }
 
 private:
-    _float3 m_vPoint[16]; // Ä¸½¶Àº ¿ø 2°³¿Í 2°³ÀÇ Á¡À» °®´Â 16°³ÀÇ Á¡À¸·Î Á¤ÀÇµÊ
+    _float3 m_vPoint[18]; // Ä¸½¶Àº ¿ø 2°³¿Í 2°³ÀÇ Á¡À» °®´Â 16°³ÀÇ Á¡À¸·Î Á¤ÀÇµÊ
 
 protected:
     COLLCAPSULE_DESC m_StateDesc;

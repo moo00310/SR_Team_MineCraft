@@ -21,7 +21,7 @@ public:
 	virtual HRESULT Update_Collider();
 	virtual HRESULT Render_Collider(_bool isHit);
 
-	virtual _bool Collision_Check(class CCollider_Cube* pTarget, _float3* pOutDistance, COLLISION_DIR* pOutDir) = 0;
+	virtual _bool Collision_Check(class CCollider_Cube* pTarget, _float3* pOutDepth, COLLISION_DIR* pOutDir) = 0;
 
 protected:
 	LPDIRECT3DVERTEXBUFFER9 m_pVB = { nullptr };

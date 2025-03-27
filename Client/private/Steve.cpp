@@ -203,10 +203,10 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
-		//if (m_pRigidbodyCom->Jump())
-		//{
-		//	//m_pGameInstance->Play_Sound("event:/Built_Fail");
-		//}
+		if (m_pRigidbodyCom->Jump())
+		{
+			//m_pGameInstance->Play_Sound("event:/Built_Fail");
+		}
 		
 	}
 
@@ -279,8 +279,8 @@ HRESULT CSteve::Ready_Components()
 
 	// 콜라이더 설정
 	CCollider_Capsule::COLLCAPSULE_DESC Desc_Capsule{}; // 콜라이더 크기 설정
-	Desc_Capsule.fRadius = 0.3f;  // 반지름 1
-	Desc_Capsule.fHeight = 1.6f;  // 높이 2
+	Desc_Capsule.fRadius = 0.3f;  // 반지름 1 
+	Desc_Capsule.fHeight = 1.5f;  // 높이 2
 	Desc_Capsule.fOffsetY = 0.8f;
 	Desc_Capsule.pTransformCom = m_pTransformCom;  // 현재 오브젝트의 Transform 컴포넌트 사용
 
