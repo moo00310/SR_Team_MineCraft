@@ -81,21 +81,11 @@ HRESULT CDirt::Delete_Cube(_float3 fPos)
             if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
                 return E_FAIL;
 
-            // 2. 벡터에서 해당 위치 제거
-            m_vecPositions.erase(m_vecPositions.begin() + i);
-
-            // 3. 콜라이더 제거
-            Safe_Release(m_Colliders[i]);
-            m_Colliders.erase(m_Colliders.begin() + i);
-
-            // 4. 인스턴스 버퍼 업데이트
-            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
-
             wchar_t layerName[100];
             swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
             if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"), LEVEL_YU, layerName)))
                 return E_FAIL;
-            dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_vecPositions[i]);
             dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_DIRT);
 
             CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,
@@ -106,9 +96,19 @@ HRESULT CDirt::Delete_Cube(_float3 fPos)
 
             if (particle != nullptr)
             {
-                particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                particle->Replay(m_vecPositions[i]);
                 //m_pGameInstance->Pop(particle);
             }
+
+            // 2. 벡터에서 해당 위치 제거
+            m_vecPositions.erase(m_vecPositions.begin() + i);
+
+            // 3. 콜라이더 제거
+            Safe_Release(m_Colliders[i]);
+            m_Colliders.erase(m_Colliders.begin() + i);
+
+            // 4. 인스턴스 버퍼 업데이트
+            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
 
             return S_OK;
         }

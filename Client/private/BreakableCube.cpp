@@ -25,6 +25,10 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
+    if (m_vecPositions.size() == 0) {
+        Destroy();
+    }
+
     // 플레이어 밑에 있는 청크면 충돌 매니저에 올림
     if (m_bChunkColliderActive) {
         m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);

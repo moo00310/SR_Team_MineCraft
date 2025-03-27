@@ -35,6 +35,9 @@ void CLeaf::Update(_float fTimeDelta)
 
 void CLeaf::Late_Update(_float fTimeDelta)
 {
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
+
 	__super::Late_Update(fTimeDelta);
 }
 
@@ -49,13 +52,74 @@ HRESULT CLeaf::Render()
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
 		return E_FAIL;
 
+	m_pTransformCom->Bind_Resource(m_pShaderCom);
+	m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+
+	m_pShaderCom->Begin(0);
+
 	/* 정점을 그린다. */
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
 	__super::Render();
 
+	m_pShaderCom->End();
+
 	return S_OK;
+}
+
+HRESULT CLeaf::Delete_Cube(_float3 fPos)
+{
+	for (size_t i = 0; i < m_vecPositions.size(); ++i)
+	{
+		if (m_vecPositions[i].x == fPos.x &&
+			m_vecPositions[i].y == fPos.y &&
+			m_vecPositions[i].z == fPos.z)
+		{
+			if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
+				return E_FAIL;
+
+			int random = rand() % 100;
+			if (random < 10) {
+				wchar_t layerName[100];
+				swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+					return E_FAIL;
+				dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_vecPositions[i]);
+				dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_SAPLING);
+			}
+			else if (10 <= random && random < 20) {
+				wchar_t layerName[100];
+				swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+					return E_FAIL;
+				dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_vecPositions[i]);
+				dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_APPLE);
+			}
+
+			// 2. 벡터에서 해당 위치 제거
+			m_vecPositions.erase(m_vecPositions.begin() + i);
+
+			// 3. 콜라이더 제거
+			Safe_Release(m_Colliders[i]);
+			m_Colliders.erase(m_Colliders.begin() + i);
+
+			// 4. 인스턴스 버퍼 업데이트
+			m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
+
+
+			return S_OK;
+		}
+	}
+
+	return E_FAIL;
+}
+
+void CLeaf::RemoveLeaf()
+{
+	int random = rand() % m_vecPositions.size();
+
+	Delete_Cube(m_vecPositions[random]);
 }
 
 HRESULT CLeaf::Ready_Components()
@@ -98,24 +162,6 @@ CGameObject* CLeaf::Clone(void* pArg)
 
 void CLeaf::Free()
 {
-	int random = rand() % 100;
-	if (random < 10) {
-		wchar_t layerName[100];
-		swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
-		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
-			return;
-		dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-		dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_SAPLING);
-	}
-	else if (10 <= random && random < 20) {
-		wchar_t layerName[100];
-		swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
-		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
-			return;
-		dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-		dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_APPLE);
-	}
-
 	__super::Free();
 }
 
