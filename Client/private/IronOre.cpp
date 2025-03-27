@@ -26,18 +26,18 @@ HRESULT CIronOre::Initialize(void* pArg)
 
 void CIronOre::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
 }
 
 void CIronOre::Update(_float fTimeDelta)
 {
+    __super::Update(fTimeDelta);
 }
 
 void CIronOre::Late_Update(_float fTimeDelta)
 {
-    if (m_bRenderActive) {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-            return;
-    }
+    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+        return;
 
 	__super::Late_Update(fTimeDelta);
 }

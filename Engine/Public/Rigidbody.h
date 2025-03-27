@@ -23,6 +23,7 @@ public:
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
 	HRESULT Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist);
+	//인스턴싱 버전 레이캐스트 만들어야함
 
 public:
 	_bool	Jump();

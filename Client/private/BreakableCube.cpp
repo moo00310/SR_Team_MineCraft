@@ -35,7 +35,10 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
 	//이놈이 관리하는 모든 콜라이더 박스를 충돌 매니저에 등록 하겠다는건데...
-    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);
+    if (m_bRenderActive) {
+        m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);
+    }
+    
 }
 
 void CBreakableCube::Update(_float fTimeDelta)
@@ -51,10 +54,12 @@ void CBreakableCube::Late_Update(_float fTimeDelta)
     if (m_pColliderCom2)
         m_pColliderCom2->Update_ColliderBox();*/
 
-	for (int i = 0; i < m_Colliders.size(); ++i)
-	{
-		m_Colliders[i]->Update_ColliderBox();
-	}
+	//for (int i = 0; i < m_Colliders.size(); ++i)
+	//{
+ //       if (m_Colliders[i]->Get_bColliderActive()) {
+ //           m_Colliders[i]->Update_ColliderBox();
+ //       }
+	//}
 }
 
 HRESULT CBreakableCube::Render()
@@ -66,10 +71,14 @@ HRESULT CBreakableCube::Render()
     //if (m_pColliderCom2)
     //    m_pColliderCom2->Render_ColliderBox(false);
 
-    for (int i = 0; i < m_Colliders.size(); ++i)
+    /*for (int i = 0; i < m_Colliders.size(); ++i)
     {
-        m_Colliders[i]->Render_ColliderBox(true);
-    }
+        if (m_Colliders[i]->Get_bColliderActive())
+        {
+            m_Colliders[i]->Render_ColliderBox(true);
+
+        }
+    }*/
 
     return S_OK;
 }
@@ -99,31 +108,10 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
-    for (size_t i = 0; i < m_vecPositions.size(); ++i)
-    {
-        if (m_vecPositions[i].x == fPos.x &&
-            m_vecPositions[i].y == fPos.y &&
-            m_vecPositions[i].z == fPos.z)
-        {
-            if(FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
-                return E_FAIL;
-
-            // 2. 벡터에서 해당 위치 제거
-            m_vecPositions.erase(m_vecPositions.begin() + i);
-
-            // 3. 콜라이더 제거
-            Safe_Release(m_Colliders[i]);
-            m_Colliders.erase(m_Colliders.begin() + i);
-
-            // 4. 인스턴스 버퍼 업데이트
-            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
-
-            return S_OK;
-        }
-    }
-
-    return E_FAIL;
+    return E_NOTIMPL;
 }
+
+
 
 
 
@@ -180,7 +168,7 @@ CGameObject* CBreakableCube::Clone(void* pArg)
 void CBreakableCube::Free()
 {
     if (CMCTerrain* _copy = dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))){
-       _copy->CheckRenderLayerObjects();
+       _copy->CheckColliderActive();
     }
 
     __super::Free();

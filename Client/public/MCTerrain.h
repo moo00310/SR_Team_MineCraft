@@ -29,13 +29,10 @@ public:
 public:
 	CGameInstance* GetGameInstance();
 	int GetFileCount();
-	void CheckRenderLayerObjects();
+	void CheckColliderActive();
 private:
 	HRESULT Ready_Layer_BackGround();
-	// 모든 물체 Render
 
-	// 돌 빼고 Render
-	void RenderWithoutStone();
 	// 모든 청크 비활성화
 	void OffAllChunkLayer();
 
@@ -43,6 +40,8 @@ private:
 	void GetPlayerChunk3x3();
 	void GetPlayerChunk();
 
+	//플레이어가 있는 청크에서만 충돌 매니저에 올려줌
+	void SetColliderChunk();
 
 	int m_iChunkCount = 0;
 	bool prevF1State = false;

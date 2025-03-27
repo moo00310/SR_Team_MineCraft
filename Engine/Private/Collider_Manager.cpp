@@ -122,16 +122,16 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 			switch (eCollisionType)
 			{
 			case Engine::CCollider_Manager::COLLSIION_CUBE:
-				if (pCollider == nullptr)
-					continue;
-				if (static_cast<CCollider_Cube*>(pMyCollider)->Collision_Check(
-					static_cast<CCollider_Cube*>(pCollider), &OutDistance, &OutDir))
-				{
-					CCollider_Cube::COLLISION_INFO tInfo;
-					tInfo.pGameObject = iter;
-					tInfo.eCollisionDir = OutDir;
-					tInfo.vDepth = OutDistance;
-					Collision_Infos.push_back(tInfo);
+				if (static_cast<CCollider_Cube*>(pCollider)->Get_bColliderActive()) {
+					if (static_cast<CCollider_Cube*>(pMyCollider)->Collision_Check(
+						static_cast<CCollider_Cube*>(pCollider), &OutDistance, &OutDir))
+					{
+						CCollider_Cube::COLLISION_INFO tInfo;
+						tInfo.pGameObject = iter;
+						tInfo.eCollisionDir = OutDir;
+						tInfo.vDepth = OutDistance;
+						Collision_Infos.push_back(tInfo);
+					}
 				}
 				break;
 			default:
