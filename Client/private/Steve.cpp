@@ -215,6 +215,10 @@ void CSteve::Move(_float fTimeDelta)
 	{
 		CUI_Mgr::Get_Instance()->TakeDamge();
 	}
+	if (m_pGameInstance->Key_Down('X'))
+	{
+		CUI_Mgr::Get_Instance()->PlayerExp_Set();
+	}
 }
 
 HRESULT CSteve::Ready_Components()

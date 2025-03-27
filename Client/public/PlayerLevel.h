@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CPlayerExp_Back final : public CUIObject
+class CPlayerLevel final : public CUIObject
 {
 private:
-	CPlayerExp_Back(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CPlayerExp_Back(CPlayerExp_Back& Prototype);
-	virtual ~CPlayerExp_Back() = default;
+	CPlayerLevel(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CPlayerLevel(CPlayerLevel& Prototype);
+	virtual ~CPlayerLevel() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -25,27 +25,36 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-private:
-	HRESULT Ready_Components();
+public:
+	_int	Get_TextureNum() { return m_iTextureNum; }
+	_int	Get_LevelIndex() { return m_iLevelIndex; }
+	_bool	Get_RenderOn() { return m_bRenderOn; }
+
+public:
+	void Set_TextureNum(_int TextureNum) { m_iTextureNum = TextureNum; }
+	void Set_RenderOn(_bool _bRenderOn) { m_bRenderOn = _bRenderOn; }
 
 private:
+	HRESULT Ready_Components();
 	void	Begin();
 	void	End();
 
 private:
-	UIOBJECT_DESC Desc{};
+	_int*	m_iLevelCount = { nullptr };
+	_int	m_iLevelIndex = { 0 };
+	_int	m_iTextureNum = { 0 };
+	_bool	m_bRenderOn = { false };
 
 private:
-	_int* m_iExpCount = { nullptr };
-	_int  m_iExpIndex = { 0 };
-	_int  m_iTextureNum = { 2 };
+	UIOBJECT_DESC Desc{};
+
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 public:
-	static CPlayerExp_Back* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CPlayerLevel* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

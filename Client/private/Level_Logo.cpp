@@ -90,7 +90,7 @@ void CLevel_Logo::Update(_float fTimeDelta)
 
 HRESULT CLevel_Logo::Render()
 {
-	SetWindowText(g_hWnd, TEXT("로고화면입니다."));
+	SetWindowText(g_hWnd, TEXT("Minecraft"));
 
 	return S_OK;
 }

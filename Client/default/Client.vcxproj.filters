@@ -247,6 +247,9 @@
     <Filter Include="03.UI\05.PlayerState\02.PlayerExp">
       <UniqueIdentifier>{be029a2e-92dc-4ce0-83b6-400ee3eb2035}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\05.PlayerState\03.PlayerLevel">
+      <UniqueIdentifier>{525bc881-5430-4351-8fbf-b197eb91c1ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -523,7 +526,7 @@
     </ClInclude>
     <ClInclude Include="..\public\UIParticleRain.h">
       <Filter>03.UI\06.UIParticle</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\PlayerHunger.h">
       <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
     </ClInclude>
@@ -535,6 +538,9 @@
     </ClInclude>
     <ClInclude Include="..\public\PlayerExp_Back.h">
       <Filter>03.UI\05.PlayerState\02.PlayerExp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\PlayerLevel.h">
+      <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -799,7 +805,7 @@
     </ClCompile>
     <ClCompile Include="..\private\UIParticleRain.cpp">
       <Filter>03.UI\06.UIParticle</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\PlayerHunger.cpp">
       <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
     </ClCompile>
@@ -811,6 +817,9 @@
     </ClCompile>
     <ClCompile Include="..\private\PlayerExp_Back.cpp">
       <Filter>03.UI\05.PlayerState\02.PlayerExp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerLevel.cpp">
+      <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
