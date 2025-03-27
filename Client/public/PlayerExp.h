@@ -26,10 +26,13 @@ public:
 	virtual HRESULT Render()override;
 
 public:
-	_int Get_TextureNum() { return m_iTextureNum; }
-
+	_int	Get_TextureNum()	{ return m_iTextureNum; }
+	_int	Get_ExpIndex()		{ return m_iExpIndex; }
+	_bool	Get_RenderOn()		{ return m_bRenderOn; }
+	
 public:
 	void Set_TextureNum(_int TextureNum) { m_iTextureNum = TextureNum; }
+	void Set_RenderOn(_bool _bRenderOn) { m_bRenderOn = _bRenderOn; }
 
 private:
 	HRESULT Ready_Components();
@@ -40,6 +43,7 @@ private:
 	_int*	m_iExpCount = { nullptr };
 	_int	m_iExpIndex = { 0 };
 	_int	m_iTextureNum = { 0 };
+	_bool	m_bRenderOn = { false };
 
 private:
 	UIOBJECT_DESC Desc{};
