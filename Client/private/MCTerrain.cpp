@@ -29,15 +29,15 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
 
-    CheckColliderActive();
     SetColliderChunk();
+    
 
     return S_OK;
 }
 
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
-    
+
 }
 
 void CMCTerrain::Update(_float fTimeDelta)
@@ -69,10 +69,11 @@ void CMCTerrain::Late_Update(_float fTimeDelta)
 
     //청크를 이동 했다면
     if (m_prePlayerChunk != m_currentPlayerChunk) {
-        CheckColliderActive();
         SetColliderChunk();
         m_prePlayerChunk = m_currentPlayerChunk;
     }
+
+    CheckColliderActive();
 }
 
 HRESULT CMCTerrain::Render()
@@ -225,17 +226,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
     return S_OK;
 }
 
-#include <unordered_set>
-
-struct Float3Hash {
-    size_t operator()(const _float3& v) const {
-        size_t hx = std::hash<float>()(v.x);
-        size_t hy = std::hash<float>()(v.y);
-        size_t hz = std::hash<float>()(v.z);
-        return hx ^ (hy << 1) ^ (hz << 2);  // XOR을 이용한 해싱
-    }
-};
-
+/*
 void CMCTerrain::CheckColliderActive()
 {
     //이전 청크의 활성화된 충돌 블럭들 모두 비활성화
@@ -303,6 +294,87 @@ void CMCTerrain::CheckColliderActive()
                     // 3. 둘러싸여져 있으면 충돌 비활성화
                     if (isSurrounded) {
                         _vecCopyCollider[i]->Set_bColliderActive(false);
+                    }
+                }
+            }
+        }
+    }
+}
+*/
+
+void CMCTerrain::CheckColliderActive()
+{
+    //이전 청크의 활성화된 충돌 블럭들 모두 비활성화
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_prePlayerChunk);
+
+    vector<_float3> blockPositions;
+
+    list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+
+    for (auto _object : _copyObjectList) {
+        if (_object->Get_isDestroy() == false) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                vector<CCollider_Cube*> _vecCopyCollider = _break->Get_ColliderCube();
+                vector<_float3> _vecCopyPosition = _break->Get_Positions();
+                for (auto collider : _vecCopyCollider) {
+                    collider->Set_bColliderActive(false);
+                }
+
+                for (auto pos : _vecCopyPosition) {
+                    blockPositions.push_back(pos);
+                }
+            }
+        }
+    }
+
+    // 플레이어 주변에 있는 블럭들만 활성화
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return;
+
+    _float3 playerPos = pSteve->GetPos();
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    int chunk = x + (width * z);
+
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_currentPlayerChunk);
+    _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    
+
+    for (auto _object : _copyObjectList) {
+        if (_object->Get_isDestroy() == false) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                vector<CCollider_Cube*> _vecCopyCollider = _break->Get_ColliderCube();
+                vector<_float3> _vecCopyPosition = _break->Get_Positions();
+
+                for (int i = 0; i < _vecCopyCollider.size(); ++i) {
+                    _float3 pos = _vecCopyPosition[i];
+
+                    // 26방향 확인
+                    static const _float3 offsets[] = {
+                        // 6방향 (기본)
+                        {-1,  0,  0}, {1,  0,  0}, {0,  1,  0},
+                        { 0, -1,  0}, {0,  0,  1}, {0,  0, -1},
+
+                        // 12 엣지 방향
+                        {-1, -1,  0}, {-1,  1,  0}, {1, -1,  0}, {1,  1,  0},
+                        {-1,  0, -1}, {-1,  0,  1}, {1,  0, -1}, {1,  0,  1},
+                        { 0, -1, -1}, { 0, -1,  1}, {0,  1, -1}, {0,  1,  1},
+
+                        // 8 코너 방향
+                        {-1, -1, -1}, {-1, -1,  1}, {-1,  1, -1}, {-1,  1,  1},
+                        { 1, -1, -1}, { 1, -1,  1}, { 1,  1, -1}, { 1,  1,  1}
+                    };
+
+
+
+                    for (const auto& offset : offsets) {
+                        if (pos == _float3((int)playerPos.x + offset.x, (int)playerPos.y + offset.y, (int)playerPos.z + offset.z)) {
+                            _vecCopyCollider[i]->Set_bColliderActive(true);
+                            break;
+                        }
                     }
                 }
             }
