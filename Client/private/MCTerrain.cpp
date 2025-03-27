@@ -28,14 +28,14 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
-    //CheckRenderLayerObjects();
+
     return S_OK;
 }
 
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
-    //OffAllChunkLayer();
-    GetPlayerChunk();
+    CheckColliderActive();
+    SetColliderChunk();
 }
 
 void CMCTerrain::Update(_float fTimeDelta)
@@ -45,12 +45,7 @@ void CMCTerrain::Update(_float fTimeDelta)
 
     if (currF1State && !prevF1State)
     {
-        CheckRenderLayerObjects();
-    }
-
-    if (currF2State && !prevF2State)
-    {
-        RenderWithoutStone();
+        CheckColliderActive();
     }
 
     prevF1State = currF1State;
@@ -122,6 +117,10 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         vector<D3DXVECTOR3> ironVec;
         vector<D3DXVECTOR3> coalVec;
 
+        CTree::DESC desc = {};
+        int percent = 999;
+        CBreakableRect* pRect = nullptr;
+
         while (ReadFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesRead, NULL) && dwBytesRead > 0)
         {
 
@@ -129,6 +128,35 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
             {
             case GRASSDIRT:
                 grassVec.push_back(eblockData.fPosition);
+
+         /*       percent = rand() % 100;
+                if (percent < 1) {
+                    int randWood = rand() % 3 + 4;
+                    int ranLeaf = rand() % 8 + 4;
+
+                    desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.5, eblockData.fPosition.z),0 };
+                    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"), LEVEL_YU, layerName, &desc)))
+                        return E_FAIL;
+                }
+                else if (1 <= percent && percent < 5) {
+                    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Grass"), LEVEL_YU, layerName)))
+                        return 1;
+                    pRect = dynamic_cast<CBreakableRect*>(m_pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+                    if (pRect) {
+                        pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 1, eblockData.fPosition.z));
+                    }
+                    index++;
+                }
+                else if (5 <= percent && percent < 6) {
+                    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_RedTulip"), LEVEL_YU, layerName)))
+                        return 1;
+                    pRect = dynamic_cast<CBreakableRect*>(m_pGameInstance->Get_Object(LEVEL_YU, layerName, index));
+                    if (pRect) {
+                        pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.7, eblockData.fPosition.z));
+                    }
+                    index++;
+                }*/
+
                 break;
             case DIRT:
                 dirtVec.push_back(eblockData.fPosition);
@@ -151,11 +179,10 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
 
          vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
             {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
-            //{TEXT("Prototype_GameObject_Dirt"), &dirtVec},
-            //{TEXT("Prototype_GameObject_Stone"), &stoneVec},
-            //{TEXT("Prototype_GameObject_IronOre"), &ironVec},
-            //{TEXT("Prototype_GameObject_CoalOre"), &coalVec}
-            //{TEXT("Prototype_GameObject_CoalOre"), &coalVec}
+            {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
+            {TEXT("Prototype_GameObject_Stone"), &stoneVec},
+            {TEXT("Prototype_GameObject_IronOre"), &ironVec},
+            {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
         };
 
 
@@ -165,7 +192,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
             CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_YU, layerName, static_cast<int>(i)));
             if (pCube) {
                 pCube->Set_InstanceBuffer(*(blockTypes[i].second));
-                pCube->Set_MyChunk(i);
+                pCube->Set_MyChunk(static_cast<int>(i));
                 pCube->Set_BlockPositions(*(blockTypes[i].second));
             }
                 
@@ -190,9 +217,8 @@ struct Float3Hash {
     }
 };
 
-void CMCTerrain::CheckRenderLayerObjects()
+void CMCTerrain::CheckColliderActive()
 {
-
     auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
     if (!pSteve) return;
 
@@ -206,6 +232,7 @@ void CMCTerrain::CheckRenderLayerObjects()
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
 
+    // 오브젝트 정보들 가지고 옴
     list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
 
     // 블록 위치 정보를 저장할 unordered_set
@@ -215,52 +242,82 @@ void CMCTerrain::CheckRenderLayerObjects()
     for (auto _object : _copyObjectList) {
         if (_object->Get_isDestroy() == false) {
             if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
-                _break->Set_RenderActive(true);
-                blockPositions.insert(_break->GetPos());
+                vector<CCollider_Cube*> _vecCopyCollider = _break->Get_ColliderCube();
+                vector<_float3> _vecCopyPosition = _break->Get_Positions();
+
+                for (int i = 0; i < _vecCopyCollider.size(); ++i) {
+                    _vecCopyCollider[i]->Set_bColliderActive(true);
+                    blockPositions.insert(_vecCopyPosition[i]);
+                }
             }
         }
     }
 
-    // 블록의 렌더링 여부 확인
+    // 블록의 충돌 여부 확인
     for (auto _object : _copyObjectList) {
-        if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
-            _float3 pos = _break->GetPos();
+        if (_object->Get_isDestroy() == false) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                vector<CCollider_Cube*> _vecCopyCollider = _break->Get_ColliderCube();
+                vector<_float3> _vecCopyPosition = _break->Get_Positions();
 
-            // 6방향 확인
-            static const _float3 offsets[] = {
-                {-1, 0, 0}, {1, 0, 0}, {0, 1, 0},
-                {0, -1, 0}, {0, 0, 1}, {0, 0, -1}
-            };
+                for (int i = 0; i < _vecCopyCollider.size(); ++i) {
+                    _float3 pos = _vecCopyPosition[i];
 
-            bool isSurrounded = true;
-            for (const auto& offset : offsets) {
-                if (blockPositions.find({ pos.x + offset.x, pos.y + offset.y, pos.z + offset.z }) == blockPositions.end()) {
-                    isSurrounded = false;
-                    break;
+                    // 6방향 확인
+                    static const _float3 offsets[] = {
+                        {-1, 0, 0}, {1, 0, 0}, {0, 1, 0},
+                        {0, -1, 0}, {0, 0, 1}, {0, 0, -1}
+                    };
+
+                    bool isSurrounded = true;
+                    for (const auto& offset : offsets) {
+                        if (blockPositions.find({ pos.x + offset.x, pos.y + offset.y, pos.z + offset.z }) == blockPositions.end()) {
+                            isSurrounded = false;
+                            break;
+                        }
+                    }
+
+                    if (isSurrounded) {
+                        _vecCopyCollider[i]->Set_bColliderActive(false);
+                    }
                 }
-            }
-
-            if (isSurrounded) {
-                _break->Set_RenderActive(false);
             }
         }
     }
 }
 
-void CMCTerrain::RenderWithoutStone()
+void CMCTerrain::SetColliderChunk()
 {
-    for (int i = 0; i < m_iChunkCount; ++i) {
-        wchar_t layerName[100];
-        swprintf(layerName, 100, L"Layer_Chunk%d", i);
+    // 플레이어 위치 가져오기
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return;
 
-        list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    _float3 playerPos = pSteve->GetPos();
 
-        for (auto _object : _copyObjectList) {
-            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
-                _break->Set_RenderActive(true);
-                if (dynamic_cast<CStone*>(_object)) {
-                    _break->Set_RenderActive(false);
-                }
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    int chunk = x + (width * z);
+
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
+    //플레이어가 있는 청크 오브젝트 가지고 옴
+    list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    for (auto obj : objlist) {
+        if (CBreakableCube* _copy = dynamic_cast<CBreakableCube*>(obj)) {
+            _copy->Set_RenderActive(true);
+        }
+
+        if (CTree* _copy = dynamic_cast<CTree*>(obj)) {
+            vector<CGameObject*> _vecObj = _copy->Get_LeafInfo();
+            for (auto _obj : _vecObj) {
+                dynamic_cast<CBreakableCube*>(_obj)->Set_RenderActive(true);
+            }
+
+            _vecObj = _copy->Get_WoodInfo();
+            for (auto _obj : _vecObj) {
+                dynamic_cast<CBreakableCube*>(_obj)->Set_RenderActive(true);
             }
         }
     }
@@ -371,6 +428,7 @@ void CMCTerrain::GetPlayerChunk()
         }
     }
 }
+
 
 
 CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

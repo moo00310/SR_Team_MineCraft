@@ -25,7 +25,7 @@ HRESULT CItemCube::Initialize(void* pArg)
     m_fUpDownSpeed = 0.005f;
     m_iUpDownFrame = 0;
 
-    m_pTransformCom->Scaling(0.3, 0.3, 0.3);
+    m_pTransformCom->Scaling(1.5, 1.5, 1.5);
 
     return S_OK;
 }

@@ -36,13 +36,14 @@ public:
 	HRESULT Initialize_Prototype();
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update_ColliderBox();
-	HRESULT SetUp_RenderState();
-	HRESULT Release_RenderState();
 	HRESULT Render_ColliderBox(_bool isHit);
 	_bool	Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLSION_DIR* pOutDir = nullptr);
 public:
 	COLLCUBE_DESC&	Get_Desc() { return m_StateDesc; }
 	void			Set_Desc(COLLCUBE_DESC& Desc) { m_StateDesc = Desc; }
+
+	bool Get_bColliderActive() { return m_bColliderActive; }
+	void Set_bColliderActive(bool _b) { m_bColliderActive = _b; }
 
 private:
 	_float3						m_vPoint[8];
@@ -65,6 +66,8 @@ protected:
 	LPDIRECT3DINDEXBUFFER9		m_pIB = { nullptr };
 	_uint						m_iIndicesByte = {};
 	D3DFORMAT					m_eIndexFormat = {};
+
+	bool m_bColliderActive;
 
 public:
 	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -25,10 +25,12 @@ HRESULT CWood::Initialize(void* pArg)
 
 void CWood::Priority_Update(_float fTimeDelta)
 {
+	__super::Priority_Update(fTimeDelta);
 }
 
 void CWood::Update(_float fTimeDelta)
 {
+	__super::Update(fTimeDelta);
 }
 
 void CWood::Late_Update(_float fTimeDelta)

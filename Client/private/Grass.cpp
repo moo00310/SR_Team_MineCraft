@@ -33,10 +33,8 @@ void CGrass::Update(_float fTimeDelta)
 
 void CGrass::Late_Update(_float fTimeDelta)
 {
-    if (m_bRenderActive) {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-            return;
-    }
+    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+        return;
 
 	__super::Late_Update(fTimeDelta);
 }

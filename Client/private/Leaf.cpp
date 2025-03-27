@@ -25,10 +25,12 @@ HRESULT CLeaf::Initialize(void* pArg)
 
 void CLeaf::Priority_Update(_float fTimeDelta)
 {
+	__super::Priority_Update(fTimeDelta);
 }
 
 void CLeaf::Update(_float fTimeDelta)
 {
+	__super::Update(fTimeDelta);
 }
 
 void CLeaf::Late_Update(_float fTimeDelta)
