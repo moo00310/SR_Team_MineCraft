@@ -1,21 +1,17 @@
 #pragma once
 
-#include "Component.h"
+#include "Collider.h"
 #include "Transform.h"
 BEGIN(Engine)
 
 
-class ENGINE_DLL CCollider_Cube final : public CComponent
+class ENGINE_DLL CCollider_Cube final : public CCollider
 {
-
-public:
-	enum class COLLSION_DIR { NONE, LEFT, RIGHT, UP, DOWN, FRONT,BACK };
-
 public:
 	typedef struct tagCollisionInfo
 	{
 		class CGameObject* pGameObject{ nullptr };   // 충돌한 오브젝트
-		CCollider_Cube::COLLSION_DIR eCollisionDir{ CCollider_Cube::COLLSION_DIR::NONE };  // 충돌 방향
+		COLLISION_DIR eCollisionDir{ COLLISION_DIR::NONE };  // 충돌 방향
 		_float3 vDepth{ 0.f, 0.f, 0.f };  // 충돌 깊이
 	}COLLISION_INFO;
 
@@ -37,10 +33,16 @@ public:
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update_ColliderBox();
 	HRESULT Render_ColliderBox(_bool isHit);
-	_bool	Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLSION_DIR* pOutDir = nullptr);
+	_bool Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir);
+
 public:
 	COLLCUBE_DESC&	Get_Desc() { return m_StateDesc; }
 	void			Set_Desc(COLLCUBE_DESC& Desc) { m_StateDesc = Desc; }
+
+	_float3 GetMin() const;
+	_float3 GetMax() const;
+
+	class CTransform* Get_Transform() { return m_pTransformCom; }
 
 	bool Get_bColliderActive() { return m_bColliderActive; }
 	void Set_bColliderActive(bool _b) { m_bColliderActive = _b; }

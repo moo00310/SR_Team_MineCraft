@@ -73,15 +73,15 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 			for (CCollider_Cube::COLLISION_INFO& tCollision_Info : Collision_Infos)
 			{
 				_float3 vDepth = tCollision_Info.vDepth;
-				CCollider_Cube::COLLSION_DIR eDir = tCollision_Info.eCollisionDir;
+				CCollider::COLLISION_DIR eDir = tCollision_Info.eCollisionDir;
 
-				if (eDir == CCollider_Cube::COLLSION_DIR::DOWN)
+				if (eDir == CCollider::COLLISION_DIR::DOWN)
 				{
 					m_vVelocity.y = 0.0f;
 					fMaxDepth_Y = max(fMaxDepth_Y, vDepth.y);
 				}
 
-				if (eDir == CCollider_Cube::COLLSION_DIR::UP)
+				if (eDir == CCollider::COLLISION_DIR::UP)
 				{
 					if (isFalling())
 						m_vVelocity.y = 0.0f;
@@ -93,16 +93,16 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 				{
 					switch (eDir)
 					{
-					case CCollider_Cube::COLLSION_DIR::LEFT:
+					case CCollider::COLLISION_DIR::LEFT:
 						fMaxDepth_X = max(fMaxDepth_X, vDepth.x);
 						break;
-					case CCollider_Cube::COLLSION_DIR::RIGHT:
+					case CCollider::COLLISION_DIR::RIGHT:
 						fMinDepth_X = (fMinDepth_X == 0.f) ? vDepth.x : min(fMinDepth_X, vDepth.x);
 						break;
-					case CCollider_Cube::COLLSION_DIR::FRONT:
+					case CCollider::COLLISION_DIR::FRONT:
 						fMaxDepth_Z = max(fMaxDepth_Z, vDepth.z);
 						break;
-					case CCollider_Cube::COLLSION_DIR::BACK:
+					case CCollider::COLLISION_DIR::BACK:
 						fMinDepth_Z = (fMinDepth_Z == 0.f) ? vDepth.z : min(fMinDepth_Z, vDepth.z);
 						break;
 					default:

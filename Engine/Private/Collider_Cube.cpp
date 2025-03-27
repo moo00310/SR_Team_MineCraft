@@ -2,13 +2,13 @@
 
 
 CCollider_Cube::CCollider_Cube(LPDIRECT3DDEVICE9 pGraphic_Device)
-	: CComponent(pGraphic_Device)
+	: CCollider(pGraphic_Device)
 {
 
 }
 
 CCollider_Cube::CCollider_Cube(const CCollider_Cube& Prototype)
-	: CComponent(Prototype)
+	: CCollider(Prototype)
 	, m_pVB(Prototype.m_pVB)
 	, m_pIB(Prototype.m_pIB)
 	, m_iNumVertices(Prototype.m_iNumVertices)
@@ -176,177 +176,96 @@ HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
 
 }
 
-_bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLSION_DIR* pOutDir)
+_bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir)
 {
-    if (pOutDistance)
-        *pOutDistance = { 0.f, 0.f, 0.f };
+	if (pOutDistance)
+		*pOutDistance = { 0.f, 0.f, 0.f };
 
-    COLLSION_DIR Collision_Dir{ COLLSION_DIR::NONE };
-    if (pOutDir)
-        *pOutDir = Collision_Dir;
+	CCollider_Cube::COLLISION_DIR Collision_Dir{ CCollider_Cube::COLLISION_DIR::NONE };
+	if (pOutDir)
+		*pOutDir = Collision_Dir;
 
-    if (pTarget == nullptr)
-        return false;
+	if (pTarget == nullptr)
+		return false;
 
-    // 월드 행렬 추출
-    const _float4x4* pWorldMatrixA = m_pTransformCom->Get_WorldMatrix();
-    const _float4x4* pWorldMatrixB = pTarget->m_pTransformCom->Get_WorldMatrix();
+	_float3 vMyPosition{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
+	_float3 vTargetPosition{ pTarget->m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
 
-    // 로컬 축 및 중심 계산
-    _float3 axesA[3] = {
-        _float3(pWorldMatrixA->_11, pWorldMatrixA->_12, pWorldMatrixA->_13),
-        _float3(pWorldMatrixA->_21, pWorldMatrixA->_22, pWorldMatrixA->_23),
-        _float3(pWorldMatrixA->_31, pWorldMatrixA->_32, pWorldMatrixA->_33)
-    };
+	// AABB 최소/최대 좌표 계산
+	_float3 minA = {vMyPosition.x - m_StateDesc.fRadiusX,
+					vMyPosition.y - m_StateDesc.fRadiusY,
+					vMyPosition.z - m_StateDesc.fRadiusZ };
 
-    // offset 적용된 중심 계산
-    _float3 centerA(pWorldMatrixA->_41 + m_StateDesc.fOffSetX,
-        pWorldMatrixA->_42 + m_StateDesc.fOffSetY,
-        pWorldMatrixA->_43 + m_StateDesc.fOffsetZ);
+	_float3 maxA = {vMyPosition.x + m_StateDesc.fRadiusX,
+					vMyPosition.y + m_StateDesc.fRadiusY,
+					vMyPosition.z + m_StateDesc.fRadiusZ };
 
-    _float3 halfA = { m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ };
+	_float3 minB = {vTargetPosition.x - pTarget->m_StateDesc.fRadiusX,
+					vTargetPosition.y - pTarget->m_StateDesc.fRadiusY,
+					vTargetPosition.z - pTarget->m_StateDesc.fRadiusZ };
 
-    _float3 axesB[3] = {
-        _float3(pWorldMatrixB->_11, pWorldMatrixB->_12, pWorldMatrixB->_13),
-        _float3(pWorldMatrixB->_21, pWorldMatrixB->_22, pWorldMatrixB->_23),
-        _float3(pWorldMatrixB->_31, pWorldMatrixB->_32, pWorldMatrixB->_33)
-    };
+	_float3 maxB = {vTargetPosition.x + pTarget->m_StateDesc.fRadiusX,
+					vTargetPosition.y + pTarget->m_StateDesc.fRadiusY,
+					vTargetPosition.z + pTarget->m_StateDesc.fRadiusZ };
 
-    // offset 적용된 중심 계산
-    _float3 centerB(pWorldMatrixB->_41 + pTarget->m_StateDesc.fOffSetX,
-        pWorldMatrixB->_42 + pTarget->m_StateDesc.fOffSetY,
-        pWorldMatrixB->_43 + pTarget->m_StateDesc.fOffsetZ);
+	// AABB 충돌 검사
+	if (maxA.x < minB.x || minA.x > maxB.x ||
+		maxA.y < minB.y || minA.y > maxB.y ||
+		maxA.z < minB.z || minA.z > maxB.z)
+	{
+		return false;
+	}
 
-    _float3 halfB = { pTarget->m_StateDesc.fRadiusX, pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
+	// 충돌 방향 계산
+	_float3 overlap = { min(maxA.x, maxB.x) - max(minA.x, minB.x),
+						min(maxA.y, maxB.y) - max(minA.y, minB.y),
+						min(maxA.z, maxB.z) - max(minA.z, minB.z) };
 
-    // 정규화
-    for (int i = 0; i < 3; ++i)
-    {
-        D3DXVec3Normalize(&axesA[i], &axesA[i]);
-        D3DXVec3Normalize(&axesB[i], &axesB[i]);
-    }
+	if (pOutDistance)
+		*pOutDistance = overlap;
 
-    // 8개 꼭짓점 계산
-    _float3 cornersA[8], cornersB[8];
-    for (int i = 0; i < 8; ++i)
-    {
-        float offsetX = (i & 1) ? halfA.x : -halfA.x;
-        float offsetY = (i & 2) ? halfA.y : -halfA.y;
-        float offsetZ = (i & 4) ? halfA.z : -halfA.z;
-        cornersA[i] = centerA + axesA[0] * offsetX + axesA[1] * offsetY + axesA[2] * offsetZ;
+	if (pOutDir)
+	{
+		if (overlap.y <= overlap.x && overlap.y <= overlap.z)
+			Collision_Dir = (minA.y < minB.y) ? COLLISION_DIR::UP : COLLISION_DIR::DOWN;
+		else if (overlap.x <= overlap.z)
+			Collision_Dir = (minA.x < minB.x) ? COLLISION_DIR::RIGHT : COLLISION_DIR::LEFT;
+		else
+			Collision_Dir = (minA.z < minB.z) ? COLLISION_DIR::FRONT : COLLISION_DIR::BACK;
 
-        offsetX = (i & 1) ? halfB.x : -halfB.x;
-        offsetY = (i & 2) ? halfB.y : -halfB.y;
-        offsetZ = (i & 4) ? halfB.z : -halfB.z;
-        cornersB[i] = centerB + axesB[0] * offsetX + axesB[1] * offsetY + axesB[2] * offsetZ;
-    }
+		*pOutDir = Collision_Dir;
+	}
 
-    // SAT 충돌 검사
-    std::vector<_float3> testAxes = { axesA[0], axesA[1], axesA[2], axesB[0], axesB[1], axesB[2] };
-    for (int i = 0; i < 3; ++i)
-    {
-        for (int j = 0; j < 3; ++j)
-        {
-            _float3 axis;
-            D3DXVec3Cross(&axis, &axesA[i], &axesB[j]);
-            if (D3DXVec3Length(&axis) > 1e-6f)
-            {
-                D3DXVec3Normalize(&axis, &axis);
-                testAxes.push_back(axis);
-            }
-        }
-    }
-
-    float minPenetration = FLT_MAX;
-    _float3 smallestAxis(0, 0, 0);
-    for (const auto& axis : testAxes)
-    {
-        float minA = FLT_MAX, maxA = -FLT_MAX;
-        float minB = FLT_MAX, maxB = -FLT_MAX;
-
-        for (int i = 0; i < 8; ++i)
-        {
-            float projA = D3DXVec3Dot(&cornersA[i], &axis);
-            minA = min(minA, projA);
-            maxA = max(maxA, projA);
-
-            float projB = D3DXVec3Dot(&cornersB[i], &axis);
-            minB = min(minB, projB);
-            maxB = max(maxB, projB);
-        }
-
-        if (maxA < minB || maxB < minA)
-            return false;
-
-        float overlap = min(maxA, maxB) - max(minA, minB);
-        if (overlap < minPenetration)
-        {
-            minPenetration = overlap;
-            smallestAxis = axis;
-        }
-    }
-
-    // 충돌 방향 분석 (위/아래/옆 구분)
-    if (pOutDistance)
-    {
-        _float3 d = centerB - centerA;
-        if (D3DXVec3Dot(&d, &smallestAxis) < 0)
-            smallestAxis = -smallestAxis;
-
-        // minPenetration이 정상적인 값인지 확인
-        if (minPenetration <= 0)
-            return false;
-
-        *pOutDistance = smallestAxis * minPenetration;
-
-        // pOutDistance 값이 이상하면 0 벡터로 보정
-        if (D3DXVec3LengthSq(pOutDistance) < 1e-6f)
-            *pOutDistance = { 0, 0, 0 };
-
-        // 충돌 방향 판정
-        if (fabs(smallestAxis.y) > fabs(smallestAxis.x) && fabs(smallestAxis.y) > fabs(smallestAxis.z))
-        {
-            if (smallestAxis.y > 0)
-            {
-                Collision_Dir = COLLSION_DIR::DOWN;
-            }
-            else
-            {
-                Collision_Dir = COLLSION_DIR::UP;
-            }
-        }
-        else if (fabs(smallestAxis.x) > fabs(smallestAxis.z))
-        {
-            if (smallestAxis.x > 0)
-            {
-                Collision_Dir = COLLSION_DIR::LEFT;
-            }
-            else
-            {
-                Collision_Dir = COLLSION_DIR::RIGHT;
-            }
-        }
-        else
-        {
-            if (smallestAxis.z > 0)
-            {
-                Collision_Dir = COLLSION_DIR::FRONT;
-            }
-            else
-            {
-                Collision_Dir = COLLSION_DIR::BACK;
-            }
-        }
-    }
-
-    if (pOutDir)
-        *pOutDir = Collision_Dir;
-
-    return true;
+	return true;
 }
 
 
+// CCollider_Cube 클래스에 min, max 값을 리턴하는 함수 추가
+// AABB의 최소값 반환
+_float3 CCollider_Cube::GetMin() const
+{
+	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 
+	// 최소 좌표 계산
+	return _float3(
+		vPosition.x - m_StateDesc.fRadiusX,
+		vPosition.y - m_StateDesc.fRadiusY,
+		vPosition.z - m_StateDesc.fRadiusZ
+	);
+}
+
+// AABB의 최대값 반환
+_float3 CCollider_Cube::GetMax() const
+{
+	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+
+	// 최대 좌표 계산
+	return _float3(
+		vPosition.x + m_StateDesc.fRadiusX,
+		vPosition.y + m_StateDesc.fRadiusY,
+		vPosition.z + m_StateDesc.fRadiusZ
+	);
+}
 
 CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device/*, COLLRECTDESC& Des*/)
 {
@@ -363,7 +282,7 @@ CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device/*, COL
 
 CComponent * CCollider_Cube::Clone(void * pArg)
 {
-	CCollider_Cube*	pInstance = new CCollider_Cube(*this);
+ 	CCollider_Cube*	pInstance = new CCollider_Cube(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{

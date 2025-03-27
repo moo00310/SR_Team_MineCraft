@@ -46,13 +46,13 @@ void CSteve::Priority_Update(_float fTimeDelta)
 void CSteve::Update(_float fTimeDelta)
 {
 	
-	if (FAILED(m_pCollider_CubeCom->Update_ColliderBox()))
+	if (FAILED(m_pCollider_CapsuleCom->Update_ColliderCapsule()))
 	{
 		MSG_BOX("Update_ColliderBox()");
 		return;
 	}
 
-	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+	//m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
 	//CGameObject* pGameObject;
 	//_float fDist;
@@ -107,7 +107,7 @@ HRESULT CSteve::Render()
 			return E_FAIL;
 	}
 
-	if (FAILED(m_pCollider_CubeCom->Render_ColliderBox(false)))
+	if (FAILED(m_pCollider_CapsuleCom->Render_ColliderCapsule(false)))
 		return E_FAIL;
 
 	return S_OK;
@@ -146,11 +146,11 @@ void CSteve::Move(_float fTimeDelta)
 
 	CGameObject* collider{ nullptr };
 	// 블럭 충돌 여부 확인.	
-	collider = m_pGameInstance->Collision_Check_with_Group(
-		COLLISION_BLOCK,		
-		m_pCollider_CubeCom,	
-		CCollider_Manager::COLLSIION_CUBE
-		);	
+	//collider = m_pGameInstance->Collision_Check_with_Group(
+	//	COLLISION_BLOCK,		
+	//	m_pCollider_CubeCom,	
+	//	CCollider_Manager::COLLSIION_CUBE
+	//	);	
 
 	if (collider != nullptr)
 	{
@@ -203,10 +203,10 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
-		if (m_pRigidbodyCom->Jump())
-		{
-			//m_pGameInstance->Play_Sound("event:/Built_Fail");
-		}
+		//if (m_pRigidbodyCom->Jump())
+		//{
+		//	//m_pGameInstance->Play_Sound("event:/Built_Fail");
+		//}
 		
 	}
 
@@ -277,12 +277,26 @@ HRESULT CSteve::Ready_Components()
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
 		return E_FAIL;
 
+	// 콜라이더 설정
+	CCollider_Capsule::COLLCAPSULE_DESC Desc_Capsule{}; // 콜라이더 크기 설정
+	Desc_Capsule.fRadius = 0.3f;  // 반지름 1
+	Desc_Capsule.fHeight = 1.6f;  // 높이 2
+	Desc_Capsule.fOffsetY = 0.8f;
+	Desc_Capsule.pTransformCom = m_pTransformCom;  // 현재 오브젝트의 Transform 컴포넌트 사용
+
+	// 컴포넌트 추가
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Capsule"),
+		TEXT("Com_Collider_Capsule"), reinterpret_cast<CComponent**>(&m_pCollider_CapsuleCom), &Desc_Capsule)))
+		return E_FAIL;
+
+
 	//리지드바디
 	/* For.Com_Rigidbody */
 	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CubeCom, 1.f };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
 		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
 		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -528,6 +542,7 @@ void CSteve::Free()
 	__super::Free();
 
 	Safe_Release(m_pRigidbodyCom);
+	Safe_Release(m_pCollider_CapsuleCom);
 	Safe_Release(m_pCollider_CubeCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
