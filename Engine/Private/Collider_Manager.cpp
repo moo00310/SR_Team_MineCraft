@@ -93,7 +93,7 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 	_uint iGroupIndex,
 	list<CCollider_Cube::COLLISION_INFO>& Collision_Infos,
 	CComponent* pCollider,
-	COLLISION_TYPE eCollisionType
+	COLLISION_TYPE eOther_CollisionType
 )
 {
 	
@@ -119,11 +119,13 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 				continue;
 			if (pCollider == pMyCollider)
 				continue;
-			switch (eCollisionType)
+
+			switch (eOther_CollisionType)
 			{
 			case CCollider_Manager::COLLSIION_CUBE:
-				if (static_cast<CCollider_Cube*>(pCollider)->Get_bColliderActive()) {
-					if (static_cast<CCollider_Cube*>(pMyCollider)->Collision_Check(
+				if (static_cast<CCollider_Cube*>(pCollider)->Get_bColliderActive()) 
+				{
+					if (static_cast<CCollider*>(pMyCollider)->Collision_Check(
 						static_cast<CCollider_Cube*>(pCollider), &OutDistance, &OutDir))
 					{
 						CCollider_Cube::COLLISION_INFO tInfo;

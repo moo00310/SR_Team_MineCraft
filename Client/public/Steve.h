@@ -43,7 +43,7 @@ public:
 private:
 	CTransform* m_pTransformCom = { nullptr };
 	CTexture* m_pTextureCom = { nullptr };
-	CCollider_Cube* m_pCollider_CubeCom{ nullptr };
+	//CCollider_Cube* m_pCollider_CubeCom{ nullptr };
 	CCollider_Capsule* m_pCollider_CapsuleCom{ nullptr };
 	CRigidbody*		m_pRigidbodyCom{ nullptr };
 	CSkeletalAnimator* m_skelAnime = { nullptr };

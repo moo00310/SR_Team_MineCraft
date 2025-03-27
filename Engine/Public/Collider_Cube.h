@@ -29,11 +29,11 @@ private:
 	virtual ~CCollider_Cube() = default;
 
 public:
-	HRESULT Initialize_Prototype();
+	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize(void* pArg) override;
-	HRESULT Update_ColliderBox();
-	HRESULT Render_ColliderBox(_bool isHit);
-	_bool Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir);
+	virtual HRESULT Update_Collider()override;
+	virtual HRESULT Render_Collider(_bool isHit)override;
+	_bool Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir) override;
 
 public:
 	COLLCUBE_DESC&	Get_Desc() { return m_StateDesc; }
@@ -53,23 +53,9 @@ private:
 protected:
 	COLLCUBE_DESC				m_StateDesc;
 
-private:
-	class CTransform*			m_pTransformCom = { nullptr };
 
-protected:
-	LPDIRECT3DVERTEXBUFFER9		m_pVB = { nullptr };
-	_uint						m_iNumVertices = {};
-	_uint						m_iStride = {}; /* 정점의 크기(byte) */
-	_ulong						m_dwFVF = {};
-	D3DPRIMITIVETYPE			m_ePrimitiveType = {};
-	_uint						m_iNumPrimitive = {};
 
-protected:
-	LPDIRECT3DINDEXBUFFER9		m_pIB = { nullptr };
-	_uint						m_iIndicesByte = {};
-	D3DFORMAT					m_eIndexFormat = {};
 
-	bool m_bColliderActive;
 
 public:
 	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

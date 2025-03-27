@@ -8,17 +8,12 @@ CCollider_Capsule::CCollider_Capsule(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 CCollider_Capsule::CCollider_Capsule(const CCollider_Capsule& Prototype)
     : CCollider(Prototype)
-    , m_pVB(Prototype.m_pVB)
-    , m_pIB(Prototype.m_pIB)
-    , m_iNumVertices(Prototype.m_iNumVertices)
-    , m_dwFVF(Prototype.m_dwFVF)
-    , m_iStride(Prototype.m_iStride)
-    , m_ePrimitiveType(Prototype.m_ePrimitiveType)
-    , m_iNumPrimitive(Prototype.m_iNumPrimitive)
+
 {
-    memcpy(m_vPoint, Prototype.m_vPoint, sizeof(_float3) * 16);
     Safe_AddRef(m_pVB);
     Safe_AddRef(m_pIB);
+    memcpy(m_vPoint, Prototype.m_vPoint, sizeof(_float3) * 16);
+
 }
 
 HRESULT CCollider_Capsule::Initialize_Prototype()
@@ -117,7 +112,7 @@ HRESULT CCollider_Capsule::Initialize(void* pArg)
 
 
 
-HRESULT CCollider_Capsule::Update_ColliderCapsule()
+HRESULT CCollider_Capsule::Update_Collider()
 {
     const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
     _float4x4 StateMatrix = *pWorldMatrix;
@@ -139,7 +134,7 @@ HRESULT CCollider_Capsule::Update_ColliderCapsule()
     return S_OK;
 }
 
-HRESULT CCollider_Capsule::Render_ColliderCapsule(_bool isHit)
+HRESULT CCollider_Capsule::Render_Collider(_bool isHit)
 {
     m_pGraphic_Device->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -186,65 +181,68 @@ HRESULT CCollider_Capsule::Render_ColliderCapsule(_bool isHit)
 }
 
 
-_bool CCollider_Capsule::Collision_Check(CCollider_Capsule* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLISION_DIR* pOutDir)
-{
-    // 충돌 체크 로직을 작성합니다.
-    return false;
-}
+//_bool CCollider_Capsule::Collision_Check(CCollider_Capsule* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLISION_DIR* pOutDir)
+//{
+//    // 충돌 체크 로직을 작성합니다.
+//    return false;
+//}
 
-_bool CCollider_Capsule::Collision_Check_Cube(CCollider_Cube* pTarget, _float3* pOutDistance, COLLISION_DIR* pOutDir)
+_bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLISION_DIR* pOutDir)
 {
+    if (!pTarget)
+        return false;
+
     if (pOutDistance)
         *pOutDistance = { 0.f, 0.f, 0.f };
 
-    COLLISION_DIR Collision_Dir{ COLLISION_DIR::NONE };
+    COLLISION_DIR Collision_Dir = COLLISION_DIR::NONE;
     if (pOutDir)
         *pOutDir = Collision_Dir;
 
-    if (pTarget == nullptr)
-        return false;
+    // 캡슐 중심 위치
+    _float3 vCapsuleCenter = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 
-    _float3 vMyPosition{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
-    _float3 vTargetPosition{ pTarget->Get_Transform()->Get_State(CTransform::STATE_POSITION)};
+    // 상대 AABB의 월드 변환 행렬을 고려하여 월드 좌표로 변환
+    const _float4x4* matWorld = pTarget->Get_Transform()->Get_WorldMatrix();
+    _float3 vTargetMin = pTarget->GetMin();
+    _float3 vTargetMax = pTarget->GetMax();
 
-    // AABB 최소/최대 좌표 계산
-    _float3 minA = pTarget->GetMin();
-    _float3 maxA = pTarget->GetMax();
+    // 월드 공간에서 AABB의 최소/최대 좌표 계산
+    D3DXVec3TransformCoord(&vTargetMin, &vTargetMin, matWorld);
+    D3DXVec3TransformCoord(&vTargetMax, &vTargetMax, matWorld);
 
-    _float3 minB = pTarget->GetMin();
-    _float3 maxB = pTarget->GetMax();
+    // AABB에서 캡슐 중심에 가장 가까운 점 찾기
+    _float3 vClosestPoint;
+    vClosestPoint.x = max(vTargetMin.x, min(vCapsuleCenter.x, vTargetMax.x));
+    vClosestPoint.y = max(vTargetMin.y, min(vCapsuleCenter.y, vTargetMax.y));
+    vClosestPoint.z = max(vTargetMin.z, min(vCapsuleCenter.z, vTargetMax.z));
 
-    // AABB 충돌 검사
-    if (maxA.x < minB.x || minA.x > maxB.x ||
-        maxA.y < minB.y || minA.y > maxB.y ||
-        maxA.z < minB.z || minA.z > maxB.z)
-    {
-        return false;
-    }
+    // 가장 가까운 점과 캡슐의 중심 거리 계산
+    _float3 vDiff = vCapsuleCenter - vClosestPoint;
+    float fDistanceSquared = vDiff.x * vDiff.x + vDiff.y * vDiff.y + vDiff.z * vDiff.z;
+    float fCapsuleRadiusSquared = m_StateDesc.fRadius * m_StateDesc.fRadius;
+
+    if (fDistanceSquared > fCapsuleRadiusSquared)
+        return false; // 충돌 없음
 
     // 충돌 방향 계산
-    _float3 overlap = { min(maxA.x, maxB.x) - max(minA.x, minB.x),
-                        min(maxA.y, maxB.y) - max(minA.y, minB.y),
-                        min(maxA.z, maxB.z) - max(minA.z, minB.z) };
-
-    if (pOutDistance)
-        *pOutDistance = overlap;
-
     if (pOutDir)
     {
-        if (overlap.y <= overlap.x && overlap.y <= overlap.z)
-            Collision_Dir = (minA.y < minB.y) ? COLLISION_DIR::UP : COLLISION_DIR::DOWN;
-        else if (overlap.x <= overlap.z)
-            Collision_Dir = (minA.x < minB.x) ? COLLISION_DIR::RIGHT : COLLISION_DIR::LEFT;
+        if (fabs(vDiff.y) >= fabs(vDiff.x) && fabs(vDiff.y) >= fabs(vDiff.z))
+            Collision_Dir = (vDiff.y > 0) ? COLLISION_DIR::UP : COLLISION_DIR::DOWN;
+        else if (fabs(vDiff.x) >= fabs(vDiff.z))
+            Collision_Dir = (vDiff.x > 0) ? COLLISION_DIR::RIGHT : COLLISION_DIR::LEFT;
         else
-            Collision_Dir = (minA.z < minB.z) ? COLLISION_DIR::FRONT : COLLISION_DIR::BACK;
+            Collision_Dir = (vDiff.z > 0) ? COLLISION_DIR::FRONT : COLLISION_DIR::BACK;
 
         *pOutDir = Collision_Dir;
     }
+
+    if (pOutDistance)
+        *pOutDistance = vDiff;
 
     return true;
 }
-
 CCollider_Capsule* CCollider_Capsule::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
     CCollider_Capsule* pInstance = new CCollider_Capsule(pGraphic_Device);
@@ -270,9 +268,9 @@ CComponent* CCollider_Capsule::Clone(void* pArg)
 
 void CCollider_Capsule::Free()
 {
+    __super::Free();
+
     Safe_Release(m_pVB);
     Safe_Release(m_pIB);
     Safe_Release(m_pTransformCom);
-
-    CComponent::Free();
 }

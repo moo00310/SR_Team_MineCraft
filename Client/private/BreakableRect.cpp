@@ -38,13 +38,13 @@ void CBreakableRect::Update(_float fTimeDelta)
 void CBreakableRect::Late_Update(_float fTimeDelta)
 {
     if (m_pColliderCom)
-        m_pColliderCom->Update_ColliderBox();
+        m_pColliderCom->Update_Collider();
 }
 
 HRESULT CBreakableRect::Render()
 {
     if (m_pColliderCom)
-        m_pColliderCom->Render_ColliderBox(false);
+        m_pColliderCom->Render_Collider(false);
     return S_OK;
 }
 

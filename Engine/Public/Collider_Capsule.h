@@ -30,13 +30,15 @@ private:
     virtual ~CCollider_Capsule() = default;
 
 public:
-    HRESULT Initialize_Prototype();
+    HRESULT Initialize_Prototype() override;
     HRESULT Initialize(void* pArg) override;
-    HRESULT Update_ColliderCapsule();
-    HRESULT Render_ColliderCapsule(_bool isHit);
+    virtual HRESULT Update_Collider()override;
+    virtual HRESULT Render_Collider(_bool isHit)override;
 
-    _bool Collision_Check(CCollider_Capsule* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLISION_DIR* pOutDir = nullptr);
-    _bool Collision_Check_Cube(class CCollider_Cube* pTarget, _float3* pOutDistance, COLLISION_DIR* pOutDir);
+    //_bool Collision_Check(CCollider_Capsule* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLISION_DIR* pOutDir = nullptr);
+
+    //Ä¸½¶ vs AABB
+    _bool Collision_Check(class CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ COLLISION_DIR* pOutDir) override;
 
 
 public:
@@ -55,20 +57,7 @@ protected:
 private:
     class CTransform* m_pTransformCom = { nullptr };
 
-protected:
-    LPDIRECT3DVERTEXBUFFER9 m_pVB = { nullptr };
-    _uint m_iNumVertices = {};
-    _uint m_iStride = {}; /* Á¤Á¡ÀÇ Å©±â(byte) */
-    _ulong m_dwFVF = {};
-    D3DPRIMITIVETYPE m_ePrimitiveType = {};
-    _uint m_iNumPrimitive = {};
 
-protected:
-    LPDIRECT3DINDEXBUFFER9 m_pIB = { nullptr };
-    _uint m_iIndicesByte = {};
-    D3DFORMAT m_eIndexFormat = {};
-
-    bool m_bColliderActive;
 
 public:
     static CCollider_Capsule* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -9,17 +9,12 @@ CCollider_Cube::CCollider_Cube(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 CCollider_Cube::CCollider_Cube(const CCollider_Cube& Prototype)
 	: CCollider(Prototype)
-	, m_pVB(Prototype.m_pVB)
-	, m_pIB(Prototype.m_pIB)
-	, m_iNumVertices(Prototype.m_iNumVertices)
-	, m_dwFVF(Prototype.m_dwFVF)
-	, m_iStride(Prototype.m_iStride)
-	, m_ePrimitiveType(Prototype.m_ePrimitiveType)
-	, m_iNumPrimitive(Prototype.m_iNumPrimitive)
+
 {
-	memcpy(m_vPoint, Prototype.m_vPoint, sizeof(_float3) * 4);
 	Safe_AddRef(m_pVB);
 	Safe_AddRef(m_pIB);
+	memcpy(m_vPoint, Prototype.m_vPoint, sizeof(_float3) * 4);
+
 }
 
 HRESULT CCollider_Cube::Initialize_Prototype()
@@ -94,7 +89,7 @@ HRESULT CCollider_Cube::Initialize(void* pArg)
 }
 
 
-HRESULT CCollider_Cube::Update_ColliderBox()
+HRESULT CCollider_Cube::Update_Collider()
 {
 	const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
 	_float4x4 StateMatrix = *pWorldMatrix;
@@ -130,7 +125,7 @@ HRESULT CCollider_Cube::Update_ColliderBox()
 }
 
 
-HRESULT CCollider_Cube::Render_ColliderBox(_bool isHit)
+HRESULT CCollider_Cube::Render_Collider(_bool isHit)
 {
 	// 세계 변환 행렬 설정
 	m_pGraphic_Device->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -297,7 +292,7 @@ void CCollider_Cube::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
+	Safe_Release(m_pTransformCom);
 }

@@ -46,13 +46,13 @@ void CSteve::Priority_Update(_float fTimeDelta)
 void CSteve::Update(_float fTimeDelta)
 {
 	
-	if (FAILED(m_pCollider_CapsuleCom->Update_ColliderCapsule()))
+	if (FAILED(m_pCollider_CapsuleCom->Update_Collider()))
 	{
-		MSG_BOX("Update_ColliderBox()");
+		MSG_BOX("Update_Collider()");
 		return;
 	}
 
-	//m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
 	//CGameObject* pGameObject;
 	//_float fDist;
@@ -107,7 +107,7 @@ HRESULT CSteve::Render()
 			return E_FAIL;
 	}
 
-	if (FAILED(m_pCollider_CapsuleCom->Render_ColliderCapsule(false)))
+	if (FAILED(m_pCollider_CapsuleCom->Render_Collider(false)))
 		return E_FAIL;
 
 	return S_OK;
@@ -269,13 +269,13 @@ HRESULT CSteve::Ready_Components()
 
 	//콜라이더
 	/* For.Com_Collider */
-	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	Desc.fRadiusX = 0.3f; Desc.fRadiusY = 0.8f; Desc.fRadiusZ = 0.3;
-	Desc.fOffSetY = 0.8f;
-	Desc.pTransformCom = m_pTransformCom;
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
-		return E_FAIL;
+	//CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
+	//Desc.fRadiusX = 0.3f; Desc.fRadiusY = 0.8f; Desc.fRadiusZ = 0.3;
+	//Desc.fOffSetY = 0.8f;
+	//Desc.pTransformCom = m_pTransformCom;
+	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+	//	TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
+	//	return E_FAIL;
 
 	// 콜라이더 설정
 	CCollider_Capsule::COLLCAPSULE_DESC Desc_Capsule{}; // 콜라이더 크기 설정
@@ -292,7 +292,7 @@ HRESULT CSteve::Ready_Components()
 
 	//리지드바디
 	/* For.Com_Rigidbody */
-	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CubeCom, 1.f };
+	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CapsuleCom, 1.f };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
 		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
 		return E_FAIL;
@@ -543,7 +543,7 @@ void CSteve::Free()
 
 	Safe_Release(m_pRigidbodyCom);
 	Safe_Release(m_pCollider_CapsuleCom);
-	Safe_Release(m_pCollider_CubeCom);
+	//Safe_Release(m_pCollider_CubeCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_skelAnime);

@@ -29,10 +29,10 @@ HRESULT CRigidbody::Initialize(void* pArg)
 		return E_FAIL;
 
 	//Collider 있어도되고 없어도 되고
-	m_pCollider_Cube = Desc.pCollider_Cube;
-	if (m_pCollider_Cube)
+	m_pCollider = Desc.pCollider;
+	if (m_pCollider)
 	{
-		Safe_AddRef(m_pCollider_Cube);
+		Safe_AddRef(m_pCollider);
 	}
 
 	m_fMass = Desc.fMass;
@@ -59,10 +59,10 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 	Fall_With_Gravity(fTimeDelta);
 
 	// 충돌 검사
-	if (m_pCollider_Cube)
+	if (m_pCollider)
 	{
 		list<CCollider_Cube::COLLISION_INFO> Collision_Infos;
-		_bool isHit = m_pGameInstance->Collision_Check_Group_Multi(iCollsionGroup, Collision_Infos, m_pCollider_Cube, CCollider_Manager::COLLSIION_CUBE);
+		_bool isHit = m_pGameInstance->Collision_Check_Group_Multi(iCollsionGroup, Collision_Infos, m_pCollider, CCollider_Manager::COLLSIION_CUBE);
 
 		if (isHit)
 		{
@@ -261,8 +261,8 @@ void CRigidbody::Free()
 	__super::Free();
 	Safe_Release(m_pTransform);
 
-	if (m_pCollider_Cube)
+	if (m_pCollider)
 	{
-		Safe_Release(m_pCollider_Cube);
+		Safe_Release(m_pCollider);
 	}
 }
