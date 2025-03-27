@@ -25,6 +25,7 @@ HRESULT CGrass::Initialize(void* pArg)
 
 void CGrass::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
 }
 
 void CGrass::Update(_float fTimeDelta)
@@ -36,7 +37,7 @@ void CGrass::Late_Update(_float fTimeDelta)
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
         return;
 
-	__super::Late_Update(fTimeDelta);
+    __super::Late_Update(fTimeDelta);
 }
 
 HRESULT CGrass::Render()

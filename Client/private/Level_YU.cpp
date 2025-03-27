@@ -47,8 +47,8 @@ HRESULT CLevel_YU::Initialize()
 	if(FAILED(Ready_Layer_PlayerState(TEXT("Layer_PlayerState"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE)))
 		return E_FAIL;

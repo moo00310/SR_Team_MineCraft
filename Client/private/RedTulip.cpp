@@ -28,6 +28,7 @@ HRESULT CRedTulip::Initialize(void* pArg)
 
 void CRedTulip::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
 }
 
 void CRedTulip::Update(_float fTimeDelta)
@@ -36,12 +37,10 @@ void CRedTulip::Update(_float fTimeDelta)
 
 void CRedTulip::Late_Update(_float fTimeDelta)
 {
-    if (m_bRenderActive) {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-            return;
-    }
+    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+        return;
 
-	__super::Late_Update(fTimeDelta);
+    __super::Late_Update(fTimeDelta);
 }
 
 HRESULT CRedTulip::Render()

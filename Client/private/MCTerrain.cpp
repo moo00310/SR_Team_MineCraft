@@ -129,7 +129,6 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
 
         DWORD dwBytesRead;
         BLOCKDESC eblockData;
-        int index = 0;
 
         vector<D3DXVECTOR3> stoneVec;
         vector<D3DXVECTOR3> dirtVec;
@@ -137,7 +136,10 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         vector<D3DXVECTOR3> ironVec;
         vector<D3DXVECTOR3> coalVec;
 
-        CTree::DESC desc = {};
+        vector<CTree::DESC> vecTreeDesc = {};
+        vector<D3DXVECTOR3> vecGrass;
+        vector<D3DXVECTOR3> vecTulip;
+
         int percent = 999;
         CBreakableRect* pRect = nullptr;
 
@@ -149,33 +151,20 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
             case GRASSDIRT:
                 grassVec.push_back(eblockData.fPosition);
 
-         /*       percent = rand() % 100;
+                percent = rand() % 100;
                 if (percent < 1) {
                     int randWood = rand() % 3 + 4;
                     int ranLeaf = rand() % 8 + 4;
 
-                    desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.5, eblockData.fPosition.z),0 };
-                    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"), LEVEL_YU, layerName, &desc)))
-                        return E_FAIL;
+                    CTree::DESC desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.5, eblockData.fPosition.z),0 };
+                    vecTreeDesc.push_back(desc);
                 }
                 else if (1 <= percent && percent < 5) {
-                    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Grass"), LEVEL_YU, layerName)))
-                        return 1;
-                    pRect = dynamic_cast<CBreakableRect*>(m_pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-                    if (pRect) {
-                        pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 1, eblockData.fPosition.z));
-                    }
-                    index++;
+                    vecGrass.push_back(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 1, eblockData.fPosition.z));
                 }
                 else if (5 <= percent && percent < 6) {
-                    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_RedTulip"), LEVEL_YU, layerName)))
-                        return 1;
-                    pRect = dynamic_cast<CBreakableRect*>(m_pGameInstance->Get_Object(LEVEL_YU, layerName, index));
-                    if (pRect) {
-                        pRect->SetPos(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.7, eblockData.fPosition.z));
-                    }
-                    index++;
-                }*/
+                    vecTulip.push_back(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.7, eblockData.fPosition.z));
+                }
 
                 break;
             case DIRT:
@@ -215,11 +204,30 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
                 pCube->Set_MyChunk(static_cast<int>(i));
                 pCube->Set_BlockPositions(*(blockTypes[i].second));
             }
-                
         }
 
+        for (auto desc : vecTreeDesc) {
+            if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"), LEVEL_YU, layerName, &desc)))
+                return E_FAIL;
+        }
 
+        for (auto pos : vecGrass) {
+            if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Grass"), LEVEL_YU, layerName)))
+                return 1;
+            pRect = dynamic_cast<CBreakableRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
+            if (pRect) {
+                pRect->SetPos(pos);
+            }
+        }
 
+        for (auto pos : vecTulip) {
+            if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_RedTulip"), LEVEL_YU, layerName)))
+                return 1;
+            pRect = dynamic_cast<CBreakableRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
+            if (pRect) {
+                pRect->SetPos(pos);
+            }
+        }
     }
 
     MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
@@ -394,15 +402,13 @@ void CMCTerrain::SetColliderChunk()
         }
 
         if (CTree* _copy = dynamic_cast<CTree*>(obj)) {
-            vector<CGameObject*> _vecObj = _copy->Get_LeafInfo();
-            for (auto _obj : _vecObj) {
-                dynamic_cast<CBreakableCube*>(_obj)->Set_ChunkColliderActive(false);
-            }
+            _copy->Get_Leaf()->Set_ChunkColliderActive(false);
+            _copy->Get_Wood()->Set_ChunkColliderActive(false);
+        }
 
-            _vecObj = _copy->Get_WoodInfo();
-            for (auto _obj : _vecObj) {
-                dynamic_cast<CBreakableCube*>(_obj)->Set_ChunkColliderActive(false);
-            }
+
+        if (CBreakableRect* _copy = dynamic_cast<CBreakableRect*>(obj)) {
+            _copy->Set_ChunkColliderActive(false);
         }
     }
 
@@ -415,15 +421,12 @@ void CMCTerrain::SetColliderChunk()
         }
 
         if (CTree* _copy = dynamic_cast<CTree*>(obj)) {
-            vector<CGameObject*> _vecObj = _copy->Get_LeafInfo();
-            for (auto _obj : _vecObj) {
-                dynamic_cast<CBreakableCube*>(_obj)->Set_ChunkColliderActive(true);
-            }
+            _copy->Get_Leaf()->Set_ChunkColliderActive(true);
+            _copy->Get_Wood()->Set_ChunkColliderActive(true);
+        }
 
-            _vecObj = _copy->Get_WoodInfo();
-            for (auto _obj : _vecObj) {
-                dynamic_cast<CBreakableCube*>(_obj)->Set_ChunkColliderActive(true);
-            }
+        if (CBreakableRect* _copy = dynamic_cast<CBreakableRect*>(obj)) {
+            _copy->Set_ChunkColliderActive(true);
         }
     }
 }
@@ -510,27 +513,27 @@ void CMCTerrain::GetPlayerChunk()
                 m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
             }
         }
-        else {
-            //나무
-            if (CTree* pTree = dynamic_cast<CTree*>(pGameObject)) {
-                vector<CGameObject*> _copyVec = pTree->Get_WoodInfo();
-                for (auto copy : _copyVec) {
-                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
-                }
-                _copyVec = pTree->Get_LeafInfo();
-                for (auto copy : _copyVec) {
-                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
-                }
-            }
+        //else {
+        //    //나무
+        //    if (CTree* pTree = dynamic_cast<CTree*>(pGameObject)) {
+        //        vector<CGameObject*> _copyVec = pTree->Get_WoodInfo();
+        //        for (auto copy : _copyVec) {
+        //            m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
+        //        }
+        //        _copyVec = pTree->Get_LeafInfo();
+        //        for (auto copy : _copyVec) {
+        //            m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, copy);
+        //        }
+        //    }
 
-            //잔디 & 꽃
-            if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pGameObject)) {
-                if (pBreakableRect->Get_RenderActive()) {
-                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
-                }
-            }
+        //    //잔디 & 꽃
+        //    if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pGameObject)) {
+        //        if (pBreakableRect->Get_RenderActive()) {
+        //            m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
+        //        }
+        //    }
 
-        }
+        //}
     }
 }
 
