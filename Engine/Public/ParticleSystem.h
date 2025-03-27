@@ -76,6 +76,9 @@ private:
 	// 파티클 경계선.
 	ParticleBoundingBox m_boundingBox;
 
+	// 텍스쳐 애니메이션 현재 프레임 시간.
+	float fCurrentAnimationFrame;	
+
 protected:
 	_uint	m_iFVF = {};
 	LPDIRECT3DVERTEXBUFFER9 m_pVB = { nullptr };
@@ -109,6 +112,18 @@ protected:
 
 	// 파티클 경계선 활성화.
 	bool IsBounding = false;
+
+	// 텍스쳐 애니메이션 활성화.
+	bool IsTextureAnimation = false;
+
+	// 텍스쳐 애니메이션 프레임 시간.
+	float fAnimationFrame;
+
+	// 텍스쳐 마지막 인덱스.
+	_uint iTextureIndex;
+
+	// 텍스쳐 현재 인덱스.
+	_uint iCurrentTextureIndex;
 
 	// 파티클 텍스쳐.
 	CTexture* m_pParticleTexture = { nullptr };

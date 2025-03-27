@@ -18,6 +18,9 @@ HRESULT CParticleSystem::Initialize(void* pArg)
 	// 파티클 속성 셋팅.
 	SetParticleAttribute();
 
+	fCurrentAnimationFrame = 0.f;
+	iCurrentTextureIndex = 0;
+
 	return S_OK;
 }
 
@@ -32,6 +35,24 @@ void CParticleSystem::Priority_Update(_float fTimeDelta)
 
 void CParticleSystem::Update(_float fTimeDelta)
 {
+	if (IsTextureAnimation == true && fCurrentAnimationFrame >= fAnimationFrame)
+	{
+		if (iCurrentTextureIndex >= iTextureIndex)
+		{
+			iCurrentTextureIndex = 0;
+		}
+		else
+		{
+			iCurrentTextureIndex++;
+		}		
+		fCurrentAnimationFrame = 0.f;
+	}
+
+	if (IsTextureAnimation == true)
+	{
+		fCurrentAnimationFrame += fTimeDelta;
+	}
+
 	for (auto& data : m_ListParticleAttribute)
 	{
 		// 파티클 타이머 활성화 시 시간 증가.
@@ -67,7 +88,7 @@ void CParticleSystem::Update(_float fTimeDelta)
 			// 중력 없을 시 단순 이동만.
 			data.vPosition += data.vVelocity * fTimeDelta;
 		}		
-	}
+	}	
 }
 
 void CParticleSystem::Late_Update(_float fTimeDelta)
@@ -92,7 +113,7 @@ HRESULT CParticleSystem::Render()
 		return E_FAIL;
 	}
 
-	if (FAILED(m_pParticleTexture->Bind_Resource(0)))
+	if (FAILED(m_pParticleTexture->Bind_Resource(iCurrentTextureIndex)))
 	{
 		return E_FAIL;
 	}	

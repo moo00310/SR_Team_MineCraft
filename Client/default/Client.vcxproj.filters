@@ -545,6 +545,9 @@
     <ClInclude Include="..\public\ISubject.h">
       <Filter>101.ObserverPattern</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleExplosion.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -826,6 +829,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ISubject.cpp">
       <Filter>101.ObserverPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleExplosion.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

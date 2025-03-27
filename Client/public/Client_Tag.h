@@ -34,6 +34,12 @@ static const _wstring PROTOTYPE_COMPONENT_TEXTURE_WOOD_MINING = TEXT("Prototype_
 // 나무 채굴 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING = TEXT("Prototype_GameObject_ParticleWoodMining");
 
+// 폭발 텍스쳐.
+static const _wstring PROTOTYPE_COMPONENT_TEXTURE_EXPLOSION = TEXT("Prototype_Component_Texture_Explosion");
+
+// 폭발 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION = TEXT("Prototype_GameObject_Particle_Explosion");
+
 #pragma endregion
 
 #pragma region LAYER_TAG
