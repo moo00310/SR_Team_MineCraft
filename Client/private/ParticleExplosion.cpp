@@ -95,6 +95,8 @@ void CParticleExplosion::Update(_float fTimeDelta)
 
 void CParticleExplosion::OnPushPool()
 {
+	__super::OnPushPool();
+
 	m_CurrentCount = 0.f;
 	iCurrentTextureIndex = 0;
 }
