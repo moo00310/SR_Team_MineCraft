@@ -29,13 +29,15 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
 
+    CheckColliderActive();
+    SetColliderChunk();
+
     return S_OK;
 }
 
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
-    CheckColliderActive();
-    SetColliderChunk();
+    
 }
 
 void CMCTerrain::Update(_float fTimeDelta)
@@ -53,7 +55,24 @@ void CMCTerrain::Update(_float fTimeDelta)
 }
 
 void CMCTerrain::Late_Update(_float fTimeDelta)
-{	
+{
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return;
+
+    _float3 playerPos = pSteve->GetPos();
+
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    m_currentPlayerChunk = x + (width * z);
+
+    //청크를 이동 했다면
+    if (m_prePlayerChunk != m_currentPlayerChunk) {
+        CheckColliderActive();
+        SetColliderChunk();
+        m_prePlayerChunk = m_currentPlayerChunk;
+    }
 }
 
 HRESULT CMCTerrain::Render()
@@ -219,26 +238,30 @@ struct Float3Hash {
 
 void CMCTerrain::CheckColliderActive()
 {
-    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
-    if (!pSteve) return;
-
-    _float3 playerPos = pSteve->GetPos();
-
-    // 플레이어가 위치한 청크 계산
-    int x = static_cast<int>(playerPos.x) / 16;
-    int z = static_cast<int>(playerPos.z) / 16;
-    int width = static_cast<int>(sqrt(m_iChunkCount));
-    int chunk = x + (width * z);
+    //이전 청크의 활성화된 충돌 블럭들 모두 비활성화
     wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_prePlayerChunk);
 
-    // 오브젝트 정보들 가지고 옴
     list<class CGameObject*> _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
 
-    // 블록 위치 정보를 저장할 unordered_set
+    for (auto _object : _copyObjectList) {
+        if (_object->Get_isDestroy() == false) {
+            if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
+                vector<CCollider_Cube*> _vecCopyCollider = _break->Get_ColliderCube();
+                for (auto collider : _vecCopyCollider) {
+                    collider->Set_bColliderActive(false);
+                }
+            }
+        }
+    }
+
+    // 현재 청크에 있는 안보이는 블럭들은 모두 비활성화
+
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_currentPlayerChunk);
+    _copyObjectList = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
     std::unordered_set<_float3, Float3Hash> blockPositions;
 
-    // 먼저 모든 블록의 위치를 저장
+    // 1. 일단 모두 활성화
     for (auto _object : _copyObjectList) {
         if (_object->Get_isDestroy() == false) {
             if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
@@ -253,7 +276,7 @@ void CMCTerrain::CheckColliderActive()
         }
     }
 
-    // 블록의 충돌 여부 확인
+    // 2. 블록의 충돌 여부 확인
     for (auto _object : _copyObjectList) {
         if (_object->Get_isDestroy() == false) {
             if (CBreakableCube* _break = dynamic_cast<CBreakableCube*>(_object)) {
@@ -277,6 +300,7 @@ void CMCTerrain::CheckColliderActive()
                         }
                     }
 
+                    // 3. 둘러싸여져 있으면 충돌 비활성화
                     if (isSurrounded) {
                         _vecCopyCollider[i]->Set_bColliderActive(false);
                     }
@@ -288,36 +312,45 @@ void CMCTerrain::CheckColliderActive()
 
 void CMCTerrain::SetColliderChunk()
 {
-    // 플레이어 위치 가져오기
-    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
-    if (!pSteve) return;
-
-    _float3 playerPos = pSteve->GetPos();
-
-    // 플레이어가 위치한 청크 계산
-    int x = static_cast<int>(playerPos.x) / 16;
-    int z = static_cast<int>(playerPos.z) / 16;
-    int width = static_cast<int>(sqrt(m_iChunkCount));
-    int chunk = x + (width * z);
-
+    // 이전 프레임에 충돌 매니저에 올라가라고 활성화되어 있던 청크 비활성화
     wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
-    //플레이어가 있는 청크 오브젝트 가지고 옴
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_prePlayerChunk);
     list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
     for (auto obj : objlist) {
         if (CBreakableCube* _copy = dynamic_cast<CBreakableCube*>(obj)) {
-            _copy->Set_RenderActive(true);
+            _copy->Set_ChunkColliderActive(false);
         }
 
         if (CTree* _copy = dynamic_cast<CTree*>(obj)) {
             vector<CGameObject*> _vecObj = _copy->Get_LeafInfo();
             for (auto _obj : _vecObj) {
-                dynamic_cast<CBreakableCube*>(_obj)->Set_RenderActive(true);
+                dynamic_cast<CBreakableCube*>(_obj)->Set_ChunkColliderActive(false);
             }
 
             _vecObj = _copy->Get_WoodInfo();
             for (auto _obj : _vecObj) {
-                dynamic_cast<CBreakableCube*>(_obj)->Set_RenderActive(true);
+                dynamic_cast<CBreakableCube*>(_obj)->Set_ChunkColliderActive(false);
+            }
+        }
+    }
+
+    // 현재 플레이어 밑에 있는 청크만 충돌 매니저에 올림
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_currentPlayerChunk);
+    objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    for (auto obj : objlist) {
+        if (CBreakableCube* _copy = dynamic_cast<CBreakableCube*>(obj)) {
+            _copy->Set_ChunkColliderActive(true);
+        }
+
+        if (CTree* _copy = dynamic_cast<CTree*>(obj)) {
+            vector<CGameObject*> _vecObj = _copy->Get_LeafInfo();
+            for (auto _obj : _vecObj) {
+                dynamic_cast<CBreakableCube*>(_obj)->Set_ChunkColliderActive(true);
+            }
+
+            _vecObj = _copy->Get_WoodInfo();
+            for (auto _obj : _vecObj) {
+                dynamic_cast<CBreakableCube*>(_obj)->Set_ChunkColliderActive(true);
             }
         }
     }
@@ -354,7 +387,7 @@ void CMCTerrain::GetPlayerChunk3x3()
 
         for (CGameObject* pGameObject : m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName)) {
             if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pGameObject)) {
-                if (pBreakableCube->Get_RenderActive()) {
+                if (pBreakableCube->Get_ChunkColliderActive()) {
                     m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
                 }
             }
@@ -401,7 +434,7 @@ void CMCTerrain::GetPlayerChunk()
     {
         if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pGameObject)) 
         {
-            if (pBreakableCube->Get_RenderActive()) {
+            if (pBreakableCube->Get_ChunkColliderActive()) {
                 m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
             }
         }

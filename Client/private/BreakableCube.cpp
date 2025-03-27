@@ -20,22 +20,13 @@ HRESULT CBreakableCube::Initialize_Prototype()
 
 HRESULT CBreakableCube::Initialize(void* pArg)
 {
-    //if (FAILED(Ready_Components()))
-    //    return E_FAIL;
-
-    //CCollider_Cube::COLLCUBE_DESC Desc = m_pColliderCom2->Get_Desc();//콜라이더 크기 설정
-    //Desc.fOffSetY = 1.f;
-
-    //m_pColliderCom2->Set_Desc(Desc);
-
-
     return S_OK;
 }
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
-	//이놈이 관리하는 모든 콜라이더 박스를 충돌 매니저에 등록 하겠다는건데...
-    if (m_bRenderActive) {
+    // 플레이어 밑에 있는 청크면 충돌 매니저에 올림
+    if (m_bChunkColliderActive) {
         m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);
     }
     
@@ -48,29 +39,11 @@ void CBreakableCube::Update(_float fTimeDelta)
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
 {
-    /*if (m_pColliderCom)
-        m_pColliderCom->Update_ColliderBox();
 
-    if (m_pColliderCom2)
-        m_pColliderCom2->Update_ColliderBox();*/
-
-	//for (int i = 0; i < m_Colliders.size(); ++i)
-	//{
- //       if (m_Colliders[i]->Get_bColliderActive()) {
- //           m_Colliders[i]->Update_ColliderBox();
- //       }
-	//}
 }
 
 HRESULT CBreakableCube::Render()
 {
-    
-    //if (m_pColliderCom)
-    //    m_pColliderCom->Render_ColliderBox(false);
-
-    //if (m_pColliderCom2)
-    //    m_pColliderCom2->Render_ColliderBox(false);
-
     /*for (int i = 0; i < m_Colliders.size(); ++i)
     {
         if (m_Colliders[i]->Get_bColliderActive())
