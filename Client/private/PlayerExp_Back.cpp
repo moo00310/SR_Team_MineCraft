@@ -107,7 +107,7 @@ HRESULT CPlayerExp_Back::Ready_Components()
 void CPlayerExp_Back::Begin()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 100);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 160);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 }
 

@@ -253,6 +253,12 @@
     <Filter Include="04.Behavior_Tree\BTNode\Decorator\DistanceBranch">
       <UniqueIdentifier>{38d7dc54-59c4-465f-87d0-21fd2447db23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="101.ObserverPattern">
+      <UniqueIdentifier>{c5b9c737-054a-4e33-bdce-ca55acc70337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.PlayerState\03.PlayerLevel">
+      <UniqueIdentifier>{525bc881-5430-4351-8fbf-b197eb91c1ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -548,6 +554,18 @@
     <ClInclude Include="..\public\BTDistanceBranch.h">
       <Filter>04.Behavior_Tree\BTNode\Decorator\DistanceBranch</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\IObserver.h">
+      <Filter>101.ObserverPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ISubject.h">
+      <Filter>101.ObserverPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleExplosion.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+</ClInclude>
+    <ClInclude Include="..\public\PlayerLevel.h">
+      <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -829,6 +847,18 @@
     </ClCompile>
     <ClCompile Include="..\private\BTDistanceBranch.cpp">
       <Filter>04.Behavior_Tree\BTNode\Decorator\DistanceBranch</Filter>
+</ClCompile>
+    <ClCompile Include="..\private\IObserver.cpp">
+      <Filter>101.ObserverPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ISubject.cpp">
+      <Filter>101.ObserverPattern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleExplosion.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerLevel.cpp">
+      <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

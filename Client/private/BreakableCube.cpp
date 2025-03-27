@@ -25,6 +25,10 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
+    if (m_vecPositions.size() == 0) {
+        Destroy();
+    }
+
     // 플레이어 밑에 있는 청크면 충돌 매니저에 올림
     if (m_bChunkColliderActive) {
         m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);
@@ -44,14 +48,14 @@ void CBreakableCube::Late_Update(_float fTimeDelta)
 
 HRESULT CBreakableCube::Render()
 {
-    /*for (int i = 0; i < m_Colliders.size(); ++i)
+    for (int i = 0; i < m_Colliders.size(); ++i)
     {
         if (m_Colliders[i]->Get_bColliderActive())
         {
-            m_Colliders[i]->Render_ColliderBox(true);
+            m_Colliders[i]->Render_Collider(true);
 
         }
-    }*/
+    }
 
     return S_OK;
 }

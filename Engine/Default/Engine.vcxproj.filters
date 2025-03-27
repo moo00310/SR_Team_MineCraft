@@ -137,6 +137,12 @@
     <ClInclude Include="..\public\UIParticleSystem.h">
       <Filter>96.Particle\UIParticle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Collider_Capsule.h">
+      <Filter>04.Components\Collider\Collider_Capsule</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Collider.h">
+      <Filter>04.Components\Collider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -250,6 +256,9 @@
     <Filter Include="96.Particle\UIParticle">
       <UniqueIdentifier>{6d08a1bb-e05a-47e8-a462-0a5e8b5406a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.Components\Collider\Collider_Capsule">
+      <UniqueIdentifier>{de924ea3-ef85-45d6-b9d9-11b2ad79e1b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -362,6 +371,12 @@
     </ClCompile>
     <ClCompile Include="..\private\UIParticleSystem.cpp">
       <Filter>96.Particle\UIParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Collider_Capsule.cpp">
+      <Filter>04.Components\Collider\Collider_Capsule</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Collider.cpp">
+      <Filter>04.Components\Collider</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

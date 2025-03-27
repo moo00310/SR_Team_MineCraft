@@ -1,22 +1,18 @@
 #pragma once
 
-#include "Component.h"
+#include "Collider.h"
 #include "Transform.h"
 BEGIN(Engine)
 
 
-class ENGINE_DLL CCollider_Cube final : public CComponent
+class ENGINE_DLL CCollider_Cube final : public CCollider
 {
-
-public:
-	enum class COLLSION_DIR { NONE, LEFT, RIGHT, UP, DOWN, FRONT,BACK };
-
 public:
 	typedef struct tagCollisionInfo
 	{
-		class CGameObject* pGameObject{ nullptr };   // √Êµπ«— ø¿∫Í¡ß∆Æ
-		CCollider_Cube::COLLSION_DIR eCollisionDir{ CCollider_Cube::COLLSION_DIR::NONE };  // √Êµπ πÊ«‚
-		_float3 vDepth{ 0.f, 0.f, 0.f };  // √Êµπ ±Ì¿Ã
+		class CGameObject* pGameObject{ nullptr };   // Ï∂©ÎèåÌïú Ïò§Î∏åÏ†ùÌä∏
+		COLLISION_DIR eCollisionDir{ COLLISION_DIR::NONE };  // Ï∂©Îèå Î∞©Ìñ•
+		_float3 vDepth{ 0.f, 0.f, 0.f };  // Ï∂©Îèå ÍπäÏù¥
 	}COLLISION_INFO;
 
 public:
@@ -33,14 +29,20 @@ private:
 	virtual ~CCollider_Cube() = default;
 
 public:
-	HRESULT Initialize_Prototype();
+	HRESULT Initialize_Prototype() override;
 	HRESULT Initialize(void* pArg) override;
-	HRESULT Update_ColliderBox();
-	HRESULT Render_ColliderBox(_bool isHit);
-	_bool	Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLSION_DIR* pOutDir = nullptr);
+	virtual HRESULT Update_Collider()override;
+	virtual HRESULT Render_Collider(_bool isHit)override;
+	_bool Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir) override;
+
 public:
 	COLLCUBE_DESC&	Get_Desc() { return m_StateDesc; }
 	void			Set_Desc(COLLCUBE_DESC& Desc) { m_StateDesc = Desc; }
+
+	_float3 GetMin() const;
+	_float3 GetMax() const;
+
+	class CTransform* Get_Transform() { return m_pTransformCom; }
 
 	bool Get_bColliderActive() { return m_bColliderActive; }
 	void Set_bColliderActive(bool _b) { m_bColliderActive = _b; }
@@ -51,23 +53,7 @@ private:
 protected:
 	COLLCUBE_DESC				m_StateDesc;
 
-private:
-	class CTransform*			m_pTransformCom = { nullptr };
-
-protected:
-	LPDIRECT3DVERTEXBUFFER9		m_pVB = { nullptr };
-	_uint						m_iNumVertices = {};
-	_uint						m_iStride = {}; /* ¡§¡°¿« ≈©±‚(byte) */
-	_ulong						m_dwFVF = {};
-	D3DPRIMITIVETYPE			m_ePrimitiveType = {};
-	_uint						m_iNumPrimitive = {};
-
-protected:
-	LPDIRECT3DINDEXBUFFER9		m_pIB = { nullptr };
-	_uint						m_iIndicesByte = {};
-	D3DFORMAT					m_eIndexFormat = {};
-
-	bool m_bColliderActive;
+	bool m_bColliderActive = false;
 
 public:
 	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

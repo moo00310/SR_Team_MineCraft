@@ -34,9 +34,9 @@ void CHeroCubeNoMove::Priority_Update(_float fTimeDelta)
 
 void CHeroCubeNoMove::Update(_float fTimeDelta)
 {
-	if (FAILED(m_pColliderCom->Update_ColliderBox()))
+	if (FAILED(m_pColliderCom->Update_Collider()))
 	{
-		MSG_BOX("Update_ColliderBox()");
+		MSG_BOX("Update_Collider()");
 		return;
 	}
 
@@ -66,7 +66,7 @@ HRESULT CHeroCubeNoMove::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	if (FAILED(m_pColliderCom->Render_ColliderBox(m_bHit)))
+	if (FAILED(m_pColliderCom->Render_Collider(m_bHit)))
 		return E_FAIL;
 
 	return S_OK;

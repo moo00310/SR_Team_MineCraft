@@ -149,6 +149,8 @@
   <ItemGroup>
     <ClInclude Include="..\Public\Base.h" />
     <ClInclude Include="..\public\Camera.h" />
+    <ClInclude Include="..\public\Collider.h" />
+    <ClInclude Include="..\public\Collider_Capsule.h" />
     <ClInclude Include="..\Public\Collider_Cube.h" />
     <ClInclude Include="..\Public\Collider_Manager.h" />
     <ClInclude Include="..\public\Component.h" />
@@ -199,6 +201,8 @@
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp" />
     <ClCompile Include="..\private\Camera.cpp" />
+    <ClCompile Include="..\private\Collider.cpp" />
+    <ClCompile Include="..\private\Collider_Capsule.cpp" />
     <ClCompile Include="..\Private\Collider_Cube.cpp" />
     <ClCompile Include="..\Private\Collider_Manager.cpp" />
     <ClCompile Include="..\private\Component.cpp" />

@@ -38,7 +38,7 @@ private:
 private:
 	_int* m_iExpCount = { nullptr };
 	_int  m_iExpIndex = { 0 };
-	_int  m_iTextureNum = { 0 };
+	_int  m_iTextureNum = { 2 };
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };

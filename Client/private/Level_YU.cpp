@@ -201,6 +201,14 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 			return E_FAIL;
 	}
 
+	for (int i = 0; i < 2; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerLevel"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+
+	}
+
 	return S_OK;
 }
 

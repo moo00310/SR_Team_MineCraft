@@ -63,8 +63,8 @@ HRESULT CCreeper::Render()
 
 HRESULT CCreeper::Ready_Components()
 {
-#pragma region ¿ÜÇü
-    // Å©¸®ÆÛ ÅØ½ºÃ³
+#pragma region ì™¸í˜•
+    // í¬ë¦¬í¼ í…ìŠ¤ì²˜
    /* For.Com_Texture */
     if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Creeper"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
@@ -92,7 +92,7 @@ HRESULT CCreeper::Ready_Components()
         return E_FAIL;
 #pragma endregion
 
-    //¹öÆÛ ¿¬°á ÇÏ°í Transform°ú AinmaitonCom ¿¬°á
+    //ë²„í¼ ì—°ê²° í•˜ê³  Transformê³¼ AinmaitonCom ì—°ê²°
     if (FAILED(__super::Ready_Components()))
         return E_FAIL;
 
@@ -132,14 +132,14 @@ HRESULT CCreeper::Ready_Bone()
 HRESULT CCreeper::Ready_Animation()
 {
     /*----------
-    * INIT ¸ğ¼Ç
+    * INIT ëª¨ì…˜
     - -----------*/
     Matrix mat = {};
     KEYFREAME Init = { 0.f, mat };
     m_skelAnime->Add_Animation(ANIM_type::INIT, Init);
 
     /*----------
-    * Walk ¸ğ¼Ç
+    * Walk ëª¨ì…˜
     ------------*/
     Matrix mat2 = {};
     mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(25.f));
@@ -184,7 +184,7 @@ HRESULT CCreeper::Ready_Animation()
     m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_5_B);
 
 /*----------
-* Attack ¸ğ¼Ç
+* Attack ëª¨ì…˜
 ------------*/
     mat2 = {};
     mat2.Scaling(6.f, 6.f, 6.f);
@@ -204,7 +204,7 @@ HRESULT CCreeper::Ready_Animation()
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_4);
 
 /*----------
-* Dead ¸ğ¼Ç
+* Dead ëª¨ì…˜
 ------------*/
 
 

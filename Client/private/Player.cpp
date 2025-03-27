@@ -103,7 +103,7 @@ void CPlayer::Update(_float fTimeDelta)
 	if (GetKeyState('Z') & 0x8000)
 	{	
 		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
-			PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// 가져올 프로토타입.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,	// 가져올 프로토타입.
 			LEVEL_HYEOK,	// 적용 씬.
 			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어		
 

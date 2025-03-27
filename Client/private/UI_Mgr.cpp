@@ -96,6 +96,54 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 	}
 }
 
+void CUI_Mgr::PlayerExp_Set()
+{
+	if (!m_PlayerExplist.empty())
+	{
+		for (auto iter = m_PlayerExplist.begin(); iter != m_PlayerExplist.end(); ++iter)
+		{
+			if (!(*iter)->Get_RenderOn())
+			{
+				if ((*iter)->Get_ExpIndex() == 0)
+				{
+					(*iter)->Set_TextureNum(3);
+					(*iter)->Set_RenderOn(true);
+					break;
+				}
+				else if ((*iter)->Get_ExpIndex() == 17)
+				{
+					(*iter)->Set_TextureNum(5);
+					(*iter)->Set_RenderOn(true);
+
+					LevelUp();
+
+					break;
+				}
+				else
+				{
+					(*iter)->Set_TextureNum(4);
+					(*iter)->Set_RenderOn(true);
+					break;
+				}
+			}
+
+			/* 마지막 back -> 5가된다면 LevelUp() 호출 */
+		}
+	}
+}
+
+void CUI_Mgr::LevelUp()
+{
+	/* 레벨 표기 숫자 변경 */
+
+	for (auto iter = m_PlayerExplist.begin(); iter != m_PlayerExplist.end(); ++iter)
+	{
+		(*iter)->Set_RenderOn(false);
+	}
+
+
+}
+
 void CUI_Mgr::Add_Item(CItem* pItem)
 {
 	m_vecItemlist.push_back(pItem);
@@ -115,5 +163,7 @@ void CUI_Mgr::Free()
 {
 	m_vecItemlist.clear();
 	m_PlayerHPlist.clear();
+	m_PlayerHungerlist.clear();
+	m_PlayerExplist.clear();
 }
 

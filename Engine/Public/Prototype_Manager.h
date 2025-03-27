@@ -10,8 +10,8 @@
 #include "SkeletalAnimator.h"
 #include "Texture.h"
 #include "Collider_Cube.h"
+#include "Collider_Capsule.h"
 #include "Shader.h"
-
 #include "Rigidbody.h"
 
 /* 1. 원형객체를 보관한다. */

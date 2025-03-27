@@ -21,6 +21,7 @@
 #include "ParticleWoodMining.h"
 #include "ParticleSandDestroy.h"
 #include "UIParticleRain.h"
+#include "ParticleExplosion.h"
 
 
 CMainApp::CMainApp()
@@ -91,6 +92,30 @@ HRESULT CMainApp::Initialize()
 	// Setup Platform/Renderer backends
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX9_Init(m_pGraphic_Device);
+
+	#ifdef _DEBUG
+
+	if (::AllocConsole() == TRUE)
+	{
+		FILE* nfp[3];
+		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+		std::ios::sync_with_stdio();
+	}
+
+	// :one: 콘솔 핸들 가져오기
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	// :two: 콘솔 버퍼 크기 먼저 조정
+	COORD bufferSize = { 20, 20 }; // 가로 80, 세로 20
+	SetConsoleScreenBufferSize(hConsole, bufferSize);
+
+	// :three: 콘솔 창 크기 조정
+	SMALL_RECT windowSize = { 0, 0, 80 - 1, 20 - 1 };
+	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+
+#endif // _DEBUG
 
 	return S_OK;
 }
@@ -245,6 +270,11 @@ HRESULT CMainApp::Ready_Texture()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/wood_mining.png"), 1))))
 		return E_FAIL;
 
+	// TODO : 폭발 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_EXPLOSION,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/explosion_%d.png"), 16))))
+		return E_FAIL;
+
 	// TODO : 파티클.
 	// 비 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
@@ -271,6 +301,11 @@ HRESULT CMainApp::Ready_Texture()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
 		CParticleSandDestroy::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 폭발 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
+		CParticleExplosion::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;
@@ -303,6 +338,11 @@ HRESULT CMainApp::Ready_Component()
 	/* Prototype_Component_Collider_Cube */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
 		CCollider_Cube::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* Prototype_Component_Collider_Capsule */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Capsule"),
+		CCollider_Capsule::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Rigidbody */
