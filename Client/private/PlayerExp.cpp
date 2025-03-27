@@ -54,24 +54,27 @@ void CPlayerExp::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayerExp::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(5)))
-        return E_FAIL;
+    if (m_bRenderOn)
+    {
+        if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
+            return E_FAIL;
 
-    if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-        return E_FAIL;
+        if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+            return E_FAIL;
 
-    if (FAILED(m_pTransformCom->Bind_Resource()))
-        return E_FAIL;
+        if (FAILED(m_pTransformCom->Bind_Resource()))
+            return E_FAIL;
 
-    __super::Begin();
-    Begin();
+        __super::Begin();
+        Begin();
 
-    if (FAILED(m_pVIBufferCom->Render()))
-        return E_FAIL;
+        if (FAILED(m_pVIBufferCom->Render()))
+            return E_FAIL;
 
-    __super::End();
-    End();
-
+        __super::End();
+        End();
+    }
+  
     return S_OK;
 }
 
@@ -113,6 +116,7 @@ CPlayerExp* CPlayerExp::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
         MSG_BOX("Failed to Created : CPlayerExp");
         Safe_Release(pInstance);
     }
+
     return pInstance;
 }
 
@@ -125,6 +129,8 @@ CGameObject* CPlayerExp::Clone(void* pArg)
         MSG_BOX("Failed to Created : CPlayerExp");
         Safe_Release(pInstance);
     }
+
+    CUI_Mgr::Get_Instance()->Get_PlayerExplist()->push_back(pInstance);
 
     return pInstance;
 }

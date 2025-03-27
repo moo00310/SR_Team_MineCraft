@@ -10,9 +10,9 @@ class ENGINE_DLL CCollider_Cube final : public CCollider
 public:
 	typedef struct tagCollisionInfo
 	{
-		class CGameObject* pGameObject{ nullptr };   // √Êµπ«— ø¿∫Í¡ß∆Æ
-		COLLISION_DIR eCollisionDir{ COLLISION_DIR::NONE };  // √Êµπ πÊ«‚
-		_float3 vDepth{ 0.f, 0.f, 0.f };  // √Êµπ ±Ì¿Ã
+		class CGameObject* pGameObject{ nullptr };   // Ï∂©ÎèåÌïú Ïò§Î∏åÏ†ùÌä∏
+		COLLISION_DIR eCollisionDir{ COLLISION_DIR::NONE };  // Ï∂©Îèå Î∞©Ìñ•
+		_float3 vDepth{ 0.f, 0.f, 0.f };  // Ï∂©Îèå ÍπäÏù¥
 	}COLLISION_INFO;
 
 public:
@@ -53,9 +53,7 @@ private:
 protected:
 	COLLCUBE_DESC				m_StateDesc;
 
-
-
-
+	bool m_bColliderActive = false;
 
 public:
 	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

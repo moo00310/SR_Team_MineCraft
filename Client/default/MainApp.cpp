@@ -21,6 +21,7 @@
 #include "ParticleWoodMining.h"
 #include "ParticleSandDestroy.h"
 #include "UIParticleRain.h"
+#include "ParticleExplosion.h"
 
 
 CMainApp::CMainApp()
@@ -269,6 +270,11 @@ HRESULT CMainApp::Ready_Texture()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/wood_mining.png"), 1))))
 		return E_FAIL;
 
+	// TODO : 폭발 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_EXPLOSION,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/explosion_%d.png"), 16))))
+		return E_FAIL;
+
 	// TODO : 파티클.
 	// 비 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
@@ -295,6 +301,11 @@ HRESULT CMainApp::Ready_Texture()
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
 		CParticleSandDestroy::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 폭발 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
+		CParticleExplosion::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;
