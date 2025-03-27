@@ -6,7 +6,7 @@ CBase::CBase()
 
 unsigned int CBase::AddRef()
 {
-	return ++m_iRefCnt;	
+ 	return ++m_iRefCnt;	
 }
 
 unsigned int CBase::Release()

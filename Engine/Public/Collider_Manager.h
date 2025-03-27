@@ -3,14 +3,16 @@
 #include "Base.h"
 #include "GameObject.h"
 #include "LineManager.h"
+#include "Collider.h"
 #include "Collider_Cube.h"
+#include "Collider_Capsule.h"
 
 BEGIN(Engine)
 
 class CCollider_Manager final : public CBase
 {
 public:
-	enum COLLISION_TYPE { COLLSIION_CUBE, COLLSION_END };
+	enum COLLISION_TYPE { COLLSIION_CUBE, COLLSIION_CAPSULE, COLLSION_END };
 private:
 	CCollider_Manager(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual ~CCollider_Manager() = default;
@@ -21,7 +23,7 @@ public:
 
 	HRESULT Reset_ColliderGroup();
 
-	class CGameObject* Collision_Check_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDepth = nullptr, _Out_ CCollider_Cube::COLLSION_DIR* pOutDir = nullptr);
+	class CGameObject* Collision_Check_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDepth = nullptr, _Out_ CCollider::COLLISION_DIR* pOutDir = nullptr);
 	
 	_bool Collision_Check_Group_Multi(
 		_uint iGroupIndex,

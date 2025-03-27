@@ -11,7 +11,7 @@ public:
 	typedef struct tagRigidbodyDesc
 	{
 		class CTransform*		pTransform{ nullptr };
-		class CCollider_Cube*	pCollider_Cube{ nullptr };
+		class CCollider*		pCollider{ nullptr };
 		_float					fMass{ 1.f };
 	}RIGIDBODY_DESC;
 private:
@@ -34,7 +34,7 @@ private:
 	void	Compute_Velocity(_float fTimeDelta);
 private:
 	class CTransform*		m_pTransform{ nullptr };
-	class CCollider_Cube*	m_pCollider_Cube{ nullptr };
+	class CCollider*		m_pCollider{ nullptr };
 	_float					m_fMass{ 1.f };
 	_float3					m_vVelocity{ 0.f, 0.f, 0.f };
 

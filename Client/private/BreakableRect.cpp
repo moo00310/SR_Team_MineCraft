@@ -41,14 +41,22 @@ void CBreakableRect::Update(_float fTimeDelta)
 
 void CBreakableRect::Late_Update(_float fTimeDelta)
 {
+
+    if (m_pColliderCom)
+        m_pColliderCom->Update_Collider();
+
     if (m_pColliderCom->Get_bColliderActive())
     {
         m_pColliderCom->Render_ColliderBox(true);
     }
+
 }
 
 HRESULT CBreakableRect::Render()
 {
+    if (m_pColliderCom)
+        m_pColliderCom->Render_Collider(false);
+
     return S_OK;
 }
 
@@ -67,7 +75,7 @@ HRESULT CBreakableRect::Ready_Components()
         return E_FAIL;
 
     /* For.Com_Collider */
-    CCollider_Cube::COLLCUBE_DESC Desc{}; //ÄÝ¶óÀÌ´õ Å©±â ¼³Á¤
+    CCollider_Cube::COLLCUBE_DESC Desc{}; //Ã„ÃÂ¶Ã³Ã€ÃŒÂ´Ãµ Ã…Â©Â±Ã¢ Â¼Â³ÃÂ¤
     Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
     _float3 pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
     Desc.fOffSetX = pos.x;

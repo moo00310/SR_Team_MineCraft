@@ -167,7 +167,7 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
 
     m_CurrentAnim = _type;
     fElapsedTime[_type] += fTimeDelta;
-    cout << _type << " "<<fElapsedTime[_type] << endl;
+    //cout << _type << " "<<fElapsedTime[_type] << endl;
 
     if (m_Animations[_type].size() < 2)
     {

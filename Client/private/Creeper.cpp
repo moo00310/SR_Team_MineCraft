@@ -45,7 +45,7 @@ void CCreeper::Update(_float fTimeDelta)
 { 
     __super::Update(fTimeDelta);
 
-    //m_pCollider_CubeCom->Update_ColliderBox();
+    //m_pCollider_CubeCom->Update_Collider();
 
     //CGameObject* pHitObject{ nullptr };
     //_float fDist{};

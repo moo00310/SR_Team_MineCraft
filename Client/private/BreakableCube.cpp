@@ -48,14 +48,14 @@ void CBreakableCube::Late_Update(_float fTimeDelta)
 
 HRESULT CBreakableCube::Render()
 {
-    /*for (int i = 0; i < m_Colliders.size(); ++i)
+    for (int i = 0; i < m_Colliders.size(); ++i)
     {
         if (m_Colliders[i]->Get_bColliderActive())
         {
-            m_Colliders[i]->Render_ColliderBox(true);
+            m_Colliders[i]->Render_Collider(true);
 
         }
-    }*/
+    }
 
     return S_OK;
 }
