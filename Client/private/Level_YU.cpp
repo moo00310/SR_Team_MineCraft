@@ -58,13 +58,19 @@ HRESULT CLevel_YU::Initialize()
 
 void CLevel_YU::Update(_float fTimeDelta)
 {
-
+	ftime += fTimeDelta;
+	m_iFPS++;
 }
 
 HRESULT CLevel_YU::Render()
 {
-	SetWindowText(g_hWnd, TEXT("최유경 레벨입니다."));
-
+	if (ftime >= 1.f)
+	{
+		swprintf_s(m_szFPS, L"FPS : %d", m_iFPS);
+		SetWindowText(g_hWnd, m_szFPS);
+		ftime = 0;
+		m_iFPS = 0;
+	}
 	return S_OK;
 }
 

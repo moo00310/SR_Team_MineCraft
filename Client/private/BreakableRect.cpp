@@ -45,10 +45,10 @@ void CBreakableRect::Late_Update(_float fTimeDelta)
     if (m_pColliderCom)
         m_pColliderCom->Update_Collider();
 
-    if (m_pColliderCom->Get_bColliderActive())
+   /* if (m_pColliderCom->Get_bColliderActive())
     {
         m_pColliderCom->Render_ColliderBox(true);
-    }
+    }*/
 
 }
 

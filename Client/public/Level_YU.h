@@ -32,6 +32,11 @@ private:
 	HRESULT Ready_Layer_Inventory(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_PlayerState(const _wstring& strLayerTag);
 
+private:
+	wchar_t m_szFPS[20];
+	float  ftime = { 0 };
+	int m_iFPS;
+
 public:
 	static CLevel_YU* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free() override;
