@@ -67,7 +67,7 @@ protected:
 	_uint						m_iIndicesByte = {};
 	D3DFORMAT					m_eIndexFormat = {};
 
-	bool m_bColliderActive;
+	bool m_bColliderActive = false;
 
 public:
 	static CCollider_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -61,6 +61,7 @@
 #include "PlayerHunger.h"
 #include "PlayerExp_Back.h"
 #include "PlayerExp.h"
+#include "PlayerLevel.h"
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -479,6 +480,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerExp"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/PlayerState/Exp_%03d.png"), 6))))
 		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_PlayerLevel*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerLevel"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/font/font_%03d.png"), 10))))
+		return E_FAIL;
 	/*================================================================================================*/
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -586,6 +592,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_PlayerExp*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_PlayerExp"),
 		CPlayerExp::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_PlayerExp*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_PlayerLevel"),
+		CPlayerLevel::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	/*================================================================================================*/
 

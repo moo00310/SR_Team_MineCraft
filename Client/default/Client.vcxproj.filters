@@ -250,6 +250,9 @@
     <Filter Include="101.ObserverPattern">
       <UniqueIdentifier>{c5b9c737-054a-4e33-bdce-ca55acc70337}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\05.PlayerState\03.PlayerLevel">
+      <UniqueIdentifier>{525bc881-5430-4351-8fbf-b197eb91c1ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -547,6 +550,9 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleExplosion.h">
       <Filter>02.GameObjects\05.Particle</Filter>
+</ClInclude>
+    <ClInclude Include="..\public\PlayerLevel.h">
+      <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -832,6 +838,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleExplosion.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\PlayerLevel.cpp">
+      <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

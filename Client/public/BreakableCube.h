@@ -41,6 +41,7 @@ public:
 
 	// 충돌 큐브 생성 & 위치 설정
 	void Set_BlockPositions(vector<_float3> position);
+	int Get_PositionSize() { return m_vecPositions.size(); }
 
 	// 충돌 활성화 & 비활성화 관리를 위함
 	vector<CCollider_Cube*> Get_ColliderCube() { return m_Colliders; }

@@ -69,6 +69,41 @@ HRESULT CIronOre::Render()
     return S_OK;
 }
 
+HRESULT CIronOre::Delete_Cube(_float3 fPos)
+{
+    for (size_t i = 0; i < m_vecPositions.size(); ++i)
+    {
+        if (m_vecPositions[i].x == fPos.x &&
+            m_vecPositions[i].y == fPos.y &&
+            m_vecPositions[i].z == fPos.z)
+        {
+            if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
+                return E_FAIL;
+
+            wchar_t layerName[100];
+            swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+            if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+                return E_FAIL;
+            dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_vecPositions[i]);
+            dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_RAWIRON);
+
+            // 2. 벡터에서 해당 위치 제거
+            m_vecPositions.erase(m_vecPositions.begin() + i);
+
+            // 3. 콜라이더 제거
+            Safe_Release(m_Colliders[i]);
+            m_Colliders.erase(m_Colliders.begin() + i);
+
+            // 4. 인스턴스 버퍼 업데이트
+            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
+
+            return S_OK;
+        }
+    }
+
+    return E_FAIL;
+}
+
 HRESULT CIronOre::Ready_Components()
 {
     /* For.Com_Texture */
@@ -111,12 +146,5 @@ CGameObject* CIronOre::Clone(void* pArg)
 
 void CIronOre::Free()
 {
-    wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
-        return;
-    dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-    dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_RAWIRON);
-
     __super::Free();
 }

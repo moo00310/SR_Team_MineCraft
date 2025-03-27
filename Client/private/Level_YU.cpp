@@ -47,8 +47,8 @@ HRESULT CLevel_YU::Initialize()
 	if(FAILED(Ready_Layer_PlayerState(TEXT("Layer_PlayerState"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE)))
 		return E_FAIL;
@@ -202,6 +202,14 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerExp"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
+	}
+
+	for (int i = 0; i < 2; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerLevel"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+
 	}
 
 	return S_OK;

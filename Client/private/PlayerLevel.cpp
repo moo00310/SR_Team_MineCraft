@@ -1,30 +1,43 @@
-#include "PlayerExp.h"
+#include "PlayerLevel.h"
 #include "UI_Mgr.h"
 
-CPlayerExp::CPlayerExp(LPDIRECT3DDEVICE9 pGraphic_Device)
-    : CUIObject{ pGraphic_Device }
+CPlayerLevel::CPlayerLevel(LPDIRECT3DDEVICE9 pGraphic_Device)
+    :CUIObject{ pGraphic_Device }
 {
 }
 
-CPlayerExp::CPlayerExp(CPlayerExp& Prototype)
-    : CUIObject(Prototype)
+CPlayerLevel::CPlayerLevel(CPlayerLevel& Prototype)
+    :CUIObject(Prototype)
 {
 }
 
-HRESULT CPlayerExp::Initialize_Prototype()
+HRESULT CPlayerLevel::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CPlayerExp::Initialize(void* pArg)
+HRESULT CPlayerLevel::Initialize(void* pArg)
 {
-    m_iExpCount = (int*)pArg;
-    m_iExpIndex = *m_iExpCount;
+    m_iLevelCount = (int*)pArg;
+    m_iLevelIndex = *m_iLevelCount;
 
-    Desc.fSizeX = 36.f;
-    Desc.fSizeY = 25.f;
-    Desc.fX = 332.f + (m_iExpIndex * Desc.fSizeX);
-    Desc.fY = 600.f;
+    if (m_iLevelIndex == 0)
+    {
+        Desc.fSizeX = 20.f;
+        Desc.fSizeY = 25.f;
+        //Desc.fX = 655.f;
+        //Desc.fY = 580.f;
+        m_iTextureNum = 2;
+        m_bRenderOn = true;
+    }    
+
+    else if (m_iLevelIndex == 1)
+    {
+        Desc.fSizeX = 20.f;
+        Desc.fSizeY = 25.f;
+        Desc.fX = 625.f;
+        Desc.fY = 580.f;
+    }
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -38,21 +51,21 @@ HRESULT CPlayerExp::Initialize(void* pArg)
     return S_OK;
 }
 
-void CPlayerExp::Priority_Update(_float fTimeDelta)
+void CPlayerLevel::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CPlayerExp::Update(_float fTimeDelta)
+void CPlayerLevel::Update(_float fTimeDelta)
 {
 }
 
-void CPlayerExp::Late_Update(_float fTimeDelta)
+void CPlayerLevel::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
-HRESULT CPlayerExp::Render()
+HRESULT CPlayerLevel::Render()
 {
     if (m_bRenderOn)
     {
@@ -74,13 +87,13 @@ HRESULT CPlayerExp::Render()
         __super::End();
         End();
     }
-  
+
     return S_OK;
 }
 
-HRESULT CPlayerExp::Ready_Components()
+HRESULT CPlayerLevel::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerExp"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerLevel"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -91,54 +104,49 @@ HRESULT CPlayerExp::Ready_Components()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
-
     return S_OK;
 }
 
-void CPlayerExp::Begin()
+void CPlayerLevel::Begin()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 160);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 95);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 }
 
-void CPlayerExp::End()
+void CPlayerLevel::End()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
-CPlayerExp* CPlayerExp::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CPlayerLevel* CPlayerLevel::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CPlayerExp* pInstance = new CPlayerExp(pGraphic_Device);
+    CPlayerLevel* pInstance = new CPlayerLevel(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CPlayerExp");
+        MSG_BOX("Failed to Created : CPlayerLevel");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CPlayerExp::Clone(void* pArg)
+CGameObject* CPlayerLevel::Clone(void* pArg)
 {
-    CPlayerExp* pInstance = new CPlayerExp(*this);
+    CPlayerLevel* pInstance = new CPlayerLevel(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CPlayerExp");
+        MSG_BOX("Failed to Created : CPlayerLevel");
         Safe_Release(pInstance);
     }
 
-    CUI_Mgr::Get_Instance()->Get_PlayerExplist()->push_back(pInstance);
+    CUI_Mgr::Get_Instance()->Get_PlayerLevellist()->push_back(pInstance);
 
     return pInstance;
 }
 
-void CPlayerExp::Free()
+void CPlayerLevel::Free()
 {
-    __super::Free();
-    Safe_Release(m_pVIBufferCom);
-    Safe_Release(m_pTextureCom);
-    Safe_Release(m_pTransformCom);
 }

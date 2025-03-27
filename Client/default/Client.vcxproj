@@ -201,6 +201,7 @@
     <ClInclude Include="..\public\PlayerExp_Back.h" />
     <ClInclude Include="..\public\PlayerHP.h" />
     <ClInclude Include="..\public\PlayerHP_Back.h" />
+    <ClInclude Include="..\public\PlayerLevel.h" />
     <ClInclude Include="..\public\UIParticleRain.h" />
     <ClInclude Include="..\public\PlayerHunger.h" />
     <ClInclude Include="..\public\PlayerHunger_Back.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="..\private\PlayerExp.cpp" />
     <ClCompile Include="..\private\PlayerExp_Back.cpp" />
     <ClCompile Include="..\private\PlayerHP_Back.cpp" />
+    <ClCompile Include="..\private\PlayerLevel.cpp" />
     <ClCompile Include="..\private\UIParticleRain.cpp" />
     <ClCompile Include="..\private\PlayerHunger.cpp" />
     <ClCompile Include="..\private\PlayerHunger_Back.cpp" />

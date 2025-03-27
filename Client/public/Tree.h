@@ -6,7 +6,6 @@
 BEGIN(Engine)
 class CTexture;
 class CTransform;
-class CVIBuffer_Cube;
 END
 
 class CTree : public CGameObject
@@ -34,8 +33,8 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-	vector<CGameObject*> Get_WoodInfo() { return m_vecWood; }
-	vector<CGameObject*> Get_LeafInfo() { return m_vecLeaf; }
+	CBreakableCube* Get_Wood() { return m_pWood; }
+	CBreakableCube* Get_Leaf() { return m_pLeaf; }
 
 private:
 	int index = {};
@@ -44,9 +43,9 @@ private:
 	int m_iTreeIndex = {};
 	
 	int m_iMyChunk = 0;
-
-	vector<CGameObject*> m_vecWood;
-	vector<CGameObject*> m_vecLeaf;
+	
+	CBreakableCube* m_pWood;
+	CBreakableCube* m_pLeaf;
 	bool m_bWoodZero = false;
 	int m_iRemoveFrame = 0;
 
