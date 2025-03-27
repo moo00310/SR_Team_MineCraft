@@ -8,19 +8,11 @@
 CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CMonster{ pGraphic_Device }
 {
-    for (int i = 0; i < 6; i++)
-    {
-       m_pVIBufferCom[i] = nullptr;     
-    }
 }
 
 CCreeper::CCreeper(const CCreeper& Prototype)
     : CMonster(Prototype)
 {
-    for (int i = 0; i < 6; i++)
-    {
-        m_pVIBufferCom[i] = nullptr;
-    }
 }
 
 HRESULT CCreeper::Initialize_Prototype()
@@ -35,7 +27,11 @@ HRESULT CCreeper::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, { -10.f, 0.f, -10.f });
+    if (FAILED(Ready_Bone()))
+        return E_FAIL;
+
+    if (FAILED(Ready_Animation()))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -49,41 +45,30 @@ void CCreeper::Update(_float fTimeDelta)
 { 
     __super::Update(fTimeDelta);
 
-    // 걷는 모션
-    if (GetKeyState('Q') & 0x8000)
-    {
-        elapsedTime += fTimeDelta;
-        Comput = maxAngle * sin(elapsedTime * D3DXToRadian(2.5f));
+    //m_pCollider_CubeCom->Update_ColliderBox();
 
-        //vecBones[3].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), Comput);
-        //vecBones[4].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), -Comput);
-        //vecBones[5].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), -Comput);
-        //vecBones[6].transform.Turn_Radian(_float3(1.f, 0.f, 0.f), Comput);
-    }
+    //CGameObject* pHitObject{ nullptr };
+    //_float fDist{};
 
-    m_pCollider_CubeCom->Update_ColliderBox();
-
-    CGameObject* pHitObject{ nullptr };
-    _float fDist{};
-
-    pHitObject = m_pGameInstance->Ray_Cast
-    (   m_pTransformCom->Get_State(CTransform::STATE_POSITION),
-        m_pTransformCom->Get_State(CTransform::STATE_LOOK),
-        10.f,
-        COLLISION_PLAYER,
-        fDist
-    );
+    //pHitObject = m_pGameInstance->Ray_Cast
+    //(   m_pTransformCom->Get_State(CTransform::STATE_POSITION),
+    //    m_pTransformCom->Get_State(CTransform::STATE_LOOK),
+    //    10.f,
+    //    COLLISION_PLAYER,
+    //    fDist
+    //);
 
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
 {
- 
-    // 본의 매트릭스를 현재 트랜스폼으로 업데이트
-    //vecBones[0].transform = *(m_pTransformCom->Get_WorldMatrix());
+    if (m_pGameInstance->Key_Down('Q'))
+    {
+        m_eCurAnim = WALK;
+    }
 
-    // 본이 적용된 매쉬 업데이트
-    Ready_Mesh();
+    Update_State(fTimeDelta);
+    m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
         return;
@@ -91,148 +76,200 @@ void CCreeper::Late_Update(_float fTimeDelta)
 
 HRESULT CCreeper::Render()
 {
-
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
-    /*if (FAILED(m_pTransformCom->Bind_Resource()))
-        return E_FAIL;*/
     for (int i = 0; i < 6; i++)
     {
-        if (FAILED(m_pVIBufferCom[i]->Bind_WorldMatrix()))
+        if (FAILED(m_pVIBufferComs[i]->Bind_WorldMatrix()))
             return E_FAIL;
 
-        if (FAILED(m_pVIBufferCom[i]->Bind_Buffers()))
+        if (FAILED(m_pVIBufferComs[i]->Bind_Buffers()))
             return E_FAIL;
 
-        if (FAILED(m_pVIBufferCom[i]->Render()))
+        if (FAILED(m_pVIBufferComs[i]->Render()))
             return E_FAIL;
     }
 
-    m_pCollider_CubeCom->Render_ColliderBox(false);
+    //m_pCollider_CubeCom->Render_ColliderBox(false);
 
     return S_OK;
 }
 
 HRESULT CCreeper::Ready_Components()
 {
-
-#pragma region 외형
-    // 크리퍼 텍스처
-   /* For.Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_Texture_Creeper"),
-        TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-        return E_FAIL;
-
-    /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
-        TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[0]))))
-        return E_FAIL;
-
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
-        TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[1]))))
-        return E_FAIL;
-
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
-        TEXT("m_pVIBufferCom_Foot_LF"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[2]))))
-        return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
-        TEXT("m_pVIBufferCom_Foot_RF"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[3]))))
-        return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
-        TEXT("m_pVIBufferCom_Foot_LB"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[4]))))
-        return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_GAMEPLAY, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
-        TEXT("m_pVIBufferCom_Foot_RB"), reinterpret_cast<CComponent**>(&m_pVIBufferCom[5]))))
-        return E_FAIL;
-
-
-    if (FAILED(Ready_Bone()))
-        return E_FAIL;
-    if (FAILED(Ready_Mesh()))
-        return E_FAIL;
-#pragma endregion
-
-#pragma region 기능
     /* For.Com_Transform */
     CTransform::TRANSFORM_DESC		TransformDesc{ 3.f, D3DXToRadian(30.f) };
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
 
-    /* For.Com_Collider_Cube */
-    CCollider_Cube::COLLCUBE_DESC		ColliderCubeDesc;
-    ColliderCubeDesc.fRadiusY = 1.f;
-    ColliderCubeDesc.fOffSetY = 1.f;
-    ColliderCubeDesc.pTransformCom = m_pTransformCom;
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-        TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &ColliderCubeDesc)))
+#pragma region 외형
+    // 크리퍼 텍스처
+   /* For.Com_Texture */
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Creeper"),
+        TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+        return E_FAIL;
+
+    m_pVIBufferComs.resize(6);
+    /* For.Com_VIBuffer */
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
+        TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
+        return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
+        TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[1]))))
+        return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+        TEXT("m_pVIBufferCom_Foot_LF"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[2]))))
+        return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+        TEXT("m_pVIBufferCom_Foot_RF"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[3]))))
+        return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+        TEXT("m_pVIBufferCom_Foot_LB"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[4]))))
+        return E_FAIL;
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+        TEXT("m_pVIBufferCom_Foot_RB"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[5]))))
         return E_FAIL;
 #pragma endregion
 
-    
+    // 본 + 애니메이션
+    CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
+        TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
+        return E_FAIL;
+
+
+    ///* For.Com_Collider_Cube */
+    //CCollider_Cube::COLLCUBE_DESC		ColliderCubeDesc;
+    //ColliderCubeDesc.fRadiusY = 1.f;
+    //ColliderCubeDesc.fOffSetY = 1.f;
+    //ColliderCubeDesc.pTransformCom = m_pTransformCom;
+    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+    //    TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &ColliderCubeDesc)))
+    //    return E_FAIL;
 
     return S_OK;
 }
 
 HRESULT CCreeper::Ready_Bone()
 {
-
-    /*BONE bone[7] = 
+    BONE bone[7] =
     {
-         { "Root"    ,0, -1,  MAtrixTranslation(0.f,              0.f,      0.f) },
-         { "Pelvis"  ,1,  0,  MAtrixTranslation(0,              6.f /16.f,  0) },
-         { "Neck"    ,2,  1,  MAtrixTranslation(0,              12.f/16.f,  0) },
-         { "Leg_LF"  ,3,  1,  MAtrixTranslation(2.f/16.f,       0,          -2.f/16.f) },
-         { "Leg_RF"  ,4,  1,  MAtrixTranslation(-2.f/16.f,      0,          -2.f/16.f) },
-         { "Leg_LB"  ,5,  1,  MAtrixTranslation(2.f/16.f,       0,          2.f/16.f) },
-         { "Leg_RB"  ,6,  1,  MAtrixTranslation(-2.f/16,        0,          2.f/16.f) },
+         { "Root"  , -1,   MAtrixTranslation(0.f, 0.f,0.f),	MAtrixTranslation(0.f	,0.f,	0.f), Matrix(), Matrix() },  // root
+         { "Pelvis",  0,   MAtrixTranslation(0.f,  6.f / 16.f ,0.f),	MAtrixTranslation(0.f,   6.f / 16.f, 0.f), Matrix(), MAtrixTranslation(0.f,  6.f / 16.f, 0.f)},
+         { "Neck"   ,  1,  MAtrixTranslation(0.f,  12.f / 16.f ,0.f), MAtrixTranslation(0.f,  12.f / 16.f ,0.f), Matrix(), MAtrixTranslation(0.f,  4.f / 16.f ,0.f), },
+         { "Leg_LF" ,  1,  MAtrixTranslation(2.f / 16.f, 0,  -2.f / 16.f), MAtrixTranslation(2.f / 16.f, 0,  -2.f / 16.f), Matrix(), MAtrixTranslation(0, -3.f / 16.f,  -2.f / 16.f)},
+         { "Leg_RF" ,  1,  MAtrixTranslation(-2.f / 16.f,  0,  -2.f / 16.f),  MAtrixTranslation(-2.f / 16.f,  0,  -2.f / 16.f), Matrix(), MAtrixTranslation(0, -3.f / 16.f,  -2.f / 16.f)},
+         { "Leg_LB" ,  1,  MAtrixTranslation(2.f / 16.f,  0, 2.f / 16.f),MAtrixTranslation(2.f / 16.f,  0, 2.f / 16.f), Matrix(), MAtrixTranslation(0, -3.f / 16.f,  2.f / 16.f)},
+         { "Leg_RB" ,  1,  MAtrixTranslation(-2.f / 16, 0, 2.f / 16.f), MAtrixTranslation(-2.f / 16, 0, 2.f / 16.f), Matrix(), MAtrixTranslation(0, -3.f / 16.f,  2.f / 16.f)},
     };
 
     for (int i = 0; i < 7; i++)
     {
-        vecBones.push_back(bone[i]);
-    }*/
+        m_skelAnime->Add_Bone(bone[i]);
+    }
 
     return S_OK;
 }
 
-HRESULT CCreeper::Ready_Mesh()
+HRESULT CCreeper::Ready_Animation()
 {
-    //Matrix temp = {};
-    //Matrix rootTransform = vecBones[1].transform * vecBones[0].transform;
+    /*----------
+    * INIT 모션
+    - -----------*/
+    Matrix mat = {};
+    KEYFREAME Init = { 0.f, mat };
+    m_skelAnime->Add_Animation(ANIM_type::INIT, Init);
 
-    //// 머리
-    //temp = MAtrixTranslation(0, 4.f / 16.f, 0.f) *  vecBones[2].transform * rootTransform;
-    //m_pVIBufferCom[0]->SetMatrix(temp);
+    /*----------
+    * Walk 모션
+    ------------*/
+    Matrix mat2 = {};
+    mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(25.f));
 
-    //// 몸통
-    //temp = MAtrixTranslation(0, 6.f / 16.f, 0.f) * rootTransform;
-    //m_pVIBufferCom[1]->SetMatrix(temp);
+    Matrix mat3 = {};
+    mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-25.f));
 
-    //// 다리
-    //const float legOffsets[4][2] = {
-    //   {-3.f / 16.f, -2.f / 16.f},
-    //   {-3.f / 16.f, -2.f / 16.f},
-    //   {-3.f / 16.f,  2.f / 16.f},
-    //   {-3.f / 16.f,  2.f / 16.f}
-    //};
+    KEYFREAME Walk_1_F = { 0.f, mat }; //0
+    KEYFREAME Walk_2_F = { 0.5f, mat2 }; //60
+    KEYFREAME Walk_3_F = { 1.0f, mat }; // 0
+    KEYFREAME Walk_4_F = { 1.5f, mat3 }; // -60
+    KEYFREAME Walk_5_F = { 2.0f, mat }; // 0
 
-    //for (int i = 0; i < 4; ++i)
-    //{
-    //    temp = MAtrixTranslation(0, legOffsets[i][0], legOffsets[i][1]) * vecBones[i + 3].transform * rootTransform;
-    //    m_pVIBufferCom[i + 2]->SetMatrix(temp);
-    //}
+    KEYFREAME Walk_1_B = { 0.f,  mat };
+    KEYFREAME Walk_2_B = { 0.5f, mat3 };
+    KEYFREAME Walk_3_B = { 1.0f, mat };
+    KEYFREAME Walk_4_B = { 1.5f, mat2 };
+    KEYFREAME Walk_5_B = { 2.f, mat };
+
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_1_F);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_2_F);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_3_F);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_4_F);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_5_F);
+
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_1_F);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_2_F);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_3_F);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_4_F);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_FA, Walk_5_F);
+
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_1_B);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_2_B);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_3_B);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_4_B);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_5_B);
+
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_1_B);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_2_B);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_3_B);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_4_B);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_5_B);
 
     return S_OK;
 }
 
-HRESULT CCreeper::UpDate_Mesh()
+void CCreeper::Update_State(_float fTimeDelta)
 {
+    switch (m_eCurAnim)
+    {
+    case CCreeper::IDLE:
+        Motion_Idle(fTimeDelta);
+        break;
+    case CCreeper::WALK:
+        Motion_Walk(fTimeDelta);
+        break;
+    case CCreeper::ANIM_END:
+        break;
+    default:
+        break;
+    }
+}
 
+void CCreeper::Motion_Idle(_float fTimeDelta)
+{
+}
 
+void CCreeper::Motion_Walk(_float fTimeDelta)
+{
+    if (m_skelAnime->is_AnimtionEND(Swing_BF) &&
+        m_skelAnime->is_AnimtionEND(Swing_FF) &&
+        m_skelAnime->is_AnimtionEND(Swing_BA) &&
+        m_skelAnime->is_AnimtionEND(Swing_FA)
+        )
+    {
+        m_eCurAnim = WALK;
+    }
 
-    return S_OK;
+    m_skelAnime->Update_Animetion(Swing_BF, fTimeDelta, 3);
+    m_skelAnime->Update_Animetion(Swing_FF, fTimeDelta, 4);
+    m_skelAnime->Update_Animetion(Swing_BA, fTimeDelta, 6);
+    m_skelAnime->Update_Animetion(Swing_FA, fTimeDelta, 5);
+}
+
+void CCreeper::Turn(_float fTimeDelta)
+{
 }
 
 CCreeper* CCreeper::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -265,12 +302,8 @@ void CCreeper::Free()
 {
     __super::Free();
 
-    Safe_Release(m_pCollider_CubeCom);
+    //Safe_Release(m_pCollider_CubeCom);
     Safe_Release(m_pTextureCom);
 
-    for (int i = 0; i < 6; i++)
-    {
-        Safe_Release(m_pVIBufferCom[i]);
-    }
-  
 }
+

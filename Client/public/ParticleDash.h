@@ -20,9 +20,7 @@ public:
 	// CParticleSystem을(를) 통해 상속됨
 	CGameObject* Clone(void* pArg) override;
 	static CParticleDash* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual void Free();
-
-	CTransform* GetTransform() const;	
+	virtual void Free();	
 
 protected:
 	virtual HRESULT Ready_Components() override;

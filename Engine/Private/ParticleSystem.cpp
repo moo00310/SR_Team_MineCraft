@@ -256,8 +256,7 @@ HRESULT CParticleSystem::Create_VertexBuffer()
 }
 
 void CParticleSystem::SetParticleAttribute()
-{	
-	// 파티클 리스트가 하나도 없다면 생성.
+{
 	for (_uint i = 0; i < iParticleCount; i++)
 	{
 		ParticleAttribute att = OnSetAddParticle();

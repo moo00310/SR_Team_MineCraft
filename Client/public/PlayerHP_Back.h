@@ -36,8 +36,8 @@ private:
 	UIOBJECT_DESC Desc{};
 
 private:
-	_int*	m_iHpIndex = { nullptr };
-	_int	m_iHpCount;
+	_int*	m_iHpCount = { nullptr };
+	_int	m_iHpIndex;
 
 private:
 	CTexture* m_pTextureCom = { nullptr };

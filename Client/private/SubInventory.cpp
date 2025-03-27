@@ -19,10 +19,10 @@ HRESULT CSubInventory::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = 600.f;
+    Desc.fSizeX = g_iWinSizeX * 0.5f;
     Desc.fSizeY = 100.f;
     Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = 700.f;
+    Desc.fY = 672.f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -62,11 +62,15 @@ HRESULT CSubInventory::Render()
         return E_FAIL;
 
     __super::Begin();
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 170);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
     __super::End();
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
     return S_OK; 
 }

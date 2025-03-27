@@ -37,11 +37,11 @@ HRESULT CSkeletalAnimator::Update(_float fTimeDelta, _uint iCollsionGroup)
     return S_OK;
 }
 
-bool CSkeletalAnimator::is_AnimtionEND()
+bool CSkeletalAnimator::is_AnimtionEND(int type)
 {
-    if (fElapsedTime >= m_Animations[m_CurrentAnim].back().fTime)
+    if (fElapsedTime[type] >= m_Animations[type].back().fTime)
     {
-        fElapsedTime = 0.0f;  // 처음부터 재생
+        fElapsedTime[type] = 0.0f;  // 처음부터 재생
         return true;
     }
     else
@@ -153,7 +153,7 @@ void CSkeletalAnimator::Blend_Animations(float fTimeDelta, int boneIndex)
         // 블렌딩 완료 → 다음 애니메이션으로 전환
         m_blendState.isBlending = false;
         m_CurrentAnim = m_blendState.toAnim;
-        fElapsedTime = 0.f;
+        //fElapsedTime[_type] = 0.f;
     }
 }
 
@@ -166,7 +166,8 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
     }
 
     m_CurrentAnim = _type;
-    fElapsedTime += fTimeDelta;
+    fElapsedTime[_type] += fTimeDelta;
+    cout << _type << " "<<fElapsedTime[_type] << endl;
 
     if (m_Animations[_type].size() < 2)
     {
@@ -176,20 +177,23 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
     }
 
     // 키프레임 찾기
-    KEYFREAME key1, key2;
+    KEYFREAME key1{}, key2{};
+    bool found = false;
+
     for (size_t i = 0; i < m_Animations[_type].size() - 1; ++i)
     {
-        if (fElapsedTime >= m_Animations[_type][i].fTime && fElapsedTime <= m_Animations[_type][i + 1].fTime)
+        if (fElapsedTime[_type] >= m_Animations[_type][i].fTime && fElapsedTime[_type] <= m_Animations[_type][i + 1].fTime)
         {
             key1 = m_Animations[_type][i];
             key2 = m_Animations[_type][i + 1];
+            found = true;
             break;
         }
     }
+    if (!found) return S_OK;
 
     // 보간 비율 계산 (0~1 사이 값)
-    float t = (fElapsedTime - key1.fTime) / (key2.fTime - key1.fTime);
-    cout << t << " " << key2.fTime << " " << key1.fTime << endl;
+    float t = (fElapsedTime[_type] - key1.fTime) / (key2.fTime - key1.fTime);
     Matrix interpolatedMatrix = InterpolateMatrix_Quat(key1.matTransform , key2.matTransform, t);
     vecBones[boneIndex].localTransform = interpolatedMatrix * vecBones[boneIndex].baseTransform;
 
@@ -222,7 +226,6 @@ void CSkeletalAnimator::DeBugBone(int BoneIndex)
 {
     Matrix mat = vecBones[BoneIndex].worldTransform;
 
-    cout << mat._41 << " " << mat._42 << " " << mat._43 << endl;
 }
 
 

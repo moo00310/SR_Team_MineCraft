@@ -73,14 +73,7 @@ CParticleDash* CParticleDash::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 void CParticleDash::Free()
 {
-	__super::Free();
-
-	Safe_Release(m_pTransform);
-}
-
-CTransform* CParticleDash::GetTransform() const
-{
-	return m_pTransform;
+	__super::Free();	
 }
 
 HRESULT CParticleDash::Ready_Components()

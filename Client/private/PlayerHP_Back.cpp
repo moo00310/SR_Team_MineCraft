@@ -17,13 +17,13 @@ HRESULT CPlayerHP_Back::Initialize_Prototype()
 
 HRESULT CPlayerHP_Back::Initialize(void* pArg)
 {
-    m_iHpIndex = (int*)pArg;
-    m_iHpCount = *m_iHpIndex;
+    m_iHpCount = (int*)pArg;
+    m_iHpIndex = *m_iHpCount;
 
-    Desc.fSizeX = 35.f;
-    Desc.fSizeY = 35.f;
-    Desc.fX = 350.f + (m_iHpCount * 35.f);
-    Desc.fY = g_iWinSizeY * 0.85f;
+    Desc.fSizeX = 30.f;
+    Desc.fSizeY = 30.f;
+    Desc.fX = 330.f + (m_iHpIndex * Desc.fSizeX);
+    Desc.fY = 570.f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -94,7 +94,7 @@ HRESULT CPlayerHP_Back::Ready_Components()
 void CPlayerHP_Back::Begin()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 160);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 100);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 }
 

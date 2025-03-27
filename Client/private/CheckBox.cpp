@@ -17,11 +17,11 @@ HRESULT CCheckBox::Initialize_Prototype()
 
 HRESULT CCheckBox::Initialize(void* pArg)
 {
- 
-    Desc.fSizeX = 77;
-    Desc.fSizeY = 77;
-    Desc.fX = g_iWinSizeX * 0.293f;
-    Desc.fY = g_iWinSizeY * 0.95f;
+
+    Desc.fSizeX = 85.f;
+    Desc.fSizeY = 100.f;
+    Desc.fX = 360.f;
+    Desc.fY = 672.f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -41,15 +41,15 @@ void CCheckBox::Priority_Update(_float fTimeDelta)
 
 void CCheckBox::Update(_float fTimeDelta)
 {
-    if (GetKeyState('1') & 0x8000) Desc.fX = g_iWinSizeX * 0.293f;
-    if (GetKeyState('2') & 0x8000) Desc.fX = g_iWinSizeX * 0.346f;    
-    if (GetKeyState('3') & 0x8000) Desc.fX = g_iWinSizeX * 0.397f;
-    if (GetKeyState('4') & 0x8000) Desc.fX = g_iWinSizeX * 0.450f;
-    if (GetKeyState('5') & 0x8000) Desc.fX = g_iWinSizeX * 0.502f;
-    if (GetKeyState('6') & 0x8000) Desc.fX = g_iWinSizeX * 0.554f;
-    if (GetKeyState('7') & 0x8000) Desc.fX = g_iWinSizeX * 0.604f;
-    if (GetKeyState('8') & 0x8000) Desc.fX = g_iWinSizeX * 0.655f;
-    if (GetKeyState('9') & 0x8000) Desc.fX = g_iWinSizeX * 0.707f;
+    if (GetKeyState('1') & 0x8000) Desc.fX = 360.f;
+    if (GetKeyState('2') & 0x8000) Desc.fX = 430.f;
+    if (GetKeyState('3') & 0x8000) Desc.fX = 500.f;
+    if (GetKeyState('4') & 0x8000) Desc.fX = 570.f;
+    if (GetKeyState('5') & 0x8000) Desc.fX = 640.f;
+    if (GetKeyState('6') & 0x8000) Desc.fX = 710.f;
+    if (GetKeyState('7') & 0x8000) Desc.fX = 780.f;
+    if (GetKeyState('8') & 0x8000) Desc.fX = 850.f;
+    if (GetKeyState('9') & 0x8000) Desc.fX = 920.f;
 
     if(m_fCheckBox != Desc.fX)
     {

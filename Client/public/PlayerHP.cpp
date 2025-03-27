@@ -18,23 +18,15 @@ HRESULT CPlayerHP::Initialize_Prototype()
 
 HRESULT CPlayerHP::Initialize(void* pArg)
 {
-    m_iHpIndex = (int*)pArg;
-    m_iHpCount= *m_iHpIndex;
+    m_iHpCount = (int*)pArg;
+    m_iHpIndex = *m_iHpCount;
 
     m_iTextureNum = 1;
-    Desc.fSizeX = 30.f;
-    Desc.fSizeY = 30.f;
-    Desc.fX = 350.f + (m_iHpCount * 35.f);
-    Desc.fY = g_iWinSizeY * 0.85f;
-    
-    
-    /*m_iTextureNum == 2*/
- /*   Desc.fSizeX = 20.f;
-    Desc.fSizeY = 20.f;
-    Desc.fX = 350.f + (m_iHpCount * 35.f);
-    Desc.fY = g_iWinSizeY * 0.85f;*/
-
-
+    Desc.fSizeX = 25.f;
+    Desc.fSizeY = 25.f;
+    Desc.fX = 330.f + (m_iHpIndex * 30.f);
+    Desc.fY = 570.f;
+   
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
 
@@ -64,7 +56,6 @@ void CPlayerHP::Late_Update(_float fTimeDelta)
 
 HRESULT CPlayerHP::Render()
 {
-    /* m_iTextureNum = 1 ¶Ç´Â 2 */
 	if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
 		return E_FAIL;
 

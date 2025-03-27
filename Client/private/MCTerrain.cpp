@@ -35,7 +35,7 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
     //OffAllChunkLayer();
-    //GetPlayerChunk();
+    GetPlayerChunk();
 }
 
 void CMCTerrain::Update(_float fTimeDelta)
@@ -149,12 +149,13 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         CloseHandle(hFile);
 
 
-        vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
+         vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
             {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
-            {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
-            {TEXT("Prototype_GameObject_Stone"), &stoneVec},
-            {TEXT("Prototype_GameObject_IronOre"), &ironVec},
-            {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
+            //{TEXT("Prototype_GameObject_Dirt"), &dirtVec},
+            //{TEXT("Prototype_GameObject_Stone"), &stoneVec},
+            //{TEXT("Prototype_GameObject_IronOre"), &ironVec},
+            //{TEXT("Prototype_GameObject_CoalOre"), &coalVec}
+            //{TEXT("Prototype_GameObject_CoalOre"), &coalVec}
         };
 
 

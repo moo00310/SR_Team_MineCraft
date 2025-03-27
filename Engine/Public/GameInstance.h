@@ -66,6 +66,8 @@ public:
 	_bool Collision_Check_Group_Multi(_uint iGroupIndex, list<CCollider_Cube::COLLISION_INFO>& CollisionObjects, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eCollisionType);
 	//레이케스트
 	CGameObject* Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist);
+
+	CGameObject* Ray_Cast_InstancingObject(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist, _Out_ CComponent** ppOutCollider);
 #pragma endregion
 
 #pragma region KEY_MANAGER

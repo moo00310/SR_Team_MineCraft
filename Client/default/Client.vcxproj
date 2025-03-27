@@ -194,8 +194,13 @@
     <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Inventory_Back.h" />
     <ClInclude Include="..\public\ItemRect.h" />
+    <ClInclude Include="..\public\PlayerExp.h" />
+    <ClInclude Include="..\public\PlayerExp_Back.h" />
     <ClInclude Include="..\public\PlayerHP.h" />
     <ClInclude Include="..\public\PlayerHP_Back.h" />
+    <ClInclude Include="..\public\UIParticleRain.h" />
+    <ClInclude Include="..\public\PlayerHunger.h" />
+    <ClInclude Include="..\public\PlayerHunger_Back.h" />
     <ClInclude Include="..\public\UI_Mgr.h" />
     <ClInclude Include="..\public\ItemCube.h" />
     <ClInclude Include="..\public\RedTulip.h" />
@@ -281,7 +286,12 @@
     <ClCompile Include="..\private\HyockCube.cpp" />
     <ClCompile Include="..\private\Inventory_Back.cpp" />
     <ClCompile Include="..\private\ItemRect.cpp" />
+    <ClCompile Include="..\private\PlayerExp.cpp" />
+    <ClCompile Include="..\private\PlayerExp_Back.cpp" />
     <ClCompile Include="..\private\PlayerHP_Back.cpp" />
+    <ClCompile Include="..\private\UIParticleRain.cpp" />
+    <ClCompile Include="..\private\PlayerHunger.cpp" />
+    <ClCompile Include="..\private\PlayerHunger_Back.cpp" />
     <ClCompile Include="..\private\UI_Mgr.cpp" />
     <ClCompile Include="..\private\ItemCube.cpp" />
     <ClCompile Include="..\private\RedTulip.cpp" />

@@ -34,9 +34,12 @@ public:
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
 
+
+
 public:
 	int GetCurrentAnim() { return m_CurrentAnim; }
-	bool is_AnimtionEND();
+	bool is_AnimtionEND(int type);
+	void Reset_fElapsedTime(int index, int targetIndex ) { fElapsedTime[index] = fElapsedTime[targetIndex]; }
 
 public:
 	void IkLookAt(float fTimeDelta, int boneIndex, int targetInex);
@@ -60,8 +63,8 @@ private:
 	vector<BONE> vecBones;
 	vector<CVIBuffer_Cube*> m_pVIBufferComs;
 	map<_uint, vector<KEYFREAME>> m_Animations = {};
-	float fElapsedTime = 0.0f;
-	float animElapsedTime = 0.0f;
+	float fElapsedTime[20] = {};
+	float animElapsedTime = {};
 	int m_imeshCount = 0;
 
 	int m_CurrentAnim = { 0 };

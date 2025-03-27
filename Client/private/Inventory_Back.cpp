@@ -20,35 +20,44 @@ HRESULT CInventory_Back::Initialize(void* pArg)
 	m_iSlotIndex = (int*)pArg;
 	m_iSlotIndexNum = *m_iSlotIndex;
 
+	/* 하단 퀵슬롯 */
 	if (m_iSlotIndexNum < 9)
 	{
 		m_iTextureNum = 0;
-		Desc.fSizeX = 60;
-		Desc.fSizeY = 60;
-		Desc.fY = g_iWinSizeY * 0.957f;
+		Desc.fSizeX = 60.f;
+		Desc.fSizeY = 75.f;
+		Desc.fY = 672.f;
 	}
+	/* 메인 인벤토리 */
 	else
 	{
 		m_iTextureNum = 1;
-		Desc.fSizeX = 57;
-		Desc.fSizeY = 57;
-		Desc.fY = g_iWinSizeY * 0.741f;
+		Desc.fSizeX = 46.f;
+		Desc.fSizeY = 49.f;
+		Desc.fY = 510.f;
 	}
 
 	/* 하단 인벤토리 */
-	if (m_iSlotIndexNum == 0) { Desc.fX = g_iWinSizeX * 0.293f; }
-	if (m_iSlotIndexNum == 1) { Desc.fX = g_iWinSizeX * 0.346f; }
-	if (m_iSlotIndexNum == 2) { Desc.fX = g_iWinSizeX * 0.397f; }
-	if (m_iSlotIndexNum == 3) { Desc.fX = g_iWinSizeX * 0.450f; }
-	if (m_iSlotIndexNum == 4) { Desc.fX = g_iWinSizeX * 0.502f; }
-	if (m_iSlotIndexNum == 5) { Desc.fX = g_iWinSizeX * 0.554f; }
-	if (m_iSlotIndexNum == 6) { Desc.fX = g_iWinSizeX * 0.604f; }
-	if (m_iSlotIndexNum == 7) { Desc.fX = g_iWinSizeX * 0.655f; }
-	if (m_iSlotIndexNum == 8) { Desc.fX = g_iWinSizeX * 0.707f; }
+	if (m_iSlotIndexNum == 0) { Desc.fX = 360.f; }
+	if (m_iSlotIndexNum == 1) { Desc.fX = 430.f; }
+	if (m_iSlotIndexNum == 2) { Desc.fX = 500.f; }
+	if (m_iSlotIndexNum == 3) { Desc.fX = 570.f; }
+	if (m_iSlotIndexNum == 4) { Desc.fX = 640.f; }
+	if (m_iSlotIndexNum == 5) { Desc.fX = 710.f; }
+	if (m_iSlotIndexNum == 6) { Desc.fX = 780.f; }
+	if (m_iSlotIndexNum == 7) { Desc.fX = 850.f; }
+	if (m_iSlotIndexNum == 8) { Desc.fX = 920.f; }
 
 	/* 메인 인벤토리 */
-	if (m_iSlotIndexNum == 9)	{ Desc.fX = g_iWinSizeX * 0.336; }
-	if (m_iSlotIndexNum == 10)	{ Desc.fX = g_iWinSizeX * 0.666; }
+	if (m_iSlotIndexNum == 9)	{ Desc.fX = 428.f; }
+	if (m_iSlotIndexNum == 10)	{ Desc.fX = 481.f; }
+	if (m_iSlotIndexNum == 11) { Desc.fX = 534.f; }
+	if (m_iSlotIndexNum == 12) { Desc.fX = 587.f; }
+	if (m_iSlotIndexNum == 13) { Desc.fX = 640.f; }
+	if (m_iSlotIndexNum == 14) { Desc.fX = 693.f; }
+	if (m_iSlotIndexNum == 15) { Desc.fX = 746.f; }
+	if (m_iSlotIndexNum == 16) { Desc.fX = 799.f; }
+	if (m_iSlotIndexNum == 17) { Desc.fX = 852.f; }
 
 
 	if (FAILED(__super::Initialize(&Desc)))

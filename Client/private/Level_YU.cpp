@@ -47,11 +47,13 @@ HRESULT CLevel_YU::Initialize()
 	if(FAILED(Ready_Layer_PlayerState(TEXT("Layer_PlayerState"))))
 		return E_FAIL;
 
-
-	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE_DASH)))
+	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_SandDestroyParticle(LAYER_PARTICLE_SAND_DESTROY)))
+	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE)))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_SandDestroyParticle(LAYER_PARTICLE)))
 		return E_FAIL;
 
 	return S_OK;
@@ -131,7 +133,6 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	/* Prototype_GameObject_InventoryBack */
 	for (int i = 0; i < 18; ++i)
 	{
-
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_InventoryBack"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
@@ -140,7 +141,6 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	/* Prototype_GameObject_Item */
 	for (int i = 0; i < 18; ++i)
 	{
-
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
@@ -157,7 +157,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 {
 	/* Prototype_GameObject_PlayerHP_Back */
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP_Back"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -165,13 +165,45 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 	}
 
 	/* Prototype_GameObject_PlayerHP */
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHP"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
 	}
 	
+	/* Prototype_GameObject_PlayerHunger_Back */
+	for (int i = 0; i < 10; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHunger_Back"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+
+	/* Prototype_GameObject_PlayerHunger*/
+	for (int i = 0; i < 10; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerHunger"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+
+	/* Prototype_GameObject_PlayerExp_Back*/
+	for (int i = 0; i < 18; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerExp_Back"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+
+	/* Prototype_GameObject_PlayerExp*/
+	for (int i = 0; i < 18; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerExp"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -180,6 +212,15 @@ HRESULT CLevel_YU::Ready_Laye_TPS_Arm(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+}
+
+HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CLevel_YU::Ready_Layer_DashParticle(const _wstring& strLayerTag)
