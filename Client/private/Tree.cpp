@@ -123,7 +123,7 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
     {
         if (i == height + 1) {
             _leafPos.push_back(_float3(0.f, 0.5f + i, 0.f) + m_Pos);
-            continue;
+            break;
         }
         _woodPos.push_back(_float3(0.f, 0.5f + i, 0.f) + m_Pos);
     }

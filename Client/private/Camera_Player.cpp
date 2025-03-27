@@ -114,10 +114,10 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
         if (pHitObject)
         {
-            //if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pHitObject)) {
-            //    pBreakableRect->Destroy();
-            //    return;
-            //}
+            if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pHitObject)) {
+                pBreakableRect->Destroy();
+                return;
+            }
 
             // 충돌한 오브젝트가 CBreakableCube인지 확인 후 형변환
             if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pHitObject)) {

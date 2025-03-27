@@ -69,6 +69,10 @@ HRESULT CBreakableRect::Ready_Components()
     /* For.Com_Collider */
     CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
     Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
+    _float3 pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+    Desc.fOffSetX = pos.x;
+    Desc.fOffSetY = pos.y;
+    Desc.fOffsetZ = pos.z;
     Desc.pTransformCom = m_pTransformCom;
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
         TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
