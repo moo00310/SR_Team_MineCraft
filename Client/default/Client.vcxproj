@@ -193,7 +193,10 @@
     <ClInclude Include="..\public\HeroCubeNoMove.h" />
     <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Inventory_Back.h" />
+    <ClInclude Include="..\public\ISubject.h" />
     <ClInclude Include="..\public\ItemRect.h" />
+    <ClInclude Include="..\public\IObserver.h" />
+    <ClInclude Include="..\public\ParticleExplosion.h" />
     <ClInclude Include="..\public\PlayerExp.h" />
     <ClInclude Include="..\public\PlayerExp_Back.h" />
     <ClInclude Include="..\public\PlayerHP.h" />
@@ -286,7 +289,10 @@
     <ClCompile Include="..\private\HeroCubeNoMove.cpp" />
     <ClCompile Include="..\private\HyockCube.cpp" />
     <ClCompile Include="..\private\Inventory_Back.cpp" />
+    <ClCompile Include="..\private\ISubject.cpp" />
     <ClCompile Include="..\private\ItemRect.cpp" />
+    <ClCompile Include="..\private\IObserver.cpp" />
+    <ClCompile Include="..\private\ParticleExplosion.cpp" />
     <ClCompile Include="..\private\PlayerExp.cpp" />
     <ClCompile Include="..\private\PlayerExp_Back.cpp" />
     <ClCompile Include="..\private\PlayerHP_Back.cpp" />
