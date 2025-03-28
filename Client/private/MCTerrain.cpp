@@ -190,8 +190,8 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
             {TEXT("Prototype_GameObject_GrassDirt"), &grassVec},
             {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
             {TEXT("Prototype_GameObject_Stone"), &stoneVec},
-            //{TEXT("Prototype_GameObject_IronOre"), &ironVec},
-            //{TEXT("Prototype_GameObject_CoalOre"), &coalVec}
+            {TEXT("Prototype_GameObject_IronOre"), &ironVec},
+            {TEXT("Prototype_GameObject_CoalOre"), &coalVec}
         };
 
 
