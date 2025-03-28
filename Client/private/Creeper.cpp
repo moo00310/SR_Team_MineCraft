@@ -45,6 +45,11 @@ void CCreeper::Update(_float fTimeDelta)
 void CCreeper::Late_Update(_float fTimeDelta)
 {
     
+    if (m_pGameInstance->Key_Down('Q'))
+    {
+        m_eCurAnim = ATTACK;
+    }
+
     Update_State(fTimeDelta);
     m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
@@ -186,22 +191,58 @@ HRESULT CCreeper::Ready_Animation()
 /*----------
 * Attack 모션
 ------------*/
+    // MAX =   Scaling(1.60f, 1.2f, 1.2f);
+
     mat2 = {};
-    mat2.Scaling(6.f, 6.f, 6.f);
+    mat2.Scaling(1.12f, 1.04f, 1.04f); // 성장 1
 
     mat3 = {};
-    mat3.Scaling(0.2f, 0.2, 0.2f);
+    mat3.Scaling(1.10, 1.02f, 1.02f);
 
+    Matrix mat4 = {};
+    mat4.Scaling(1.24f, 1.08f, 1.08f);  // 성장 2
 
-    KEYFREAME Attack_1 = { 0.f, mat };
-    KEYFREAME Attack_2 = { 1.f, mat2 };
-    KEYFREAME Attack_3 = { 2.f, mat3 };
-    KEYFREAME Attack_4 = { 3.f, mat };
+    Matrix mat5 = {};
+    mat5.Scaling(1.22f, 1.06f, 1.06f);
+
+    Matrix mat6 = {};
+    mat6.Scaling(1.36f, 1.12f, 1.12f);  // 성장 3
+
+    Matrix mat7 = {};
+    mat7.Scaling(1.34f, 1.10f, 1.10f);
+
+    Matrix mat8 = {};
+    mat8.Scaling(1.48f, 1.16f, 1.16f); // 성장 4
+
+    Matrix mat9 = {};
+    mat9.Scaling(1.46f, 1.14f, 1.14f); 
+
+    Matrix mat10 = {};
+    mat10.Scaling(1.60f, 1.2f, 1.2f); //마지막 크기
+
+    KEYFREAME Attack_1 = { 0.0f,   mat };
+    KEYFREAME Attack_2 = { 0.2f,   mat2 };
+    KEYFREAME Attack_3 = { 0.25f,  mat3 };
+    KEYFREAME Attack_4 = { 0.4f,   mat4 };
+    KEYFREAME Attack_5 = { 0.45f,  mat5 };
+    KEYFREAME Attack_6 = { 0.6f,   mat6 };
+    KEYFREAME Attack_7 = { 0.65f,  mat7 };
+    KEYFREAME Attack_8 = { 0.8f,   mat8 };
+    KEYFREAME Attack_9 = { 0.85f,  mat9 };
+    KEYFREAME Attack_10 = { 1.0f,  mat10 };
+
 
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_1);
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_2);
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_3);
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_4);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_5);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_6);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_7);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_8);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_9);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_10);
+
 
 /*----------
 * Dead 모션
@@ -259,7 +300,7 @@ void CCreeper::Motion_Walk(_float fTimeDelta)
 
 void CCreeper::Motion_Attack(_float fTimeDelta)
 {
-    m_skelAnime->Update_Animetion(Attack, fTimeDelta, 2);
+    m_skelAnime->Update_Animetion(Attack, fTimeDelta, 0);
     
     if (m_skelAnime->is_AnimtionEND(Attack))
     {

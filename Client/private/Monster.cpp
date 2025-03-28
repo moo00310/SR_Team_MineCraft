@@ -36,10 +36,10 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-    if (m_pBehaviorTree)
+    /*if (m_pBehaviorTree)
     {
         m_pBehaviorTree->Excute(this, fTimeDelta);
-    }
+    }*/
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
@@ -94,7 +94,7 @@ HRESULT CMonster::Ready_BehaviorTree()
     pRoot->Add_Node(pPatrol);
 
     // 최종 트리 설정
-    m_pBehaviorTree = pRoot;
+   // m_pBehaviorTree = pRoot;
 
     return S_OK;
 }
@@ -114,8 +114,8 @@ HRESULT CMonster::Ready_Components()
         return E_FAIL;
 
     // BT 연결
-    if(FAILED(Ready_BehaviorTree()))
-        return E_FAIL;
+   // if(FAILED(Ready_BehaviorTree()))
+   //     return E_FAIL;
 
     return S_OK;
 }
@@ -123,9 +123,11 @@ HRESULT CMonster::Ready_Components()
 void CMonster::Free()
 {
 	__super::Free();
-	Safe_Release(m_pBehaviorTree);
+	//Safe_Release(m_pBehaviorTree);
 	Safe_Release(m_pTransformCom);
     Safe_Release(m_skelAnime);
     for (auto& buffer : m_pVIBufferComs)
         Safe_Release(buffer);
+
+    int a = 0;
 }
