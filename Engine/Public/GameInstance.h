@@ -91,6 +91,9 @@ public:
 
 	// 풀링으로 돌아감.
 	void PopPool(CGameObject* _object);
+
+	// 해당 프로토타입 태그 풀링 객체 갯수 반환.
+	int GetPoolCount(_wstring _tag);
 	
 #pragma endregion
 
