@@ -26,6 +26,7 @@ HRESULT CPlayerHunger::Initialize(void* pArg)
     Desc.fSizeY = 25.f;
     Desc.fX = 680.f + (m_iHungerIndex * 30.f);
     Desc.fY = 570.f;
+    m_bFlicker = false;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -49,6 +50,8 @@ void CPlayerHunger::Update(_float fTimeDelta)
 
 void CPlayerHunger::Late_Update(_float fTimeDelta)
 {
+    m_fTiem += fTimeDelta;
+
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
@@ -65,13 +68,40 @@ HRESULT CPlayerHunger::Render()
 		return E_FAIL;
 
 	__super::Begin();
-	Begin();
+    Begin();
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(m_iTextureNum));
+
+	if(m_bFlicker)
+	{
+        if (m_fTiem < 1.f)
+        {
+            float timeValue = GetTickCount() * 0.001f;
+            m_pShaderCom->SetFloat("g_Time", timeValue);
+
+            m_pShaderCom->Begin(2);
+
+        }
+        else
+        {
+            m_fTiem = 0.f;
+            m_bFlicker = false;
+        }
+	}
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
+    m_pShaderCom->End();
 	__super::End();
-	End();
+    End();
 
 	return S_OK;
 }
@@ -88,6 +118,10 @@ HRESULT CPlayerHunger::Ready_Components()
 
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
+        return E_FAIL;
+
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
     return S_OK;
@@ -138,4 +172,5 @@ void CPlayerHunger::Free()
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pTransformCom);
+    Safe_Release(m_pShaderCom);
 }

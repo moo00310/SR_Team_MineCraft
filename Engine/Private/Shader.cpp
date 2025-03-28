@@ -37,6 +37,14 @@ HRESULT CShader::Bind_Matrix(D3DXHANDLE hParameter, const _float4x4* pMatrix)
 	
 }
 
+HRESULT CShader::SetFloat(const char* variableName, float value)
+{
+	if (!m_pEffect)
+		return E_FAIL;
+
+	return m_pEffect->SetFloat(variableName, value);
+}
+
 void CShader::Begin(_uint iPassIndex)
 {
 	m_pEffect->Begin(nullptr, 0);

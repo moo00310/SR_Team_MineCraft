@@ -562,7 +562,7 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleExplosion.h">
       <Filter>02.GameObjects\05.Particle</Filter>
-</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\PlayerLevel.h">
       <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
     </ClInclude>
@@ -847,7 +847,7 @@
     </ClCompile>
     <ClCompile Include="..\private\BTDistanceBranch.cpp">
       <Filter>04.Behavior_Tree\BTNode\Decorator\DistanceBranch</Filter>
-</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\IObserver.cpp">
       <Filter>101.ObserverPattern</Filter>
     </ClCompile>
@@ -866,6 +866,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Rect.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_UI.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

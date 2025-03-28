@@ -26,6 +26,7 @@ HRESULT CInventory_Back::Initialize(void* pArg)
 		m_iTextureNum = 0;
 		Desc.fSizeX = 60.f;
 		Desc.fSizeY = 75.f;
+		Desc.fX = 360.f + (m_iSlotIndexNum) * 70.f;
 		Desc.fY = 672.f;
 	}
 	/* 메인 인벤토리 */
@@ -34,31 +35,9 @@ HRESULT CInventory_Back::Initialize(void* pArg)
 		m_iTextureNum = 1;
 		Desc.fSizeX = 46.f;
 		Desc.fSizeY = 49.f;
+		Desc.fX = 428.f + (m_iSlotIndexNum - 9) * 53.f;
 		Desc.fY = 510.f;
 	}
-
-	/* 하단 인벤토리 */
-	if (m_iSlotIndexNum == 0) { Desc.fX = 360.f; }
-	if (m_iSlotIndexNum == 1) { Desc.fX = 430.f; }
-	if (m_iSlotIndexNum == 2) { Desc.fX = 500.f; }
-	if (m_iSlotIndexNum == 3) { Desc.fX = 570.f; }
-	if (m_iSlotIndexNum == 4) { Desc.fX = 640.f; }
-	if (m_iSlotIndexNum == 5) { Desc.fX = 710.f; }
-	if (m_iSlotIndexNum == 6) { Desc.fX = 780.f; }
-	if (m_iSlotIndexNum == 7) { Desc.fX = 850.f; }
-	if (m_iSlotIndexNum == 8) { Desc.fX = 920.f; }
-
-	/* 메인 인벤토리 */
-	if (m_iSlotIndexNum == 9)	{ Desc.fX = 428.f; }
-	if (m_iSlotIndexNum == 10)	{ Desc.fX = 481.f; }
-	if (m_iSlotIndexNum == 11) { Desc.fX = 534.f; }
-	if (m_iSlotIndexNum == 12) { Desc.fX = 587.f; }
-	if (m_iSlotIndexNum == 13) { Desc.fX = 640.f; }
-	if (m_iSlotIndexNum == 14) { Desc.fX = 693.f; }
-	if (m_iSlotIndexNum == 15) { Desc.fX = 746.f; }
-	if (m_iSlotIndexNum == 16) { Desc.fX = 799.f; }
-	if (m_iSlotIndexNum == 17) { Desc.fX = 852.f; }
-
 
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;

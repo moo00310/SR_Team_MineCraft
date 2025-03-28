@@ -30,7 +30,7 @@ HRESULT CVIBuffer::Initialize(void* pArg)
     return S_OK;
 }
 
-HRESULT CVIBuffer::Render()
+HRESULT CVIBuffer::Render() 
 {  
      m_pGraphic_Device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_iNumVertices, 0, m_iNumPritimive);
 

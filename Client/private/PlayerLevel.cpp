@@ -25,9 +25,9 @@ HRESULT CPlayerLevel::Initialize(void* pArg)
     {
         Desc.fSizeX = 20.f;
         Desc.fSizeY = 25.f;
-        //Desc.fX = 655.f;
-        //Desc.fY = 580.f;
-        m_iTextureNum = 2;
+        Desc.fX = 655.f;
+        Desc.fY = 580.f;
+        m_iTextureNum = 9;
         m_bRenderOn = true;
     }    
 
@@ -37,6 +37,8 @@ HRESULT CPlayerLevel::Initialize(void* pArg)
         Desc.fSizeY = 25.f;
         Desc.fX = 625.f;
         Desc.fY = 580.f;
+        m_iTextureNum = 9;
+        m_bRenderOn = true;
     }
 
     if (FAILED(__super::Initialize(&Desc)))
@@ -79,13 +81,24 @@ HRESULT CPlayerLevel::Render()
             return E_FAIL;
 
         __super::Begin();
-        Begin();
+   
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
+
+		m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(m_iTextureNum));
+
+		m_pShaderCom->Begin(1);
 
         if (FAILED(m_pVIBufferCom->Render()))
             return E_FAIL;
 
+        m_pShaderCom->End();
+
         __super::End();
-        End();
     }
 
     return S_OK;
@@ -93,6 +106,7 @@ HRESULT CPlayerLevel::Render()
 
 HRESULT CPlayerLevel::Ready_Components()
 {
+  
     if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerLevel"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
@@ -104,13 +118,18 @@ HRESULT CPlayerLevel::Ready_Components()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
+
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+        return E_FAIL;
+
     return S_OK;
 }
 
 void CPlayerLevel::Begin()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 95);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 110);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 }
 
@@ -149,4 +168,9 @@ CGameObject* CPlayerLevel::Clone(void* pArg)
 
 void CPlayerLevel::Free()
 {
+    __super::Free();
+    Safe_Release(m_pVIBufferCom);
+    Safe_Release(m_pTextureCom);
+    Safe_Release(m_pTransformCom);
+    Safe_Release(m_pShaderCom);
 }

@@ -25,13 +25,21 @@ void CUI_Mgr::Synchronize_Slots()
 {
 	if (m_vecItemlist.size() != 0)
 	{
+		/* ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_COBBLESTONE, ITEMNAME_DIRT, ITEMNAME_DANDELION, ITEMNAME_END */
 		CItem* pItem9 = m_vecItemlist[9];
 		CItem* pItem10 = m_vecItemlist[10];
+		CItem* pItem11 = m_vecItemlist[11];
+		CItem* pItem15 = m_vecItemlist[15];
+		CItem* pItem17 = m_vecItemlist[17];
 		/*=====================================*/
 		/* Å×½ºÆ®¿ë */
-		pItem9->Set_ItemType(ITEMNAME_WOOD);
-		pItem10->Set_ItemType(ITEMNAME_AXE);
+		pItem9->Set_ItemType(ITEMNAME_COBBLESTONE);
+		pItem10->Set_ItemType(ITEMNAME_WOOD);
+		pItem11->Set_ItemType(ITEMNAME_OAKPLANKS);
+		pItem15->Set_ItemType(ITEMNAME_DIRT);
+		pItem17->Set_ItemType(ITEMNAME_DANDELION);
 		/*=====================================*/
+
 		for (int i = 0; i < 9; ++i)
 		{
 			if (m_vecItemlist[i] && m_vecItemlist[i + 9])
@@ -67,24 +75,37 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 {
 	m_fHungerTime += fTimeDelta;
 
-	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 5.f)
+	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 10.f)
 	{
 		m_fHungerTime = 0.f;
 		
 		for (auto iter = m_PlayerHungerlist.rbegin(); iter != m_PlayerHungerlist.rend(); ++iter)
 		{
+			/* ¹Ý ÇÖµµ±× -> ºó ÇÖµµ±× */
 			if ((*iter)->Get_TextureNum() == 2)
 			{
 				(*iter)->Set_TextureNum(0);
+			
+				(*iter)->Set_Flicker(false);
+			
 				m_iallZeroCount++;
+
 				break;
 			}
+			/* Ç® ÇÖµµ±× -> ¹Ý ÇÖµµ±× */
 			if ((*iter)->Get_TextureNum() == 1)
 			{
 				(*iter)->Set_TextureNum(2);
+
+				if (!(*iter)->Get_Flicker())
+				{
+					(*iter)->Set_Flicker(true);
+				}
+
 				break;
 			}
 		}
+
 
 		if (m_iallZeroCount == 10)
 		{
@@ -115,7 +136,7 @@ void CUI_Mgr::PlayerExp_Set()
 					(*iter)->Set_TextureNum(5);
 					(*iter)->Set_RenderOn(true);
 
-					LevelUp();
+					//LevelUp();
 
 					break;
 				}

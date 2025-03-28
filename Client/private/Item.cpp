@@ -24,30 +24,18 @@ HRESULT CItem::Initialize(void* pArg)
     Desc.fSizeX = 42.f;
     Desc.fSizeY = 42.f;
 
+    /* 하단 퀵슬롯 인벤토리 */
 	if (m_iSlotIndexNum < 9)
 	{
-		Desc.fY = g_iWinSizeY * 0.957f;
+        Desc.fX = 360.f + (m_iSlotIndexNum) * 70.f;
+        Desc.fY = 672.f;
 	}
+    /* 메인 인벤토리 */
 	else
 	{
-		Desc.fY = g_iWinSizeY * 0.741f;
+        Desc.fX = 407.f + (m_iSlotIndexNum - 9) * 58.f;
+        Desc.fY = 510.f;
 	}
-	
-	/* 하단 퀵슬롯 인벤토리 */
-    if (m_iSlotIndexNum == 0) { Desc.fX = g_iWinSizeX * 0.293f; /*m_ItemType = ITEMNAME_WOOD;*/}
-    if (m_iSlotIndexNum == 1) { Desc.fX = g_iWinSizeX * 0.346f; }
-    if (m_iSlotIndexNum == 2) { Desc.fX = g_iWinSizeX * 0.397f; }
-    if (m_iSlotIndexNum == 3) { Desc.fX = g_iWinSizeX * 0.450f; }
-    if (m_iSlotIndexNum == 4) { Desc.fX = g_iWinSizeX * 0.502f; }
-    if (m_iSlotIndexNum == 5) { Desc.fX = g_iWinSizeX * 0.554f; }
-    if (m_iSlotIndexNum == 6) { Desc.fX = g_iWinSizeX * 0.604f; }
-    if (m_iSlotIndexNum == 7) { Desc.fX = g_iWinSizeX * 0.655f; }
-    if (m_iSlotIndexNum == 8) { Desc.fX = g_iWinSizeX * 0.707f; /* m_ItemType = ITEMNAME_AXE;*/}
-
-    /* 메인 인벤토리 */
-    if (m_iSlotIndexNum == 9) { Desc.fX = 428.f;  /* m_ItemType = ITEMNAME_WOOD; */ }
-    if (m_iSlotIndexNum == 10) { Desc.fX = g_iWinSizeX * 0.666; /*m_ItemType = ITEMNAME_AXE;*/ }
-
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -80,10 +68,10 @@ void CItem::Late_Update(_float fTimeDelta)
 HRESULT CItem::Render()
 {
     /* 메인 인벤토리 활성화일때만 렌더*/
-   /* if ((m_iSlotIndexNum == 9 || m_iSlotIndexNum == 10) && !g_bMainInventoryOpen)
-    {
-        return S_OK;
-    }
+    if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
+	{
+		return S_OK;
+	}
 
 	if (FAILED(m_pTextureCom->Bind_Resource(m_ItemType)))
 		return E_FAIL;
@@ -99,7 +87,7 @@ HRESULT CItem::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	__super::End();*/
+	__super::End();
 
 	return S_OK;
 }
