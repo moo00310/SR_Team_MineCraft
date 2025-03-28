@@ -140,7 +140,7 @@ HRESULT CMapTool::Render()
         ImGui::Begin("Cave Map");
 
         if (ImGui::Button("To Main", ImVec2(200, 50))) {
-            m_bMapFrame = false;
+            m_bCaveFrame = false;
             m_bMainFrame = true;
         }
 
@@ -244,10 +244,11 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
                     int heightValue = (heightColor & 0xFF) / 15;
 
                     DWORD caveColor = cavePixels[y * pitchCave + x];
-                    int caveValue = (caveColor & 0xFF) %20;
+                    int caveValue = (caveColor & 0xFF) /15 + m_iDirtDeep + 10;
 
-                    m_vecGrassDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
-
+                    if (caveValue != heightValue) {
+                        m_vecGrassDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                    }
 
                     int depth = m_iDirtDeep;
                     int minDepth = m_iStoneDeep;
@@ -260,10 +261,12 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
                         switch (eblockData2.eBlockType)
                         {
                         case DIRT:
-                            m_vecDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                            if (caveValue != heightValue) {
+                                m_vecDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                            }
                             break;
                         case STONE:
-                            if (!(caveValue-2 < -heightValue && -heightValue < caveValue +2)) {
+                            if (caveValue != heightValue) {
                                 m_vecStone.push_back(_float3((float)x, (float)heightValue, (float)y));
                             }
                             break;
