@@ -288,6 +288,10 @@ void CGameInstance::PopPool(CGameObject* _object)
 {
 	m_pPoolManager->PopPool(_object);
 }
+int CGameInstance::GetPoolCount(_wstring _tag)
+{
+	return m_pPoolManager->GetPoolCount(_tag);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()

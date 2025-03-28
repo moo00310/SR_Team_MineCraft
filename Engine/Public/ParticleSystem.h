@@ -79,6 +79,9 @@ private:
 	// 텍스쳐 애니메이션 현재 프레임 시간.
 	float fCurrentAnimationFrame;	
 
+	// 파티클 현재 시간.
+	float m_fCurrentTimer = { 0.f };
+
 protected:
 	_uint	m_iFVF = {};
 	LPDIRECT3DVERTEXBUFFER9 m_pVB = { nullptr };
@@ -118,6 +121,12 @@ protected:
 
 	// 텍스쳐 애니메이션 프레임 시간.
 	float fAnimationFrame;
+
+	// 파티클 객체 타이머 활성화.
+	bool IsTimer = false;	
+
+	// 파티클 종료 시간.
+	float fEndTimer = { 0.f };
 
 	// 텍스쳐 마지막 인덱스.
 	_uint iTextureIndex;

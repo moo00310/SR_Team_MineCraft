@@ -20,11 +20,6 @@ public:
 	static CParticleExplosion* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free();
 
-	virtual void Update(_float fTimeDelta) override;
-
-	// 풀링 시 호출.
-	virtual void OnPushPool() override;
-
 protected:
 	virtual HRESULT Ready_Components() override;
 
@@ -33,10 +28,6 @@ protected:
 
 	// CParticleSystem을(를) 통해 상속됨
 	void OnBoundingExit(ParticleAttribute& particle) override;
-
-private:
-	float m_CurrentCount = { 0.f };
-	float m_EndCount = {0.f};
 };
 
 END

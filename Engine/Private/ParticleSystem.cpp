@@ -31,6 +31,17 @@ HRESULT CParticleSystem::Initialize_Prototype()
 
 void CParticleSystem::Priority_Update(_float fTimeDelta)
 {
+	if (IsTimer == true)
+	{
+		// 시간 지나면 종료.
+		if (m_fCurrentTimer >= fEndTimer)
+		{
+			SetActive(false);
+			return;
+		}
+
+		m_fCurrentTimer += fTimeDelta;
+	}
 }
 
 void CParticleSystem::Update(_float fTimeDelta)
@@ -322,6 +333,8 @@ void CParticleSystem::Free()
 
 void CParticleSystem::OnPushPool()
 {
+	m_fCurrentTimer = 0.f;
+
 	// 재생성 시 기존에 값 덮어씀.
 	for (auto& particle : m_ListParticleAttribute)
 	{
