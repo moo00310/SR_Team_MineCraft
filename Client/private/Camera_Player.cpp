@@ -132,7 +132,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 _float3 hitPosition = {
                     pCollider_Cube->Get_Desc().fOffSetX,
                     pCollider_Cube->Get_Desc().fOffSetY,
-                    pCollider_Cube->Get_Desc().fOffsetZ
+                    pCollider_Cube->Get_Desc().fOffSetZ
                 };
 
                 if (FAILED(pBreakableCube->Delete_Cube(hitPosition)))

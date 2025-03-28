@@ -80,8 +80,9 @@ HRESULT CBreakableRect::Ready_Components()
     _float3 pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
     Desc.fOffSetX = pos.x;
     Desc.fOffSetY = pos.y;
-    Desc.fOffsetZ = pos.z;
+    Desc.fOffSetZ = pos.z;
     Desc.pTransformCom = m_pTransformCom;
+    Desc.pOwner = this;
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
         TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
         return E_FAIL;

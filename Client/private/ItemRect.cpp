@@ -44,6 +44,7 @@ void CItemRect::Priority_Update(_float fTimeDelta)
 
 void CItemRect::Update(_float fTimeDelta)
 {
+    m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.5f);
 }
 
 void CItemRect::Late_Update(_float fTimeDelta)
@@ -147,6 +148,15 @@ HRESULT CItemRect::Ready_Components()
     CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
+        return E_FAIL;
+
+    /* For.Com_Rigidbody */
+    CRigidbody::RIGIDBODY_DESC RigidbodyDesc{};
+    RigidbodyDesc.pTransform = m_pTransformCom;
+    //RigidbodyDesc.pCollider_Cube = m_pColliderCom;
+    RigidbodyDesc.fMass = 1.f;
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
+        TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
         return E_FAIL;
 
     return S_OK;

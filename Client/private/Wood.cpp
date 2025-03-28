@@ -62,9 +62,9 @@ HRESULT CWood::Render()
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	__super::Render();
-
 	m_pShaderCom->End();
+
+	__super::Render();
 
 	return S_OK;
 }

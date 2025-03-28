@@ -198,7 +198,7 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
     // 큐브의 오프셋을 적용 (오프셋은 위치에 더하는 형태)
     vCubeCenter.x += pTarget->Get_Desc().fOffSetX;
     vCubeCenter.y += pTarget->Get_Desc().fOffSetY;
-    vCubeCenter.z += pTarget->Get_Desc().fOffsetZ;
+    vCubeCenter.z += pTarget->Get_Desc().fOffSetZ;
 
     // AABB의 최소/최대 좌표 계산
     _float3 vTargetMin = pTarget->GetMin();
@@ -207,11 +207,11 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
     // AABB에 오프셋 적용 (큐브의 월드 좌표에 오프셋을 더한 후)
     vTargetMin.x += pTarget->Get_Desc().fOffSetX;
     vTargetMin.y += pTarget->Get_Desc().fOffSetY;
-    vTargetMin.z += pTarget->Get_Desc().fOffsetZ;
+    vTargetMin.z += pTarget->Get_Desc().fOffSetZ;
 
     vTargetMax.x += pTarget->Get_Desc().fOffSetX;
     vTargetMax.y += pTarget->Get_Desc().fOffSetY;
-    vTargetMax.z += pTarget->Get_Desc().fOffsetZ;
+    vTargetMax.z += pTarget->Get_Desc().fOffSetZ;
 
     // AABB의 월드 좌표를 계산 (오프셋을 고려하여 월드 공간에 적용)
     const _float4x4* matWorld = pTarget->Get_Transform()->Get_WorldMatrix();

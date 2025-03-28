@@ -38,6 +38,7 @@ protected:
 	HRESULT Ready_Components();
 
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	CRigidbody* m_pRigidbodyCom = { nullptr };
 
 	int m_iUpDownFrame;
 	float m_fUpDownSpeed;

@@ -16,11 +16,11 @@ public:
 	}COLLISION_INFO;
 
 public:
-	typedef struct tagCollisionCubeDesc
+	typedef struct tagCollisionCubeDesc : public COLLDESC
 	{
 		_float	fRadiusX = 0.5f, fRadiusY = 0.5f,  fRadiusZ = 0.5f;
-		_float	fOffSetX = 0.f, fOffSetY = 0.f,  fOffsetZ = 0.f;
-		class CTransform* pTransformCom = { nullptr };
+		_float	fOffSetX = 0.f, fOffSetY = 0.f,  fOffSetZ = 0.f;
+		//class CTransform* pTransformCom = { nullptr };
 	}COLLCUBE_DESC;
 
 private:

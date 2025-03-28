@@ -29,8 +29,12 @@ HRESULT CCollider_Cube::Initialize(void* pArg)
 
 	memcpy(&m_StateDesc, pArg, sizeof(COLLCUBE_DESC));
 	m_pTransformCom = m_StateDesc.pTransformCom;
+	m_pOwner = m_StateDesc.pOwner;
 
 	if (!m_pTransformCom)
+		return E_FAIL;
+
+	if (!m_pOwner)
 		return E_FAIL;
 
 	Safe_AddRef(m_pTransformCom);
@@ -49,7 +53,7 @@ HRESULT CCollider_Cube::Initialize(void* pArg)
 	m_pVB->Lock(0, 0, (void**)&pVertices, 0);
 
 	// Offset 적용
-	_float3 vOffset = _float3(m_StateDesc.fOffSetX, m_StateDesc.fOffSetY, m_StateDesc.fOffsetZ);
+	_float3 vOffset = _float3(m_StateDesc.fOffSetX, m_StateDesc.fOffSetY, m_StateDesc.fOffSetZ);
 
 	pVertices[0].vPosition = m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
 	pVertices[1].vPosition = m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
@@ -108,7 +112,7 @@ HRESULT CCollider_Cube::Update_Collider()
 	_float3 vecOffsetPos = *(_float3*)&(StateMatrix.m[3][0]);
 	vecOffsetPos.x += m_StateDesc.fOffSetX;
 	vecOffsetPos.y += m_StateDesc.fOffSetY;
-	vecOffsetPos.z += m_StateDesc.fOffsetZ;
+	vecOffsetPos.z += m_StateDesc.fOffSetZ;
 
 	// 월드 행렬의 위치 부분 업데이트
 	StateMatrix.m[3][0] = vecOffsetPos.x;
@@ -197,7 +201,7 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pO
 	// offset 적용된 중심 계산
 	_float3 centerA(pWorldMatrixA->_41 + m_StateDesc.fOffSetX,
 		pWorldMatrixA->_42 + m_StateDesc.fOffSetY,
-		pWorldMatrixA->_43 + m_StateDesc.fOffsetZ);
+		pWorldMatrixA->_43 + m_StateDesc.fOffSetZ);
 
 	_float3 halfA = { m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ };
 
@@ -210,7 +214,7 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pO
 	// offset 적용된 중심 계산
 	_float3 centerB(pWorldMatrixB->_41 + pTarget->m_StateDesc.fOffSetX,
 		pWorldMatrixB->_42 + pTarget->m_StateDesc.fOffSetY,
-		pWorldMatrixB->_43 + pTarget->m_StateDesc.fOffsetZ);
+		pWorldMatrixB->_43 + pTarget->m_StateDesc.fOffSetZ);
 
 	_float3 halfB = { pTarget->m_StateDesc.fRadiusX, pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
 

@@ -16,12 +16,12 @@ public:
     } COLLISION_INFO;
 
 public:
-    typedef struct tagCollisionCapsuleDesc
+    typedef struct tagCollisionCapsuleDesc : public COLLDESC
     {
         _float fRadius = 0.5f;
         _float fHeight = 1.0f;  // Ä¸½¶ÀÇ ³ôÀÌ
         _float fOffsetX = 0.f, fOffsetY = 0.f, fOffsetZ = 0.f;
-        class CTransform* pTransformCom = { nullptr };
+        //class CTransform* pTransformCom = { nullptr };
     } COLLCAPSULE_DESC;
 
 private:
