@@ -76,11 +76,9 @@ HRESULT CBreakableRect::Ready_Components()
 
     /* For.Com_Collider */
     CCollider_Cube::COLLCUBE_DESC Desc{}; //ÄÝ¶óÀÌ´õ Å©±â ¼³Á¤
-    Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
+    Desc.vRadius = { 0.5f, 0.5f, 0.5f };
     _float3 pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-    Desc.fOffSetX = pos.x;
-    Desc.fOffSetY = pos.y;
-    Desc.fOffSetZ = pos.z;
+    Desc.vOffset = { pos.x, pos.y, pos.z };
     Desc.pTransformCom = m_pTransformCom;
     Desc.pOwner = this;
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),

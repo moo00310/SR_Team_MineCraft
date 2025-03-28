@@ -26,11 +26,22 @@ HRESULT CCollider_Capsule::Initialize(void* pArg)
     if (pArg == nullptr)
         return E_FAIL;
 
+    COLLCAPSULE_DESC tDesc;
+
     // 매개변수로 받은 구조체를 멤버 변수에 복사
-    memcpy(&m_StateDesc, pArg, sizeof(COLLCAPSULE_DESC));
-    m_pTransformCom = m_StateDesc.pTransformCom;
+    memcpy(&tDesc, pArg, sizeof(COLLCAPSULE_DESC));
+
+    m_fRadius = tDesc.fRadius;
+    m_fHeight = tDesc.fHeight;
+    m_vOffset = tDesc.vfOffset;
+
+    m_pTransformCom = tDesc.pTransformCom;
+    m_pOwner = tDesc.pOwner;
 
     if (!m_pTransformCom)
+        return E_FAIL;
+
+    if(!m_pOwner)
         return E_FAIL;
 
     Safe_AddRef(m_pTransformCom);
@@ -49,20 +60,19 @@ HRESULT CCollider_Capsule::Initialize(void* pArg)
     m_pVB->Lock(0, 0, (void**)&pVertices, 0);
 
     // 캡슐의 중심을 기준으로 반지름과 높이를 설정
-    float radius = m_StateDesc.fRadius;
-    float fHeight = m_StateDesc.fHeight;
-    D3DXVECTOR3 vecOffset = { m_StateDesc.fOffsetX, m_StateDesc.fOffsetY, m_StateDesc.fOffsetZ };
+    float radius = m_fRadius;
+    float fHeight = m_fHeight;
 
     // 원기둥의 중간을 생성 (옆으로 펼쳐진 원)
     for (int i = 0; i < 8; ++i) {
         float angle = (i * D3DX_PI * 2.0f) / 8;
-        pVertices[i].vPosition = D3DXVECTOR3(radius * cos(angle), 0, radius * sin(angle)) + vecOffset;
+        pVertices[i].vPosition = D3DXVECTOR3(radius * cos(angle), 0, radius * sin(angle)) + m_vOffset;
         //pVertices[i].vTex = D3DXVECTOR2(cos(angle), sin(angle)); // 텍스처 좌표 (각도 기반)
     }
 
     // 캡슐의 위쪽과 아래쪽 반구를 추가
     for (int i = 8; i < 10; ++i) {
-        pVertices[i].vPosition = D3DXVECTOR3(0, (i == 8 ? fHeight / 2.0f : -fHeight / 2.0f), 0) + vecOffset;
+        pVertices[i].vPosition = D3DXVECTOR3(0, (i == 8 ? fHeight / 2.0f : -fHeight / 2.0f), 0) + m_vOffset;
         //pVertices[i].vTex = D3DXVECTOR2(0.5f, 0.5f); // 중앙 위치
     }
 
@@ -111,9 +121,9 @@ HRESULT CCollider_Capsule::Update_Collider()
     _float4x4 StateMatrix = *pWorldMatrix;
 
     _float3 vecOffsetPos = *(_float3*)&(StateMatrix.m[3][0]);
-    vecOffsetPos.x += m_StateDesc.fOffsetX;
-    vecOffsetPos.y += m_StateDesc.fOffsetY;
-    vecOffsetPos.z += m_StateDesc.fOffsetZ;
+
+    vecOffsetPos += m_vOffset;
+
 
     StateMatrix.m[3][0] = vecOffsetPos.x;
     StateMatrix.m[3][1] = vecOffsetPos.y;
@@ -188,30 +198,24 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
 
     // 캡슐의 중심 위치 (오프셋을 고려하여 계산)
     _float3 vCapsuleCenter = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-    vCapsuleCenter.x += m_StateDesc.fOffsetX;
-    vCapsuleCenter.y += m_StateDesc.fOffsetY;
-    vCapsuleCenter.z += m_StateDesc.fOffsetZ;
+
+    vCapsuleCenter += m_vOffset;
 
     // 큐브의 월드 변환 행렬을 가져와 큐브의 월드 좌표 계산
     _float3 vCubeCenter = pTarget->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 
     // 큐브의 오프셋을 적용 (오프셋은 위치에 더하는 형태)
-    vCubeCenter.x += pTarget->Get_Desc().fOffSetX;
-    vCubeCenter.y += pTarget->Get_Desc().fOffSetY;
-    vCubeCenter.z += pTarget->Get_Desc().fOffSetZ;
+    vCubeCenter += pTarget->Get_Offset();
+
 
     // AABB의 최소/최대 좌표 계산
     _float3 vTargetMin = pTarget->GetMin();
     _float3 vTargetMax = pTarget->GetMax();
 
     // AABB에 오프셋 적용 (큐브의 월드 좌표에 오프셋을 더한 후)
-    vTargetMin.x += pTarget->Get_Desc().fOffSetX;
-    vTargetMin.y += pTarget->Get_Desc().fOffSetY;
-    vTargetMin.z += pTarget->Get_Desc().fOffSetZ;
+    vTargetMin += pTarget->Get_Offset();
+    vTargetMax += pTarget->Get_Offset();
 
-    vTargetMax.x += pTarget->Get_Desc().fOffSetX;
-    vTargetMax.y += pTarget->Get_Desc().fOffSetY;
-    vTargetMax.z += pTarget->Get_Desc().fOffSetZ;
 
     // AABB의 월드 좌표를 계산 (오프셋을 고려하여 월드 공간에 적용)
     const _float4x4* matWorld = pTarget->Get_Transform()->Get_WorldMatrix();
@@ -227,7 +231,7 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
     // 캡슐의 원형 부분과의 거리 계산
     _float3 vDiff = vClosestPoint - vCapsuleCenter;
     float fDistanceSquared = vDiff.x * vDiff.x + vDiff.y * vDiff.y + vDiff.z * vDiff.z;
-    float fCapsuleRadiusSquared = m_StateDesc.fRadius * m_StateDesc.fRadius;
+    float fCapsuleRadiusSquared = m_fRadius * m_fRadius;
 
     // 충돌 여부 확인
     if (fDistanceSquared > fCapsuleRadiusSquared)
@@ -248,7 +252,7 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
 
     // 충돌 발생 시 깊이 계산
     float fDistance = sqrt(fDistanceSquared); // 거리 계산
-    float fDepth = m_StateDesc.fRadius - fDistance; // 충돌 깊이 계산
+    float fDepth = m_fRadius - fDistance; // 충돌 깊이 계산
 
     // 충돌 깊이 벡터 계산
     _float3 vDepthVec = vDiff;

@@ -48,6 +48,7 @@ protected:
 	bool m_bColliderActive;
 
 protected:
+
 	class CTransform* m_pTransformCom = { nullptr };
 	class CGameObject* m_pOwner{ nullptr };
 

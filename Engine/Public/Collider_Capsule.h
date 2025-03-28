@@ -18,9 +18,9 @@ public:
 public:
     typedef struct tagCollisionCapsuleDesc : public COLLDESC
     {
-        _float fRadius = 0.5f;
-        _float fHeight = 1.0f;  // Ä¸½¶ÀÇ ³ôÀÌ
-        _float fOffsetX = 0.f, fOffsetY = 0.f, fOffsetZ = 0.f;
+        _float fRadius{ 0.5f };
+        _float fHeight{ 1.0f };  // Ä¸½¶ÀÇ ³ôÀÌ
+        _float3 vfOffset{0.f, 0.f, 0.f};
         //class CTransform* pTransformCom = { nullptr };
     } COLLCAPSULE_DESC;
 
@@ -35,29 +35,22 @@ public:
     virtual HRESULT Update_Collider()override;
     virtual HRESULT Render_Collider(_bool isHit)override;
 
-    //_bool Collision_Check(CCollider_Capsule* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ COLLISION_DIR* pOutDir = nullptr);
-
-    //Ä¸½¶ vs AABB
     _bool Collision_Check(class CCollider_Cube* pTarget, _Out_ _float3* pOutDepth, _Out_ COLLISION_DIR* pOutDir) override;
 
 
 public:
-    COLLCAPSULE_DESC& Get_Desc() { return m_StateDesc; }
-    void Set_Desc(COLLCAPSULE_DESC& Desc) { m_StateDesc = Desc; }
-
     bool Get_bColliderActive() { return m_bColliderActive; }
     void Set_bColliderActive(bool _b) { m_bColliderActive = _b; }
 
 private:
     _float3 m_vPoint[18]; // Ä¸½¶Àº ¿ø 2°³¿Í 2°³ÀÇ Á¡À» °®´Â 16°³ÀÇ Á¡À¸·Î Á¤ÀÇµÊ
 
-protected:
-    COLLCAPSULE_DESC m_StateDesc;
-
 private:
     class CTransform* m_pTransformCom = { nullptr };
 
-
+    _float  m_fRadius{ 0.5f };
+    _float  m_fHeight{ 1.0f }; // Ä¸½¶ÀÇ ³ôÀÌ
+    _float3 m_vOffset{};
 
 public:
     static CCollider_Capsule* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

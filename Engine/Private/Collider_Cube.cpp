@@ -27,9 +27,14 @@ HRESULT CCollider_Cube::Initialize(void* pArg)
 	if (pArg == nullptr)
 		return E_FAIL;
 
-	memcpy(&m_StateDesc, pArg, sizeof(COLLCUBE_DESC));
-	m_pTransformCom = m_StateDesc.pTransformCom;
-	m_pOwner = m_StateDesc.pOwner;
+	COLLCUBE_DESC tDesc{};
+
+	memcpy(&tDesc, pArg, sizeof(COLLCUBE_DESC));
+	m_pTransformCom = tDesc.pTransformCom;
+	m_pOwner = tDesc.pOwner;
+
+	m_vRadius = tDesc.vRadius;
+	m_vOffset = tDesc.vOffset;
 
 	if (!m_pTransformCom)
 		return E_FAIL;
@@ -52,17 +57,15 @@ HRESULT CCollider_Cube::Initialize(void* pArg)
 	VTXCUBETEX* pVertices = nullptr;
 	m_pVB->Lock(0, 0, (void**)&pVertices, 0);
 
-	// Offset 적용
-	_float3 vOffset = _float3(m_StateDesc.fOffSetX, m_StateDesc.fOffSetY, m_StateDesc.fOffSetZ);
+	pVertices[0].vPosition = m_vPoint[0] = _float3(-m_vRadius.x, m_vRadius.y, -m_vRadius.z) + m_vOffset;
+	pVertices[1].vPosition = m_vPoint[1] = _float3(m_vRadius.x, m_vRadius.y, -m_vRadius.z) + m_vOffset;
+	pVertices[2].vPosition = m_vPoint[2] = _float3(m_vRadius.x, -m_vRadius.y, -m_vRadius.z) + m_vOffset;
+	pVertices[3].vPosition = m_vPoint[3] = _float3(-m_vRadius.x, -m_vRadius.y, -m_vRadius.z) + m_vOffset;
+	pVertices[4].vPosition = m_vPoint[4] = _float3(-m_vRadius.x, m_vRadius.y, m_vRadius.z) + m_vOffset;
+	pVertices[5].vPosition = m_vPoint[5] = _float3(m_vRadius.x, m_vRadius.y, m_vRadius.z) + m_vOffset;
+	pVertices[6].vPosition = m_vPoint[6] = _float3(m_vRadius.x, -m_vRadius.y, m_vRadius.z) + m_vOffset;
+	pVertices[7].vPosition = m_vPoint[7] = _float3(-m_vRadius.x, -m_vRadius.y, m_vRadius.z) + m_vOffset;
 
-	pVertices[0].vPosition = m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
-	pVertices[1].vPosition = m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
-	pVertices[2].vPosition = m_vPoint[2] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
-	pVertices[3].vPosition = m_vPoint[3] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ) + vOffset;
-	pVertices[4].vPosition = m_vPoint[4] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ) + vOffset;
-	pVertices[5].vPosition = m_vPoint[5] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ) + vOffset;
-	pVertices[6].vPosition = m_vPoint[6] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ) + vOffset;
-	pVertices[7].vPosition = m_vPoint[7] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ) + vOffset;
 
 	for (int i = 0; i < 8; i++)
 		pVertices[i].vTexture = pVertices[i].vPosition;
@@ -99,20 +102,20 @@ HRESULT CCollider_Cube::Update_Collider()
 	_float4x4 StateMatrix = *pWorldMatrix;
 
 	// 기본 8개의 꼭짓점 설정
-	m_vPoint[0] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
-	m_vPoint[1] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
-	m_vPoint[2] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
-	m_vPoint[3] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, -m_StateDesc.fRadiusZ);
-	m_vPoint[4] = _float3(-m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);
-	m_vPoint[5] = _float3(m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);
-	m_vPoint[6] = _float3(m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);
-	m_vPoint[7] = _float3(-m_StateDesc.fRadiusX, -m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ);
+	m_vPoint[0] = _float3(-m_vRadius.x, m_vRadius.y, -m_vRadius.z);
+	m_vPoint[1] = _float3(m_vRadius.x, m_vRadius.y, -m_vRadius.z);
+	m_vPoint[2] = _float3(m_vRadius.x, -m_vRadius.y, -m_vRadius.z);
+	m_vPoint[3] = _float3(-m_vRadius.x, -m_vRadius.y, -m_vRadius.z);
+	m_vPoint[4] = _float3(-m_vRadius.x, m_vRadius.y, m_vRadius.z);
+	m_vPoint[5] = _float3(m_vRadius.x, m_vRadius.y, m_vRadius.z);
+	m_vPoint[6] = _float3(m_vRadius.x, -m_vRadius.y, m_vRadius.z);
+	m_vPoint[7] = _float3(-m_vRadius.x, -m_vRadius.y, m_vRadius.z);
+
 
 	// 월드 위치에 offset 적용
 	_float3 vecOffsetPos = *(_float3*)&(StateMatrix.m[3][0]);
-	vecOffsetPos.x += m_StateDesc.fOffSetX;
-	vecOffsetPos.y += m_StateDesc.fOffSetY;
-	vecOffsetPos.z += m_StateDesc.fOffSetZ;
+
+	vecOffsetPos += m_vOffset;
 
 	// 월드 행렬의 위치 부분 업데이트
 	StateMatrix.m[3][0] = vecOffsetPos.x;
@@ -199,11 +202,11 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pO
 	};
 
 	// offset 적용된 중심 계산
-	_float3 centerA(pWorldMatrixA->_41 + m_StateDesc.fOffSetX,
-		pWorldMatrixA->_42 + m_StateDesc.fOffSetY,
-		pWorldMatrixA->_43 + m_StateDesc.fOffSetZ);
+	_float3 centerA(pWorldMatrixA->_41 + m_vOffset.x,
+		pWorldMatrixA->_42 + m_vOffset.y,
+		pWorldMatrixA->_43 + m_vOffset.z);
 
-	_float3 halfA = { m_StateDesc.fRadiusX, m_StateDesc.fRadiusY, m_StateDesc.fRadiusZ };
+	_float3 halfA = { m_vRadius.x, m_vRadius.y, m_vRadius.z };
 
 	_float3 axesB[3] = {
 		_float3(pWorldMatrixB->_11, pWorldMatrixB->_12, pWorldMatrixB->_13),
@@ -212,11 +215,11 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pO
 	};
 
 	// offset 적용된 중심 계산
-	_float3 centerB(pWorldMatrixB->_41 + pTarget->m_StateDesc.fOffSetX,
-		pWorldMatrixB->_42 + pTarget->m_StateDesc.fOffSetY,
-		pWorldMatrixB->_43 + pTarget->m_StateDesc.fOffSetZ);
+	_float3 centerB(pWorldMatrixB->_41 + pTarget->m_vOffset.x,
+		pWorldMatrixB->_42 + pTarget->m_vOffset.y,
+		pWorldMatrixB->_43 + pTarget->m_vOffset.z);
 
-	_float3 halfB = { pTarget->m_StateDesc.fRadiusX, pTarget->m_StateDesc.fRadiusY, pTarget->m_StateDesc.fRadiusZ };
+	_float3 halfB = { pTarget->m_vRadius.x, pTarget->m_vRadius.y, pTarget->m_vRadius.z };
 
 	// 정규화
 	for (int i = 0; i < 3; ++i)
@@ -412,11 +415,7 @@ _float3 CCollider_Cube::GetMin() const
 	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 
 	// 최소 좌표 계산
-	return _float3(
-		vPosition.x - m_StateDesc.fRadiusX,
-		vPosition.y - m_StateDesc.fRadiusY,
-		vPosition.z - m_StateDesc.fRadiusZ
-	);
+	return vPosition - m_vRadius;
 }
 
 // AABB의 최대값 반환
@@ -425,11 +424,7 @@ _float3 CCollider_Cube::GetMax() const
 	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 
 	// 최대 좌표 계산
-	return _float3(
-		vPosition.x + m_StateDesc.fRadiusX,
-		vPosition.y + m_StateDesc.fRadiusY,
-		vPosition.z + m_StateDesc.fRadiusZ
-	);
+	return vPosition + m_vRadius;
 }
 
 CCollider_Cube * CCollider_Cube::Create(LPDIRECT3DDEVICE9 pGraphic_Device/*, COLLRECTDESC& Des*/)

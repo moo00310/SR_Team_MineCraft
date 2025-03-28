@@ -43,7 +43,7 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
             pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
 
             _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
-            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ pCollider->Get_Desc().fOffSetX, pCollider->Get_Desc().fOffSetY, pCollider->Get_Desc().fOffSetZ }};
+            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
 
             _float3 vDiff{ vStevePos - vColliderPos };
 
@@ -107,8 +107,8 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 
         /* For.Com_Collider */
         CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-        Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
-		Desc.fOffSetX = position[i].x; Desc.fOffSetY = position[i].y; Desc.fOffSetZ = position[i].z;
+        Desc.vRadius = { .5f, .5f, .5f };
+        Desc.vOffset = { position[i].x , position[i].y, position[i].z };
         Desc.pTransformCom = m_pTransformCom;
         Desc.pOwner = this;
         if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),

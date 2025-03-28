@@ -18,9 +18,8 @@ public:
 public:
 	typedef struct tagCollisionCubeDesc : public COLLDESC
 	{
-		_float	fRadiusX = 0.5f, fRadiusY = 0.5f,  fRadiusZ = 0.5f;
-		_float	fOffSetX = 0.f, fOffSetY = 0.f,  fOffSetZ = 0.f;
-		//class CTransform* pTransformCom = { nullptr };
+		_float3 vRadius{ 0.5f, 0.5f, 0.5f };
+		_float3 vOffset{ 0.0f, 0.0f, 0.0f };
 	}COLLCUBE_DESC;
 
 private:
@@ -36,11 +35,11 @@ public:
 	_bool Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir) override;
 
 public:
-	COLLCUBE_DESC&	Get_Desc() { return m_StateDesc; }
-	void			Set_Desc(COLLCUBE_DESC& Desc) { m_StateDesc = Desc; }
-
 	_float3 GetMin() const;
 	_float3 GetMax() const;
+
+	_float3 Get_Radius() { return m_vRadius; }
+	_float3 Get_Offset() { return m_vOffset; }
 
 	class CTransform* Get_Transform() { return m_pTransformCom; }
 
@@ -51,7 +50,8 @@ private:
 	_float3						m_vPoint[8];
 
 protected:
-	COLLCUBE_DESC				m_StateDesc;
+	_float3 m_vRadius{};
+	_float3 m_vOffset{};
 
 	bool m_bColliderActive = false;
 

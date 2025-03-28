@@ -92,7 +92,7 @@ HRESULT CHeroCubeNoMove::Ready_Components()
 
 	/* For.Com_Collider */
 	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	Desc.fRadiusX = 1.f; Desc.fRadiusY = 1.f; Desc.fRadiusZ = 1.f;
+	Desc.vRadius = { 1.f, 1.f, 1.f };
 	Desc.pTransformCom = m_pTransformCom;
 	Desc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),

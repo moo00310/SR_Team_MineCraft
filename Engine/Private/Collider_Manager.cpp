@@ -179,9 +179,9 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 		if (nullptr == pOtherCollider)
 			continue;
 
-		CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
-		const _float4x4* pWorldMatrix = CubeDesc.pTransformCom->Get_WorldMatrix();
-		const _float3 halfSize = { CubeDesc.fRadiusX, CubeDesc.fRadiusY, CubeDesc.fRadiusZ };
+		//CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
+		const _float4x4* pWorldMatrix = pOtherCollider->Get_Transform()->Get_WorldMatrix();
+		const _float3 halfSize = pOtherCollider->Get_Radius();
 
 		// OBB 중심 및 로컬 축 추출
 		_float3 obbCenter(pWorldMatrix->_41, pWorldMatrix->_42, pWorldMatrix->_43);
@@ -281,19 +281,11 @@ CGameObject* CCollider_Manager::Ray_Cast_InstancingObject(const _float3& rayOrig
 		if (pOtherCollider->Get_bColliderActive() == false)
 			continue;
 
-		CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
+		//CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
 
 		// AABB의 최소, 최대 좌표 계산
-		_float3 minBound = {
-			CubeDesc.fOffSetX - CubeDesc.fRadiusX,
-			CubeDesc.fOffSetY - CubeDesc.fRadiusY,
-			CubeDesc.fOffSetZ - CubeDesc.fRadiusZ
-		};
-		_float3 maxBound = {
-			CubeDesc.fOffSetX + CubeDesc.fRadiusX,
-			CubeDesc.fOffSetY + CubeDesc.fRadiusY,
-			CubeDesc.fOffSetZ + CubeDesc.fRadiusZ
-		};
+		_float3 minBound{ pOtherCollider->Get_Offset() - pOtherCollider->Get_Radius() };
+		_float3 maxBound{ pOtherCollider->Get_Offset() + pOtherCollider->Get_Radius() };
 
 		// 레이와 AABB의 충돌 검사
 		_float tMin = 0.f, tMax = fMaxDistanc;

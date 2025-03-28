@@ -129,11 +129,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                     return;
 
                 // 충돌한 콜라이더의 위치를 가져와 해당 블록 삭제
-                _float3 hitPosition = {
-                    pCollider_Cube->Get_Desc().fOffSetX,
-                    pCollider_Cube->Get_Desc().fOffSetY,
-                    pCollider_Cube->Get_Desc().fOffSetZ
-                };
+                _float3 hitPosition{ pCollider_Cube->Get_Offset() };
 
                 if (FAILED(pBreakableCube->Delete_Cube(hitPosition)))
                 {
