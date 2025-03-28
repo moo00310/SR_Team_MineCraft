@@ -25,7 +25,7 @@ HRESULT CItemCube::Initialize(void* pArg)
     m_fUpDownSpeed = 0.005f;
     m_iUpDownFrame = 0;
 
-    m_pTransformCom->Scaling(1.5, 1.5, 1.5);
+    m_pTransformCom->Scaling(0.3f, 0.3f, 0.3f);
 
     return S_OK;
 }
@@ -44,7 +44,7 @@ void CItemCube::Priority_Update(_float fTimeDelta)
 
 void CItemCube::Update(_float fTimeDelta)
 {
-    m_pRigidbodyCom->Update_RayCast(fTimeDelta, COLLISION_BLOCK, 0.5f);
+    m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.5f);
 }
 
 void CItemCube::Late_Update(_float fTimeDelta)

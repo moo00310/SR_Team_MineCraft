@@ -54,7 +54,7 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 	/*아 이것도 충돌먼저 체크하고 떨어지는 부분을 뒤로 두고 싶은데 점프가 안되서... 일단 냅둠*/
 
-	m_isGrounded = false;
+	m_isGround = false;
 
 	Fall_With_Gravity(fTimeDelta);
 
@@ -73,36 +73,36 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 			for (CCollider_Cube::COLLISION_INFO& tCollision_Info : Collision_Infos)
 			{
 				_float3 vDepth = tCollision_Info.vDepth;
-				CCollider::COLLISION_DIR eDir = tCollision_Info.eCollisionDir;
+				CCollider_Cube::COLLISION_DIR eDir = tCollision_Info.eCollisionDir;
 
-				if (eDir == CCollider::COLLISION_DIR::DOWN)
+				if (eDir == CCollider_Cube::COLLISION_DIR::DOWN)
 				{
 					m_vVelocity.y = 0.0f;
 					fMaxDepth_Y = max(fMaxDepth_Y, vDepth.y);
 				}
 
-				if (eDir == CCollider::COLLISION_DIR::UP)
+				if (eDir == CCollider_Cube::COLLISION_DIR::UP)
 				{
 					if (isFalling())
 						m_vVelocity.y = 0.0f;
 
-					m_isGrounded = true;
+					m_isGround = true;
 					fMinDepth_Y = min(fMinDepth_Y, vDepth.y);
 				}
 				else
 				{
 					switch (eDir)
 					{
-					case CCollider::COLLISION_DIR::LEFT:
+					case CCollider_Cube::COLLISION_DIR::LEFT:
 						fMaxDepth_X = max(fMaxDepth_X, vDepth.x);
 						break;
-					case CCollider::COLLISION_DIR::RIGHT:
+					case CCollider_Cube::COLLISION_DIR::RIGHT:
 						fMinDepth_X = (fMinDepth_X == 0.f) ? vDepth.x : min(fMinDepth_X, vDepth.x);
 						break;
-					case CCollider::COLLISION_DIR::FRONT:
+					case CCollider_Cube::COLLISION_DIR::FRONT:
 						fMaxDepth_Z = max(fMaxDepth_Z, vDepth.z);
 						break;
-					case CCollider::COLLISION_DIR::BACK:
+					case CCollider_Cube::COLLISION_DIR::BACK:
 						fMinDepth_Z = (fMinDepth_Z == 0.f) ? vDepth.z : min(fMinDepth_Z, vDepth.z);
 						break;
 					default:
@@ -134,20 +134,12 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 	Compute_Velocity(fTimeDelta);
 
-	if (m_isGrounded)
-	{
-		printf_s("Ground\n");
-	}
-	else
-	{
-		printf_s("Air\n");
-	}
 	return S_OK;
 }
 
 HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist)
 {
-	m_isGrounded = false;
+	m_isGround = false;
 
 	_float fDist{ 0.f };
 	CGameObject* pGameObject{ nullptr };
@@ -155,7 +147,31 @@ HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _flo
 	pGameObject = m_pGameInstance->Ray_Cast(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup, fDist);
 	if (pGameObject)
 	{
-		m_isGrounded = true;
+		m_isGround = true;
+		m_vVelocity.y = 0.f;
+	}
+	else
+	{
+		Fall_With_Gravity(fTimeDelta);
+	}
+
+	Compute_Velocity(fTimeDelta);
+
+	return S_OK;
+}
+
+HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist)
+{
+	m_isGround = false;
+
+	_float fDist{ 0.f };
+	CGameObject* pGameObject{ nullptr };
+	CComponent* pCollider{ nullptr };
+	//레이케스트로 땅 검사
+	pGameObject = m_pGameInstance->Ray_Cast_InstancingObject(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup, fDist, &pCollider);
+	if (pGameObject)
+	{
+		m_isGround = true;
 		m_vVelocity.y = 0.f;
 	}
 	else
@@ -173,10 +189,10 @@ HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _flo
 
 _bool CRigidbody::Jump()
 {
-	if (m_isGrounded) // 바닥에 닿아 있을 때만 점프 가능
+	if (m_isGround) // 바닥에 닿아 있을 때만 점프 가능
 	{
 		m_vVelocity.y = m_fJumpForce; // Y축 방향으로 힘 추가
-		m_isGrounded = false; // 공중에 떠 있는 상태로 변경
+		m_isGround = false; // 공중에 떠 있는 상태로 변경
 
 		return true;
 	}
@@ -218,7 +234,7 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 		if(isFalling())
 			m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
 
-		m_isGrounded = true;
+		m_isGround = true;
 	}
 }
 

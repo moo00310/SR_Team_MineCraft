@@ -24,10 +24,11 @@ public:
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
 	HRESULT Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist);
 	//인스턴싱 버전 레이캐스트 만들어야함
-
+	HRESULT Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist);
 public:
 	_bool	Jump();
 	const _float3& Get_Velocity() { return m_vReadOnly_Velocity; }
+	_bool	isGround() { return m_isGround; }
 private:
 	void	Fall_With_Gravity(_float fTimeDelta);
 	_bool	isFalling() { return m_vVelocity.y < 0.f; };
@@ -45,7 +46,7 @@ private:
 
 	//점프
 private:
-	_bool					m_isGrounded{ false };
+	_bool					m_isGround{ false };
 	_float					m_fJumpForce{ 8.f };
 
 public:
