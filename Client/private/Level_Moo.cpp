@@ -16,8 +16,8 @@ HRESULT CLevel_Moo::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Creeper(TEXT("Layer_Creeper"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Zombi"))))
+	//	return E_FAIL;
 
 	//if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 	//	return E_FAIL;
@@ -100,6 +100,15 @@ HRESULT CLevel_Moo::Ready_Laye_Sword(const _wstring& strLayerTag)
 
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Sword"),
 		LEVEL_MOO, strLayerTag, &desc)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_Moo::Ready_Laye_Zombi(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_MOO, TEXT("Prototype_GameObject_Zombi"),
+		LEVEL_MOO, strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

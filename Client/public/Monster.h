@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Behavior_Tree.h"
 #include <iostream>
+
 BEGIN(Client)
 
 class CMonster abstract : public CGameObject
@@ -42,7 +43,7 @@ protected:
 	CGameObject* m_pTargetGameObject = nullptr;
 
 protected:
-	CNode* m_pBehaviorTree{ nullptr };
+	//CNode* m_pBehaviorTree{ nullptr };
 	ANIM m_eCurAnim = { ANIM_END };
 
 protected:
@@ -55,6 +56,7 @@ protected:
 	virtual void Update_State(_float fTimeDelta) = 0;
 	virtual void Motion_Idle(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
+	virtual void Motion_Attack(_float fTimeDelta) = 0;
 	virtual void Turn(_float fTimeDelta) = 0;
 
 public:

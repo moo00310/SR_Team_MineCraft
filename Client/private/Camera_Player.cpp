@@ -37,9 +37,11 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 
 	// 플레이어 트랜스폼 받기
 	m_pTarget_Transform_Com = static_cast<CTransform*>(Desc.pTarget->Find_Component(TEXT("Com_Transform")));
+    Safe_AddRef(m_pTarget_Transform_Com);
     
     // 플레이어 리지드바디 받기
     m_pTarget_Rigidbody_Com = static_cast<CRigidbody*>(Desc.pTarget->Find_Component(TEXT("Com_Rigidbody")));
+    Safe_AddRef(m_pTarget_Rigidbody_Com);
 
 	// 카메라 기본 값 세팅
 	if (FAILED(__super::Initialize(&Desc)))
@@ -302,4 +304,7 @@ CGameObject* CCamera_Player::Clone(void* pArg)
 void CCamera_Player::Free()
 {
 	__super::Free();
+
+    Safe_Release(m_pTarget_Transform_Com);
+    Safe_Release(m_pTarget_Rigidbody_Com);
 }

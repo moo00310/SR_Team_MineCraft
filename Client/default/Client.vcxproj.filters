@@ -154,9 +154,6 @@
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster">
       <UniqueIdentifier>{85c77c0b-6725-4c2e-b6c2-651cdd0b5d3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\Creeper">
-      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\04.HeroEnemy">
       <UniqueIdentifier>{95716bec-861e-49d5-bd33-aa5e8e8ea25e}</UniqueIdentifier>
     </Filter>
@@ -259,6 +256,12 @@
     <Filter Include="03.UI\05.PlayerState\03.PlayerLevel">
       <UniqueIdentifier>{525bc881-5430-4351-8fbf-b197eb91c1ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\00.Creeper">
+      <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi">
+      <UniqueIdentifier>{6793b5d6-1d4e-436c-ba44-72ca082eac6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -304,7 +307,7 @@
       <Filter>02.GameObjects\99.Teacher\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Creeper.h">
-      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\Creeper</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\00.Creeper</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_TOOL.h">
       <Filter>01.Levels\100.Tool_Level</Filter>
@@ -562,9 +565,12 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleExplosion.h">
       <Filter>02.GameObjects\05.Particle</Filter>
-</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\PlayerLevel.h">
       <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Zombi.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -612,7 +618,7 @@
       <Filter>02.GameObjects\99.Teacher\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Creeper.cpp">
-      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\Creeper</Filter>
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\00.Creeper</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_Hyeok.cpp">
       <Filter>01.Levels\95.Huck_Level</Filter>
@@ -847,7 +853,7 @@
     </ClCompile>
     <ClCompile Include="..\private\BTDistanceBranch.cpp">
       <Filter>04.Behavior_Tree\BTNode\Decorator\DistanceBranch</Filter>
-</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\IObserver.cpp">
       <Filter>101.ObserverPattern</Filter>
     </ClCompile>
@@ -859,6 +865,9 @@
     </ClCompile>
     <ClCompile Include="..\private\PlayerLevel.cpp">
       <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Zombi.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
