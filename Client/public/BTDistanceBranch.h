@@ -9,9 +9,10 @@ BEGIN(Client)
 class CBTDistanceBranch : public CNode
 {
 public:
-    void Set_Actions(CNode* pAttack, CNode* pChase) {
+    void Set_Actions(CNode* pAttack, CNode* pChase, float AttackDistance) {
         m_pAttackAction = pAttack;
         m_pChaseAction = pChase;
+        m_fAttack_Distnace = AttackDistance;
     }
 
     virtual STATUS Excute(CGameObject* _Obj, _float _fTimeDelta) override;
@@ -25,6 +26,8 @@ public:
 private:
     CNode* m_pAttackAction = nullptr;
     CNode* m_pChaseAction = nullptr;
+    float m_fAttack_Distnace;
+    bool bIsAttack = false;
 };
 
 END

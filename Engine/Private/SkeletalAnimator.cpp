@@ -1,6 +1,7 @@
 #include "SkeletalAnimator.h"
 #include "VIBuffer_Cube.h"
 #include "Transform.h"
+#include <iostream>
 
 CSkeletalAnimator::CSkeletalAnimator(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CComponent{ pGraphic_Device }
@@ -158,15 +159,8 @@ void CSkeletalAnimator::Blend_Animations(float fTimeDelta, int boneIndex)
 
 HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int boneIndex)
 {
-    if (m_blendState.isBlending)
-    {
-        Blend_Animations(fTimeDelta, boneIndex);
-		return S_OK;
-    }
-
     m_CurrentAnim = _type;
     fElapsedTime[_type] += fTimeDelta;
-
 
     if (m_Animations[_type].size() < 2)
     {
@@ -225,6 +219,14 @@ void CSkeletalAnimator::DeBugBone(int BoneIndex)
 {
     Matrix mat = vecBones[BoneIndex].worldTransform;
 
+}
+
+void CSkeletalAnimator::InitBone()
+{
+    for (auto& bone : vecBones)
+    {
+        bone.localTransform = bone.baseTransform;
+    }
 }
 
 

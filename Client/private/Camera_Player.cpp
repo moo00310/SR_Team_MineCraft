@@ -200,7 +200,7 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     // === 플레이어의 머리 위치 설정 ===
     _float3 vRight = { cosf(m_fYaw), 0.f, -sinf(m_fYaw) };
     _float3 playerPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION);
-    _float headHeight = 1.4f;
+    _float headHeight = 1.8f;
     m_vHeadPos = playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f);
 
     if (m_eCameraMode == E_CAMERA_MODE::FPS)

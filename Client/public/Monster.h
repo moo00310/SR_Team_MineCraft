@@ -13,6 +13,10 @@ public:
 	{
 		IDLE, RUN, WALK, ATTACK, DEAD, ANIM_END
 	};
+	enum MonsterType
+	{
+		MT_Zombie, MT_Creeper, MT_END
+	};
 
 protected:
 	CMonster(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -33,6 +37,9 @@ public:
 	CTransform* Get_Transform(){ return m_pTransformCom; }
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 
+public:
+	void Reset_Ainmation(); 
+
 protected:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
@@ -43,8 +50,10 @@ protected:
 	CGameObject* m_pTargetGameObject = nullptr;
 
 protected:
-	//CNode* m_pBehaviorTree{ nullptr };
+	CNode* m_pBehaviorTree{ nullptr };
 	ANIM m_eCurAnim = { ANIM_END };
+	MonsterType m_MonsterType = { MT_END };
+	float m_fAttackDistance = {};
 
 protected:
 	virtual HRESULT Ready_Components();
@@ -57,6 +66,7 @@ protected:
 	virtual void Motion_Idle(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
 	virtual void Motion_Attack(_float fTimeDelta) = 0;
+	virtual void Motion_Dead(_float fTimeDelta) = 0;
 	virtual void Turn(_float fTimeDelta) = 0;
 
 public:
