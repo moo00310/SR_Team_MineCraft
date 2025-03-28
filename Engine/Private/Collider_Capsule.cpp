@@ -239,15 +239,28 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
         if (fabs(vDiff.y) >= fabs(vDiff.x) && fabs(vDiff.y) >= fabs(vDiff.z))
             Collision_Dir = (vDiff.y > 0) ? COLLISION_DIR::DOWN : COLLISION_DIR::UP;
         else if (fabs(vDiff.x) >= fabs(vDiff.z))
-            Collision_Dir = (vDiff.x > 0) ? COLLISION_DIR::RIGHT : COLLISION_DIR::LEFT;
+            Collision_Dir = (vDiff.x > 0) ? COLLISION_DIR::LEFT : COLLISION_DIR::RIGHT;
         else
             Collision_Dir = (vDiff.z > 0) ? COLLISION_DIR::FRONT : COLLISION_DIR::BACK;
 
         *pOutDir = Collision_Dir;
     }
 
+    // 충돌 발생 시 깊이 계산
+    float fDistance = sqrt(fDistanceSquared); // 거리 계산
+    float fDepth = m_StateDesc.fRadius - fDistance; // 충돌 깊이 계산
+
+    // 충돌 깊이 벡터 계산
+    _float3 vDepthVec = vDiff;
+    D3DXVec3Normalize(&vDepthVec, &vDepthVec); // 깊이 벡터를 정규화
+    vDepthVec *= fDepth; // 깊이를 벡터에 곱해줌
+
+    // 충돌 깊이를 pOutDepth에 저장
     if (pOutDepth)
-        *pOutDepth = vDiff;
+        *pOutDepth = vDepthVec;
+
+    /*if (pOutDepth)
+        *pOutDepth = vDiff;*/
 
     return true;
 }

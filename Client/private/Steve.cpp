@@ -45,18 +45,13 @@ void CSteve::Priority_Update(_float fTimeDelta)
 
 void CSteve::Update(_float fTimeDelta)
 {
+	if (FAILED(m_pColliderCom->Update_Collider()))
+	{
+		MSG_BOX("Update_Collider()");
+		return;
+	}
+  
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
-
-	//CGameObject* pGameObject;
-	//_float fDist;
-	//m_pGameInstance->Ray_Cast
-	//(m_pTransformCom->Get_State(CTransform::STATE_POSITION),
-	//	m_pTransformCom->Get_State(CTransform::STATE_LOOK),
-	//	10.f,
-	//	COLLISION_PLAYER,
-	//	fDist,
-	//	&pGameObject
-	//);
 }
 
 void CSteve::Late_Update(_float fTimeDelta)
@@ -100,7 +95,7 @@ HRESULT CSteve::Render()
 			return E_FAIL;
 	}
 
-	if (FAILED(m_pCollider_CapsuleCom->Render_Collider(false)))
+	if (FAILED(m_pColliderCom->Render_Collider(true)))
 		return E_FAIL;
 
 	return S_OK;
@@ -138,14 +133,14 @@ void CSteve::Move(_float fTimeDelta)
 	bool isMoving = false;
 
 	CGameObject* collider{ nullptr };
-	// 블럭 충돌 여부 확인.	
+	////블럭 충돌 여부 확인.	
 	//collider = m_pGameInstance->Collision_Check_with_Group(
 	//	COLLISION_BLOCK,		
-	//	m_pCollider_CubeCom,	
+	//	m_pColliderCom,	
 	//	CCollider_Manager::COLLSIION_CUBE
 	//	);	
 
-	if (collider != nullptr)
+	if (m_pRigidbodyCom->isGround())
 	{
 		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
 		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
@@ -264,32 +259,31 @@ HRESULT CSteve::Ready_Components()
 		return E_FAIL;
 
 
-	//콜라이더
+	////콜라이더
 	/* For.Com_Collider */
-	//CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	//Desc.fRadiusX = 0.3f; Desc.fRadiusY = 0.8f; Desc.fRadiusZ = 0.3;
-	//Desc.fOffSetY = 0.8f;
-	//Desc.pTransformCom = m_pTransformCom;
-	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-	//	TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
-	//	return E_FAIL;
-
-	// 콜라이더 설정
-	CCollider_Capsule::COLLCAPSULE_DESC Desc_Capsule{}; // 콜라이더 크기 설정
-	Desc_Capsule.fRadius = 0.3f;  // 반지름 1 
-	Desc_Capsule.fHeight = 1.5f;  // 높이 2
-	Desc_Capsule.fOffsetY = 0.8f;
-	Desc_Capsule.pTransformCom = m_pTransformCom;  // 현재 오브젝트의 Transform 컴포넌트 사용
-
-	// 컴포넌트 추가
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Capsule"),
-		TEXT("Com_Collider_Capsule"), reinterpret_cast<CComponent**>(&m_pCollider_CapsuleCom), &Desc_Capsule)))
+	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
+	Desc.fRadiusX = 0.3f; Desc.fRadiusY = 0.8f; Desc.fRadiusZ = 0.3;
+	Desc.fOffSetY = 0.8f;
+	Desc.pTransformCom = m_pTransformCom;
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;
+
+	/////* For.Com_Collider */
+	//CCollider_Capsule::COLLCAPSULE_DESC Desc_Capsule{}; // 콜라이더 크기 설정
+	//Desc_Capsule.fRadius = 0.3f;  // 반지름 1 
+	//Desc_Capsule.fHeight = 1.5f;  // 높이 2
+	//Desc_Capsule.fOffsetY = 0.8f;
+	//Desc_Capsule.pTransformCom = m_pTransformCom;  // 현재 오브젝트의 Transform 컴포넌트 사용
+	//// 컴포넌트 추가
+	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Capsule"),
+	//	TEXT("Com_Collider_Capsule"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc_Capsule)))
+	//	return E_FAIL;
 
 
 	//리지드바디
 	/* For.Com_Rigidbody */
-	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CapsuleCom, 1.f };
+	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pColliderCom, 1.f };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
 		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
 		return E_FAIL;
@@ -539,8 +533,9 @@ void CSteve::Free()
 	__super::Free();
 
 	Safe_Release(m_pRigidbodyCom);
-	Safe_Release(m_pCollider_CapsuleCom);
+	//Safe_Release(m_pCollider_CapsuleCom);
 	//Safe_Release(m_pCollider_CubeCom);
+	Safe_Release(m_pColliderCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_skelAnime);

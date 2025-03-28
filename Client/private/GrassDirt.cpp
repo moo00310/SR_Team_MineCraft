@@ -63,9 +63,10 @@ HRESULT CGrassDirt::Render()
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
-    __super::Render();
-
     m_pShaderCom->End();
+
+    //쉐이더 비긴 엔드 않으로 넣으면 콜라이더 빨갛게 안보임
+    __super::Render();
 
     return S_OK;
 }

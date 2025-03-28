@@ -376,14 +376,22 @@ void CMCTerrain::CheckColliderActive()
                         { 1, -1, -1}, { 1, -1,  1}, { 1,  1, -1}, { 1,  1,  1}
                     };
 
+                    for (const auto& offset : offsets)
+                    {
+                        // pos + offset 계산
+                        _float3 newPos = pos + offset;
 
+                        // playerPos와 newPos 사이의 거리를 계산
+                        float distance = sqrtf(powf(newPos.x - playerPos.x, 2) + powf(newPos.y - playerPos.y, 2) + powf(newPos.z - playerPos.z, 2));
 
-                    for (const auto& offset : offsets) {
-                        if (pos == _float3((int)playerPos.x + offset.x, (int)playerPos.y + offset.y, (int)playerPos.z + offset.z)) {
+                        // 거리가 3.0f 이내일 때 collider 활성화
+                        if (distance <= 3.0f)
+                        {
                             _vecCopyCollider[i]->Set_bColliderActive(true);
-                            break;
+                            break; // 첫 번째로 조건을 만족한 collider만 활성화하고 종료
                         }
                     }
+
                 }
             }
         }
