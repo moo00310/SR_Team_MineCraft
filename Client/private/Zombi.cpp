@@ -17,6 +17,9 @@ HRESULT CZombi::Initialize_Prototype()
 
 HRESULT CZombi::Initialize(void* pArg)
 {
+    m_MonsterType = MT_Zombie;
+    m_fAttackDistance = 1.f;
+
     __super::Initialize(pArg);
 
     if (FAILED(Ready_Components()))
@@ -29,6 +32,7 @@ HRESULT CZombi::Initialize(void* pArg)
         return E_FAIL;
 
     m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(2.f, 0.f, 0.f));
+
 
     return S_OK;
 }
@@ -187,6 +191,18 @@ HRESULT CZombi::Ready_Animation()
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_3);
 
 
+    /*----------
+    Dead 모션
+    --------*/
+    mat2 = {};
+    mat2.Turn_Radian(_float3(1.f, 0.f, 1.f), D3DXToRadian(-90));
+
+    KEYFREAME Dead_1 = { 0.0f,   mat };
+    KEYFREAME Dead_2 = { 0.8f,   mat2 };
+
+    m_skelAnime->Add_Animation(ANIM_type::Dead, Dead_1);
+    m_skelAnime->Add_Animation(ANIM_type::Dead, Dead_2);
+
     return S_OK;
 }
 
@@ -202,6 +218,9 @@ void CZombi::Update_State(_float fTimeDelta)
         break;
     case  CZombi::ATTACK:
         Motion_Attack(fTimeDelta);
+        break;
+    case  CZombi::DEAD:
+        Motion_Dead(fTimeDelta);
         break;
     case CZombi::ANIM_END:
         break;
@@ -241,6 +260,17 @@ void CZombi::Motion_Attack(_float fTimeDelta)
     m_skelAnime->Update_Animetion(Attack, fTimeDelta, 6);
 }
 
+void CZombi::Motion_Dead(_float fTimeDelta)
+{
+    m_skelAnime->Update_Animetion(Dead, fTimeDelta, 0);
+
+    if (m_skelAnime->is_AnimtionEND(Dead))
+    {
+        // 맞아 죽었을 때 
+        m_eCurAnim = IDLE;
+    }
+}
+
 void CZombi::Turn(_float fTimeDelta)
 {
 }
@@ -277,3 +307,4 @@ void CZombi::Free()
     Safe_Release(m_pTextureCom);
 
 }
+

@@ -18,6 +18,9 @@ HRESULT CCreeper::Initialize_Prototype()
 
 HRESULT CCreeper::Initialize(void* pArg)
 {
+    m_MonsterType = MT_Creeper;
+    m_fAttackDistance = 3.f;
+
     __super::Initialize(pArg); 
 
     if (FAILED(Ready_Components()))
@@ -44,12 +47,6 @@ void CCreeper::Update(_float fTimeDelta)
 
 void CCreeper::Late_Update(_float fTimeDelta)
 {
-    
-    if (m_pGameInstance->Key_Down('Q'))
-    {
-        m_eCurAnim = ATTACK;
-    }
-
     Update_State(fTimeDelta);
     m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
@@ -248,6 +245,14 @@ HRESULT CCreeper::Ready_Animation()
 * Dead 모션
 ------------*/
 
+    mat2 = {};
+    mat2.Turn_Radian(_float3(1.f, 0.f, 1.f), D3DXToRadian(-90));
+
+    KEYFREAME Dead_1 = { 0.0f,   mat };
+    KEYFREAME Dead_2 = { 0.8f,   mat2 };
+
+    m_skelAnime->Add_Animation(ANIM_type::Dead, Dead_1);
+    m_skelAnime->Add_Animation(ANIM_type::Dead, Dead_2);
 
 
     return S_OK;
@@ -266,6 +271,9 @@ void CCreeper::Update_State(_float fTimeDelta)
     case  CCreeper::ATTACK:
         Motion_Attack(fTimeDelta);
         break;
+    case  CCreeper::DEAD:
+        Motion_Dead(fTimeDelta);
+        break;
     case CCreeper::ANIM_END:
         break;
     default:
@@ -275,10 +283,13 @@ void CCreeper::Update_State(_float fTimeDelta)
 
 void CCreeper::Motion_Idle(_float fTimeDelta)
 {
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 0);
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 1);
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 2);
     m_skelAnime->Update_Animetion(INIT, fTimeDelta, 3);
     m_skelAnime->Update_Animetion(INIT, fTimeDelta, 4);
-    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 6);
     m_skelAnime->Update_Animetion(INIT, fTimeDelta, 5);
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 6);
 }
 
 void CCreeper::Motion_Walk(_float fTimeDelta)
@@ -307,6 +318,17 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
         m_eCurAnim = IDLE;
     }
 
+}
+
+void CCreeper::Motion_Dead(_float fTimeDelta)
+{
+    m_skelAnime->Update_Animetion(Dead, fTimeDelta, 0);
+
+    if (m_skelAnime->is_AnimtionEND(Dead))
+    {
+        // 맞아 죽었을 때 
+        m_eCurAnim = IDLE;
+    }
 }
 
 void CCreeper::Turn(_float fTimeDelta)

@@ -18,6 +18,8 @@ struct BlendState
 class ENGINE_DLL CSkeletalAnimator final : public CComponent
 {
 public:
+#define AnimTimeCount 20
+
 	typedef struct tagRigidbodyDesc
 	{
 		vector<CVIBuffer_Cube*> Cubes;
@@ -34,12 +36,11 @@ public:
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
 
-
-
 public:
 	int GetCurrentAnim() { return m_CurrentAnim; }
 	bool is_AnimtionEND(int type);
 	void Reset_fElapsedTime(int index, int targetIndex ) { fElapsedTime[index] = fElapsedTime[targetIndex]; }
+	void Set_ZeroAnimTime() { for (int i = 0; i < AnimTimeCount; i++) { fElapsedTime[i] = 0.f; } }
 
 public:
 	void IkLookAt(float fTimeDelta, int boneIndex, int targetInex);
@@ -58,12 +59,13 @@ public:
 
 public:
 	void DeBugBone(int BoneIndex);
+	void InitBone();
 
 private:
 	vector<BONE> vecBones;
 	vector<CVIBuffer_Cube*> m_pVIBufferComs;
 	map<_uint, vector<KEYFREAME>> m_Animations = {};
-	float fElapsedTime[20] = {};
+	float fElapsedTime[AnimTimeCount] = {};
 	float animElapsedTime = {};
 	int m_imeshCount = 0;
 

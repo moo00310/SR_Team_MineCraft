@@ -15,13 +15,6 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
     m_fElapsedTime += _fTimeDelta;
     m_fToIdle += _fTimeDelta;
 
-    if (m_fToIdle > 12.f)
-    {
-        m_fToIdle = 0.f;
-        m_fElapsedTime = 0.f;
-        return STATUS::FAIL;
-    }
-
     // 일정 시간이 지나면 새로운 랜덤 회전 설정
     if (m_fElapsedTime > 3.0f && !m_isTurning)
     {
@@ -46,7 +39,6 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
 
     // 직진 이동
     pTransform->Go_Straight(_fTimeDelta);
-    cout << "패트롤" << endl;
     return STATUS::RUNNING;
 }
 
