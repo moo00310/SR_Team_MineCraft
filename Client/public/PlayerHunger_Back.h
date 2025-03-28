@@ -40,9 +40,9 @@ private:
 	_int	m_iHungerIndex;
 
 private:
-	CTexture* m_pTextureCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	CTexture*			m_pTextureCom = { nullptr };
+	CTransform*			m_pTransformCom = { nullptr };
+	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
 
 public:
 	static CPlayerHunger_Back* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

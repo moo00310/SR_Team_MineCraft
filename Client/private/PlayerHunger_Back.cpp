@@ -67,7 +67,7 @@ HRESULT CPlayerHunger_Back::Render()
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
-
+    
     __super::End();
     End();
 

@@ -21,8 +21,12 @@ HRESULT CMainInventory::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = 500.f;
+    //Desc.fSizeX = 500.f;
+    //Desc.fSizeY = 500.f;
+    
+    Desc.fSizeX = 550.f;
     Desc.fSizeY = 500.f;
+
     Desc.fX = g_iWinSizeX * 0.5f;
     Desc.fY = 300.f;
 

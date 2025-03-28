@@ -49,9 +49,10 @@ private:
 	UIOBJECT_DESC Desc{};
 
 private:
-	CTexture* m_pTextureCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
+	CTexture*		m_pTextureCom = { nullptr };
+	CTransform*		m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	CShader*		m_pShaderCom = { nullptr };
 
 public:
 	static CPlayerLevel* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

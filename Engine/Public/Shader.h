@@ -17,6 +17,7 @@ public:
 	HRESULT Bind_Texture(D3DXHANDLE hParameter, LPDIRECT3DBASETEXTURE9 pTexture);
 	HRESULT Bind_Matrix(D3DXHANDLE hParameter, const _float4x4* pMatrix);
 
+	HRESULT SetFloat(const char* variableName, float value);
 
 public:
 	void Begin(_uint iPassIndex);

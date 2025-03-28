@@ -38,12 +38,13 @@ public:
 	void LevelUp();
 
 public:
-	CItem*					Get_Item(int slotIndex);
+	CItem*							Get_Item(int slotIndex);
 
-	list<CPlayerHP*>*		Get_PlayerHPlist(void)		{ return &m_PlayerHPlist; }
-	list<CPlayerHunger*>*	Get_PlayerHungerlist(void)	{ return &m_PlayerHungerlist; }
-	list<CPlayerExp*>*		Get_PlayerExplist(void)		{ return &m_PlayerExplist; }
-	list<CPlayerLevel*>* Get_PlayerLevellist(void)		{ return &m_PlayerLevellist; }
+	list<CPlayerHP*>*				Get_PlayerHPlist(void)			{ return &m_PlayerHPlist; }
+	list<CPlayerHunger*>*			Get_PlayerHungerlist(void)		{ return &m_PlayerHungerlist; }
+
+	list<CPlayerExp*>*				Get_PlayerExplist(void)			{ return &m_PlayerExplist; }
+	list<CPlayerLevel*>*			Get_PlayerLevellist(void)		{ return &m_PlayerLevellist; }
 
 private:
 	_float	m_fHungerTime = { 0.f };
@@ -56,10 +57,10 @@ private:
 	list<CInventory_Back*>	m_InventoryBacklist;
 
 	/* Player State ฐüทร */
-	list<CPlayerHP*>		m_PlayerHPlist;
-	list<CPlayerHunger*>	m_PlayerHungerlist;
-	list<CPlayerExp*>		m_PlayerExplist;
-	list<CPlayerLevel*>		m_PlayerLevellist;
+	list<CPlayerHP*>			m_PlayerHPlist;
+	list<CPlayerHunger*>		m_PlayerHungerlist;
+	list<CPlayerExp*>			m_PlayerExplist;
+	list<CPlayerLevel*>			m_PlayerLevellist;
 
 public:
 	virtual void Free();

@@ -70,8 +70,6 @@ PS_OUT PS_MAIN_RED(PS_IN In)
     return Out;
 }
 
-
-
 technique DefaultTechnique
 {
     pass DefaultPass

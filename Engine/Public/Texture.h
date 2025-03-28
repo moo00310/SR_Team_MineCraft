@@ -10,6 +10,10 @@ private:
 	CTexture(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CTexture(const CTexture& Prototype);
 	virtual ~CTexture() = default;
+
+public:
+	LPDIRECT3DBASETEXTURE9 Get_Texture(_uint iIndex) {	return m_Textures[iIndex];}
+
 public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures);
 	virtual HRESULT Initialize(void* pArg) override;
