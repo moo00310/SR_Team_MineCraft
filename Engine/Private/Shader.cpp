@@ -27,7 +27,6 @@ HRESULT CShader::Initialize(void* pArg)
 
 HRESULT CShader::Bind_Texture(D3DXHANDLE hParameter, LPDIRECT3DBASETEXTURE9 pTexture)
 {
-
 	return m_pEffect->SetTexture(hParameter, pTexture);
 }
 

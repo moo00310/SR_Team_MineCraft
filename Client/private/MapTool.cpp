@@ -140,7 +140,7 @@ HRESULT CMapTool::Render()
         ImGui::Begin("Cave Map");
 
         if (ImGui::Button("To Main", ImVec2(200, 50))) {
-            m_bMapFrame = false;
+            m_bCaveFrame = false;
             m_bMainFrame = true;
         }
 
@@ -244,10 +244,11 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
                     int heightValue = (heightColor & 0xFF) / 15;
 
                     DWORD caveColor = cavePixels[y * pitchCave + x];
-                    int caveValue = (caveColor & 0xFF) %20;
+                    int caveValue = (caveColor & 0xFF) /15 + m_iDirtDeep + 10;
 
-                    m_vecGrassDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
-
+                    if (caveValue != heightValue) {
+                        m_vecGrassDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                    }
 
                     int depth = m_iDirtDeep;
                     int minDepth = m_iStoneDeep;
@@ -260,10 +261,12 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
                         switch (eblockData2.eBlockType)
                         {
                         case DIRT:
-                            m_vecDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                            if (caveValue != heightValue) {
+                                m_vecDirt.push_back(_float3((float)x, (float)heightValue, (float)y));
+                            }
                             break;
                         case STONE:
-                            if (!(caveValue-2 < -heightValue && -heightValue < caveValue +2)) {
+                            if (caveValue != heightValue) {
                                 m_vecStone.push_back(_float3((float)x, (float)heightValue, (float)y));
                             }
                             break;
@@ -334,6 +337,7 @@ void CMapTool::GeneratePerlinNoiseTexture(int width, int height) {
         for (int x = 0; x < width; x++) {
             float noiseValue = noise.GetNoise((float)x, (float)y);
             int gray = (int)((noiseValue + 1.0f) * 127.5f); // [-1, 1] → [0, 255]
+
             pixels[y * (lockedRect.Pitch / 4) + x] = D3DCOLOR_ARGB(255, gray, gray, gray);
         }
     }
@@ -367,7 +371,16 @@ void CMapTool::GeneratePerlinNoiseTextureCave(int width, int height) {
         for (int x = 0; x < width; x++) {
             float noiseValue = noise.GetNoise((float)x, (float)y);
             int gray = (int)((noiseValue + 1.0f) * 127.5f); // [-1, 1] → [0, 255]
-            pixels[y * (lockedRect.Pitch / 4) + x] = D3DCOLOR_ARGB(255, gray, gray, gray);
+
+           int chk =  gray / 15;
+
+            if (chk==4 || chk == 5 || chk == 6) {
+                pixels[y * (lockedRect.Pitch / 4) + x] = D3DCOLOR_ARGB(255, 0, 255, gray);
+            }
+            else {
+                pixels[y * (lockedRect.Pitch / 4) + x] = D3DCOLOR_ARGB(255, gray, gray, gray);
+            }
+            
         }
     }
 
@@ -388,7 +401,6 @@ struct SaveThreadParams {
     int m_iDirtDeep, m_iStoneDeep;
 };
 
-
 DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
     SaveThreadParams* params = (SaveThreadParams*)lpParam;
     int chunkIndex = params->chunkZ * params->numChunksX + params->chunkX;
@@ -402,41 +414,69 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
     }
     DWORD dwBytesWritten;
 
+    vector<BLOCKDESC> m_vGrassDirt;
+    vector<BLOCKDESC> m_vDirt;
+    vector<BLOCKDESC> m_vStone;
+    vector<BLOCKDESC> m_vIron;
+    vector<BLOCKDESC> m_vCoal;
+
     for (int y = params->chunkZ * 16; y < (params->chunkZ + 1) * 16; y++) {
         for (int x = params->chunkX * 16; x < (params->chunkX + 1) * 16; x++) {
             DWORD heightColor = params->heightPixels[y * params->pitchHeight + x];
             int heightValue = (heightColor & 0xFF) / 15;
 
-            DWORD caveColor = params->cavePixels[y * params->pitchCave + x];
-            int caveValue = (caveColor & 0xFF) / 15;
-
             BLOCKDESC eblockData;
             eblockData.eBlockType = GRASSDIRT;
             eblockData.fPosition = _float3((float)x, (float)heightValue, (float)y);
-            WriteFile(hFile, &eblockData, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+            m_vGrassDirt.push_back(eblockData);
 
             int depth = params->m_iDirtDeep;
             int minDepth = params->m_iStoneDeep;
+
             while (heightValue > minDepth) {
                 heightValue--;
                 BLOCKDESC eblockData2;
                 eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                //eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
-                eblockData2.eBlockType = (depth > 0) ? DIRT : STONE;
+                eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
 
-                if (eblockData2.eBlockType == STONE) {
-                    if (!(caveValue - 3 < -heightValue -2 && -heightValue -2< caveValue + 3)) {
-                        WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
-                    }
+                switch (eblockData2.eBlockType)
+                {
+                case DIRT:
+                        m_vDirt.push_back(eblockData2);
+                    break;
+                case STONE:
+                        m_vStone.push_back(eblockData2);
+                    break;
+                case IRONORE:
+                        m_vIron.push_back(eblockData2);
+                    break;
+                case COALORE:
+                    m_vCoal.push_back(eblockData2);
+                    break;
+                default:
+                    break;
                 }
-                else {
-                    WriteFile(hFile, &eblockData2, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
-                }
-
-                
                 depth--;
             }
         }
+    }
+
+    for (auto desc : m_vGrassDirt) {
+        WriteFile(hFile, &desc, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+    }
+    for (auto desc : m_vDirt) {
+        WriteFile(hFile, &desc, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+    }
+
+    for (auto desc : m_vStone) {
+        WriteFile(hFile, &desc, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+    }
+
+    for (auto desc : m_vIron) {
+        WriteFile(hFile, &desc, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
+    }
+    for (auto desc : m_vCoal) {
+        WriteFile(hFile, &desc, sizeof(BLOCKDESC), &dwBytesWritten, NULL);
     }
 
     CloseHandle(hFile);
