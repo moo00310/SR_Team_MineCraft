@@ -29,3 +29,4 @@ Client/default/Client.vcxproj.user
 *.sarif
 EngineSDK
 EngineSDK
+*.cso
