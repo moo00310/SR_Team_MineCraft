@@ -21,6 +21,8 @@ HRESULT CParticleExplosion::Initialize(void* pArg)
 	iTextureIndex = 16;
 	fAnimationFrame = 0.05f;
 	IsTextureAnimation = true;
+	IsTimer = true;
+	fEndTimer = 0.1f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
@@ -42,10 +44,7 @@ HRESULT CParticleExplosion::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 	{
 		return E_FAIL;
-	}
-
-	// 객체 종료 시간.
-	m_EndCount = 0.8f;
+	}	
 
 	return S_OK;
 }
@@ -79,26 +78,6 @@ CParticleExplosion* CParticleExplosion::Create(LPDIRECT3DDEVICE9 pGraphic_Device
 void CParticleExplosion::Free()
 {
 	__super::Free();
-}
-
-void CParticleExplosion::Update(_float fTimeDelta)
-{
-	__super::Update(fTimeDelta);
-
-	m_CurrentCount += fTimeDelta;
-
-	if (m_CurrentCount >= m_EndCount)
-	{
-		SetActive(false);
-	}
-}
-
-void CParticleExplosion::OnPushPool()
-{
-	__super::OnPushPool();
-
-	m_CurrentCount = 0.f;
-	iCurrentTextureIndex = 0;
 }
 
 HRESULT CParticleExplosion::Ready_Components()
