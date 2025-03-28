@@ -45,13 +45,6 @@ void CSteve::Priority_Update(_float fTimeDelta)
 
 void CSteve::Update(_float fTimeDelta)
 {
-	
-	if (FAILED(m_pCollider_CapsuleCom->Update_Collider()))
-	{
-		MSG_BOX("Update_Collider()");
-		return;
-	}
-
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
 	//CGameObject* pGameObject;
@@ -554,5 +547,6 @@ void CSteve::Free()
 	for (auto& buffer : m_pVIBufferComs)
 		Safe_Release(buffer);
 
+	int a = 0;
 }
 

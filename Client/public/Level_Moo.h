@@ -25,6 +25,7 @@ private:
 
 	HRESULT Ready_Laye_MooArm(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_Sword(const _wstring& strLayerTag);
+	HRESULT Ready_Laye_Zombi(const _wstring& strLayerTag);
 
 public:
 	static CLevel_Moo* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

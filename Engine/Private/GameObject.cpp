@@ -99,7 +99,7 @@ list<CComponent*> CGameObject::Find_Component_All(const _tchar* pComponentTag)
 		{
 			Components.push_back(pair.second);
 		}
-	}
+	} 
 
 	return Components;
 }

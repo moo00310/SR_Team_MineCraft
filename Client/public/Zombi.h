@@ -2,6 +2,7 @@
 #include "Client_Defines.h"
 #include "Monster.h"
 
+
 BEGIN(Engine)
 class CTexture;
 class CTransform;
@@ -10,7 +11,7 @@ END
 
 BEGIN(Client)
 
-class CCreeper : public CMonster
+class CZombi : public CMonster
 {
 public:
 	enum ANIM_type
@@ -19,9 +20,9 @@ public:
 	};
 
 private:
-	CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CCreeper(const CCreeper& Prototype);
-	virtual ~CCreeper() = default;
+	CZombi(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CZombi(const CZombi& Prototype);
+	virtual ~CZombi() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -47,7 +48,7 @@ private:
 	//CCollider_Cube* m_pCollider_CubeCom{ nullptr };
 
 public:
-	static CCreeper* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CZombi* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

@@ -18,7 +18,7 @@ HRESULT CLevel_HERO::Initialize()
   		return E_FAIL;
 
 	//if (FAILED(Ready_Layer_HeroCube(TEXT("Layer_HeroCube"))))
- //		return E_FAIL;
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
@@ -28,6 +28,9 @@ HRESULT CLevel_HERO::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Zombi"))))
 		return E_FAIL;
 
 	////BT 연습용 적
@@ -226,6 +229,13 @@ HRESULT CLevel_HERO::Ready_Laye_Creeper(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CLevel_HERO::Ready_Laye_Zombi(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Zombi"),
+		LEVEL_HERO, strLayerTag)))
+		return E_FAIL;
 }
 
 CLevel_HERO* CLevel_HERO::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
