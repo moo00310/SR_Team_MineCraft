@@ -30,8 +30,44 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
     }
 
     // 플레이어 밑에 있는 청크면 충돌 매니저에 올림
-    if (m_bChunkColliderActive) {
-        m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, this);
+    if (m_bChunkColliderActive) 
+    {
+        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+        for (CCollider_Cube* pCollider : m_Colliders)
+        {
+            CGameObject* pSteve{ nullptr };
+            pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+
+            CTransform* pTransformCom{ nullptr };
+            pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+
+            _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
+
+            _float3 vDiff{ vStevePos - vColliderPos };
+
+            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+            if (fLengthSq < 30.f)
+            {
+                //플레이어와 거리가 가까우면
+                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+
+                pCollider->Set_bColliderActive(true);
+            }
+            else
+            {
+                pCollider->Set_bColliderActive(false);
+            }
+        }
+    }
+    else
+    {
+        for (CCollider_Cube* pCollider : m_Colliders)
+        {
+            pCollider->Set_bColliderActive(false);
+        }
     }
     
 }
@@ -71,9 +107,10 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 
         /* For.Com_Collider */
         CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-        Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
-		Desc.fOffSetX = position[i].x; Desc.fOffSetY = position[i].y; Desc.fOffsetZ = position[i].z;
+        Desc.vRadius = { .5f, .5f, .5f };
+        Desc.vOffset = { position[i].x , position[i].y, position[i].z };
         Desc.pTransformCom = m_pTransformCom;
+        Desc.pOwner = this;
         if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
             TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_Colliders[i]), &Desc)))
         {
@@ -144,9 +181,9 @@ CGameObject* CBreakableCube::Clone(void* pArg)
 
 void CBreakableCube::Free()
 {
-    if (CMCTerrain* _copy = dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))){
-       _copy->CheckColliderActive();
-    }
+    //if (CMCTerrain* _copy = dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0))){
+    //   _copy->CheckColliderActive();
+    //}
 
     __super::Free();
     Safe_Release(m_pVIBufferCom);

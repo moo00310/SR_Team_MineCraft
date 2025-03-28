@@ -10,6 +10,13 @@ public:
     enum class COLLISION_DIR { NONE, LEFT, RIGHT, UP, DOWN, FRONT, BACK };
 
 protected:
+	typedef struct tagColliderDesc
+	{
+		class CTransform*	pTransformCom;
+		class CGameObject*	pOwner;
+	}COLLDESC;
+
+protected:
 	CCollider(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CCollider(const CCollider& Prototype);
 	virtual ~CCollider() = default;
@@ -22,6 +29,8 @@ public:
 	virtual HRESULT Render_Collider(_bool isHit);
 
 	virtual _bool Collision_Check(class CCollider_Cube* pTarget, _float3* pOutDepth, COLLISION_DIR* pOutDir) = 0;
+
+	class CGameObject* Get_Owner() { return m_pOwner; }
 
 protected:
 	LPDIRECT3DVERTEXBUFFER9 m_pVB = { nullptr };
@@ -39,7 +48,9 @@ protected:
 	bool m_bColliderActive;
 
 protected:
+
 	class CTransform* m_pTransformCom = { nullptr };
+	class CGameObject* m_pOwner{ nullptr };
 
 public:
 	static CCollider* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -206,6 +206,14 @@ HRESULT CGameInstance::Add_CollisionGroup(_uint eCollisionGroup, CGameObject* pG
 	return m_pCollider_Manager->Add_CollisionGroup(eCollisionGroup, pGameObject);
 }
 
+HRESULT CGameInstance::Add_Collider_CollisionGroup(_uint iGroupIndex, CCollider* pCollider)
+{
+	if (!m_pCollider_Manager)
+		return E_FAIL;
+
+	return m_pCollider_Manager->Add_Collider_CollisionGroup(iGroupIndex, pCollider);
+}
+
 void CGameInstance::Out_CollisiomGroup(_uint eCollisionGroup, CGameObject* pGameObject)
 {
 	if (!m_pCollider_Manager)

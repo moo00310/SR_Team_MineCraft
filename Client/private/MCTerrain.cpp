@@ -47,7 +47,7 @@ void CMCTerrain::Update(_float fTimeDelta)
 
     if (currF1State && !prevF1State)
     {
-        CheckColliderActive();
+        //CheckColliderActive();
     }
 
     prevF1State = currF1State;
@@ -73,7 +73,7 @@ void CMCTerrain::Late_Update(_float fTimeDelta)
         m_prePlayerChunk = m_currentPlayerChunk;
     }
 
-    CheckColliderActive();
+    //CheckColliderActive();
 }
 
 HRESULT CMCTerrain::Render()

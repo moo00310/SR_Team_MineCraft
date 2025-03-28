@@ -18,8 +18,13 @@ private:
 	virtual ~CCollider_Manager() = default;
 
 public:
-	HRESULT Add_CollisionGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
-	void Out_CollisiomGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
+	//게임 오브젝트가 가지고 있는 모든 콜라이더를 등록 하는 함수
+	HRESULT Add_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject);
+	//콜라이더 하나를 등록 하는 함수
+	HRESULT Add_Collider_CollisionGroup(_uint iGroupIndex, class CCollider* pCollider);
+
+
+	void Out_CollisiomGroup(_uint iGroupIndex, class CGameObject* pGameObject);
 
 	HRESULT Reset_ColliderGroup();
 
@@ -56,7 +61,7 @@ private:
 
 private:
 	_uint						m_iNumGroups = {};
-	list<class CGameObject*>*	m_pGameObjects{ nullptr };
+	list<class CCollider*>*		m_pColliders{ nullptr };
 	LPDIRECT3DDEVICE9			m_pGraphic_Device = { nullptr }; //라인 디버깅 하려고 가져왔음
 
 public:

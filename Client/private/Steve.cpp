@@ -37,7 +37,11 @@ HRESULT CSteve::Initialize(void* pArg)
 
 void CSteve::Priority_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
+	//m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
+	
+	//테스트(Add_Collider_CollisionGroup)
+	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pColliderCom);
+
 
 	 //1. 키입력에 따른 이동
 	Input_Key(fTimeDelta);
@@ -262,9 +266,10 @@ HRESULT CSteve::Ready_Components()
 	////콜라이더
 	/* For.Com_Collider */
 	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	Desc.fRadiusX = 0.3f; Desc.fRadiusY = 0.8f; Desc.fRadiusZ = 0.3;
-	Desc.fOffSetY = 0.8f;
+	Desc.vRadius = { .3f, .8f, .3f };
+	Desc.vOffset = { 0.f, 0.8f, 0.f };
 	Desc.pTransformCom = m_pTransformCom;
+	Desc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
 		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
 		return E_FAIL;

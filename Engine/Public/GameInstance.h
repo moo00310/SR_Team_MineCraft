@@ -56,8 +56,11 @@ public:
 #pragma endregion
 
 #pragma region COLLIDER_MANAGER
-	//콜리전 그룹에 추가
+	//게임오브젝트가 가진 모든 콜라이더를 넣는 함수
 	HRESULT Add_CollisionGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
+	//콜라이더 하나만 넣는 함수
+	HRESULT Add_Collider_CollisionGroup(_uint iGroupIndex, class CCollider* pCollider);
+
 	//콜리전 그룹에서 빼기
 	void Out_CollisiomGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
 	//특정 그룹의 오브젝트들과 충돌 검사
