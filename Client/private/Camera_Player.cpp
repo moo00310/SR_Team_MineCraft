@@ -5,6 +5,8 @@ using namespace DirectX;
 #include "BreakableCube.h"
 #include "BreakableRect.h"
 
+#include "Monster.h"
+
 CCamera_Player::CCamera_Player(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CCamera{ pGraphic_Device }
 {
@@ -129,16 +131,32 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                     return;
 
                 // 충돌한 콜라이더의 위치를 가져와 해당 블록 삭제
-                _float3 hitPosition{ pCollider_Cube->Get_Offset() };
+                _float3 hitPosition{ pCollider_Cube->Get_Offset()};
 
                 if (FAILED(pBreakableCube->Delete_Cube(hitPosition)))
                 {
                     MSG_BOX("Delete_Cube: Fail");
                 }
-            }
-            
 
-         
+                return;
+            }
+        }
+
+        // 몬스터와 충돌 검사
+        pHitObject = m_pGameInstance->Ray_Cast(
+            m_vHeadPos, // 시작 위치 (카메라 또는 플레이어의 머리 위치)
+            m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
+            5.f, // 최대 탐색 거리
+            COLLISION_MONSTER, // 충돌 그룹
+            fDist); //거리저장
+
+        if (pHitObject)
+        {
+            if (CMonster* monster = dynamic_cast<CMonster*>(pHitObject))
+            {
+                monster->Nuck_Back();
+            }
+
         }
     }
 

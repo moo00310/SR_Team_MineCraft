@@ -537,11 +537,8 @@ CGameObject* CSteve::Clone(void* pArg)
 void CSteve::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pRigidbodyCom);
-	//Safe_Release(m_pCollider_CapsuleCom);
-	//Safe_Release(m_pCollider_CubeCom);
 	Safe_Release(m_pColliderCom);
+	Safe_Release(m_pRigidbodyCom);
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_skelAnime);

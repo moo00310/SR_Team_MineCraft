@@ -98,15 +98,6 @@ HRESULT CCreeper::Ready_Components()
     if (FAILED(__super::Ready_Components()))
         return E_FAIL;
 
-    /* For.Com_Collider_Cube */
-    //CCollider_Cube::COLLCUBE_DESC		ColliderCubeDesc;
-    //ColliderCubeDesc.fRadiusY = 1.f;
-    //ColliderCubeDesc.fOffSetY = 1.f;
-    //ColliderCubeDesc.pTransformCom = m_pTransformCom;
-    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-    //    TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &ColliderCubeDesc)))
-    //    return E_FAIL;
-
     return S_OK;
 }
 
@@ -364,9 +355,5 @@ CGameObject* CCreeper::Clone(void* pArg)
 void CCreeper::Free()
 {
     __super::Free();
-
-    //Safe_Release(m_pCollider_CubeCom);
-    Safe_Release(m_pTextureCom);
-
 }
 

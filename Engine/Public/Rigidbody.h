@@ -47,7 +47,7 @@ private:
 	//มกวม
 private:
 	_bool					m_isGround{ false };
-	_float					m_fJumpForce{ 8.f };
+	_float					m_fJumpForce{ 6.f };
 
 public:
 	static CRigidbody* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
