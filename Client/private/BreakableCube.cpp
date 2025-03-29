@@ -32,17 +32,16 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
     // 플레이어 밑에 있는 청크면 충돌 매니저에 올림
     if (m_bChunkColliderActive) 
     {
+        CGameObject* pSteve{ nullptr };
+        pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+        
         //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
         for (CCollider_Cube* pCollider : m_Colliders)
         {
-            CGameObject* pSteve{ nullptr };
-            pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
-
-
-            CTransform* pTransformCom{ nullptr };
-            pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
-
-            _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
             _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
 
             _float3 vDiff{ vStevePos - vColliderPos };

@@ -29,8 +29,29 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
 
-    SetColliderChunk();
-    
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return E_FAIL;
+
+    _float3 playerPos = pSteve->GetPos();
+
+    // 플레이어가 위치한 청크 계산
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    m_currentPlayerChunk = x + (width * z);
+
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_currentPlayerChunk);
+    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    for (auto obj : objlist) {
+        if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
+            _cube->Set_ChunkColliderActive(true);
+        }
+        if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
+            _rect->Set_ChunkColliderActive(true);
+        }
+    }
 
     return S_OK;
 }
@@ -67,13 +88,35 @@ void CMCTerrain::Late_Update(_float fTimeDelta)
     int width = static_cast<int>(sqrt(m_iChunkCount));
     m_currentPlayerChunk = x + (width * z);
 
-    //청크를 이동 했다면
     if (m_prePlayerChunk != m_currentPlayerChunk) {
-        SetColliderChunk();
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", m_prePlayerChunk);
+        //m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, false);
+        list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+        for (auto obj : objlist) {
+            if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
+                _cube->Set_ChunkColliderActive(false);
+            }
+            if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
+                _rect->Set_ChunkColliderActive(false);
+            }
+        }
+
+        
+        swprintf(layerName, 100, L"Layer_Chunk%d", m_currentPlayerChunk);
+        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+        objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+        for (auto obj : objlist) {
+            if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
+                _cube->Set_ChunkColliderActive(true);
+            }
+            if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
+                _rect->Set_ChunkColliderActive(true);
+            }
+        }
         m_prePlayerChunk = m_currentPlayerChunk;
     }
-
-    //CheckColliderActive();
+    
 }
 
 HRESULT CMCTerrain::Render()
@@ -513,16 +556,19 @@ void CMCTerrain::GetPlayerChunk()
 
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", chunk);
-    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-    list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
-    for (CGameObject* pGameObject : objlist)
-    {
-        if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pGameObject)) 
-        {
-            if (pBreakableCube->Get_ChunkColliderActive()) {
-                m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
-            }
-        }
+    //m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
+    
+
+   
+    //list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    //for (CGameObject* pGameObject : objlist)
+    //{
+    //    if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pGameObject)) 
+    //    {
+    //        if (pBreakableCube->Get_ChunkColliderActive()) {
+    //            m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
+    //        }
+    //    }
         //else {
         //    //나무
         //    if (CTree* pTree = dynamic_cast<CTree*>(pGameObject)) {
@@ -544,7 +590,7 @@ void CMCTerrain::GetPlayerChunk()
         //    }
 
         //}
-    }
+    //}
 }
 
 
