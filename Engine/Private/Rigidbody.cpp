@@ -164,11 +164,10 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 {
 	m_isGround = false;
 
-	_float fDist{ 0.f };
 	CGameObject* pGameObject{ nullptr };
-	CComponent* pCollider{ nullptr };
+
 	//레이케스트로 땅 검사
-	pGameObject = m_pGameInstance->Ray_Cast_InstancingObject(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup, fDist, &pCollider);
+	pGameObject = m_pGameInstance->Ray_Cast_InstancingObject(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup);
 	if (pGameObject)
 	{
 		m_isGround = true;

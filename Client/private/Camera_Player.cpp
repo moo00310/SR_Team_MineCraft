@@ -103,6 +103,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
         CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
+        _float3 vDir{};
 
         // Ray Casting: Instancing된 오브젝트와 충돌 검사
         pHitObject = m_pGameInstance->Ray_Cast_InstancingObject(
@@ -110,7 +111,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
             5.f, // 최대 탐색 거리
             COLLISION_BLOCK, // 충돌 그룹
-            fDist, // 충돌한 거리 저장
+            &fDist, // 충돌한 거리 저장
+            &vDir,  //충돌 방향 저장
             &pHitComponent // 충돌한 콜라이더 저장
         );
 
@@ -139,6 +141,48 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             
 
          
+        }
+    }
+
+    if (m_pGameInstance->Key_Down(VK_RBUTTON))
+    {
+        _float fDist;                  // 광선과 오브젝트 간의 거리
+        CGameObject* pHitObject;       // 충돌한 오브젝트
+        CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
+        _float3 vDir{};
+
+        // Ray Casting: Instancing된 오브젝트와 충돌 검사
+        pHitObject = m_pGameInstance->Ray_Cast_InstancingObject(
+            m_vHeadPos, // 시작 위치 (카메라 또는 플레이어의 머리 위치)
+            m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
+            5.f, // 최대 탐색 거리
+            COLLISION_BLOCK, // 충돌 그룹
+            &fDist, // 충돌한 거리 저장
+            &vDir,  //충돌 방향 저장
+            &pHitComponent // 충돌한 콜라이더 저장
+        );
+
+        if (pHitObject)
+        {
+            if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pHitObject)) {
+                pBreakableRect->Destroy();
+                return;
+            }
+
+            // 충돌한 오브젝트가 CBreakableCube인지 확인 후 형변환
+            if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pHitObject)) {
+                // 충돌한 콜라이더를 CCollider_Cube로 형변환
+                CCollider_Cube* pCollider_Cube = static_cast<CCollider_Cube*>(pHitComponent);
+                if (!pCollider_Cube)
+                    return;
+
+                //콜라이더 큐브의 위치 + 방향을 계산해서
+                //Create_Cube 함수 실행
+
+                _float3 vPos = pCollider_Cube->Get_Offset() + pBreakableCube->GetPos() + vDir;
+                pBreakableCube->Create_Cube(vPos);
+
+            }
         }
     }
 

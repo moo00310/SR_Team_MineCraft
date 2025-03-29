@@ -256,10 +256,12 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 }
 
 
-CGameObject* CCollider_Manager::Ray_Cast_InstancingObject(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, _uint iGroupIndex, _Out_ _float& fDist, _Out_ CComponent** ppOutCollider)
+CGameObject* CCollider_Manager::Ray_Cast_InstancingObject(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, _uint iGroupIndex, _Out_ _float* pDist, _Out_ _float3* pOutCollision_Dir, _Out_ CComponent** ppOutCollider)
 {
+	//CCollider::COLLISION_DIR 6방향임
+	//여기서 레이케스트로 부딫힌 콜라이더의 방향을 알고 싶음
+
 	// 초기화
-	fDist = 0.f;
 	if (ppOutCollider)
 		*ppOutCollider = nullptr;
 
@@ -322,13 +324,34 @@ CGameObject* CCollider_Manager::Ray_Cast_InstancingObject(const _float3& rayOrig
 			closestDist = tMin;
 			closestObject = iter->Get_Owner();
 			closestCollider = iter;
+
+			if (pOutCollision_Dir)
+			{
+				// 충돌한 면의 방향 계산
+				_float3 hitNormal = { 0.f, 0.f, 0.f };
+				for (int i = 0; i < 3; ++i)
+				{
+					_float t1 = (minBound[i] - rayOrigin[i]) / vNormalRayDir[i];
+					_float t2 = (maxBound[i] - rayOrigin[i]) / vNormalRayDir[i];
+
+					if (fabs(tMin - t1) < 1e-5f)  // tMin이 t1에서 결정된 경우
+						hitNormal[i] = -1.f;
+					else if (fabs(tMin - t2) < 1e-5f)  // tMin이 t2에서 결정된 경우
+						hitNormal[i] = 1.f;
+				}
+
+				*pOutCollision_Dir = hitNormal;
+			}
+
+
 		}
 	}
 
 	// 충돌한 경우 반환
 	if (closestObject)
 	{
-		fDist = closestDist;
+		if(pDist)
+		*pDist = closestDist;
 		if (ppOutCollider)
 			*ppOutCollider = closestCollider;
 		m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, fMaxDistanc, true);

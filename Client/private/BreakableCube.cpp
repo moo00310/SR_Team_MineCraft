@@ -124,6 +124,11 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
     return E_NOTIMPL;
 }
 
+HRESULT CBreakableCube::Create_Cube(_float3 fPos)
+{
+    return E_NOTIMPL;
+}
+
 
 
 
