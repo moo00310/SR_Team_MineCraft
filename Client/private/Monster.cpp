@@ -36,10 +36,14 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
+    // 땅이랑 충돌
+    m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+
     if (m_pBehaviorTree)
     {
         m_pBehaviorTree->Excute(this, fTimeDelta);
     }
+ 
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
@@ -72,7 +76,12 @@ void CMonster::Reset_Ainmation()
     cout << "초기화" << endl;
     m_skelAnime->Set_ZeroAnimTime();
     m_skelAnime->InitBone();
-    m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+    //m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+}
+
+void CMonster::Nuck_Back()
+{
+    m_pRigidbodyCom->Jump();
 }
 
 HRESULT CMonster::Ready_BehaviorTree()
@@ -121,6 +130,24 @@ HRESULT CMonster::Ready_Components()
         TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
         return E_FAIL;
 
+    ////콜라이더
+    /* For.Com_Collider */
+    CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
+    Desc.vRadius = { 0.5f, 0.8f, 0.5f };
+    Desc.vOffset = { 0.f, 0.f, 0.f };
+    Desc.pTransformCom = m_pTransformCom;
+    Desc.pOwner = this;
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+        TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
+        return E_FAIL;
+
+    //리지드바디
+    /* For.Com_Rigidbody */
+    CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CubeCom, 1.f };
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
+        TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
+        return E_FAIL;
+
     // BT 연결
     if(FAILED(Ready_BehaviorTree()))
         return E_FAIL;
@@ -131,9 +158,14 @@ HRESULT CMonster::Ready_Components()
 void CMonster::Free()
 {
 	__super::Free();
+
+    Safe_Release(m_pRigidbodyCom);
+    Safe_Release(m_pCollider_CubeCom);
 	Safe_Release(m_pBehaviorTree);
 	Safe_Release(m_pTransformCom);
     Safe_Release(m_skelAnime);
+    Safe_Release(m_pTextureCom);
+
     for (auto& buffer : m_pVIBufferComs)
         Safe_Release(buffer);
 }

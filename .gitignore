@@ -30,3 +30,4 @@ Client/default/Client.vcxproj.user
 EngineSDK
 EngineSDK
 *.cso
+Engine/Private/Graphic_Device.cpp

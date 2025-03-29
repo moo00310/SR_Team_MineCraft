@@ -38,13 +38,18 @@ public:
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 
 public:
-	void Reset_Ainmation(); 
+	void Reset_Ainmation();
+	void Nuck_Back();
 
 protected:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CSkeletalAnimator* m_skelAnime = { nullptr };
 	vector<CVIBuffer_Cube*> m_pVIBufferComs;
+
+protected:
+	CCollider_Cube* m_pCollider_CubeCom = { nullptr };
+	CRigidbody* m_pRigidbodyCom = { nullptr };
 
 protected:
 	CGameObject* m_pTargetGameObject = nullptr;
@@ -54,6 +59,8 @@ protected:
 	ANIM m_eCurAnim = { ANIM_END };
 	MonsterType m_MonsterType = { MT_END };
 	float m_fAttackDistance = {};
+	float m_fNuckback = {};
+	bool m_isNuckback = {false};
 
 protected:
 	virtual HRESULT Ready_Components();
