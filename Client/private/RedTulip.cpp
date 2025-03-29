@@ -113,12 +113,20 @@ CGameObject* CRedTulip::Clone(void* pArg)
 
 void CRedTulip::Free()
 {
-    wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
-        return;
-    dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-    dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_REDTULIP);
-
     __super::Free();
+    //원형객체가 삭제될 때 Add_Gameobject해서 터지는 듯?
+    //그때 GameObjectManager가 없어서 터지더라
+    //클론 일때만 호출하게 하면 될 지도?
+    if (m_isCloned)
+    {
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+        if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+            return;
+        dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_REDTULIP);
+
+    }
+
+
 }
