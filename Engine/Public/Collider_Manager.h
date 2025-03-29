@@ -51,8 +51,9 @@ public:
 		const _float3& rayDir,						//레이 방향
 		_float fMaxDistanc,							//최대 충돌 범위
 		_uint iGroupIndex,							//충돌 할 그룹
-		_Out_ _float& fDist,					//충돌 지점과의 거리
-		_Out_ CComponent** ppOutCollider
+		_Out_ _float* fDist = nullptr,						//충돌 지점과의 거리
+		_Out_ _float3* pOutCollision_Dir = nullptr, 
+		_Out_ CComponent** ppOutCollider = nullptr
 	);
 
 	void  Render();
