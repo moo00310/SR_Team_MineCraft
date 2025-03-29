@@ -44,29 +44,7 @@ void CCoalOre::Late_Update(_float fTimeDelta)
 
 HRESULT CCoalOre::Render()
 {
-    m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
-        return E_FAIL;
-
-    if (FAILED(m_pTransformCom->Bind_Resource()))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-        return E_FAIL;
-
-    m_pTransformCom->Bind_Resource(m_pShaderCom);
-    m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
-
-    m_pShaderCom->Begin(0);
-
-    /* 정점을 그린다. */
-    if (FAILED(m_pVIBufferCom->Render()))
-        return E_FAIL;
-
-    m_pShaderCom->End();
-    //쉐이더 비긴 엔드 않으로 넣으면 콜라이더 빨갛게 안보임
     __super::Render();
-
     return S_OK;
 }
 
