@@ -33,11 +33,10 @@ public:
 	_float3 GetPos() { return m_pTransformCom->Get_State(CTransform::STATE_POSITION); }
 	void SetMatrix(const _float4x4& mat) { m_pTransformCom->MultiplyMatrix(mat); }
 	
-	// 인스턴싱 버퍼 업데이트
-	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects) { m_pVIBufferCom->Update_InstanceBuffer(_objects); }
-	
 	//아이템 어떤 청크레이어에 생성할 지 필요
 	void Set_MyChunk(int _num) { m_iMyChunk = _num; } 
+	// 인스턴싱 버퍼 업데이트
+	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects) { m_pVIBufferCom->Update_InstanceBuffer(_objects); }
 
 	// 충돌 큐브 생성 & 위치 설정
 	void Set_BlockPositions(vector<_float3> position);

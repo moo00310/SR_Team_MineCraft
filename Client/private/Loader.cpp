@@ -488,9 +488,9 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CVIBuffer_CubeInstance::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_VIBuffer_Rect3D */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Rect3D"),
-		CVIBuffer_Rect3D::Create(m_pGraphic_Device))))
+	/* For.Prototype_Component_VIBuffer_Rect3DInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Rect3DInstance"),
+		CVIBuffer_Rect3DInstance::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 
@@ -999,9 +999,9 @@ HRESULT CLoader::Loading_For_TOOL()
 		CVIBuffer_CubeInstance::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_VIBuffer_Rect3D */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Rect3D"),
-		CVIBuffer_Rect3D::Create(m_pGraphic_Device))))
+	/* For.Prototype_Component_VIBuffer_Rect3DInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_TOOL, TEXT("Prototype_Component_VIBuffer_Rect3DInstance"),
+		CVIBuffer_Rect3DInstance::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));

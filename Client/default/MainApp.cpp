@@ -336,9 +336,14 @@ HRESULT CMainApp::Ready_Component()
 		CVIBuffer_Rect_Normal::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_Component_Shader_Rect */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect"),
-		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Rect.hlsl")))))
+	/* For.Prototype_Component_Shader_CubeInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_CubeInstance"),
+		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_CubeInstance.hlsl")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_Rect3DInstance */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect3DInstance"),
+		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Rect3DInstance.hlsl")))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_UI */
