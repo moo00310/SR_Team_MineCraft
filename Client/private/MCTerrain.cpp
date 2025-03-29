@@ -66,6 +66,11 @@ void CMCTerrain::ActivateChunkLayer(int chunkIndex, bool _b) {
         if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
             _rect->Set_ChunkColliderActive(_b);
         }
+
+        if (CTree* _Tree = dynamic_cast<CTree*>(obj)) {
+            _Tree->Get_Wood()->Set_ChunkColliderActive(_b);
+            _Tree->Get_Leaf()->Set_ChunkColliderActive(_b);
+        }
     }
 
 };
