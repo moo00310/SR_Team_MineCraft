@@ -47,11 +47,16 @@ protected:
 protected:
 	multimap<const _wstring, class CComponent*>	m_Components;
 
+	//클론인지 판단
+	_bool	m_isCloned{ false };
+
 private:
 	_bool	m_isDestroyed{ false };
 
 	// 오브젝트 true = 활성화/ false = 비활성화.
 	_bool	m_isActive = { true };
+
+
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);

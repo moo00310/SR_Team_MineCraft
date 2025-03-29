@@ -45,6 +45,7 @@ HRESULT CCollider_Capsule::Initialize(void* pArg)
         return E_FAIL;
 
     Safe_AddRef(m_pTransformCom);
+    Safe_AddRef(m_pOwner);
 
     m_iNumVertices = 18; // 원기둥의 원 둘레 8개 + 위아래 중앙점 2개
     m_iStride = sizeof(VTXCUBETEX); // 정점 구조체 크기
@@ -300,4 +301,5 @@ void CCollider_Capsule::Free()
     Safe_Release(m_pVB);
     Safe_Release(m_pIB);
     Safe_Release(m_pTransformCom);
+    Safe_Release(m_pOwner);
 }
