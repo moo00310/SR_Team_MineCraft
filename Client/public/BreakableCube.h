@@ -52,6 +52,9 @@ public:
 
 	//충돌된 큐브 삭제
 	virtual HRESULT Delete_Cube(_float3 fPos);
+
+	//블럭 밝기 조절
+	void Set_Bright(float _f) { m_fBright = _f; }
 protected:
 	HRESULT Ready_Components();
 
@@ -64,7 +67,8 @@ protected:
 	int m_iMyChunk = 0;
 	vector<_float3> m_vecPositions;
 	vector<CCollider_Cube*> m_Colliders;
-	
+
+	float m_fBright=1;
 public:
 	static CBreakableCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

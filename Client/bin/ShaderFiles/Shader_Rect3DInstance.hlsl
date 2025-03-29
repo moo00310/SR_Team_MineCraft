@@ -2,6 +2,7 @@
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture g_Texture;
+float g_Bright;
 
 struct VS_IN
 {
@@ -53,6 +54,7 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out;    
     
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
+    Out.vColor.rgb *= g_Bright;
     
     return Out;
 }

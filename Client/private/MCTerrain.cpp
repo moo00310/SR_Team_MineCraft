@@ -6,6 +6,7 @@
 #include "Steve.h"
 #include "Tree.h"
 #include "BreakableRect.h"
+#include "Sun.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -159,6 +160,10 @@ int CMCTerrain::GetFileCount()
         } while (FindNextFile(hFind, &findFileData));
 
         FindClose(hFind);
+    }
+
+    if (CSun* _sun = dynamic_cast<CSun*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Sun"), 0))) {
+        _sun->Set_ChunkCount(m_iChunkCount);
     }
 
     return m_iChunkCount;

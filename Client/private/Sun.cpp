@@ -1,4 +1,7 @@
 #include "Sun.h"
+#include "BreakableCube.h"
+#include "BreakableRect.h"
+#include "Tree.h"
 
 CSun::CSun(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject(pGraphic_Device)
@@ -25,6 +28,35 @@ HRESULT CSun::Initialize(void* pArg)
 
 void CSun::Priority_Update(_float fTimeDelta)
 {
+	m_brightFrame++;
+
+	if (m_brightFrame > 20) {
+		m_fBright += m_fBrightPercent;
+		m_brightFrame = 0;
+
+		for (int i = 0; i < m_iChunkCnt; ++i) {
+			wchar_t layerName[100];
+			swprintf(layerName, 100, L"Layer_Chunk%d", i);
+			list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+			for (auto obj : objlist) {
+				if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
+					_cube->Set_Bright(m_fBright);
+				}
+				if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
+					_rect->Set_Bright(m_fBright);
+				}
+
+				if (CTree* _Tree = dynamic_cast<CTree*>(obj)) {
+					_Tree->Get_Wood()->Set_Bright(m_fBright);
+					_Tree->Get_Leaf()->Set_Bright(m_fBright);
+				}
+			}
+		}
+
+		if (m_fBright <= 0.1f || m_fBright >=1.f) {
+			m_fBrightPercent *= -1;
+		}
+	}
 }
 
 void CSun::Update(_float fTimeDelta)
