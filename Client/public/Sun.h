@@ -24,6 +24,7 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+	void Set_ChunkCount(int _cnt) { m_iChunkCnt = _cnt; }
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
@@ -37,6 +38,10 @@ private:
 	HRESULT Release_RenderState();
 	HRESULT Ready_Components();
 
+	int m_iChunkCnt;
+	float m_fBright = 1.f;
+	float m_fBrightPercent = -0.03f;
+	int m_brightFrame = 0;
 public:
 	static CSun* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

@@ -226,8 +226,8 @@ HRESULT CVIBuffer_CubeInstance::Render()
         m_iNumPritimive      // 삼각형 개수
     );
 
-    //m_pGraphic_Device->SetStreamSourceFreq(0, 1);
-    //m_pGraphic_Device->SetStreamSourceFreq(1, 1);
+    m_pGraphic_Device->SetStreamSourceFreq(0, 1);
+    m_pGraphic_Device->SetStreamSourceFreq(1, 1);
 
     return hr;
 }

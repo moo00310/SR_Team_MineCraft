@@ -30,8 +30,7 @@ public:
 	CGameInstance* GetGameInstance();
 	int GetFileCount();
 
-	// 안보이는 블럭들은 충돌처리 비활성화
-	void CheckColliderActive();
+	void ActivateChunkLayer(int chunkIndex, bool _b);
 private:
 	HRESULT Ready_Layer_BackGround();
 
@@ -42,8 +41,6 @@ private:
 	void OffAllChunkLayer();
 	//플레이어 주변 3x3 청크만 활성화
 	void GetPlayerChunk3x3();
-	//플레이어가 있는 청크만 활성화
-	void GetPlayerChunk();
 
 
 	int m_iChunkCount = 0; // 청크 개수 

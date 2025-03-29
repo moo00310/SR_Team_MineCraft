@@ -2,11 +2,11 @@
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture g_Texture;
+float g_Bright;
 
 struct VS_IN
 {
     float3 vPosition : POSITION;
-    float3 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float3 vInstancePos : TEXCOORD1; //인스턴싱 버퍼 (위치만)
 };
@@ -14,7 +14,6 @@ struct VS_IN
 struct VS_OUT
 {
     float4 vPosition : POSITION;
-    float3 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
 };
 
@@ -33,7 +32,6 @@ VS_OUT VS_MAIN(VS_IN In)
     
     
     Out.vPosition = worldPosition;
-    Out.vNormal = In.vNormal;
     Out.vTexcoord = In.vTexcoord;
 
     return Out;
@@ -43,7 +41,6 @@ VS_OUT VS_MAIN(VS_IN In)
 struct PS_IN
 {
     float4 vPosition : POSITION;
-    float3 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
 };
 
@@ -57,6 +54,7 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out;    
     
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
+    Out.vColor.rgb *= g_Bright;
     
     return Out;
 }
@@ -76,6 +74,11 @@ technique DefaultTechnique
     { 
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_MAIN();
+        AlphaTestEnable = TRUE;
+        AlphaFunc = GREATER;
+        AlphaRef = 254;
+        CullMode = NONE;
+        Lighting = FALSE;
     }
 
     pass asdouble

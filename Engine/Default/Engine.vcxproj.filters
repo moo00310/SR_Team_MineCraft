@@ -128,7 +128,7 @@
     <ClInclude Include="..\public\PoolManager.h">
       <Filter>08.Pooling</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VIBuffer_Rect3D.h">
+    <ClInclude Include="..\Public\VIBuffer_Rect3DInstance.h">
       <Filter>04.Components\VIBuffer\Rect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Shader.h">
@@ -363,7 +363,7 @@
     <ClCompile Include="..\private\PoolManager.cpp">
       <Filter>08.Pooling</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\VIBuffer_Rect3D.cpp">
+    <ClCompile Include="..\Private\VIBuffer_Rect3DInstance.cpp">
       <Filter>04.Components\VIBuffer\Rect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Shader.cpp">

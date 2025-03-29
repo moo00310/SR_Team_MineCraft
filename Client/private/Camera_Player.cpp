@@ -119,8 +119,18 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         if (pHitObject)
         {
             if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pHitObject)) {
-                pBreakableRect->Destroy();
-                return;
+                // 충돌한 콜라이더를 CCollider_Cube로 형변환
+                CCollider_Cube* pCollider_Cube = static_cast<CCollider_Cube*>(pHitComponent);
+                if (!pCollider_Cube)
+                    return;
+
+                // 충돌한 콜라이더의 위치를 가져와 해당 블록 삭제
+                _float3 hitPosition{ pCollider_Cube->Get_Offset() };
+
+                if (FAILED(pBreakableRect->Delete_Cube(hitPosition)))
+                {
+                    MSG_BOX("Delete_Rect: Fail");
+                }
             }
 
             // 충돌한 오브젝트가 CBreakableCube인지 확인 후 형변환

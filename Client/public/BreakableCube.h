@@ -1,5 +1,5 @@
 #pragma once
-// ºÎ½¤Áö´Â Å¥ºêµéÀÇ ºÎ¸ğ°¡ µÇ´Â °÷
+// ë¶€ìˆ´ì§€ëŠ” íë¸Œë“¤ì˜ ë¶€ëª¨ê°€ ë˜ëŠ” ê³³
 
 #include "Client_Defines.h"
 #include "Cube.h"
@@ -33,31 +33,33 @@ public:
 	_float3 GetPos() { return m_pTransformCom->Get_State(CTransform::STATE_POSITION); }
 	void SetMatrix(const _float4x4& mat) { m_pTransformCom->MultiplyMatrix(mat); }
 	
-	// ÀÎ½ºÅÏ½Ì ¹öÆÛ ¾÷µ¥ÀÌÆ®
-	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects) { m_pVIBufferCom->Update_InstanceBuffer(_objects); }
-	
-	//¾ÆÀÌÅÛ ¾î¶² Ã»Å©·¹ÀÌ¾î¿¡ »ı¼ºÇÒ Áö ÇÊ¿ä
+	//ì•„ì´í…œ ì–´ë–¤ ì²­í¬ë ˆì´ì–´ì— ìƒì„±í•  ì§€ í•„ìš”
 	void Set_MyChunk(int _num) { m_iMyChunk = _num; } 
+	// ì¸ìŠ¤í„´ì‹± ë²„í¼ ì—…ë°ì´íŠ¸
+	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects) { m_pVIBufferCom->Update_InstanceBuffer(_objects); }
 
-	// Ãæµ¹ Å¥ºê »ı¼º & À§Ä¡ ¼³Á¤
+	// ì¶©ëŒ íë¸Œ ìƒì„± & ìœ„ì¹˜ ì„¤ì •
 	void Set_BlockPositions(vector<_float3> position);
 	int Get_PositionSize() { return m_vecPositions.size(); }
 
-	// Ãæµ¹ È°¼ºÈ­ & ºñÈ°¼ºÈ­ °ü¸®¸¦ À§ÇÔ
+	// ì¶©ëŒ í™œì„±í™” & ë¹„í™œì„±í™” ê´€ë¦¬ë¥¼ ìœ„í•¨
 	vector<CCollider_Cube*> Get_ColliderCube() { return m_Colliders; }
 	vector<_float3> Get_Positions() { return m_vecPositions; }
 
-	// Ãæµ¹ÇÒ Ã»Å©¸¸ È°¼ºÈ­ ½ÃÅ´
+	// ì¶©ëŒí•  ì²­í¬ë§Œ í™œì„±í™” ì‹œí‚´
 	void Set_ChunkColliderActive(bool _b) { m_bChunkColliderActive = _b; }
 	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
 
-	//Ãæµ¹µÈ Å¥ºê »èÁ¦
+	//ì¶©ëŒëœ íë¸Œ ì‚­ì œ
 	virtual HRESULT Delete_Cube(_float3 fPos);
+	//ë¸”ëŸ­ ë°ê¸° ì¡°ì ˆ
+	void Set_Bright(float _f) { m_fBright = _f; }
+
 	virtual HRESULT Create_Cube(_float3 fPos);
-protected:
+
 	HRESULT Ready_Components();
 
-	// ÇöÀç Ã»Å©¸¦ Ãæµ¹ ¸Å´ÏÀú¿¡ ¿Ã¸±Áö 
+	// í˜„ì¬ ì²­í¬ë¥¼ ì¶©ëŒ ë§¤ë‹ˆì €ì— ì˜¬ë¦´ì§€ 
 	bool m_bChunkColliderActive = false;
 
 	CVIBuffer_CubeInstance* m_pVIBufferCom = { nullptr };
@@ -66,7 +68,8 @@ protected:
 	int m_iMyChunk = 0;
 	vector<_float3> m_vecPositions;
 	vector<CCollider_Cube*> m_Colliders;
-	
+
+	float m_fBright=1;
 public:
 	static CBreakableCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

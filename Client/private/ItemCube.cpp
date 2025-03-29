@@ -200,5 +200,6 @@ void CItemCube::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);
+    Safe_Release(m_pRigidbodyCom);
     //Safe_Release(m_pColliderCom);
 }

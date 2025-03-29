@@ -26,6 +26,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Clouds(TEXT("Layer_Clouds"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
@@ -37,9 +40,6 @@ HRESULT CLevel_YU::Initialize()
 
 	/*if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
 		return E_FAIL;*/
-
-	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
-		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;

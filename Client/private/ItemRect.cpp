@@ -25,7 +25,7 @@ HRESULT CItemRect::Initialize(void* pArg)
     m_fUpDownSpeed = 0.005f;
     m_iUpDownFrame = 0;
 
-    m_pTransformCom->Scaling(0.3, 0.3, 0.3);
+    m_pTransformCom->Scaling(0.5, 0.5, 0.5);
 
     return S_OK;
 }
@@ -211,4 +211,5 @@ void CItemRect::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);
+    Safe_Release(m_pRigidbodyCom);
 }

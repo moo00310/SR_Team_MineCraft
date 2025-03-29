@@ -9,7 +9,7 @@
 
 
 BEGIN(Engine)
-class CVIBuffer_Rect3D;
+class CVIBuffer_Rect3DInstance;
 class CCollider_Cube;
 END
 
@@ -37,16 +37,28 @@ public:
 	// 충돌할 청크만 활성화 시킴
 	void Set_ChunkColliderActive(bool _b) { m_bChunkColliderActive = _b; }
 	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
+
+	// 인스턴싱 버퍼 업데이트
+	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects) { m_pVIBufferCom->Update_InstanceBuffer(_objects); }
+	void Set_BlockPositions(vector<_float3> position);
+
+	//충돌된 큐브 삭제
+	virtual HRESULT Delete_Cube(_float3 fPos);
+
+	//블럭 밝기 조절
+	void Set_Bright(float _f) { m_fBright = _f; }
 protected:
 	HRESULT Ready_Components();
-	CVIBuffer_Rect3D* m_pVIBufferCom = { nullptr};
-	CCollider_Cube* m_pColliderCom = { nullptr };
-	
+
+	CVIBuffer_Rect3DInstance* m_pVIBufferCom = { nullptr};
+	CShader* m_pShaderCom = { nullptr };
+
 	int m_iMyChunk = 0;
+	vector<_float3> m_vecPositions;
+	vector<CCollider_Cube*> m_Colliders;
 
-	// 현재 청크를 충돌 매니저에 올릴지 
 	bool m_bChunkColliderActive = false;
-
+	float m_fBright=1;
 public:
 	static CBreakableRect* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
