@@ -40,21 +40,35 @@ HRESULT CMCTerrain::Initialize(void* pArg)
     int width = static_cast<int>(sqrt(m_iChunkCount));
     m_currentPlayerChunk = x + (width * z);
 
-    wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", m_currentPlayerChunk);
-    m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-    list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
-    for (auto obj : objlist) {
-        if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
-            _cube->Set_ChunkColliderActive(true);
-        }
-        if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
-            _rect->Set_ChunkColliderActive(true);
+    for (int dy = -1; dy <= 1; ++dy) {
+        for (int dx = -1; dx <= 1; ++dx) {
+            int newChunk = m_currentPlayerChunk + dx + dy * width;
+            // 왼쪽 경계 검사
+            if (m_currentPlayerChunk % width == 0 && dx == -1) continue;
+            // 오른쪽 경계 검사
+            if ((m_currentPlayerChunk + 1) % width == 0 && dx == 1) continue;
+
+            ActivateChunkLayer(newChunk, true);
         }
     }
 
     return S_OK;
 }
+
+void CMCTerrain::ActivateChunkLayer(int chunkIndex, bool _b) {
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
+    list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    for (auto obj : objlist) {
+        if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
+            _cube->Set_ChunkColliderActive(_b);
+        }
+        if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
+            _rect->Set_ChunkColliderActive(_b);
+        }
+    }
+
+};
 
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
@@ -89,29 +103,27 @@ void CMCTerrain::Late_Update(_float fTimeDelta)
     m_currentPlayerChunk = x + (width * z);
 
     if (m_prePlayerChunk != m_currentPlayerChunk) {
-        wchar_t layerName[100];
-        swprintf(layerName, 100, L"Layer_Chunk%d", m_prePlayerChunk);
-        //m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, false);
-        list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
-        for (auto obj : objlist) {
-            if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
-                _cube->Set_ChunkColliderActive(false);
-            }
-            if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
-                _rect->Set_ChunkColliderActive(false);
+        for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+                int newChunk = m_prePlayerChunk + dx + dy * width;
+                // 왼쪽 경계 검사
+                if (m_prePlayerChunk % width == 0 && dx == -1) continue;
+                // 오른쪽 경계 검사
+                if ((m_prePlayerChunk + 1) % width == 0 && dx == 1) continue;
+
+                ActivateChunkLayer(newChunk, false);
             }
         }
 
-        
-        swprintf(layerName, 100, L"Layer_Chunk%d", m_currentPlayerChunk);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-        objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
-        for (auto obj : objlist) {
-            if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
-                _cube->Set_ChunkColliderActive(true);
-            }
-            if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
-                _rect->Set_ChunkColliderActive(true);
+        for (int dy = -1; dy <= 1; ++dy) {
+            for (int dx = -1; dx <= 1; ++dx) {
+                int newChunk = m_currentPlayerChunk + dx + dy * width;
+                // 왼쪽 경계 검사
+                if (m_currentPlayerChunk % width == 0 && dx == -1) continue;
+                // 오른쪽 경계 검사
+                if ((m_currentPlayerChunk + 1) % width == 0 && dx == 1) continue;
+
+                ActivateChunkLayer(newChunk, true);
             }
         }
         m_prePlayerChunk = m_currentPlayerChunk;
@@ -520,7 +532,7 @@ void CMCTerrain::GetPlayerChunk3x3()
                 }
             }
         }
-        };
+     };
 
     // 3x3 영역 활성화
     ActivateChunkLayer(chunk);

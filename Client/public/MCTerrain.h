@@ -32,6 +32,8 @@ public:
 
 	// 안보이는 블럭들은 충돌처리 비활성화
 	void CheckColliderActive();
+
+	void ActivateChunkLayer(int chunkIndex, bool _b);
 private:
 	HRESULT Ready_Layer_BackGround();
 
