@@ -44,7 +44,25 @@ void CItemRect::Priority_Update(_float fTimeDelta)
 
 void CItemRect::Update(_float fTimeDelta)
 {
-    m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.5f);
+    //플레이어와 거리 계산해서 멀면 비활성화
+    CGameObject* pSteve{ nullptr };
+    pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+    CTransform* pTransformCom{ nullptr };
+    pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+
+    _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+    _float3 vMyPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+    _float3 vDiff{ vStevePos - vMyPos };
+
+    _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+    if (fLengthSq < 20.f)
+    {
+        //플레이어와 거리가 가까우면 중력적용
+        m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.5f);
+    }
 }
 
 void CItemRect::Late_Update(_float fTimeDelta)

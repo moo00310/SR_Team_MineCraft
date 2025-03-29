@@ -43,6 +43,7 @@ HRESULT CCollider_Cube::Initialize(void* pArg)
 		return E_FAIL;
 
 	Safe_AddRef(m_pTransformCom);
+	Safe_AddRef(m_pOwner);
 
 	m_iNumVertices = 8;
 	m_iStride = sizeof(VTXCUBETEX);
@@ -460,4 +461,5 @@ void CCollider_Cube::Free()
 	Safe_Release(m_pVB);
 	Safe_Release(m_pIB);
 	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pOwner);
 }

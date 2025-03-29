@@ -211,6 +211,8 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
                 return E_FAIL;
         }
 
+        //그래스랑 튤립 소환 안시켰는데도 레퍼런스카운트 오류남
+
         for (auto pos : vecGrass) {
             if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Grass"), LEVEL_YU, layerName)))
                 return 1;
