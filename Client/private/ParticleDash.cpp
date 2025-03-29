@@ -19,6 +19,8 @@ HRESULT CParticleDash::Initialize_Prototype()
 HRESULT CParticleDash::Initialize(void* pArg)
 {
 	iParticleCount = 6;	
+	IsTimer = true;
+	fEndTimer = 0.4f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{

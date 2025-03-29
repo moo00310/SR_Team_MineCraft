@@ -142,25 +142,7 @@ void CSteve::Move(_float fTimeDelta)
 	//	COLLISION_BLOCK,		
 	//	m_pColliderCom,	
 	//	CCollider_Manager::COLLSIION_CUBE
-	//	);	
-
-	if (m_pRigidbodyCom->isGround())
-	{
-		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
-		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
-			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
-			LEVEL_STATIC,	// 가져올 씬.
-			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
-
-		if (particle != nullptr)
-		{
-			particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-			//m_pGameInstance->Pop(particle);
-		}
-	}
+	//	);		
 	
 	Matrix mat = *m_pTransformCom->Get_WorldMatrix();
 
@@ -169,6 +151,25 @@ void CSteve::Move(_float fTimeDelta)
 		m_pTransformCom->Go_Straight(fTimeDelta);
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
+
+		if (m_pRigidbodyCom->isGround())
+		{
+			int count = m_pGameInstance->GetPoolCount(PROTOTYPE_GAMEOBJECT_PARTICLE_DASH);
+			//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
+			CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
+				PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
+				LEVEL_STATIC,	// 가져올 씬.
+				LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
+
+			if (particle != nullptr)
+			{
+				particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+				particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+				particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+				particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+				//m_pGameInstance->Pop(particle);
+			}
+		}
 	}
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
