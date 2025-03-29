@@ -53,6 +53,7 @@ public:
 
 	//충돌된 큐브 삭제
 	virtual HRESULT Delete_Cube(_float3 fPos);
+	virtual HRESULT Create_Cube(_float3 fPos);
 protected:
 	HRESULT Ready_Components();
 
