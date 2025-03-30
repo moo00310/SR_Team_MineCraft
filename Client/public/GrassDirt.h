@@ -19,10 +19,8 @@ public:
 	HRESULT Delete_Cube(_float3 fPos) override;	
 
 private:
-	// �ı� ��ƼŬ ����.
 	void PlayDestroyParticle(_float3 _position);
 
-	//HRESULT Create_Cube(_float3 fPos) override;
 protected:
 	HRESULT Ready_Components();
 
