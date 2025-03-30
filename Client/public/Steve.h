@@ -35,6 +35,7 @@ public:
 public:
 	void SetPos(_float3 v3);
 	_float3 GetPos();
+	void Knock_back(const _float3& vforce) override;
 
 private:
 	_float   m_fMouseSensor = { 0.03f };
@@ -60,6 +61,7 @@ public:
 	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
+
 };
 
 

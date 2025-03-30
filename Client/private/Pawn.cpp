@@ -16,16 +16,6 @@ void CPawn::Reset_Ainmation()
 	m_skelAnime->InitBone();
 }
 
-void CPawn::Knock_back(const _float3& vforce)
-{
-	_float3 temp = {};
-	D3DXVec3Normalize(&temp, &vforce);
-	temp *= 3.f;
-	temp.y = 4.f;
-
-	m_pRigidbodyCom->Knock_back(temp);
-
-}
 
 void CPawn::Free()
 {
@@ -58,8 +48,8 @@ HRESULT CPawn::Ready_Components()
 	////콜라이더
 	/* For.Com_Collider */
 	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	Desc.vRadius = { .3f, .8f, .3f };
-	Desc.vOffset = { 0.f, 0.8f, 0.f };
+	Desc.vRadius = m_Coll_Size;
+	Desc.vOffset = m_Coll_Offset;
 	Desc.pTransformCom = m_pTransformCom;
 	Desc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),

@@ -34,10 +34,11 @@ public:
 public:
 	CTransform* Get_Transform() { return m_pTransformCom; }
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
+	void		Set_Hp(int hp) { m_Hp = hp; }
 
 public:
 	void Reset_Ainmation();
-	void Knock_back(const _float3& vforce);
+	virtual void Knock_back(const _float3& vforce) = 0;
 
 protected:
 	CTexture* m_pTextureCom = { nullptr };
@@ -65,6 +66,11 @@ protected:
 	_float m_fSpeed = {};
 	_float m_MaxHp = {};
 	_float m_Hp = {};
+
+protected:
+	_float3 m_Coll_Size = {};
+	_float3 m_Coll_Offset = {};
+	_bool isDead = { false };
 
 
 protected:

@@ -33,6 +33,12 @@ HRESULT CMonster::Initialize(void* pArg)
 
 void CMonster::Priority_Update(_float fTimeDelta)
 {
+    if (m_Hp <= 0.f)
+    {
+        isDead = true;
+        m_eCurAnim = DEAD;
+    }
+
 }
 
 void CMonster::Update(_float fTimeDelta)
@@ -40,7 +46,7 @@ void CMonster::Update(_float fTimeDelta)
     // ¶¥ÀÌ¶û Ãæµ¹
     m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
-    if (m_pBehaviorTree)
+    if (m_pBehaviorTree && !isDead)
     {
         m_pBehaviorTree->Excute(this, fTimeDelta);
     }
@@ -88,6 +94,20 @@ void CMonster::Chase_Player(float _fTimeDelta)
     m_pTransformCom->LookAt_XZ(vTarget);
     m_pTransformCom->Chase(_float3(vTarget.x, 0.f, vTarget.z), _fTimeDelta, 1.0f);
 
+}
+
+
+void CMonster::Knock_back(const _float3& vforce)
+{
+    _float3 temp = {};
+    D3DXVec3Normalize(&temp, &vforce);
+    temp *= 3.f;
+    temp.y = 4.f;
+
+    m_pRigidbodyCom->Knock_back(temp);
+
+    _float3 vTarget = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    m_pTransformCom->LookAt_XZ(vTarget);
 }
 
 HRESULT CMonster::Ready_BehaviorTree()

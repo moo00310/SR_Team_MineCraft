@@ -28,6 +28,8 @@ HRESULT CSteve::Initialize(void* pArg)
 	m_MaxHp = 100.f;
 	m_Hp = 100.f;
 
+	m_Coll_Size = { 0.3f, 1.f, 0.3f };
+	m_Coll_Offset = { 0.f, 1.f, 0.f };
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -471,6 +473,16 @@ void CSteve::Turn(_float fTimeDelta)
 	// 몸(Root) 회전
 	m_skelAnime->IkLookAt(fTimeDelta, 0, 2);
 
+}
+
+void CSteve::Knock_back(const _float3& vforce)
+{
+	_float3 temp = {};
+	D3DXVec3Normalize(&temp, &vforce);
+	temp *= 3.f;
+	temp.y = 4.f;
+
+	m_pRigidbodyCom->Knock_back(temp);
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

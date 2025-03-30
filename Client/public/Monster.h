@@ -31,6 +31,7 @@ public:
 	CPawn* Get_Target() { return m_pTargetPawn;}
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	float Comput_Distance();
+	void Knock_back(const _float3& vforce) override;
 
 //BT¿ë °Ù¼Â ÇÔ¼ö
 public:
@@ -72,6 +73,7 @@ protected:
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free();
+
 };
 
 END
