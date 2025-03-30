@@ -22,7 +22,7 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, _bool isWindowed, _uint iWinSizeX
 	// GetDeviceCaps : 장치 정보를 얻어오는 함수
 	// D3DADAPTER_DEFAULT : 정보를 얻으려는 기본 그래픽 카드
 
-	if (FAILED(m_pSDK->GetDeviceCaps(1, D3DDEVTYPE_HAL, &DeviceCaps)))
+	if (FAILED(m_pSDK->GetDeviceCaps(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, &DeviceCaps)))
 	{
 		MSG_BOX("GetDeviceCaps Failed");
 		return E_FAIL;
@@ -45,7 +45,7 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, _bool isWindowed, _uint iWinSizeX
 
 	// CreateDevice : 장치를 제어할 객체 생성
 	// CreateDevice(어떤 그래픽 카드를 제어할 것인가, 어떤 정보로 장치에 접근할 것인가, 장치를 사용할 윈도우 핸들, 동작 방식, 사용 환경, 생성할 객체를 저장할 포인터)
-	if (FAILED(m_pSDK->CreateDevice(1,
+	if (FAILED(m_pSDK->CreateDevice(D3DADAPTER_DEFAULT,
 							D3DDEVTYPE_HAL, hWnd, vp, &d3dpp, &m_pDevice)))
 	{
 		MSG_BOX("CreateDevice Failed");

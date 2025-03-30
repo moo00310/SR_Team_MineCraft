@@ -52,7 +52,10 @@ private:
 	_float              m_fMouseSensor = { 0.03f };
 	int m_bisTPS = { 1 };
 	ANIM m_eCurAnim = { ANIM_END };
-	bool isAttack = { false };
+	bool isAttack = { false };	
+	bool m_IsDashCoolTime = {false};
+	float m_fCurrentDashTime = { 0.f };
+	float m_fCoolTimeDash = { 0.4f };
 
 
 private:
@@ -69,6 +72,12 @@ private:
 	void Motion_Idle(_float fTimeDelta);
 	void Motion_Walk(_float fTimeDelta);
 	void Turn(_float fTimeDelta);
+
+	// 대시 파티클 적용.
+	void OnDashParticle(_float fTimeDelta);
+
+	// 파티클 쿨타임 관련 데이터 초기화.
+	void ResetDashParticle();
 
 public:
 	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

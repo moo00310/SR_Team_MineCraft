@@ -147,30 +147,21 @@ void CSteve::Move(_float fTimeDelta)
 	Matrix mat = *m_pTransformCom->Get_WorldMatrix();
 
 	if (m_pGameInstance->Key_Pressing('W'))
-	{
+	{		
 		m_pTransformCom->Go_Straight(fTimeDelta);
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
 
 		if (m_pRigidbodyCom->isGround())
 		{
-			int count = m_pGameInstance->GetPoolCount(PROTOTYPE_GAMEOBJECT_PARTICLE_DASH);
-			//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
-			CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
-				PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
-				LEVEL_STATIC,	// 가져올 씬.
-				LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
-
-			if (particle != nullptr)
-			{
-				particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-				particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-				particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-				particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-				//m_pGameInstance->Pop(particle);
-			}
-		}
+			OnDashParticle(fTimeDelta);
+		}		
 	}
+	if (m_pGameInstance->Key_Up('W'))
+	{
+		ResetDashParticle();
+	}
+
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
 		m_pTransformCom->Go_Backward(fTimeDelta);
@@ -506,6 +497,47 @@ void CSteve::Turn(_float fTimeDelta)
 	// 몸(Root) 회전
 	m_skelAnime->IkLookAt(fTimeDelta, 0, 2);
 
+}
+
+void CSteve::OnDashParticle(_float fTimeDelta)
+{
+	// 대시 파티클.
+	if (m_IsDashCoolTime == false)
+	{
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
+			LEVEL_STATIC,		// 가져올 씬.
+			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
+
+		if (particle != nullptr)
+		{
+			particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			//m_pGameInstance->Pop(particle);
+		}
+
+		// 쿨타임 진행 처리.
+		m_IsDashCoolTime = true;
+	}
+
+	// 파티클 시간 증가.
+	m_fCurrentDashTime += fTimeDelta;
+
+	if (m_fCurrentDashTime >= m_fCoolTimeDash)
+	{
+		// 파티클 쿨타임 초기화.
+		m_fCurrentDashTime = 0.f;
+		m_IsDashCoolTime = false;
+	}
+}
+
+void CSteve::ResetDashParticle()
+{
+	// 파티클 쿨타임 초기화.
+	m_fCurrentDashTime = 0.f;
+	m_IsDashCoolTime = false;
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
