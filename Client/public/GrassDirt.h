@@ -20,9 +20,10 @@ public:
 	HRESULT Create_Cube(_float3 fPos) override;
 
 private:
-	// ÆÄ±« ÆÄÆ¼Å¬ Àû¿ë.
+	// ï¿½Ä±ï¿½ ï¿½ï¿½Æ¼Å¬ ï¿½ï¿½ï¿½ï¿½.
 	void PlayDestroyParticle(_float3 _position);
 
+	//HRESULT Create_Cube(_float3 fPos) override;
 protected:
 	HRESULT Ready_Components();
 

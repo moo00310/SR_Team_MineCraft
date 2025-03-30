@@ -158,12 +158,9 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 	return !Collision_Infos.empty();  // 충돌된 오브젝트가 있다면 true
 }
 
-
-
-
-CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float& fDist)
+CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float* pDist)
 {
-	fDist = 0.f;
+	if(pDist) *pDist = 0.f;
 
 	// 레이 방향 벡터 정규화
 	_float3 vNormalRayDir;
@@ -245,7 +242,7 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 	// 충돌한 경우
 	if (closestObject)
 	{
-		fDist = closestDist;
+		if (pDist) *pDist = closestDist;
 		m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, maxDistance, true);
 		return closestObject;
 	}
@@ -256,7 +253,7 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 }
 
 
-CGameObject* CCollider_Manager::Ray_Cast_InstancingObject(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, _uint iGroupIndex, _Out_ _float* pDist, _Out_ _float3* pOutCollision_Dir, _Out_ CComponent** ppOutCollider)
+CGameObject* CCollider_Manager::Ray_Cast_InstancedObjects(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, _uint iGroupIndex, _Out_ _float* pDist, _Out_ _float3* pOutCollision_Dir, _Out_ CComponent** ppOutCollider)
 {
 	//CCollider::COLLISION_DIR 6방향임
 	//여기서 레이케스트로 부딫힌 콜라이더의 방향을 알고 싶음
@@ -363,6 +360,112 @@ CGameObject* CCollider_Manager::Ray_Cast_InstancingObject(const _float3& rayOrig
 
 	return nullptr;
 }
+
+CGameObject* CCollider_Manager::Ray_Cast_MultiGroup_InstancedObjects(
+	const _float3& rayOrigin,
+	const _float3& rayDir,
+	_float fMaxDistanc,
+	const std::vector<_uint>& vGroupIndices,  // 여러 개의 그룹을 받을 벡터
+	_Out_ _float* pDist,
+	_Out_ _float3* pOutCollision_Dir,
+	_Out_ CComponent** ppOutCollider)
+{
+	// 초기화
+	if (ppOutCollider)
+		*ppOutCollider = nullptr;
+
+	// 레이 방향 정규화
+	_float3 vNormalRayDir;
+	D3DXVec3Normalize(&vNormalRayDir, &rayDir);
+
+	CGameObject* closestObject = nullptr;
+	_float closestDist = FLT_MAX;
+	CComponent* closestCollider = nullptr;
+
+	// 여러 그룹 검사
+	for (const auto& iGroupIndex : vGroupIndices)
+	{
+		for (auto& iter : m_pColliders[iGroupIndex])
+		{
+			CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter);
+			if (nullptr == pOtherCollider || !pOtherCollider->Get_bColliderActive())
+				continue;
+
+			// AABB 최소, 최대 좌표 계산
+			_float3 minBound{ pOtherCollider->Get_Offset() - pOtherCollider->Get_Radius() };
+			_float3 maxBound{ pOtherCollider->Get_Offset() + pOtherCollider->Get_Radius() };
+
+			// AABB 충돌 검사
+			_float tMin = 0.f, tMax = fMaxDistanc;
+			_bool hit = true;
+
+			for (int i = 0; i < 3; ++i)
+			{
+				if (fabs(vNormalRayDir[i]) < 1e-5f)
+				{
+					if (rayOrigin[i] < minBound[i] || rayOrigin[i] > maxBound[i])
+					{
+						hit = false;
+						break;
+					}
+				}
+				else
+				{
+					_float t1 = (minBound[i] - rayOrigin[i]) / vNormalRayDir[i];
+					_float t2 = (maxBound[i] - rayOrigin[i]) / vNormalRayDir[i];
+					if (t1 > t2) std::swap(t1, t2);
+					tMin = max(tMin, t1);
+					tMax = min(tMax, t2);
+					if (tMin > tMax)
+					{
+						hit = false;
+						break;
+					}
+				}
+			}
+
+			// 가장 가까운 충돌 오브젝트 갱신
+			if (hit && tMin < closestDist)
+			{
+				closestDist = tMin;
+				closestObject = iter->Get_Owner();
+				closestCollider = iter;
+
+				if (pOutCollision_Dir)
+				{
+					_float3 hitNormal = { 0.f, 0.f, 0.f };
+					for (int i = 0; i < 3; ++i)
+					{
+						_float t1 = (minBound[i] - rayOrigin[i]) / vNormalRayDir[i];
+						_float t2 = (maxBound[i] - rayOrigin[i]) / vNormalRayDir[i];
+
+						if (fabs(tMin - t1) < 1e-5f)
+							hitNormal[i] = -1.f;
+						else if (fabs(tMin - t2) < 1e-5f)
+							hitNormal[i] = 1.f;
+					}
+					*pOutCollision_Dir = hitNormal;
+				}
+			}
+		}
+	}
+
+	// 충돌한 경우 반환
+	if (closestObject)
+	{
+		if (pDist)
+			*pDist = closestDist;
+		if (ppOutCollider)
+			*ppOutCollider = closestCollider;
+		m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, fMaxDistanc, true);
+		return closestObject;
+	}
+
+	// 충돌이 없을 경우
+	m_pLineManager->Add_Line(rayOrigin, vNormalRayDir, fMaxDistanc, false);
+	return nullptr;
+}
+
 
 
 void CCollider_Manager::Render()
