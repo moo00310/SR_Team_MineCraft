@@ -20,6 +20,7 @@ HRESULT CCreeper::Initialize(void* pArg)
 {
     m_MonsterType = MT_Creeper;
     m_fAttackDistance = 3.f;
+    m_fSpeed = 1.5f;
 
     __super::Initialize(pArg); 
 
@@ -306,7 +307,15 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
     
     if (m_skelAnime->is_AnimtionEND(Attack))
     {
-        m_eCurAnim = IDLE;
+        //m_eCurAnim = IDLE;
+
+
+
+
+
+        
+        _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+        m_pTargetPawn->Knock_back(temp);
     }
 
 }

@@ -71,6 +71,7 @@ public:
 	void LookAt(const _float3& vTargetPos);
 	void LookAt_XZ(const _float3& vTargetPos);
 	void Chase(const _float3& vTargetPos, _float fTimeDelta, _float fMinDistance = 0.1f);
+	void Chase_XZ(const _float3& vTargetPos, _float fTimeDelta, _float fMinDistance);
 	void Turn(const _float3& vAxis, _float fTimeDelta);
 	void Rotation(const _float3& vAxis, _float fRadian);
 
