@@ -57,11 +57,11 @@ void CSteve::Priority_Update(_float fTimeDelta)
 
 void CSteve::Update(_float fTimeDelta)
 {
-	if (FAILED(m_pCollider_CubeCom->Update_Collider()))
-
+	
 	//1. 키입력에 따른 이동
 	Input_Key(fTimeDelta);
 
+	if (FAILED(m_pCollider_CubeCom->Update_Collider()))
 	{
 		MSG_BOX("Update_Collider()");
 		return;
