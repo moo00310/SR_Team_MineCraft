@@ -81,7 +81,7 @@ void CMonster::Reset_Ainmation()
 
 void CMonster::Nuck_Back()
 {
-    m_pRigidbodyCom->Jump();
+    m_pRigidbodyCom->Jump(1.f);
 }
 
 HRESULT CMonster::Ready_BehaviorTree()

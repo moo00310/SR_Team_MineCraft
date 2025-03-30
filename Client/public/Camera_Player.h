@@ -29,15 +29,15 @@ public:
 private:
     POINT               m_ptOldMousePos = {};
     _float              m_fMouseSensor = {};
-    CTransform* m_pTarget_Transform_Com = { nullptr };
-    CRigidbody* m_pTarget_Rigidbody_Com = { nullptr };
+    CTransform*         m_pTarget_Transform_Com = { nullptr };
+    CRigidbody*         m_pTarget_Rigidbody_Com = { nullptr };
     _float              m_fYaw{};
     _float              m_fPitch{};
     enum class E_CAMERA_MODE { FPS, TPS };
     E_CAMERA_MODE       m_eCameraMode = E_CAMERA_MODE::TPS; // ±âº»°ª TPS
 
 private:
-    _float3             m_vHeadPos{};
+    //_float3             m_vCameraPos{};
     _bool               m_isActiveMouse{ false };
     _float              m_fWalkTime{};
     _float              m_fSpringArmLength{ 5.f };

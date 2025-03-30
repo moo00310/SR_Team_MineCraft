@@ -41,20 +41,19 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	
 	//테스트(Add_Collider_CollisionGroup)
 	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pColliderCom);
-
-
-	 //1. 키입력에 따른 이동
-	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
+	//1. 키입력에 따른 이동
+	Input_Key(fTimeDelta);
+
 	if (FAILED(m_pColliderCom->Update_Collider()))
 	{
 		MSG_BOX("Update_Collider()");
 		return;
 	}
-  
+
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
@@ -196,7 +195,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
-		if (m_pRigidbodyCom->Jump())
+		if (m_pRigidbodyCom->Jump(6.5f))
 		{
 			//m_pGameInstance->Play_Sound("event:/Built_Fail");
 		}
@@ -267,8 +266,8 @@ HRESULT CSteve::Ready_Components()
 	////콜라이더
 	/* For.Com_Collider */
 	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	Desc.vRadius = { .3f, .8f, .3f };
-	Desc.vOffset = { 0.f, 0.8f, 0.f };
+	Desc.vRadius = { 0.3f, 0.95f, 0.3f };
+	Desc.vOffset = { 0.f, 0.95f, 0.f };
 	Desc.pTransformCom = m_pTransformCom;
 	Desc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
@@ -289,7 +288,7 @@ HRESULT CSteve::Ready_Components()
 
 	//리지드바디
 	/* For.Com_Rigidbody */
-	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pColliderCom, 1.f };
+	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pColliderCom, 80.f };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
 		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
 		return E_FAIL;

@@ -37,23 +37,35 @@ public:
 		COLLISION_TYPE eCollisionType
 	);
 
+	//일반 버전
 	CGameObject* Ray_Cast(
 		const _float3& rayOrigin,					//레이 시작점
 		const _float3& rayDir,						//레이 방향
 		_float fMaxDistanc,							//최대 충돌 범위
 		_uint iGroupIndex,							//충돌 할 그룹
-		_Out_ _float& fDist						//충돌 지점과의 거리
+		_Out_ _float* pDist							//충돌 지점과의 거리
 	);
 
-	//인스턴싱된 블럭들은 트랜스폼으 이용해서 충돌 처리불가
-	CGameObject* Ray_Cast_InstancingObject(
+	//인스턴싱 오브젝트 버전
+	CGameObject* Ray_Cast_InstancedObjects(
 		const _float3& rayOrigin,					//레이 시작점
 		const _float3& rayDir,						//레이 방향
 		_float fMaxDistanc,							//최대 충돌 범위
 		_uint iGroupIndex,							//충돌 할 그룹
-		_Out_ _float* fDist = nullptr,						//충돌 지점과의 거리
-		_Out_ _float3* pOutCollision_Dir = nullptr, 
-		_Out_ CComponent** ppOutCollider = nullptr
+		_Out_ _float* fDist = nullptr,				//충돌 지점과의 거리
+		_Out_ _float3* pOutCollision_Dir = nullptr, //충돌 방향
+		_Out_ CComponent** ppOutCollider = nullptr	//충돌한 콜라이더
+	);
+
+	//인스턴싱 오브젝트 버전
+	CGameObject* Ray_Cast_MultiGroup_InstancedObjects(
+		const _float3& rayOrigin,					//레이 시작점
+		const _float3& rayDir,						//레이 방향
+		_float fMaxDistanc,							//최대 충돌 범위
+		const vector<_uint>& vGroupIndices,			//충돌 할 그룹 벡터
+		_Out_ _float* pDist = nullptr,				//충돌 지점과의 거리
+		_Out_ _float3* pOutCollision_Dir = nullptr,	//충돌 방향
+		_Out_ CComponent** ppOutCollider = nullptr	//충돌한 콜라이더
 	);
 
 	void  Render();
