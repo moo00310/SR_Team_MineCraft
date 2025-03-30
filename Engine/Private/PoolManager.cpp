@@ -32,12 +32,12 @@ CPoolManager* CPoolManager::Create()
 	return pInstance;
 }
 
-void CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
+HRESULT CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
 {	
 	// 재귀 함수 종료.
 	if (count <= 0)
 	{
-		return;
+		return S_OK;
 	}
 
 	// 오브젝트 매니저에 생성.
@@ -47,7 +47,7 @@ void CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPro
 	if (obj == nullptr)
 	{
 		MSG_BOX("Failed to PoolManager CreatePool !!!");
-		return;
+		return E_FAIL;
 	}	
 
 	// 비활성화.
