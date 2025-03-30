@@ -183,9 +183,6 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 	return S_OK;
 }
 
-
-
-
 _bool CRigidbody::Jump()
 {
 	if (m_isGround) // 바닥에 닿아 있을 때만 점프 가능
@@ -197,6 +194,17 @@ _bool CRigidbody::Jump()
 	}
 
 	return false;
+}
+
+void CRigidbody::Knock_back(const _float3& vfroce)
+{
+	if (!m_isKnockBack) 
+	{
+		m_vVelocity.x = vfroce.x;
+		m_vVelocity.y = vfroce.y;
+		m_vVelocity.z = vfroce.z;
+		m_isKnockBack = true;
+	}
 }
 
 void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
@@ -232,6 +240,13 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 
 		if(isFalling())
 			m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
+
+		if (m_isKnockBack)
+		{
+			m_vVelocity.x = 0.f;
+			m_vVelocity.z = 0.f;
+			m_isKnockBack = false;
+		}
 
 		m_isGround = true;
 	}

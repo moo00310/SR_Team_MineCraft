@@ -79,9 +79,11 @@ void CMonster::Reset_Ainmation()
     //m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 }
 
-void CMonster::Nuck_Back()
+void CMonster::Knock_back(const _float3& vforce)
 {
-    m_pRigidbodyCom->Jump();
+    _float3 temp = vforce * 6.f;
+    temp.y = 4.f;
+    m_pRigidbodyCom->Knock_back(temp);
 }
 
 HRESULT CMonster::Ready_BehaviorTree()

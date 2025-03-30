@@ -39,7 +39,7 @@ public:
 
 public:
 	void Reset_Ainmation();
-	void Nuck_Back();
+	void Knock_back(const _float3& vforce);
 
 protected:
 	CTexture* m_pTextureCom = { nullptr };
@@ -59,8 +59,6 @@ protected:
 	ANIM m_eCurAnim = { ANIM_END };
 	MonsterType m_MonsterType = { MT_END };
 	float m_fAttackDistance = {};
-	float m_fNuckback = {};
-	bool m_isNuckback = {false};
 
 protected:
 	virtual HRESULT Ready_Components();

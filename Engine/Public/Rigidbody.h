@@ -29,6 +29,8 @@ public:
 	_bool	Jump();
 	const _float3& Get_Velocity() { return m_vReadOnly_Velocity; }
 	_bool	isGround() { return m_isGround; }
+	void Knock_back(const _float3& vfroce);
+
 private:
 	void	Fall_With_Gravity(_float fTimeDelta);
 	_bool	isFalling() { return m_vVelocity.y < 0.f; };
@@ -47,6 +49,7 @@ private:
 	//มกวม
 private:
 	_bool					m_isGround{ false };
+	_bool					m_isKnockBack = {false};
 	_float					m_fJumpForce{ 6.f };
 
 public:
