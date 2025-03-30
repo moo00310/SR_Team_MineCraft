@@ -1,5 +1,7 @@
 #pragma once
 #include "BreakableCube.h"
+#include "ParticleSystem.h"
+
 class CGrassDirt : public CBreakableCube
 {
 protected:
@@ -16,6 +18,11 @@ public:
 	virtual HRESULT Render()override;
 	HRESULT Delete_Cube(_float3 fPos) override;
 	HRESULT Create_Cube(_float3 fPos) override;
+
+private:
+	// 파괴 파티클 적용.
+	void PlayDestroyParticle(_float3 _position);
+
 protected:
 	HRESULT Ready_Components();
 
