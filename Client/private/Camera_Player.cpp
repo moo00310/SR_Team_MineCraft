@@ -215,7 +215,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     }
 
 
-    if (m_pGameInstance->Key_Down(VK_ESCAPE))
+    if (m_pGameInstance->Key_Down(VK_ESCAPE) || m_pGameInstance->Key_Down('E'))
     {
         if (m_isActiveMouse)
         {

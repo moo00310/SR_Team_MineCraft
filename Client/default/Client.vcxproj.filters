@@ -262,6 +262,12 @@
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi">
       <UniqueIdentifier>{6793b5d6-1d4e-436c-ba44-72ca082eac6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Mouse">
+      <UniqueIdentifier>{b87cc9f4-0248-4b6b-b755-092782f2f18f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\07.Mouse_UI">
+      <UniqueIdentifier>{1ae29a47-5cfd-4a67-a6bd-0e5e0016d828}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -572,6 +578,12 @@
     <ClInclude Include="..\public\Zombi.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Mouse.h">
+      <Filter>05.Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mouse_Item.h">
+      <Filter>03.UI\07.Mouse_UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -868,6 +880,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Zombi.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mouse.cpp">
+      <Filter>05.Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mouse_Item.cpp">
+      <Filter>03.UI\07.Mouse_UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -63,6 +63,7 @@
 #include "PlayerExp_Back.h"
 #include "PlayerExp.h"
 #include "PlayerLevel.h"
+#include "Mouse_Item.h"
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -560,6 +561,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_PlayerExp*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_PlayerLevel"),
 		CPlayerLevel::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Mouse_item*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_item"),
+		CMouse_Item::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	/*================================================================================================*/
 

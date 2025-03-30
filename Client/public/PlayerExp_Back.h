@@ -27,10 +27,8 @@ public:
 
 private:
 	HRESULT Ready_Components();
-
-private:
-	void	Begin();
-	void	End();
+	HRESULT	SetUp_RenderState();
+	HRESULT	Reset_RenderState();
 
 private:
 	UIOBJECT_DESC Desc{};

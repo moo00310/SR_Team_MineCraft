@@ -1,5 +1,6 @@
 #include "Item.h"
 #include "UI_Mgr.h"
+#include "Mouse.h"
 
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
@@ -61,6 +62,63 @@ void CItem::Update(_float fTimeDelta)
 
 void CItem::Late_Update(_float fTimeDelta)
 {
+    if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
+    {
+        return;
+    }
+    
+    CMouse* pMouse = CMouse::Get_Instance();
+
+    /* 마우스와 아이템 슬롯 간 충돌 체크 */
+    RECT rcRect;
+    SetRect(&rcRect, (int)(Desc.fX - Desc.fSizeX * 0.5f), (int)(Desc.fY - Desc.fSizeY * 0.5f),
+        (int)(Desc.fX + Desc.fSizeX * 0.5f), (int)(Desc.fY + Desc.fSizeY * 0.5f));
+
+    POINT ptMouse;
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    CUI_Mgr* pUI_Mgr = CUI_Mgr::Get_Instance();
+
+    auto mouse = pUI_Mgr->Get_MouseItemlist()->begin();
+
+    /* 마우스 클릭 시 아이템 선택 및 교체 */
+    /* 마우스가 아이템 슬롯 위에 있고, 좌클릭이 떼어졌을 때 실행*/
+
+    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON) && m_iSlotIndexNum >= 9)
+    {
+        
+        if (pMouse->Get_Picked() == false)
+        {
+            /* 아이템 타입 저장*/
+            pMouse->Set_ItemID(m_ItemID);
+            /* 아이템 텍스쳐 번호 저장*/
+            pMouse->Set_ItemName(m_ItemName);
+            /* 아이템이 원래 있던 인벤토리 슬롯 번호 저장*/
+            pMouse->Set_SlotIndex(m_iSlotIndexNum);
+            /* 마우스가 아이템을 들고 있는 상태로 변경 */
+            pMouse->Set_Picked(true);
+            /* 현재 슬롯에 있는 아이템 개수 저장 */
+            pMouse->Set_ItemCount(m_iItemCount);
+
+            /* 마우스가 아이템을 들고 있는 상태로 저장*/
+            (*mouse)->Set_Check(true);
+            /* 마우스에 표시할 아이템 이미지 설정 */
+            (*mouse)->Set_ItemName(m_ItemName);
+
+            Set_ItemName(ITEMNAME_END);
+        }
+        else
+        {
+           
+        }
+
+
+    }
+
+
+
+
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
 		return;
 }
@@ -73,7 +131,7 @@ HRESULT CItem::Render()
 		return S_OK;
 	}
 
-	if (FAILED(m_pTextureCom->Bind_Resource(m_ItemType)))
+	if (FAILED(m_pTextureCom->Bind_Resource(m_ItemName)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))

@@ -76,13 +76,13 @@ HRESULT CPlayerExp_Back::Render()
         return E_FAIL;
 
     __super::Begin();
-    Begin();
+    SetUp_RenderState();
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
     __super::End();
-    End();
+    Reset_RenderState();
 
     return S_OK;
 }
@@ -104,16 +104,20 @@ HRESULT CPlayerExp_Back::Ready_Components()
     return S_OK;
 }
 
-void CPlayerExp_Back::Begin()
+HRESULT CPlayerExp_Back::SetUp_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 160);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+    return S_OK;
 }
 
-void CPlayerExp_Back::End()
+HRESULT CPlayerExp_Back::Reset_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+    return S_OK;
 }
 
 CPlayerExp_Back* CPlayerExp_Back::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

@@ -68,7 +68,7 @@ HRESULT CPlayerHunger::Render()
 		return E_FAIL;
 
 	__super::Begin();
-    Begin();
+    SetUp_RenderState();
 
 	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
 		return E_FAIL;
@@ -101,7 +101,7 @@ HRESULT CPlayerHunger::Render()
 
     m_pShaderCom->End();
 	__super::End();
-    End();
+    Reset_RenderState();
 
 	return S_OK;
 }
@@ -127,16 +127,20 @@ HRESULT CPlayerHunger::Ready_Components()
     return S_OK;
 }
 
-void CPlayerHunger::Begin()
+HRESULT CPlayerHunger::SetUp_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 160);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+    
+    return S_OK;
 }
 
-void CPlayerHunger::End()
+HRESULT CPlayerHunger::Reset_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+    return S_OK;
 }
 
 CPlayerHunger* CPlayerHunger::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

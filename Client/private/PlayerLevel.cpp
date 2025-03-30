@@ -126,18 +126,6 @@ HRESULT CPlayerLevel::Ready_Components()
     return S_OK;
 }
 
-void CPlayerLevel::Begin()
-{
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 110);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-}
-
-void CPlayerLevel::End()
-{
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-}
-
 CPlayerLevel* CPlayerLevel::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
     CPlayerLevel* pInstance = new CPlayerLevel(pGraphic_Device);

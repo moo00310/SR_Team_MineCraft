@@ -36,8 +36,6 @@ public:
 
 private:
 	HRESULT Ready_Components();
-	void	Begin();
-	void	End();
 
 private:
 	_int*	m_iLevelCount = { nullptr };

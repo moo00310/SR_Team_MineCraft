@@ -20,6 +20,7 @@ HRESULT CCheckBox::Initialize(void* pArg)
 
     Desc.fSizeX = 85.f;
     Desc.fSizeY = 100.f;
+    
     Desc.fX = 360.f;
     Desc.fY = 672.f;
 

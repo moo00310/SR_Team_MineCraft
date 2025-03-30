@@ -26,27 +26,32 @@ public:
 	virtual HRESULT Render()override;
 
 public:
-	void Set_ItemType(ITEMNAME itemType) { m_ItemType = itemType; }
+	ITEMNAME	Get_ItemName() { return m_ItemName; }
+	ITEMID		Get_ItemID() { return m_ItemID; }
+	_int		Get_SlotIndex() { return m_iSlotIndexNum; }
+	_int		Get_ItemCount() { return m_iItemCount; }
 
 public:
-	ITEMNAME	Get_ItemType() { return m_ItemType; }
-	_int		Get_SlotIndex() { return m_iSlotIndexNum; }
+	void Set_ItemName(ITEMNAME _ItemName) { m_ItemName = _ItemName; }
+	void Set_ItemCount(_int _itemCount) { m_iItemCount = _itemCount; }
 
 private:
 	HRESULT Ready_Components();
 
 private:
-	CTexture* m_pTextureCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	CTexture*			m_pTextureCom = { nullptr };
+	CTransform*			m_pTransformCom = { nullptr };
+	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
 
 private:
-	UIOBJECT_DESC Desc{};
-	ITEMNAME m_ItemType = ITEMNAME_END;
+	UIOBJECT_DESC		Desc{};
+	ITEMNAME			m_ItemName = ITEMNAME_END;
+	ITEMID				m_ItemID = ITEMID_END;
 
 private:
 	_int*		m_iSlotIndex = { nullptr };
 	_int		m_iSlotIndexNum;
+	_int		m_iItemCount = { 0 };
 	_bool		m_bTest = {true};
 
 public:
