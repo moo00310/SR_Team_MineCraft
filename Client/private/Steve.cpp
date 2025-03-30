@@ -154,7 +154,7 @@ void CSteve::Move(_float fTimeDelta)
 
 		if (m_pRigidbodyCom->isGround())
 		{
-			OnDashParticle(fTimeDelta);
+			PlayDashParticle(fTimeDelta);
 		}		
 	}
 	if (m_pGameInstance->Key_Up('W'))
@@ -499,7 +499,7 @@ void CSteve::Turn(_float fTimeDelta)
 
 }
 
-void CSteve::OnDashParticle(_float fTimeDelta)
+void CSteve::PlayDashParticle(_float fTimeDelta)
 {
 	// 대시 파티클.
 	if (m_IsDashCoolTime == false)
@@ -509,14 +509,17 @@ void CSteve::OnDashParticle(_float fTimeDelta)
 			LEVEL_STATIC,		// 가져올 씬.
 			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
 
-		if (particle != nullptr)
+		// 파티클 풀 객체 null 체크.
+		if (particle == nullptr)
 		{
-			particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-			//m_pGameInstance->Pop(particle);
+			return;
 		}
+
+		// 파티클 적용.
+		particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+		particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+		particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+		particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
 		// 쿨타임 진행 처리.
 		m_IsDashCoolTime = true;

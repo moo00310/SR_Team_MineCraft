@@ -74,7 +74,7 @@ private:
 	void Turn(_float fTimeDelta);
 
 	// 대시 파티클 적용.
-	void OnDashParticle(_float fTimeDelta);
+	void PlayDashParticle(_float fTimeDelta);
 
 	// 파티클 쿨타임 관련 데이터 초기화.
 	void ResetDashParticle();
