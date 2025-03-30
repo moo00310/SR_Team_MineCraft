@@ -41,20 +41,19 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	
 	//테스트(Add_Collider_CollisionGroup)
 	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pColliderCom);
-
-
-	 //1. 키입력에 따른 이동
-	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
+	//1. 키입력에 따른 이동
+	Input_Key(fTimeDelta);
+
 	if (FAILED(m_pColliderCom->Update_Collider()))
 	{
 		MSG_BOX("Update_Collider()");
 		return;
 	}
-  
+
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 

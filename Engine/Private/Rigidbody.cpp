@@ -201,7 +201,7 @@ _bool CRigidbody::Jump(_float fJumpForce)
 void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 {
 	// 1. 중력 가속도 정의
-	const _float3 GRAVITY = { 0.0f, -18.81f, 0.0f };
+	const _float3 GRAVITY = { 0.0f, -20.f, 0.0f };
 
 	// 2. 질량이 0이면 중력 적용 안함
 	if (m_fMass == 0.0f) return;
