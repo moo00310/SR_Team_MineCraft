@@ -8,6 +8,7 @@
 #include "PlayerHunger.h"
 #include "PlayerExp.h"
 #include "PlayerLevel.h"
+#include "Mouse_Item.h"
 
 BEGIN(Client)
 
@@ -42,25 +43,28 @@ public:
 
 	list<CPlayerHP*>*				Get_PlayerHPlist(void)			{ return &m_PlayerHPlist; }
 	list<CPlayerHunger*>*			Get_PlayerHungerlist(void)		{ return &m_PlayerHungerlist; }
-
 	list<CPlayerExp*>*				Get_PlayerExplist(void)			{ return &m_PlayerExplist; }
 	list<CPlayerLevel*>*			Get_PlayerLevellist(void)		{ return &m_PlayerLevellist; }
+	list<CMouse_Item*>*				Get_MouseItemlist(void)			{ return &m_MouseItemlist; }
 
 private:
 	_float	m_fHungerTime = { 0.f };
 	_int	m_iallZeroCount = { 0 };
 
 private:
-	vector<CItem*>			m_vecItemlist;
-	list<CMainInventory*>	m_MainInventorylist;
-	list<CSubInventory*>	m_SubInventorylist;
-	list<CInventory_Back*>	m_InventoryBacklist;
-
 	/* Player State 관련 */
 	list<CPlayerHP*>			m_PlayerHPlist;
 	list<CPlayerHunger*>		m_PlayerHungerlist;
 	list<CPlayerExp*>			m_PlayerExplist;
 	list<CPlayerLevel*>			m_PlayerLevellist;
+
+
+	/* Inventory 관련 */
+	vector<CItem*>			m_vecItemlist;
+	list<CMainInventory*>	m_MainInventorylist;
+	list<CSubInventory*>	m_SubInventorylist;
+	list<CInventory_Back*>	m_InventoryBacklist;
+	list<CMouse_Item*>		m_MouseItemlist;
 
 public:
 	virtual void Free();

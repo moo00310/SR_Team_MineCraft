@@ -36,8 +36,8 @@ public:
 
 private:
 	HRESULT Ready_Components();
-	void	Begin();
-	void	End();
+	HRESULT	SetUp_RenderState();
+	HRESULT	Reset_RenderState();
 
 private:
 	_int*	m_iExpCount = { nullptr };

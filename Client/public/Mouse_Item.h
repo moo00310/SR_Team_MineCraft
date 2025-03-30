@@ -10,12 +10,13 @@ END
 
 BEGIN(Client)
 
-class CPlayerHP final : public CUIObject
+
+class CMouse_Item final : public CUIObject
 {
 private:
-	CPlayerHP(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CPlayerHP(CPlayerHP& Prototype);
-	virtual ~CPlayerHP() = default;
+	CMouse_Item(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CMouse_Item(CMouse_Item& Prototype);
+	virtual ~CMouse_Item() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -26,20 +27,16 @@ public:
 	virtual HRESULT Render()override;
 
 public:
-	_int Get_TextureNum() { return m_iTextureNum;}
+	_bool		Get_Check() { return m_bCheck; }
 
 public:
-	void Set_TextureNum(_int TextureNum) { m_iTextureNum = TextureNum; }
+	void Set_Check(_bool _bCheck)			{ m_bCheck = _bCheck; }
+	void Set_ItemName(ITEMNAME _ItemName)	{ m_ItemName = _ItemName; }
 
 private:
 	HRESULT Ready_Components();
-	HRESULT SetUp_RenderState();
-	HRESULT Reset_RenderState();
-
-private:
-	_int*	m_iHpCount = { nullptr };
-	_int	m_iHpIndex;
-	_int	m_iTextureNum;
+	HRESULT	SetUp_RenderState();
+	HRESULT	Reset_RenderState();
 
 private:
 	UIOBJECT_DESC Desc{};
@@ -49,9 +46,14 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
+private:
+	_bool		m_bCheck = { false };
+
+	ITEMNAME	m_ItemName = ITEMNAME_END;
+
 public:
-	static CPlayerHP* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
-	virtual CGameObject* Clone(void* pArg) override;
+	static CMouse_Item* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual CGameObject* Clone(void* pArg = nullptr) override;
 	virtual void Free();
 };
 
