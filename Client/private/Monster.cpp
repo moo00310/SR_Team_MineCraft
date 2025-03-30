@@ -43,7 +43,7 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-    // ¶¥ÀÌ¶û Ãæµ¹
+    // ë•…ì´ëž‘ ì¶©ëŒ
     m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
     if (m_pBehaviorTree && !isDead)
@@ -99,6 +99,7 @@ void CMonster::Chase_Player(float _fTimeDelta)
 
 void CMonster::Knock_back(const _float3& vforce)
 {
+
     _float3 temp = {};
     D3DXVec3Normalize(&temp, &vforce);
     temp *= 3.f;
@@ -108,35 +109,36 @@ void CMonster::Knock_back(const _float3& vforce)
 
     _float3 vTarget = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
     m_pTransformCom->LookAt_XZ(vTarget);
+
 }
 
 HRESULT CMonster::Ready_BehaviorTree()
 {
-    // ·çÆ® ³ëµå: Selector (ÀûÀ» ¹ß°ßÇÏ¸é µû¶ó°¡°í, ¾Æ´Ï¸é ¼øÂû)
+    // ë£¨íŠ¸ ë…¸ë“œ: Selector (ì ì„ ë°œê²¬í•˜ë©´ ë”°ë¼ê°€ê³ , ì•„ë‹ˆë©´ ìˆœì°°)
     CSelectorNode* pRoot = new CSelectorNode(L"Root");
 
-    // Á¶°Ç °Ë»ç ³ëµå: ÀûÀÌ ÀÖ´ÂÁö È®ÀÎ
+    // ì¡°ê±´ ê²€ì‚¬ ë…¸ë“œ: ì ì´ ìžˆëŠ”ì§€ í™•ì¸
     CBTTask_DetectEnemy* pDetectEnemy = new CBTTask_DetectEnemy;
 
-    // Çàµ¿³ëµå
+    // í–‰ë™ë…¸ë“œ
     CBTTask_Chase* pChase = new CBTTask_Chase;
     CBTTask_Patrol* pPatrol = new CBTTask_Patrol;
     CBTTask_Attack* pAttack = new CBTTask_Attack;
 
-    // °ø°Ý, Ãß°Ý,
+    // ê³µê²©, ì¶”ê²©,
     CBTDistanceBranch* pDistanceBranch = new CBTDistanceBranch;
     pDistanceBranch->Set_Actions(pAttack, pChase, m_fAttackDistance);
 
-    // ½ÃÄö½º
+    // ì‹œí€€ìŠ¤
     CSequenceNode* pChaseSequence = new CSequenceNode(L"ChaseSequence");
     pChaseSequence->Add_Node(pDetectEnemy);
     pChaseSequence->Add_Node(pDistanceBranch);
 
-    // ·çÆ® ³ëµå¿¡ Ãß°¡
+    // ë£¨íŠ¸ ë…¸ë“œì— ì¶”ê°€
     pRoot->Add_Node(pChaseSequence);
     pRoot->Add_Node(pPatrol);
 
-    // ÃÖÁ¾ Æ®¸® ¼³Á¤
+    // ìµœì¢… íŠ¸ë¦¬ ì„¤ì •
     m_pBehaviorTree = pRoot;
 
     return S_OK;
@@ -146,7 +148,7 @@ HRESULT CMonster::Ready_Components()
 {
     __super ::Ready_Components();
 
-    // BT ¿¬°á
+    // BT ì—°ê²°
     if(FAILED(Ready_BehaviorTree()))
         return E_FAIL;
 

@@ -50,19 +50,23 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	//테스트(Add_Collider_CollisionGroup)
 	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pCollider_CubeCom);
 
-
 	 //1. 키입력에 따른 이동
 	Input_Key(fTimeDelta);
+
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
 	if (FAILED(m_pCollider_CubeCom->Update_Collider()))
+
+	//1. 키입력에 따른 이동
+	Input_Key(fTimeDelta);
+
 	{
 		MSG_BOX("Update_Collider()");
 		return;
 	}
-  
+
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
@@ -204,7 +208,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
-		if (m_pRigidbodyCom->Jump())
+		if (m_pRigidbodyCom->Jump(6.5f))
 		{
 			//m_pGameInstance->Play_Sound("event:/Built_Fail");
 		}
@@ -257,7 +261,6 @@ HRESULT CSteve::Ready_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
 		TEXT("m_pVIBufferCom_Arm_L"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[5]))))
 		return E_FAIL;
-
 
 	__super::Ready_Components();
 

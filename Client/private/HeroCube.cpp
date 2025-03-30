@@ -56,18 +56,18 @@ void CHeroCube::Priority_Update(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Pressing(VK_SPACE))
 	{
-		m_pRigidbodyCom->Jump();
+		m_pRigidbodyCom->Jump(1.f);
 	}
 }
 
 void CHeroCube::Update(_float fTimeDelta)
 {
-	_float fRange;
+	//_float fRange;
 	_bool isRayHit{ false };
 	_float3 vPosition = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 	D3DXVec3Normalize(&vLook, &vLook);
-	isRayHit = m_pGameInstance->Ray_Cast(vPosition, vLook, 10.f, COLLISION_BLOCK, fRange);
+	isRayHit = m_pGameInstance->Ray_Cast_InstancedObjects(vPosition, vLook, 10.f, COLLISION_BLOCK/*, fRange*/);
 	if (isRayHit)
 	{
 		int a = 10;
