@@ -20,6 +20,12 @@ HRESULT CCreeper::Initialize(void* pArg)
 {
     m_MonsterType = MT_Creeper;
     m_fAttackDistance = 3.f;
+    m_fSpeed = 1.5f;
+    m_Hp = 100.f;
+    m_MaxHp = 100.f;
+
+    m_Coll_Size = { 0.3f, 0.8f, 0.3f };
+    m_Coll_Offset = { 0.f, 0.8f, 0.f };
 
     __super::Initialize(pArg); 
 
@@ -37,6 +43,8 @@ HRESULT CCreeper::Initialize(void* pArg)
 
 void CCreeper::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
+
     m_pGameInstance->Add_CollisionGroup(COLLISION_MONSTER, this);
 }
 
@@ -58,7 +66,7 @@ HRESULT CCreeper::Render()
 {
     __super::Render();
 
-    //m_pCollider_CubeCom->Render_ColliderBox(false);
+    m_pCollider_CubeCom->Render_Collider(true);
 
     return S_OK;
 }
@@ -309,7 +317,10 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
         // 폭발 파티클.
         PlayExplosionParticle();
 
-        m_eCurAnim = IDLE;
+        //m_eCurAnim = IDLE;
+        
+        _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+        m_pTargetPawn->Knock_back(temp);
     }
 
 }
@@ -320,8 +331,7 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
 
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
-        // 맞아 죽었을 때 
-        m_eCurAnim = IDLE;
+        m_isDestroyed = true;
     }
 }
 

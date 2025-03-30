@@ -28,7 +28,7 @@ HRESULT CRigidbody::Initialize(void* pArg)
 	if (!m_pTransform)
 		return E_FAIL;
 
-	//Collider ÀÖ¾îµµµÇ°í ¾ø¾îµµ µÇ°í
+	//Collider ìˆì–´ë„ë˜ê³  ì—†ì–´ë„ ë˜ê³ 
 	m_pCollider = Desc.pCollider;
 	if (m_pCollider)
 	{
@@ -41,24 +41,24 @@ HRESULT CRigidbody::Initialize(void* pArg)
 	return S_OK;
 }
 
-//#include <algorithm> // std::clamp »ç¿ë
+//#include <algorithm> // std::clamp ì‚¬ìš©
 
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
-	// µ¨Å¸Å¸ÀÓÀÌ ³Ê¹« Å©¸é ¸®ÅÏ (¿¹: 0.2f ÀÌ»óÀÏ °æ¿ì)
+	// ë¸íƒ€íƒ€ì„ì´ ë„ˆë¬´ í¬ë©´ ë¦¬í„´ (ì˜ˆ: 0.2f ì´ìƒì¼ ê²½ìš°)
 	const _float MAX_DELTA_TIME = 0.2f;
 	if (fTimeDelta > MAX_DELTA_TIME)
 	{
-		return S_OK;  // µ¨Å¸Å¸ÀÓÀÌ ³Ê¹« Å©¸é Ã³¸®ÇÏÁö ¾Ê°í ¸®ÅÏ
+		return S_OK;  // ë¸íƒ€íƒ€ì„ì´ ë„ˆë¬´ í¬ë©´ ì²˜ë¦¬í•˜ì§€ ì•Šê³  ë¦¬í„´
 	}
 
-	/*¾Æ ÀÌ°Íµµ Ãæµ¹¸ÕÀú Ã¼Å©ÇÏ°í ¶³¾îÁö´Â ºÎºĞÀ» µÚ·Î µÎ°í ½ÍÀºµ¥ Á¡ÇÁ°¡ ¾ÈµÇ¼­... ÀÏ´Ü ³ÀµÒ*/
+	/*ì•„ ì´ê²ƒë„ ì¶©ëŒë¨¼ì € ì²´í¬í•˜ê³  ë–¨ì–´ì§€ëŠ” ë¶€ë¶„ì„ ë’¤ë¡œ ë‘ê³  ì‹¶ì€ë° ì í”„ê°€ ì•ˆë˜ì„œ... ì¼ë‹¨ ëƒ…ë‘ */
 
 	m_isGround = false;
 
 	Fall_With_Gravity(fTimeDelta);
 
-	// Ãæµ¹ °Ë»ç
+	// ì¶©ëŒ ê²€ì‚¬
 	if (m_pCollider)
 	{
 		list<CCollider_Cube::COLLISION_INFO> Collision_Infos;
@@ -111,10 +111,10 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 				}
 			}
 
-			// ÇöÀç À§Ä¡ º¸Á¤ (ÃÖ´ë ¡¾0.5f Á¦ÇÑ)
+			// í˜„ì¬ ìœ„ì¹˜ ë³´ì • (ìµœëŒ€ Â±0.5f ì œí•œ)
 			_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 
-			//const _float fClamp = 0.5f;//ÀÇ¹Ì ¾ø´Â µí???
+			//const _float fClamp = 0.5f;//ì˜ë¯¸ ì—†ëŠ” ë“¯???
 
 			//_float fTotalDepth_Y = clamp(fMinDepth_Y + fMaxDepth_Y, -fClamp, fClamp);
 			//vPosition.y -= fTotalDepth_Y;
@@ -142,7 +142,7 @@ HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _flo
 	m_isGround = false;
 
 	CGameObject* pGameObject{ nullptr };
-	//·¹ÀÌÄÉ½ºÆ®·Î ¶¥ °Ë»ç
+	//ë ˆì´ì¼€ìŠ¤íŠ¸ë¡œ ë•… ê²€ì‚¬
 	pGameObject = m_pGameInstance->Ray_Cast(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup);
 	if (pGameObject)
 	{
@@ -165,7 +165,7 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 
 	CGameObject* pGameObject{ nullptr };
 
-	//·¹ÀÌÄÉ½ºÆ®·Î ¶¥ °Ë»ç
+	//ë ˆì´ì¼€ìŠ¤íŠ¸ë¡œ ë•… ê²€ì‚¬
 	pGameObject = m_pGameInstance->Ray_Cast_InstancedObjects(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup);
 	if (pGameObject)
 	{
@@ -183,14 +183,12 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 }
 
 
-
-
 _bool CRigidbody::Jump(_float fJumpForce)
 {
-	if (m_isGround) // ¹Ù´Ú¿¡ ´ê¾Æ ÀÖÀ» ¶§¸¸ Á¡ÇÁ °¡´É
+	if (m_isGround) // ë°”ë‹¥ì— ë‹¿ì•„ ìˆì„ ë•Œë§Œ ì í”„ ê°€ëŠ¥
 	{
-		m_vVelocity.y = fJumpForce; // YÃà ¹æÇâÀ¸·Î Èû Ãß°¡
-		m_isGround = false; // °øÁß¿¡ ¶° ÀÖ´Â »óÅÂ·Î º¯°æ
+		m_vVelocity.y = fJumpForce; // Yì¶• ë°©í–¥ìœ¼ë¡œ í˜ ì¶”ê°€
+		m_isGround = false; // ê³µì¤‘ì— ë–  ìˆëŠ” ìƒíƒœë¡œ ë³€ê²½
 
 		return true;
 	}
@@ -198,22 +196,33 @@ _bool CRigidbody::Jump(_float fJumpForce)
 	return false;
 }
 
+void CRigidbody::Knock_back(const _float3& vfroce)
+{
+	if (!m_isKnockBack) 
+	{
+		m_vVelocity.x = vfroce.x;
+		m_vVelocity.y = vfroce.y;
+		m_vVelocity.z = vfroce.z;
+		m_isKnockBack = true;
+	}
+}
+
 void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 {
-	// 1. Áß·Â °¡¼Óµµ Á¤ÀÇ
+	// 1. ì¤‘ë ¥ ê°€ì†ë„ ì •ì˜
 	const _float3 GRAVITY = { 0.0f, -20.f, 0.0f };
 
-	// 2. Áú·®ÀÌ 0ÀÌ¸é Áß·Â Àû¿ë ¾ÈÇÔ
+	// 2. ì§ˆëŸ‰ì´ 0ì´ë©´ ì¤‘ë ¥ ì ìš© ì•ˆí•¨
 	if (m_fMass == 0.0f) return;
 
-	// 3. ¼Óµµ ¾÷µ¥ÀÌÆ® (Áß·Â °¡¼Óµµ¸¸ Àû¿ë)
+	// 3. ì†ë„ ì—…ë°ì´íŠ¸ (ì¤‘ë ¥ ê°€ì†ë„ë§Œ ì ìš©)
 	m_vVelocity.y += GRAVITY.y * fTimeDelta;
 
-	// 4. À§Ä¡ ¾÷µ¥ÀÌÆ®
+	// 4. ìœ„ì¹˜ ì—…ë°ì´íŠ¸
 	_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition + m_vVelocity * fTimeDelta);
 
-	// 5. ¹Ù´Ú Ãæµ¹ Ã³¸®
+	// 5. ë°”ë‹¥ ì¶©ëŒ ì²˜ë¦¬
 	vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	if (vPosition.y <= 0.0f)
 	{
@@ -223,6 +232,13 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 		if (isFalling())
 			m_vVelocity.y = 0.0f;
 
+		if (m_isKnockBack)
+		{
+			m_vVelocity.x = 0.f;
+			m_vVelocity.z = 0.f;
+			m_isKnockBack = false;
+		}
+
 		m_isGround = true;
 	}
 }
@@ -230,9 +246,9 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 
 void CRigidbody::Compute_Velocity(_float fTimeDelta)
 {
-	if (fTimeDelta <= 0.f) return; // µ¨Å¸ Å¸ÀÓÀÌ 0ÀÌ¸é °è»êÇÏÁö ¾ÊÀ½
+	if (fTimeDelta <= 0.f) return; // ë¸íƒ€ íƒ€ì„ì´ 0ì´ë©´ ê³„ì‚°í•˜ì§€ ì•ŠìŒ
 
-	//¼Óµµ´Â À§Ä¡ º¯È­·® / ½Ã°£
+	//ì†ë„ëŠ” ìœ„ì¹˜ ë³€í™”ëŸ‰ / ì‹œê°„
 	_float3 vCurrentPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	m_vReadOnly_Velocity = (vCurrentPosition - m_vPrevPosition) / fTimeDelta;
 
