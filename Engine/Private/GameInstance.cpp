@@ -297,9 +297,14 @@ _bool CGameInstance::Key_Down(int _Key)
 #pragma endregion
 
 #pragma region POOL_MANAGER
-void CGameInstance::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
+HRESULT CGameInstance::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
 {
-	m_pPoolManager->CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, count, pArg);
+	if (FAILED(m_pPoolManager->CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, count, pArg)))
+	{
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 CGameObject* CGameInstance::PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
 {

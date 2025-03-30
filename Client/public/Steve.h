@@ -40,7 +40,11 @@ public:
 private:
 	_float   m_fMouseSensor = { 0.03f };
 	int m_bisTPS = { 1 };
-	bool isAttack = { false };
+	ANIM m_eCurAnim = { ANIM_END };
+	bool isAttack = { false };	
+	bool m_IsDashCoolTime = {false};
+	float m_fCurrentDashTime = { 0.f };
+	float m_fCoolTimeDash = { 0.4f };
 
 private:
 	void	Input_Key(_float fTimeDelta);
@@ -56,6 +60,12 @@ private:
 	void Motion_Idle(_float fTimeDelta) override;
 	void Motion_Walk(_float fTimeDelta) override;
 	void Turn(_float fTimeDelta) override;
+
+	// ��� ��ƼŬ ����.
+	void PlayDashParticle(_float fTimeDelta);
+
+	// ��ƼŬ ��Ÿ�� ���� ������ �ʱ�ȭ.
+	void ResetDashParticle();
 
 public:
 	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

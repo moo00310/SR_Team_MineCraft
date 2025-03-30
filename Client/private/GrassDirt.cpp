@@ -67,6 +67,8 @@ HRESULT CGrassDirt::Delete_Cube(_float3 fPos)
             dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_vecPositions[i]);
             dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_DIRT);
 
+            PlayDestroyParticle(m_vecPositions[i]);
+
             // 2. 벡터에서 해당 위치 제거
             m_vecPositions.erase(m_vecPositions.begin() + i);
 
@@ -108,6 +110,22 @@ HRESULT CGrassDirt::Delete_Cube(_float3 fPos)
 //
 //    return S_OK;
 //}
+
+void CGrassDirt::PlayDestroyParticle(_float3 _position)
+{
+    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(
+        LEVEL_STATIC,
+        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+        LEVEL_YU,
+        LAYER_PARTICLE);
+
+    if (particle == nullptr)
+    {
+        return;
+    }
+
+    particle->Replay(_position);
+}
 
 HRESULT CGrassDirt::Ready_Components()
 {

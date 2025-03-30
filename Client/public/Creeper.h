@@ -1,6 +1,7 @@
 #pragma once
 #include "Client_Defines.h"
 #include "Monster.h"
+#include "ParticleSystem.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -43,6 +44,9 @@ private:
 	void Motion_Attack(_float fTimeDelta) override;
 	void Motion_Dead(_float fTimeDelta) override;
 	void Turn(_float fTimeDelta) override;			
+
+	// 폭발 파티클 적용.
+	void PlayExplosionParticle();
 
 public:
 	static CCreeper* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
