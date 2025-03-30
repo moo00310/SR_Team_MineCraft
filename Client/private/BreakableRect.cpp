@@ -54,7 +54,7 @@ void CBreakableRect::Priority_Update(_float fTimeDelta)
             if (fLengthSq < 30.f)
             {
                 //플레이어와 거리가 가까우면
-                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_NON_PHYSIC_BLOCK, pCollider);
 
                 pCollider->Set_bColliderActive(true);
             }

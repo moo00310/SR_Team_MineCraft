@@ -201,6 +201,7 @@
     <ClInclude Include="..\public\Mouse.h" />
     <ClInclude Include="..\public\Mouse_Item.h" />
     <ClInclude Include="..\public\ParticleExplosion.h" />
+    <ClInclude Include="..\public\Pawn.h" />
     <ClInclude Include="..\public\PlayerExp.h" />
     <ClInclude Include="..\public\PlayerExp_Back.h" />
     <ClInclude Include="..\public\PlayerHP.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="..\private\Mouse.cpp" />
     <ClCompile Include="..\private\Mouse_Item.cpp" />
     <ClCompile Include="..\private\ParticleExplosion.cpp" />
+    <ClCompile Include="..\private\Pawn.cpp" />
     <ClCompile Include="..\private\PlayerExp.cpp" />
     <ClCompile Include="..\private\PlayerExp_Back.cpp" />
     <ClCompile Include="..\private\PlayerHP_Back.cpp" />

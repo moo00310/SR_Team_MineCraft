@@ -20,6 +20,12 @@ HRESULT CCreeper::Initialize(void* pArg)
 {
     m_MonsterType = MT_Creeper;
     m_fAttackDistance = 3.f;
+    m_fSpeed = 1.5f;
+    m_Hp = 100.f;
+    m_MaxHp = 100.f;
+
+    m_Coll_Size = { 0.3f, 0.8f, 0.3f };
+    m_Coll_Offset = { 0.f, 0.8f, 0.f };
 
     __super::Initialize(pArg); 
 
@@ -37,6 +43,8 @@ HRESULT CCreeper::Initialize(void* pArg)
 
 void CCreeper::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
+
     m_pGameInstance->Add_CollisionGroup(COLLISION_MONSTER, this);
 }
 
@@ -58,7 +66,7 @@ HRESULT CCreeper::Render()
 {
     __super::Render();
 
-    //m_pCollider_CubeCom->Render_ColliderBox(false);
+    m_pCollider_CubeCom->Render_Collider(true);
 
     return S_OK;
 }
@@ -306,7 +314,13 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
     
     if (m_skelAnime->is_AnimtionEND(Attack))
     {
-        m_eCurAnim = IDLE;
+        // 폭발 파티클.
+        PlayExplosionParticle();
+
+        //m_eCurAnim = IDLE;
+        
+        _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+        m_pTargetPawn->Knock_back(temp);
     }
 
 }
@@ -317,13 +331,31 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
 
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
-        // 맞아 죽었을 때 
-        m_eCurAnim = IDLE;
+        m_isDestroyed = true;
     }
 }
 
 void CCreeper::Turn(_float fTimeDelta)
 {
+}
+
+void CCreeper::PlayExplosionParticle()
+{
+    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
+        PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,	// 가져올 프로토타입.
+        LEVEL_YU,	// 적용 씬.
+        LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어		
+
+    // NULL 체크.
+    if (particle == nullptr)
+    {
+        return;
+    }
+
+    particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+    particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+    particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+    particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 }
 
 CCreeper* CCreeper::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

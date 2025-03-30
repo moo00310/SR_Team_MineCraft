@@ -584,6 +584,9 @@
     <ClInclude Include="..\public\Mouse_Item.h">
       <Filter>03.UI\07.Mouse_UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Pawn.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -886,6 +889,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Mouse_Item.cpp">
       <Filter>03.UI\07.Mouse_UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pawn.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

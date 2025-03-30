@@ -5,25 +5,24 @@ STATUS CBTTask_DetectEnemy::Excute(CGameObject* _Obj, _float _fTimeDelta)
 {
 	CMonster* pMonster = static_cast<CMonster*>(_Obj);
 
-	if (pMonster->Get_Target())
+	if (pMonster->isFind())
 	{
 		return STATUS::SUCCESS;
 	}
 
-	_float fHitDist{};
+	//_float fHitDist{};
 	CGameObject* pHitOjbect{ nullptr };
 
-	pHitOjbect = pMonster->Get_GameInstance()->Ray_Cast(pMonster->Get_Transform()->Get_State(CTransform::STATE_POSITION),
+	pHitOjbect = pMonster->Get_GameInstance()->Ray_Cast_InstancedObjects(pMonster->Get_Transform()->Get_State(CTransform::STATE_POSITION),
 		pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK),
 		10.f,
-		COLLISION_PLAYER,
-		fHitDist
+		COLLISION_PLAYER
+		//fHitDist
 		);
-
-	pMonster->Set_Target(pHitOjbect);
 
 	if (pHitOjbect)
 	{
+		pMonster->Set_Find(true);
 		return STATUS::SUCCESS;
 	}
 	else

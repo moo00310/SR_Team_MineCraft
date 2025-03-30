@@ -7,12 +7,12 @@
 #include "UI_Mgr.h"
 
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
-	: CGameObject{ pGraphic_Device }
+	: CPawn{ pGraphic_Device }
 {
 }
 
 CSteve::CSteve(const CSteve& Prototype)
-	: CGameObject(Prototype)
+	: CPawn(Prototype)
 {
 }
 
@@ -23,6 +23,14 @@ HRESULT CSteve::Initialize_Prototype()
 
 HRESULT CSteve::Initialize(void* pArg)
 {
+	// 기타 스텟 초기화 ( Panw 에 선언 되어 있음 )
+	m_fSpeed = 3.f;
+	m_MaxHp = 100.f;
+	m_Hp = 100.f;
+
+	m_Coll_Size = { 0.3f, 1.f, 0.3f };
+	m_Coll_Offset = { 0.f, 1.f, 0.f };
+
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 	
@@ -40,21 +48,25 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	//m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 	
 	//테스트(Add_Collider_CollisionGroup)
-	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pColliderCom);
-
+	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pCollider_CubeCom);
 
 	 //1. 키입력에 따른 이동
 	Input_Key(fTimeDelta);
+
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
-	if (FAILED(m_pColliderCom->Update_Collider()))
+	if (FAILED(m_pCollider_CubeCom->Update_Collider()))
+
+	//1. 키입력에 따른 이동
+	Input_Key(fTimeDelta);
+
 	{
 		MSG_BOX("Update_Collider()");
 		return;
 	}
-  
+
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
@@ -99,7 +111,7 @@ HRESULT CSteve::Render()
 			return E_FAIL;
 	}
 
-	if (FAILED(m_pColliderCom->Render_Collider(true)))
+	if (FAILED(m_pCollider_CubeCom->Render_Collider(true)))
 		return E_FAIL;
 
 	return S_OK;
@@ -147,30 +159,21 @@ void CSteve::Move(_float fTimeDelta)
 	Matrix mat = *m_pTransformCom->Get_WorldMatrix();
 
 	if (m_pGameInstance->Key_Pressing('W'))
-	{
+	{		
 		m_pTransformCom->Go_Straight(fTimeDelta);
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
 
 		if (m_pRigidbodyCom->isGround())
 		{
-			int count = m_pGameInstance->GetPoolCount(PROTOTYPE_GAMEOBJECT_PARTICLE_DASH);
-			//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
-			CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
-				PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
-				LEVEL_STATIC,	// 가져올 씬.
-				LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
-
-			if (particle != nullptr)
-			{
-				particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-				particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-				particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-				particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-				//m_pGameInstance->Pop(particle);
-			}
-		}
+			PlayDashParticle(fTimeDelta);
+		}		
 	}
+	if (m_pGameInstance->Key_Up('W'))
+	{
+		ResetDashParticle();
+	}
+
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
 		m_pTransformCom->Go_Backward(fTimeDelta);
@@ -196,7 +199,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
-		if (m_pRigidbodyCom->Jump())
+		if (m_pRigidbodyCom->Jump(6.5f))
 		{
 			//m_pGameInstance->Play_Sound("event:/Built_Fail");
 		}
@@ -220,12 +223,6 @@ HRESULT CSteve::Ready_Components()
   /* For.Com_Texture */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Steve"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
-		return E_FAIL;
-
-	/* For.Com_Transform */
-	CTransform::TRANSFORM_DESC		TransformDesc{ 4.f, D3DXToRadian(90.f) };
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
@@ -256,43 +253,7 @@ HRESULT CSteve::Ready_Components()
 		TEXT("m_pVIBufferCom_Arm_L"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[5]))))
 		return E_FAIL;
 
-
-	// 본 + 애니메이션
-	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
-		TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
-		return E_FAIL;
-
-
-	////콜라이더
-	/* For.Com_Collider */
-	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	Desc.vRadius = { .3f, .8f, .3f };
-	Desc.vOffset = { 0.f, 0.8f, 0.f };
-	Desc.pTransformCom = m_pTransformCom;
-	Desc.pOwner = this;
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-		TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
-		return E_FAIL;
-
-	/////* For.Com_Collider */
-	//CCollider_Capsule::COLLCAPSULE_DESC Desc_Capsule{}; // 콜라이더 크기 설정
-	//Desc_Capsule.fRadius = 0.3f;  // 반지름 1 
-	//Desc_Capsule.fHeight = 1.5f;  // 높이 2
-	//Desc_Capsule.fOffsetY = 0.8f;
-	//Desc_Capsule.pTransformCom = m_pTransformCom;  // 현재 오브젝트의 Transform 컴포넌트 사용
-	//// 컴포넌트 추가
-	//if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Capsule"),
-	//	TEXT("Com_Collider_Capsule"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc_Capsule)))
-	//	return E_FAIL;
-
-
-	//리지드바디
-	/* For.Com_Rigidbody */
-	CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pColliderCom, 1.f };
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
-		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
-		return E_FAIL;
+	__super::Ready_Components();
 
 	return S_OK;
 }
@@ -508,6 +469,61 @@ void CSteve::Turn(_float fTimeDelta)
 
 }
 
+
+void CSteve::PlayDashParticle(_float fTimeDelta)
+{
+	// 대시 파티클.
+	if (m_IsDashCoolTime == false)
+	{
+		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
+			LEVEL_STATIC,		// 가져올 씬.
+			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
+
+		// 파티클 풀 객체 null 체크.
+		if (particle == nullptr)
+		{
+			return;
+		}
+
+		// 파티클 적용.
+		particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+		particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+		particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+		particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+		// 쿨타임 진행 처리.
+		m_IsDashCoolTime = true;
+	}
+
+	// 파티클 시간 증가.
+	m_fCurrentDashTime += fTimeDelta;
+
+	if (m_fCurrentDashTime >= m_fCoolTimeDash)
+	{
+		// 파티클 쿨타임 초기화.
+		m_fCurrentDashTime = 0.f;
+		m_IsDashCoolTime = false;
+	}
+}
+
+void CSteve::ResetDashParticle()
+{
+	// 파티클 쿨타임 초기화.
+	m_fCurrentDashTime = 0.f;
+	m_IsDashCoolTime = false;
+}
+
+void CSteve::Knock_back(const _float3& vforce)
+{
+	_float3 temp = {};
+	D3DXVec3Normalize(&temp, &vforce);
+	temp *= 3.f;
+	temp.y = 4.f;
+
+	m_pRigidbodyCom->Knock_back(temp);
+}
+
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CSteve* pInstance = new CSteve(pGraphic_Device);
@@ -537,14 +553,6 @@ CGameObject* CSteve::Clone(void* pArg)
 void CSteve::Free()
 {
 	__super::Free();
-	Safe_Release(m_pColliderCom);
-	Safe_Release(m_pRigidbodyCom);
-	Safe_Release(m_pTransformCom);
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_skelAnime);
-	for (auto& buffer : m_pVIBufferComs)
-		Safe_Release(buffer);
 
-	int a = 0;
 }
 

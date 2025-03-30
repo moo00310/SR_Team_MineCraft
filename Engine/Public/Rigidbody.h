@@ -6,7 +6,7 @@ BEGIN(Engine)
 
 class ENGINE_DLL CRigidbody final : public CComponent
 {
-	//ÄÄÆ÷³ÍÆ® »ó¼Ó ¹ŞÀ¸¸é Graphic_Deviece¸¦ ¹«Á¶°Ç ¹Ş´Â°Ô ¸Â´Â°¡??
+	//ì»´í¬ë„ŒíŠ¸ ìƒì† ë°›ìœ¼ë©´ Graphic_Devieceë¥¼ ë¬´ì¡°ê±´ ë°›ëŠ”ê²Œ ë§ëŠ”ê°€??
 public:
 	typedef struct tagRigidbodyDesc
 	{
@@ -23,12 +23,14 @@ public:
 	HRESULT Initialize(void* pArg) override;
 	HRESULT Update(_float fTimeDelta, _uint iCollsionGroup);
 	HRESULT Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist);
-	//ÀÎ½ºÅÏ½Ì ¹öÀü ·¹ÀÌÄ³½ºÆ® ¸¸µé¾î¾ßÇÔ
+	//ì¸ìŠ¤í„´ì‹± ë²„ì „ ë ˆì´ìºìŠ¤íŠ¸ ë§Œë“¤ì–´ì•¼í•¨
 	HRESULT Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist);
 public:
-	_bool	Jump();
+	_bool	Jump(_float fJumpForce);
 	const _float3& Get_Velocity() { return m_vReadOnly_Velocity; }
 	_bool	isGround() { return m_isGround; }
+	void Knock_back(const _float3& vfroce);
+
 private:
 	void	Fall_With_Gravity(_float fTimeDelta);
 	_bool	isFalling() { return m_vVelocity.y < 0.f; };
@@ -39,15 +41,17 @@ private:
 	_float					m_fMass{ 1.f };
 	_float3					m_vVelocity{ 0.f, 0.f, 0.f };
 
-	//ÀÌÀü ÇÁ·¹ÀÓ À§Ä¡¿Í ÇöÀç À§Ä¡¸¦ ºñ±³ÇØ¼­ ¼Óµµ °è»ê ¿ëµµ
+	//ì´ì „ í”„ë ˆì„ ìœ„ì¹˜ì™€ í˜„ì¬ ìœ„ì¹˜ë¥¼ ë¹„êµí•´ì„œ ì†ë„ ê³„ì‚° ìš©ë„
 	_float3					m_vPrevPosition{ 0.f, 0.f, 0.f };
 	_float3					m_vReadOnly_Velocity{ 0.f, 0.f, 0.f };
 
 
-	//Á¡ÇÁ
+	//ì í”„
 private:
 	_bool					m_isGround{ false };
+	_bool					m_isKnockBack = {false};
 	_float					m_fJumpForce{ 6.f };
+
 
 public:
 	static CRigidbody* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -209,6 +209,11 @@ CGameObject* CTree::Clone(void* pArg)
 
 void CTree::Free()
 {
-    Safe_Release(m_pWood);
-    Safe_Release(m_pLeaf);
+	__super::Free();
+
+    if (m_isCloned)
+    {
+        Safe_Release(m_pWood);
+        Safe_Release(m_pLeaf);
+    }
 }

@@ -67,10 +67,13 @@ public:
 	class CGameObject* Collision_Check_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDepth = nullptr, _Out_ CCollider_Cube::COLLISION_DIR* pOutDir = nullptr);
 	//특정 그룹의 오브젝트들과 충돌 검사(여러개의 오브젝트와 충돌 검사)
 	_bool Collision_Check_Group_Multi(_uint iGroupIndex, list<CCollider_Cube::COLLISION_INFO>& CollisionObjects, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eCollisionType);
-	//레이케스트
-	CGameObject* Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float& fDist);
-
-	CGameObject* Ray_Cast_InstancingObject(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float* pDist = nullptr, _Out_ _float3* pOutCollision_Dir = nullptr, _Out_ CComponent** ppOutCollider = nullptr);
+	
+	//일반 레이케스트
+	CGameObject* Ray_Cast(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float* pDist = nullptr);
+	//인스턴싱 오브젝트 레이케스트
+	CGameObject* Ray_Cast_InstancedObjects(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float* pDist = nullptr, _Out_ _float3* pOutCollision_Dir = nullptr, _Out_ CComponent** ppOutCollider = nullptr);
+	//인스턴싱 오브젝트 레이케스트(여러개의 그룹과 충돌 검사)
+	CGameObject* Ray_Cast_MultiGroup_InstancedObjects(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, const ::vector<_uint>& vGroupIndices, _Out_ _float* pDist = nullptr, _Out_ _float3* pOutCollision_Dir = nullptr, _Out_ CComponent** ppOutCollider = nullptr);
 #pragma endregion
 
 #pragma region KEY_MANAGER
@@ -87,7 +90,7 @@ public:
 #pragma region POOL_MANAGER
 
 	// 풀링 객체 생성.
-	void CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count = 1, void* pArg = nullptr);
+	HRESULT CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count = 1, void* pArg = nullptr);
 
 	// 풀링 객체 꺼내옴.
 	CGameObject* PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);

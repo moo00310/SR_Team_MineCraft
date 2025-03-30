@@ -122,11 +122,8 @@ void CTransform::Go_Right(_float fTimeDelta)
 void CTransform::LookAt(const _float3& vTargetPos)
 {
 	_float3		vScaled = Compute_Scaled();
-
 	_float3		vPosition = Get_State(STATE_POSITION);
-
 	_float3		vLook = vTargetPos - vPosition;
-
 	_float3		vRight = {};
 
 	_float3		vUpDir{ 0.f, 1.f, 0.f };	
@@ -138,6 +135,32 @@ void CTransform::LookAt(const _float3& vTargetPos)
 	Set_State(STATE_RIGHT, *D3DXVec3Normalize(&vRight, &vRight) * vScaled.x);
 	Set_State(STATE_UP, *D3DXVec3Normalize(&vUp, &vUp) * vScaled.y);
 	Set_State(STATE_LOOK, *D3DXVec3Normalize(&vLook, &vLook) * vScaled.z);
+}
+
+void CTransform::LookAt_XZ(const _float3& vTargetPos)
+{
+	_float3 vScaled = Compute_Scaled();
+	_float3 vPosition = Get_State(STATE_POSITION);
+
+	_float3 vLook = vTargetPos - vPosition;
+	vLook.y = 0.f;
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	_float3 vWorldUp = { 0.f, 1.f, 0.f };
+
+	// RIGHT는 수평 기준
+	_float3 vRight;
+	D3DXVec3Cross(&vRight, &vWorldUp, &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	// 새롭게 계산된 UP (정확한 직교 축)
+	_float3 vUp;
+	D3DXVec3Cross(&vUp, &vLook, &vRight);
+	D3DXVec3Normalize(&vUp, &vUp);
+
+	Set_State(STATE_RIGHT, vRight * vScaled.x);
+	Set_State(STATE_UP, vUp * vScaled.y); // 여기 중요
+	Set_State(STATE_LOOK, vLook * vScaled.z);
 }
 
 void CTransform::Chase(const _float3& vTargetPos, _float fTimeDelta, _float fMinDistance)

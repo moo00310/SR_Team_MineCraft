@@ -100,6 +100,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         On_MouseMove(fTimeDelta);
     }
 
+	_float3 vHeadPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
+
     if (m_pGameInstance->Key_Down(VK_LBUTTON))
     {
         _float fDist;                  // 광선과 오브젝트 간의 거리
@@ -107,12 +109,15 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
         _float3 vDir{};
 
+        vector<_uint> Groups = { COLLISION_NON_PHYSIC_BLOCK, COLLISION_BLOCK };
+
+
         // Ray Casting: Instancing된 오브젝트와 충돌 검사
-        pHitObject = m_pGameInstance->Ray_Cast_InstancingObject(
-            m_vHeadPos, // 시작 위치 (카메라 또는 플레이어의 머리 위치)
+        pHitObject = m_pGameInstance->Ray_Cast_MultiGroup_InstancedObjects(
+            vHeadPos, // 시작 위치 (플레이어의 머리 위치)
             m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
             5.f, // 최대 탐색 거리
-            COLLISION_BLOCK, // 충돌 그룹
+            Groups, // 충돌 그룹
             &fDist, // 충돌한 거리 저장
             &vDir,  //충돌 방향 저장
             &pHitComponent // 충돌한 콜라이더 저장
@@ -156,17 +161,18 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
         // 몬스터와 충돌 검사
         pHitObject = m_pGameInstance->Ray_Cast(
-            m_vHeadPos, // 시작 위치 (카메라 또는 플레이어의 머리 위치)
+            vHeadPos, // 시작 위치 (플레이어의 머리 위치)
             m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
             5.f, // 최대 탐색 거리
             COLLISION_MONSTER, // 충돌 그룹
-            fDist); //거리저장
+            &fDist); //거리저장
 
         if (pHitObject)
         {
             if (CMonster* monster = dynamic_cast<CMonster*>(pHitObject))
             {
-                monster->Nuck_Back();
+                monster->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+                monster->Set_Hp(0);
             }
 
         }
@@ -180,8 +186,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         _float3 vDir{};
 
         // Ray Casting: Instancing된 오브젝트와 충돌 검사
-        pHitObject = m_pGameInstance->Ray_Cast_InstancingObject(
-            m_vHeadPos, // 시작 위치 (카메라 또는 플레이어의 머리 위치)
+        pHitObject = m_pGameInstance->Ray_Cast_InstancedObjects(
+            vHeadPos, // 시작 위치 (카메라 또는 플레이어의 머리 위치)
             m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
             5.f, // 최대 탐색 거리
             COLLISION_BLOCK, // 충돌 그룹
@@ -268,19 +274,21 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     // === 플레이어의 머리 위치 설정 ===
     _float3 vRight = { cosf(m_fYaw), 0.f, -sinf(m_fYaw) };
     _float3 playerPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION);
-    _float headHeight = 1.8f;
-    m_vHeadPos = playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f);
+    _float headHeight = 1.5f;
 
+    // === 카메라 위치 설정 ===
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f));
+
+    // === 카메라 모드에 따라 다른 처리 ===
     if (m_eCameraMode == E_CAMERA_MODE::FPS)
     {
-        m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_vHeadPos);
-        m_pTransformCom->LookAt(m_vHeadPos + vLookDir);
+        m_pTransformCom->LookAt(playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f) + vLookDir);
     }
     else if (m_eCameraMode == E_CAMERA_MODE::TPS)
     {
         // === 3인칭 스프링 암 거리 조절 ===
         _float fTargetDist = m_fSpringArmLength;
-        CGameObject* pGameObject = m_pGameInstance->Ray_Cast(m_vHeadPos, -vLookDir, m_fSpringArmLength, COLLISION_BLOCK, fTargetDist);
+        CGameObject* pGameObject = m_pGameInstance->Ray_Cast_InstancedObjects(m_pTransformCom->Get_State(CTransform::STATE_POSITION), -vLookDir, m_fSpringArmLength, COLLISION_BLOCK, &fTargetDist);
 
         // Ray_Cast 결과 확인
         if (pGameObject)
@@ -294,13 +302,14 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
         }
 
         // === 최종 카메라 위치 계산 ===
-        _float3 vFinalCameraPos = m_vHeadPos + (-vLookDir * fTargetDist);
+        _float3 vFinalCameraPos = playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f) - (vLookDir * fTargetDist);
 
         // === 카메라 위치 바로 적용 ===
         m_pTransformCom->Set_State(CTransform::STATE_POSITION, vFinalCameraPos);
-        m_pTransformCom->LookAt(m_vHeadPos);
+        m_pTransformCom->LookAt(playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f));
     }
 }
+
 
 void CCamera_Player::On_MouseMove(_float fTimeDelta)
 {

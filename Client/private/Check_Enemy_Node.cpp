@@ -11,14 +11,14 @@ STATUS CCheck_Enemy_Node::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		return STATUS::SUCCESS;
 	}
 
-	_float fHitDist{};
+	/*_float fHitDist{};*/
 	CGameObject* pHitObject{ nullptr };
 
-	pHitObject = pHeroEnemy->Get_GameInstance()->Ray_Cast(pHeroEnemy->Get_Transform()->Get_State(CTransform::STATE_POSITION),
+	pHitObject = pHeroEnemy->Get_GameInstance()->Ray_Cast_InstancedObjects(pHeroEnemy->Get_Transform()->Get_State(CTransform::STATE_POSITION),
 		pHeroEnemy->Get_Transform()->Get_State(CTransform::STATE_LOOK),
 		5.f,
-		COLLISION_PLAYER,
-		fHitDist
+		COLLISION_PLAYER
+		//fHitDist
 	);
 
 	pHeroEnemy->Set_Target(pHitObject);

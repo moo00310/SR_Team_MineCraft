@@ -112,29 +112,44 @@ HRESULT CLevel_Hyeok::Ready_Layer_RainParticle(const _wstring& strLayerTag)
 
 HRESULT CLevel_Hyeok::Ready_Layer_DashParticle(const _wstring& strLayerTag)
 {
-	m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
+	HRESULT hr = m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
 		PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
 		LEVEL_HYEOK,	// 적용 씬..
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
 		3);				// 풀링 갯수.
+
+	if (FAILED(hr))
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
 
 HRESULT CLevel_Hyeok::Ready_Layer_Sand_DestroyParticle(const _wstring& strLayerTag)
 {
-	m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
+	HRESULT hr = m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
 		PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// 가져올 프로토타입.
 		LEVEL_HYEOK,	// 적용 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
 		3);				// 풀링 갯수.
 
+	if (FAILED(hr))
+	{
+		return E_FAIL;
+	}
+
 	// 폭발 파티클.
-	m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
+	hr = m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
 		PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,	// 가져올 프로토타입.
 		LEVEL_HYEOK,	// 적용 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
 		3);				// 풀링 갯수.
+
+	if (FAILED(hr))
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
