@@ -141,10 +141,9 @@ HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _flo
 {
 	m_isGround = false;
 
-	_float fDist{ 0.f };
 	CGameObject* pGameObject{ nullptr };
 	//레이케스트로 땅 검사
-	pGameObject = m_pGameInstance->Ray_Cast(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup, fDist);
+	pGameObject = m_pGameInstance->Ray_Cast(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup);
 	if (pGameObject)
 	{
 		m_isGround = true;
@@ -167,7 +166,7 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 	CGameObject* pGameObject{ nullptr };
 
 	//레이케스트로 땅 검사
-	pGameObject = m_pGameInstance->Ray_Cast_InstancingObject(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup);
+	pGameObject = m_pGameInstance->Ray_Cast_InstancedObjects(m_pTransform->Get_State(CTransform::STATE_POSITION), _float3(0.f, -1.f, 0.f), fRayDist, iCollsionGroup);
 	if (pGameObject)
 	{
 		m_isGround = true;
@@ -186,11 +185,11 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 
 
 
-_bool CRigidbody::Jump()
+_bool CRigidbody::Jump(_float fJumpForce)
 {
 	if (m_isGround) // 바닥에 닿아 있을 때만 점프 가능
 	{
-		m_vVelocity.y = m_fJumpForce; // Y축 방향으로 힘 추가
+		m_vVelocity.y = fJumpForce; // Y축 방향으로 힘 추가
 		m_isGround = false; // 공중에 떠 있는 상태로 변경
 
 		return true;
@@ -201,41 +200,33 @@ _bool CRigidbody::Jump()
 
 void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 {
-	// 1. 중력 가속도 정의 (Y축 방향)
-	const _float3 GRAVITY = { 0.0f, -9.81f, 0.0f }; // 지구 중력 가속도 (단위: m/s^2)
-	 
-	// 2. 질량이 0이면 중력 적용 안함 (무한 질량 가정)
+	// 1. 중력 가속도 정의
+	const _float3 GRAVITY = { 0.0f, -18.81f, 0.0f };
+
+	// 2. 질량이 0이면 중력 적용 안함
 	if (m_fMass == 0.0f) return;
 
-	// 3. 힘에 중력 추가 (중력 가속도 * 질량)
-	_float3 gravityForce = GRAVITY * m_fMass;
+	// 3. 속도 업데이트 (중력 가속도만 적용)
+	m_vVelocity.y += GRAVITY.y * fTimeDelta;
 
-	// 4. 가속도 계산 (F = ma -> a = F/m)
-	_float3 acceleration = gravityForce / m_fMass;
-
-
-	// 5. 속도 업데이트 (v = v + a * dt)
-	m_vVelocity.y = m_vVelocity.y + acceleration.y * fTimeDelta;
-
-	// 6. 위치 업데이트 (p = p + v * dt)
+	// 4. 위치 업데이트
 	_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition + m_vVelocity * fTimeDelta);
 
-	
-	// 7. 바닥에 닿았을 때 반응 (간단한 처리 예시: 위치 보정 및 속도 감쇠)
+	// 5. 바닥 충돌 처리
 	vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
-	if (vPosition.y <= 0.0f) // Y축이 0 이하로 내려갔다면
+	if (vPosition.y <= 0.0f)
 	{
 		vPosition.y = 0.0f;
 		m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
-		  // 바닥에 닿았다면 위치를 0으로 고정
 
-		if(isFalling())
-			m_vVelocity.y = 0.0f;   // 속도를 0으로 (반동 없이 멈춤)
+		if (isFalling())
+			m_vVelocity.y = 0.0f;
 
 		m_isGround = true;
 	}
 }
+
 
 void CRigidbody::Compute_Velocity(_float fTimeDelta)
 {
