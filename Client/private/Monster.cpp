@@ -7,39 +7,46 @@
 #include "BTTask_Attack.h"
 #include "BTDistanceBranch.h"
 
-#include <iostream>
-
-
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphic_Device)
-	:CGameObject{ pGraphic_Device }
+	:CPawn{ pGraphic_Device }
 {
 }
 
 CMonster::CMonster(const CMonster& Prototype)
-	:CGameObject(Prototype)
+	:CPawn(Prototype)
 {
 }
 
 HRESULT CMonster::Initialize_Prototype()
 {
+
 	return S_OK;
 }
 
 HRESULT CMonster::Initialize(void* pArg)
 {
+    m_pTargetPawn = static_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_HERO, TEXT("Layer_Steve")));
+    Safe_AddRef(m_pTargetPawn);
+
     return S_OK;
 }
 
 void CMonster::Priority_Update(_float fTimeDelta)
 {
+    if (m_Hp <= 0.f)
+    {
+        isDead = true;
+        m_eCurAnim = DEAD;
+    }
+
 }
 
 void CMonster::Update(_float fTimeDelta)
 {
-    // ¶¥ÀÌ¶û Ãæµ¹
+    // ë•…ì´ëž‘ ì¶©ëŒ
     m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
-    if (m_pBehaviorTree)
+    if (m_pBehaviorTree && !isDead)
     {
         m_pBehaviorTree->Excute(this, fTimeDelta);
     }
@@ -71,46 +78,67 @@ HRESULT CMonster::Render()
 	return S_OK;
 }
 
-void CMonster::Reset_Ainmation()
+float CMonster::Comput_Distance()
 {
-    cout << "ÃÊ±âÈ­" << endl;
-    m_skelAnime->Set_ZeroAnimTime();
-    m_skelAnime->InitBone();
-    //m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+    _float3 vMonsterPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+    _float3 vTargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+    _float3 vDiff = vTargetPos - vMonsterPos;
+
+    return D3DXVec3Length(&vDiff);
 }
 
-void CMonster::Nuck_Back()
+void CMonster::Chase_Player(float _fTimeDelta)
 {
-    m_pRigidbodyCom->Jump(1.f);
+    _float3 vTarget =  m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    m_pTransformCom->LookAt_XZ(vTarget);
+    m_pTransformCom->Chase(_float3(vTarget.x, 0.f, vTarget.z), _fTimeDelta, 1.0f);
+
+}
+
+
+void CMonster::Knock_back(const _float3& vforce)
+{
+
+    _float3 temp = {};
+    D3DXVec3Normalize(&temp, &vforce);
+    temp *= 3.f;
+    temp.y = 4.f;
+
+    m_pRigidbodyCom->Knock_back(temp);
+
+    _float3 vTarget = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    m_pTransformCom->LookAt_XZ(vTarget);
+
 }
 
 HRESULT CMonster::Ready_BehaviorTree()
 {
-    // ·çÆ® ³ëµå: Selector (ÀûÀ» ¹ß°ßÇÏ¸é µû¶ó°¡°í, ¾Æ´Ï¸é ¼øÂû)
+    // ë£¨íŠ¸ ë…¸ë“œ: Selector (ì ì„ ë°œê²¬í•˜ë©´ ë”°ë¼ê°€ê³ , ì•„ë‹ˆë©´ ìˆœì°°)
     CSelectorNode* pRoot = new CSelectorNode(L"Root");
 
-    // Á¶°Ç °Ë»ç ³ëµå: ÀûÀÌ ÀÖ´ÂÁö È®ÀÎ
+    // ì¡°ê±´ ê²€ì‚¬ ë…¸ë“œ: ì ì´ ìžˆëŠ”ì§€ í™•ì¸
     CBTTask_DetectEnemy* pDetectEnemy = new CBTTask_DetectEnemy;
 
-    // Çàµ¿³ëµå
+    // í–‰ë™ë…¸ë“œ
     CBTTask_Chase* pChase = new CBTTask_Chase;
     CBTTask_Patrol* pPatrol = new CBTTask_Patrol;
     CBTTask_Attack* pAttack = new CBTTask_Attack;
 
-    // °ø°Ý, Ãß°Ý,
+    // ê³µê²©, ì¶”ê²©,
     CBTDistanceBranch* pDistanceBranch = new CBTDistanceBranch;
     pDistanceBranch->Set_Actions(pAttack, pChase, m_fAttackDistance);
 
-    // ½ÃÄö½º
+    // ì‹œí€€ìŠ¤
     CSequenceNode* pChaseSequence = new CSequenceNode(L"ChaseSequence");
     pChaseSequence->Add_Node(pDetectEnemy);
     pChaseSequence->Add_Node(pDistanceBranch);
 
-    // ·çÆ® ³ëµå¿¡ Ãß°¡
+    // ë£¨íŠ¸ ë…¸ë“œì— ì¶”ê°€
     pRoot->Add_Node(pChaseSequence);
     pRoot->Add_Node(pPatrol);
 
-    // ÃÖÁ¾ Æ®¸® ¼³Á¤
+    // ìµœì¢… íŠ¸ë¦¬ ì„¤ì •
     m_pBehaviorTree = pRoot;
 
     return S_OK;
@@ -118,37 +146,9 @@ HRESULT CMonster::Ready_BehaviorTree()
 
 HRESULT CMonster::Ready_Components()
 {
-    /* For.Com_Transform */
-    CTransform::TRANSFORM_DESC		TransformDesc{ 1.5f, D3DXToRadian(30.f) };
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-        TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
-        return E_FAIL;
+    __super ::Ready_Components();
 
-    // º» + ¾Ö´Ï¸ÞÀÌ¼Ç
-    CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
-        TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
-        return E_FAIL;
-
-    ////ÄÝ¶óÀÌ´õ
-    /* For.Com_Collider */
-    CCollider_Cube::COLLCUBE_DESC Desc{}; //ÄÝ¶óÀÌ´õ Å©±â ¼³Á¤
-    Desc.vRadius = { 0.5f, 0.8f, 0.5f };
-    Desc.vOffset = { 0.f, 0.f, 0.f };
-    Desc.pTransformCom = m_pTransformCom;
-    Desc.pOwner = this;
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-        TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pCollider_CubeCom), &Desc)))
-        return E_FAIL;
-
-    //¸®Áöµå¹Ùµð
-    /* For.Com_Rigidbody */
-    CRigidbody::RIGIDBODY_DESC	RigidbodyDesc{ m_pTransformCom, m_pCollider_CubeCom, 1.f };
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
-        TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
-        return E_FAIL;
-
-    // BT ¿¬°á
+    // BT ì—°ê²°
     if(FAILED(Ready_BehaviorTree()))
         return E_FAIL;
 
@@ -157,15 +157,8 @@ HRESULT CMonster::Ready_Components()
 
 void CMonster::Free()
 {
-	__super::Free();
+    __super::Free();
 
-    Safe_Release(m_pRigidbodyCom);
-    Safe_Release(m_pCollider_CubeCom);
-	Safe_Release(m_pBehaviorTree);
-	Safe_Release(m_pTransformCom);
-    Safe_Release(m_skelAnime);
-    Safe_Release(m_pTextureCom);
-
-    for (auto& buffer : m_pVIBufferComs)
-        Safe_Release(buffer);
+    Safe_Release(m_pTargetPawn);
+    Safe_Release(m_pBehaviorTree);
 }

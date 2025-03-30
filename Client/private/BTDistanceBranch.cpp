@@ -37,5 +37,6 @@ STATUS CBTDistanceBranch::Excute(CGameObject* _Obj, _float _fTimeDelta)
         }
     }
 
+    pMonster->Set_Find(false);
     return STATUS::FAIL;
 }

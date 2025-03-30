@@ -19,6 +19,12 @@ HRESULT CZombi::Initialize(void* pArg)
 {
     m_MonsterType = MT_Zombie;
     m_fAttackDistance = 1.f;
+    m_fSpeed = 1.5f;
+    m_Hp = 100.f;
+    m_MaxHp = 100.f;
+
+    m_Coll_Size = { 0.3f, 1.f, 0.3f };
+    m_Coll_Offset = { 0.f, 1.f, 0.f };
 
     __super::Initialize(pArg);
 
@@ -39,6 +45,8 @@ HRESULT CZombi::Initialize(void* pArg)
 
 void CZombi::Priority_Update(_float fTimeDelta)
 {
+    __super::Priority_Update(fTimeDelta);
+
     m_pGameInstance->Add_CollisionGroup(COLLISION_MONSTER, this);
 }
 
@@ -64,6 +72,8 @@ void CZombi::Late_Update(_float fTimeDelta)
 HRESULT CZombi::Render()
 {
     __super::Render();
+
+    m_pCollider_CubeCom->Render_Collider(true);
 
     return S_OK;
 }
@@ -253,7 +263,10 @@ void CZombi::Motion_Attack(_float fTimeDelta)
 {
     if (m_skelAnime->is_AnimtionEND(Attack))
     {
-        m_eCurAnim = IDLE;
+
+
+        _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+        m_pTargetPawn->Knock_back(temp);
     }
 
     m_skelAnime->Update_Animetion(Attack, fTimeDelta, 5);
@@ -266,8 +279,7 @@ void CZombi::Motion_Dead(_float fTimeDelta)
 
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
-        // 맞아 죽었을 때 
-        m_eCurAnim = IDLE;
+        m_isDestroyed = true;
     }
 }
 

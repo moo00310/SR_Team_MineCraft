@@ -171,7 +171,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         {
             if (CMonster* monster = dynamic_cast<CMonster*>(pHitObject))
             {
-                monster->Nuck_Back();
+                monster->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+                monster->Set_Hp(0);
             }
 
         }

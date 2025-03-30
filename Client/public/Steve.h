@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Pawn.h"
 #include "ParticleSystem.h"
 
 BEGIN(Engine)
@@ -11,13 +11,9 @@ class CVIBuffer_Cube;
 class CSkeletalAnimator;
 END
 
-class CSteve : public CGameObject
+class CSteve final : public CPawn
 {
 public:
-	enum ANIM
-	{
-		IDLE, RUN, WALK, ATTACK, JUMP, ANIM_END
-	};
 	enum ANIM_type
 	{
 		Swing_FF, Swing_BF, Swing_BA, Swing_FA, Swing_R, Swing_L, Attack ,INIT,
@@ -39,41 +35,33 @@ public:
 public:
 	void SetPos(_float3 v3);
 	_float3 GetPos();
+	void Knock_back(const _float3& vforce) override;
 
 private:
-	CTransform* m_pTransformCom = { nullptr };
-	CTexture* m_pTextureCom = { nullptr };
-	CCollider* m_pColliderCom{ nullptr };
-	CRigidbody*		m_pRigidbodyCom{ nullptr };
-	CSkeletalAnimator* m_skelAnime = { nullptr };
-	vector<CVIBuffer_Cube*> m_pVIBufferComs;
-
-private:
-	_float              m_fMouseSensor = { 0.03f };
+	_float   m_fMouseSensor = { 0.03f };
 	int m_bisTPS = { 1 };
-	ANIM m_eCurAnim = { ANIM_END };
 	bool isAttack = { false };
-
 
 private:
 	void	Input_Key(_float fTimeDelta);
 	void	Move(_float fTimeDelta);
 
 private:
-	HRESULT Ready_Components();
-	HRESULT Ready_Bone();
-	HRESULT Ready_Animation();
+	virtual HRESULT Ready_Components() override;
+	virtual HRESULT Ready_Bone() override;
+	virtual HRESULT Ready_Animation() override;
 
 private:
-	void Update_State(_float fTimeDelta);
-	void Motion_Idle(_float fTimeDelta);
-	void Motion_Walk(_float fTimeDelta);
-	void Turn(_float fTimeDelta);
+	void Update_State(_float fTimeDelta) override;
+	void Motion_Idle(_float fTimeDelta) override;
+	void Motion_Walk(_float fTimeDelta) override;
+	void Turn(_float fTimeDelta) override;
 
 public:
 	static CSteve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
+
 };
 
 

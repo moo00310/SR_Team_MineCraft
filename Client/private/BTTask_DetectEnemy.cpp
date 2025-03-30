@@ -5,7 +5,7 @@ STATUS CBTTask_DetectEnemy::Excute(CGameObject* _Obj, _float _fTimeDelta)
 {
 	CMonster* pMonster = static_cast<CMonster*>(_Obj);
 
-	if (pMonster->Get_Target())
+	if (pMonster->isFind())
 	{
 		return STATUS::SUCCESS;
 	}
@@ -20,10 +20,9 @@ STATUS CBTTask_DetectEnemy::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		//fHitDist
 		);
 
-	pMonster->Set_Target(pHitOjbect);
-
 	if (pHitOjbect)
 	{
+		pMonster->Set_Find(true);
 		return STATUS::SUCCESS;
 	}
 	else

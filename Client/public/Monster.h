@@ -1,18 +1,14 @@
 #pragma once
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "Pawn.h"
 #include "Behavior_Tree.h"
 #include <iostream>
 
 BEGIN(Client)
 
-class CMonster abstract : public CGameObject
+class CMonster abstract : public CPawn
 {
 public:
-	enum ANIM
-	{
-		IDLE, RUN, WALK, ATTACK, DEAD, ANIM_END
-	};
 	enum MonsterType
 	{
 		MT_Zombie, MT_Creeper, MT_END
@@ -32,41 +28,39 @@ public:
 	virtual HRESULT Render();
 
 public:
-	CGameObject* Get_Target() { return m_pTargetGameObject;}
-	void Set_Target(CGameObject* object) { m_pTargetGameObject = object;}
-	CTransform* Get_Transform(){ return m_pTransformCom; }
+	CPawn* Get_Target() { return m_pTargetPawn;}
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
+	float Comput_Distance();
+	void Knock_back(const _float3& vforce) override;
 
+//BT¿ë °Ù¼Â ÇÔ¼ö
 public:
-	void Reset_Ainmation();
-	void Nuck_Back();
+	_bool isFind() { return m_isFind; }
+	void Set_Find(bool flag) { m_isFind = flag; }
+	void Chase_Player(float _fTimeDelta);
 
 protected:
-	CTexture* m_pTextureCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
-	CSkeletalAnimator* m_skelAnime = { nullptr };
-	vector<CVIBuffer_Cube*> m_pVIBufferComs;
-
-protected:
-	CCollider_Cube* m_pCollider_CubeCom = { nullptr };
-	CRigidbody* m_pRigidbodyCom = { nullptr };
-
-protected:
-	CGameObject* m_pTargetGameObject = nullptr;
+	CPawn* m_pTargetPawn = nullptr;
 
 protected:
 	CNode* m_pBehaviorTree{ nullptr };
-	ANIM m_eCurAnim = { ANIM_END };
 	MonsterType m_MonsterType = { MT_END };
 	float m_fAttackDistance = {};
-	float m_fNuckback = {};
-	bool m_isNuckback = {false};
+
+// Black_Board
+protected:
+	_bool m_isFind = { false };
+
+protected:
+
+
+protected:
+	HRESULT Ready_BehaviorTree();
 
 protected:
 	virtual HRESULT Ready_Components();
 	virtual HRESULT Ready_Bone()= 0;
 	virtual HRESULT Ready_Animation() = 0;
-	HRESULT Ready_BehaviorTree();
 
 protected:
 	virtual void Update_State(_float fTimeDelta) = 0;
@@ -79,6 +73,7 @@ protected:
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free();
+
 };
 
 END

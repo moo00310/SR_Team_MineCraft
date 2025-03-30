@@ -572,6 +572,9 @@
     <ClInclude Include="..\public\Zombi.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Pawn.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -868,6 +871,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Zombi.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Pawn.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
