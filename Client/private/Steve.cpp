@@ -24,11 +24,11 @@ HRESULT CSteve::Initialize_Prototype()
 HRESULT CSteve::Initialize(void* pArg)
 {
 	// 기타 스텟 초기화 ( Panw 에 선언 되어 있음 )
-	m_fSpeed = 3.f;
+	m_fSpeed = 5.f;
 	m_MaxHp = 100.f;
 	m_Hp = 100.f;
 
-	m_Coll_Size = { 0.3f, 1.f, 0.3f };
+	m_Coll_Size = { 0.3f, 0.9f, 0.3f };
 	m_Coll_Offset = { 0.f, 1.f, 0.f };
 
 	if (FAILED(Ready_Components()))
@@ -49,9 +49,6 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	
 	//테스트(Add_Collider_CollisionGroup)
 	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pCollider_CubeCom);
-
-	 //1. 키입력에 따른 이동
-	Input_Key(fTimeDelta);
 
 }
 

@@ -287,7 +287,7 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     else if (m_eCameraMode == E_CAMERA_MODE::TPS)
     {
         // === 3인칭 스프링 암 거리 조절 ===
-        _float fTargetDist = m_fSpringArmLength;
+        _float fTargetDist{};
         CGameObject* pGameObject = m_pGameInstance->Ray_Cast_InstancedObjects(m_pTransformCom->Get_State(CTransform::STATE_POSITION), -vLookDir, m_fSpringArmLength, COLLISION_BLOCK, &fTargetDist);
 
         // Ray_Cast 결과 확인

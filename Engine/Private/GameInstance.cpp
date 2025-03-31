@@ -253,23 +253,23 @@ CGameObject* CGameInstance::Ray_Cast(const _float3& vRayOrigin, const _float3& v
 
 CGameObject* CGameInstance::Ray_Cast_InstancedObjects(const _float3& vRayOrigin, const _float3& vRayDir, _float fMaxDistance, _uint iGroup, _Out_ _float* pDist, _Out_ _float3* pOutCollision_Dir, _Out_ CComponent** ppOutCollider)
 {
-	if (nullptr == m_pCollider_Manager)
-		return nullptr;
-
 	if (pDist) *pDist = 0.f;
 	if (pOutCollision_Dir) *pOutCollision_Dir = { 0.f, 0.f, 0.f };
 	if (ppOutCollider) *ppOutCollider = nullptr;
+
+	if (nullptr == m_pCollider_Manager)
+		return nullptr;
 
 	return m_pCollider_Manager->Ray_Cast_InstancedObjects(vRayOrigin, vRayDir, fMaxDistance, iGroup, pDist, pOutCollision_Dir, ppOutCollider);
 }
 CGameObject* CGameInstance::Ray_Cast_MultiGroup_InstancedObjects(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, const::vector<_uint>& vGroupIndices, _Out_ _float* pDist, _Out_ _float3* pOutCollision_Dir, _Out_ CComponent** ppOutCollider)
 {
-	if (nullptr == m_pCollider_Manager)
-		return nullptr;
-
 	if (pDist) *pDist = 0.f;
 	if (pOutCollision_Dir) *pOutCollision_Dir = { 0.f, 0.f, 0.f };
 	if (ppOutCollider) *ppOutCollider = nullptr;
+
+	if (nullptr == m_pCollider_Manager)
+		return nullptr;
 
 	return m_pCollider_Manager->Ray_Cast_MultiGroup_InstancedObjects(rayOrigin, rayDir, fMaxDistanc, vGroupIndices, pDist, pOutCollision_Dir, ppOutCollider);
 }

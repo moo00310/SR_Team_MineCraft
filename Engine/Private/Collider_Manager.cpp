@@ -160,7 +160,7 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 
 CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float* pDist)
 {
-	if(pDist) *pDist = 0.f;
+	if (pDist) *pDist = 0.f;
 
 	// 레이 방향 벡터 정규화
 	_float3 vNormalRayDir;
@@ -169,26 +169,37 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 	CGameObject* closestObject = nullptr;
 	_float closestDist = FLT_MAX;
 
-	// 해당 그룹에 속한 모든 오브젝트 검사
+	// 해당 그룹의 모든 충돌체 검사
 	for (auto& iter : m_pColliders[eGroup])
 	{
 		CCollider_Cube* pOtherCollider = static_cast<CCollider_Cube*>(iter);
 		if (nullptr == pOtherCollider)
 			continue;
 
-		//CCollider_Cube::COLLCUBE_DESC& CubeDesc = pOtherCollider->Get_Desc();
+		// OBB 중심 및 크기 정보 가져오기
 		const _float4x4* pWorldMatrix = pOtherCollider->Get_Transform()->Get_WorldMatrix();
-		const _float3 halfSize = pOtherCollider->Get_Radius();
+		_float3 offset = pOtherCollider->Get_Offset();  // 콜라이더의 오프셋
+		_float3 halfSize = pOtherCollider->Get_Radius(); // OBB 반쪽 크기
 
-		// OBB 중심 및 로컬 축 추출
-		_float3 obbCenter(pWorldMatrix->_41, pWorldMatrix->_42, pWorldMatrix->_43);
+		//// 오브젝트의 스케일을 반영한 크기 적용
+		//_float3 scale = pOtherCollider->Get_Radius();
+		//halfSize.x *= scale.x;
+		//halfSize.y *= scale.y;
+		//halfSize.z *= scale.z;
+
+		// 오프셋을 적용한 OBB 중심 좌표 계산
+		_float3 obbCenter = {
+			pWorldMatrix->_41 + offset.x /** scale.x*/,
+			pWorldMatrix->_42 + offset.y /** scale.y*/,
+			pWorldMatrix->_43 + offset.z /** scale.z*/
+		};
+
+		// OBB의 로컬 축 추출 (정규화)
 		_float3 axes[3] = {
 			_float3(pWorldMatrix->_11, pWorldMatrix->_12, pWorldMatrix->_13),
 			_float3(pWorldMatrix->_21, pWorldMatrix->_22, pWorldMatrix->_23),
 			_float3(pWorldMatrix->_31, pWorldMatrix->_32, pWorldMatrix->_33)
 		};
-
-		// 각 축 정규화
 		D3DXVec3Normalize(&axes[0], &axes[0]);
 		D3DXVec3Normalize(&axes[1], &axes[1]);
 		D3DXVec3Normalize(&axes[2], &axes[2]);
@@ -196,7 +207,7 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 		// 레이와 OBB의 교차 검사 (Slab 방식)
 		_float tMin = 0.f;
 		_float tMax = FLT_MAX;
-		_bool hit = true; // OBB와의 충돌 여부
+		_bool hit = true;
 
 		for (int i = 0; i < 3; ++i)
 		{
@@ -204,24 +215,23 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 			_float e = D3DXVec3Dot(&axes[i], &lValue);
 			_float f = D3DXVec3Dot(&axes[i], &vNormalRayDir);
 
-			if (fabs(f) > 1e-5f) // 레이가 축과 평행하지 않다면
+			if (fabs(f) > 1e-5f) // 레이가 축과 평행하지 않을 때
 			{
 				_float t1 = (e - halfSize[i]) / f;
 				_float t2 = (e + halfSize[i]) / f;
 
-				if (t1 > t2)
-					std::swap(t1, t2);
+				if (t1 > t2) std::swap(t1, t2);
 
 				tMin = max(tMin, t1);
 				tMax = min(tMax, t2);
 
-				if (tMin > tMax) // 교차 없음
+				if (tMin > tMax)
 				{
 					hit = false;
 					break;
 				}
 			}
-			else // 레이가 축과 평행한 경우
+			else // 레이가 축과 평행할 때
 			{
 				if (-e - halfSize[i] > 0.0f || -e + halfSize[i] < 0.0f)
 				{
@@ -253,14 +263,13 @@ CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3
 }
 
 
+
 CGameObject* CCollider_Manager::Ray_Cast_InstancedObjects(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, _uint iGroupIndex, _Out_ _float* pDist, _Out_ _float3* pOutCollision_Dir, _Out_ CComponent** ppOutCollider)
 {
-	//CCollider::COLLISION_DIR 6방향임
-	//여기서 레이케스트로 부딫힌 콜라이더의 방향을 알고 싶음
-
 	// 초기화
-	if (ppOutCollider)
-		*ppOutCollider = nullptr;
+	if (pDist) *pDist = 0.f;
+	if (pOutCollision_Dir) *pOutCollision_Dir = { 0.f, 0.f, 0.f };
+	if (ppOutCollider) *ppOutCollider = nullptr;
 
 	// 레이 방향을 정규화
 	_float3 vNormalRayDir;
@@ -365,14 +374,15 @@ CGameObject* CCollider_Manager::Ray_Cast_MultiGroup_InstancedObjects(
 	const _float3& rayOrigin,
 	const _float3& rayDir,
 	_float fMaxDistanc,
-	const std::vector<_uint>& vGroupIndices,  // 여러 개의 그룹을 받을 벡터
+	const vector<_uint>& vGroupIndices,  // 여러 개의 그룹을 받을 벡터
 	_Out_ _float* pDist,
 	_Out_ _float3* pOutCollision_Dir,
 	_Out_ CComponent** ppOutCollider)
 {
 	// 초기화
-	if (ppOutCollider)
-		*ppOutCollider = nullptr;
+	if (pDist) *pDist = 0.f;
+	if (pOutCollision_Dir) *pOutCollision_Dir = { 0.f, 0.f, 0.f };
+	if (ppOutCollider) *ppOutCollider = nullptr;
 
 	// 레이 방향 정규화
 	_float3 vNormalRayDir;
