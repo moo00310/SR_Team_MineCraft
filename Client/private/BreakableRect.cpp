@@ -145,8 +145,32 @@ HRESULT CBreakableRect::Delete_Cube(_float3 fPos)
 
 void CBreakableRect::Set_Bright(float _f)
 {
-    for (auto& bright : m_vecBrights) {
-        bright = _f;
+    if (m_bChunkColliderActive)
+    {
+        CGameObject* pSteve{ nullptr };
+        pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+
+        for (int i = 0; i < m_vecPositions.size(); ++i) {
+            _float3 vDiff{ vStevePos - m_vecPositions[i] };
+            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+            if (fLengthSq < 10.f) {
+                m_vecBrights[i] = _f + 0.2f;
+            }
+            else {
+                m_vecBrights[i] = _f;
+            }
+        }
+    }
+    else {
+        for (auto& bright : m_vecBrights) {
+            bright = _f;
+        }
     }
 }
 
