@@ -777,6 +777,78 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 #pragma endregion
 
+#pragma region 크리퍼
+	/*-----------------------------------
+	*  크리퍼 모델
+	-----------------------------*/
+
+	/* For.Prototype_GameObject_Creeper */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Creeper"),
+		CCreeper::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Creeper */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Creeper"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Creeper/Creeper.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_VIBuffer_Creeper */
+	Engine::CUBE cube = { _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 32.f), _float3(6.f, 12.f, 4.f), _float2(16.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 32.f), _float3(4.f, 6.f, 4.f), _float2(0.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+#pragma endregion
+
+
+#pragma region 좀비 텍스처, 모델, 원형객체
+	//텍스처
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_Texture_Zombi"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Zombi/zombie.png"), 1))))
+		return E_FAIL;
+
+	// 모델
+	/* For.Prototype_Component_VIBuffer_Zombi */
+	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Head"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(64.f, 64.f), _float3(8.f, 12.f, 4.f), _float2(16.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Body"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	// 다리
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(0.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Leg"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	// 팔
+	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(40.f, 16.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Arm"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	// 원형 객체
+	/* For.Prototype_GameObject_Zombi */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_GameObject_Zombi"),
+		CZombi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+#pragma endregion
+
+
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
 #pragma region PROTOTYPE

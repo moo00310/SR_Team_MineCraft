@@ -187,6 +187,7 @@
     <ClInclude Include="..\public\Client_Defines.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Creeper.h" />
+    <ClInclude Include="..\public\Cube_Model.h" />
     <ClInclude Include="..\public\Edition.h" />
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\GrassDirt.h" />
@@ -208,6 +209,9 @@
     <ClInclude Include="..\public\PlayerHP.h" />
     <ClInclude Include="..\public\PlayerHP_Back.h" />
     <ClInclude Include="..\public\PlayerLevel.h" />
+    <ClInclude Include="..\public\Rect_Model.h" />
+    <ClInclude Include="..\public\RightHand_Object.h" />
+    <ClInclude Include="..\public\Right_hand.h" />
     <ClInclude Include="..\public\UIParticleRain.h" />
     <ClInclude Include="..\public\PlayerHunger.h" />
     <ClInclude Include="..\public\PlayerHunger_Back.h" />
@@ -290,6 +294,7 @@
     <ClCompile Include="..\private\CoalOre.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
+    <ClCompile Include="..\private\Cube_Model.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\GrassDirt.cpp" />
@@ -310,6 +315,9 @@
     <ClCompile Include="..\private\PlayerExp_Back.cpp" />
     <ClCompile Include="..\private\PlayerHP_Back.cpp" />
     <ClCompile Include="..\private\PlayerLevel.cpp" />
+    <ClCompile Include="..\private\Rect_Model.cpp" />
+    <ClCompile Include="..\private\RightHand_Object.cpp" />
+    <ClCompile Include="..\private\Right_hand.cpp" />
     <ClCompile Include="..\private\UIParticleRain.cpp" />
     <ClCompile Include="..\private\PlayerHunger.cpp" />
     <ClCompile Include="..\private\PlayerHunger_Back.cpp" />

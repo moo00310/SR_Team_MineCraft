@@ -148,9 +148,6 @@
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\00.Steve">
       <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Arm">
-      <UniqueIdentifier>{f171070a-27a5-4542-94f6-770d938b3233}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster">
       <UniqueIdentifier>{85c77c0b-6725-4c2e-b6c2-651cdd0b5d3d}</UniqueIdentifier>
     </Filter>
@@ -267,6 +264,18 @@
     </Filter>
     <Filter Include="03.UI\07.Mouse_UI">
       <UniqueIdentifier>{1ae29a47-5cfd-4a67-a6bd-0e5e0016d828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Right_Hand">
+      <UniqueIdentifier>{c4fb0171-7320-416e-85ac-fa2d0331adaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\00.Arm_Model">
+      <UniqueIdentifier>{b1a8865c-b1d7-422b-92bf-072f1b491b3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\01.Cube_Model">
+      <UniqueIdentifier>{919cd1bd-35af-4c7b-8c72-5c8b125deae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model">
+      <UniqueIdentifier>{46952101-c5a9-4eed-b9f6-1bb320096855}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -435,9 +444,6 @@
     <ClInclude Include="..\public\StartButton.h">
       <Filter>03.UI\01.StartButton</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Arm_Steve.h">
-      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Arm</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\SkyBox.h">
       <Filter>02.GameObjects\03.Sky\01.SkyBox</Filter>
     </ClInclude>
@@ -587,6 +593,20 @@
     <ClInclude Include="..\public\Pawn.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Right_hand.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Arm_Steve.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\00.Arm_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Cube_Model.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\01.Cube_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Rect_Model.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RightHand_Object.h" />
+  </ClInclude>
     <ClInclude Include="..\public\ParticleDie.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
@@ -749,9 +769,6 @@
     <ClCompile Include="..\private\StartButton.cpp">
       <Filter>03.UI\01.StartButton</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Arm_Steve.cpp">
-      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Arm</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\SkyBox.cpp">
       <Filter>02.GameObjects\03.Sky\01.SkyBox</Filter>
     </ClCompile>
@@ -896,6 +913,20 @@
     <ClCompile Include="..\private\Pawn.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Right_hand.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Arm_Steve.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\00.Arm_Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Cube_Model.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\01.Cube_Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Rect_Model.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RightHand_Object.cpp" />
+   </ClCompile> 
     <ClCompile Include="..\private\ParticleDie.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>

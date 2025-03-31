@@ -143,6 +143,15 @@
     <ClInclude Include="..\public\Collider.h">
       <Filter>04.Components\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ViBuffer_Anim.h">
+      <Filter>04.Components\VIBuffer\ViBuffer_Anim</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Anim_Cube.h">
+      <Filter>04.Components\VIBuffer\ViBuffer_Anim\00.VIbuffer_Anim_Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Anim_Rect.h">
+      <Filter>04.Components\VIBuffer\ViBuffer_Anim\01.VIBuffer_Ainm_Rect</Filter>
+  </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_CubeShader.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClInclude>
@@ -261,6 +270,15 @@
     </Filter>
     <Filter Include="04.Components\Collider\Collider_Capsule">
       <UniqueIdentifier>{de924ea3-ef85-45d6-b9d9-11b2ad79e1b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\VIBuffer\ViBuffer_Anim">
+      <UniqueIdentifier>{f4470bd4-31e0-4d83-b222-9d87ba05e6cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\VIBuffer\ViBuffer_Anim\00.VIbuffer_Anim_Cube">
+      <UniqueIdentifier>{3d5799b8-4ec9-474c-bdc5-a1dc8c2b1ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\VIBuffer\ViBuffer_Anim\01.VIBuffer_Ainm_Rect">
+      <UniqueIdentifier>{2c0c6cf9-e0e7-4f4b-b1ed-ffe6157eb597}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +399,15 @@
     <ClCompile Include="..\private\Collider.cpp">
       <Filter>04.Components\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\ViBuffer_Anim.cpp">
+      <Filter>04.Components\VIBuffer\ViBuffer_Anim</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Anim_Cube.cpp">
+      <Filter>04.Components\VIBuffer\ViBuffer_Anim\00.VIbuffer_Anim_Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Anim_Rect.cpp">
+      <Filter>04.Components\VIBuffer\ViBuffer_Anim\01.VIBuffer_Ainm_Rect</Filter>
+  </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_CubeShader.cpp">
       <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClCompile>
