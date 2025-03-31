@@ -277,9 +277,11 @@ void CZombi::Motion_Dead(_float fTimeDelta)
 {
     m_skelAnime->Update_Animetion(Dead, fTimeDelta, 0);
 
+    // »ç¸Á ÆÄÆ¼Å¬.
     CParticleEventManager::Get_Instance()->OnParticle(
         PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
-        m_pTransformCom
+        m_pTransformCom,
+        0.5f
     );    
 
     if (m_skelAnime->is_AnimtionEND(Dead))

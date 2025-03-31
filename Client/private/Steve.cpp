@@ -474,7 +474,8 @@ void CSteve::PlayDashParticle(_float fTimeDelta)
 	{
 		CParticleEventManager::Get_Instance()->OnParticle(
 			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,
-			m_pTransformCom
+			m_pTransformCom,
+			0.2f
 		);
 
 		// 쿨타임 진행 처리.

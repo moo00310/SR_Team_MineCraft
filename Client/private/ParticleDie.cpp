@@ -19,7 +19,7 @@ HRESULT CParticleDie::Initialize(void* pArg)
 {
 	iParticleCount = 6;
 	IsTimer = true;
-	fEndTimer = 5.f;
+	fEndTimer = 2.f;
 	IsParticleTexture = true;
 
 	if (FAILED(__super::Initialize(pArg)))

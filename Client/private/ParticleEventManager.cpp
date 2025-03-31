@@ -9,7 +9,7 @@ void CParticleEventManager::Initialization(CGameInstance* _device)
 	Safe_AddRef(m_pGameInstance);
 }
 
-void CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, CTransform* _transform)
+void CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, CTransform* _transform, _float _yUp)
 {
 	CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬.
 		strPrototypeTag,	// 가져올 프로토타입.
@@ -29,7 +29,8 @@ void CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, CTransfo
 	particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, _transform->Get_State(CTransform::STATE_RIGHT));
 	
 	_float3 _pos = _transform->Get_State(CTransform::STATE_POSITION);
-	_pos.y += 0.2f;
+	_pos.y += _yUp;
+
 	particle->Replay(_pos);
 }
 

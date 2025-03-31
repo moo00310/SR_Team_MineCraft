@@ -19,7 +19,7 @@ public:
 	void Initialization(CGameInstance* _device);
 
 	// 해당 태그 파티클 효과 발동.
-	void OnParticle(const _wstring& strPrototypeTag, CTransform* _transform);
+	void OnParticle(const _wstring& strPrototypeTag, CTransform* _transform, _float _yUp = 0.f);
 
 	// 해당 태그 파티클 효과 발동.
 	void OnParticle(const _wstring& strPrototypeTag, _float3 _position);

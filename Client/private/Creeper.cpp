@@ -314,6 +314,7 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
     
     if (m_skelAnime->is_AnimtionEND(Attack))
     {
+        // 폭발 파티클.
         CParticleEventManager::Get_Instance()->OnParticle(
             PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
             m_pTransformCom
@@ -331,9 +332,11 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
 {
     m_skelAnime->Update_Animetion(Dead, fTimeDelta, 0);
 
+    // 사망 파티클.
     CParticleEventManager::Get_Instance()->OnParticle(
         PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
-        m_pTransformCom
+        m_pTransformCom,
+        0.5f
     );
 
     if (m_skelAnime->is_AnimtionEND(Dead))
