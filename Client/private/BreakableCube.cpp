@@ -39,27 +39,22 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
         _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
         
-        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-        for (CCollider_Cube* pCollider : m_Colliders)
-        {
-            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
 
-            _float3 vDiff{ vStevePos - vColliderPos };
-
+        for (int i = 0; i < m_vecPositions.size(); ++i) {
+            _float3 vDiff{ vStevePos - m_vecPositions[i]};
             _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-
             if (fLengthSq < 30.f)
             {
-                //플레이어와 거리가 가까우면
-                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, m_Colliders[i]);
 
-                pCollider->Set_bColliderActive(true);
+                m_Colliders[i]->Set_bColliderActive(true);
             }
             else
             {
-                pCollider->Set_bColliderActive(false);
+                m_Colliders[i]->Set_bColliderActive(false);
             }
         }
+
     }
     else
     {
@@ -73,12 +68,11 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
 
 void CBreakableCube::Update(_float fTimeDelta)
 {
-
 }
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
 {
-
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 }
 
 HRESULT CBreakableCube::Render()
@@ -94,7 +88,6 @@ HRESULT CBreakableCube::Render()
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
-    m_pShaderCom->SetFloat("g_Bright", m_fBright);
 
     m_pShaderCom->Begin(0);
 
@@ -124,6 +117,7 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 
     for (int i = 0; i < position.size(); ++i) {
         m_vecPositions.push_back(position[i]); //위치 넣어줌
+        m_vecBrights.push_back(1.f);
 
         /* For.Com_Collider */
         CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
@@ -145,16 +139,61 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
     return E_NOTIMPL;
 }
 
-HRESULT CBreakableCube::Create_Cube(_float3 fPos)
+void CBreakableCube::Set_Bright(float _f)
 {
+
+    if (m_bChunkColliderActive)
+    {
+        CGameObject* pSteve{ nullptr };
+        pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+
+        for (int i = 0; i < m_vecPositions.size(); ++i) {
+            _float3 vDiff{ vStevePos - m_vecPositions[i] };
+            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+            if (fLengthSq < 5.f) {
+                m_vecBrights[i] = _f + 0.2f * m_vecPositions[i].y / 10.f;
+            }
+            else if (fLengthSq < 10.f) {
+                m_vecBrights[i] = _f + 0.1f * m_vecPositions[i].y / 10.f;
+            }
+            else {
+                m_vecBrights[i] = _f * m_vecPositions[i].y / 10.f;
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < m_vecBrights.size(); ++i) {
+            m_vecBrights[i] = _f * m_vecPositions[i].y / 10.f;
+        }
+    }
+}
+
+HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
+{
+    int brightIndex = 0;
     // 2. 벡터에서 해당 위치 추가
-    m_vecPositions.push_back(fPos);
+    for (int i = 0; i < m_vecPositions.size(); ++i) {
+        if (fPos.x == m_vecPositions[i].x && fPos.y == m_vecPositions[i].y && fPos.z == m_vecPositions[i].z) {
+            brightIndex = i;
+            break;
+        }
+    }
+
+    _float3 blockPos = fPos + _Dir;
+    m_vecPositions.push_back(blockPos);
+    m_vecBrights.push_back(m_vecBrights[brightIndex]);
 
     // 3. 콜라이더 추가
     /* For.Com_Collider */
     CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
     Desc.vRadius = { .5f, .5f, .5f };
-    Desc.vOffset = { fPos.x , fPos.y, fPos.z };
+    Desc.vOffset = { blockPos.x , blockPos.y, blockPos.z };
     Desc.pTransformCom = m_pTransformCom;
     Desc.pOwner = this;
     m_Colliders.resize(m_Colliders.size() + 1);
@@ -165,7 +204,7 @@ HRESULT CBreakableCube::Create_Cube(_float3 fPos)
     }
 
     // 4. 인스턴스 버퍼 업데이트
-    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
     return S_OK;
 }

@@ -35,11 +35,16 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 	
-	if (FAILED(Ready_Laye_TPS_Arm(TEXT("Layer_TPS_Arm"))))
-	return E_FAIL;
+	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_TPS_Arm"))))
+		return E_FAIL;
 
-	/*if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
-		return E_FAIL;*/
+	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;
+
+	/*
+	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
+		return E_FAIL;
+	*/
 
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;
@@ -115,6 +120,16 @@ HRESULT CLevel_YU::Ready_Layer_Sun(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_Clouds(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Clouds"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_SkyBox(const _wstring& strLayerTag)
+{
+	/* Prototype_GameObject_SkyBox */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_SkyBox"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
@@ -223,7 +238,7 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_YU::Ready_Laye_TPS_Arm(const _wstring& strLayerTag)
+HRESULT CLevel_YU::Ready_Layer_TPS_Arm(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
 		LEVEL_YU, strLayerTag)))

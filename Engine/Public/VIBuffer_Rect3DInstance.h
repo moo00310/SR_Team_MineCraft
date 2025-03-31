@@ -15,7 +15,8 @@ public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	HRESULT Create_InstanceBuffer();
-	HRESULT Update_InstanceBuffer(const std::vector<D3DXVECTOR3>& positions);
+	HRESULT Update_InstanceBuffer(vector<D3DXVECTOR3>& positions, vector<_float>& brights);
+	HRESULT Update_InstanceBuffer(vector<D3DXVECTOR3>& positions, _float bright);
 	HRESULT Render();
 	HRESULT Bind_Buffers();
 private:

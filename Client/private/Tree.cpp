@@ -162,8 +162,8 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
         _leafPos.push_back(_float3(vecAddLeadPos[j].x, 0.5f + vecAddLeadPos[j].y + height, vecAddLeadPos[j].z) + m_Pos);
     }
 
-    m_pWood->Set_InstanceBuffer(_woodPos);
-    m_pLeaf->Set_InstanceBuffer(_leafPos);
+    m_pWood->Set_InstanceBuffer(_woodPos, 1.f);
+    m_pLeaf->Set_InstanceBuffer(_leafPos,1.f);
 
     m_pWood->Set_BlockPositions(_woodPos);
     m_pLeaf->Set_BlockPositions(_leafPos);

@@ -80,8 +80,7 @@ void CBreakableRect::Update(_float fTimeDelta)
 
 void CBreakableRect::Late_Update(_float fTimeDelta)
 {
-
-
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 }
 
 HRESULT CBreakableRect::Render()
@@ -97,8 +96,7 @@ HRESULT CBreakableRect::Render()
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
-    m_pShaderCom->SetFloat("g_Bright", m_fBright);
-
+    
     m_pShaderCom->Begin(0);
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
@@ -123,6 +121,7 @@ void CBreakableRect::Set_BlockPositions(vector<_float3> position)
 
     for (int i = 0; i < position.size(); ++i) {
         m_vecPositions.push_back(position[i]); //위치 넣어줌
+        m_vecBrights.push_back(1.f);
 
         /* For.Com_Collider */
         CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
@@ -142,6 +141,37 @@ void CBreakableRect::Set_BlockPositions(vector<_float3> position)
 HRESULT CBreakableRect::Delete_Cube(_float3 fPos)
 {
     return S_OK;
+}
+
+void CBreakableRect::Set_Bright(float _f)
+{
+    if (m_bChunkColliderActive)
+    {
+        CGameObject* pSteve{ nullptr };
+        pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+
+        for (int i = 0; i < m_vecPositions.size(); ++i) {
+            _float3 vDiff{ vStevePos - m_vecPositions[i] };
+            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+            if (fLengthSq < 10.f) {
+                m_vecBrights[i] = _f + 0.2f;
+            }
+            else {
+                m_vecBrights[i] = _f;
+            }
+        }
+    }
+    else {
+        for (auto& bright : m_vecBrights) {
+            bright = _f;
+        }
+    }
 }
 
 HRESULT CBreakableRect::Ready_Components()
