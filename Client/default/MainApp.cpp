@@ -23,6 +23,7 @@
 #include "UIParticleRain.h"
 #include "ParticleExplosion.h"
 #include "Mouse.h"
+#include "ParticleDie.h"
 
 
 CMainApp::CMainApp()
@@ -164,32 +165,32 @@ HRESULT CMainApp::Ready_Steve()
 	/* For.Prototype_Component_VIBuffer_Steve */
 	Engine::CUBE cube{ _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Head"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 64.f), _float3(8.f, 12.f, 4.f), _float2(16.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Body"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(0.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_R"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(16.f, 48.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Foot_L"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(40.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(32.f, 48.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	// 스티브 게임 오브젝트
@@ -254,6 +255,11 @@ HRESULT CMainApp::Ready_Texture()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/explosion_%d.png"), 16))))
 		return E_FAIL;
 
+	// 사망 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DIE,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/die_%d.png"), 3))))
+		return E_FAIL;
+
 	// TODO : 파티클.
 	// 비 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
@@ -285,6 +291,11 @@ HRESULT CMainApp::Ready_Texture()
 	// 폭발 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
 		CParticleExplosion::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 사망 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
+		CParticleDie::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;
@@ -336,7 +347,7 @@ HRESULT CMainApp::Ready_Component()
 
 	//  노말이 들어간 렉트
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect_Normal"),
-		CVIBuffer_Rect_Normal::Create(m_pGraphic_Device))))
+		CVIBuffer_Anim_Rect::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_CubeInstance */
@@ -347,6 +358,11 @@ HRESULT CMainApp::Ready_Component()
 	/* For.Prototype_Component_Shader_Rect3DInstance */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect3DInstance"),
 		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Rect3DInstance.hlsl")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_Cube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Cube"),
+		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Cube.hlsl")))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_UI */

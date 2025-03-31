@@ -134,6 +134,12 @@ protected:
 	// 텍스쳐 현재 인덱스.
 	_uint iCurrentTextureIndex;
 
+	// 파티클 입자 텍스쳐들을 각각 다르게 적용 시킬 것인가?.
+	// 이 기능을 활성화 시킬경우 해당 파티클은
+	// 인스턴싱 기능이 적용이 안되니
+	// 너무 많은 파티클 입자에는 적용하지 말 것.
+	bool IsParticleTexture = {false};
+
 	// 파티클 텍스쳐.
 	CTexture* m_pParticleTexture = { nullptr };
 

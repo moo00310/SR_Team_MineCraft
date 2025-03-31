@@ -28,6 +28,13 @@ namespace Engine
 	}VTXNORTEX;
 
 
+	typedef struct tagInstanceCube
+	{
+		D3DXVECTOR3		vPosition;
+		_float			vBright;
+	}INFOINS;
+
+
 	typedef struct tagCreateCube
 	{
 		D3DXVECTOR2 Imagesize;
@@ -57,7 +64,7 @@ namespace Engine
 		// 파티클 속도.
 		_float3 vVelocity;		
 
-		// 파티클 컬러.
+		// 파티클 컬러 (DWORD 자료형).
 		D3DXCOLOR vColor;	
 
 		// 파티클 생존 여부.
@@ -83,6 +90,9 @@ namespace Engine
 
 		// 중력 가속도.
 		float fGravity;
+
+		// 텍스쳐 인덱스.
+		_uint iTextureIndex;
 	}ParticleAttribute;
 
 	// 파티클 경계선.

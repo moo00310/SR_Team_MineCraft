@@ -5,6 +5,7 @@
 BEGIN(Engine)
 
 class CVIBuffer_Cube;
+class CVIBuffer_Anim;
 
 struct BlendState
 {
@@ -22,7 +23,7 @@ public:
 
 	typedef struct tagRigidbodyDesc
 	{
-		vector<CVIBuffer_Cube*> Cubes;
+		vector<CVIBuffer_Anim*> Cubes;
 
 	}DESC;
 
@@ -63,7 +64,7 @@ public:
 
 private:
 	vector<BONE> vecBones;
-	vector<CVIBuffer_Cube*> m_pVIBufferComs;
+	vector<CVIBuffer_Anim*> m_pVIBufferComs;
 	map<_uint, vector<KEYFREAME>> m_Animations = {};
 	float fElapsedTime[AnimTimeCount] = {};
 	float animElapsedTime = {};

@@ -213,8 +213,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 //콜라이더 큐브의 위치 + 방향을 계산해서
                 //Create_Cube 함수 실행
 
-                _float3 vPos = pCollider_Cube->Get_Offset() + pBreakableCube->GetPos() + vDir;
-                pBreakableCube->Create_Cube(vPos);
+                _float3 vPos = pCollider_Cube->Get_Offset() + pBreakableCube->GetPos();
+                pBreakableCube->Create_Cube(vPos, vDir);
 
             }
         }

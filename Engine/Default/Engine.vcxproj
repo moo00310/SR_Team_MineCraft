@@ -189,8 +189,12 @@
     <ClInclude Include="..\public\UIObject.h" />
     <ClInclude Include="..\public\UIParticleSystem.h" />
     <ClInclude Include="..\public\VIBuffer.h" />
+    <ClInclude Include="..\public\ViBuffer_Anim.h" />
+    <ClInclude Include="..\public\VIBuffer_Anim_Cube.h" />
+    <ClInclude Include="..\public\VIBuffer_Anim_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Cube.h" />
     <ClInclude Include="..\Public\VIBuffer_CubeInstance.h" />
+    <ClInclude Include="..\Public\VIBuffer_CubeShader.h" />
     <ClInclude Include="..\Public\VIBuffer_Cube_Only.h" />
     <ClInclude Include="..\public\VIBuffer_Line.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
@@ -233,8 +237,12 @@
     <ClCompile Include="..\private\UIObject.cpp" />
     <ClCompile Include="..\private\UIParticleSystem.cpp" />
     <ClCompile Include="..\private\VIBuffer.cpp" />
+    <ClCompile Include="..\private\ViBuffer_Anim.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Anim_Cube.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Anim_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp" />
     <ClCompile Include="..\Private\VIBuffer_CubeInstance.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_CubeShader.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Cube_Only.cpp" />
     <ClCompile Include="..\private\VIBuffer_Line.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />

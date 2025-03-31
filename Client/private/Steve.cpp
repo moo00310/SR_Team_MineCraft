@@ -2,7 +2,7 @@
 
 #include "Transform.h"
 #include "Texture.h"
-#include "VIBuffer_Cube.h"
+#include "VIBuffer_Anim_Cube.h"
 #include "GameInstance.h"
 #include "UI_Mgr.h"
 
@@ -23,13 +23,13 @@ HRESULT CSteve::Initialize_Prototype()
 
 HRESULT CSteve::Initialize(void* pArg)
 {
-	// 기타 스텟 초기화 ( Panw 에 선언 되어 있음 )
+	// 기타 스텟 초기화 ( Pawn 에 선언 되어 있음 )
 	m_fSpeed = 5.f;
 	m_MaxHp = 100.f;
 	m_Hp = 100.f;
 
 	m_Coll_Size = { 0.3f, 0.9f, 0.3f };
-	m_Coll_Offset = { 0.f, 1.f, 0.f };
+	m_Coll_Offset = { 0.f, 0.9f, 0.f };
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
@@ -486,10 +486,14 @@ void CSteve::PlayDashParticle(_float fTimeDelta)
 		}
 
 		// 파티클 적용.
-		particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-		particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-		particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-		particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		//particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+		//particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+		//particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+		//
+		//// 플레이어 발에 생성되는데 이러면 블럭에 가려져 파티클이 안나올 수 있다. 약간 y를 올린다.
+		//_float3 _pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		//_pos.y += 0.2f;
+		//particle->Replay(_pos);
 
 		// 쿨타임 진행 처리.
 		m_IsDashCoolTime = true;

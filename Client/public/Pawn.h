@@ -6,7 +6,7 @@
 BEGIN(Engine)
 class CTexture;
 class CTransform;
-class CVIBuffer_Cube;
+class CVIBuffer_Anim;
 class CSkeletalAnimator;
 END
 
@@ -47,7 +47,7 @@ protected:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CSkeletalAnimator* m_skelAnime = { nullptr };
-	vector<CVIBuffer_Cube*> m_pVIBufferComs;
+	vector<CVIBuffer_Anim*> m_pVIBufferComs;
 
 protected:
 	CCollider_Cube* m_pCollider_CubeCom = { nullptr };
