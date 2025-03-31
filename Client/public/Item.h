@@ -31,9 +31,13 @@ public:
 	_int		Get_SlotIndex() { return m_iSlotIndexNum; }
 	_int		Get_ItemCount() { return m_iItemCount; }
 
+
+	_bool		Get_Test() { return m_bTest; }
+
 public:
 	void Set_ItemName(ITEMNAME _ItemName) { m_ItemName = _ItemName; }
 	void Set_ItemCount(_int _itemCount) { m_iItemCount = _itemCount; }
+	void Set_Test(_bool _Test) { m_bTest = _Test; }
 
 private:
 	HRESULT Ready_Components();
@@ -52,7 +56,8 @@ private:
 	_int*		m_iSlotIndex = { nullptr };
 	_int		m_iSlotIndexNum;
 	_int		m_iItemCount = { 0 };
-	_bool		m_bTest = {true};
+	_bool		m_bCheck = {true};
+	_bool		m_bTest = { false };
 
 public:
 	static CItem* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

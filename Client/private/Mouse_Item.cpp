@@ -66,6 +66,7 @@ void CMouse_Item::Late_Update(_float fTimeDelta)
 {
     CMouse* pMouse = CMouse::Get_Instance();
 
+    /* 아이템 종류에 따라 아이템 아이디 분류 */
     if (m_ItemName == ITEMNAME_WOOD)
     {
         pMouse->Set_ItemID(ITEMID_BLOCK);
