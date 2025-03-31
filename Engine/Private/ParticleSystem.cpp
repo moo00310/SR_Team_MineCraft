@@ -104,7 +104,7 @@ void CParticleSystem::Update(_float fTimeDelta)
 
 void CParticleSystem::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this);
+	m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
 }
 
 HRESULT CParticleSystem::Render()
