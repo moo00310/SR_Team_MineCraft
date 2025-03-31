@@ -484,14 +484,14 @@ void CSteve::PlayDashParticle(_float fTimeDelta)
 		}
 
 		// 파티클 적용.
-		//particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-		//particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-		//particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-		//
-		//// 플레이어 발에 생성되는데 이러면 블럭에 가려져 파티클이 안나올 수 있다. 약간 y를 올린다.
-		//_float3 _pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-		//_pos.y += 0.2f;
-		//particle->Replay(_pos);
+		particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+		particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+		particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+		
+		// 플레이어 발에 생성되는데 이러면 블럭에 가려져 파티클이 안나올 수 있다. 약간 y를 올린다.
+		_float3 _pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+		_pos.y += 0.2f;
+		particle->Replay(_pos);
 
 		// 쿨타임 진행 처리.
 		m_IsDashCoolTime = true;
