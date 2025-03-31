@@ -65,7 +65,7 @@ void CZombi::Late_Update(_float fTimeDelta)
     Update_State(fTimeDelta);
     m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
         return;
 }
 
@@ -83,28 +83,28 @@ HRESULT CZombi::Ready_Components()
 #pragma region 외형
     // 좀비 텍스처
   /* For.Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Zombi"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Zombi"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
     m_pVIBufferComs.resize(6);
     /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Body"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Body"),
         TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Head"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Head"),
         TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[1]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Leg"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Leg"),
         TEXT("m_pVIBufferCom_Foot_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[2]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Leg"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Leg"),
         TEXT("m_pVIBufferCom_Foot_L"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[3]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Arm"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Arm"),
         TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[4]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Arm"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Arm"),
         TEXT("m_pVIBufferCom_Arm_L"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[5]))))
         return E_FAIL;
 #pragma endregion

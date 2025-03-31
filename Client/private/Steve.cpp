@@ -23,13 +23,13 @@ HRESULT CSteve::Initialize_Prototype()
 
 HRESULT CSteve::Initialize(void* pArg)
 {
-	// 기타 스텟 초기화 ( Panw 에 선언 되어 있음 )
+	// 기타 스텟 초기화 ( Pawn 에 선언 되어 있음 )
 	m_fSpeed = 5.f;
 	m_MaxHp = 100.f;
 	m_Hp = 100.f;
 
 	m_Coll_Size = { 0.3f, 0.9f, 0.3f };
-	m_Coll_Offset = { 0.f, 1.f, 0.f };
+	m_Coll_Offset = { 0.f, 0.9f, 0.f };
 
 	if (FAILED(Ready_Components()))
 		return E_FAIL;

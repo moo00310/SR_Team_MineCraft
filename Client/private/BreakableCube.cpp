@@ -29,9 +29,9 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         Destroy();
     }
 
-    // �÷��̾� �ؿ� �ִ� ûũ�� �浹 �Ŵ����� �ø�
-    if (m_bChunkColliderActive) 
+    for (CCollider_Cube* pCollider : m_Colliders)
     {
+
         CGameObject* pSteve{ nullptr };
         pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
 
@@ -56,13 +56,14 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         }
 
     }
-    else
+
+    if (m_bChunkColliderActive)
     {
-        for (CCollider_Cube* pCollider : m_Colliders)
-        {
-            pCollider->Set_bColliderActive(false);
-        }
+        Should_Collide_With_Player();
+        Should_Collide_With_Monster();
     }
+    //밖에 꺼내 놓은 이유(다른 청크가면 몬스터 떨어져버림) -> 안돼 프레임 개 떨어져 그냥 몬스터 멀어지면 비활성화 시키는게 나을 거 같음
+    //Should_Collide_With_Monster();
     
 }
 
@@ -91,7 +92,7 @@ HRESULT CBreakableCube::Render()
 
     m_pShaderCom->Begin(0);
 
-    /* ������ �׸���. */
+    /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
@@ -116,11 +117,11 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
     m_Colliders.resize(position.size());
 
     for (int i = 0; i < position.size(); ++i) {
-        m_vecPositions.push_back(position[i]); //��ġ �־���
+        m_vecPositions.push_back(position[i]); //위치 넣어줌
         m_vecBrights.push_back(1.f);
 
         /* For.Com_Collider */
-        CCollider_Cube::COLLCUBE_DESC Desc{}; //�ݶ��̴� ũ�� ����
+        CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
         Desc.vRadius = { .5f, .5f, .5f };
         Desc.vOffset = { position[i].x , position[i].y, position[i].z };
         Desc.pTransformCom = m_pTransformCom;
@@ -136,6 +137,8 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
+    //여기다가 구현해놔야지 나중에
+    //크리에이트 큐브 처럼
     return E_NOTIMPL;
 }
 
@@ -177,7 +180,7 @@ void CBreakableCube::Set_Bright(float _f)
 HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
 {
     int brightIndex = 0;
-    // 2. ���Ϳ��� �ش� ��ġ �߰�
+    // 2. 벡터에서 해당 위치 추가
     for (int i = 0; i < m_vecPositions.size(); ++i) {
         if (fPos.x == m_vecPositions[i].x && fPos.y == m_vecPositions[i].y && fPos.z == m_vecPositions[i].z) {
             brightIndex = i;
@@ -189,9 +192,9 @@ HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
     m_vecPositions.push_back(blockPos);
     m_vecBrights.push_back(m_vecBrights[brightIndex]);
 
-    // 3. �ݶ��̴� �߰�
+    // 3. 콜라이더 추가
     /* For.Com_Collider */
-    CCollider_Cube::COLLCUBE_DESC Desc{}; //�ݶ��̴� ũ�� ����
+    CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
     Desc.vRadius = { .5f, .5f, .5f };
     Desc.vOffset = { blockPos.x , blockPos.y, blockPos.z };
     Desc.pTransformCom = m_pTransformCom;
@@ -203,7 +206,7 @@ HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
         return E_FAIL;
     }
 
-    // 4. �ν��Ͻ� ���� ������Ʈ
+    // 4. 인스턴스 버퍼 업데이트
     m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
     return S_OK;
@@ -236,6 +239,67 @@ HRESULT CBreakableCube::Ready_Components()
     return S_OK;
 }
 
+
+void CBreakableCube::Should_Collide_With_Player()
+{
+    // 플레이어 밑에 있는 청크면 충돌 매니저에 올림(이제는 플레이어에다가 추가로 몬스터 크리퍼, 좀비 레이어)
+    CGameObject* pSteve{ nullptr };
+    pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+    CTransform* pTransformCom{ nullptr };
+    pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+    _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+    //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+    for (CCollider_Cube* pCollider : m_Colliders)
+    {
+        _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
+
+        _float3 vDiff{ vStevePos - vColliderPos };
+
+        _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+        if (fLengthSq < 30.f)
+        {
+            //플레이어와 거리가 가까우면
+            m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+
+            pCollider->Set_bColliderActive(true);
+        }
+    }
+}
+
+void CBreakableCube::Should_Collide_With_Monster()
+{
+    // 플레이어 밑에 있는 청크면 충돌 매니저에 올림(이제는 플레이어에다가 추가로 몬스터 크리퍼, 좀비 레이어)
+
+    list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
+
+    for (CGameObject* pMonster : Monsters)
+    {
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
+        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+        for (CCollider_Cube* pCollider : m_Colliders)
+        {
+            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
+
+            _float3 vDiff{ vStevePos - vColliderPos };
+
+            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+            if (fLengthSq < 3.f)
+            {
+                //플레이어와 거리가 가까우면
+                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+
+                pCollider->Set_bColliderActive(true);
+            }
+        }
+    } 
+}
 
 CBreakableCube* CBreakableCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
