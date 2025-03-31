@@ -30,6 +30,7 @@ private:
 	HRESULT Ready_Layer_WOOInvenTest(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_Creeper(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_Zombi(const _wstring& strLayerTag);
+	HRESULT Ready_Laye_Particle(const _wstring& strLayerTag);
 
 
 private:

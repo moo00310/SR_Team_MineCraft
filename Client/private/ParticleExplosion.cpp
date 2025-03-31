@@ -17,19 +17,19 @@ HRESULT CParticleExplosion::Initialize_Prototype()
 
 HRESULT CParticleExplosion::Initialize(void* pArg)
 {
-	iParticleCount = 4;
+	iParticleCount = 12;
 	iTextureIndex = 16;
 	fAnimationFrame = 0.05f;
 	IsTextureAnimation = true;
 	IsTimer = true;
-	fEndTimer = 0.1f;
+	fEndTimer = 0.8f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
 		return E_FAIL;
 	}
 
-	dwVpBatchSize = 4;
+	dwVpBatchSize = 12;
 	dwPointSize = GetScale(2.f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);

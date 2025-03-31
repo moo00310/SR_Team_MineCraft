@@ -333,6 +333,7 @@ void CParticleSystem::Free()
 
 void CParticleSystem::OnPushPool()
 {
+	iCurrentTextureIndex = 0;
 	m_fCurrentTimer = 0.f;
 
 	// 재생성 시 기존에 값 덮어씀.

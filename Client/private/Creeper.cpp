@@ -343,7 +343,7 @@ void CCreeper::PlayExplosionParticle()
 {
     CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
         PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,	// 가져올 프로토타입.
-        LEVEL_YU,	// 적용 씬.
+        LEVEL_HERO,	// 적용 씬.
         LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어		
 
     // NULL 체크.
