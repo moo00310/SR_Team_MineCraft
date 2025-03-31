@@ -85,19 +85,28 @@ void CPlayer::Update(_float fTimeDelta)
 	if (GetKeyState('X') & 0x8000)
 	{
 		//m_pParticleSandDestroy->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));		
+		//CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
+		//	PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
+		//	LEVEL_HYEOK,	// 적용 씬.
+		//	LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
+
+		//if (particle != nullptr)
+		//{
+		//	particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+		//	particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
+		//	particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+		//	particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));					
+		//}		
+
 		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
-			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,	// 가져올 프로토타입.
 			LEVEL_HYEOK,	// 적용 씬.
 			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
 
 		if (particle != nullptr)
-		{
-			particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-			particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-			particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
+		{			
 			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));			
-			//m_pGameInstance->Pop(particle);
-		}		
+		}
 	}
 
 	if (GetKeyState('Z') & 0x8000)

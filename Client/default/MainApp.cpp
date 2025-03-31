@@ -22,6 +22,7 @@
 #include "ParticleSandDestroy.h"
 #include "UIParticleRain.h"
 #include "ParticleExplosion.h"
+#include "ParticleDie.h"
 
 
 CMainApp::CMainApp()
@@ -251,6 +252,11 @@ HRESULT CMainApp::Ready_Texture()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/explosion_%d.png"), 16))))
 		return E_FAIL;
 
+	// 사망 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DIE,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/die_%d.png"), 3))))
+		return E_FAIL;
+
 	// TODO : 파티클.
 	// 비 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
@@ -282,6 +288,11 @@ HRESULT CMainApp::Ready_Texture()
 	// 폭발 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
 		CParticleExplosion::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 사망 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
+		CParticleDie::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;
