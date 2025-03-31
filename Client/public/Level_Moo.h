@@ -23,8 +23,6 @@ private:
 	HRESULT Ready_Layer_Creeper(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Steve(const _wstring& strLayerTag);
 
-	HRESULT Ready_Laye_MooArm(const _wstring& strLayerTag);
-	HRESULT Ready_Laye_Sword(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_Zombi(const _wstring& strLayerTag);
 
 public:

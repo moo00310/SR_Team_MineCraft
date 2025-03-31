@@ -18,7 +18,6 @@
 #include "Tree.h"
 #include "Wood.h"
 #include "Leaf.h"
-#include "Sword.h"
 #include "Zombi.h"
 #include "Rect_Model.h"
 #include "Cube_Model.h"
@@ -328,10 +327,6 @@ HRESULT CLoader::Loading_For_MOOPlay()
 		CCamera_Free::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Sword */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_MOO, TEXT("Prototype_GameObject_Sword"),
-		CSword::Create(m_pGraphic_Device))))
-		return E_FAIL;
 
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
@@ -705,10 +700,6 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CRedTulip::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Sword */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Sword"),
-		CSword::Create(m_pGraphic_Device))))
-		return E_FAIL;
 
 	/* For.Prototype_GameObject_Sun */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Sun"),

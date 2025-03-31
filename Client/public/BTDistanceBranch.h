@@ -26,7 +26,7 @@ public:
 private:
     CNode* m_pAttackAction = nullptr;
     CNode* m_pChaseAction = nullptr;
-    float m_fAttack_Distnace;
+    float m_fAttack_Distnace = {};
     bool bIsAttack = false;
 };
 

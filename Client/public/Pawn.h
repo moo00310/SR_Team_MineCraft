@@ -35,9 +35,9 @@ public:
 	CTransform* Get_Transform() { return m_pTransformCom; }
 	CRigidbody* Get_RigidBody() { return m_pRigidbodyCom; }
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
-	void		Set_Hp(int hp) { m_Hp = hp; }
+	void		Set_Hp(float hp) { m_Hp = hp; }
 
-	void		Add_Hp(int damage) { m_Hp += damage; }
+	void		Add_Hp(float damage) { m_Hp += damage; }
 	_float		Get_Hp() { return m_Hp; }
 
 public:

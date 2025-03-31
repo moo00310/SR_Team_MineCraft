@@ -17,7 +17,6 @@ public:
 	virtual HRESULT Render() override;
 
 private:
-	HRESULT Ready_Laye_Sword(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Terrain(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Tool(const _wstring& strLayerTag);
