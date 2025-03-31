@@ -9,6 +9,7 @@
 #include "PlayerExp.h"
 #include "PlayerLevel.h"
 #include "Mouse_Item.h"
+#include "Steve.h"
 
 BEGIN(Client)
 
@@ -30,7 +31,7 @@ public:
 	/* 퀵슬롯과 인벤토리 동기화*/
 	void Synchronize_Slots();
 	/* 플레이어 체력 */
-	void TakeDamge();
+	void SetHP();
 	/* 플레이어 배고픔*/
 	void PlayerHunger_Set(_float fTimeDelta);
 	/* 플레이어 경험치*/
@@ -41,7 +42,7 @@ public:
 public:
 	CItem*							Get_Item(int slotIndex);
 
-	list<CPlayerHP*>*				Get_PlayerHPlist(void)			{ return &m_PlayerHPlist; }
+	vector<CPlayerHP*>*				Get_vecPlayerHPlist(void)		{ return &m_vecPlayerHPlist; }
 	list<CPlayerHunger*>*			Get_PlayerHungerlist(void)		{ return &m_PlayerHungerlist; }
 	list<CPlayerExp*>*				Get_PlayerExplist(void)			{ return &m_PlayerExplist; }
 	list<CPlayerLevel*>*			Get_PlayerLevellist(void)		{ return &m_PlayerLevellist; }
@@ -49,13 +50,26 @@ public:
 
 	vector<CItem*>*					Get_vecItemlist(void)			{ return &m_vecItemlist; }
 
+	_bool							Get_PlayerHP_Shader()			{ return m_bPlayerHP_Shader; }
+	
+public:
+	void Set_Steve(CSteve* _Steve) 
+	{ 
+		pSteve = _Steve;
+		Safe_AddRef(pSteve);
+	}
+
+	void Set_PlayerHP_Shader(_bool _bPlayerHP_Shader) { m_bPlayerHP_Shader = _bPlayerHP_Shader; }
+
 private:
 	_float	m_fHungerTime = { 0.f };
 	_int	m_iallZeroCount = { 0 };
+	_int	m_iHP_ChangeCount = { 0 };
+	_bool	m_bPlayerHP_Shader = { false };
 
 private:
 	/* Player State 관련 */
-	list<CPlayerHP*>			m_PlayerHPlist;
+	vector<CPlayerHP*>			m_vecPlayerHPlist;
 	list<CPlayerHunger*>		m_PlayerHungerlist;
 	list<CPlayerExp*>			m_PlayerExplist;
 	list<CPlayerLevel*>			m_PlayerLevellist;
@@ -67,6 +81,10 @@ private:
 	list<CSubInventory*>	m_SubInventorylist;
 	list<CInventory_Back*>	m_InventoryBacklist;
 	list<CMouse_Item*>		m_MouseItemlist;
+
+
+private:
+	CSteve* pSteve = { nullptr };
 
 public:
 	virtual void Free();

@@ -111,6 +111,8 @@ HRESULT CLevel_YU::Ready_Layer_Steve(const _wstring& strLayerTag)
 
 	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(10.f, 20.f, 10.f));
 
+	CUI_Mgr::Get_Instance()->Set_Steve(dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0)));
+
 	return S_OK;
 }
 

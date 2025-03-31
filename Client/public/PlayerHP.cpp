@@ -50,6 +50,9 @@ void CPlayerHP::Update(_float fTimeDelta)
 
 void CPlayerHP::Late_Update(_float fTimeDelta)
 {
+
+    m_fTime = fTimeDelta;
+
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
@@ -68,8 +71,26 @@ HRESULT CPlayerHP::Render()
 	__super::Begin();
     SetUp_RenderState();
 
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+        return E_FAIL;
+
+    m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(m_iTextureNum));
+
+    if (CUI_Mgr::Get_Instance()->Get_PlayerHP_Shader())
+    {
+        float timeValue = GetTickCount64() * 0.001f;
+        m_pShaderCom->SetFloat("g_Time", timeValue);
+        m_pShaderCom->Begin(2);
+    }
+
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
+
+    m_pShaderCom->End();
 
 	__super::End();
     Reset_RenderState();
@@ -91,6 +112,10 @@ HRESULT CPlayerHP::Ready_Components()
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
 
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+
+        return E_FAIL;
     return S_OK;
 }
 
@@ -132,7 +157,7 @@ CGameObject* CPlayerHP::Clone(void* pArg)
         Safe_Release(pInstance);
     }
 
-    CUI_Mgr::Get_Instance()->Get_PlayerHPlist()->push_back(pInstance);
+    CUI_Mgr::Get_Instance()->Get_vecPlayerHPlist()->push_back(pInstance);
 
     return pInstance;
 }
@@ -143,4 +168,5 @@ void CPlayerHP::Free()
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pTransformCom);
+    Safe_Release(m_pShaderCom);
 }

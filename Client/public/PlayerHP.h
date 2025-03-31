@@ -40,14 +40,17 @@ private:
 	_int*	m_iHpCount = { nullptr };
 	_int	m_iHpIndex;
 	_int	m_iTextureNum;
+	_float	m_fTime = { 0.f };
 
 private:
 	UIOBJECT_DESC Desc{};
 
 private:
-	CTexture* m_pTextureCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	CTexture*			m_pTextureCom = { nullptr };
+	CTransform*			m_pTransformCom = { nullptr };
+	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
+	CShader*			m_pShaderCom = { nullptr };
+
 
 public:
 	static CPlayerHP* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
