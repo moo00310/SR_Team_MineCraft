@@ -33,11 +33,26 @@ void CUI_Mgr::Synchronize_Slots()
 		CItem* pItem17 = m_vecItemlist[17];
 		/*=====================================*/
 		/* 테스트용 */
-		pItem9->Set_ItemName(ITEMNAME_COBBLESTONE);
-		pItem10->Set_ItemName(ITEMNAME_WOOD);
-		pItem11->Set_ItemName(ITEMNAME_OAKPLANKS);
-		pItem15->Set_ItemName(ITEMNAME_DIRT);
-		pItem17->Set_ItemName(ITEMNAME_DANDELION);
+		if (!pItem9->Get_Test())
+		{
+			pItem9->Set_ItemName(ITEMNAME_COBBLESTONE);
+		}
+		if (!pItem10->Get_Test())
+		{
+			pItem10->Set_ItemName(ITEMNAME_WOOD);
+		}
+		if (!pItem11->Get_Test())
+		{
+			pItem11->Set_ItemName(ITEMNAME_OAKPLANKS);
+		}
+		if (!pItem15->Get_Test())
+		{
+			pItem15->Set_ItemName(ITEMNAME_DIRT);
+		}
+		if (!pItem17->Get_Test())
+		{
+			pItem17->Set_ItemName(ITEMNAME_DANDELION);
+		}
 		/*=====================================*/
 
 		for (int i = 0; i < 9; ++i)

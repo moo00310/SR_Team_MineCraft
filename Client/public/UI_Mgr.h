@@ -47,6 +47,8 @@ public:
 	list<CPlayerLevel*>*			Get_PlayerLevellist(void)		{ return &m_PlayerLevellist; }
 	list<CMouse_Item*>*				Get_MouseItemlist(void)			{ return &m_MouseItemlist; }
 
+	vector<CItem*>*					Get_vecItemlist(void)			{ return &m_vecItemlist; }
+
 private:
 	_float	m_fHungerTime = { 0.f };
 	_int	m_iallZeroCount = { 0 };
