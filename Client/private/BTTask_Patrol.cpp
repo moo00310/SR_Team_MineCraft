@@ -37,6 +37,12 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
         }
     }
 
+    //움직일라 하는데 속도가 안난다 점프함 ㅋㅋ
+    if (D3DXVec3LengthSq(&pMonster->Get_RigidBody()->Get_Velocity()) < 0.5f)
+    {
+        pMonster->Get_RigidBody()->Jump(7.f);
+    }
+
     // 직진 이동
     pTransform->Go_Straight(_fTimeDelta);
     return STATUS::RUNNING;

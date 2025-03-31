@@ -232,6 +232,13 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 			m_vVelocity.y = 0.0f;
 
 		m_isGround = true;
+
+		if (m_isKnockBack)
+		{
+			m_vVelocity.x = 0.f;
+			m_vVelocity.z = 0.f;
+			m_isKnockBack = false;
+		}
 	}
 }
 
