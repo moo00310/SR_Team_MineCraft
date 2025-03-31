@@ -1,7 +1,7 @@
 #include "VIBuffer_Rect3DInstance.h"
 #define MAX_INSTANCE_COUNT 10000
 
-D3DVERTEXELEMENT9 vertexDeclRect[] =
+D3DVERTEXELEMENT9 vertexRect3D[] =
 {
 	// 정점 버퍼 (Stream 0)
 	{ 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 }, // vPosition
@@ -107,7 +107,7 @@ HRESULT CVIBuffer_Rect3DInstance::Initialize_Prototype()
 	if (FAILED(Create_InstanceBuffer()))
 		return E_FAIL;
 
-	HRESULT hr = m_pGraphic_Device->CreateVertexDeclaration(vertexDeclRect, &pVertexDecl);
+	HRESULT hr = m_pGraphic_Device->CreateVertexDeclaration(vertexRect3D, &pVertexDecl);
 	if (FAILED(hr) || pVertexDecl == nullptr)
 	{
 		MessageBox(0, L"Failed to create Vertex Declaration!", L"Error", MB_OK);

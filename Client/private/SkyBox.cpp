@@ -95,7 +95,7 @@ HRESULT CSkyBox::Release_RenderState()
 HRESULT CSkyBox::Ready_Components()
 {
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_GrassDirt"),
+	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_GrassDirt"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

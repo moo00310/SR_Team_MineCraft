@@ -1,36 +1,27 @@
-﻿#include "VIBuffer_CubeInstance.h"
-#define MAX_INSTANCE_COUNT 10000
+#include "VIBuffer_CubeShader.h"
 
-D3DVERTEXELEMENT9 vertexCubeInstance[] =
+D3DVERTEXELEMENT9 vertexCube[] =
 {
-    // 정점 버퍼 (Stream 0)
+    // ���� ���� (Stream 0)
     { 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 }, // vPosition
     { 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0 },   // vNormal
     { 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 }, // vTexcoord
-
-    // 인스턴스 버퍼 (Stream 1)
-    { 1, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 }, // vInstancePos (인스턴스 위치)
-
     D3DDECL_END()
 };
 
-CVIBuffer_CubeInstance::CVIBuffer_CubeInstance(LPDIRECT3DDEVICE9 pGraphic_Device)
+CVIBuffer_CubeShader::CVIBuffer_CubeShader(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CVIBuffer{ pGraphic_Device }
 {
 }
 
-CVIBuffer_CubeInstance::CVIBuffer_CubeInstance(const CVIBuffer_CubeInstance& Prototype)
-    : CVIBuffer (Prototype)
-    ,m_pInstanceVB{ Prototype.m_pInstanceVB }
-    , m_iNumInstances {Prototype.m_iNumInstances}
-    , m_iInstanceStride{Prototype.m_iInstanceStride }
-    , pVertexDecl{Prototype.pVertexDecl }
-
+CVIBuffer_CubeShader::CVIBuffer_CubeShader(const CVIBuffer_CubeShader& Prototype):
+    CVIBuffer (Prototype)
+    ,pVertexDecl(Prototype.pVertexDecl)
 {
     D3DXMatrixIdentity(&m_WorldMatrix);
 }
 
-HRESULT CVIBuffer_CubeInstance::Initialize_Prototype(CUBE& tInfo)
+HRESULT CVIBuffer_CubeShader::Initialize_Prototype(CUBE& tInfo)
 {
     m_iNumVertices = 24;
     m_iVertexStride = sizeof(VTXNORTEX);
@@ -66,39 +57,39 @@ HRESULT CVIBuffer_CubeInstance::Initialize_Prototype(CUBE& tInfo)
     m_pVB->Lock(0, 0, reinterpret_cast<void**>(&pVertices), 0);
 
 
-#pragma region 버택스 점찍기
+#pragma region ���ý� �����
 
-    // front 앞 면
+    // front �� ��
     pVertices[0].vPosition = VertInex[0];
     pVertices[1].vPosition = VertInex[1];
     pVertices[2].vPosition = VertInex[2];
     pVertices[3].vPosition = VertInex[3];
 
-    // Right 오른쪽 면
+    // Right ������ ��
     pVertices[4].vPosition = VertInex[3];
     pVertices[5].vPosition = VertInex[2];
     pVertices[6].vPosition = VertInex[6];
     pVertices[7].vPosition = VertInex[7];
 
-    // back 뒷면
+    // back �޸�
     pVertices[8].vPosition = VertInex[7];
     pVertices[9].vPosition = VertInex[6];
     pVertices[10].vPosition = VertInex[5];
     pVertices[11].vPosition = VertInex[4];
 
-    // left 왼쪽면
+    // left ���ʸ�
     pVertices[12].vPosition = VertInex[4];
     pVertices[13].vPosition = VertInex[5];
     pVertices[14].vPosition = VertInex[1];
     pVertices[15].vPosition = VertInex[0];
 
-    // Up 윗면
+    // Up ����
     pVertices[16].vPosition = VertInex[4];
     pVertices[17].vPosition = VertInex[0];
     pVertices[18].vPosition = VertInex[3];
     pVertices[19].vPosition = VertInex[7];
 
-    // Down 아랫면
+    // Down �Ʒ���
     pVertices[20].vPosition = VertInex[1];
     pVertices[21].vPosition = VertInex[5];
     pVertices[22].vPosition = VertInex[6];
@@ -116,7 +107,7 @@ HRESULT CVIBuffer_CubeInstance::Initialize_Prototype(CUBE& tInfo)
         {_float2(startPixelpos.x + fBoxSize.z + fBoxSize.x,      startPixelpos.y)} 
     };
 
-#pragma region UV 매핑
+#pragma region UV ����
     
     _uint		iUvIndices = { 0 };
     // front, Right, back, left
@@ -164,7 +155,7 @@ HRESULT CVIBuffer_CubeInstance::Initialize_Prototype(CUBE& tInfo)
     pIndices[iNumIndices++] = 20;  pIndices[iNumIndices++] = 23;  pIndices[iNumIndices++] = 22;
     pIndices[iNumIndices++] = 20;  pIndices[iNumIndices++] = 22;  pIndices[iNumIndices++] = 21;
 
-#pragma region Normal 매핑
+#pragma region Normal ����
     _float3		vSourDir, vDestDir, vNormal;
 
     for (int i = 0; i < 34; i++)
@@ -184,143 +175,77 @@ HRESULT CVIBuffer_CubeInstance::Initialize_Prototype(CUBE& tInfo)
     m_pVB->Unlock();
     m_pIB->Unlock();
 
-    /* 인스턴싱 버퍼 생성*/
-    if (FAILED(Create_InstanceBuffer()))
-        return E_FAIL;
-
-
-     HRESULT hr = m_pGraphic_Device->CreateVertexDeclaration(vertexCubeInstance, &pVertexDecl);
+    HRESULT hr = m_pGraphic_Device->CreateVertexDeclaration(vertexCube, &pVertexDecl);
     if (FAILED(hr) || pVertexDecl == nullptr)
     {
         MessageBox(0, L"Failed to create Vertex Declaration!", L"Error", MB_OK);
     }
-    
+
+
     return S_OK;
+
 }
 
-HRESULT CVIBuffer_CubeInstance::Initialize(void* pArg)
+HRESULT CVIBuffer_CubeShader::Initialize(void* pArg)
 {
     return S_OK;
 }
 
-HRESULT CVIBuffer_CubeInstance::Bind_WorldMatrix()
+HRESULT CVIBuffer_CubeShader::Bind_WorldMatrix()
 {
     m_pGraphic_Device->SetTransform(D3DTS_WORLD, &m_WorldMatrix);
     return S_OK;
 }
 
-void CVIBuffer_CubeInstance::SetMatrix(const D3DXMATRIX& mat)
+void CVIBuffer_CubeShader::SetMatrix(const D3DXMATRIX& mat)
 {
     m_WorldMatrix = mat;
 }
 
-HRESULT CVIBuffer_CubeInstance::Render()
-{
-
-    HRESULT hr = m_pGraphic_Device->DrawIndexedPrimitive(
-        D3DPT_TRIANGLELIST,  // 삼각형 리스트
-        0,                   // 정점 시작 인덱스
-        0,                   // 최소 정점 인덱스
-        m_iNumVertices,      // 총 정점 개수
-        0,                   // 인덱스 버퍼 오프셋
-        m_iNumPritimive      // 삼각형 개수
-    );
-
-    m_pGraphic_Device->SetStreamSourceFreq(0, 1);
-    m_pGraphic_Device->SetStreamSourceFreq(1, 1);
-
-    return hr;
-}
-
-HRESULT CVIBuffer_CubeInstance::Create_InstanceBuffer()
-{
-    m_iNumInstances = MAX_INSTANCE_COUNT;
-    m_iInstanceStride = sizeof(D3DXVECTOR3);
-
-    if (FAILED(m_pGraphic_Device->CreateVertexBuffer(
-        m_iNumInstances * m_iInstanceStride, 
-        D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, 
-        0,
-        D3DPOOL_DEFAULT,
-        &m_pInstanceVB,
-        0)))
-        return E_FAIL;
-
-    return S_OK;
-}
-
-
-HRESULT CVIBuffer_CubeInstance::Bind_Buffers()
+HRESULT CVIBuffer_CubeShader::Bind_Buffers()
 {
     if (!m_pGraphic_Device)
         return E_FAIL;
 
     m_pGraphic_Device->SetVertexDeclaration(pVertexDecl);
-
-    // 정점 버퍼 바인딩 (기본 버퍼)
+    // ���� ���� ���ε� (�⺻ ����)
     m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iVertexStride);
-    m_pGraphic_Device->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | m_iNumInstances);
 
-    // 인스턴스 버퍼 바인딩 (위치 데이터)
-    m_pGraphic_Device->SetStreamSource(1, m_pInstanceVB, 0, sizeof(D3DXVECTOR3));
-    m_pGraphic_Device->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
-
-    // 인덱스 버퍼 설정
+    // �ε��� ���� ����
     m_pGraphic_Device->SetIndices(m_pIB);
 
-    
     return S_OK;
 }
 
-HRESULT CVIBuffer_CubeInstance::Update_InstanceBuffer(const std::vector<D3DXVECTOR3>& positions)
+
+CVIBuffer_CubeShader* CVIBuffer_CubeShader::Create(LPDIRECT3DDEVICE9 pGraphic_Device, CUBE tInfo)
 {
-    if (!m_pInstanceVB || positions.empty())
-        return E_FAIL;
-
-    // 현재 들어온 인스턴스 개수로 업데이트
-    m_iNumInstances = static_cast<UINT>(positions.size());
-
-    // 인스턴스 데이터가 담길 버퍼를 D3DXMATRIX로 변경
-    D3DXMATRIX* pInstanceData = nullptr;
-    if (FAILED(m_pInstanceVB->Lock(0, 0, (void**)&pInstanceData, D3DLOCK_DISCARD)))
-        return E_FAIL;
-
-    // 현재 들어온 인스턴스 개수만큼 복사
-    memcpy(pInstanceData, positions.data(), m_iNumInstances * sizeof(D3DXVECTOR3));
-
-    m_pInstanceVB->Unlock();
-    return S_OK;
-}
-
-CVIBuffer_CubeInstance* CVIBuffer_CubeInstance::Create(LPDIRECT3DDEVICE9 pGraphic_Device, CUBE tInfo)
-{
-    CVIBuffer_CubeInstance* pInstance = new CVIBuffer_CubeInstance(pGraphic_Device);
+    CVIBuffer_CubeShader* pInstance = new CVIBuffer_CubeShader(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype(tInfo)))
     {
-        MSG_BOX("Failed to Created : CVIBuffer_CubeInstance");
+        MSG_BOX("Failed to Created : CVIBuffer_CubeShader");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CComponent* CVIBuffer_CubeInstance::Clone(void* pArg)
+CComponent* CVIBuffer_CubeShader::Clone(void* pArg)
 {
-    CVIBuffer_CubeInstance* pInstance = new CVIBuffer_CubeInstance(*this);
+    CVIBuffer_CubeShader* pInstance = new CVIBuffer_CubeShader(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CVIBuffer_CubeInstance");
+        MSG_BOX("Failed to Created : CVIBuffer_CubeShader");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
-void CVIBuffer_CubeInstance::Free()
+void CVIBuffer_CubeShader::Free()
 {
 	__super::Free();
-
-    Safe_Release(m_pInstanceVB);
     Safe_Release(pVertexDecl);
 }
+

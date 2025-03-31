@@ -143,6 +143,9 @@
     <ClInclude Include="..\public\Collider.h">
       <Filter>04.Components\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_CubeShader.h">
+      <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -377,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Collider.cpp">
       <Filter>04.Components\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_CubeShader.cpp">
+      <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
