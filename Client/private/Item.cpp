@@ -148,8 +148,10 @@ void CItem::Late_Update(_float fTimeDelta)
 			//(*mouse)->Set_Check(false);
 
 			/* 슬롯 아이템 이미지 비우기 */
-			pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
-			/* 테스트 함수 활성 */
+            if (pMouse->Get_SlotIndex() != m_iSlotIndexNum)
+                pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
+			
+            /* 테스트 함수 활성 */
 			pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_Test(true);
         }
     }

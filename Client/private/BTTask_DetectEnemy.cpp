@@ -12,8 +12,10 @@ STATUS CBTTask_DetectEnemy::Excute(CGameObject* _Obj, _float _fTimeDelta)
 
 	_float fHitDist{};
 	CGameObject* pHitOjbect{ nullptr };
+	_float3 temp = pMonster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+	temp.y += 1;
 
-	pHitOjbect = pMonster->Get_GameInstance()->Ray_Cast(pMonster->Get_Transform()->Get_State(CTransform::STATE_POSITION),
+	pHitOjbect = pMonster->Get_GameInstance()->Ray_Cast(temp,
 		pMonster->Get_Transform()->Get_State(CTransform::STATE_LOOK),
 		10.f,
 		COLLISION_PLAYER

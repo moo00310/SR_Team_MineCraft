@@ -1,5 +1,5 @@
 #pragma once
-// 아이템 모델의 부모가 되는 곳
+// 렉트 모델의 부모가 되는 곳
 
 #include "Client_Defines.h"
 #include "GameObject.h"
@@ -50,7 +50,6 @@ protected:
 	virtual HRESULT Ready_Components();
 	HRESULT Update_Anime(_int _type, _float fTimeDelta);
 	HRESULT Update_BoneAndMesh(const Matrix& matrix);
-
 
 private:
 	HRESULT SetUp_RenderState();

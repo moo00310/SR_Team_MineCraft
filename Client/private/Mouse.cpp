@@ -12,4 +12,5 @@ void CMouse::Clear(_uint iLevelIndex)
 
 void CMouse::Free()
 {
+	__super::Free();
 }
