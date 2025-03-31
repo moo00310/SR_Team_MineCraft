@@ -20,22 +20,33 @@ private:
 public:
 	//게임 오브젝트가 가지고 있는 모든 콜라이더를 등록 하는 함수
 	HRESULT Add_CollisionGroup(_uint iGroupIndex, class CGameObject* pGameObject);
+
 	//콜라이더 하나를 등록 하는 함수
 	HRESULT Add_Collider_CollisionGroup(_uint iGroupIndex, class CCollider* pCollider);
 
-
+	//콜라이더를 그룹에서 제거하는 함수
 	void Out_CollisiomGroup(_uint iGroupIndex, class CGameObject* pGameObject);
 
+	//콜라이더 그룹을 초기화 하는 함수
 	HRESULT Reset_ColliderGroup();
 
-	class CGameObject* Collision_Check_with_Group(_uint iGroupIndex, CComponent* pCollider, COLLISION_TYPE eCollisionType, _Out_ _float3* pOutDepth = nullptr, _Out_ CCollider::COLLISION_DIR* pOutDir = nullptr);
-	
-	_bool Collision_Check_Group_Multi(
-		_uint iGroupIndex,
-		list<CCollider_Cube::COLLISION_INFO>& CollisionObjects,
-		CComponent* pCollider,
-		COLLISION_TYPE eCollisionType
+	// 특정 그룹 내에서 충돌을 검사하고, 첫 번째로 감지된 충돌 객체를 반환합니다.
+	class CGameObject* Collision_Check_with_Group(
+		_uint iGroupIndex,									// 검사할 그룹의 인덱스
+		CComponent* pCollider,								// 충돌을 검사할 대상 Collider
+		COLLISION_TYPE eCollisionType,						// 충돌할 콜라이더 종류
+		_Out_ _float3* pOutDepth = nullptr,					// (옵션) 충돌 깊이를 반환할 포인터
+		_Out_ CCollider::COLLISION_DIR* pOutDir = nullptr	// (옵션) 충돌 방향을 반환할 포인터
 	);
+
+	// 특정 그룹 내에서 다중 충돌을 검사하고, 충돌한 객체 목록을 반환합니다.
+	_bool Collision_Check_Group_Multi(
+		_uint iGroupIndex,											// 검사할 그룹의 인덱스
+		list<CCollider_Cube::COLLISION_INFO>& CollisionObjects,		// 충돌한 객체 정보를 저장할 리스트 (출력)
+		CComponent* pCollider,										// 충돌을 검사할 대상 Collider
+		COLLISION_TYPE eCollisionType								// 충돌할 콜라이더 종류
+	);
+
 
 	//일반 버전
 	CGameObject* Ray_Cast(
