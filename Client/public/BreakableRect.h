@@ -39,14 +39,16 @@ public:
 	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
 
 	// 인스턴싱 버퍼 업데이트
-	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects) { m_pVIBufferCom->Update_InstanceBuffer(_objects); }
+	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects, vector<_float> _brights) { m_pVIBufferCom->Update_InstanceBuffer(_objects, _brights); }
+	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects, _float _bright) { m_pVIBufferCom->Update_InstanceBuffer(_objects, _bright); }
+
 	void Set_BlockPositions(vector<_float3> position);
 
 	//충돌된 큐브 삭제
 	virtual HRESULT Delete_Cube(_float3 fPos);
 
 	//블럭 밝기 조절
-	void Set_Bright(float _f) { m_fBright = _f; }
+	void Set_Bright(float _f);
 protected:
 	HRESULT Ready_Components();
 
@@ -55,10 +57,10 @@ protected:
 
 	int m_iMyChunk = 0;
 	vector<_float3> m_vecPositions;
+	vector<_float> m_vecBrights;
 	vector<CCollider_Cube*> m_Colliders;
 
 	bool m_bChunkColliderActive = false;
-	float m_fBright=1;
 public:
 	static CBreakableRect* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

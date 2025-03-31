@@ -31,7 +31,30 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
 
     for (CCollider_Cube* pCollider : m_Colliders)
     {
-        pCollider->Set_bColliderActive(false);
+
+        CGameObject* pSteve{ nullptr };
+        pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+        
+
+        for (int i = 0; i < m_vecPositions.size(); ++i) {
+            _float3 vDiff{ vStevePos - m_vecPositions[i]};
+            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+            if (fLengthSq < 30.f)
+            {
+                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, m_Colliders[i]);
+
+                m_Colliders[i]->Set_bColliderActive(true);
+            }
+            else
+            {
+                m_Colliders[i]->Set_bColliderActive(false);
+            }
+        }
+
     }
 
     if (m_bChunkColliderActive)
@@ -39,19 +62,18 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         Should_Collide_With_Player();
         Should_Collide_With_Monster();
     }
-    //¹Û¿¡ ²¨³» ³õÀº ÀÌÀ¯(´Ù¸¥ Ã»Å©°¡¸é ¸ó½ºÅÍ ¶³¾îÁ®¹ö¸²) -> ¾ÈµÅ ÇÁ·¹ÀÓ °³ ¶³¾îÁ® ±×³É ¸ó½ºÅÍ ¸Ö¾îÁö¸é ºñÈ°¼ºÈ­ ½ÃÅ°´Â°Ô ³ªÀ» °Å °°À½
+    //ë°–ì— êº¼ë‚´ ë†“ì€ ì´ìœ (ë‹¤ë¥¸ ì²­í¬ê°€ë©´ ëª¬ìŠ¤í„° ë–¨ì–´ì ¸ë²„ë¦¼) -> ì•ˆë¼ í”„ë ˆì„ ê°œ ë–¨ì–´ì ¸ ê·¸ëƒ¥ ëª¬ìŠ¤í„° ë©€ì–´ì§€ë©´ ë¹„í™œì„±í™” ì‹œí‚¤ëŠ”ê²Œ ë‚˜ì„ ê±° ê°™ìŒ
     //Should_Collide_With_Monster();
     
 }
 
 void CBreakableCube::Update(_float fTimeDelta)
 {
-
 }
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
 {
-
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 }
 
 HRESULT CBreakableCube::Render()
@@ -67,11 +89,10 @@ HRESULT CBreakableCube::Render()
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
-    m_pShaderCom->SetFloat("g_Bright", m_fBright);
 
     m_pShaderCom->Begin(0);
 
-    /* Á¤Á¡À» ±×¸°´Ù. */
+    /* ì •ì ì„ ê·¸ë¦°ë‹¤. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
@@ -96,10 +117,11 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
     m_Colliders.resize(position.size());
 
     for (int i = 0; i < position.size(); ++i) {
-        m_vecPositions.push_back(position[i]); //À§Ä¡ ³Ö¾îÁÜ
+        m_vecPositions.push_back(position[i]); //ìœ„ì¹˜ ë„£ì–´ì¤Œ
+        m_vecBrights.push_back(1.f);
 
         /* For.Com_Collider */
-        CCollider_Cube::COLLCUBE_DESC Desc{}; //Äİ¶óÀÌ´õ Å©±â ¼³Á¤
+        CCollider_Cube::COLLCUBE_DESC Desc{}; //ì½œë¼ì´ë” í¬ê¸° ì„¤ì •
         Desc.vRadius = { .5f, .5f, .5f };
         Desc.vOffset = { position[i].x , position[i].y, position[i].z };
         Desc.pTransformCom = m_pTransformCom;
@@ -115,21 +137,66 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
-    //¿©±â´Ù°¡ ±¸ÇöÇØ³ö¾ßÁö ³ªÁß¿¡
-    //Å©¸®¿¡ÀÌÆ® Å¥ºê Ã³·³
+    //ì—¬ê¸°ë‹¤ê°€ êµ¬í˜„í•´ë†”ì•¼ì§€ ë‚˜ì¤‘ì—
+    //í¬ë¦¬ì—ì´íŠ¸ íë¸Œ ì²˜ëŸ¼
     return E_NOTIMPL;
 }
 
-HRESULT CBreakableCube::Create_Cube(_float3 fPos)
+void CBreakableCube::Set_Bright(float _f)
 {
-    // 2. º¤ÅÍ¿¡¼­ ÇØ´ç À§Ä¡ Ãß°¡
-    m_vecPositions.push_back(fPos);
 
-    // 3. Äİ¶óÀÌ´õ Ãß°¡
+    if (m_bChunkColliderActive)
+    {
+        CGameObject* pSteve{ nullptr };
+        pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+
+        for (int i = 0; i < m_vecPositions.size(); ++i) {
+            _float3 vDiff{ vStevePos - m_vecPositions[i] };
+            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+            if (fLengthSq < 5.f) {
+                m_vecBrights[i] = _f + 0.2f * m_vecPositions[i].y / 10.f;
+            }
+            else if (fLengthSq < 10.f) {
+                m_vecBrights[i] = _f + 0.1f * m_vecPositions[i].y / 10.f;
+            }
+            else {
+                m_vecBrights[i] = _f * m_vecPositions[i].y / 10.f;
+            }
+        }
+    }
+    else {
+        for (int i = 0; i < m_vecBrights.size(); ++i) {
+            m_vecBrights[i] = _f * m_vecPositions[i].y / 10.f;
+        }
+    }
+}
+
+HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
+{
+    int brightIndex = 0;
+    // 2. ë²¡í„°ì—ì„œ í•´ë‹¹ ìœ„ì¹˜ ì¶”ê°€
+    for (int i = 0; i < m_vecPositions.size(); ++i) {
+        if (fPos.x == m_vecPositions[i].x && fPos.y == m_vecPositions[i].y && fPos.z == m_vecPositions[i].z) {
+            brightIndex = i;
+            break;
+        }
+    }
+
+    _float3 blockPos = fPos + _Dir;
+    m_vecPositions.push_back(blockPos);
+    m_vecBrights.push_back(m_vecBrights[brightIndex]);
+
+    // 3. ì½œë¼ì´ë” ì¶”ê°€
     /* For.Com_Collider */
-    CCollider_Cube::COLLCUBE_DESC Desc{}; //Äİ¶óÀÌ´õ Å©±â ¼³Á¤
+    CCollider_Cube::COLLCUBE_DESC Desc{}; //ì½œë¼ì´ë” í¬ê¸° ì„¤ì •
     Desc.vRadius = { .5f, .5f, .5f };
-    Desc.vOffset = { fPos.x , fPos.y, fPos.z };
+    Desc.vOffset = { blockPos.x , blockPos.y, blockPos.z };
     Desc.pTransformCom = m_pTransformCom;
     Desc.pOwner = this;
     m_Colliders.resize(m_Colliders.size() + 1);
@@ -139,8 +206,8 @@ HRESULT CBreakableCube::Create_Cube(_float3 fPos)
         return E_FAIL;
     }
 
-    // 4. ÀÎ½ºÅÏ½º ¹öÆÛ ¾÷µ¥ÀÌÆ®
-    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
+    // 4. ì¸ìŠ¤í„´ìŠ¤ ë²„í¼ ì—…ë°ì´íŠ¸
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
     return S_OK;
 }
@@ -175,7 +242,7 @@ HRESULT CBreakableCube::Ready_Components()
 
 void CBreakableCube::Should_Collide_With_Player()
 {
-    // ÇÃ·¹ÀÌ¾î ¹Ø¿¡ ÀÖ´Â Ã»Å©¸é Ãæµ¹ ¸Å´ÏÀú¿¡ ¿Ã¸²(ÀÌÁ¦´Â ÇÃ·¹ÀÌ¾î¿¡´Ù°¡ Ãß°¡·Î ¸ó½ºÅÍ Å©¸®ÆÛ, Á»ºñ ·¹ÀÌ¾î)
+    // í”Œë ˆì´ì–´ ë°‘ì— ìˆëŠ” ì²­í¬ë©´ ì¶©ëŒ ë§¤ë‹ˆì €ì— ì˜¬ë¦¼(ì´ì œëŠ” í”Œë ˆì´ì–´ì—ë‹¤ê°€ ì¶”ê°€ë¡œ ëª¬ìŠ¤í„° í¬ë¦¬í¼, ì¢€ë¹„ ë ˆì´ì–´)
     CGameObject* pSteve{ nullptr };
     pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
 
@@ -183,7 +250,7 @@ void CBreakableCube::Should_Collide_With_Player()
     pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
     _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
 
-    //ÇÃ·¹ÀÌ¾î¿Í °¡±îÀÌ ÀÖ´Â Äİ¶óÀÌ´õ¸¸ È°¼ºÈ­ ½ÃÅ°°í µî·ÏÇÔ
+    //í”Œë ˆì´ì–´ì™€ ê°€ê¹Œì´ ìˆëŠ” ì½œë¼ì´ë”ë§Œ í™œì„±í™” ì‹œí‚¤ê³  ë“±ë¡í•¨
     for (CCollider_Cube* pCollider : m_Colliders)
     {
         _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
@@ -194,7 +261,7 @@ void CBreakableCube::Should_Collide_With_Player()
 
         if (fLengthSq < 30.f)
         {
-            //ÇÃ·¹ÀÌ¾î¿Í °Å¸®°¡ °¡±î¿ì¸é
+            //í”Œë ˆì´ì–´ì™€ ê±°ë¦¬ê°€ ê°€ê¹Œìš°ë©´
             m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
 
             pCollider->Set_bColliderActive(true);
@@ -204,7 +271,7 @@ void CBreakableCube::Should_Collide_With_Player()
 
 void CBreakableCube::Should_Collide_With_Monster()
 {
-    // ÇÃ·¹ÀÌ¾î ¹Ø¿¡ ÀÖ´Â Ã»Å©¸é Ãæµ¹ ¸Å´ÏÀú¿¡ ¿Ã¸²(ÀÌÁ¦´Â ÇÃ·¹ÀÌ¾î¿¡´Ù°¡ Ãß°¡·Î ¸ó½ºÅÍ Å©¸®ÆÛ, Á»ºñ ·¹ÀÌ¾î)
+    // í”Œë ˆì´ì–´ ë°‘ì— ìˆëŠ” ì²­í¬ë©´ ì¶©ëŒ ë§¤ë‹ˆì €ì— ì˜¬ë¦¼(ì´ì œëŠ” í”Œë ˆì´ì–´ì—ë‹¤ê°€ ì¶”ê°€ë¡œ ëª¬ìŠ¤í„° í¬ë¦¬í¼, ì¢€ë¹„ ë ˆì´ì–´)
 
     list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
 
@@ -214,7 +281,7 @@ void CBreakableCube::Should_Collide_With_Monster()
         pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
         _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
 
-        //ÇÃ·¹ÀÌ¾î¿Í °¡±îÀÌ ÀÖ´Â Äİ¶óÀÌ´õ¸¸ È°¼ºÈ­ ½ÃÅ°°í µî·ÏÇÔ
+        //í”Œë ˆì´ì–´ì™€ ê°€ê¹Œì´ ìˆëŠ” ì½œë¼ì´ë”ë§Œ í™œì„±í™” ì‹œí‚¤ê³  ë“±ë¡í•¨
         for (CCollider_Cube* pCollider : m_Colliders)
         {
             _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
@@ -225,7 +292,7 @@ void CBreakableCube::Should_Collide_With_Monster()
 
             if (fLengthSq < 3.f)
             {
-                //ÇÃ·¹ÀÌ¾î¿Í °Å¸®°¡ °¡±î¿ì¸é
+                //í”Œë ˆì´ì–´ì™€ ê±°ë¦¬ê°€ ê°€ê¹Œìš°ë©´
                 m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
 
                 pCollider->Set_bColliderActive(true);

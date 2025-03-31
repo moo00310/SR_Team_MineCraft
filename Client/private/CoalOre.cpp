@@ -68,16 +68,15 @@ HRESULT CCoalOre::Delete_Cube(_float3 fPos)
 
             // 2. 벡터에서 해당 위치 제거
             m_vecPositions.erase(m_vecPositions.begin() + i);
+            m_vecBrights.erase(m_vecBrights.begin() + i);
 
             // 3. 콜라이더 제거
             Safe_Release(m_Colliders[i]);
             m_Colliders.erase(m_Colliders.begin() + i);
 
-            if (m_vecPositions.size() == 0) {
-            }
 
             // 4. 인스턴스 버퍼 업데이트
-            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
+            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
             return S_OK;
         }

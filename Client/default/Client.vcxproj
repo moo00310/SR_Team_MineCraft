@@ -370,6 +370,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Cube.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_CubeInstance.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_Rect3DInstance.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_UI.hlsl" />

@@ -563,6 +563,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 #pragma endregion
 
 
+	/* For.Prototype_Component_VIBuffer_CubeShader */
+ 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeShader"),
+		CVIBuffer_CubeShader::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
@@ -710,6 +715,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Clouds */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Clouds"),
 		CClouds::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SkyBox */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_SkyBox"),
+		CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_ItemCube */

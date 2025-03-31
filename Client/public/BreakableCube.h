@@ -36,7 +36,8 @@ public:
 	//아이템 어떤 청크레이어에 생성할 지 필요
 	void Set_MyChunk(int _num) { m_iMyChunk = _num; } 
 	// 인스턴싱 버퍼 업데이트
-	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects) { m_pVIBufferCom->Update_InstanceBuffer(_objects); }
+	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects, vector<_float> _brights) { m_pVIBufferCom->Update_InstanceBuffer(_objects, _brights); }
+	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects, _float _bright) { m_pVIBufferCom->Update_InstanceBuffer(_objects, _bright); }
 
 	// 충돌 큐브 생성 & 위치 설정
 	void Set_BlockPositions(vector<_float3> position);
@@ -53,9 +54,9 @@ public:
 	//충돌된 큐브 삭제
 	virtual HRESULT Delete_Cube(_float3 fPos);
 	//블럭 밝기 조절
-	void Set_Bright(float _f) { m_fBright = _f; }
+	void Set_Bright(float _f);
 
-	virtual HRESULT Create_Cube(_float3 fPos);
+	virtual HRESULT Create_Cube(_float3 fPos, _float3 _Dir);
 
 	HRESULT Ready_Components();
 
@@ -67,15 +68,14 @@ public:
 
 	int m_iMyChunk = 0;
 	vector<_float3> m_vecPositions;
+	vector<_float> m_vecBrights;
 	vector<CCollider_Cube*> m_Colliders;
-
-	float m_fBright=1;
 
 private:
 	//아래 두 함수를 나중에 Pawn으로 합쳐도 될지는 모르겠음, 일단 나눔
 	void Should_Collide_With_Player();
 	void Should_Collide_With_Monster();
-
+  
 public:
 	static CBreakableCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

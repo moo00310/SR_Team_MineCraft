@@ -303,7 +303,7 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
          m_pGameInstance->Add_GameObject(LEVEL_TOOL, blockTypes[i].first, LEVEL_TOOL, TEXT("Layer_Environment"));
          CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_Object(LEVEL_TOOL, TEXT("Layer_Environment"), static_cast<int>(i)));
          if (pCube) {
-             pCube->Set_InstanceBuffer(*(blockTypes[i].second));
+             pCube->Set_InstanceBuffer(*(blockTypes[i].second), 1.f);
              //pCube->Set_MyChunk(i);
              //pCube->Set_BlockPositions(*(blockTypes[i].second));
          }

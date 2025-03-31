@@ -6,6 +6,7 @@
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_CubeInstance.h"
 #include "VIBuffer_Rect3DInstance.h"
+#include "VIBuffer_CubeShader.h"
 #include "Transform.h"
 #include "SkeletalAnimator.h"
 #include "Texture.h"
