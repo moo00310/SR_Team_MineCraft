@@ -1,4 +1,4 @@
-﻿#include "Level_YU.h"
+#include "Level_YU.h"
 #include "GameInstance.h"
 #include "MapTool.h"
 
@@ -60,7 +60,7 @@ HRESULT CLevel_YU::Initialize()
 	if(FAILED(Ready_Layer_PlayerState(TEXT("Layer_PlayerState"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_DashParticle(LAYER_PARTICLE)))
+	if (FAILED(Ready_Layer_Particle(LAYER_PARTICLE)))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_SandDestroyParticle(LAYER_PARTICLE)))
@@ -312,15 +312,34 @@ HRESULT CLevel_YU::Ready_Laye_RightHand(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_YU::Ready_Layer_DashParticle(const _wstring& strLayerTag)
-{
-	HRESULT hr = m_pGameInstance->CreatePool(LEVEL_STATIC,	// 적용 씬.
+HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
+{	
+	// 달리기 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,	// 적용 씬.
 		PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
-		3);				// 풀링 갯수.
+		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
 
-	if (FAILED(hr))
+	// 사망 파티클.	
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 적용 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
+	// 폭발 파티클.	
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 적용 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))				// 풀링 갯수.
 	{
 		return E_FAIL;
 	}

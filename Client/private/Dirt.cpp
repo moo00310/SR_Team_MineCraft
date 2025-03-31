@@ -66,7 +66,11 @@ HRESULT CDirt::Delete_Cube(_float3 fPos)
             dynamic_cast<CTransform*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, m_vecPositions[i]);
             dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))->Set_ItemTypeAndBindTexture(ITEM_DIRT);
 
-            PlayDestroyParticle(m_vecPositions[i]);
+            // 흙 파괴 파티클.
+            CParticleEventManager::Get_Instance()->OnParticle(
+                PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+                m_vecPositions[i]
+            );
 
             // 2. 벡터에서 해당 위치 제거
             m_vecPositions.erase(m_vecPositions.begin() + i);
@@ -87,22 +91,6 @@ HRESULT CDirt::Delete_Cube(_float3 fPos)
     }
 
     return E_FAIL;
-}
-
-void CDirt::PlayDestroyParticle(_float3 _position)
-{
- /*   CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(
-        LEVEL_STATIC,
-        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
-        LEVEL_YU,
-        LAYER_PARTICLE);
-
-    if (particle == nullptr)
-    {
-        return;
-    }
-
-    particle->Replay(_position);*/
 }
 
 HRESULT CDirt::Ready_Components()

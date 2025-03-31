@@ -469,26 +469,11 @@ void CSteve::PlayDashParticle(_float fTimeDelta)
 	// 대시 파티클.
 	if (m_IsDashCoolTime == false)
 	{
-		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 적용 씬.
-			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,	// 가져올 프로토타입.
-			LEVEL_STATIC,		// 가져올 씬.
-			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
-
-		// 파티클 풀 객체 null 체크.
-		if (particle == nullptr)
-		{
-			return;
-		}
-
-		// 파티클 적용.
-		//particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-		//particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-		//particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-		//
-		//// 플레이어 발에 생성되는데 이러면 블럭에 가려져 파티클이 안나올 수 있다. 약간 y를 올린다.
-		//_float3 _pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-		//_pos.y += 0.2f;
-		//particle->Replay(_pos);
+		CParticleEventManager::Get_Instance()->OnParticle(
+			PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,
+			m_pTransformCom,
+			0.2f
+		);
 
 		// 쿨타임 진행 처리.
 		m_IsDashCoolTime = true;

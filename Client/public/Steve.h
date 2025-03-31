@@ -2,7 +2,7 @@
 
 #include "Client_Defines.h"
 #include "Pawn.h"
-#include "ParticleSystem.h"
+#include "ParticleEventManager.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -60,10 +60,10 @@ private:
 	void Motion_Walk(_float fTimeDelta) override;
 	void Turn(_float fTimeDelta) override;
 
-	// ��� ��ƼŬ ����.
+	// 달리기 파티클.
 	void PlayDashParticle(_float fTimeDelta);
 
-	// ��ƼŬ ��Ÿ�� ���� ������ �ʱ�ȭ.
+	// 달리기 파티클 초기화.
 	void ResetDashParticle();
 
 public:

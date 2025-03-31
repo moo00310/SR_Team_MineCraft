@@ -14,6 +14,8 @@
 #include "Steve.h"
 #include "Arm_Steve.h"
 
+#include "ParticleEventManager.h"
+
 #include "UI_Mgr.h"
 #include "ParticleRain.h"
 #include "ParticleDash.h"
@@ -96,6 +98,9 @@ HRESULT CMainApp::Initialize()
 	// Setup Platform/Renderer backends
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX9_Init(m_pGraphic_Device);
+
+	// 파티클 매니저 초기화.
+	CParticleEventManager::Get_Instance()->Initialization(m_pGameInstance);
 
 	return S_OK;
 }
@@ -379,6 +384,10 @@ void CMainApp::Free()
 	__super::Free();
 
 	CUI_Mgr::Get_Instance()->Free();
+
+	// 파티클 매니저 메모리 해제.
+	CParticleEventManager::Get_Instance()->Free();
+	CParticleEventManager::Get_Instance()->Destroy_Instance();
 
 	// Cleanup
 	ImGui_ImplDX9_Shutdown();
