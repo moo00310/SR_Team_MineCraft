@@ -2,14 +2,14 @@
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture g_Texture;
-float g_Bright;
 
 struct VS_IN
 {
     float3 vPosition : POSITION;
     float3 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
-    float3 vInstancePos : TEXCOORD1; //인스턴싱 버퍼 (위치만)
+    float3 vInstancePos : TEXCOORD1; //인스턴싱 버퍼 (위치)
+    float1 vBright : TEXCOORD2; //인스턴싱 버퍼 (밝기)
 };
 
 struct VS_OUT
@@ -17,6 +17,7 @@ struct VS_OUT
     float4 vPosition : POSITION;
     float3 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
+    float1 vBright : TEXCOORD2; //인스턴싱 버퍼 (밝기)
 };
 
 sampler2D DefaultSampler : register(s0);
@@ -36,6 +37,7 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = worldPosition;
     Out.vNormal = In.vNormal;
     Out.vTexcoord = In.vTexcoord;
+    Out.vBright = In.vBright;
 
     return Out;
 }
@@ -46,6 +48,7 @@ struct PS_IN
     float4 vPosition : POSITION;
     float3 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
+    float1 vBright : TEXCOORD2; //인스턴싱 버퍼 (밝기)
 };
 
 struct PS_OUT
@@ -58,7 +61,7 @@ PS_OUT PS_MAIN(PS_IN In)
     PS_OUT Out;    
     
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
-    Out.vColor.rgb *= g_Bright;
+    Out.vColor.rgb *= In.vBright;
     return Out;
 }
 

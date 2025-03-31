@@ -35,11 +35,16 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 	
-	if (FAILED(Ready_Laye_TPS_Arm(TEXT("Layer_TPS_Arm"))))
-	return E_FAIL;
+	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_TPS_Arm"))))
+		return E_FAIL;
 
-	/*if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
-		return E_FAIL;*/
+	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;
+
+	/*
+	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
+		return E_FAIL;
+	*/
 
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;
@@ -52,6 +57,12 @@ HRESULT CLevel_YU::Initialize()
 
 	if (FAILED(Ready_Layer_SandDestroyParticle(LAYER_PARTICLE)))
 		return E_FAIL;
+
+	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
+	return E_FAIL;
+
+	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
+	return E_FAIL;
 
 	return S_OK;
 }
@@ -98,7 +109,7 @@ HRESULT CLevel_YU::Ready_Layer_Steve(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
-	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(0, 20, 0));
+	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(10.f, 20.f, 10.f));
 
 	return S_OK;
 }
@@ -115,6 +126,16 @@ HRESULT CLevel_YU::Ready_Layer_Sun(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_Clouds(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Clouds"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_SkyBox(const _wstring& strLayerTag)
+{
+	/* Prototype_GameObject_SkyBox */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_SkyBox"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
@@ -223,7 +244,32 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
+	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(30.f, 20.f, 20.f));
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
+	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 20.f, 20.f));
+
+	return S_OK;
+}
+
 HRESULT CLevel_YU::Ready_Laye_TPS_Arm(const _wstring& strLayerTag)
+
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
 		LEVEL_YU, strLayerTag)))

@@ -111,24 +111,23 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 				}
 			}
 
-			// 현재 위치 보정 (최대 ±0.5f 제한)
 			_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
 
-			//const _float fClamp = 0.5f;//의미 없는 듯???
-
-			//_float fTotalDepth_Y = clamp(fMinDepth_Y + fMaxDepth_Y, -fClamp, fClamp);
-			//vPosition.y -= fTotalDepth_Y;
 			vPosition.y -= fMinDepth_Y + fMaxDepth_Y;
-
-			/*_float fTotalDepth_X = clamp(fMaxDepth_X + fMinDepth_X, -fClamp, fClamp);
-			vPosition.x -= fTotalDepth_X;*/
 			vPosition.x -= fMaxDepth_X + fMinDepth_X;
-
-			/*_float fTotalDepth_Z = clamp(fMaxDepth_Z + fMinDepth_Z, -fClamp, fClamp);
-			vPosition.z -= fTotalDepth_Z;*/
 			vPosition.z -= fMaxDepth_Z + fMinDepth_Z;
 
 			m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
+		}
+	}
+
+	if (m_isGround)
+	{
+		if (m_isKnockBack)
+		{
+			m_vVelocity.x = 0.f;
+			m_vVelocity.z = 0.f;
+			m_isKnockBack = false;
 		}
 	}
 
@@ -231,13 +230,6 @@ void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
 
 		if (isFalling())
 			m_vVelocity.y = 0.0f;
-
-		if (m_isKnockBack)
-		{
-			m_vVelocity.x = 0.f;
-			m_vVelocity.z = 0.f;
-			m_isKnockBack = false;
-		}
 
 		m_isGround = true;
 	}

@@ -71,13 +71,17 @@ HRESULT CGrassDirt::Delete_Cube(_float3 fPos)
 
             // 2. 벡터에서 해당 위치 제거
             m_vecPositions.erase(m_vecPositions.begin() + i);
+            m_vecBrights.erase(m_vecBrights.begin() + i);
 
             // 3. 콜라이더 제거
             Safe_Release(m_Colliders[i]);
             m_Colliders.erase(m_Colliders.begin() + i);
 
+            if (m_vecPositions.size() == 0) {
+            }
+
             // 4. 인스턴스 버퍼 업데이트
-            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
+            m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
             return S_OK;
         }
@@ -85,31 +89,6 @@ HRESULT CGrassDirt::Delete_Cube(_float3 fPos)
 
     return E_FAIL;
 }
-
-//HRESULT CGrassDirt::Create_Cube(_float3 fPos)
-//{
-//    // 2. 벡터에서 해당 위치 추가
-//    m_vecPositions.push_back(fPos);
-//
-//    // 3. 콜라이더 추가
-//    /* For.Com_Collider */
-//    CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-//    Desc.vRadius = { .5f, .5f, .5f };
-//    Desc.vOffset = { fPos.x , fPos.y, fPos.z };
-//    Desc.pTransformCom = m_pTransformCom;
-//    Desc.pOwner = this;
-//    m_Colliders.resize(m_Colliders.size() + 1);
-//    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-//        TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_Colliders.back()), &Desc)))
-//    {
-//        return E_FAIL;
-//    }
-//
-//    // 4. 인스턴스 버퍼 업데이트
-//    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
-//
-//    return S_OK;
-//}
 
 void CGrassDirt::PlayDestroyParticle(_float3 _position)
 {

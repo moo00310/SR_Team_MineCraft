@@ -17,7 +17,7 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 	HRESULT Delete_Cube(_float3 fPos) override;	
-	//HRESULT Create_Cube(_float3 fPos)override;
+
 
 private:
 	void PlayDestroyParticle(_float3 _position);

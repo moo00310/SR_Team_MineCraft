@@ -28,6 +28,13 @@ namespace Engine
 	}VTXNORTEX;
 
 
+	typedef struct tagInstanceCube
+	{
+		D3DXVECTOR3		vPosition;
+		_float			vBright;
+	}INFOINS;
+
+
 	typedef struct tagCreateCube
 	{
 		D3DXVECTOR2 Imagesize;

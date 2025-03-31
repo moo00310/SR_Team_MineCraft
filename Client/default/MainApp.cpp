@@ -357,6 +357,11 @@ HRESULT CMainApp::Ready_Component()
 		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Rect3DInstance.hlsl")))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Shader_Cube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Cube"),
+		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Cube.hlsl")))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Shader_UI */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI"),
 		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_UI.hlsl")))))

@@ -25,7 +25,7 @@ HRESULT CMonster::Initialize_Prototype()
 
 HRESULT CMonster::Initialize(void* pArg)
 {
-    m_pTargetPawn = static_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_HERO, TEXT("Layer_Steve")));
+    m_pTargetPawn = static_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")));
     Safe_AddRef(m_pTargetPawn);
 
     return S_OK;
@@ -43,14 +43,23 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-    // 땅이랑 충돌
-    m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+    //플레이어랑 멀면 여기 비활성화
+    _float3 vTargetPos{ static_cast<CTransform*>(m_pTargetPawn->Find_Component(TEXT("Com_Transform")))->Get_State(CTransform::STATE_POSITION) };
+    _float3 vDiff{ vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_POSITION)};
+    _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+    if (fLengthSq > 500.f)
+    {
+		//타겟과 너무 멀다면-> 비활성화
+        return;
+    }
 
     if (m_pBehaviorTree && !isDead)
     {
         m_pBehaviorTree->Excute(this, fTimeDelta);
     }
- 
+
+    // 땅 충돌 + 중력 처리
+    m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
@@ -92,8 +101,13 @@ void CMonster::Chase_Player(float _fTimeDelta)
 {
     _float3 vTarget =  m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
     m_pTransformCom->LookAt_XZ(vTarget);
-    m_pTransformCom->Chase(_float3(vTarget.x, 0.f, vTarget.z), _fTimeDelta, 1.0f);
+    m_pTransformCom->Chase(_float3(vTarget.x, vTarget.y, vTarget.z), _fTimeDelta, 1.0f);
 
+    //움직일라 하는데 속도가 안난다 점프함 ㅋㅋ
+    if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 0.1f)
+    {
+		m_pRigidbodyCom->Jump(7.f);
+    }
 }
 
 
