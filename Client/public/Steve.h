@@ -2,7 +2,7 @@
 
 #include "Client_Defines.h"
 #include "Pawn.h"
-#include "ParticleSystem.h"
+#include "ParticleEventManager.h"
 
 BEGIN(Engine)
 class CTexture;

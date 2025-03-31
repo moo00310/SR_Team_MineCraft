@@ -314,8 +314,10 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
     
     if (m_skelAnime->is_AnimtionEND(Attack))
     {
-        // 폭발 파티클.
-        PlayExplosionParticle();
+        CParticleEventManager::Get_Instance()->OnParticle(
+            PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
+            m_pTransformCom
+        );
 
         //m_eCurAnim = IDLE;
         
@@ -329,7 +331,10 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
 {
     m_skelAnime->Update_Animetion(Dead, fTimeDelta, 0);
 
-    PlayDieParticle();
+    CParticleEventManager::Get_Instance()->OnParticle(
+        PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
+        m_pTransformCom
+    );
 
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
@@ -339,42 +344,6 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
 
 void CCreeper::Turn(_float fTimeDelta)
 {
-}
-
-void CCreeper::PlayExplosionParticle()
-{
-    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
-        PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,	// 가져올 프로토타입.
-        LEVEL_HERO,	// 적용 씬.
-        LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어		
-
-    // NULL 체크.
-    if (particle == nullptr)
-    {
-        return;
-    }
-
-    particle->GetTransform()->Set_State(CTransform::STATE_LOOK, m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-    particle->GetTransform()->Set_State(CTransform::STATE_UP, m_pTransformCom->Get_State(CTransform::STATE_UP));
-    particle->GetTransform()->Set_State(CTransform::STATE_RIGHT, m_pTransformCom->Get_State(CTransform::STATE_RIGHT));
-    particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-}
-
-void CCreeper::PlayDieParticle()
-{
-    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
-        PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,	// 가져올 프로토타입.
-        LEVEL_STATIC,	// 적용 씬.
-        LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
-
-    if (particle == nullptr)
-    {
-        return;
-    }
-
-    _float3 pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-    pos.y += 0.4f;
-    particle->Replay(pos);
 }
 
 CCreeper* CCreeper::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

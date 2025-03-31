@@ -1,6 +1,7 @@
 #pragma once
 #include "Client_Defines.h"
 #include "Monster.h"
+#include "ParticleEventManager.h"
 
 
 BEGIN(Engine)
@@ -43,10 +44,7 @@ private:
 	void Motion_Walk(_float fTimeDelta) override;
 	void Motion_Attack(_float fTimeDelta) override;
 	void Motion_Dead(_float fTimeDelta) override;
-	void Turn(_float fTimeDelta) override;
-
-	// »ç¸Á ÆÄÆ¼Å¬.
-	void PlayDieParticle();
+	void Turn(_float fTimeDelta) override;	
 
 private:
 	//CCollider_Cube* m_pCollider_CubeCom{ nullptr };

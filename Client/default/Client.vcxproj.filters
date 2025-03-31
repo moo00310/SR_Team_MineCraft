@@ -277,6 +277,9 @@
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model">
       <UniqueIdentifier>{46952101-c5a9-4eed-b9f6-1bb320096855}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.Manager">
+      <UniqueIdentifier>{aff4408e-e4d1-4958-9d91-7e74d7ef330b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -609,6 +612,9 @@
     <ClInclude Include="..\public\ParticleDie.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleEventManager.h">
+      <Filter>06.Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -927,6 +933,9 @@
     <ClCompile Include="..\private\RightHand_Object.cpp" />
     <ClCompile Include="..\private\ParticleDie.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleEventManager.cpp">
+      <Filter>06.Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
