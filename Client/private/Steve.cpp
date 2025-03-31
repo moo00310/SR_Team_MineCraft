@@ -77,12 +77,7 @@ void CSteve::Late_Update(_float fTimeDelta)
 	Matrix matrix = *m_pTransformCom->Get_WorldMatrix();
 	m_skelAnime->Update_RootBone(MAtrixTranslation(matrix._41, matrix._42, matrix._43));
 
-	// f5로 랜더 그룹 변경
-	if (m_pGameInstance->Key_Down(VK_F5))
-	{
-		m_bisTPS *= -1;
-	}
-	if (m_bisTPS > 0)
+	if (m_isRender)
 	{
 		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 			return;

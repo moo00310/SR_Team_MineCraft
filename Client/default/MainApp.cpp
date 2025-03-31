@@ -190,18 +190,6 @@ HRESULT CMainApp::Ready_Steve()
 		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
-	// 스티브 게임 오브젝트
-	/* For.Prototype_GameObject_Steve */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
-		CSteve::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// 스티브_팔 게임 오브젝트
-	/* For.Prototype_GameObject_Arm_Steve */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
-		CArm_Steve::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
 	return S_OK;
 }
 

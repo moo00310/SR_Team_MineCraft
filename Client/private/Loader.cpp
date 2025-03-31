@@ -14,11 +14,15 @@
 //Moo
 #include "Creeper.h"
 #include "Steve.h"
+#include "Arm_Steve.h"
 #include "Tree.h"
 #include "Wood.h"
 #include "Leaf.h"
 #include "Sword.h"
 #include "Zombi.h"
+#include "Rect_Model.h"
+#include "Cube_Model.h"
+#include "Right_hand.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -433,7 +437,6 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Sword/iron_sword.png"), 1))))
 		return E_FAIL;
 
-
 	// 돌 곡괭이 택스쳐
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Pickaxe"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Pickaxe/stone_pickaxe.png"), 1))))
@@ -509,17 +512,17 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_Component_VIBuffer_Creeper */
 	cube = { _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 32.f), _float3(6.f, 12.f, 4.f), _float2(16.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 32.f), _float3(4.f, 6.f, 4.f), _float2(0.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 #pragma endregion
 
@@ -534,24 +537,24 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_Component_VIBuffer_Zombi */
 	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Head"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 64.f), _float3(8.f, 12.f, 4.f), _float2(16.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Body"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	// 다리
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(0.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Leg"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	// 팔
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(40.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Zombi_Arm"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	// 원형 객체
@@ -721,7 +724,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_SkyBox"),
 		CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
+	
 	/* For.Prototype_GameObject_ItemCube */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"),
 		CItemCube::Create(m_pGraphic_Device))))
@@ -731,6 +734,37 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"),
 		CItemRect::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	//===============================================================================================
+		// 스티브 게임 오브젝트
+	/* For.Prototype_GameObject_Steve */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Steve"),
+		CSteve::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 스티브_팔 게임 오브젝트
+	/* For.Prototype_GameObject_Arm_Steve */
+ 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_TPS_Arm"),
+		CArm_Steve::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	//==================================<스티브 오른손 물건임>================================================
+	/* For.Prototype_GameObject_Rect_Model */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Rect_Model"),
+		CRect_Model::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	/* For.Prototype_GameObject_Cube_Model */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Cube_Model"),
+		CCube_Model::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Right_hand */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_RightHand"),
+		CRight_hand::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	//=============================================================================================================
+	
+
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

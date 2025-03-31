@@ -139,12 +139,6 @@
     <Filter Include="02.GameObjects\01.Actor\01.NoMove\01.HeroCubeNoMove">
       <UniqueIdentifier>{ddb7df8e-096e-4719-91f9-4051854f1245}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\01.Actor\00.Pawn\03.Item_Model">
-      <UniqueIdentifier>{1e031f01-cd2d-4456-a741-912be6a55e4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\01.Actor\00.Pawn\03.Item_Model\Sword">
-      <UniqueIdentifier>{a72c2b44-4733-4d4c-8d2f-171858e25944}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\00.Steve">
       <UniqueIdentifier>{0d8a7297-4abd-484e-b486-d48c5e774727}</UniqueIdentifier>
     </Filter>
@@ -276,6 +270,9 @@
     </Filter>
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model">
       <UniqueIdentifier>{46952101-c5a9-4eed-b9f6-1bb320096855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\RIght_hand_Object">
+      <UniqueIdentifier>{42dd935a-5469-468e-b5db-7bfcae7026e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -447,12 +444,6 @@
     <ClInclude Include="..\public\SkyBox.h">
       <Filter>02.GameObjects\03.Sky\01.SkyBox</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Sword.h">
-      <Filter>02.GameObjects\01.Actor\00.Pawn\03.Item_Model\Sword</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Item_Model.h">
-      <Filter>02.GameObjects\01.Actor\00.Pawn\03.Item_Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Title.h">
       <Filter>03.UI\02.title</Filter>
     </ClInclude>
@@ -605,9 +596,11 @@
     <ClInclude Include="..\public\Rect_Model.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\RightHand_Object.h" />
     <ClInclude Include="..\public\ParticleDie.h">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\RightHand_Object.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\RIght_hand_Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -771,12 +764,6 @@
     <ClCompile Include="..\private\SkyBox.cpp">
       <Filter>02.GameObjects\03.Sky\01.SkyBox</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Sword.cpp">
-      <Filter>02.GameObjects\01.Actor\00.Pawn\03.Item_Model\Sword</Filter>
-    </ClCompile>
-    <ClCompile Include="..\private\Item_Model.cpp">
-      <Filter>02.GameObjects\01.Actor\00.Pawn\03.Item_Model</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Title.cpp">
       <Filter>03.UI\02.title</Filter>
     </ClCompile>
@@ -924,9 +911,11 @@
     <ClCompile Include="..\private\Rect_Model.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\RightHand_Object.cpp" />
     <ClCompile Include="..\private\ParticleDie.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\RightHand_Object.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\RIght_hand_Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
