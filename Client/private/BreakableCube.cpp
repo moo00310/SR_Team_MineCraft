@@ -157,16 +157,16 @@ void CBreakableCube::Set_Bright(float _f)
             _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
 
             if (fLengthSq < 10.f) {
-                m_vecBrights[i] = _f + 0.2f;
+                m_vecBrights[i] = _f + 0.2f * m_vecPositions[i].y / 10.f;
             }
             else {
-                m_vecBrights[i] = _f;
+                m_vecBrights[i] = _f * m_vecPositions[i].y / 10.f;
             }
         }
     }
     else {
-        for (auto& bright : m_vecBrights) {
-            bright = _f;
+        for (int i = 0; i < m_vecBrights.size(); ++i) {
+            m_vecBrights[i] = _f * m_vecPositions[i].y / 10.f;
         }
     }
 }
