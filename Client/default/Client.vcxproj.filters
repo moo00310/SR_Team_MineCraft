@@ -615,6 +615,9 @@
     <ClInclude Include="..\public\ParticleEventManager.h">
       <Filter>06.Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\DestroyCube.h">
+      <Filter>02.GameObjects\00.Cube\00.BreakableCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -936,6 +939,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleEventManager.cpp">
       <Filter>06.Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\DestroyCube.cpp">
+      <Filter>02.GameObjects\00.Cube\00.BreakableCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

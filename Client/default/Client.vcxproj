@@ -188,6 +188,7 @@
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Creeper.h" />
     <ClInclude Include="..\public\Cube_Model.h" />
+    <ClInclude Include="..\public\DestroyCube.h" />
     <ClInclude Include="..\public\Edition.h" />
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\GrassDirt.h" />
@@ -296,6 +297,7 @@
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
     <ClCompile Include="..\private\Cube_Model.cpp" />
+    <ClCompile Include="..\private\DestroyCube.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\GrassDirt.cpp" />
