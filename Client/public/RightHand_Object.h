@@ -14,7 +14,7 @@ class CRightHand_Object abstract : public CGameObject
 {
 public:
 	enum ANIM {
-		IDLE, SWING, WALK, ANIM_END
+		INIT, SWING, WALK, EAT, ANIM_END
 	};
 
 protected:
@@ -37,8 +37,7 @@ protected:
 
 protected:
 	bool isAttack = { false };
-	ANIM m_eCurAnim = { IDLE };
-	int m_bisTPS = { -1 };
+	ANIM m_eCurAnim = { INIT };
 
 protected:
 	virtual HRESULT Ready_Components();
@@ -53,13 +52,9 @@ protected:
 	virtual void Motion_Idle(_float fTimeDelta) = 0;
 	virtual void Motion_Swing(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
-	virtual void KeyInput() = 0;
+	virtual void KeyInput();
 
 public:
 	virtual CGameObject* Clone(void* pArg) =0;
 	virtual void Free();
-
 };
-
-
-// 추상클래스 만들고 있었음

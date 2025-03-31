@@ -18,14 +18,7 @@ HRESULT CArm_Steve::Initialize_Prototype()
 
 HRESULT CArm_Steve::Initialize(void* pArg)
 {
-	if (FAILED(Ready_Components()))
-		return E_FAIL;
-
-	if (FAILED(Ready_Bone()))
-		return E_FAIL;
-
-	if (FAILED(Ready_Animation()))
-		return E_FAIL;
+	__super::Initialize(pArg);
 
 	return S_OK;
 }
@@ -36,29 +29,12 @@ void CArm_Steve::Priority_Update(_float fTimeDelta)
 
 void CArm_Steve::Update(_float fTimeDelta)
 {
-	KeyInput();
-
 	__super::Update(fTimeDelta);
 }
 
 void CArm_Steve::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
-
-	// 루트본이 따라가는 곳
-	if (FAILED(Update_Root(fTimeDelta)))
-		return;
-
-	// 카메라 시점에따라 랜더에 올릴지 반영
-	if (m_pGameInstance->Key_Down(VK_F5))
-	{
-		m_bisTPS *= -1;
-	}
-	if (m_bisTPS > 0)
-	{
-		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
-			return;
-	}
 }
 
 HRESULT CArm_Steve::Render()
@@ -129,7 +105,7 @@ HRESULT CArm_Steve::Ready_Animation()
 	  팔 IDLE 모션
 	--------------------*/
 	keyframe = { 0.f, Matrix() };
-	m_pSkeletalAnimator->Add_Animation(IDLE, keyframe);
+	m_pSkeletalAnimator->Add_Animation(INIT, keyframe);
 
 	/*-------------------
 	 팔 WALK 모션
@@ -156,14 +132,13 @@ HRESULT CArm_Steve::Ready_Animation()
 	return S_OK;
 }
 
-
 void CArm_Steve::Motion_Idle(_float fTimeDelta)
 {
-	m_pSkeletalAnimator->Update_Animetion(IDLE, fTimeDelta, 0);
+	m_pSkeletalAnimator->Update_Animetion(INIT, fTimeDelta, 0);
 
-	if (m_pSkeletalAnimator->is_AnimtionEND(IDLE))
+	if (m_pSkeletalAnimator->is_AnimtionEND(INIT))
 	{
-		m_eCurAnim = IDLE;
+		m_eCurAnim = INIT;
 	}
 }
 
@@ -173,7 +148,7 @@ void CArm_Steve::Motion_Swing(_float fTimeDelta)
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
-		m_eCurAnim = IDLE;
+		m_eCurAnim = INIT;
 		isAttack = false;
 	}
 }
@@ -190,28 +165,7 @@ void CArm_Steve::Motion_Walk(_float fTimeDelta)
 
 void CArm_Steve::KeyInput()
 {
-	if (m_pGameInstance->Key_Down(VK_LBUTTON))
-	{
-		m_eCurAnim = SWING;
-		isAttack = true;
-		return;
-	}
-
-	if (m_eCurAnim == SWING)
-		return;
-	
-	// 애니메이션 바꾸기
-	if (m_pGameInstance->Key_Pressing('W') ||
-		m_pGameInstance->Key_Pressing('A') ||
-		m_pGameInstance->Key_Pressing('S') ||
-		m_pGameInstance->Key_Pressing('D'))
-	{
-		m_eCurAnim = WALK;
-	}
-	else
-	{
-		m_eCurAnim = IDLE;
-	}
+	__super::KeyInput();
 }
 
 CArm_Steve* CArm_Steve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -243,11 +197,4 @@ CGameObject* CArm_Steve::Clone(void* pArg)
 void CArm_Steve::Free()
 {
 	__super::Free();
-
-	Safe_Release(m_pTextureCom);
-	Safe_Release(m_pSkeletalAnimator);
-
-	for (auto& pVIBuffer : m_pVIBufferComs)
-		Safe_Release(pVIBuffer);
-
 }
