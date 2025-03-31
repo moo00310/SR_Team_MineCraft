@@ -1,6 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "RightHand_Object.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -9,13 +9,9 @@ class CVIBuffer_Anim_Cube;
 class CSkeletalAnimator;
 END
 
-class CArm_Steve : public CGameObject
+class CArm_Steve : public CRightHand_Object
 {
 public:
-	enum ANIM {
-		IDLE, SWING, WALK ,ANIM_END
-	};
-
 	typedef struct tagArmesc 
 	{
 		CGameObject* pTarget = { nullptr };
@@ -35,27 +31,15 @@ public:
 	virtual HRESULT Render()override;
 
 private:
-	CTexture* m_pTextureCom = { nullptr };
-	vector<CVIBuffer_Anim*> m_pVIBufferComs = { nullptr };
-	CSkeletalAnimator* m_pSkeletalAnimator = { nullptr };
-	
-private:
-	bool isAttack = { false }; 
-	ANIM m_eCurAnim = { IDLE };
-	int m_bisTPS = { -1 };
-
-private:
 	HRESULT Ready_Components();
-	HRESULT Ready_Bone();
-	HRESULT Ready_Animation();
+	HRESULT Ready_Bone() override;
+	HRESULT Ready_Animation() override;
 
 private:
-	HRESULT Update_Root(_float fTimeDelta);
-	void Update_State(_float fTimeDelta);
-	void Motion_Idle(_float fTimeDelta);
-	void Motion_Swing(_float fTimeDelta);
-	void Motion_Walk(_float fTimeDelta);
-	void KeyInput();
+	void Motion_Idle(_float fTimeDelta)override;
+	void Motion_Swing(_float fTimeDelta)override;
+	void Motion_Walk(_float fTimeDelta)override;
+	void KeyInput()override;
 
 public:
 	static CArm_Steve* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

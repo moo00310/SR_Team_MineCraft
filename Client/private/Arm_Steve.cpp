@@ -2,12 +2,12 @@
 #include "GameInstance.h"
 
 CArm_Steve::CArm_Steve(LPDIRECT3DDEVICE9 pGraphic_Device)
-	: CGameObject{ pGraphic_Device }
+	: CRightHand_Object{ pGraphic_Device }
 {
 }
 
 CArm_Steve::CArm_Steve(const CArm_Steve& Prototype)
-	: CGameObject(Prototype)
+	: CRightHand_Object(Prototype)
 {
 }
 
@@ -37,12 +37,13 @@ void CArm_Steve::Priority_Update(_float fTimeDelta)
 void CArm_Steve::Update(_float fTimeDelta)
 {
 	KeyInput();
+
+	__super::Update(fTimeDelta);
 }
 
 void CArm_Steve::Late_Update(_float fTimeDelta)
 {
-	// 애니메이션 체인지 반영
-	Update_State(fTimeDelta);
+	__super::Late_Update(fTimeDelta);
 
 	// 루트본이 따라가는 곳
 	if (FAILED(Update_Root(fTimeDelta)))
@@ -65,14 +66,7 @@ HRESULT CArm_Steve::Render()
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
-	if (FAILED(m_pVIBufferComs[0]->Bind_WorldMatrix()))
-		return E_FAIL;
-
-	if (FAILED(m_pVIBufferComs[0]->Bind_Buffers()))
-		return E_FAIL;
-
-	if (FAILED(m_pVIBufferComs[0]->Render()))
-		return E_FAIL;
+	__super::Render();
 
 	return S_OK;
 }
@@ -85,19 +79,12 @@ HRESULT CArm_Steve::Ready_Components()
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
-	m_pVIBufferComs.resize(1);
-
 	// 팔
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_R"),
 		TEXT("m_pVIBufferCom_Arm_R"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
 		return E_FAIL;
 
-	// 본 + 애니메이션
-	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
-	int a = 10;
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
-		TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_pSkeletalAnimator), &DescSekel)))
-		return E_FAIL;
+	__super::Ready_Components();
 
 	return S_OK;
 }
@@ -169,37 +156,6 @@ HRESULT CArm_Steve::Ready_Animation()
 	return S_OK;
 }
 
-HRESULT CArm_Steve::Update_Root(_float fTimeDelta)
-{
-	Matrix		ViewMatrix = {};
-	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
-	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
-
-	// 카메라 위치로 따라오게 하는 코드임
-	m_pSkeletalAnimator->Update_RootBone(ViewMatrix);
-
-	return S_OK;
-}
-
-void CArm_Steve::Update_State(_float fTimeDelta)
-{
-	switch (m_eCurAnim)
-	{
-	case CArm_Steve::IDLE:
-		Motion_Idle(fTimeDelta);
-		break;
-	case CArm_Steve::SWING:
-		Motion_Swing(fTimeDelta);
-		break;
-	case CArm_Steve::WALK:
-		Motion_Walk(fTimeDelta);
-		break;
-	case CArm_Steve::ANIM_END:
-		break;
-	default:
-		break;
-	}
-}
 
 void CArm_Steve::Motion_Idle(_float fTimeDelta)
 {
