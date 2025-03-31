@@ -19,7 +19,8 @@ HRESULT CParticleDie::Initialize(void* pArg)
 {
 	iParticleCount = 6;
 	IsTimer = true;
-	fEndTimer = 1.f;
+	fEndTimer = 5.f;
+	IsParticleTexture = true;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
@@ -92,6 +93,7 @@ ParticleAttribute CParticleDie::OnSetAddParticle()
 	att.vPosition = { GetRandomFloat(-0.5f, 0.5f), GetRandomFloat(-0.5f, 0.5f), GetRandomFloat(-0.5f, 0.5f) };
 	att.vColor = 0xffffff;
 	att.vVelocity = { GetRandomFloat(-0.3f, 0.3f), 0.3f, 0.f };
+	att.iTextureIndex = (int)GetRandomFloat(0.f, 3.f);
 
 	return att;
 }
