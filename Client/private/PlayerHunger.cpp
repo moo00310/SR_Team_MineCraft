@@ -83,7 +83,7 @@ HRESULT CPlayerHunger::Render()
 	{
         if (m_fTiem < 1.f)
         {
-            float timeValue = GetTickCount() * 0.001f;
+            float timeValue = GetTickCount64() * 0.001f;
             m_pShaderCom->SetFloat("g_Time", timeValue);
 
             m_pShaderCom->Begin(2);

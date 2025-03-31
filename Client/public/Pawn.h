@@ -36,6 +36,9 @@ public:
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	void		Set_Hp(int hp) { m_Hp = hp; }
 
+	void		Add_Hp(int damage) { m_Hp += damage; }
+	_float		Get_Hp() { return m_Hp; }
+
 public:
 	void Reset_Ainmation();
 	virtual void Knock_back(const _float3& vforce) = 0;

@@ -22,6 +22,7 @@
 #include "ParticleSandDestroy.h"
 #include "UIParticleRain.h"
 #include "ParticleExplosion.h"
+#include "Mouse.h"
 
 
 CMainApp::CMainApp()
@@ -44,6 +45,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(Desc, &m_pGraphic_Device)))
 		return E_FAIL;
+
+	CUI_Mgr::Get_Instance();
 
 #pragma region 조명 연산
 	D3DLIGHT9			LightDesc{};
@@ -382,6 +385,7 @@ void CMainApp::Free()
 
 	m_pGameInstance->Release_Engine();
 	CUI_Mgr::Get_Instance()->Destroy_Instance();
+	CMouse::Get_Instance()->Destroy_Instance();
 
 	/* 내멤버를 정리한다.*/	
 	Safe_Release(m_pGameInstance);

@@ -100,9 +100,10 @@ PS_OUT PS_PlayerHunger(PS_IN In)
 	// 시간에 따른 반짝이는 효과
 	float flicker = 0.75f + 0.25f * sin(g_Time * 10.0f); // 시간에 따른 반짝임
 
-    // 반짝이는 효과 적용
-    Out.vColor.rgb *= flicker;  
 
+	// 반짝이는 효과 적용
+	Out.vColor.rgb *= flicker;  
+	
 	return Out;
 }
 

@@ -110,12 +110,18 @@ void CItem::Late_Update(_float fTimeDelta)
         {   
             /* 같은 아이템인지 확인  => 개수 합치는 방식 (스택 처리) */
             if (pMouse->Get_SlotIndex() == m_iSlotIndexNum)
+            {
                 pMouse->Set_ItemMatch(true);
-
+            }
+              
             else
+            {
                 pMouse->Set_ItemMatch(false);
+                pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
+            }
+                
 
-            ///* 이미 슬롯의 아이템이 있다면 교체 못함 */
+            ///* 이미 슬롯의 아이템이 있다면 교체 못함 */ // 이 부분을 변경해야할듯 -> 이미 슬롯의 아이템이 있다면 마우스가 들고있는 아이템과  슬롯 아이템 교체
             if (pUI_Mgr->Get_vecItemlist()->at(m_iSlotIndexNum)->Get_ItemName() < ITEMNAME_END)
             {
                 return;
@@ -128,8 +134,11 @@ void CItem::Late_Update(_float fTimeDelta)
             }*/
            
 			/* 이전 아이템 저장 */
-			pMouse->Set_OldItem(m_ItemName);
-			pMouse->Set_OldItemCount(m_iItemCount);
+            if (m_ItemName < ITEMNAME_END)
+            {
+              pMouse->Set_OldItem(m_ItemName);
+              pMouse->Set_OldItemCount(m_iItemCount);
+            }
 
 			/* 마우스에 있던 아이템을 슬롯애 배치 */
 			m_ItemName = (pMouse->Get_ItemName());
@@ -140,16 +149,16 @@ void CItem::Late_Update(_float fTimeDelta)
 			/* 마우스 상태 갱신 */
 			m_bCheck = true;
 
+            /* 요부분 변경 */
 			/* 마우스가 더 이상 아이템을 들고 있지 않도록 변경 = 빈 상태*/
 			pMouse->Set_ItemID(ITEMID_END);
 			/* 마우스의 이미지를 ITEMID_END로 변경 = 마우스가 들고 있는 아이템을 비움*/
 			(*mouse)->Set_ItemName(ITEMNAME_END);
 			/* 마우스 상태 비활성화 */
-			//(*mouse)->Set_Check(false);
+			(*mouse)->Set_Check(false);
 
-			/* 슬롯 아이템 이미지 비우기 */
-			pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
-			/* 테스트 함수 활성 */
+       
+            /* 테스트 함수 활성 */
 			pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_Test(true);
         }
     }

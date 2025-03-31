@@ -206,7 +206,9 @@ void CSteve::Move(_float fTimeDelta)
 	/* 현우 Test */
 	if (m_pGameInstance->Key_Down('Z'))
 	{
-		CUI_Mgr::Get_Instance()->TakeDamge();
+		Add_Hp(-15);
+
+		CUI_Mgr::Get_Instance()->SetHP();
 	}
 	if (m_pGameInstance->Key_Down('X'))
 	{
