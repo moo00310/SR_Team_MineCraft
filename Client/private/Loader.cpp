@@ -495,7 +495,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_CubeShader */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeShader"),
+ 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeShader"),
 		CVIBuffer_CubeShader::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 

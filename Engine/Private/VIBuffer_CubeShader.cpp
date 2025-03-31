@@ -109,27 +109,38 @@ HRESULT CVIBuffer_CubeShader::Initialize_Prototype(CUBE& tInfo)
 
 #pragma region UV ╦егн
     
+    vector<_float2> pos;
     _uint		iUvIndices = { 0 };
     // front, Right, back, left
     for (int i = 0; i < 4; i++)
     {
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x,              (UvPexel[i].y) / Imagesize.y);
+        pos.push_back(_float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y));
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x,              (UvPexel[i].y + fBoxSize.y) / Imagesize.y);
+        pos.push_back(_float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y + fBoxSize.y) / Imagesize.y));
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y + fBoxSize.y) / Imagesize.y);
+        pos.push_back(_float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y + fBoxSize.y) / Imagesize.y));
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y);
+        pos.push_back(_float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y));
     }
    
     for (int i = 4; i < 6; i++)
     {
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x,               (UvPexel[i].y) / Imagesize.y);
+        pos.push_back(_float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y));
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x,               (UvPexel[i].y + fBoxSize.z) / Imagesize.y);
+        pos.push_back(_float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y + fBoxSize.z) / Imagesize.y));
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y + fBoxSize.z) / Imagesize.y);
+        pos.push_back(_float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y + fBoxSize.z) / Imagesize.y));
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y);
+        pos.push_back(_float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y));
     }
+
+
 
 #pragma endregion
     /*IB*/
-    if (FAILED(__super::Create_IndexBuffer()))
+     if (FAILED(__super::Create_IndexBuffer()))
         return E_FAIL;
 
     _uint		iNumIndices = { 0 };
