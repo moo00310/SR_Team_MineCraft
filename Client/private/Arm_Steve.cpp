@@ -93,7 +93,7 @@ HRESULT CArm_Steve::Ready_Components()
 		return E_FAIL;
 
 	// 본 + 애니메이션
-	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs};
+	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
 	int a = 10;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
 		TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_pSkeletalAnimator), &DescSekel)))

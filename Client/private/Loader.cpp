@@ -717,17 +717,17 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	/* For.Prototype_Component_VIBuffer_Creeper */
 	Engine::CUBE cube = { _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 32.f), _float3(6.f, 12.f, 4.f), _float2(16.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 32.f), _float3(4.f, 6.f, 4.f), _float2(0.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 #pragma endregion
 
@@ -742,24 +742,24 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	/* For.Prototype_Component_VIBuffer_Zombi */
 	cube = { _float2(64.f, 64.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Head"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	cube = { _float2(64.f, 64.f), _float3(8.f, 12.f, 4.f), _float2(16.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Body"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	// 다리
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(0.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Leg"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	// 팔
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(40.f, 16.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Zombi_Arm"),
-		CVIBuffer_Cube::Create(m_pGraphic_Device, cube))))
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;
 
 	// 원형 객체

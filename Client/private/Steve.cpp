@@ -2,7 +2,7 @@
 
 #include "Transform.h"
 #include "Texture.h"
-#include "VIBuffer_Cube.h"
+#include "VIBuffer_Anim_Cube.h"
 #include "GameInstance.h"
 #include "UI_Mgr.h"
 

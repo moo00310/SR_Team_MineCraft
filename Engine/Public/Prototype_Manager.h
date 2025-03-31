@@ -4,6 +4,8 @@
 #include "VIBuffer_Rect.h"
 #include "VIBuffer_Rect_Normal.h"
 #include "VIBuffer_Cube.h"
+#include "VIBuffer_Anim_Cube.h"
+#include "VIBuffer_Anim_Rect.h"
 #include "VIBuffer_CubeInstance.h"
 #include "VIBuffer_Rect3DInstance.h"
 #include "Transform.h"
