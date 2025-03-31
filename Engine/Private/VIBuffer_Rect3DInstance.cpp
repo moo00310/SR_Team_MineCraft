@@ -9,6 +9,7 @@ D3DVERTEXELEMENT9 vertexRect3D[] =
 
 	// 인스턴스 버퍼 (Stream 1)
 	{ 1, 0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 1 }, // vInstancePos (인스턴스 위치)
+	{ 1, 12, D3DDECLTYPE_FLOAT1, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 2 }, // vInstanceBright (밝기 위치)
 
 	D3DDECL_END()
 };
@@ -124,7 +125,7 @@ HRESULT CVIBuffer_Rect3DInstance::Initialize(void* pArg)
 HRESULT CVIBuffer_Rect3DInstance::Create_InstanceBuffer()
 {
 	m_iNumInstances = MAX_INSTANCE_COUNT;
-	m_iInstanceStride = sizeof(D3DXVECTOR3);
+	m_iInstanceStride = sizeof(INFOINS);
 
 	if (FAILED(m_pGraphic_Device->CreateVertexBuffer(
 		m_iNumInstances * m_iInstanceStride,
@@ -138,7 +139,29 @@ HRESULT CVIBuffer_Rect3DInstance::Create_InstanceBuffer()
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Rect3DInstance::Update_InstanceBuffer(const std::vector<D3DXVECTOR3>& positions)
+HRESULT CVIBuffer_Rect3DInstance::Update_InstanceBuffer(vector<D3DXVECTOR3>& positions, vector<_float>& brights)
+{
+	if (!m_pInstanceVB || positions.empty() || brights.empty())
+		return E_FAIL;
+
+	// 현재 들어온 인스턴스 개수로 업데이트
+	m_iNumInstances = static_cast<UINT>(positions.size());
+
+	// 인스턴스 데이터가 담길 버퍼를 D3DXMATRIX로 변경
+	INFOINS* pInstanceData = nullptr;
+	if (FAILED(m_pInstanceVB->Lock(0, 0, (void**)&pInstanceData, D3DLOCK_DISCARD)))
+		return E_FAIL;
+
+	for (int i = 0; i < m_iNumInstances; ++i) {
+		pInstanceData[i].vPosition = positions[i];
+		pInstanceData[i].vBright = brights[i];
+	}
+
+	m_pInstanceVB->Unlock();
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Rect3DInstance::Update_InstanceBuffer(vector<D3DXVECTOR3>& positions, _float bright)
 {
 	if (!m_pInstanceVB || positions.empty())
 		return E_FAIL;
@@ -147,12 +170,14 @@ HRESULT CVIBuffer_Rect3DInstance::Update_InstanceBuffer(const std::vector<D3DXVE
 	m_iNumInstances = static_cast<UINT>(positions.size());
 
 	// 인스턴스 데이터가 담길 버퍼를 D3DXMATRIX로 변경
-	D3DXMATRIX* pInstanceData = nullptr;
+	INFOINS* pInstanceData = nullptr;
 	if (FAILED(m_pInstanceVB->Lock(0, 0, (void**)&pInstanceData, D3DLOCK_DISCARD)))
 		return E_FAIL;
 
-	// 현재 들어온 인스턴스 개수만큼 복사
-	memcpy(pInstanceData, positions.data(), m_iNumInstances * sizeof(D3DXVECTOR3));
+	for (int i = 0; i < m_iNumInstances; ++i) {
+		pInstanceData[i].vPosition = positions[i];
+		pInstanceData[i].vBright = bright;
+	}
 
 	m_pInstanceVB->Unlock();
 	return S_OK;
@@ -189,7 +214,7 @@ HRESULT CVIBuffer_Rect3DInstance::Bind_Buffers()
 	m_pGraphic_Device->SetStreamSourceFreq(0, D3DSTREAMSOURCE_INDEXEDDATA | m_iNumInstances);
 
 	// 인스턴스 버퍼 바인딩 (위치 데이터)
-	m_pGraphic_Device->SetStreamSource(1, m_pInstanceVB, 0, sizeof(D3DXVECTOR3));
+	m_pGraphic_Device->SetStreamSource(1, m_pInstanceVB, 0, sizeof(INFOINS));
 	m_pGraphic_Device->SetStreamSourceFreq(1, D3DSTREAMSOURCE_INSTANCEDATA | 1);
 
 	// 인덱스 버퍼 설정

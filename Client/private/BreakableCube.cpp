@@ -78,7 +78,7 @@ void CBreakableCube::Update(_float fTimeDelta)
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
 {
-
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 }
 
 HRESULT CBreakableCube::Render()
@@ -94,7 +94,6 @@ HRESULT CBreakableCube::Render()
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
-    m_pShaderCom->SetFloat("g_Bright", m_fBright);
 
     m_pShaderCom->Begin(0);
 
@@ -124,6 +123,7 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 
     for (int i = 0; i < position.size(); ++i) {
         m_vecPositions.push_back(position[i]); //위치 넣어줌
+        m_vecBrights.push_back(1.f);
 
         /* For.Com_Collider */
         CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
@@ -145,10 +145,18 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
     return E_NOTIMPL;
 }
 
+void CBreakableCube::Set_Bright(float _f)
+{
+    for (auto& bright : m_vecBrights) {
+        bright = _f;
+    }
+}
+
 HRESULT CBreakableCube::Create_Cube(_float3 fPos)
 {
     // 2. 벡터에서 해당 위치 추가
     m_vecPositions.push_back(fPos);
+    m_vecBrights.push_back(1.f);
 
     // 3. 콜라이더 추가
     /* For.Com_Collider */
@@ -165,7 +173,7 @@ HRESULT CBreakableCube::Create_Cube(_float3 fPos)
     }
 
     // 4. 인스턴스 버퍼 업데이트
-    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions);
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
     return S_OK;
 }

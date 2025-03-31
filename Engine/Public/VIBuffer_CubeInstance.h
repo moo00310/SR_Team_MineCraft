@@ -21,7 +21,8 @@ public:
 	HRESULT Bind_WorldMatrix();
 	HRESULT Create_InstanceBuffer();
 	virtual HRESULT Bind_Buffers();
-	HRESULT Update_InstanceBuffer(const std::vector<D3DXVECTOR3>& positions);
+	HRESULT Update_InstanceBuffer(vector<D3DXVECTOR3>& positions, vector<_float>& brights);
+	HRESULT Update_InstanceBuffer(vector<D3DXVECTOR3>& positions, _float _bright);
 	void SetMatrix(const D3DXMATRIX& mat);
 	virtual HRESULT Render();
 private:
