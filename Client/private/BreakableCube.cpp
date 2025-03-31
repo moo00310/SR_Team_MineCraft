@@ -29,7 +29,7 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         Destroy();
     }
 
-    for (CCollider_Cube* pCollider : m_Colliders)
+    /*for (CCollider_Cube* pCollider : m_Colliders)
     {
 
         CGameObject* pSteve{ nullptr };
@@ -55,8 +55,12 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
             }
         }
 
-    }
+    }*/
 
+    for (CCollider_Cube* pCollider : m_Colliders)
+    {
+        pCollider->Set_bColliderActive(false);
+    }
     if (m_bChunkColliderActive)
     {
         Should_Collide_With_Player();

@@ -268,7 +268,7 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_YU::Ready_Laye_TPS_Arm(const _wstring& strLayerTag)
+HRESULT CLevel_YU::Ready_Layer_TPS_Arm(const _wstring& strLayerTag)
 
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
