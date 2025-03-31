@@ -22,10 +22,8 @@ private:
 	HRESULT Ready_Layer_BackGround(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Hyock(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_TestParticle(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_RainParticle(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_DashParticle(const _wstring& strLayerTag);
-	HRESULT Ready_Layer_Sand_DestroyParticle(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_DigParticle(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_Particle(const _wstring& strLayerTag);
 
 public:
 	static CLevel_Hyeok* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

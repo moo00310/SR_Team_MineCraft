@@ -40,6 +40,12 @@ static const _wstring PROTOTYPE_COMPONENT_TEXTURE_EXPLOSION = TEXT("Prototype_Co
 // Æø¹ß ÆÄÆ¼Å¬.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION = TEXT("Prototype_GameObject_Particle_Explosion");
 
+// »ç¸Á ÅØ½ºÃÄ.
+static const _wstring PROTOTYPE_COMPONENT_TEXTURE_DIE = TEXT("Prototype_Component_Texture_Die");
+
+// »ç¸Á ÆÄÆ¼Å¬.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_DIE = TEXT("Prototype_GameObject_Particle_Die");
+
 #pragma endregion
 
 #pragma region LAYER_TAG

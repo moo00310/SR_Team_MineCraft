@@ -587,6 +587,9 @@
     <ClInclude Include="..\public\Pawn.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleDie.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -892,6 +895,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Pawn.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleDie.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
