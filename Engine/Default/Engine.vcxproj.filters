@@ -151,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Anim_Rect.h">
       <Filter>04.Components\VIBuffer\ViBuffer_Anim\01.VIBuffer_Ainm_Rect</Filter>
+  </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_CubeShader.h">
+      <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -404,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Anim_Rect.cpp">
       <Filter>04.Components\VIBuffer\ViBuffer_Anim\01.VIBuffer_Ainm_Rect</Filter>
+  </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_CubeShader.cpp">
+      <Filter>04.Components\VIBuffer\Cube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

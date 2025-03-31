@@ -104,7 +104,7 @@ void CParticleSystem::Update(_float fTimeDelta)
 
 void CParticleSystem::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this);
+	m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this);
 }
 
 HRESULT CParticleSystem::Render()
@@ -158,6 +158,29 @@ HRESULT CParticleSystem::Render()
 		// 다음 버텍스로 증가.
 		p++;
 
+		// 파티클 입자들마다 각각 다른 텍스쳐를 적용받을 경우.
+		if (IsParticleTexture == true)
+		{			
+			// 잠금 해제.
+			m_pVB->Unlock();
+
+			if (FAILED(m_pParticleTexture->Bind_Resource(data.iTextureIndex)))
+			{
+				return E_FAIL;
+			}
+
+			// 지정 범위 점을 그린다.			
+			m_pGraphic_Device->DrawPrimitive(
+				D3DPT_POINTLIST,
+				0,
+				1);
+
+			// 다음 세그먼트 그리기 위한 락.
+			m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
+
+			continue;
+		}
+
 		// 현재 세그먼트의 단계 증가.
 		currentSegmentVertexIndex++;
 
@@ -182,7 +205,9 @@ HRESULT CParticleSystem::Render()
 			// 현재 세그먼트의 단계 초기화.
 			currentSegmentVertexIndex = 0;
 		}		
-	}	
+	}
+
+	m_pVB->Unlock();
 
 	if (FAILED(EndRender()))
 	{
@@ -334,7 +359,7 @@ void CParticleSystem::Free()
 void CParticleSystem::OnPushPool()
 {
 	iCurrentTextureIndex = 0;
-	m_fCurrentTimer = 0.f;
+	m_fCurrentTimer = 0.f;	
 
 	// 재생성 시 기존에 값 덮어씀.
 	for (auto& particle : m_ListParticleAttribute)

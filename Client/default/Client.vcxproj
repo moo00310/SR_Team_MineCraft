@@ -201,6 +201,7 @@
     <ClInclude Include="..\public\IObserver.h" />
     <ClInclude Include="..\public\Mouse.h" />
     <ClInclude Include="..\public\Mouse_Item.h" />
+    <ClInclude Include="..\public\ParticleDie.h" />
     <ClInclude Include="..\public\ParticleExplosion.h" />
     <ClInclude Include="..\public\Pawn.h" />
     <ClInclude Include="..\public\PlayerExp.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="..\private\IObserver.cpp" />
     <ClCompile Include="..\private\Mouse.cpp" />
     <ClCompile Include="..\private\Mouse_Item.cpp" />
+    <ClCompile Include="..\private\ParticleDie.cpp" />
     <ClCompile Include="..\private\ParticleExplosion.cpp" />
     <ClCompile Include="..\private\Pawn.cpp" />
     <ClCompile Include="..\private\PlayerExp.cpp" />
@@ -378,6 +380,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Cube.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_CubeInstance.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_Rect3DInstance.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_UI.hlsl" />

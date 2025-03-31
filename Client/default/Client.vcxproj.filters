@@ -606,6 +606,10 @@
       <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RightHand_Object.h" />
+  </ClInclude>
+    <ClInclude Include="..\public\ParticleDie.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -922,6 +926,10 @@
       <Filter>02.GameObjects\01.Actor\00.Pawn\02.Right_Hand\02.Rect_Model</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RightHand_Object.cpp" />
+   </ClCompile> 
+    <ClCompile Include="..\private\ParticleDie.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -934,6 +942,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Rect3DInstance.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Cube.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

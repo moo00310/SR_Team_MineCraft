@@ -24,13 +24,17 @@ private:
 	HRESULT Ready_Layer_Steve(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Sun(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Clouds(const _wstring& strLayerTag);
-	HRESULT Ready_Laye_TPS_Arm(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_TPS_Arm(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_SkyBox(const _wstring& strLayerTag);
 
 	HRESULT Ready_Layer_DashParticle(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_SandDestroyParticle(const _wstring& strLayerTag);
 
 	HRESULT Ready_Layer_Inventory(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_PlayerState(const _wstring& strLayerTag);
+
+	HRESULT Ready_Laye_Creeper(const _wstring& strLayerTag);
+	HRESULT Ready_Laye_Zombi(const _wstring& strLayerTag);
 
 private:
 	wchar_t m_szFPS[20];

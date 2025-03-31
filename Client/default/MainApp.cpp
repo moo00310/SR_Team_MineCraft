@@ -22,6 +22,7 @@
 #include "ParticleSandDestroy.h"
 #include "UIParticleRain.h"
 #include "ParticleExplosion.h"
+#include "ParticleDie.h"
 
 
 CMainApp::CMainApp()
@@ -251,6 +252,11 @@ HRESULT CMainApp::Ready_Texture()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/explosion_%d.png"), 16))))
 		return E_FAIL;
 
+	// 사망 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DIE,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/die_%d.png"), 3))))
+		return E_FAIL;
+
 	// TODO : 파티클.
 	// 비 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
@@ -282,6 +288,11 @@ HRESULT CMainApp::Ready_Texture()
 	// 폭발 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
 		CParticleExplosion::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 사망 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
+		CParticleDie::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;
@@ -344,6 +355,11 @@ HRESULT CMainApp::Ready_Component()
 	/* For.Prototype_Component_Shader_Rect3DInstance */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect3DInstance"),
 		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Rect3DInstance.hlsl")))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Shader_Cube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Cube"),
+		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Cube.hlsl")))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Shader_UI */
