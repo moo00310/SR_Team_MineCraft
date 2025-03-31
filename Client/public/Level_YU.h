@@ -27,7 +27,7 @@ private:
 	HRESULT Ready_Layer_TPS_Arm(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_SkyBox(const _wstring& strLayerTag);
 
-	HRESULT Ready_Layer_DashParticle(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_Particle(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_SandDestroyParticle(const _wstring& strLayerTag);
 
 	HRESULT Ready_Layer_Inventory(const _wstring& strLayerTag);

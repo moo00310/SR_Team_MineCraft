@@ -48,6 +48,9 @@ private:
 	// 폭발 파티클 적용.
 	void PlayExplosionParticle();
 
+	// 사망 파티클 적용.
+	void PlayDieParticle();
+
 public:
 	static CCreeper* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

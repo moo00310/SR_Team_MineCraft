@@ -61,10 +61,10 @@ private:
 	void Motion_Walk(_float fTimeDelta) override;
 	void Turn(_float fTimeDelta) override;
 
-	// ��� ��ƼŬ ����.
+	// 달리기 파티클.
 	void PlayDashParticle(_float fTimeDelta);
 
-	// ��ƼŬ ��Ÿ�� ���� ������ �ʱ�ȭ.
+	// 달리기 파티클 초기화.
 	void ResetDashParticle();
 
 public:

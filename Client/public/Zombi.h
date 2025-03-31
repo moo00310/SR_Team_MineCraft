@@ -45,6 +45,9 @@ private:
 	void Motion_Dead(_float fTimeDelta) override;
 	void Turn(_float fTimeDelta) override;
 
+	// »ç¸Á ÆÄÆ¼Å¬.
+	void PlayDieParticle();
+
 private:
 	//CCollider_Cube* m_pCollider_CubeCom{ nullptr };
 

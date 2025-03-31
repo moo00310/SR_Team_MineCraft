@@ -91,8 +91,8 @@ ParticleAttribute CParticleDie::OnSetAddParticle()
 {
 	ParticleAttribute att;
 	att.vPosition = { GetRandomFloat(-0.5f, 0.5f), GetRandomFloat(-0.5f, 0.5f), GetRandomFloat(-0.5f, 0.5f) };
-	att.vColor = 0xffffff;
-	att.vVelocity = { GetRandomFloat(-0.3f, 0.3f), 0.3f, 0.f };
+	//att.vColor = 0xffffff;
+	att.vVelocity = { GetRandomFloat(-0.2f, 0.2f), 0.2f, 0.f };
 	att.iTextureIndex = (int)GetRandomFloat(0.f, 3.f);
 
 	return att;
