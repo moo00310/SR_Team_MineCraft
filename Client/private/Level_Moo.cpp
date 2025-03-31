@@ -16,12 +16,6 @@ HRESULT CLevel_Moo::Initialize()
 	if (FAILED(Ready_Layer_BackGround(TEXT("Layer_BackGround"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Zombi"))))
-	//	return E_FAIL;
-
-	//if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
-	//	return E_FAIL;
-
 	//임무결 1인칭 확인용
 	//if (FAILED(Ready_Laye_MooArm(TEXT("Layer_Arm"))))
 	//	return E_FAIL;

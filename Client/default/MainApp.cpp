@@ -24,6 +24,7 @@
 #include "ParticleSandDestroy.h"
 #include "UIParticleRain.h"
 #include "ParticleExplosion.h"
+#include "Mouse.h"
 #include "ParticleDie.h"
 
 
@@ -47,6 +48,8 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(m_pGameInstance->Initialize_Engine(Desc, &m_pGraphic_Device)))
 		return E_FAIL;
+
+	CUI_Mgr::Get_Instance();
 
 #pragma region 조명 연산
 	D3DLIGHT9			LightDesc{};
@@ -193,18 +196,6 @@ HRESULT CMainApp::Ready_Steve()
 	cube = { _float2(64.f, 64.f), _float3(4.f, 12.f, 4.f), _float2(32.f, 48.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Steve_Arm_L"),
 		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
-		return E_FAIL;
-
-	// 스티브 게임 오브젝트
-	/* For.Prototype_GameObject_Steve */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
-		CSteve::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// 스티브_팔 게임 오브젝트
-	/* For.Prototype_GameObject_Arm_Steve */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
-		CArm_Steve::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;
@@ -407,6 +398,7 @@ void CMainApp::Free()
 
 	m_pGameInstance->Release_Engine();
 	CUI_Mgr::Get_Instance()->Destroy_Instance();
+	CMouse::Get_Instance()->Destroy_Instance();
 
 	/* 내멤버를 정리한다.*/	
 	Safe_Release(m_pGameInstance);

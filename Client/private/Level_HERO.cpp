@@ -2,6 +2,8 @@
 #include "GameInstance.h"
 
 #include "Camera_Player.h"
+#include "UI_Mgr.h"
+#include "Steve.h"
 
 CLevel_HERO::CLevel_HERO(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -20,13 +22,12 @@ HRESULT CLevel_HERO::Initialize()
 	//if (FAILED(Ready_Layer_HeroCube(TEXT("Layer_HeroCube"))))
 	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
+	//	return E_FAIL;
 
-	//스티브 다음으로 준비해야 스티브의 트랜스 폼을 찾을 수 있음
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
-
+	////스티브 다음으로 준비해야 스티브의 트랜스 폼을 찾을 수 있음
+	//if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+	//	return E_FAIL;
 
 	//Yu로 이사
 	/*if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Creeper"))))
@@ -35,8 +36,8 @@ HRESULT CLevel_HERO::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Zombi"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Laye_Particle(LAYER_PARTICLE)))
-		return E_FAIL;
+	/*if (FAILED(Ready_Laye_Particle(LAYER_PARTICLE)))
+		return E_FAIL;*/
 
 #ifdef _DEBUG
 
@@ -164,6 +165,8 @@ HRESULT CLevel_HERO::Ready_Layer_Steve(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
+
+	CUI_Mgr::Get_Instance()->Set_Steve(dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_HERO, TEXT("Layer_Steve"), 0)));
 
 	return S_OK;
 }

@@ -39,7 +39,6 @@ public:
 
 private:
 	_float   m_fMouseSensor = { 0.03f };
-	int m_bisTPS = { 1 };
 	ANIM m_eCurAnim = { ANIM_END };
 	bool isAttack = { false };	
 	bool m_IsDashCoolTime = {false};

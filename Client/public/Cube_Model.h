@@ -1,5 +1,5 @@
 #include "Client_Defines.h"
-#include "GameObject.h"
+#include "RightHand_Object.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -7,20 +7,8 @@ class CTransform;
 class CVIBuffer_Anim;
 END
 
-class CCube_Model : public CGameObject
+class CCube_Model : public CRightHand_Object
 {
-public:
-	enum ANIM {
-		IDLE, SWING, WALK, ANIM_END
-	};
-
-public:
-	typedef struct tagItemDesc
-	{
-		wstring TextureTag = {};
-		LEVEL TextureLevel = {};
-	}DESC;
-
 protected:
 	CCube_Model(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CCube_Model(const CCube_Model& Prototype);
@@ -35,19 +23,15 @@ public:
 	virtual HRESULT Render();
 
 private:
-	bool isAttack = { false };
-	ANIM m_eCurAnim = { IDLE };
-	int m_bisTPS = { -1 };
-
-private:
 	HRESULT Ready_Components();
-	HRESULT Ready_Bone();
-	HRESULT Ready_Animation();
 
 private:
-	CTexture* m_pTextureCom = { nullptr };
-	vector<CVIBuffer_Anim*> m_pVIBufferComs = { nullptr };
-	CSkeletalAnimator* m_pSkeletalAnimator = { nullptr };
+	HRESULT Ready_Bone() override;
+	HRESULT Ready_Animation() override;
+	void Motion_Idle(_float fTimeDelta) override;
+	void Motion_Swing(_float fTimeDelta) override;
+	void Motion_Walk(_float fTimeDelta) override;
+	void KeyInput() override;
 
 public:
 	static CCube_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

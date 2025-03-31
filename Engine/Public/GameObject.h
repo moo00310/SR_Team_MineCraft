@@ -40,6 +40,10 @@ public:
 	void	SetActive(_bool isActive);
 	_bool	GetActive() const;
 
+	void	SetRender(_bool isRender) {
+		m_isRender = isRender;
+	}
+
 protected:
 	LPDIRECT3DDEVICE9				m_pGraphic_Device = { nullptr };
 	class CGameInstance*			m_pGameInstance = { nullptr };
@@ -51,10 +55,10 @@ protected:
 	_bool	m_isCloned{ false }; 
 	_bool	m_isDestroyed{ false };
 
-private:
-	
+protected:
 	// 오브젝트 true = 활성화/ false = 비활성화.
 	_bool	m_isActive = { true };
+	_bool	m_isRender = { true };
 
 protected:
 	HRESULT Add_Component(_uint iLevelIndex, const _wstring& strPrototypeTag, const _wstring& strComponentTag, CComponent** ppOut, void* pArg = nullptr);

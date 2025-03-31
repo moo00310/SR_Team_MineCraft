@@ -25,13 +25,13 @@ HRESULT CItem::Initialize(void* pArg)
     Desc.fSizeX = 42.f;
     Desc.fSizeY = 42.f;
 
-    /* ÇÏ´Ü Äü½½·Ô ÀÎº¥Åä¸® */
+    /* í•˜ë‹¨ í€µìŠ¬ë¡¯ ì¸ë²¤í† ë¦¬ */
 	if (m_iSlotIndexNum < 9)
 	{
         Desc.fX = 360.f + (m_iSlotIndexNum) * 70.f;
         Desc.fY = 672.f;
 	}
-    /* ¸ŞÀÎ ÀÎº¥Åä¸® */
+    /* ë©”ì¸ ì¸ë²¤í† ë¦¬ */
 	else
 	{
         Desc.fX = 407.f + (m_iSlotIndexNum - 9) * 58.f;
@@ -67,7 +67,7 @@ void CItem::Late_Update(_float fTimeDelta)
   
     CMouse* pMouse = CMouse::Get_Instance();
 
-    /* ¸¶¿ì½º¿Í ¾ÆÀÌÅÛ ½½·Ô °£ Ãæµ¹ Ã¼Å© */
+    /* ë§ˆìš°ìŠ¤ì™€ ì•„ì´í…œ ìŠ¬ë¡¯ ê°„ ì¶©ëŒ ì²´í¬ */
     RECT rcRect;
     SetRect(&rcRect, (int)(Desc.fX - Desc.fSizeX * 0.5f), (int)(Desc.fY - Desc.fSizeY * 0.5f),
         (int)(Desc.fX + Desc.fSizeX * 0.5f), (int)(Desc.fY + Desc.fSizeY * 0.5f));
@@ -80,78 +80,90 @@ void CItem::Late_Update(_float fTimeDelta)
 
     auto mouse = pUI_Mgr->Get_MouseItemlist()->begin();
 
-    /* ¸¶¿ì½º Å¬¸¯ ½Ã ¾ÆÀÌÅÛ ¼±ÅÃ ¹× ±³Ã¼ */
-    /* ¸¶¿ì½º°¡ ¾ÆÀÌÅÛ ½½·Ô À§¿¡ ÀÖ°í, ÁÂÅ¬¸¯ÀÌ ¶¼¾îÁ³À» ¶§ ½ÇÇà*/
+    /* ë§ˆìš°ìŠ¤ í´ë¦­ ì‹œ ì•„ì´í…œ ì„ íƒ ë° êµì²´ */
+    /* ë§ˆìš°ìŠ¤ê°€ ì•„ì´í…œ ìŠ¬ë¡¯ ìœ„ì— ìˆê³ , ì¢Œí´ë¦­ì´ ë–¼ì–´ì¡Œì„ ë•Œ ì‹¤í–‰*/
     if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON) && m_iSlotIndexNum >= 9)
     {
-        /* ¸¶¿ì½º¿¡ ¾ÆÀÌÅÛÀÌ ¾øÀ¸¸é => ÇöÀç ½½·ÔÀÇ ¾ÆÀÌÅÛÀ» ÁıÀ½ */
+        /* ë§ˆìš°ìŠ¤ì— ì•„ì´í…œì´ ì—†ìœ¼ë©´ => í˜„ì¬ ìŠ¬ë¡¯ì˜ ì•„ì´í…œì„ ì§‘ìŒ */
         if (pMouse->Get_Picked() == false)
         {
-            /* ¾ÆÀÌÅÛ Å¸ÀÔ ÀúÀå*/
+            /* ì•„ì´í…œ íƒ€ì… ì €ì¥*/
             pMouse->Set_ItemID(m_ItemID);
-            /* ¾ÆÀÌÅÛ ÅØ½ºÃÄ ¹øÈ£ ÀúÀå*/
+            /* ì•„ì´í…œ í…ìŠ¤ì³ ë²ˆí˜¸ ì €ì¥*/
             pMouse->Set_ItemName(m_ItemName);
-            /* ¾ÆÀÌÅÛÀÌ ¿ø·¡ ÀÖ´ø ÀÎº¥Åä¸® ½½·Ô ¹øÈ£ ÀúÀå*/
+            /* ì•„ì´í…œì´ ì›ë˜ ìˆë˜ ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë²ˆí˜¸ ì €ì¥*/
             pMouse->Set_SlotIndex(m_iSlotIndexNum);
-            /* ¸¶¿ì½º°¡ ¾ÆÀÌÅÛÀ» µé°í ÀÖ´Â »óÅÂ·Î º¯°æ */
+            /* ë§ˆìš°ìŠ¤ê°€ ì•„ì´í…œì„ ë“¤ê³  ìˆëŠ” ìƒíƒœë¡œ ë³€ê²½ */
             pMouse->Set_Picked(true);
-            /* ÇöÀç ½½·Ô¿¡ ÀÖ´Â ¾ÆÀÌÅÛ °³¼ö ÀúÀå */
+            /* í˜„ì¬ ìŠ¬ë¡¯ì— ìˆëŠ” ì•„ì´í…œ ê°œìˆ˜ ì €ì¥ */
             pMouse->Set_ItemCount(m_iItemCount);
 
-            /* ¸¶¿ì½º°¡ ¾ÆÀÌÅÛÀ» µé°í ÀÖ´Â »óÅÂ·Î ÀúÀå*/
+            /* ë§ˆìš°ìŠ¤ê°€ ì•„ì´í…œì„ ë“¤ê³  ìˆëŠ” ìƒíƒœë¡œ ì €ì¥*/
             (*mouse)->Set_Check(true);
-            /* ¸¶¿ì½º¿¡ Ç¥½ÃÇÒ ¾ÆÀÌÅÛ ÀÌ¹ÌÁö ¼³Á¤ */
+            /* ë§ˆìš°ìŠ¤ì— í‘œì‹œí•  ì•„ì´í…œ ì´ë¯¸ì§€ ì„¤ì • */
             (*mouse)->Set_ItemName(m_ItemName);
 
             Set_ItemName(ITEMNAME_END);
         }
-        /* ÀÌ¹Ì ¾ÆÀÌÅÛÀÌ ÀÖ´Ù¸é => ½½·Ô°ú ¸¶¿ì½ºÀÇ ¾ÆÀÌÅÛÀ» ±³È¯ */
+        /* ì´ë¯¸ ì•„ì´í…œì´ ìˆë‹¤ë©´ => ìŠ¬ë¡¯ê³¼ ë§ˆìš°ìŠ¤ì˜ ì•„ì´í…œì„ êµí™˜ */
         else
         {   
-            /* °°Àº ¾ÆÀÌÅÛÀÎÁö È®ÀÎ  => °³¼ö ÇÕÄ¡´Â ¹æ½Ä (½ºÅÃ Ã³¸®) */
+            /* ê°™ì€ ì•„ì´í…œì¸ì§€ í™•ì¸  => ê°œìˆ˜ í•©ì¹˜ëŠ” ë°©ì‹ (ìŠ¤íƒ ì²˜ë¦¬) */
             if (pMouse->Get_SlotIndex() == m_iSlotIndexNum)
+            {
                 pMouse->Set_ItemMatch(true);
-
+            }
+              
             else
+            {
                 pMouse->Set_ItemMatch(false);
+                pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
+            }
+                
 
-            ///* ÀÌ¹Ì ½½·ÔÀÇ ¾ÆÀÌÅÛÀÌ ÀÖ´Ù¸é ±³Ã¼ ¸øÇÔ */
+            ///* ì´ë¯¸ ìŠ¬ë¡¯ì˜ ì•„ì´í…œì´ ìˆë‹¤ë©´ êµì²´ ëª»í•¨ */ // ì´ ë¶€ë¶„ì„ ë³€ê²½í•´ì•¼í• ë“¯ -> ì´ë¯¸ ìŠ¬ë¡¯ì˜ ì•„ì´í…œì´ ìˆë‹¤ë©´ ë§ˆìš°ìŠ¤ê°€ ë“¤ê³ ìˆëŠ” ì•„ì´í…œê³¼  ìŠ¬ë¡¯ ì•„ì´í…œ êµì²´
             if (pUI_Mgr->Get_vecItemlist()->at(m_iSlotIndexNum)->Get_ItemName() < ITEMNAME_END)
             {
                 return;
             }
 
-            /* ÇØ´ç Ä­¿¡ ¾ÆÀÌÅÛÀÌ ÀÖÀ» °æ¿ì ¸¶¿ì½º°¡ µé°íÀÖ´Â ¾ÆÀÌÅÛ°ú ±³Ã¼  (¼öÁ¤ÇØ¾ßÇÔ)*/
+            /* í•´ë‹¹ ì¹¸ì— ì•„ì´í…œì´ ìˆì„ ê²½ìš° ë§ˆìš°ìŠ¤ê°€ ë“¤ê³ ìˆëŠ” ì•„ì´í…œê³¼ êµì²´  (ìˆ˜ì •í•´ì•¼í•¨)*/
             /*if (pMouse->Get_ItemName() < ITEMNAME_END)
             {
                 
             }*/
            
-			/* ÀÌÀü ¾ÆÀÌÅÛ ÀúÀå */
-			pMouse->Set_OldItem(m_ItemName);
-			pMouse->Set_OldItemCount(m_iItemCount);
+			/* ì´ì „ ì•„ì´í…œ ì €ì¥ */
+            if (m_ItemName < ITEMNAME_END)
+            {
+              pMouse->Set_OldItem(m_ItemName);
+              pMouse->Set_OldItemCount(m_iItemCount);
+            }
 
-			/* ¸¶¿ì½º¿¡ ÀÖ´ø ¾ÆÀÌÅÛÀ» ½½·Ô¾Ö ¹èÄ¡ */
+			/* ë§ˆìš°ìŠ¤ì— ìˆë˜ ì•„ì´í…œì„ ìŠ¬ë¡¯ì•  ë°°ì¹˜ */
 			m_ItemName = (pMouse->Get_ItemName());
-			/* ¸¶¿ì½º°¡ µé°í ÀÖ´ø ¾ÆÀÌÅÛ °³¼ö¸¦ ½½·ÔÀÇ ¾ÆÀÌÅÛ °³¼ö·Î ¼³Á¤ */
+			/* ë§ˆìš°ìŠ¤ê°€ ë“¤ê³  ìˆë˜ ì•„ì´í…œ ê°œìˆ˜ë¥¼ ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ê°œìˆ˜ë¡œ ì„¤ì • */
 			Set_ItemCount(pMouse->Get_ItemCount());
-			/* ¸¶¿ì½º°¡ ¾ÆÀÌÅÛÀ» ³»·Á³õÀ½À¸·Î º¯°æ */
+			/* ë§ˆìš°ìŠ¤ê°€ ì•„ì´í…œì„ ë‚´ë ¤ë†“ìŒìœ¼ë¡œ ë³€ê²½ */
 			pMouse->Set_Picked(false);
-			/* ¸¶¿ì½º »óÅÂ °»½Å */
+			/* ë§ˆìš°ìŠ¤ ìƒíƒœ ê°±ì‹  */
 			m_bCheck = true;
 
-			/* ¸¶¿ì½º°¡ ´õ ÀÌ»ó ¾ÆÀÌÅÛÀ» µé°í ÀÖÁö ¾Êµµ·Ï º¯°æ = ºó »óÅÂ*/
+            /* ìš”ë¶€ë¶„ ë³€ê²½ */
+			/* ë§ˆìš°ìŠ¤ê°€ ë” ì´ìƒ ì•„ì´í…œì„ ë“¤ê³  ìˆì§€ ì•Šë„ë¡ ë³€ê²½ = ë¹ˆ ìƒíƒœ*/
 			pMouse->Set_ItemID(ITEMID_END);
-			/* ¸¶¿ì½ºÀÇ ÀÌ¹ÌÁö¸¦ ITEMID_END·Î º¯°æ = ¸¶¿ì½º°¡ µé°í ÀÖ´Â ¾ÆÀÌÅÛÀ» ºñ¿ò*/
+			/* ë§ˆìš°ìŠ¤ì˜ ì´ë¯¸ì§€ë¥¼ ITEMID_ENDë¡œ ë³€ê²½ = ë§ˆìš°ìŠ¤ê°€ ë“¤ê³  ìˆëŠ” ì•„ì´í…œì„ ë¹„ì›€*/
 			(*mouse)->Set_ItemName(ITEMNAME_END);
-			/* ¸¶¿ì½º »óÅÂ ºñÈ°¼ºÈ­ */
-			//(*mouse)->Set_Check(false);
+			/* ë§ˆìš°ìŠ¤ ìƒíƒœ ë¹„í™œì„±í™” */
+			(*mouse)->Set_Check(false);
+      
+      // ë­”ì§€ ëª°ë¼ì„œ ì‚´ë ¤ë‘  í•„ìš”ì—†ìœ¼ë©´ ì§€ìš°ì„¸ìš© -ë¬´ê²°-
+			///* ìŠ¬ë¡¯ ì•„ì´í…œ ì´ë¯¸ì§€ ë¹„ìš°ê¸° */
+      //      if (pMouse->Get_SlotIndex() != m_iSlotIndexNum)
+      //          pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
+			//
 
-			/* ½½·Ô ¾ÆÀÌÅÛ ÀÌ¹ÌÁö ºñ¿ì±â */
-            if (pMouse->Get_SlotIndex() != m_iSlotIndexNum)
-                pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
-			
-            /* Å×½ºÆ® ÇÔ¼ö È°¼º */
+            /* í…ŒìŠ¤íŠ¸ í•¨ìˆ˜ í™œì„± */
 			pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_Test(true);
         }
     }
@@ -164,7 +176,7 @@ HRESULT CItem::Render()
 {
     if (m_bCheck)
     {
-        /* ¸ŞÀÎ ÀÎº¥Åä¸® È°¼ºÈ­ÀÏ¶§¸¸ ·»´õ*/
+        /* ë©”ì¸ ì¸ë²¤í† ë¦¬ í™œì„±í™”ì¼ë•Œë§Œ ë Œë”*/
         if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
         {
             return S_OK;

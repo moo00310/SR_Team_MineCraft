@@ -1,4 +1,4 @@
-﻿#include "Level_YU.h"
+#include "Level_YU.h"
 #include "GameInstance.h"
 #include "MapTool.h"
 
@@ -34,17 +34,25 @@ HRESULT CLevel_YU::Initialize()
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
-	
-	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_TPS_Arm"))))
-		return E_FAIL;
 
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
-	/*
-	if (FAILED(Ready_Laye_Sword(TEXT("Layer_Item"))))
+	///// 오른손 객체들과 그걸 관리할 오브젝트
+	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_TPS_Arm"))))
 		return E_FAIL;
-	*/
+
+	if (FAILED(Ready_Laye_Rect_Model(TEXT("Layer_Rect_Model"))))
+		return E_FAIL;
+
+	//if (FAILED(Ready_Laye_Cube_Model(TEXT("Layer_Cube_Model"))))
+	//	return E_FAIL;
+
+	// 위 객체들을 관리하는 오브젝트
+	if (FAILED(Ready_Laye_RightHand(TEXT("Layer_Cube_RightHand"))))
+		return E_FAIL;
+
+	///////////////////////////////////////////////////////////
 
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;
@@ -105,11 +113,13 @@ HRESULT CLevel_YU::Ready_Layer_Tool(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Layer_Steve(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_Steve"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Steve"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
 	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(10.f, 20.f, 10.f));
+
+	CUI_Mgr::Get_Instance()->Set_Steve(dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0)));
 
 	return S_OK;
 }
@@ -238,7 +248,6 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_PlayerLevel"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
 			return E_FAIL;
-
 	}
 
 	return S_OK;
@@ -269,11 +278,38 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 }
 
 HRESULT CLevel_YU::Ready_Layer_TPS_Arm(const _wstring& strLayerTag)
-
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_STATIC, TEXT("Prototype_GameObject_TPS_Arm"),
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_TPS_Arm"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+}
+
+HRESULT CLevel_YU::Ready_Laye_Rect_Model(const _wstring& strLayerTag)
+{
+	// 렉트모델 게임오브젝트 옮겨야겠다
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Rect_Model"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Laye_Cube_Model(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Cube_Model"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Laye_RightHand(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_RightHand"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
