@@ -58,7 +58,7 @@ void CCreeper::Late_Update(_float fTimeDelta)
     Update_State(fTimeDelta);
     m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
         return;
 }
 
@@ -76,28 +76,28 @@ HRESULT CCreeper::Ready_Components()
 #pragma region 외형
     // 크리퍼 텍스처
    /* For.Com_Texture */
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_Texture_Creeper"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Creeper"),
         TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
     m_pVIBufferComs.resize(6);
     /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Body"),
         TEXT("m_pVIBufferCom_Body"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[0]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Head"),
         TEXT("m_pVIBufferCom_Head"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[1]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
         TEXT("m_pVIBufferCom_Foot_LF"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[2]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
         TEXT("m_pVIBufferCom_Foot_RF"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[3]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
         TEXT("m_pVIBufferCom_Foot_LB"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[4]))))
         return E_FAIL;
-    if (FAILED(__super::Add_Component(LEVEL_HERO, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Creeper_Foot"),
         TEXT("m_pVIBufferCom_Foot_RB"), reinterpret_cast<CComponent**>(&m_pVIBufferComs[5]))))
         return E_FAIL;
 #pragma endregion

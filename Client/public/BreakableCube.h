@@ -70,6 +70,12 @@ public:
 	vector<CCollider_Cube*> m_Colliders;
 
 	float m_fBright=1;
+
+private:
+	//아래 두 함수를 나중에 Pawn으로 합쳐도 될지는 모르겠음, 일단 나눔
+	void Should_Collide_With_Player();
+	void Should_Collide_With_Monster();
+
 public:
 	static CBreakableCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

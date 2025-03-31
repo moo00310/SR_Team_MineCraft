@@ -29,45 +29,18 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         Destroy();
     }
 
-    // 플레이어 밑에 있는 청크면 충돌 매니저에 올림
-    if (m_bChunkColliderActive) 
+    for (CCollider_Cube* pCollider : m_Colliders)
     {
-        CGameObject* pSteve{ nullptr };
-        pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
-
-        CTransform* pTransformCom{ nullptr };
-        pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
-        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
-        
-        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-        for (CCollider_Cube* pCollider : m_Colliders)
-        {
-            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
-
-            _float3 vDiff{ vStevePos - vColliderPos };
-
-            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-
-            if (fLengthSq < 30.f)
-            {
-                //플레이어와 거리가 가까우면
-                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
-
-                pCollider->Set_bColliderActive(true);
-            }
-            else
-            {
-                pCollider->Set_bColliderActive(false);
-            }
-        }
+        pCollider->Set_bColliderActive(false);
     }
-    else
+
+    if (m_bChunkColliderActive)
     {
-        for (CCollider_Cube* pCollider : m_Colliders)
-        {
-            pCollider->Set_bColliderActive(false);
-        }
+        Should_Collide_With_Player();
+        Should_Collide_With_Monster();
     }
+    //밖에 꺼내 놓은 이유(다른 청크가면 몬스터 떨어져버림) -> 안돼 프레임 개 떨어져 그냥 몬스터 멀어지면 비활성화 시키는게 나을 거 같음
+    //Should_Collide_With_Monster();
     
 }
 
@@ -142,6 +115,8 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position)
 
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
+    //여기다가 구현해놔야지 나중에
+    //크리에이트 큐브 처럼
     return E_NOTIMPL;
 }
 
@@ -197,6 +172,67 @@ HRESULT CBreakableCube::Ready_Components()
     return S_OK;
 }
 
+
+void CBreakableCube::Should_Collide_With_Player()
+{
+    // 플레이어 밑에 있는 청크면 충돌 매니저에 올림(이제는 플레이어에다가 추가로 몬스터 크리퍼, 좀비 레이어)
+    CGameObject* pSteve{ nullptr };
+    pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+
+    CTransform* pTransformCom{ nullptr };
+    pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+    _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+    //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+    for (CCollider_Cube* pCollider : m_Colliders)
+    {
+        _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
+
+        _float3 vDiff{ vStevePos - vColliderPos };
+
+        _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+        if (fLengthSq < 30.f)
+        {
+            //플레이어와 거리가 가까우면
+            m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+
+            pCollider->Set_bColliderActive(true);
+        }
+    }
+}
+
+void CBreakableCube::Should_Collide_With_Monster()
+{
+    // 플레이어 밑에 있는 청크면 충돌 매니저에 올림(이제는 플레이어에다가 추가로 몬스터 크리퍼, 좀비 레이어)
+
+    list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
+
+    for (CGameObject* pMonster : Monsters)
+    {
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
+        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+        for (CCollider_Cube* pCollider : m_Colliders)
+        {
+            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
+
+            _float3 vDiff{ vStevePos - vColliderPos };
+
+            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+            if (fLengthSq < 3.f)
+            {
+                //플레이어와 거리가 가까우면
+                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+
+                pCollider->Set_bColliderActive(true);
+            }
+        }
+    } 
+}
 
 CBreakableCube* CBreakableCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
