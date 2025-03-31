@@ -230,7 +230,7 @@ HRESULT CParticleSystem::Bind_Buffers()
 
 void CParticleSystem::Replay(_float3 _position)
 {
-	m_pTransform->Set_State(CTransform::STATE_POSITION, _position);
+	/*m_pTransform->Set_State(CTransform::STATE_POSITION, _position);
 
 	for (auto& particle : m_ListParticleAttribute)
 	{
@@ -239,7 +239,7 @@ void CParticleSystem::Replay(_float3 _position)
 		particle.IsAlive = true;
 
 		OnReplay(particle);
-	}
+	}*/
 }
 
 CTransform* CParticleSystem::GetTransform() const

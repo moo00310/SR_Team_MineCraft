@@ -91,7 +91,7 @@ HRESULT CGrassDirt::Delete_Cube(_float3 fPos)
 }
 
 void CGrassDirt::PlayDestroyParticle(_float3 _position)
-{
+{/*
     CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(
         LEVEL_STATIC,
         PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
@@ -101,9 +101,9 @@ void CGrassDirt::PlayDestroyParticle(_float3 _position)
     if (particle == nullptr)
     {
         return;
-    }
+    }*/
 
-    particle->Replay(_position);
+    //particle->Replay(_position);
 }
 
 HRESULT CGrassDirt::Ready_Components()
