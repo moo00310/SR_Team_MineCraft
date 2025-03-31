@@ -182,7 +182,9 @@ HRESULT CParticleSystem::Render()
 			// 현재 세그먼트의 단계 초기화.
 			currentSegmentVertexIndex = 0;
 		}		
-	}	
+	}
+
+	m_pVB->Unlock();
 
 	if (FAILED(EndRender()))
 	{
