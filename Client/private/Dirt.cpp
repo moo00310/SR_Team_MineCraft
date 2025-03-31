@@ -91,7 +91,7 @@ HRESULT CDirt::Delete_Cube(_float3 fPos)
 
 void CDirt::PlayDestroyParticle(_float3 _position)
 {
- /*   CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(
+    CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(
         LEVEL_STATIC,
         PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
         LEVEL_YU,
@@ -102,7 +102,7 @@ void CDirt::PlayDestroyParticle(_float3 _position)
         return;
     }
 
-    particle->Replay(_position);*/
+    particle->Replay(_position);
 }
 
 HRESULT CDirt::Ready_Components()
