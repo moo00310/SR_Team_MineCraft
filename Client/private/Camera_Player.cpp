@@ -71,17 +71,17 @@ void CCamera_Player::Priority_Update(_float fTimeDelta)
 void CCamera_Player::Update(_float fTimeDelta)
 {
     Input_Key(fTimeDelta);
-    Follow_Player(fTimeDelta);
-    __super::Update_VP_Matrices();
-}
 
-void CCamera_Player::Late_Update(_float fTimeDelta)
-{
-    
     if (m_pGameInstance->Key_Down(VK_F5))
     {
         m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
     }
+}
+
+void CCamera_Player::Late_Update(_float fTimeDelta)
+{
+    Follow_Player(fTimeDelta);
+    __super::Update_VP_Matrices();
 }
 
 HRESULT CCamera_Player::Render()
@@ -267,9 +267,20 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     if (m_fWalkTime > D3DX_PI * 2.f)
         m_fWalkTime -= D3DX_PI * 2.f;
 
+
     // === 좌우 & 위아래 흔들림 계산 ===
-    _float fShakeOffset_X = cosf(m_fWalkTime) * 0.05f;
-    _float fShakeOffset_Y = fabs(sinf(m_fWalkTime) * 0.05f);
+    _float fShakeOffset_X{};
+    _float fShakeOffset_Y{};
+	if (m_eCameraMode == E_CAMERA_MODE::FPS)
+	{
+        fShakeOffset_X = cosf(m_fWalkTime) * 0.01f;
+        fShakeOffset_Y = fabs(sinf(m_fWalkTime) * 0.01f);
+	}
+    else if (m_eCameraMode == E_CAMERA_MODE::TPS)
+    {
+		fShakeOffset_X = cosf(m_fWalkTime) * 0.05f;
+		fShakeOffset_Y = fabs(sinf(m_fWalkTime) * 0.05f);
+    }
 
     // === 플레이어의 머리 위치 설정 ===
     _float3 vRight = { cosf(m_fYaw), 0.f, -sinf(m_fYaw) };
@@ -282,7 +293,7 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     // === 카메라 모드에 따라 다른 처리 ===
     if (m_eCameraMode == E_CAMERA_MODE::FPS)
     {
-        m_pTransformCom->LookAt(playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f) + vLookDir);
+        m_pTransformCom->LookAt(playerPos + _float3(0.f, headHeight, 0.f) + /*vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f)*/ + vLookDir);
     }
     else if (m_eCameraMode == E_CAMERA_MODE::TPS)
     {

@@ -151,9 +151,12 @@
     </ClInclude>
     <ClInclude Include="..\public\VIBuffer_Anim_Rect.h">
       <Filter>04.Components\VIBuffer\ViBuffer_Anim\01.VIBuffer_Ainm_Rect</Filter>
-  </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_CubeShader.h">
       <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FrustumCulling_Manager.h">
+      <Filter>09.FrustumCullingManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +282,9 @@
     </Filter>
     <Filter Include="04.Components\VIBuffer\ViBuffer_Anim\01.VIBuffer_Ainm_Rect">
       <UniqueIdentifier>{2c0c6cf9-e0e7-4f4b-b1ed-ffe6157eb597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="09.FrustumCullingManager">
+      <UniqueIdentifier>{a75b4fe6-5964-48d1-aec2-0a109c19f9a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -407,9 +413,12 @@
     </ClCompile>
     <ClCompile Include="..\private\VIBuffer_Anim_Rect.cpp">
       <Filter>04.Components\VIBuffer\ViBuffer_Anim\01.VIBuffer_Ainm_Rect</Filter>
-  </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_CubeShader.cpp">
       <Filter>04.Components\VIBuffer\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FrustumCulling_Manager.cpp">
+      <Filter>09.FrustumCullingManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

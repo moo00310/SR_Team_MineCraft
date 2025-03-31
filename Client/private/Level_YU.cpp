@@ -109,7 +109,7 @@ HRESULT CLevel_YU::Ready_Layer_Steve(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
-	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(10.f, 20.f, 10.f));
+	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(5.f, 20.f, 5.f));
 
 	return S_OK;
 }
@@ -246,12 +246,16 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-		LEVEL_YU, strLayerTag)))
-		return E_FAIL;
+	for (_uint i = 0; i < 5; i++)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+			LEVEL_YU, strLayerTag)))
+			return E_FAIL;
 
-	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
-	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(30.f, 20.f, 20.f));
+		CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
+		static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(10.f + rand() % 30, 15.f, 10.f + rand() % 30));
+
+	}
 
 	return S_OK;
 }

@@ -76,6 +76,11 @@ public:
 	CGameObject* Ray_Cast_MultiGroup_InstancedObjects(const _float3& rayOrigin, const _float3& rayDir, _float fMaxDistanc, const ::vector<_uint>& vGroupIndices, _Out_ _float* pDist = nullptr, _Out_ _float3* pOutCollision_Dir = nullptr, _Out_ CComponent** ppOutCollider = nullptr);
 #pragma endregion
 
+#pragma region FRUSTUM_CULLING_MANAGER
+	_bool   Is_In_Frustum(_float3 vPos, _float fRadius);
+#pragma endregion
+
+
 #pragma region KEY_MANAGER
 	_bool		Key_Pressing(int _Key);
 	_bool		Key_Up(int _Key);		// 누르고 있다가 뗐을 때
@@ -104,16 +109,17 @@ public:
 #pragma endregion
 
 private:
-	class CGraphic_Device*		m_pGraphic_Device = { nullptr };
-	class CLevel_Manager*		m_pLevel_Manager = { nullptr };
-	class CPrototype_Manager*	m_pPrototype_Manager = { nullptr };
-	class CObject_Manager*		m_pObject_Manager = { nullptr };
-	class CRenderer*			m_pRenderer = { nullptr };
-	class CTimer_Manager*		m_pTimer_Manager = { nullptr };
-	class CCollider_Manager*	m_pCollider_Manager = { nullptr };
-	class CKey_Manager*			m_pKey_Manager = { nullptr };
-	//class CSound_Manager*		m_pSound_Manager = { nullptr };
-	class CPoolManager*			m_pPoolManager = { nullptr };
+	class CGraphic_Device*				m_pGraphic_Device = { nullptr };
+	class CLevel_Manager*				m_pLevel_Manager = { nullptr };
+	class CPrototype_Manager*			m_pPrototype_Manager = { nullptr };
+	class CObject_Manager*				m_pObject_Manager = { nullptr };
+	class CRenderer*					m_pRenderer = { nullptr };
+	class CTimer_Manager*				m_pTimer_Manager = { nullptr };
+	class CCollider_Manager*			m_pCollider_Manager = { nullptr };
+	class CFrustumCulling_Manager*		m_pFrustumCulling_Manager = { nullptr };
+	class CKey_Manager*					m_pKey_Manager = { nullptr };
+	//class CSound_Manager*				m_pSound_Manager = { nullptr };
+	class CPoolManager*					m_pPoolManager = { nullptr };
 
 public:
 	void Release_Engine();

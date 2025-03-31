@@ -7,6 +7,7 @@
 #include "Object_Manager.h"
 #include "Prototype_Manager.h"
 #include "Collider_Manager.h"
+#include "FrustumCulling_Manager.h"
 //#include "Sound_Manager.h"
 #include "PoolManager.h"
 
@@ -46,6 +47,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 	if (nullptr == m_pCollider_Manager)
 		return E_FAIL;
 
+	m_pFrustumCulling_Manager = CFrustumCulling_Manager::Create(*ppOut);
+	if (nullptr == m_pFrustumCulling_Manager)
+		return E_FAIL;
+
 	m_pKey_Manager = CKey_Manager::Create();
 	if (nullptr == m_pKey_Manager)
 		return E_FAIL;
@@ -64,17 +69,27 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
+
+
+#pragma region PRIORITY_UPDATE
+	m_pObject_Manager->Priority_Update(fTimeDelta);
+#pragma endregion
+
+#pragma region UPDATE
 	m_pKey_Manager->Update();
 	//m_pSound_Manager->Update();
-
-	m_pObject_Manager->Priority_Update(fTimeDelta);
 	m_pObject_Manager->Update(fTimeDelta);
+	m_pFrustumCulling_Manager->Update();
+#pragma endregion
 
+#pragma region LATE_UPDATE
 	m_pObject_Manager->Late_Update(fTimeDelta);
-
 	m_pLevel_Manager->Update(fTimeDelta);
-
 	m_pCollider_Manager->Reset_ColliderGroup(); // 마지막에 호출하라고함 (그룹에 넣다 뺏다 반복 하는 듯)
+#pragma endregion
+
+
+
 }
 
 HRESULT CGameInstance::Draw()
@@ -273,6 +288,16 @@ CGameObject* CGameInstance::Ray_Cast_MultiGroup_InstancedObjects(const _float3& 
 
 	return m_pCollider_Manager->Ray_Cast_MultiGroup_InstancedObjects(rayOrigin, rayDir, fMaxDistanc, vGroupIndices, pDist, pOutCollision_Dir, ppOutCollider);
 }
+_bool CGameInstance::Is_In_Frustum(_float3 vPos, _float fRadius)
+{
+	if (nullptr == m_pFrustumCulling_Manager)
+	{
+		MSG_BOX("FrustumCulling_Manager is nullptr");
+		return false;
+	}
+
+	return m_pFrustumCulling_Manager->Is_In_Frustum(vPos, fRadius);
+}
 #pragma endregion
 
 #pragma region KEY_MANAGER
@@ -337,6 +362,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLevel_Manager);
 
 	Safe_Release(m_pCollider_Manager);
+
+	Safe_Release(m_pFrustumCulling_Manager);
 
 	Safe_Release(m_pPoolManager);
 

@@ -47,19 +47,27 @@ void CMonster::Update(_float fTimeDelta)
     _float3 vTargetPos{ static_cast<CTransform*>(m_pTargetPawn->Find_Component(TEXT("Com_Transform")))->Get_State(CTransform::STATE_POSITION) };
     _float3 vDiff{ vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_POSITION)};
     _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-    if (fLengthSq > 500.f)
+    if (fLengthSq > 300.f)
     {
 		//타겟과 너무 멀다면-> 비활성화
         return;
     }
 
-    if (m_pBehaviorTree && !isDead)
+    //플레이어 거리방식, 절두체 방식 마찬가지로 다른 청크에 있으면 떨어져버림...서순문제...
+	//땅 콜라이더 활성화 되기전 여기가 먼저 실행되어가지고 문제가 생김
+    //두개다 키면 땅으로 사라지는 게 좀 줄어들긴 한데 거리방식 좀 보기 별론데
+
+    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
     {
-        m_pBehaviorTree->Excute(this, fTimeDelta);
+        if (m_pBehaviorTree && !isDead)
+        {
+            m_pBehaviorTree->Excute(this, fTimeDelta);
+        }
+
+        // 땅 충돌 + 중력 처리
+        m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
     }
 
-    // 땅 충돌 + 중력 처리
-    m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
 void CMonster::Late_Update(_float fTimeDelta)
@@ -104,7 +112,7 @@ void CMonster::Chase_Player(float _fTimeDelta)
     m_pTransformCom->Chase(_float3(vTarget.x, vTarget.y, vTarget.z), _fTimeDelta, 1.0f);
 
     //움직일라 하는데 속도가 안난다 점프함 ㅋㅋ
-    if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 0.1f)
+    if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 1.f)
     {
 		m_pRigidbodyCom->Jump(7.f);
     }
