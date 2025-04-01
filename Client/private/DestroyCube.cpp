@@ -3,12 +3,30 @@
 CDestroyCube::CDestroyCube(LPDIRECT3DDEVICE9 pGraphic_Device) :
 	CCube(pGraphic_Device)
 {
-
+	Safe_AddRef(m_pVIBufferOnlyCom);
 }
 
 CDestroyCube::CDestroyCube(const CDestroyCube& Prototype) :
 	CCube(Prototype)
 {
+}
+
+HRESULT CDestroyCube::PrevRender()
+{
+	// 알파텍스쳐 활성화.
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 1);
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+	return S_OK;
+}
+
+HRESULT CDestroyCube::EndRender()
+{
+	// 알파 텍스쳐 비활성화.
+	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	return S_OK;
 }
 
 HRESULT CDestroyCube::Initialize_Prototype()
@@ -20,6 +38,9 @@ HRESULT CDestroyCube::Initialize(void* pArg)
 {
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
+
+	// 테스트용 블럭 확인 위치.
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, {0.f, 2.f, 0.f});
 
 	return S_OK;
 }
@@ -34,10 +55,42 @@ void CDestroyCube::Update(_float fTimeDelta)
 
 void CDestroyCube::Late_Update(_float fTimeDelta)
 {
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+		return;
 }
 
 HRESULT CDestroyCube::Render()
-{
+{	
+	if (FAILED(m_pTextureCom->Bind_Resource(4)))
+	{
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pTransformCom->Bind_Resource()))
+	{
+		return E_FAIL;
+	}		
+
+	if (FAILED(m_pVIBufferOnlyCom->Bind_Buffers()))
+	{
+		return E_FAIL;
+	}
+
+	if (FAILED(PrevRender()))
+	{
+		return E_FAIL;
+	}
+
+	if (FAILED(m_pVIBufferOnlyCom->Render()))
+	{
+		return E_FAIL;
+	}
+
+	if (FAILED(EndRender()))
+	{
+		return E_FAIL;
+	}
+
 	return S_OK;
 }
 
@@ -90,4 +143,6 @@ CGameObject* CDestroyCube::Clone(void* pArg)
 void CDestroyCube::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pVIBufferOnlyCom);
 }

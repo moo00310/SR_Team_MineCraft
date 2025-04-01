@@ -373,6 +373,11 @@ HRESULT CMainApp::Ready_Component()
 		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_UI.hlsl")))))
 		return E_FAIL;
 
+	/* For 어쩌구 파티클 쉐이더 */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_SHADER_PARTICLE,
+		CShader::Create(m_pGraphic_Device, TEXT("../Bin/ShaderFiles/Shader_Particle.hlsl")))))
+		return E_FAIL;
+
 	return S_OK;
 }
 

@@ -145,6 +145,9 @@ protected:
 
 	// 파티클 트랜스폼.
 	CTransform* m_pTransform = { nullptr };
+
+	// 파티클 쉐이더.
+	CShader* m_pShader = {nullptr};
 	
 private:
 	list<ParticleAttribute> m_ListParticleAttribute;

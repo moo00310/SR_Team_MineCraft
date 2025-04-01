@@ -949,6 +949,7 @@
     <FxCompile Include="..\bin\ShaderFiles\Shader_Cube.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Particle.hlsl">
     <FxCompile Include="..\bin\ShaderFiles\Shader_Rect.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
