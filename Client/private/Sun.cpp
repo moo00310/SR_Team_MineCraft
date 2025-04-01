@@ -3,6 +3,7 @@
 #include "BreakableRect.h"
 #include "Tree.h"
 #include "SkyBox.h"
+#include "Clouds.h"
 
 CSun::CSun(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject(pGraphic_Device)
@@ -56,6 +57,10 @@ void CSun::Priority_Update(_float fTimeDelta)
 
 		if (CSkyBox* _sky = dynamic_cast<CSkyBox*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_SkyBox"), 0))) {
 			_sky->Set_Bright(m_fBright);
+		}
+
+		if (CClouds* _cloud = dynamic_cast<CClouds*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Clouds"), 0))) {
+			_cloud->Set_Bright(m_fBright);
 		}
 
 		if (m_fBright <= 0.1f || m_fBright >= 1.f) {

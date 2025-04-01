@@ -200,6 +200,7 @@
     <ClInclude Include="..\public\VIBuffer_Line.h" />
     <ClInclude Include="..\public\VIBuffer_Rect.h" />
     <ClInclude Include="..\Public\VIBuffer_Rect3DInstance.h" />
+    <ClInclude Include="..\Public\VIBuffer_RectShader.h" />
     <ClInclude Include="..\public\VIBuffer_Rect_Normal.h" />
     <ClInclude Include="..\Public\VIBuffer_Terrain.h" />
   </ItemGroup>
@@ -249,6 +250,7 @@
     <ClCompile Include="..\private\VIBuffer_Line.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Rect3DInstance.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_RectShader.cpp" />
     <ClCompile Include="..\private\VIBuffer_Rect_Normal.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Terrain.cpp" />
   </ItemGroup>

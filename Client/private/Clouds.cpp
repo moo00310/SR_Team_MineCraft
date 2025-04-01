@@ -21,7 +21,7 @@ HRESULT CClouds::Initialize(void* pArg)
 		return E_FAIL;
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(0.f, 100.f, 0.f));
-	m_pTransformCom->Scaling(5000.f, 5000.f, 1.f);
+	m_pTransformCom->Scaling(300.f, 300.f, 1.f);
 	m_pTransformCom->Rotation({ 1.f, 0.f, 0.f }, D3DXToRadian(-90.f));
 
 	return S_OK;
@@ -53,43 +53,16 @@ HRESULT CClouds::Render()
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
 		return E_FAIL;
 
-	SetUp_RenderState();
+	m_pTransformCom->Bind_Resource(m_pShaderCom);
+	m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+	m_pShaderCom->SetFloat("g_Bright", m_fBright + 0.2f);
+	m_pShaderCom->Begin(0);
 
+	/* 정점을 그린다. */
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
-	Release_RenderState();
-
-	return S_OK;
-}
-
-HRESULT CClouds::SetUp_RenderState()
-{
-	//m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, FALSE);
-	//m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
-
-	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
-
-	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 1);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-
-	return S_OK;
-}
-
-HRESULT CClouds::Release_RenderState()
-{
-	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, TRUE);
-
-	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
-	//m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
-	//m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
-
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pShaderCom->End();
 
 	return S_OK;
 }
@@ -102,7 +75,7 @@ HRESULT CClouds::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_VIBuffer */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_RectShader"),
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
 		return E_FAIL;
 
@@ -111,6 +84,11 @@ HRESULT CClouds::Ready_Components()
 
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
+		return E_FAIL;
+
+	/* For.Com_Shader */
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -149,4 +127,5 @@ void CClouds::Free()
 	Safe_Release(m_pTransformCom);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pShaderCom);
 }

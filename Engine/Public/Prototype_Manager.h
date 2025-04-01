@@ -2,6 +2,7 @@
 
 #include "VIBuffer_Terrain.h"
 #include "VIBuffer_Rect.h"
+#include "VIBuffer_RectShader.h"
 #include "VIBuffer_Rect_Normal.h"
 #include "VIBuffer_Cube.h"
 #include "VIBuffer_Anim_Cube.h"
