@@ -72,6 +72,11 @@ HRESULT CRightHand_Object::Render()
     return S_OK;
 }
 
+void CRightHand_Object::ChangeTexture(int Num)
+{
+    m_TextrueNum = Num;
+}
+
 HRESULT CRightHand_Object::Ready_Components()
 {
     // 본 + 애니메이션
