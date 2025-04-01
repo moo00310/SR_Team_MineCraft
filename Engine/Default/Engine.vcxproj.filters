@@ -158,6 +158,9 @@
     <ClInclude Include="..\public\FrustumCulling_Manager.h">
       <Filter>09.FrustumCullingManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_RectShader.h">
+      <Filter>04.Components\VIBuffer\Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -419,6 +422,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FrustumCulling_Manager.cpp">
       <Filter>09.FrustumCullingManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_RectShader.cpp">
+      <Filter>04.Components\VIBuffer\Rect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

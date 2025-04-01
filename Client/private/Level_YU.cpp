@@ -42,6 +42,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Clouds(TEXT("Layer_Clouds"))))
 		return E_FAIL;
 
@@ -52,9 +55,6 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
