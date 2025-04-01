@@ -249,33 +249,38 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
         }
         CloseHandle(hFile);
 
+        struct desc {
+            const wchar_t* _name;
+            vector<D3DXVECTOR3>* _vec;
+            ITEMNAME _itemName;
+        };
 
-         vector<pair<const wchar_t*, vector<D3DXVECTOR3>*>> blockTypes = {
-            {TEXT("Prototype_GameObject_GrassDirt"), &grassDirtVec},
-            {TEXT("Prototype_GameObject_Dirt"), &dirtVec},
-            {TEXT("Prototype_GameObject_Stone"), &stoneVec},
-            {TEXT("Prototype_GameObject_IronOre"), &ironVec},
-            {TEXT("Prototype_GameObject_CoalOre"), &coalVec},
-            {TEXT("Prototype_GameObject_Grass"), &vecGrass},
-            {TEXT("Prototype_GameObject_RedTulip"), &vecTulip}
+         vector<desc> blockTypes = {
+            {TEXT("Prototype_GameObject_GrassDirt"), &grassDirtVec, ITEMNAME_GRASSDIRT},
+            {TEXT("Prototype_GameObject_Dirt"), &dirtVec, ITEMNAME_DIRT},
+            {TEXT("Prototype_GameObject_Stone"), &stoneVec, ITEMNAME_STONE},
+            {TEXT("Prototype_GameObject_IronOre"), &ironVec, ITEMNAME_IRONORE},
+            {TEXT("Prototype_GameObject_CoalOre"), &coalVec,ITEMNAME_COALORE},
+            {TEXT("Prototype_GameObject_Grass"), &vecGrass, ITEMNAME_GRASS},
+            {TEXT("Prototype_GameObject_RedTulip"), &vecTulip, ITEMNAME_REDTULIP}
         };
 
 
         for (size_t i = 0; i < blockTypes.size(); ++i)
         {
-            m_pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i].first, LEVEL_YU, layerName);
+            m_pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i]._name, LEVEL_YU, layerName);
             CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
             if (pCube) {
-                pCube->Set_InstanceBuffer(*(blockTypes[i].second), 1.f);
+                pCube->Set_InstanceBuffer(*(blockTypes[i]._vec), 1.f);
                 pCube->Set_MyChunk(static_cast<int>(i));
-                pCube->Set_BlockPositions(*(blockTypes[i].second));
+                pCube->Set_BlockPositions(*(blockTypes[i]._vec), blockTypes[i]._itemName);
             }
 
             CBreakableRect* pRect = dynamic_cast<CBreakableRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
             if (pRect) {
-                pRect->Set_InstanceBuffer(*(blockTypes[i].second), 1.f);
+                pRect->Set_InstanceBuffer(*(blockTypes[i]._vec), 1.f);
                 pRect->Set_MyChunk(static_cast<int>(i));
-                pRect->Set_BlockPositions(*(blockTypes[i].second));
+                pRect->Set_BlockPositions(*(blockTypes[i]._vec), blockTypes[i]._itemName);
             }
         }
 

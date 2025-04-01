@@ -103,54 +103,46 @@ HRESULT CItemRect::Render()
     return S_OK;
 }
 
-HRESULT CItemRect::Set_ItemTypeAndBindTexture(ITEMTYPE _type)
+HRESULT CItemRect::Set_ItemTypeAndBindTexture(ITEMNAME _name)
 {
-    m_eItemType = _type;
-    switch (m_eItemType)
+    m_eItemName = _name;
+    switch (m_eItemName)
     {
-    case Client::ITEM_DIRT:
-        break;
-    case Client::ITEM_COBBLESTONE:
-        break;
-    case Client::ITEM_RAWIRON:
+    case Client::ITEMNAME_RAWIRON:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_RawIron"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
-    case Client::ITEM_COAL:
+    case Client::ITEMNAME_COAL:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Coal"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
-    case Client::ITEM_WOOD:
-        break;
-    case Client::ITEM_SAPLING:
+    case Client::ITEMNAME_SAPLING:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Sapling"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
-    case Client::ITEM_APPLE:
+    case Client::ITEMNAME_APPLE:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Apple"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
-    case Client::ITEM_SEED:
+    case Client::ITEMNAME_SEED:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Seed"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
-    case Client::ITEM_REDTULIP:
+    case Client::ITEMNAME_REDTULIP:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_RedTulip"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
-        break;
-    case Client::ITEM_END:
         break;
     default:
         break;
