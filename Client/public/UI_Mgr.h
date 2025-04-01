@@ -10,6 +10,7 @@
 #include "PlayerLevel.h"
 #include "Mouse_Item.h"
 #include "Steve.h"
+#include "ItemFont.h"
 
 BEGIN(Client)
 
@@ -38,6 +39,9 @@ public:
 	void PlayerExp_Set();
 	/* 플레이어 레벨업*/
 	void LevelUp();
+	/* 아이템 개수 업데이트 */
+	void Set_ItemCount();
+
 
 public:
 	CItem*							Get_Item(int slotIndex);
@@ -49,6 +53,7 @@ public:
 	list<CMouse_Item*>*				Get_MouseItemlist(void)			{ return &m_MouseItemlist; }
 
 	vector<CItem*>*					Get_vecItemlist(void)			{ return &m_vecItemlist; }
+	vector<CItemFont*>*				Get_vecItemFontlist(void)		{ return &m_vecItemFontlist; }
 
 	_bool							Get_PlayerHP_Shader()			{ return m_bPlayerHP_Shader; }
 	
@@ -77,10 +82,12 @@ private:
 
 	/* Inventory 관련 */
 	vector<CItem*>			m_vecItemlist;
+	vector<CItemFont*>		m_vecItemFontlist;
 	list<CMainInventory*>	m_MainInventorylist;
 	list<CSubInventory*>	m_SubInventorylist;
 	list<CInventory_Back*>	m_InventoryBacklist;
 	list<CMouse_Item*>		m_MouseItemlist;
+
 
 
 private:

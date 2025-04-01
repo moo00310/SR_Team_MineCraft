@@ -14,7 +14,9 @@ void CUI_Mgr::Priority_Update(_float fTimeDelta)
 
 void CUI_Mgr::Update(_float fTimeDelta)
 {
+	/* 퀵슬롯, 메인 인벤토리 동기화 */
 	Synchronize_Slots();
+
 }
 
 void CUI_Mgr::Late_Update(_float fTimeDelta)
@@ -27,13 +29,14 @@ void CUI_Mgr::Synchronize_Slots()
 	if (m_vecItemlist.size() != 0)
 	{
 		/* ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_COBBLESTONE, ITEMNAME_DIRT, ITEMNAME_DANDELION, ITEMNAME_END */
+		/*=====================================*/
+		/* 테스트용 (임시로 아이템 저장해둠 -> 나중에 지움)*/
 		CItem* pItem9 = m_vecItemlist[9];
 		CItem* pItem10 = m_vecItemlist[10];
 		CItem* pItem11 = m_vecItemlist[11];
 		CItem* pItem15 = m_vecItemlist[15];
 		CItem* pItem17 = m_vecItemlist[17];
-		/*=====================================*/
-		/* 테스트용 */
+		
 		if (!pItem9->Get_Test())
 		{
 			pItem9->Set_ItemName(ITEMNAME_COBBLESTONE);
@@ -201,6 +204,17 @@ void CUI_Mgr::LevelUp()
 	}
 
 
+}
+
+void CUI_Mgr::Set_ItemCount()
+{
+	for (int i = 0; i < m_vecItemlist.size(); ++i)
+	{
+		if (m_vecItemlist[i] != nullptr && m_vecItemFontlist[i] != nullptr)
+		{
+
+		}
+	}
 }
 
 void CUI_Mgr::Add_Item(CItem* pItem)
