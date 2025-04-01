@@ -55,25 +55,14 @@ PS_OUT PS_MAIN_SKYBOX(PS_IN In)
 {
     PS_OUT Out;
 
-    // vTexcoord.y를 사용하여 색상 보간
-    //
-    //float3 skyColor = 
     float3 skyColor;
-    if (In.vTexcoord.y > 0.5)
+    float blendFactor = saturate(In.vTexcoord.y);
+    skyColor = lerp(float3(0.0, 0.5, 1.0), float3(1.0, 1.0, 1.0), blendFactor);
+
+    
+    if (In.vNormal.y < -0.5)
     {
-        float blendFactor = saturate(In.vTexcoord.y);
-        skyColor = lerp(float3(0.0, 0.5, 1.0), float3(1.0, 1.0, 1.0), blendFactor);
-    }
-    else
-    {
-        if (In.vTexcoord.x > 0.5)
-        {
-            skyColor = float3(1.0, 1.0, 1.0);
-        }
-        else
-        {
-            skyColor = float3(0.498, 0.749, 1.0);
-        }
+        skyColor = float3(0.498, 0.749, 1.0);
     }
 
     // 밝기 적용
