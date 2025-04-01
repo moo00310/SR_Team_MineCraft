@@ -57,6 +57,9 @@ static const _wstring PROTOTYPE_GAMEOBJECT_DESTROY_CUBE = TEXT("Prototype_Gameob
 // 깨지는 블럭 텍스쳐 태그.
 static const _wstring PROTOTYPE_COMPONENT_TEXTURE_DESTROY = TEXT("Prototype_Component_Texture_Destroy");
 
+// 파티클 쉐이더 태그.
+static const _wstring PROTOTYPE_COMPONENT_SHADER_PARTICLE = TEXT("Prototype_Component_Shader_Particle");
+
 #pragma endregion
 
 #pragma region LAYER_TAG

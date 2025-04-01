@@ -11,6 +11,7 @@ CParticleSystem::CParticleSystem(const CParticleSystem& Prototype) :
 	Safe_AddRef(m_pVB);		
 	Safe_AddRef(m_pParticleTexture);
 	Safe_AddRef(m_pTransform);
+	Safe_AddRef(m_pShader);
 }
 
 HRESULT CParticleSystem::Initialize(void* pArg)
@@ -169,11 +170,23 @@ HRESULT CParticleSystem::Render()
 				return E_FAIL;
 			}
 
+			if (m_pShader != nullptr)
+			{
+				m_pParticleTexture->Bind_Resource(m_pShader, "g_Texture", data.iTextureIndex);
+				m_pTransform->Bind_Resource(m_pShader);
+				m_pShader->Begin(0);				
+			}
+
 			// 지정 범위 점을 그린다.			
 			m_pGraphic_Device->DrawPrimitive(
 				D3DPT_POINTLIST,
 				0,
 				1);
+
+			if (m_pShader != nullptr)
+			{
+				m_pShader->End();
+			}
 
 			// 다음 세그먼트 그리기 위한 락.
 			m_pVB->Lock(dwVpOffset * sizeof(VTXPARTICLE), dwVpBatchSize * sizeof(VTXPARTICLE), (void**)&p, D3DLOCK_NOOVERWRITE);
@@ -190,11 +203,23 @@ HRESULT CParticleSystem::Render()
 			// 잠금 해제.
 			m_pVB->Unlock();
 
+			if (m_pShader != nullptr)
+			{
+				m_pParticleTexture->Bind_Resource(m_pShader, "g_Texture", data.iTextureIndex);
+				m_pTransform->Bind_Resource(m_pShader);
+				m_pShader->Begin(0);
+			}			
+
 			// 지정 범위 점을 그린다.			
 			m_pGraphic_Device->DrawPrimitive(
 				D3DPT_POINTLIST,
 				dwVpOffset,
 				dwVpBatchSize);
+
+			if (m_pShader != nullptr)
+			{
+				m_pShader->End();
+			}			
 
 			// 오프셋 추가.
 			dwVpOffset += dwVpBatchSize;
@@ -360,6 +385,7 @@ void CParticleSystem::Free()
 	Safe_Release(m_pVB);
 	Safe_Release(m_pParticleTexture);
 	Safe_Release(m_pTransform);
+	Safe_Release(m_pShader);
 }
 
 void CParticleSystem::OnPushPool()
