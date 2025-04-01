@@ -1,4 +1,4 @@
-#include "Rigidbody.h"
+﻿#include "Rigidbody.h"
 #include "Transform.h"
 #include "Collider_Cube.h"
 #include "GameInstance.h"
@@ -41,24 +41,21 @@ HRESULT CRigidbody::Initialize(void* pArg)
 	return S_OK;
 }
 
-//#include <algorithm> // std::clamp 사용
-
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
-	// 델타타임이 너무 크면 리턴 (예: 0.2f 이상일 경우)
+	// 델타타임이 너무 크면 리턴
 	const _float MAX_DELTA_TIME = 0.2f;
 	if (fTimeDelta > MAX_DELTA_TIME)
-	{
-		return S_OK;  // 델타타임이 너무 크면 처리하지 않고 리턴
-	}
+		return S_OK;
 
-	/*아 이것도 충돌먼저 체크하고 떨어지는 부분을 뒤로 두고 싶은데 점프가 안되서... 일단 냅둠*/
+	// 1. 예측 위치로 Collider 업데이트
+	_float3 vOriginalPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
+	_float3 vNextPosition = vOriginalPos + m_vVelocity * fTimeDelta; // 예측 위치
 
 	m_isGround = false;
+	m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
 
-	Fall_With_Gravity(fTimeDelta);
-
-	// 충돌 검사
+	// 2. 충돌 검사 (예측 위치 기준)
 	if (m_pCollider)
 	{
 		list<CCollider_Cube::COLLISION_INFO> Collision_Infos;
@@ -66,79 +63,67 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 		if (isHit)
 		{
-			_float fMaxDepth_Y = 0.0f, fMinDepth_Y = 0.0f;
-			_float fMaxDepth_X = 0.0f, fMinDepth_X = 0.0f;
-			_float fMaxDepth_Z = 0.0f, fMinDepth_Z = 0.0f;
-
-			for (CCollider_Cube::COLLISION_INFO& tCollision_Info : Collision_Infos)
+			_float fMinY{ 0 }; // 충돌 깊이를 찾기 위한 초기값
+			_float fMaxY{ 0 };
+			for (const auto& tInfo : Collision_Infos)
 			{
-				_float3 vDepth = tCollision_Info.vDepth;
-				CCollider_Cube::COLLISION_DIR eDir = tCollision_Info.eCollisionDir;
-
-				if (eDir == CCollider_Cube::COLLISION_DIR::DOWN)
+				if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::UP)
 				{
-					m_vVelocity.y = 0.0f;
-					fMaxDepth_Y = max(fMaxDepth_Y, vDepth.y);
-				}
-
-				if (eDir == CCollider_Cube::COLLISION_DIR::UP)
-				{
-					if (isFalling())
-						m_vVelocity.y = 0.0f;
-
+					fMinY = min(fMinY, tInfo.vDepth.y);
 					m_isGround = true;
-					fMinDepth_Y = min(fMinDepth_Y, vDepth.y);
+					m_vVelocity.y = 0.0f; // 속도 초기화
 				}
-				else
+
+				if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::DOWN)
 				{
-					switch (eDir)
-					{
-					case CCollider_Cube::COLLISION_DIR::LEFT:
-						fMaxDepth_X = max(fMaxDepth_X, vDepth.x);
-						break;
-					case CCollider_Cube::COLLISION_DIR::RIGHT:
-						fMinDepth_X = (fMinDepth_X == 0.f) ? vDepth.x : min(fMinDepth_X, vDepth.x);
-						break;
-					case CCollider_Cube::COLLISION_DIR::FRONT:
-						fMaxDepth_Z = max(fMaxDepth_Z, vDepth.z);
-						break;
-					case CCollider_Cube::COLLISION_DIR::BACK:
-						fMinDepth_Z = (fMinDepth_Z == 0.f) ? vDepth.z : min(fMinDepth_Z, vDepth.z);
-						break;
-					default:
-						break;
-					}
+					fMaxY = max(fMaxY, tInfo.vDepth.y);
+					m_vVelocity.y = 0.f; // 속도 초기화
 				}
 			}
 
-			_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
-
-			vPosition.y -= fMinDepth_Y + fMaxDepth_Y;
-			vPosition.x -= fMaxDepth_X + fMinDepth_X;
-			vPosition.z -= fMaxDepth_Z + fMinDepth_Z;
-
-			m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
+			vNextPosition.y -= fMinY;
+			vNextPosition.y -= fMaxY;
 		}
 	}
 
-	if (m_isGround)
+	m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
+
+#pragma region TEST
+	//이놈은 0.f일 때 못내려가게 해주는거 나중에 없앨만 한놈
+	if (vNextPosition.y < 0.f)
 	{
-		if (m_isKnockBack)
-		{
-			m_vVelocity.x = 0.f;
-			m_vVelocity.z = 0.f;
-			m_isKnockBack = false;
-		}
+		m_isGround = true;
+		m_vVelocity.y = 0.0f;
+	}
+#pragma endregion
+
+	// 5. 최종 위치 업데이트
+	m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
+
+	// 7. 넉백 처리
+	if (m_isGround && m_isKnockBack)
+	{
+		m_vVelocity.x = 0.f;
+		m_vVelocity.z = 0.f;
+		m_isKnockBack = false;
 	}
 
 	Compute_Velocity(fTimeDelta);
 
+	printf_s("isGround: %d\n", m_isGround);
+
 	return S_OK;
 }
+
 
 HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist)
 {
 	m_isGround = false;
+
+	_float3 vOriginalPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
+	_float3 vNextPosition = vOriginalPos + m_vVelocity * fTimeDelta; // 예측 위치
+
+	m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
 
 	CGameObject* pGameObject{ nullptr };
 	//레이케스트로 땅 검사
@@ -147,10 +132,11 @@ HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _flo
 	{
 		m_isGround = true;
 		m_vVelocity.y = 0.f;
+		m_pTransform->Set_State(CTransform::STATE_POSITION, vOriginalPos);
 	}
 	else
 	{
-		Fall_With_Gravity(fTimeDelta);
+		m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
 	}
 
 	Compute_Velocity(fTimeDelta);
@@ -162,6 +148,11 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 {
 	m_isGround = false;
 
+	_float3 vOriginalPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
+	_float3 vNextPosition = vOriginalPos + m_vVelocity * fTimeDelta; // 예측 위치
+
+	m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
+
 	CGameObject* pGameObject{ nullptr };
 
 	//레이케스트로 땅 검사
@@ -170,10 +161,11 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 	{
 		m_isGround = true;
 		m_vVelocity.y = 0.f;
+		m_pTransform->Set_State(CTransform::STATE_POSITION, vOriginalPos);
 	}
 	else
 	{
-		Fall_With_Gravity(fTimeDelta);
+		m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
 	}
 
 	Compute_Velocity(fTimeDelta);
@@ -188,7 +180,7 @@ _bool CRigidbody::Jump(_float fJumpForce)
 	{
 		m_vVelocity.y = fJumpForce; // Y축 방향으로 힘 추가
 		m_isGround = false; // 공중에 떠 있는 상태로 변경
-
+		//m_isJump = true;
 		return true;
 	}
 
@@ -206,41 +198,11 @@ void CRigidbody::Knock_back(const _float3& vfroce)
 	}
 }
 
-void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
-{
-	// 1. 중력 가속도 정의
-	const _float3 GRAVITY = { 0.0f, -20.f, 0.0f };
-
-	// 2. 질량이 0이면 중력 적용 안함
-	if (m_fMass == 0.0f) return;
-
-	// 3. 속도 업데이트 (중력 가속도만 적용)
-	m_vVelocity.y += GRAVITY.y * fTimeDelta;
-
-	// 4. 위치 업데이트
-	_float3 vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
-	m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition + m_vVelocity * fTimeDelta);
-
-	// 5. 바닥 충돌 처리
-	vPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
-	if (vPosition.y <= 0.0f)
-	{
-		vPosition.y = 0.0f;
-		m_pTransform->Set_State(CTransform::STATE_POSITION, vPosition);
-
-		if (isFalling())
-			m_vVelocity.y = 0.0f;
-
-		m_isGround = true;
-
-		if (m_isKnockBack)
-		{
-			m_vVelocity.x = 0.f;
-			m_vVelocity.z = 0.f;
-			m_isKnockBack = false;
-		}
-	}
-}
+//void CRigidbody::Fall_With_Gravity(_float fTimeDelta)
+//{
+//	
+//
+//}
 
 
 void CRigidbody::Compute_Velocity(_float fTimeDelta)

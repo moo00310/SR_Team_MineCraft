@@ -68,6 +68,14 @@ public:
 	void Go_Left(_float fTimeDelta);
 	void Go_Right(_float fTimeDelta);
 
+#pragma region COLLIDER_MOVE
+	void Go_Straight(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);
+	void Go_Backward(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);
+	void Go_Left(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);
+	void Go_Right(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);
+	void Chase(class CCollider* pCollider, _uint iGroupIndex, const _float3& vTargetPos, _float fTimeDelta, _float fMinDistance = 0.1f);
+#pragma endregion
+
 	void LookAt(const _float3& vTargetPos);
 	void LookAt_XZ(const _float3& vTargetPos);
 	void Chase(const _float3& vTargetPos, _float fTimeDelta, _float fMinDistance = 0.1f);

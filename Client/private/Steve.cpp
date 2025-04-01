@@ -54,7 +54,8 @@ void CSteve::Priority_Update(_float fTimeDelta)
 
 void CSteve::Update(_float fTimeDelta)
 {
-	
+	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+
 	//1. 키입력에 따른 이동
 	Input_Key(fTimeDelta);
 
@@ -64,11 +65,11 @@ void CSteve::Update(_float fTimeDelta)
 		return;
 	}
 
-	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 }
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
+
 	// 회전 및 애니메이션 상태 변경
 	Turn(fTimeDelta);
 	Update_State(fTimeDelta);
@@ -152,7 +153,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Pressing('W'))
 	{		
-		m_pTransformCom->Go_Straight(fTimeDelta);
+		m_pTransformCom->Go_Straight(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
 
@@ -168,20 +169,20 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
-		m_pTransformCom->Go_Backward(fTimeDelta);
+		m_pTransformCom->Go_Backward(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
 	}
 	if (m_pGameInstance->Key_Pressing('A'))
 	{
-		m_pTransformCom->Go_Left(fTimeDelta);
+		m_pTransformCom->Go_Left(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
 		mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-45));
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
 	}
 	if (m_pGameInstance->Key_Pressing('D'))
 	{
-		m_pTransformCom->Go_Right(fTimeDelta);
+		m_pTransformCom->Go_Right(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
 		mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(45));
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;

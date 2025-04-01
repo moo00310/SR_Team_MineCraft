@@ -2,6 +2,8 @@
 
 #include "Component.h"
 
+#define GRAVITY 20.f
+
 BEGIN(Engine)
 
 class ENGINE_DLL CRigidbody final : public CComponent
@@ -32,7 +34,7 @@ public:
 	void Knock_back(const _float3& vfroce);
 
 private:
-	void	Fall_With_Gravity(_float fTimeDelta);
+	//void	Fall_With_Gravity(_float fTimeDelta);
 	_bool	isFalling() { return m_vVelocity.y < 0.f; };
 	void	Compute_Velocity(_float fTimeDelta);
 private:
@@ -48,6 +50,7 @@ private:
 
 	//점프
 private:
+	//_bool					m_isJump{ false };
 	_bool					m_isGround{ false };
 	_bool					m_isKnockBack = {false};
 	_float					m_fJumpForce{ 6.f };

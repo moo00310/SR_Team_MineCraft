@@ -44,7 +44,7 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
     }
 
     // 직진 이동
-    pTransform->Go_Straight(_fTimeDelta);
+    pTransform->Go_Straight(pMonster->Get_Collider(), COLLISION_BLOCK, _fTimeDelta);
     return STATUS::RUNNING;
 }
 

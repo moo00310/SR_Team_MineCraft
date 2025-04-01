@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Collider.h"
 #include "Transform.h"
@@ -13,6 +13,7 @@ public:
 		class CGameObject* pGameObject{ nullptr };   // 충돌한 오브젝트
 		COLLISION_DIR eCollisionDir{ COLLISION_DIR::NONE };  // 충돌 방향
 		_float3 vDepth{ 0.f, 0.f, 0.f };  // 충돌 깊이
+		_float3 vNormal{ 0.f, 0.f, 0.f }; // 충돌 법선
 	}COLLISION_INFO;
 
 public:
@@ -32,7 +33,8 @@ public:
 	HRESULT Initialize(void* pArg) override;
 	virtual HRESULT Update_Collider()override;
 	virtual HRESULT Render_Collider(_bool isHit)override;
-	_bool Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir) override;
+	_bool Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider::COLLISION_DIR* pOutDir = nullptr, _Out_ _float3* pOutNormal = nullptr) override;
+
 
 public:
 	_float3 GetMin() const;

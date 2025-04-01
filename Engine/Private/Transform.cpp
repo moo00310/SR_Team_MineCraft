@@ -1,5 +1,7 @@
 #include "Transform.h"
 #include "Shader.h"
+#include "GameInstance.h"
+#include "Collider.h"
 
 CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CComponent { pGraphic_Device }
@@ -86,6 +88,11 @@ void CTransform::Go_Straight(_float fTimeDelta)
 
 	vPosition += *D3DXVec3Normalize(&vLook, &vLook) * m_fSpeedPerSec * fTimeDelta;
 
+
+	////콜라이더 정보를 던져주 는함수 따로 만들어야지
+	//////여기서 충돌체크 하고 충돌이면 이동 안하게 하면 됨
+	//m_pGameInstance->Collision_Check_Group_Multi()
+
 	Set_State(STATE_POSITION, vPosition);
 }
 
@@ -118,6 +125,157 @@ void CTransform::Go_Right(_float fTimeDelta)
 
 	Set_State(STATE_POSITION, vPosition);
 }
+
+void CTransform::Go_Straight(CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta)
+{
+	_float3		vOriginPosition = Get_State(STATE_POSITION);
+	_float3		vLook = Get_State(STATE_LOOK);
+
+	_float3		vNextPosition{ vOriginPosition };
+	vNextPosition += *D3DXVec3Normalize(&vLook, &vLook) * m_fSpeedPerSec * fTimeDelta;
+
+	Set_State(STATE_POSITION, vNextPosition);
+
+	list<CCollider_Cube::COLLISION_INFO> CollisionObjects;
+	m_pGameInstance->Collision_Check_Group_Multi(iGroupIndex, CollisionObjects, pCollider, CCollider_Manager::COLLSIION_CUBE);
+
+	for (CCollider_Cube::COLLISION_INFO& tInfo : CollisionObjects)
+	{
+		//이부분 벽에 들어가지느 버그 있음 근데 그냥 리턴하면 벽에 붙음 나중에 보기
+		if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::FRONT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::BACK)
+		{
+			vNextPosition.z = vOriginPosition.z;
+			Set_State(STATE_POSITION, vNextPosition);
+		}
+		else if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::LEFT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::RIGHT)
+		{
+			vNextPosition.x = vOriginPosition.x;
+			Set_State(STATE_POSITION, vNextPosition);
+		}
+	}
+}
+
+void CTransform::Go_Backward(CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta)
+{
+	_float3 vOriginPosition = Get_State(STATE_POSITION);
+	_float3 vLook = Get_State(STATE_LOOK);
+
+	_float3 vNextPosition = vOriginPosition - *D3DXVec3Normalize(&vLook, &vLook) * m_fSpeedPerSec * fTimeDelta;
+	Set_State(STATE_POSITION, vNextPosition);
+
+	list<CCollider_Cube::COLLISION_INFO> CollisionObjects;
+	m_pGameInstance->Collision_Check_Group_Multi(iGroupIndex, CollisionObjects, pCollider, CCollider_Manager::COLLSIION_CUBE);
+
+	for (CCollider_Cube::COLLISION_INFO& tInfo : CollisionObjects)
+	{
+		if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::FRONT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::BACK)
+		{
+			vNextPosition.z = vOriginPosition.z;
+			Set_State(STATE_POSITION, vNextPosition);
+		}
+		else if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::LEFT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::RIGHT)
+		{
+			vNextPosition.x = vOriginPosition.x;
+			Set_State(STATE_POSITION, vNextPosition);
+		}
+	}
+}
+
+void CTransform::Go_Left(CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta)
+{
+	_float3 vOriginPosition = Get_State(STATE_POSITION);
+	_float3 vRight = Get_State(STATE_RIGHT);
+
+	_float3 vNextPosition = vOriginPosition - *D3DXVec3Normalize(&vRight, &vRight) * m_fSpeedPerSec * fTimeDelta;
+	Set_State(STATE_POSITION, vNextPosition);
+
+	list<CCollider_Cube::COLLISION_INFO> CollisionObjects;
+	m_pGameInstance->Collision_Check_Group_Multi(iGroupIndex, CollisionObjects, pCollider, CCollider_Manager::COLLSIION_CUBE);
+
+	for (CCollider_Cube::COLLISION_INFO& tInfo : CollisionObjects)
+	{
+		if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::FRONT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::BACK)
+		{
+			vNextPosition.z = vOriginPosition.z;
+			Set_State(STATE_POSITION, vNextPosition);
+		}
+		else if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::LEFT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::RIGHT)
+		{
+			vNextPosition.x = vOriginPosition.x;
+			Set_State(STATE_POSITION, vNextPosition);
+		}
+	}
+}
+
+void CTransform::Go_Right(CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta)
+{
+	_float3 vOriginPosition = Get_State(STATE_POSITION);
+	_float3 vRight = Get_State(STATE_RIGHT);
+
+	_float3 vNextPosition = vOriginPosition + *D3DXVec3Normalize(&vRight, &vRight) * m_fSpeedPerSec * fTimeDelta;
+	Set_State(STATE_POSITION, vNextPosition);
+
+	list<CCollider_Cube::COLLISION_INFO> CollisionObjects;
+	m_pGameInstance->Collision_Check_Group_Multi(iGroupIndex, CollisionObjects, pCollider, CCollider_Manager::COLLSIION_CUBE);
+
+	for (CCollider_Cube::COLLISION_INFO& tInfo : CollisionObjects)
+	{
+		if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::FRONT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::BACK)
+		{
+			vNextPosition.z = vOriginPosition.z;
+			Set_State(STATE_POSITION, vNextPosition);
+		}
+		else if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::LEFT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::RIGHT)
+		{
+			vNextPosition.x = vOriginPosition.x;
+			Set_State(STATE_POSITION, vNextPosition);
+		}
+	}
+}
+
+void CTransform::Chase(CCollider* pCollider, _uint iGroupIndex, const _float3& vTargetPos, _float fTimeDelta, _float fMinDistance)
+{
+	_float3 vOriginPos{ Get_State(STATE_POSITION) };
+	_float3 vNextPosition{ vOriginPos };
+	_float3 vMoveDir = vTargetPos - vNextPosition;
+
+	if (fMinDistance <= D3DXVec3Length(&vMoveDir))
+	{
+		vNextPosition += *D3DXVec3Normalize(&vMoveDir, &vMoveDir) * m_fSpeedPerSec * fTimeDelta;
+	}
+
+	Set_State(STATE_POSITION, vNextPosition);
+
+	// 충돌 검사
+	list<CCollider_Cube::COLLISION_INFO> CollisionObjects;
+	m_pGameInstance->Collision_Check_Group_Multi(iGroupIndex, CollisionObjects, pCollider, CCollider_Manager::COLLSIION_CUBE);
+
+	for (CCollider_Cube::COLLISION_INFO& tInfo : CollisionObjects)
+	{
+		if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::FRONT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::BACK)
+		{
+			vNextPosition.z = vOriginPos.z;
+		}
+		else if (tInfo.eCollisionDir == CCollider::COLLISION_DIR::LEFT ||
+			tInfo.eCollisionDir == CCollider::COLLISION_DIR::RIGHT)
+		{
+			vNextPosition.x = vOriginPos.x;
+		}
+	}
+
+	Set_State(STATE_POSITION, vNextPosition);
+}
+
+
 
 void CTransform::LookAt(const _float3& vTargetPos)
 {
