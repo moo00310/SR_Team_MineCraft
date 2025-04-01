@@ -17,6 +17,7 @@ public:
 	void SetMatrix(const D3DXMATRIX& mat);
 
 	virtual HRESULT Bind_Buffers() override;
+	virtual HRESULT Render() override;
 private:
 	IDirect3DVertexDeclaration9* pVertexDecl = nullptr;
 public:

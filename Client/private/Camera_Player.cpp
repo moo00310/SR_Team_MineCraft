@@ -102,7 +102,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
 	_float3 vHeadPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
 
-    if (m_pGameInstance->Key_Down(VK_LBUTTON))
+    if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
     {
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
@@ -150,10 +150,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 // 충돌한 콜라이더의 위치를 가져와 해당 블록 삭제
                 _float3 hitPosition{ pCollider_Cube->Get_Offset()};
 
-                if (FAILED(pBreakableCube->Delete_Cube(hitPosition)))
-                {
-                    MSG_BOX("Delete_Cube: Fail");
-                }
+                pBreakableCube->Attacked_Block(hitPosition);
 
                 return;
             }
