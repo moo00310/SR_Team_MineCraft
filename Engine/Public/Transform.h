@@ -69,6 +69,7 @@ public:
 	void Go_Right(_float fTimeDelta);
 
 #pragma region COLLIDER_MOVE
+	void Go_Direction(class CCollider* pCollider, _uint iGroupIndex, const _float3& vDirection, _float fTimeDelta);
 	void Go_Straight(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);
 	void Go_Backward(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);
 	void Go_Left(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);

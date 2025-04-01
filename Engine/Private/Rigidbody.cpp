@@ -110,7 +110,7 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 	Compute_Velocity(fTimeDelta);
 
-	printf_s("isGround: %d\n", m_isGround);
+	//printf_s("isGround: %d\n", m_isGround);
 
 	return S_OK;
 }

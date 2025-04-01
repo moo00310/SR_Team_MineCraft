@@ -150,10 +150,13 @@ void CSteve::Move(_float fTimeDelta)
 	//	);		
 	
 	Matrix mat = *m_pTransformCom->Get_WorldMatrix();
+	//_float3 vDirection{ 0.f, 0.f, 0.f };
 
 	if (m_pGameInstance->Key_Pressing('W'))
 	{		
 		m_pTransformCom->Go_Straight(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
+		//vDirection += _float3(0.f, 0.f, 1.f);
+
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
 
@@ -170,12 +173,14 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
 		m_pTransformCom->Go_Backward(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
+		//vDirection += _float3(0.f, 0.f, -1.f);
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
 	}
 	if (m_pGameInstance->Key_Pressing('A'))
 	{
 		m_pTransformCom->Go_Left(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
+		//vDirection += _float3(-1.f, 0.f, 0.f);
 		mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-45));
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
@@ -183,10 +188,13 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Pressing('D'))
 	{
 		m_pTransformCom->Go_Right(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
+		//vDirection += _float3(1.f, 0.f, 0.f);
 		mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(45));
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 		isMoving = true;
 	}
+
+	//m_pTransformCom->Go_Direction(m_pCollider_CubeCom, COLLISION_BLOCK, vDirection, fTimeDelta);
 
 	m_eCurAnim = isMoving ? WALK : IDLE;
 
