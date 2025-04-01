@@ -37,9 +37,10 @@ private:
 	UIOBJECT_DESC Desc{};
 
 private:
-	int*	m_iSlotIndex = { nullptr };
-	int		m_iSlotIndexNum;
-	int		m_iTextureNum;
+	_int*	m_iSlotIndex = { nullptr };
+	_int	m_iSlotIndexNum;
+	_int	m_iCategory;
+	_int	m_iTextureNum;
 
 public:
 	static CInventory_Back* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

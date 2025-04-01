@@ -187,7 +187,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	/* Prototype_GameObject_InventoryBack */
-	for (int i = 0; i < 18; ++i)
+	for (int i = 0; i < 56; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_InventoryBack"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -195,7 +195,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	}
 
 	/* Prototype_GameObject_Item */
-	for (int i = 0; i < 18; ++i)
+	for (int i = 0; i < 56; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -211,6 +211,14 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_item"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+
+	/* Prototype_GameObject_Mouse_item */
+	for (int i = 0; i < 56; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemFont"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }
