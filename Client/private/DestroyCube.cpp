@@ -1,13 +1,13 @@
 #include "DestroyCube.h"
 
 CDestroyCube::CDestroyCube(LPDIRECT3DDEVICE9 pGraphic_Device) :
-	CBreakableCube(pGraphic_Device)
+	CCube(pGraphic_Device)
 {
 
 }
 
 CDestroyCube::CDestroyCube(const CDestroyCube& Prototype) :
-	CBreakableCube(Prototype)
+	CCube(Prototype)
 {
 }
 
@@ -18,6 +18,9 @@ HRESULT CDestroyCube::Initialize_Prototype()
 
 HRESULT CDestroyCube::Initialize(void* pArg)
 {
+	if (FAILED(Ready_Components()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -40,6 +43,21 @@ HRESULT CDestroyCube::Render()
 
 HRESULT CDestroyCube::Ready_Components()
 {
+	if (FAILED(__super::Add_Component(LEVEL_YU, PROTOTYPE_COMPONENT_VIBUFFER_ONLY,
+	    TEXT("m_pVIBufferOnlyCom"), reinterpret_cast<CComponent**>(&m_pVIBufferOnlyCom))))
+	    return E_FAIL;
+
+	/* For.Com_Texture */	
+	if (FAILED(__super::Add_Component(LEVEL_YU, PROTOTYPE_COMPONENT_TEXTURE_DESTROY,
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+		return E_FAIL;
+
+	/* For.Com_Transform */
+	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

@@ -48,6 +48,7 @@
 //Hyock
 #include "HyockCube.h"
 #include "VIBuffer_Cube_Only.h"
+#include "DestroyCube.h"
 
 //Woo
 #include "MainLogo.h"
@@ -340,6 +341,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
 
+	// 깨지는 블럭 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_COMPONENT_TEXTURE_DESTROY,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/destroy_stage_%d.png"), 10))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Sun */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Sun"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/sun.png"), 1))))
@@ -492,6 +498,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CVIBuffer_Rect3DInstance::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	Engine::CUBE_ONLY cubeOnly{ _float3(1.f, 1.f, 1.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_COMPONENT_VIBUFFER_ONLY,
+		CVIBuffer_Cube_Only::Create(m_pGraphic_Device, cubeOnly))))
+		return E_FAIL;
+
 #pragma region 크리퍼
 
 	/* For.Prototype_GameObject_Creeper */
@@ -556,6 +567,10 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Zombi */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
 		CZombi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_GAMEOBJECT_DESTROY_CUBE,
+		CDestroyCube::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 #pragma endregion
@@ -971,9 +986,9 @@ HRESULT CLoader::Loading_For_WOOPlay()
 HRESULT CLoader::Loading_For_HECKPlay()
 {
 	lstrcpy(m_szLoadingText, TEXT(" 텍스쳐을(를) 로딩중입니다."));
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_Component_Texture_Destroy"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, PROTOTYPE_COMPONENT_TEXTURE_DESTROY,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/destroy_stage_%d.png"), 10))))
-		return E_FAIL;	
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 

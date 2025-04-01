@@ -1,10 +1,11 @@
 #pragma once
-#include "BreakableCube.h"
+#include "Cube.h"
+#include "VIBuffer_Cube_Only.h"
 
 BEGIN(Client)
 
 // 금 가는 효과를 가진 큐브.
-class CDestroyCube : public CBreakableCube
+class CDestroyCube : public CCube
 {
 private:
 	CDestroyCube(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -24,6 +25,9 @@ public:
 	static CDestroyCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
+
+protected:
+	CVIBuffer_Cube_Only* m_pVIBufferOnlyCom = {nullptr};
 };
 
 END

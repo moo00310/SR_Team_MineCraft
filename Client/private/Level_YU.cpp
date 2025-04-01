@@ -71,6 +71,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 	return E_FAIL;
 
+	if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -276,6 +279,15 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 
 	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
 	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 20.f, 20.f));
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_DestroyCube(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, PROTOTYPE_GAMEOBJECT_DESTROY_CUBE,
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }
