@@ -1,5 +1,14 @@
 #include "VIBuffer_Anim_Rect.h"
 
+D3DVERTEXELEMENT9 vertex_rect[] =
+{
+	// 정점 버퍼 (Stream 0)
+	{ 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 }, // vPosition
+	{ 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL, 0 },   // vNormal
+	{ 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 }, // vTexcoord
+	D3DDECL_END()
+};
+
 CVIBuffer_Anim_Rect::CVIBuffer_Anim_Rect(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CVIBuffer_Anim{ pGraphic_Device }
 {
@@ -82,6 +91,13 @@ HRESULT CVIBuffer_Anim_Rect::DrawRect()
 	m_pIB->Unlock();
 #pragma endregion
 
+	HRESULT hr = m_pGraphic_Device->CreateVertexDeclaration(vertex_rect, &pVertexDecl);
+	if (FAILED(hr) || pVertexDecl == nullptr)
+	{
+		MessageBox(0, L"Failed to create Vertex Declaration!", L"Error", MB_OK);
+	}
+
+
 	return S_OK;
 }
 
@@ -114,4 +130,5 @@ CComponent* CVIBuffer_Anim_Rect::Clone(void* pArg)
 void CVIBuffer_Anim_Rect::Free()
 {
 	__super::Free();
+
 }

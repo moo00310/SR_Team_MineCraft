@@ -88,24 +88,7 @@ void CSteve::Late_Update(_float fTimeDelta)
 
 HRESULT CSteve::Render()
 {
-	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
-	if (FAILED(m_pTextureCom->Bind_Resource(0)))
-		return E_FAIL;
-
-	for (int i = 0; i < 6; i++)
-	{
-		if (FAILED(m_pVIBufferComs[i]->Bind_WorldMatrix()))
-			return E_FAIL;
-
-		if (FAILED(m_pVIBufferComs[i]->Bind_Buffers()))
-			return E_FAIL;
-
-		if (FAILED(m_pVIBufferComs[i]->Render()))
-			return E_FAIL;
-	}
-
-	if (FAILED(m_pCollider_CubeCom->Render_Collider(true)))
-		return E_FAIL;
+	__super::Render();
 
 	return S_OK;
 }

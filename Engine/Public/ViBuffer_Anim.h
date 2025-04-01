@@ -4,6 +4,8 @@
 
 BEGIN(Engine)
 
+class CShader;
+
 class ENGINE_DLL CVIBuffer_Anim abstract : public CVIBuffer
 {
 protected:
@@ -14,8 +16,13 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg) override;
-	HRESULT Bind_WorldMatrix();
+	HRESULT Bind_WorldMatrix(CShader* pShader);
 	void SetMatrix(const D3DXMATRIX& mat);
+	virtual HRESULT Render() override;
+	virtual HRESULT Bind_Buffers() override;
+
+protected:
+	IDirect3DVertexDeclaration9* pVertexDecl = nullptr;
 
 public:
 	virtual CComponent* Clone(void* pArg) = 0;

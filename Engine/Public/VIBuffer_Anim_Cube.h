@@ -15,6 +15,7 @@ public:
 	virtual HRESULT Initialize_Prototype(CUBE& tInfo);
 	virtual HRESULT Initialize(void* pArg) override;
 
+
 public:
 	static CVIBuffer_Anim_Cube* Create(LPDIRECT3DDEVICE9 pGraphic_Device, CUBE tInfo);
 	virtual CComponent* Clone(void* pArg) override;

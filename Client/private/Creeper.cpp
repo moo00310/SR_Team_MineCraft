@@ -38,6 +38,8 @@ HRESULT CCreeper::Initialize(void* pArg)
     if (FAILED(Ready_Animation()))
         return E_FAIL;
 
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, {0.f, 0.f, 0.f});
+
     return S_OK;
 }
 
@@ -69,9 +71,13 @@ HRESULT CCreeper::Render()
 {
     __super::Render();
 
-    m_pCollider_CubeCom->Render_Collider(true);
-
     return S_OK;
+}
+
+void CCreeper::OnPushPool()
+{
+    // 푸시 할 때마다 호출
+
 }
 
 HRESULT CCreeper::Ready_Components()
@@ -345,7 +351,8 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
 
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
-        m_isDestroyed = true;
+        //m_isDestroyed = true;
+        SetActive(false);
     }
 }
 

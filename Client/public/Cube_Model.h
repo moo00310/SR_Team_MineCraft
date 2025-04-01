@@ -26,8 +26,10 @@ private:
 	HRESULT Ready_Components();
 
 private:
+	void KeyInput() override;
 	HRESULT Ready_Bone() override;
 	HRESULT Ready_Animation() override;
+	void Update_State(_float fTimeDelta) override;
 	void Motion_Idle(_float fTimeDelta) override;
 	void Motion_Swing(_float fTimeDelta) override;
 	void Motion_Walk(_float fTimeDelta) override;
@@ -36,4 +38,7 @@ public:
 	static CCube_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
+
+	// CRightHand_Object을(를) 통해 상속됨
+
 };

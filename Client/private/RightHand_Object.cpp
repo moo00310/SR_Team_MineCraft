@@ -39,7 +39,7 @@ void CRightHand_Object::Priority_Update(_float fTimeDelta)
 
 void CRightHand_Object::Update(_float fTimeDelta)
 {
-    KeyInput();
+
 }
 
 void CRightHand_Object::Late_Update(_float fTimeDelta)
@@ -51,7 +51,7 @@ void CRightHand_Object::Late_Update(_float fTimeDelta)
 
     if (m_isRender)
     {
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_PRIORITY, this)))
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
             return;
     }
    
@@ -59,15 +59,25 @@ void CRightHand_Object::Late_Update(_float fTimeDelta)
 
 HRESULT CRightHand_Object::Render()
 {
+ 
+    if (FAILED(m_pTextureCom->Bind_Resource(m_TextrueNum)))
+        return E_FAIL;
 
-    if (FAILED(m_pVIBufferComs[0]->Bind_WorldMatrix()))
+    if (FAILED(m_pVIBufferComs[0]->Bind_WorldMatrix(m_pShaderCom)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferComs[0]->Bind_Buffers()))
         return E_FAIL;
 
+    m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", m_TextrueNum);
+    m_pShaderCom->SetFloat("g_Bright", m_bright + 0.2f);
+    m_pShaderCom->Begin(m_RederID);
+
+    /* 정점을 그린다. */
     if (FAILED(m_pVIBufferComs[0]->Render()))
         return E_FAIL;
+
+    m_pShaderCom->End();
 
     return S_OK;
 }
@@ -79,6 +89,11 @@ void CRightHand_Object::ChangeTexture(int Num)
 
 HRESULT CRightHand_Object::Ready_Components()
 {
+    // 쉐이더 컴포넌트
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Cube"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+        return E_FAIL;
+
     // 본 + 애니메이션
     CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
@@ -88,26 +103,6 @@ HRESULT CRightHand_Object::Ready_Components()
     return S_OK;
 }
 
-
-void CRightHand_Object::Update_State(_float fTimeDelta)
-{
-    switch (m_eCurAnim)
-    {
-    case INIT:
-        Motion_Idle(fTimeDelta);
-        break;
-    case SWING:
-        Motion_Swing(fTimeDelta);
-        break;
-    case WALK:
-        Motion_Walk(fTimeDelta);
-        break;
-    case ANIM_END:
-        break;
-    default:
-        break;
-    }
-}
 
 HRESULT CRightHand_Object::Update_Root(_float fTimeDelta)
 {
@@ -121,31 +116,6 @@ HRESULT CRightHand_Object::Update_Root(_float fTimeDelta)
     return S_OK;
 }
 
-void CRightHand_Object::KeyInput()
-{
-    if (m_pGameInstance->Key_Down(VK_LBUTTON))
-    {
-        m_eCurAnim = SWING;
-        isAttack = true;
-        return;
-    }
-
-    if (m_eCurAnim == SWING)
-        return;
-
-    // 애니메이션 바꾸기
-    if (m_pGameInstance->Key_Pressing('W') ||
-        m_pGameInstance->Key_Pressing('A') ||
-        m_pGameInstance->Key_Pressing('S') ||
-        m_pGameInstance->Key_Pressing('D'))
-    {
-        m_eCurAnim = WALK;
-    }
-    else
-    {
-        m_eCurAnim = INIT;
-    }
-}
 
 void CRightHand_Object::Free()
 {
@@ -153,6 +123,7 @@ void CRightHand_Object::Free()
 
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pSkeletalAnimator);
+    Safe_Release(m_pShaderCom);
 
     for (auto& pVIBuffer : m_pVIBufferComs)
         Safe_Release(pVIBuffer);

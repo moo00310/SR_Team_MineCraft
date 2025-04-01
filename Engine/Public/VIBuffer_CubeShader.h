@@ -16,6 +16,7 @@ public:
 	HRESULT Bind_WorldMatrix();
 	void SetMatrix(const D3DXMATRIX& mat);
 
+	virtual HRESULT Render() override;
 	virtual HRESULT Bind_Buffers() override;
 	virtual HRESULT Render() override;
 private:

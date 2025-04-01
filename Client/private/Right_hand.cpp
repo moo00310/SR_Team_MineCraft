@@ -20,14 +20,14 @@ HRESULT CRight_hand::Initialize_Prototype()
 HRESULT CRight_hand::Initialize(void* pArg)
 {
     m_pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
-    m_pArm_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_TPS_Arm")));
-    m_pRect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Rect_Model")));
-    m_pCube_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Cube_Model")));
+    m_pArm_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),0));
+    m_pRect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),1));
+    m_pCube_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),2));
 
  
-    if (m_pArm_Model == nullptr &&
-        m_pRect_Model == nullptr &&
-        m_pSteve == nullptr &&
+    if (m_pArm_Model == nullptr ||
+        m_pRect_Model == nullptr ||
+        m_pSteve == nullptr ||
         m_pCube_Model == nullptr)
         return E_FAIL;
 
@@ -71,6 +71,31 @@ void CRight_hand::Update(_float fTimeDelta)
 
 void CRight_hand::Late_Update(_float fTimeDelta)
 {
+
+    // Arm
+    if (m_pGameInstance->Key_Down('P'))
+    {
+        m_pArm_Model->SetRender(true);
+        m_pRect_Model->SetRender(false);
+        m_pCube_Model->SetRender(false);
+    }
+
+    // Rect
+    if (m_pGameInstance->Key_Down('O'))
+    {
+        m_pArm_Model->SetRender(false);
+        m_pRect_Model->SetRender(true);
+        m_pCube_Model->SetRender(false);
+    }
+
+    // Cube
+    if (m_pGameInstance->Key_Down('I'))
+    {
+        m_pArm_Model->SetRender(false);
+        m_pRect_Model->SetRender(false);
+        m_pCube_Model->SetRender(true);
+    }
+
     if (m_pGameInstance->Key_Down('1'))
         Chage_RightHand(0);
     if (m_pGameInstance->Key_Down('2'))
@@ -98,32 +123,6 @@ void CRight_hand::Chage_RightHand(int slot)
 
     ITEMNAME temp = CUI_Mgr::Get_Instance()->Get_vecItemlist()->at(slot)->Get_ItemName();
     cout << temp << endl;
-
-    // Arm
-    if (m_pGameInstance->Key_Down('P'))
-    {
-        m_pArm_Model->SetRender(true);
-        m_pRect_Model->SetRender(false);
-        m_pCube_Model->SetRender(false);
-    }
-
-    // Rect
-    if (m_pGameInstance->Key_Down('O'))
-    {
-        m_pArm_Model->SetRender(false);
-        m_pRect_Model->SetRender(true);
-        m_pCube_Model->SetRender(false);
-    }
-
-    // Cube
-    if (m_pGameInstance->Key_Down('I'))
-    {
-        m_pArm_Model->SetRender(false);
-        m_pRect_Model->SetRender(false);
-        m_pCube_Model->SetRender(true);
-    }
-
-
 
 }
 

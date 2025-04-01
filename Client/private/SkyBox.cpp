@@ -65,6 +65,9 @@ HRESULT CSkyBox::Render()
 
 	m_pShaderCom->End();
 
+	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, TRUE);
+	m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+
 	return S_OK;
 }
 

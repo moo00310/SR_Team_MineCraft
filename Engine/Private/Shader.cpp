@@ -6,7 +6,7 @@ CShader::CShader(LPDIRECT3DDEVICE9 pGraphic_Device)
 }
 
 CShader::CShader(const CShader& Prototype)
-    : CComponent{ Prototype }
+    : CComponent( Prototype )
     , m_pEffect { Prototype.m_pEffect }
 {
     Safe_AddRef(m_pEffect);

@@ -10,6 +10,37 @@ CPawn::CPawn(const CPawn& Prototype)
 {
 }
 
+HRESULT CPawn::Render()
+{
+	if (FAILED(m_pTextureCom->Bind_Resource(0)))
+		return E_FAIL;
+
+	for (int i = 0; i < 6; i++)
+	{
+		if (FAILED(m_pVIBufferComs[i]->Bind_WorldMatrix(m_pShaderCom)))
+			return E_FAIL;
+
+		if (FAILED(m_pVIBufferComs[i]->Bind_Buffers()))
+			return E_FAIL;
+
+		m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+		m_pShaderCom->SetFloat("g_Bright", m_bright + 0.2f);
+		m_pShaderCom->Begin(1);
+
+		/* 정점을 그린다. */
+		if (FAILED(m_pVIBufferComs[i]->Render()))
+			return E_FAIL;
+
+		m_pShaderCom->End();
+	}
+
+
+	if (FAILED(m_pCollider_CubeCom->Render_Collider(true)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CPawn::Reset_Ainmation()
 {
 	m_skelAnime->Set_ZeroAnimTime();
@@ -21,6 +52,7 @@ void CPawn::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRigidbodyCom);
 	Safe_Release(m_pCollider_CubeCom);
 	Safe_Release(m_pTransformCom);
@@ -43,6 +75,11 @@ HRESULT CPawn::Ready_Components()
 	CSkeletalAnimator::DESC DescSekel = { m_pVIBufferComs };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_SkeletalAnimator"),
 		TEXT("m_pSkeletalAnimatorCom"), reinterpret_cast<CComponent**>(&m_skelAnime), &DescSekel)))
+		return E_FAIL;
+
+	// 쉐이더 컴포넌트
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Cube"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	////콜라이더

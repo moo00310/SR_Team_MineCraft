@@ -36,6 +36,7 @@ private:
 	HRESULT Ready_Animation() override;
 
 private:
+	void Update_State(_float fTimeDelta)override;
 	void Motion_Idle(_float fTimeDelta)override;
 	void Motion_Swing(_float fTimeDelta)override;
 	void Motion_Walk(_float fTimeDelta)override;

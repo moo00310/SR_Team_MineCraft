@@ -17,13 +17,16 @@ HRESULT CRect_Model::Initialize_Prototype()
 
 HRESULT CRect_Model::Initialize(void* pArg)
 {
+	m_RederID = 2;
+	m_TextrueNum = 0;
+
 	__super::Initialize(pArg);
 	return S_OK;
 }
 
 void CRect_Model::Priority_Update(_float fTimeDelta)
 {
-
+	KeyInput();
 }
 
 void CRect_Model::Update(_float fTimeDelta)
@@ -38,12 +41,7 @@ void CRect_Model::Late_Update(_float fTimeDelta)
 
 HRESULT CRect_Model::Render()
 {
-	if (FAILED(m_pTextureCom->Bind_Resource(m_TextrueNum)))
-		return E_FAIL;
-
-	SetUp_RenderState();
 	__super::Render();
-	Release_RenderState();
 
 	return S_OK;
 }
@@ -113,12 +111,69 @@ HRESULT CRect_Model::Ready_Animation()
 	//* WALK 애니메이션 
 	//----------------------------*/
 
+	matrix1 = {};
+	matrix1.Set_State(matrix1.STATE_POSITION, _float3(-0.04f, -0.04f, -0.04f));
+
+	matrix2 = {};
+	matrix2.Set_State(matrix2.STATE_POSITION, _float3(-0.04f, 0.04f, -0.04f));
+
+	KEYFREAME Walk1 = { 0.f, mat };
+	KEYFREAME Walk2 = { 0.4f, matrix1 };
+	KEYFREAME Walk3 = { 0.6f, matrix2 };
+	KEYFREAME Walk4 = { 0.8f, matrix1 };
+	KEYFREAME Walk5 = { 1.f, mat };
+
+	m_pSkeletalAnimator->Add_Animation(WALK, Walk1);
+	m_pSkeletalAnimator->Add_Animation(WALK, Walk2);
+	m_pSkeletalAnimator->Add_Animation(WALK, Walk3);
+	m_pSkeletalAnimator->Add_Animation(WALK, Walk4);
+	m_pSkeletalAnimator->Add_Animation(WALK, Walk5);
+
 
 	///*------------------------
 	//* EAT 애니메이션 
 	//----------------------------*/
 
+
+	matrix1 = {};
+	matrix1.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-70));
+	matrix1.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-45));
+	matrix1.Set_State(mat.STATE_POSITION, _float3(-1.f, 0.5f, -1.2f));;
+
+	KEYFREAME EAT1 = { 0.f, mat };
+	KEYFREAME EAT2 = { 0.4f, matrix1 };
+
+
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT1);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT2);
+
+
 	return S_OK;
+}
+
+
+void CRect_Model::Update_State(_float fTimeDelta)
+{
+	switch (m_eCurAnim)
+	{
+	case INIT:
+		Motion_Idle(fTimeDelta);
+		break;
+	case SWING:
+		Motion_Swing(fTimeDelta);
+		break;
+	case WALK:
+		Motion_Walk(fTimeDelta);
+		break;
+	case EAT:
+		Motion_EAT(fTimeDelta);
+		break;
+	case ANIM_END:
+		break;
+	default:
+		break;
+	}
+
 }
 
 void CRect_Model::Motion_Idle(_float fTimeDelta)
@@ -138,35 +193,58 @@ void CRect_Model::Motion_Swing(_float fTimeDelta)
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
 		m_eCurAnim = INIT;
-		isAttack = false;
 	}
 }
 
 void CRect_Model::Motion_Walk(_float fTimeDelta)
 {
-	/*m_pSkeletalAnimator->Update_Animetion(WALK, fTimeDelta, 0);
+	m_pSkeletalAnimator->Update_Animetion(WALK, fTimeDelta, 0);
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(WALK))
 	{
 		m_eCurAnim = WALK;
-	}*/
+	}
 }
 
-void CRect_Model::SetUp_RenderState()
+void CRect_Model::Motion_EAT(_float fTimeDelta)
 {
-	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pSkeletalAnimator->Update_Animetion(EAT, fTimeDelta, 0);
 
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 254);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
+	if (m_pSkeletalAnimator->is_AnimtionEND(EAT))
+	{
+		m_eCurAnim = INIT;
+	}
 }
 
-void CRect_Model::Release_RenderState()
+void CRect_Model::KeyInput()
 {
-	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		m_eCurAnim = SWING;
+		return;
+	}
 
+	if (m_pGameInstance->Key_Down(VK_RBUTTON))
+	{
+		m_eCurAnim = EAT;
+		return;
+	}
+
+	if (m_eCurAnim == SWING || m_eCurAnim == EAT)
+		return;
+
+	// 애니메이션 바꾸기
+	if (m_pGameInstance->Key_Pressing('W') ||
+		m_pGameInstance->Key_Pressing('A') ||
+		m_pGameInstance->Key_Pressing('S') ||
+		m_pGameInstance->Key_Pressing('D'))
+	{
+		m_eCurAnim = WALK;
+	}
+	else
+	{
+		m_eCurAnim = INIT;
+	}
 }
 
 CRect_Model* CRect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -188,7 +266,6 @@ CGameObject* CRect_Model::Clone(void* pArg)
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Created : CRect_Model");
 		Safe_Release(pInstance);
 	}
 

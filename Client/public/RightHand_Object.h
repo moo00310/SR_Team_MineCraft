@@ -8,6 +8,7 @@ class CTexture;
 class CTransform;
 class CVIBuffer_Anim_Cube;
 class CSkeletalAnimator;
+class CShader;
 END
 
 class CRightHand_Object abstract : public CGameObject
@@ -32,19 +33,21 @@ public:
 
 public:
 	void ChangeTexture(int Num);
+	void Set_Bright(float _bright) { m_bright = _bright; }
 
 protected:
 	CTexture* m_pTextureCom = { nullptr };
 	vector<CVIBuffer_Anim*> m_pVIBufferComs = { nullptr };
 	CSkeletalAnimator* m_pSkeletalAnimator = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
 
 protected:
-	bool isAttack = { false };
+	int m_RederID = {};
 	ANIM m_eCurAnim = { INIT };
+	float m_bright = { 1 };
 
 protected:
 	virtual HRESULT Ready_Components();
-	virtual void Update_State(_float fTimeDelta);
 	virtual HRESULT Update_Root(_float fTimeDelta);
 
 protected:
@@ -52,10 +55,11 @@ protected:
 	virtual HRESULT Ready_Animation() = 0;
 
 protected:
+	virtual void  Update_State(_float fTimeDelta) = 0;
 	virtual void Motion_Idle(_float fTimeDelta) = 0;
 	virtual void Motion_Swing(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
-	virtual void KeyInput();
+	virtual void KeyInput() = 0;
 
 protected:
 	int m_TextrueNum = 0;
