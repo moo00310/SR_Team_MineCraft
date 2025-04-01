@@ -257,18 +257,22 @@ void CBreakableCube::Should_Collide_With_Monster()
     {
         CTransform* pTransformCom{ nullptr };
         pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
-        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.f, 0.f } };
+
+        if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+            continue;
+
+        _float3 vMonsterPos = { pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.f, 0.f } };
 
         //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
         for (CCollider_Cube* pCollider : m_Colliders)
         {
             _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
 
-            _float3 vDiff{ vStevePos - vColliderPos };
+            _float3 vDiff{ vMonsterPos - vColliderPos };
 			//vDiff.y *= 2.f; //y축으로는 충돌 계산 적게 하기위해
             _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
 
-            if (fLengthSq < 5.f)
+            if (fLengthSq < /*0.f*/5.f)
             {
                 //플레이어와 거리가 가까우면
                 m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
