@@ -8,6 +8,7 @@ class CTexture;
 class CTransform;
 class CVIBuffer_Anim;
 class CSkeletalAnimator;
+class CShader;
 END
 
 class CPawn abstract : public CGameObject
@@ -29,7 +30,7 @@ public:
 	virtual void Priority_Update(_float fTimeDelta) = 0;
 	virtual void Update(_float fTimeDelta) = 0;
 	virtual void Late_Update(_float fTimeDelta) = 0;
-	virtual HRESULT Render() = 0;
+	virtual HRESULT Render();
 
 public:
 	CTransform* Get_Transform() { return m_pTransformCom; }
@@ -40,6 +41,8 @@ public:
 	void		Add_Hp(float damage) { m_Hp += damage; }
 	_float		Get_Hp() { return m_Hp; }
 
+	void Set_Bright(float _bright) { m_bright = _bright; }
+
 public:
 	void Reset_Ainmation();
 	virtual void Knock_back(const _float3& vforce) = 0;
@@ -49,10 +52,12 @@ protected:
 	CTransform* m_pTransformCom = { nullptr };
 	CSkeletalAnimator* m_skelAnime = { nullptr };
 	vector<CVIBuffer_Anim*> m_pVIBufferComs;
+	CShader* m_pShaderCom = { nullptr };
 
 protected:
 	CCollider_Cube* m_pCollider_CubeCom = { nullptr };
 	CRigidbody* m_pRigidbodyCom = { nullptr };
+	float m_bright = { 1 };
 
 protected:
 	virtual HRESULT Ready_Components();

@@ -77,20 +77,7 @@ void CMonster::Late_Update(_float fTimeDelta)
 
 HRESULT CMonster::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
-        return E_FAIL;
-
-    for (auto buffer : m_pVIBufferComs)
-    {
-        if (FAILED(buffer->Bind_WorldMatrix()))
-            return E_FAIL;
-
-        if (FAILED(buffer->Bind_Buffers()))
-            return E_FAIL;
-
-        if (FAILED(buffer->Render()))
-            return E_FAIL;
-    }
+    __super::Render();
 
 	return S_OK;
 }

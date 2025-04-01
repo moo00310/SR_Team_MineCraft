@@ -17,6 +17,9 @@ HRESULT CRect_Model::Initialize_Prototype()
 
 HRESULT CRect_Model::Initialize(void* pArg)
 {
+	m_RederID = 2;
+	m_TextrueNum = 0;
+
 	__super::Initialize(pArg);
 	return S_OK;
 }
@@ -38,12 +41,7 @@ void CRect_Model::Late_Update(_float fTimeDelta)
 
 HRESULT CRect_Model::Render()
 {
-	if (FAILED(m_pTextureCom->Bind_Resource(m_TextrueNum)))
-		return E_FAIL;
-
-	SetUp_RenderState();
 	__super::Render();
-	Release_RenderState();
 
 	return S_OK;
 }
@@ -150,23 +148,6 @@ void CRect_Model::Motion_Walk(_float fTimeDelta)
 	{
 		m_eCurAnim = WALK;
 	}*/
-}
-
-void CRect_Model::SetUp_RenderState()
-{
-	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 254);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
-}
-
-void CRect_Model::Release_RenderState()
-{
-	m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-
 }
 
 CRect_Model* CRect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

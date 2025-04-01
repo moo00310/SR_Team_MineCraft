@@ -18,8 +18,10 @@ HRESULT CArm_Steve::Initialize_Prototype()
 
 HRESULT CArm_Steve::Initialize(void* pArg)
 {
-	__super::Initialize(pArg);
+	m_RederID = 1;
+	m_TextrueNum = 0;
 
+	__super::Initialize(pArg);
 	return S_OK;
 }
 
@@ -39,9 +41,6 @@ void CArm_Steve::Late_Update(_float fTimeDelta)
 
 HRESULT CArm_Steve::Render()
 { 
-	if (FAILED(m_pTextureCom->Bind_Resource(0)))
-		return E_FAIL;
-
 	__super::Render();
 
 	return S_OK;
@@ -163,10 +162,6 @@ void CArm_Steve::Motion_Walk(_float fTimeDelta)
 	}
 }
 
-void CArm_Steve::KeyInput()
-{
-	__super::KeyInput();
-}
 
 CArm_Steve* CArm_Steve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {

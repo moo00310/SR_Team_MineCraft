@@ -45,6 +45,7 @@ private:
 	float m_fCurrentDashTime = { 0.f };
 	float m_fCoolTimeDash = { 0.4f };
 
+
 private:
 	void	Input_Key(_float fTimeDelta);
 	void	Move(_float fTimeDelta);

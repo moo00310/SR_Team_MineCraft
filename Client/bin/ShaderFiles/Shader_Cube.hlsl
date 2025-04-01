@@ -38,6 +38,24 @@ VS_OUT VS_MAIN_SKYBOX(VS_IN In)
     return Out;
 }
 
+VS_OUT VS_MAIN_Steve(VS_IN In)
+{
+    VS_OUT Out;
+
+    // 인스턴스 위치를 월드 변환에 추가
+    float4 worldPosition = float4(In.vPosition, 1.0f); // vPosition을 float4로 처리
+    worldPosition = mul(worldPosition, g_WorldMatrix); // 월드 변환
+    worldPosition = mul(worldPosition, g_ViewMatrix); // 뷰 변환
+    worldPosition = mul(worldPosition, g_ProjMatrix); // 프로젝션 변환
+    
+    
+    Out.vPosition = worldPosition;
+    Out.vNormal = In.vNormal;
+    Out.vTexcoord = In.vTexcoord;
+
+    return Out;
+}
+
 
 struct PS_IN
 {
@@ -73,6 +91,18 @@ PS_OUT PS_MAIN_SKYBOX(PS_IN In)
 }
 
 
+PS_OUT PS_MAIN_STEVE(PS_IN In)
+{
+    PS_OUT Out;
+
+    Out.vColor= tex2D(DefaultSampler, In.vTexcoord);
+    Out.vColor.rgb *= g_Bright; // 알파값 1.0 (불투명) 
+    
+   // Out.vColor = float4(1, 0, 0, 1);
+    
+    return Out;
+}
+
 technique DefaultTechnique
 {
     pass SkyBoxPass
@@ -84,4 +114,26 @@ technique DefaultTechnique
         VertexShader = compile vs_3_0 VS_MAIN_SKYBOX();
         PixelShader = compile ps_3_0 PS_MAIN_SKYBOX();
     }
+
+    pass Steve
+    {
+        ZENABLE = true;
+        ZWRITEENABLE = true;
+        LIGHTING = true;
+        VertexShader = compile vs_3_0 VS_MAIN_Steve();
+        PixelShader = compile ps_3_0 PS_MAIN_STEVE();
+    }
+
+    pass Rect
+    {
+        CULLMODE = NONE;
+        ALPHATESTENABLE = true;
+        ALPHAREF = 100;
+        ALPHAFUNC = GREATER;
+
+        VertexShader = compile vs_3_0 VS_MAIN_Steve();
+        PixelShader = compile ps_3_0 PS_MAIN_STEVE();
+
+    }
+
 }

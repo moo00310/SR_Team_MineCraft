@@ -25,8 +25,6 @@ private:
 	void Motion_Idle(_float fTimeDelta) override;
 	void Motion_Swing(_float fTimeDelta) override;
 	void Motion_Walk(_float fTimeDelta) override;
-	void SetUp_RenderState();
-	void Release_RenderState();
 
 public:
 	static CRect_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

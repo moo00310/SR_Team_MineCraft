@@ -32,6 +32,8 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+	virtual void OnPushPool() override;
+
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone() override;

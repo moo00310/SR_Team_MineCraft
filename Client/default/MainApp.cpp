@@ -343,7 +343,7 @@ HRESULT CMainApp::Ready_Component()
 		CVIBuffer_Anim_Rect::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	cube = { _float2(64.f, 32.f), _float3(8.f, 8.f, 8.f), _float2(0.f, 0.f) };
+	cube = { _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Anim_Cube"),
 		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
 		return E_FAIL;

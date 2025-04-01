@@ -17,6 +17,9 @@ HRESULT CCube_Model::Initialize_Prototype()
 
 HRESULT CCube_Model::Initialize(void* pArg)
 {
+    m_RederID = 1;
+    m_TextrueNum = 0;
+
     __super::Initialize(pArg);
     return S_OK;
 }
@@ -38,8 +41,6 @@ void CCube_Model::Late_Update(_float fTimeDelta)
 
 HRESULT CCube_Model::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(m_TextrueNum)))
-        return E_FAIL;
 
     __super::Render();
 
@@ -67,9 +68,9 @@ HRESULT CCube_Model::Ready_Bone()
 {
     // 스윙 프레임 행렬을 벡터에 저장
     Matrix mat = {};
-    mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(70));
-    mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(45));
-    mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
+    mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(90));
+    mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(5));
+    mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.65f, 1.2f));
 
     BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
 
@@ -94,17 +95,13 @@ HRESULT CCube_Model::Ready_Animation()
     matrix1.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(100));
     matrix1.Set_State(matrix1.STATE_POSITION, _float3(-1.5f, 0.2f, -0.3f));
 
-    Matrix matrix2 = { matrix1 };
-    matrix2.Set_State(matrix1.STATE_POSITION, _float3(-1.5f, -1.5f, 2.f));
 
     KEYFREAME Swing1 = { 0.f, mat };
     KEYFREAME Swing2 = { 0.15f, matrix1 };
-    KEYFREAME Swing3 = { 0.4f, matrix2 };
     KEYFREAME Swing4 = { 1.f, mat };
 
     m_pSkeletalAnimator->Add_Animation(SWING, Swing1);
     m_pSkeletalAnimator->Add_Animation(SWING, Swing2);
-    m_pSkeletalAnimator->Add_Animation(SWING, Swing3);
     m_pSkeletalAnimator->Add_Animation(SWING, Swing4);
 
     ///*------------------------

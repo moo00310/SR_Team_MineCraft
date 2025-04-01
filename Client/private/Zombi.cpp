@@ -77,8 +77,6 @@ HRESULT CZombi::Render()
 {
     __super::Render();
 
-    m_pCollider_CubeCom->Render_Collider(true);
-
     return S_OK;
 }
 

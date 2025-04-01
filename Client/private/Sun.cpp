@@ -3,6 +3,8 @@
 #include "BreakableRect.h"
 #include "Tree.h"
 #include "SkyBox.h"
+#include "Pawn.h"
+#include "RightHand_Object.h"
 
 CSun::CSun(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject(pGraphic_Device)
@@ -57,6 +59,39 @@ void CSun::Priority_Update(_float fTimeDelta)
 		if (CSkyBox* _sky = dynamic_cast<CSkyBox*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_SkyBox"), 0))) {
 			_sky->Set_Bright(m_fBright);
 		}
+
+
+		//========================< 프레임 드랍 나면 바꿈 ㅋㅋ >=================================
+		// 모든 좀비 .. 스티브.. 크리퍼 찾아서 바꿔야하네.... t순회 해야하네,,, 좀더 좋은 방법없나,,, ㅌㅋㅋ
+		// 썬을 어디가 저장하고 
+		// 좀비 크리퍼 스티브가 썬 찾는건 어떰? 썬은 1개니까  이니셜 라이즈에서 썬 찾아서 주소 저장하고
+		// 주소 참조해서 밝기 가져온다/?
+		// addRef 가 있잔슴 
+		// 누가 누가 썬 들공 ㅣㅆ어야 하지?
+		// 블럭, 렉트, 스카이 블럭, 구름 , 바닥에 뒹구는 아이템 
+		// 블럭 ,, 이거 혹시 모든 블럭 돌면서 밝기 조젏 ㅋㅋㅋㅋㅋ 바꿔야겠네  ㅇㅎ 아하..
+
+
+		if (CPawn* _pawn = dynamic_cast<CPawn*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0)))
+		{
+			_pawn->Set_Bright(m_fBright);
+		}
+
+		list<CGameObject*> temp = m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster"));
+		for (auto& Moster : temp)
+		{
+			dynamic_cast<CPawn*>(Moster)->Set_Bright(m_fBright);
+		}
+		temp.clear();
+
+		temp = m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_RightHand"));
+		for (auto& RightObj : temp)
+		{
+			if(RightObj->GetActive())
+				dynamic_cast<CRightHand_Object*>(RightObj)->Set_Bright(m_fBright);
+		}
+		temp.clear();
+
 
 		if (m_fBright <= 0.1f || m_fBright >= 1.f) {
 			m_fBrightPercent *= -1;
