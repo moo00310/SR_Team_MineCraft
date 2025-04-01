@@ -26,6 +26,7 @@ HRESULT CCube_Model::Initialize(void* pArg)
 
 void CCube_Model::Priority_Update(_float fTimeDelta)
 {
+    KeyInput();
 }
 
 void CCube_Model::Update(_float fTimeDelta)
@@ -68,8 +69,9 @@ HRESULT CCube_Model::Ready_Bone()
 {
     // 스윙 프레임 행렬을 벡터에 저장
     Matrix mat = {};
-    mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(90));
-    mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(5));
+    mat.Scaling(0.5f, 0.5f, 0.5f);
+    mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(80));
+    mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(45));
     mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.65f, 1.2f));
 
     BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
@@ -92,13 +94,13 @@ HRESULT CCube_Model::Ready_Animation()
     //* Swing 애니메이션 
     //----------------------------*/
     Matrix matrix1 = {};
-    matrix1.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(100));
-    matrix1.Set_State(matrix1.STATE_POSITION, _float3(-1.5f, 0.2f, -0.3f));
+    matrix1.Turn_Radian(_float3(1.f, 1.f, 0.f), D3DXToRadian(110));
+    matrix1.Set_State(matrix1.STATE_POSITION, _float3(-1.f, 1.f, 1.f));
 
 
     KEYFREAME Swing1 = { 0.f, mat };
     KEYFREAME Swing2 = { 0.15f, matrix1 };
-    KEYFREAME Swing4 = { 1.f, mat };
+    KEYFREAME Swing4 = { 0.3f, mat };
 
     m_pSkeletalAnimator->Add_Animation(SWING, Swing1);
     m_pSkeletalAnimator->Add_Animation(SWING, Swing2);
@@ -108,10 +110,24 @@ HRESULT CCube_Model::Ready_Animation()
     //* WALK 애니메이션 
     //----------------------------*/
 
+    matrix1 = {};
+    matrix1.Set_State(matrix1.STATE_POSITION, _float3(-0.04f, -0.04f, -0.04f));
 
-    ///*------------------------
-    //* EAT 애니메이션 
-    //----------------------------*/
+    Matrix matrix2 = {};
+    matrix2.Set_State(matrix2.STATE_POSITION, _float3(-0.04f, 0.04f, -0.04f));
+
+    KEYFREAME keyframe = { 0.f, mat };
+    KEYFREAME keyframe2 = { 0.4f, matrix1 };
+    KEYFREAME keyframe3 = { 0.6f, matrix2 };
+    KEYFREAME keyframe4 = { 0.8f, matrix1 };
+    KEYFREAME keyframe5 = { 1.f, mat };
+
+    m_pSkeletalAnimator->Add_Animation(WALK, keyframe);
+    m_pSkeletalAnimator->Add_Animation(WALK, keyframe2);
+    m_pSkeletalAnimator->Add_Animation(WALK, keyframe3);
+    m_pSkeletalAnimator->Add_Animation(WALK, keyframe4);
+    m_pSkeletalAnimator->Add_Animation(WALK, keyframe5);
+
 
     return S_OK;
 }
@@ -133,13 +149,19 @@ void CCube_Model::Motion_Swing(_float fTimeDelta)
     if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
     {
         m_eCurAnim = INIT;
-        isAttack = false;
     }
 }
 
 void CCube_Model::Motion_Walk(_float fTimeDelta)
 {
+    m_pSkeletalAnimator->Update_Animetion(WALK, fTimeDelta, 0);
+
+    if (m_pSkeletalAnimator->is_AnimtionEND(WALK))
+    {
+        m_eCurAnim = WALK;
+    }
 }
+
 
 CCube_Model* CCube_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
@@ -170,4 +192,51 @@ CGameObject* CCube_Model::Clone(void* pArg)
 void CCube_Model::Free()
 {
     __super::Free();
+}
+
+void CCube_Model::Update_State(_float fTimeDelta)
+{
+    switch (m_eCurAnim)
+    {
+    case INIT:
+        Motion_Idle(fTimeDelta);
+        break;
+    case SWING:
+        Motion_Swing(fTimeDelta);
+        break;
+    case WALK:
+        Motion_Walk(fTimeDelta);
+        break;
+    case EAT:
+    case ANIM_END:
+        break;
+    default:
+        break;
+    }
+}
+
+void CCube_Model::KeyInput()
+{
+    if (m_pGameInstance->Key_Down(VK_LBUTTON) ||
+        m_pGameInstance->Key_Down(VK_RBUTTON))
+    {
+        m_eCurAnim = SWING;
+        return;
+    }
+
+    if (m_eCurAnim == SWING)
+        return;
+
+    // 애니메이션 바꾸기
+    if (m_pGameInstance->Key_Pressing('W') ||
+        m_pGameInstance->Key_Pressing('A') ||
+        m_pGameInstance->Key_Pressing('S') ||
+        m_pGameInstance->Key_Pressing('D'))
+    {
+        m_eCurAnim = WALK;
+    }
+    else
+    {
+        m_eCurAnim = INIT;
+    }
 }

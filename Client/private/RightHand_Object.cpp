@@ -39,7 +39,7 @@ void CRightHand_Object::Priority_Update(_float fTimeDelta)
 
 void CRightHand_Object::Update(_float fTimeDelta)
 {
-    KeyInput();
+
 }
 
 void CRightHand_Object::Late_Update(_float fTimeDelta)
@@ -104,26 +104,6 @@ HRESULT CRightHand_Object::Ready_Components()
 }
 
 
-void CRightHand_Object::Update_State(_float fTimeDelta)
-{
-    switch (m_eCurAnim)
-    {
-    case INIT:
-        Motion_Idle(fTimeDelta);
-        break;
-    case SWING:
-        Motion_Swing(fTimeDelta);
-        break;
-    case WALK:
-        Motion_Walk(fTimeDelta);
-        break;
-    case ANIM_END:
-        break;
-    default:
-        break;
-    }
-}
-
 HRESULT CRightHand_Object::Update_Root(_float fTimeDelta)
 {
     Matrix		ViewMatrix = {};
@@ -136,31 +116,6 @@ HRESULT CRightHand_Object::Update_Root(_float fTimeDelta)
     return S_OK;
 }
 
-void CRightHand_Object::KeyInput()
-{
-    if (m_pGameInstance->Key_Down(VK_LBUTTON))
-    {
-        m_eCurAnim = SWING;
-        isAttack = true;
-        return;
-    }
-
-    if (m_eCurAnim == SWING)
-        return;
-
-    // 애니메이션 바꾸기
-    if (m_pGameInstance->Key_Pressing('W') ||
-        m_pGameInstance->Key_Pressing('A') ||
-        m_pGameInstance->Key_Pressing('S') ||
-        m_pGameInstance->Key_Pressing('D'))
-    {
-        m_eCurAnim = WALK;
-    }
-    else
-    {
-        m_eCurAnim = INIT;
-    }
-}
 
 void CRightHand_Object::Free()
 {

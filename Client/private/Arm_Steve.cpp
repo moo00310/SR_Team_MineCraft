@@ -27,6 +27,7 @@ HRESULT CArm_Steve::Initialize(void* pArg)
 
 void CArm_Steve::Priority_Update(_float fTimeDelta)
 {
+	KeyInput();
 }
 
 void CArm_Steve::Update(_float fTimeDelta)
@@ -131,6 +132,27 @@ HRESULT CArm_Steve::Ready_Animation()
 	return S_OK;
 }
 
+void CArm_Steve::Update_State(_float fTimeDelta)
+{
+	switch (m_eCurAnim)
+	{
+	case INIT:
+		Motion_Idle(fTimeDelta);
+		break;
+	case SWING:
+		Motion_Swing(fTimeDelta);
+		break;
+	case WALK:
+		Motion_Walk(fTimeDelta);
+		break;
+	case EAT:
+	case ANIM_END:
+		break;
+	default:
+		break;
+	}
+}
+
 void CArm_Steve::Motion_Idle(_float fTimeDelta)
 {
 	m_pSkeletalAnimator->Update_Animetion(INIT, fTimeDelta, 0);
@@ -148,7 +170,6 @@ void CArm_Steve::Motion_Swing(_float fTimeDelta)
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
 		m_eCurAnim = INIT;
-		isAttack = false;
 	}
 }
 
@@ -159,6 +180,31 @@ void CArm_Steve::Motion_Walk(_float fTimeDelta)
 	if (m_pSkeletalAnimator->is_AnimtionEND(WALK))
 	{
 		m_eCurAnim = WALK;
+	}
+}
+
+void CArm_Steve::KeyInput()
+{
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		m_eCurAnim = SWING;
+		return;
+	}
+
+	if (m_eCurAnim == SWING)
+		return;
+
+	// 애니메이션 바꾸기
+	if (m_pGameInstance->Key_Pressing('W') ||
+		m_pGameInstance->Key_Pressing('A') ||
+		m_pGameInstance->Key_Pressing('S') ||
+		m_pGameInstance->Key_Pressing('D'))
+	{
+		m_eCurAnim = WALK;
+	}
+	else
+	{
+		m_eCurAnim = INIT;
 	}
 }
 
