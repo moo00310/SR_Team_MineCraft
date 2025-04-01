@@ -18,7 +18,6 @@ public:
 
 	virtual HRESULT Render() override;
 	virtual HRESULT Bind_Buffers() override;
-	virtual HRESULT Render() override;
 private:
 	IDirect3DVertexDeclaration9* pVertexDecl = nullptr;
 public:

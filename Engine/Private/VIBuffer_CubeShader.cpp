@@ -199,13 +199,6 @@ HRESULT CVIBuffer_CubeShader::Bind_WorldMatrix()
     return S_OK;
 }
 
-HRESULT CVIBuffer_CubeShader::Render()
-{
-    m_pGraphic_Device->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_iNumVertices, 0, m_iNumPritimive);
-    m_pGraphic_Device->SetStreamSourceFreq(0, 1);
-    return S_OK;
-}
-
 void CVIBuffer_CubeShader::SetMatrix(const D3DXMATRIX& mat)
 {
     m_WorldMatrix = mat;
