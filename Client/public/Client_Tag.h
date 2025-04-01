@@ -46,11 +46,25 @@ static const _wstring PROTOTYPE_COMPONENT_TEXTURE_DIE = TEXT("Prototype_Componen
 // 사망 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_DIE = TEXT("Prototype_GameObject_Particle_Die");
 
+/////////////////////////////////////////////////////////////////////////////
+
+// VIBuffer_Only 클래스 컴포넌트 태그.
+static const _wstring PROTOTYPE_COMPONENT_VIBUFFER_ONLY = TEXT("Prototype_Component_VIBuffer_Only");
+
+// 깨지는 블럭 원형 객체 태그.
+static const _wstring PROTOTYPE_GAMEOBJECT_DESTROY_CUBE = TEXT("Prototype_Gameobject_Destroy_Cube");
+
+// 깨지는 블럭 텍스쳐 태그.
+static const _wstring PROTOTYPE_COMPONENT_TEXTURE_DESTROY = TEXT("Prototype_Component_Texture_Destroy");
+
 #pragma endregion
 
 #pragma region LAYER_TAG
 
 // 파티클 레이어.
 static const _wstring LAYER_PARTICLE = TEXT("Layer_Particle");
+
+// 깨지는 블럭 레이어.
+static const _wstring LAYER_DESTROY_CUBE = TEXT("Layer_Destroy_Cube");
 
 #pragma endregion
