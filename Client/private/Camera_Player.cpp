@@ -149,8 +149,18 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
                 // 충돌한 콜라이더의 위치를 가져와 해당 블록 삭제
                 _float3 hitPosition{ pCollider_Cube->Get_Offset()};
+                
+                // 깨지는 블럭 활성화.
+                m_DestroyCube->SetActive(true);
 
+                // 깨지는 블럭 위치 이동.
+                m_DestroyCube->GetTransform()->Set_State(CTransform::STATE_POSITION, hitPosition);
+
+                // hp 감소.
                 pBreakableCube->Attacked_Block(hitPosition);
+
+                // 꺠지는 블럭 hp 값 넘겨줌.
+                m_DestroyCube->SetTextureIndex(pBreakableCube->GetHP());
 
                 return;
             }
@@ -173,6 +183,13 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             }
 
         }
+    }
+
+    // 이 조건문이 있는 이유는 깨지는 블럭이 캐는 중에 취소하면
+    // 비활성화 시켜주려고 넣음.
+    if (m_pGameInstance->Key_Up(VK_LBUTTON))
+    {
+        m_DestroyCube->SetActive(false);
     }
 
     if (m_pGameInstance->Key_Down(VK_RBUTTON))
@@ -356,6 +373,13 @@ HRESULT CCamera_Player::Ready_Components()
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;
+
+    // 깨지는 블럭 생성 후.
+    m_DestroyCube = (CDestroyCube*)m_pGameInstance->Add_GameObjectReturnOBJ(LEVEL_YU, PROTOTYPE_GAMEOBJECT_DESTROY_CUBE,
+        LEVEL_YU, LAYER_DESTROY_CUBE);      
+
+    // 비활성화.
+    m_DestroyCube->SetActive(false);
 
 	return S_OK;
 }

@@ -61,7 +61,7 @@ void CDestroyCube::Late_Update(_float fTimeDelta)
 
 HRESULT CDestroyCube::Render()
 {	
-	if (FAILED(m_pTextureCom->Bind_Resource(4)))
+	if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureIndex)))
 	{
 		return E_FAIL;
 	}
@@ -145,4 +145,17 @@ void CDestroyCube::Free()
 	__super::Free();
 
 	Safe_Release(m_pVIBufferOnlyCom);
+}
+
+CTransform* CDestroyCube::GetTransform() const
+{
+	return m_pTransformCom;
+}
+
+void CDestroyCube::SetTextureIndex(int _hp)
+{
+	// 공식 대충 처리함
+	// 나중에 최대 hp 늘어날 수 있을거 생각해서 좀 수정할 것.
+	_hp = (100 - _hp) / 10;
+	m_iTextureIndex = _hp;
 }

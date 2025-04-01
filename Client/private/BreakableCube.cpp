@@ -148,6 +148,11 @@ void CBreakableCube::Attacked_Block(_float3 fPos)
     cout << "Damage" << m_iHp << endl;
 }
 
+int CBreakableCube::GetHP() const
+{
+    return m_iHp;
+}
+
 void CBreakableCube::Set_Bright(float _f)
 {
 

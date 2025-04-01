@@ -1,6 +1,7 @@
 #pragma once
 #include "Client_Defines.h"
 #include "Camera.h"
+#include "DestroyCube.h"
 
 BEGIN(Client)
 
@@ -41,6 +42,7 @@ private:
     _bool               m_isActiveMouse{ false };
     _float              m_fWalkTime{};
     _float              m_fSpringArmLength{ 5.f };
+    CDestroyCube*       m_DestroyCube = { nullptr };
 
 private:
     void    Input_Key(_float fTimeDelta);
