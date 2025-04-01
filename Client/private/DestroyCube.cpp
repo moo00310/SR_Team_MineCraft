@@ -3,7 +3,7 @@
 CDestroyCube::CDestroyCube(LPDIRECT3DDEVICE9 pGraphic_Device) :
 	CCube(pGraphic_Device)
 {
-
+	Safe_AddRef(m_pVIBufferOnlyCom);
 }
 
 CDestroyCube::CDestroyCube(const CDestroyCube& Prototype) :
@@ -90,4 +90,6 @@ CGameObject* CDestroyCube::Clone(void* pArg)
 void CDestroyCube::Free()
 {
 	__super::Free();
+
+	Safe_Release(m_pVIBufferOnlyCom);
 }
