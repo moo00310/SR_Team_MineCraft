@@ -249,6 +249,9 @@ CTransform* CParticleSystem::GetTransform() const
 
 HRESULT CParticleSystem::PrevRender()
 {
+	// 빛 끄기.
+	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	// 포인트 스프라이트 활성화.
 	m_pGraphic_Device->SetRenderState(D3DRS_POINTSPRITEENABLE, true);
 	
@@ -285,6 +288,9 @@ HRESULT CParticleSystem::EndRender()
 
 	// 알파 텍스쳐 비활성화.
 	m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+	// 빛 활성화.
+	m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	return S_OK;
 }
