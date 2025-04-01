@@ -28,7 +28,6 @@ void CRect_Model::Priority_Update(_float fTimeDelta)
 
 void CRect_Model::Update(_float fTimeDelta)
 {
-	KeyInput();
 	__super::Update(fTimeDelta);
 }
 
@@ -39,7 +38,7 @@ void CRect_Model::Late_Update(_float fTimeDelta)
 
 HRESULT CRect_Model::Render()
 {
-	if (FAILED(m_pTextureCom->Bind_Resource(0)))
+	if (FAILED(m_pTextureCom->Bind_Resource(m_TextrueNum)))
 		return E_FAIL;
 
 	SetUp_RenderState();
@@ -52,7 +51,7 @@ HRESULT CRect_Model::Render()
 HRESULT CRect_Model::Ready_Components()
 {
 	/* For.Com_Texture */
-	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Sword"),
+	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Rect_Model"),
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 

@@ -30,6 +30,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+public:
+	void ChangeTexture(int Num);
+
 protected:
 	CTexture* m_pTextureCom = { nullptr };
 	vector<CVIBuffer_Anim*> m_pVIBufferComs = { nullptr };
@@ -53,6 +56,9 @@ protected:
 	virtual void Motion_Swing(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
 	virtual void KeyInput();
+
+protected:
+	int m_TextrueNum = 0;
 
 public:
 	virtual CGameObject* Clone(void* pArg) =0;

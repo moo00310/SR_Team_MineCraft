@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "Arm_Steve.h"
-#include "Rect_Model.h"
+#include "RightHand_Object.h"
 
 class CRight_hand final : public CGameObject
 {
@@ -21,12 +21,15 @@ public:
 
 private:
 	CGameObject* m_pSteve = { nullptr };
-	CGameObject* m_pArm_Model = { nullptr };
-	CGameObject* m_pRect_Model = { nullptr };
-	//CGameObject* m_pCube_Model;
+	CRightHand_Object* m_pArm_Model = { nullptr };
+	CRightHand_Object* m_pRect_Model = { nullptr };
+	CRightHand_Object* m_pCube_Model = { nullptr };
 
 private:
 	bool isTPS = true;
+
+private:
+	void Chage_RightHand(int solt);
 
 public:
 	static CRight_hand* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
