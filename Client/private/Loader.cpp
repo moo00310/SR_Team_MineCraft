@@ -68,6 +68,7 @@
 #include "PlayerExp.h"
 #include "PlayerLevel.h"
 #include "Mouse_Item.h"
+#include "ItemFont.h"
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -481,7 +482,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_PlayerLevel*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_PlayerLevel"),
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Font"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/font/font_%03d.png"), 10))))
 		return E_FAIL;
 	/*================================================================================================*/
@@ -498,7 +499,15 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CVIBuffer_Rect3DInstance::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	Engine::CUBE_ONLY cubeOnly{ _float3(1.f, 1.f, 1.f) };
+
+	// 깨지는 블럭 모델.
+	Engine::CUBE_ONLY cubeOnly{ _float3(1.1f, 1.1f, 1.1f) };
+	/* For.Prototype_Component_VIBuffer_RectShader */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_RectShader"),
+		CVIBuffer_RectShader::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_COMPONENT_VIBUFFER_ONLY,
 		CVIBuffer_Cube_Only::Create(m_pGraphic_Device, cubeOnly))))
 		return E_FAIL;
@@ -652,6 +661,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Mouse_item*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_item"),
 		CMouse_Item::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Mouse_item*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemFont"),
+		CItemFont::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	/*================================================================================================*/
 

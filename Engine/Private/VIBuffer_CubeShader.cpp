@@ -226,6 +226,22 @@ HRESULT CVIBuffer_CubeShader::Bind_Buffers()
     return S_OK;
 }
 
+HRESULT CVIBuffer_CubeShader::Render()
+{
+    HRESULT hr = m_pGraphic_Device->DrawIndexedPrimitive(
+        D3DPT_TRIANGLELIST,  // 삼각형 리스트
+        0,                   // 정점 시작 인덱스
+        0,                   // 최소 정점 인덱스
+        m_iNumVertices,      // 총 정점 개수
+        0,                   // 인덱스 버퍼 오프셋
+        m_iNumPritimive      // 삼각형 개수
+    );
+
+    m_pGraphic_Device->SetStreamSourceFreq(0, 1);
+
+    return S_OK;
+}
+
 
 CVIBuffer_CubeShader* CVIBuffer_CubeShader::Create(LPDIRECT3DDEVICE9 pGraphic_Device, CUBE tInfo)
 {

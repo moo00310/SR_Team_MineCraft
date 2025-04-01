@@ -114,9 +114,9 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 	COLLISION_TYPE eOther_CollisionType
 )
 {
-	
 	_float3 OutDistance = { 0.f, 0.f, 0.f };
-	CCollider::COLLISION_DIR OutDir = CCollider::COLLISION_DIR::NONE;
+	CCollider::COLLISION_DIR OutDir = CCollider::COLLISION_DIR::NONE;    // 기존 충돌 방향 벡터
+	_float3 OutNormal = { 0.f, 0.f, 0.f }; // 새로운 법선 벡터 추가
 
 	CComponent* pMyCollider = pCollider;
 
@@ -125,26 +125,20 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 		if (nullptr == iter)
 			continue;
 
-		if (iter == nullptr)
-			continue;
 		if (iter == pMyCollider)
 			continue;
 
 		switch (eOther_CollisionType)
 		{
 		case CCollider_Manager::COLLSIION_CUBE:
-			/*if (static_cast<CCollider_Cube*>(pCollider)->Get_bColliderActive())
-			{
-				
-			}*/
-
 			if (static_cast<CCollider*>(pMyCollider)->Collision_Check(
-				static_cast<CCollider_Cube*>(iter), &OutDistance, &OutDir))
+				static_cast<CCollider_Cube*>(iter), &OutDistance, &OutDir, &OutNormal))  // 법선 벡터도 반환 받음
 			{
 				CCollider_Cube::COLLISION_INFO tInfo;
 				tInfo.pGameObject = iter->Get_Owner();
-				tInfo.eCollisionDir = OutDir;
+				tInfo.eCollisionDir = OutDir;  // 기존 충돌 방향 사용
 				tInfo.vDepth = OutDistance;
+				tInfo.vNormal = OutNormal;    // 새로운 법선 벡터 추가
 				Collision_Infos.push_back(tInfo);
 			}
 
@@ -157,6 +151,7 @@ _bool CCollider_Manager::Collision_Check_Group_Multi(
 
 	return !Collision_Infos.empty();  // 충돌된 오브젝트가 있다면 true
 }
+
 
 CGameObject* CCollider_Manager::Ray_Cast(const _float3& rayOrigin, const _float3& rayDir, _float maxDistance, _uint eGroup, _Out_ _float* pDist)
 {

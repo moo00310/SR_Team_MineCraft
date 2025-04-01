@@ -5,6 +5,8 @@
 #include "SkyBox.h"
 #include "Pawn.h"
 #include "RightHand_Object.h"
+#include "Clouds.h"
+
 
 CSun::CSun(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject(pGraphic_Device)
@@ -61,15 +63,15 @@ void CSun::Priority_Update(_float fTimeDelta)
 		}
 
 
-		//========================< ÇÁ·¹ÀÓ µå¶ø ³ª¸é ¹Ù²Þ ¤»¤» >=================================
-		// ¸ðµç Á»ºñ .. ½ºÆ¼ºê.. Å©¸®ÆÛ Ã£¾Æ¼­ ¹Ù²ã¾ßÇÏ³×.... t¼øÈ¸ ÇØ¾ßÇÏ³×,,, Á»´õ ÁÁÀº ¹æ¹ý¾ø³ª,,, ¤¼¤»¤»
-		// ½ãÀ» ¾îµð°¡ ÀúÀåÇÏ°í 
-		// Á»ºñ Å©¸®ÆÛ ½ºÆ¼ºê°¡ ½ã Ã£´Â°Ç ¾î¶¶? ½ãÀº 1°³´Ï±î  ÀÌ´Ï¼È ¶óÀÌÁî¿¡¼­ ½ã Ã£¾Æ¼­ ÁÖ¼Ò ÀúÀåÇÏ°í
-		// ÁÖ¼Ò ÂüÁ¶ÇØ¼­ ¹à±â °¡Á®¿Â´Ù/?
-		// addRef °¡ ÀÖÀÜ½¿ 
-		// ´©°¡ ´©°¡ ½ã µé°ø ¤Ó¤¶¾î¾ß ÇÏÁö?
-		// ºí·°, ·ºÆ®, ½ºÄ«ÀÌ ºí·°, ±¸¸§ , ¹Ù´Ú¿¡ µß±¸´Â ¾ÆÀÌÅÛ 
-		// ºí·° ,, ÀÌ°Å È¤½Ã ¸ðµç ºí·° µ¹¸é¼­ ¹à±â Á¶  ¤»¤»¤»¤»¤» ¹Ù²ã¾ß°Ú³×  ¤·¤¾ ¾ÆÇÏ..
+		//========================< í”„ë ˆìž„ ë“œëž ë‚˜ë©´ ë°”ê¿ˆ ã…‹ã…‹ >=================================
+		// ëª¨ë“  ì¢€ë¹„ .. ìŠ¤í‹°ë¸Œ.. í¬ë¦¬í¼ ì°¾ì•„ì„œ ë°”ê¿”ì•¼í•˜ë„¤.... tìˆœíšŒ í•´ì•¼í•˜ë„¤,,, ì¢€ë” ì¢‹ì€ ë°©ë²•ì—†ë‚˜,,, ã…Œã…‹ã…‹
+		// ì¬ì„ ì–´ë””ê°€ ì €ìž¥í•˜ê³  
+		// ì¢€ë¹„ í¬ë¦¬í¼ ìŠ¤í‹°ë¸Œê°€ ì¬ ì°¾ëŠ”ê±´ ì–´ë–°? ì¬ì€ 1ê°œë‹ˆê¹Œ  ì´ë‹ˆì…œ ë¼ì´ì¦ˆì—ì„œ ì¬ ì°¾ì•„ì„œ ì£¼ì†Œ ì €ìž¥í•˜ê³ 
+		// ì£¼ì†Œ ì°¸ì¡°í•´ì„œ ë°ê¸° ê°€ì ¸ì˜¨ë‹¤/?
+		// addRef ê°€ ìžˆìž”ìŠ´ 
+		// ëˆ„ê°€ ëˆ„ê°€ ì¬ ë“¤ê³µ ã…£ã…†ì–´ì•¼ í•˜ì§€?
+		// ë¸”ëŸ­, ë ‰íŠ¸, ìŠ¤ì¹´ì´ ë¸”ëŸ­, êµ¬ë¦„ , ë°”ë‹¥ì— ë’¹êµ¬ëŠ” ì•„ì´í…œ 
+		// ë¸”ëŸ­ ,, ì´ê±° í˜¹ì‹œ ëª¨ë“  ë¸”ëŸ­ ëŒë©´ì„œ ë°ê¸° ì¡°Â ã…‹ã…‹ã…‹ã…‹ã…‹ ë°”ê¿”ì•¼ê² ë„¤  ã…‡ã…Ž ì•„í•˜..
 
 
 		if (CPawn* _pawn = dynamic_cast<CPawn*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0)))
@@ -92,6 +94,9 @@ void CSun::Priority_Update(_float fTimeDelta)
 		}
 		temp.clear();
 
+		if (CClouds* _cloud = dynamic_cast<CClouds*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Clouds"), 0))) {
+			_cloud->Set_Bright(m_fBright);
+		}
 
 		if (m_fBright <= 0.1f || m_fBright >= 1.f) {
 			m_fBrightPercent *= -1;
@@ -135,39 +140,39 @@ HRESULT CSun::Render()
 
 void CSun::Orbit_Around_Earth()
 {
-	// ºä Çà·ÄÀ» °¡Á®¿Í¼­ Ä«¸Þ¶ó À§Ä¡¸¦ ¾Ë¾Æ³½´Ù.
+	// ë·° í–‰ë ¬ì„ ê°€ì ¸ì™€ì„œ ì¹´ë©”ë¼ ìœ„ì¹˜ë¥¼ ì•Œì•„ë‚¸ë‹¤.
 	_float4x4 ViewMatrix{};
 	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
 
-	// View Çà·ÄÀÇ ¿ªÇà·ÄÀ» ±¸ÇÏ¿© ¿ùµå ÁÂÇ¥°è¿¡¼­ Ä«¸Þ¶ó À§Ä¡¸¦ ÃßÃâ
+	// View í–‰ë ¬ì˜ ì—­í–‰ë ¬ì„ êµ¬í•˜ì—¬ ì›”ë“œ ì¢Œí‘œê³„ì—ì„œ ì¹´ë©”ë¼ ìœ„ì¹˜ë¥¼ ì¶”ì¶œ
 	D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
 
-	// Ä«¸Þ¶ó À§Ä¡ (ViewMatrixÀÇ ¸¶Áö¸· Çà)
+	// ì¹´ë©”ë¼ ìœ„ì¹˜ (ViewMatrixì˜ ë§ˆì§€ë§‰ í–‰)
 	_float3 vCamPos{ *reinterpret_cast<_float3*>(&ViewMatrix.m[3][0]) };
 
-	// vOriginPos: È¸ÀüÇÒ ´ë»óÀÇ ÃÊ±â À§Ä¡ (Ä«¸Þ¶ó ±âÁØÀ¸·Î ¾ÕÂÊ z+10 À§Ä¡)
+	// vOriginPos: íšŒì „í•  ëŒ€ìƒì˜ ì´ˆê¸° ìœ„ì¹˜ (ì¹´ë©”ë¼ ê¸°ì¤€ìœ¼ë¡œ ì•žìª½ z+10 ìœ„ì¹˜)
 	_float3 vOriginPos{ 0.f, 0.f, 1.f };
 
-	// ÅÂ¾çÀÇ ÃÊ±â À§Ä¡ (Ä«¸Þ¶ó ¾ÕÂÊÀ¸·Î ÀÏÁ¤ °Å¸®, z+10)
+	// íƒœì–‘ì˜ ì´ˆê¸° ìœ„ì¹˜ (ì¹´ë©”ë¼ ì•žìª½ìœ¼ë¡œ ì¼ì • ê±°ë¦¬, z+10)
 	_float3 vSunPos = vCamPos + vOriginPos;
 
-	// È¸Àü º¯È¯ Àû¿ë (XÃà ±âÁØ È¸Àü)
+	// íšŒì „ ë³€í™˜ ì ìš© (Xì¶• ê¸°ì¤€ íšŒì „)
 	static float fAngle = 0.f;
-	fAngle += 0.01f; // È¸Àü ¼Óµµ Áõ°¡
+	fAngle += 0.01f; // íšŒì „ ì†ë„ ì¦ê°€
 
 	_float4x4 matRotX;
-	D3DXMatrixRotationX(&matRotX, fAngle); // XÃà È¸Àü Çà·Ä »ý¼º
+	D3DXMatrixRotationX(&matRotX, fAngle); // Xì¶• íšŒì „ í–‰ë ¬ ìƒì„±
 
-	// vOriginPos¸¦ ±âÁØÀ¸·Î È¸Àü º¯È¯ Àû¿ë
+	// vOriginPosë¥¼ ê¸°ì¤€ìœ¼ë¡œ íšŒì „ ë³€í™˜ ì ìš©
 	D3DXVec3TransformCoord(&vSunPos, &vOriginPos, &matRotX);
 
-	// È¸ÀüµÈ À§Ä¡¸¦ ´Ù½Ã Ä«¸Þ¶ó À§Ä¡¸¦ ±âÁØÀ¸·Î º¯È¯
+	// íšŒì „ëœ ìœ„ì¹˜ë¥¼ ë‹¤ì‹œ ì¹´ë©”ë¼ ìœ„ì¹˜ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ë³€í™˜
 	vSunPos += vCamPos;
 
-	// ÅÂ¾ç À§Ä¡ ¼³Á¤
+	// íƒœì–‘ ìœ„ì¹˜ ì„¤ì •
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vSunPos);
 
-	// ÅÂ¾çÀÌ Ç×»ó Ä«¸Þ¶ó¸¦ ¹Ù¶óº¸µµ·Ï ¼³Á¤ (Billboard È¿°ú)
+	// íƒœì–‘ì´ í•­ìƒ ì¹´ë©”ë¼ë¥¼ ë°”ë¼ë³´ë„ë¡ ì„¤ì • (Billboard íš¨ê³¼)
 	m_pTransformCom->LookAt(vCamPos);
 }
 

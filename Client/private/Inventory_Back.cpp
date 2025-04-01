@@ -20,24 +20,48 @@ HRESULT CInventory_Back::Initialize(void* pArg)
 	m_iSlotIndex = (int*)pArg;
 	m_iSlotIndexNum = *m_iSlotIndex;
 
-	/* ÇÏ´Ü Äü½½·Ô */
-	if (m_iSlotIndexNum < 9)
-	{
-		m_iTextureNum = 0;
-		Desc.fSizeX = 60.f;
-		Desc.fSizeY = 75.f;
-		Desc.fX = 360.f + (m_iSlotIndexNum) * 70.f;
-		Desc.fY = 672.f;
-	}
-	/* ¸ÞÀÎ ÀÎº¥Åä¸® */
-	else
-	{
-		m_iTextureNum = 1;
-		Desc.fSizeX = 46.f;
-		Desc.fSizeY = 49.f;
-		Desc.fX = 428.f + (m_iSlotIndexNum - 9) * 53.f;
-		Desc.fY = 510.f;
-	}
+	static UIOBJECT_DESC  slotTable[] = {
+	{0, 60.f, 75.f, 360.f, 672.f},  // 0~8 (Äü½½·Ô)
+	{1, 53.f, 52.5f, 407.f, 508.f}, // 9~17
+	{1, 53.f, 52.5f, 407.f, 440.f}, // 18~26
+	{1, 53.f, 52.5f, 407.f, 384.f}, // 27~35
+	{1, 53.f, 52.5f, 407.f, 327.f}, // 36~44
+	{1, 53.f, 52.5f, 407.f, 90.f},  // 45~48
+	{1, 159.f, 223.f, 518.f, 173.f}, // 49
+	{1, 53.f, 52.5f, 630.f, 258.f},  // 50
+	{1, 53.f, 52.5f, 697.f, 121.f},  // 51~52
+	{1, 53.f, 52.5f, 697.f, 177.f},  // 53~54
+	{1, 53.f, 52.5f, 878.f, 152.f}   // ±âÅ¸
+	};
+
+	if (m_iSlotIndexNum < 9) m_iCategory = 0;
+	else if (m_iSlotIndexNum < 18) m_iCategory = 1;
+	else if (m_iSlotIndexNum < 27) m_iCategory = 2;
+	else if (m_iSlotIndexNum < 36) m_iCategory = 3;
+	else if (m_iSlotIndexNum < 45) m_iCategory = 4;
+	else if (m_iSlotIndexNum < 49) m_iCategory = 5;
+	else if (m_iSlotIndexNum == 49) m_iCategory = 6;
+	else if (m_iSlotIndexNum == 50) m_iCategory = 7;
+	else if (m_iSlotIndexNum < 53) m_iCategory = 8;
+	else if (m_iSlotIndexNum < 55) m_iCategory = 9;
+	else m_iCategory = 10;
+
+	m_iTextureNum = slotTable[m_iCategory].iTextureNum;
+	Desc.fSizeX = slotTable[m_iCategory].fSizeX;
+	Desc.fSizeY = slotTable[m_iCategory].fSizeY;
+	Desc.fX = slotTable[m_iCategory].fX;
+	Desc.fY = slotTable[m_iCategory].fY;
+
+	if (m_iCategory == 0)
+		Desc.fX += m_iSlotIndexNum * 70.f;
+	else if (m_iCategory >= 1 && m_iCategory <= 4)
+		Desc.fX += (m_iSlotIndexNum - (m_iCategory * 9)) * 58.f;
+	else if (m_iCategory == 5)
+		Desc.fY = 90.f + (m_iSlotIndexNum - 45) * 56.f;
+	else if (m_iCategory == 8)
+		Desc.fX += (m_iSlotIndexNum - 51) * 58.f;
+	else if (m_iCategory == 9)
+		Desc.fX += (m_iSlotIndexNum - 53) * 58.f;
 
 	if (FAILED(__super::Initialize(&Desc)))
 		return E_FAIL;
@@ -67,21 +91,21 @@ void CInventory_Back::Late_Update(_float fTimeDelta)
 
 HRESULT CInventory_Back::Render()
 {
-	/*if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
-		return E_FAIL;
+	//if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
+	//	return E_FAIL;
 
-	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-		return E_FAIL;
+	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+	//	return E_FAIL;
 
-	if (FAILED(m_pTransformCom->Bind_Resource()))
-		return E_FAIL;
+	//if (FAILED(m_pTransformCom->Bind_Resource()))
+	//	return E_FAIL;
 
-	__super::Begin();
+	//__super::Begin();
 
-	if (FAILED(m_pVIBufferCom->Render()))
-		return E_FAIL;
+	//if (FAILED(m_pVIBufferCom->Render()))
+	//	return E_FAIL;
 
-	__super::End();*/
+	//__super::End();
 
 	return S_OK;
 }

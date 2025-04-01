@@ -53,6 +53,10 @@ public:
 
 	//충돌된 큐브 삭제
 	virtual HRESULT Delete_Cube(_float3 fPos);
+
+	// 큐브 Hp 줄이기
+	virtual void Attacked_Block(_float3 fPos);
+
 	//블럭 밝기 조절
 	void Set_Bright(float _f);
 
@@ -73,6 +77,10 @@ protected:
 	vector<CCollider_Cube*> m_Colliders;
 
 	ITEMNAME m_itemName;
+
+	int m_iHp = 100;
+	_float3 m_attackedBlockPos;
+	int m_resetHpFrame = 0;
 
 private:
 	//아래 두 함수를 나중에 Pawn으로 합쳐도 될지는 모르겠음, 일단 나눔

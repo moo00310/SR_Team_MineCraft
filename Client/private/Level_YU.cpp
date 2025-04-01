@@ -15,31 +15,34 @@ CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_YU::Initialize()
 {
-#ifdef _DEBUG
-
-	if (::AllocConsole() == TRUE)
-	{
-		FILE* nfp[3];
-		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
-		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
-		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
-		std::ios::sync_with_stdio();
-	}
-
-	// :one: 콘솔 핸들 가져오기
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	// :two: 콘솔 버퍼 크기 먼저 조정
-	COORD bufferSize = { 20, 20 }; // 가로 80, 세로 20
-	SetConsoleScreenBufferSize(hConsole, bufferSize);
-
-	// :three: 콘솔 창 크기 조정
-	SMALL_RECT windowSize = { 0, 0, 80 - 1, 20 - 1 };
-	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
-
-#endif // _DEBUG
+//#ifdef _DEBUG
+//
+//	if (::AllocConsole() == TRUE)
+//	{
+//		FILE* nfp[3];
+//		freopen_s(nfp + 0, "CONOUT$", "rb", stdin);
+//		freopen_s(nfp + 1, "CONOUT$", "wb", stdout);
+//		freopen_s(nfp + 2, "CONOUT$", "wb", stderr);
+//		std::ios::sync_with_stdio();
+//	}
+//
+//	// :one: 콘솔 핸들 가져오기
+//	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+//
+//	// :two: 콘솔 버퍼 크기 먼저 조정
+//	COORD bufferSize = { 20, 20 }; // 가로 80, 세로 20
+//	SetConsoleScreenBufferSize(hConsole, bufferSize);
+//
+//	// :three: 콘솔 창 크기 조정
+//	SMALL_RECT windowSize = { 0, 0, 80 - 1, 20 - 1 };
+//	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
+//
+//#endif // _DEBUG
 
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Clouds(TEXT("Layer_Clouds"))))
@@ -52,9 +55,6 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
@@ -187,7 +187,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	/* Prototype_GameObject_InventoryBack */
-	for (int i = 0; i < 18; ++i)
+	for (int i = 0; i < 56; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_InventoryBack"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -195,7 +195,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	}
 
 	/* Prototype_GameObject_Item */
-	for (int i = 0; i < 18; ++i)
+	for (int i = 0; i < 56; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -211,6 +211,14 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_item"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+
+	/* Prototype_GameObject_Mouse_item */
+	for (int i = 0; i < 56; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemFont"),
+			LEVEL_YU, strLayerTag, (int*)&i)))
+			return E_FAIL;
+	}
 
 	return S_OK;
 }

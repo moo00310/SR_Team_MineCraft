@@ -26,11 +26,14 @@ public:
 	virtual HRESULT Render()override;
 
 public:
+	HRESULT SetUp_RenderState();
+	HRESULT Reset_RenderState();
+
+public:
 	ITEMNAME	Get_ItemName() { return m_ItemName; }
 	ITEMID		Get_ItemID() { return m_ItemID; }
 	_int		Get_SlotIndex() { return m_iSlotIndexNum; }
 	_int		Get_ItemCount() { return m_iItemCount; }
-
 
 	_bool		Get_Test() { return m_bTest; }
 
@@ -54,10 +57,12 @@ private:
 
 private:
 	_int*		m_iSlotIndex = { nullptr };
-	_int		m_iSlotIndexNum;
+	_int		m_iSlotIndexNum = {0};
+	_int		m_iCategory = {0};
 	_int		m_iItemCount = { 0 };
 	_bool		m_bCheck = {true};
 	_bool		m_bTest = { false };
+
 
 public:
 	static CItem* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

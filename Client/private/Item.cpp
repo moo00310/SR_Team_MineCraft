@@ -21,22 +21,50 @@ HRESULT CItem::Initialize_Prototype()
 HRESULT CItem::Initialize(void* pArg)
 {
     m_iSlotIndex = (int*)pArg;
-	m_iSlotIndexNum = *m_iSlotIndex;
-    Desc.fSizeX = 42.f;
-    Desc.fSizeY = 42.f;
+    m_iSlotIndexNum = *m_iSlotIndex;
 
-    /* 하단 퀵슬롯 인벤토리 */
-	if (m_iSlotIndexNum < 9)
-	{
-        Desc.fX = 360.f + (m_iSlotIndexNum) * 70.f;
-        Desc.fY = 672.f;
-	}
-    /* 메인 인벤토리 */
-	else
-	{
-        Desc.fX = 407.f + (m_iSlotIndexNum - 9) * 58.f;
-        Desc.fY = 510.f;
-	}
+    static UIOBJECT_DESC slotTable[] = {
+        {0, 42.f, 42.f, 360.f, 672.f},  // 0~8 (퀵슬롯)
+        {0, 42.f, 42.f, 408.f, 510.f},  // 9~17
+        {0, 42.f, 42.f, 408.f, 442.f},  // 18~26
+        {0, 42.f, 42.f, 408.f, 386.f},  // 27~35
+        {0, 42.f, 42.f, 408.f, 329.f},  // 36~44
+        {0, 42.f, 42.f, 407.f, 90.f},   // 45~48
+        {0, 159.f, 223.f, 518.f, 173.f},// 49 (특수 슬롯)
+        {0, 42.f, 42.f, 630.f, 258.f},  // 50
+        {0, 42.f, 42.f, 697.f, 121.f},  // 51~52
+        {0, 42.f, 42.f, 697.f, 177.f},  // 53~54
+        {0, 42.f, 42.f, 878.f, 152.f}   // 55~
+    };
+
+    if (m_iSlotIndexNum < 9) m_iCategory = 0;
+    else if (m_iSlotIndexNum < 18) m_iCategory = 1;
+    else if (m_iSlotIndexNum < 27) m_iCategory = 2;
+    else if (m_iSlotIndexNum < 36) m_iCategory = 3;
+    else if (m_iSlotIndexNum < 45) m_iCategory = 4;
+    else if (m_iSlotIndexNum < 49) m_iCategory = 5;
+    else if (m_iSlotIndexNum == 49) m_iCategory = 6;
+    else if (m_iSlotIndexNum == 50) m_iCategory = 7;
+    else if (m_iSlotIndexNum < 53) m_iCategory = 8;
+    else if (m_iSlotIndexNum < 55) m_iCategory = 9;
+    else m_iCategory = 10;
+
+    // 공통 속성 할당
+    Desc.fSizeX = slotTable[m_iCategory].fSizeX;
+    Desc.fSizeY = slotTable[m_iCategory].fSizeY;
+    Desc.fX = slotTable[m_iCategory].fX;
+    Desc.fY = slotTable[m_iCategory].fY;
+
+    // 위치 보정
+    if (m_iCategory == 0)
+        Desc.fX += m_iSlotIndexNum * 70.f;
+    else if (m_iCategory >= 1 && m_iCategory <= 4)
+        Desc.fX += (m_iSlotIndexNum - (m_iCategory * 9)) * 58.f;
+    else if (m_iCategory == 5)
+        Desc.fY += (m_iSlotIndexNum - 45) * 56.f;
+    else if (m_iCategory == 8 || m_iCategory == 9)
+        Desc.fX += (m_iSlotIndexNum - (m_iCategory == 8 ? 51 : 53)) * 58.f;
+
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -192,14 +220,32 @@ HRESULT CItem::Render()
             return E_FAIL;
 
         __super::Begin();
+        SetUp_RenderState();
 
         if (FAILED(m_pVIBufferCom->Render()))
             return E_FAIL;
 
         __super::End();
+        Reset_RenderState();
     }
 
 	return S_OK;
+}
+
+HRESULT CItem::SetUp_RenderState()
+{
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 190);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+    return S_OK;
+}
+
+HRESULT CItem::Reset_RenderState()
+{
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+
+    return S_OK;
 }
 
 HRESULT CItem::Ready_Components()

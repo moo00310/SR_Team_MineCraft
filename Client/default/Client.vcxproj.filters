@@ -277,6 +277,9 @@
     <Filter Include="02.GameObjects\06.Right_Hand\RIght_hand_Object">
       <UniqueIdentifier>{42dd935a-5469-468e-b5db-7bfcae7026e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\04.Inventory\05.Item\00.ItemFont">
+      <UniqueIdentifier>{54d27d30-5b59-4f22-8244-a05800c45db9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -611,6 +614,9 @@
     <ClInclude Include="..\public\RightHand_Object.h">
       <Filter>02.GameObjects\06.Right_Hand\RIght_hand_Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ItemFont.h">
+      <Filter>03.UI\04.Inventory\05.Item\00.ItemFont</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -932,6 +938,9 @@
     <ClCompile Include="..\private\RightHand_Object.cpp">
       <Filter>02.GameObjects\06.Right_Hand\RIght_hand_Object</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\ItemFont.cpp">
+      <Filter>03.UI\04.Inventory\05.Item\00.ItemFont</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -947,6 +956,10 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Cube.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Particle.hlsl">
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Rect.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

@@ -5,10 +5,10 @@
 
 BEGIN(Engine)
 
-class CCollider abstract : public CComponent
+class ENGINE_DLL CCollider abstract : public CComponent
 {
 public:
-    enum class COLLISION_DIR { NONE, LEFT, RIGHT, UP, DOWN, FRONT, BACK };
+    enum class COLLISION_DIR { NONE, LEFT, RIGHT, UP, DOWN, BACK, FRONT };
 
 protected:
 	typedef struct tagColliderDesc
@@ -29,8 +29,7 @@ public:
 	virtual HRESULT Update_Collider();
 	virtual HRESULT Render_Collider(_bool isHit);
 
-	virtual _bool Collision_Check(class CCollider_Cube* pTarget, _float3* pOutDepth, COLLISION_DIR* pOutDir) = 0;
-
+	virtual _bool Collision_Check(class CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider::COLLISION_DIR* pOutDir = nullptr, _Out_ _float3* pOutNormal = nullptr) = 0;
 	class CGameObject* Get_Owner() { return m_pOwner; }
 
 protected:

@@ -198,6 +198,7 @@
     <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Inventory_Back.h" />
     <ClInclude Include="..\public\ISubject.h" />
+    <ClInclude Include="..\public\ItemFont.h" />
     <ClInclude Include="..\public\ItemRect.h" />
     <ClInclude Include="..\public\IObserver.h" />
     <ClInclude Include="..\public\Mouse.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="..\private\HyockCube.cpp" />
     <ClCompile Include="..\private\Inventory_Back.cpp" />
     <ClCompile Include="..\private\ISubject.cpp" />
+    <ClCompile Include="..\private\ItemFont.cpp" />
     <ClCompile Include="..\private\ItemRect.cpp" />
     <ClCompile Include="..\private\IObserver.cpp" />
     <ClCompile Include="..\private\Mouse.cpp" />
@@ -382,6 +384,8 @@
   <ItemGroup>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Cube.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_CubeInstance.hlsl" />
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Particle.hlsl" />
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Rect.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_Rect3DInstance.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_UI.hlsl" />
   </ItemGroup>

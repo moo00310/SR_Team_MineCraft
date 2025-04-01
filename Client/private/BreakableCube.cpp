@@ -1,6 +1,7 @@
 ﻿#include "BreakableCube.h"
 #include "MCTerrain.h"
 #include "GameInstance.h"
+#include <iostream>
 
 CBreakableCube::CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
@@ -25,6 +26,21 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
+    if (m_iHp < 100) {
+
+        m_resetHpFrame++;
+        if (m_resetHpFrame > 10) {
+            m_resetHpFrame = 0;
+            m_iHp = 100;
+            cout << "Reset Hp" << m_iHp << endl;
+        }
+    }
+
+    if (m_iHp <= 0) {
+        Delete_Cube(m_attackedBlockPos);
+        m_iHp = 100;
+    }
+
     if (m_vecPositions.size() == 0) {
         Destroy();
     }
@@ -118,6 +134,18 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
     //여기다가 구현해놔야지 나중에
     //크리에이트 큐브 처럼
     return E_NOTIMPL;
+}
+
+void CBreakableCube::Attacked_Block(_float3 fPos)
+{
+    if (m_attackedBlockPos != fPos) {
+        m_iHp = 100;
+        cout << "Change Block" << m_iHp << endl;
+    }
+    m_iHp -= 1;
+    m_attackedBlockPos = fPos;
+    m_resetHpFrame = 0;
+    cout << "Damage" << m_iHp << endl;
 }
 
 void CBreakableCube::Set_Bright(float _f)
