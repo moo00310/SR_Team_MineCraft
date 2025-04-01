@@ -165,8 +165,8 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
     m_pWood->Set_InstanceBuffer(_woodPos, 1.f);
     m_pLeaf->Set_InstanceBuffer(_leafPos,1.f);
 
-    m_pWood->Set_BlockPositions(_woodPos);
-    m_pLeaf->Set_BlockPositions(_leafPos);
+    m_pWood->Set_BlockPositions(_woodPos, ITEMNAME_WOOD);
+    m_pLeaf->Set_BlockPositions(_leafPos, ITEMNAME_LEAF);
 
     vector<CCollider_Cube*> _cube = m_pWood->Get_ColliderCube();
     for (auto _collider : _cube) {

@@ -42,7 +42,7 @@ public:
 	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects, vector<_float> _brights) { m_pVIBufferCom->Update_InstanceBuffer(_objects, _brights); }
 	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects, _float _bright) { m_pVIBufferCom->Update_InstanceBuffer(_objects, _bright); }
 
-	void Set_BlockPositions(vector<_float3> position);
+	void Set_BlockPositions(vector<_float3> position, ITEMNAME _name);
 
 	//충돌된 큐브 삭제
 	virtual HRESULT Delete_Cube(_float3 fPos);
@@ -61,6 +61,8 @@ protected:
 	vector<CCollider_Cube*> m_Colliders;
 
 	bool m_bChunkColliderActive = false;
+
+	ITEMNAME m_itemName;
 public:
 	static CBreakableRect* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

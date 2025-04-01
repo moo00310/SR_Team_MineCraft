@@ -114,7 +114,7 @@ HRESULT CBreakableRect::Render()
     return S_OK;
 }
 
-void CBreakableRect::Set_BlockPositions(vector<_float3> position)
+void CBreakableRect::Set_BlockPositions(vector<_float3> position, ITEMNAME _name)
 {
     m_Colliders.clear();
     m_Colliders.resize(position.size());

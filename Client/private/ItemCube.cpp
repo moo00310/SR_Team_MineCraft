@@ -94,42 +94,28 @@ HRESULT CItemCube::Render()
     return S_OK;
 }
 
-HRESULT CItemCube::Set_ItemTypeAndBindTexture(ITEMTYPE _type)
+HRESULT CItemCube::Set_ItemTypeAndBindTexture(ITEMNAME _name)
 {
-    m_eItemType = _type;
-    switch (m_eItemType)
+    m_eItemName = _name;
+    switch (m_eItemName)
     {
-    case Client::ITEM_DIRT:
+    case Client::ITEMNAME_DIRT:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Dirt"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
-    case Client::ITEM_COBBLESTONE:
+    case Client::ITEMNAME_COBBLESTONE:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_CobbleStone"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
-    case Client::ITEM_RAWIRON:
-        break;
-    case Client::ITEM_COAL:
-        break;
-    case Client::ITEM_WOOD:
+    case Client::ITEMNAME_WOOD:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Wood"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
-        break;
-    case Client::ITEM_SAPLING:
-        break;
-    case Client::ITEM_APPLE:
-        break;
-    case Client::ITEM_SEED:
-        break;
-    case Client::ITEM_REDTULIP:
-        break;
-    case Client::ITEM_END:
         break;
     default:
         break;
