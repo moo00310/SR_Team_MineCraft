@@ -89,7 +89,7 @@ HRESULT CBreakableCube::Render()
 }
 
 
-void CBreakableCube::Set_BlockPositions(vector<_float3> position)
+void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name)
 {
     m_Colliders.clear();
     m_Colliders.resize(position.size());

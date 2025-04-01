@@ -40,7 +40,7 @@ public:
 	void Set_InstanceBuffer(vector<D3DXVECTOR3> _objects, _float _bright) { m_pVIBufferCom->Update_InstanceBuffer(_objects, _bright); }
 
 	// 충돌 큐브 생성 & 위치 설정
-	void Set_BlockPositions(vector<_float3> position);
+	void Set_BlockPositions(vector<_float3> position, ITEMNAME _name);
 	int Get_PositionSize() { return m_vecPositions.size(); }
 
 	// 충돌 활성화 & 비활성화 관리를 위함
@@ -59,6 +59,7 @@ public:
 	virtual HRESULT Create_Cube(_float3 fPos, _float3 _Dir);
 
 	HRESULT Ready_Components();
+protected:
 
 	// 현재 청크를 충돌 매니저에 올릴지 
 	bool m_bChunkColliderActive = false;
@@ -70,6 +71,8 @@ public:
 	vector<_float3> m_vecPositions;
 	vector<_float> m_vecBrights;
 	vector<CCollider_Cube*> m_Colliders;
+
+	ITEMNAME m_itemName;
 
 private:
 	//아래 두 함수를 나중에 Pawn으로 합쳐도 될지는 모르겠음, 일단 나눔
