@@ -34,6 +34,7 @@ public:
 public:
 	CTransform* Get_Transform() { return m_pTransformCom; }
 	CRigidbody* Get_RigidBody() { return m_pRigidbodyCom; }
+	CCollider*	Get_Collider() { return m_pCollider_CubeCom; }
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	void		Set_Hp(float hp) { m_Hp = hp; }
 

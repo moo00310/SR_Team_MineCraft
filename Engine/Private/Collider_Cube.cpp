@@ -179,7 +179,7 @@ HRESULT CCollider_Cube::Render_Collider(_bool isHit)
 
 }
 
-_bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir)
+_bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir, _Out_ _float3* pOutNormal)
 {
 	if (pOutDistance)
 		*pOutDistance = { 0.f, 0.f, 0.f };
@@ -333,11 +333,11 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pO
 		{
 			if (smallestAxis.z > 0)
 			{
-				Collision_Dir = COLLISION_DIR::FRONT;
+				Collision_Dir = COLLISION_DIR::BACK;
 			}
 			else
 			{
-				Collision_Dir = COLLISION_DIR::BACK;
+				Collision_Dir = COLLISION_DIR::FRONT;
 			}
 		}
 	}
@@ -345,68 +345,13 @@ _bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pO
 	if (pOutDir)
 		*pOutDir = Collision_Dir;
 
+	// 법선 벡터 반환
+	if (pOutNormal)
+		*pOutNormal = smallestAxis;
+
 	return true;
-
-	//if (pOutDistance)
-	//	*pOutDistance = { 0.f, 0.f, 0.f };
-
-	//CCollider_Cube::COLLISION_DIR Collision_Dir{ CCollider_Cube::COLLISION_DIR::NONE };
-	//if (pOutDir)
-	//	*pOutDir = Collision_Dir;
-
-	//if (pTarget == nullptr)
-	//	return false;
-
-	//_float3 vMyPosition{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
-	//_float3 vTargetPosition{ pTarget->m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
-
-	//// AABB 최소/최대 좌표 계산
-	//_float3 minA = {vMyPosition.x - m_StateDesc.fRadiusX,
-	//				vMyPosition.y - m_StateDesc.fRadiusY,
-	//				vMyPosition.z - m_StateDesc.fRadiusZ };
-
-	//_float3 maxA = {vMyPosition.x + m_StateDesc.fRadiusX,
-	//				vMyPosition.y + m_StateDesc.fRadiusY,
-	//				vMyPosition.z + m_StateDesc.fRadiusZ };
-
-	//_float3 minB = {vTargetPosition.x - pTarget->m_StateDesc.fRadiusX,
-	//				vTargetPosition.y - pTarget->m_StateDesc.fRadiusY,
-	//				vTargetPosition.z - pTarget->m_StateDesc.fRadiusZ };
-
-	//_float3 maxB = {vTargetPosition.x + pTarget->m_StateDesc.fRadiusX,
-	//				vTargetPosition.y + pTarget->m_StateDesc.fRadiusY,
-	//				vTargetPosition.z + pTarget->m_StateDesc.fRadiusZ };
-
-	//// AABB 충돌 검사
-	//if (maxA.x < minB.x || minA.x > maxB.x ||
-	//	maxA.y < minB.y || minA.y > maxB.y ||
-	//	maxA.z < minB.z || minA.z > maxB.z)
-	//{
-	//	return false;
-	//}
-
-	//// 충돌 방향 계산
-	//_float3 overlap = { min(maxA.x, maxB.x) - max(minA.x, minB.x),
-	//					min(maxA.y, maxB.y) - max(minA.y, minB.y),
-	//					min(maxA.z, maxB.z) - max(minA.z, minB.z) };
-
-	//if (pOutDistance)
-	//	*pOutDistance = overlap;
-
-	//if (pOutDir)
-	//{
-	//	if (overlap.y <= overlap.x && overlap.y <= overlap.z)
-	//		Collision_Dir = (minA.y < minB.y) ? COLLISION_DIR::UP : COLLISION_DIR::DOWN;
-	//	else if (overlap.x <= overlap.z)
-	//		Collision_Dir = (minA.x < minB.x) ? COLLISION_DIR::RIGHT : COLLISION_DIR::LEFT;
-	//	else
-	//		Collision_Dir = (minA.z < minB.z) ? COLLISION_DIR::FRONT : COLLISION_DIR::BACK;
-
-	//	*pOutDir = Collision_Dir;
-	//}
-
-	//return true;
 }
+
 
 
 // CCollider_Cube 클래스에 min, max 값을 리턴하는 함수 추가

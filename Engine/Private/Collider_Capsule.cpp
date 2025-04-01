@@ -185,7 +185,7 @@ HRESULT CCollider_Capsule::Render_Collider(_bool isHit)
 }
 
 
-_bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDepth, _Out_ CCollider::COLLISION_DIR* pOutDir)
+_bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDepth, _Out_ CCollider::COLLISION_DIR* pOutDir, _Out_ _float3* pOutNormal)
 {
     if (!pTarget)
         return false;
@@ -193,7 +193,7 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
     if (pOutDepth)
         *pOutDepth = { 0.f, 0.f, 0.f };
 
-    COLLISION_DIR Collision_Dir = COLLISION_DIR::NONE;
+    CCollider::COLLISION_DIR Collision_Dir = CCollider::COLLISION_DIR::NONE;
     if (pOutDir)
         *pOutDir = Collision_Dir;
 
@@ -246,7 +246,7 @@ _bool CCollider_Capsule::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3*
         else if (fabs(vDiff.x) >= fabs(vDiff.z))
             Collision_Dir = (vDiff.x > 0) ? COLLISION_DIR::LEFT : COLLISION_DIR::RIGHT;
         else
-            Collision_Dir = (vDiff.z > 0) ? COLLISION_DIR::FRONT : COLLISION_DIR::BACK;
+            Collision_Dir = (vDiff.z > 0) ? COLLISION_DIR::BACK : COLLISION_DIR::FRONT;
 
         *pOutDir = Collision_Dir;
     }

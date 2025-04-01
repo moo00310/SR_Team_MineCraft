@@ -35,9 +35,7 @@ public:
     virtual HRESULT Update_Collider()override;
     virtual HRESULT Render_Collider(_bool isHit)override;
 
-    _bool Collision_Check(class CCollider_Cube* pTarget, _Out_ _float3* pOutDepth, _Out_ COLLISION_DIR* pOutDir) override;
-
-
+    _bool Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider::COLLISION_DIR* pOutDir = nullptr, _Out_ _float3* pOutNormal = nullptr) override;
 public:
     bool Get_bColliderActive() { return m_bColliderActive; }
     void Set_bColliderActive(bool _b) { m_bColliderActive = _b; }
