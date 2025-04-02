@@ -121,7 +121,7 @@ void CRight_hand::Chage_RightHand(int slot)
     // 현재 슬롯의 아이템 타입을 받아 띄우는 함수임
     // 아무것도 없으면 스티브 주먹
 
-    ITEMNAME temp = CUI_Mgr::Get_Instance()->Get_vecItemlist()->at(slot)->Get_ItemName();
+    ITEMNAME temp = CUI_Mgr::Get_Instance()->Get_vecSlotInfolist()->at(slot)->Get_ItemName();
     cout << temp << endl;
 
 }

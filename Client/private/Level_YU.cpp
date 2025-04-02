@@ -3,7 +3,7 @@
 #include "MapTool.h"
 #include "Camera_Player.h"
 #include "Steve.h"
-#include "Item.h"
+#include "SlotInfo.h"
 #include "UI_Mgr.h"
 
 
@@ -209,13 +209,10 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
-	/* Prototype_GameObject_Mouse_item */
-	for (int i = 0; i < 56; ++i)
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemFont"),
-			LEVEL_YU, strLayerTag, (int*)&i)))
-			return E_FAIL;
-	}
+	/* Prototype_GameObject_Mouse_ItemFont */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_ItemFont"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }

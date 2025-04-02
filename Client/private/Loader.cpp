@@ -58,7 +58,7 @@
 #include "MainInventory.h"
 #include "SubInventory.h"
 #include "Inventory_Back.h"
-#include "Item.h"
+#include "SlotInfo.h"
 #include "CheckBox.h"
 #include "PlayerHP_Back.h"
 #include "PlayerHP.h"
@@ -68,7 +68,7 @@
 #include "PlayerExp.h"
 #include "PlayerLevel.h"
 #include "Mouse_Item.h"
-#include "ItemFont.h"
+#include "Mouse_ItemFont.h"
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -625,7 +625,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	/* For.Prototype_GameObject_Item*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
-		CItem::Create(m_pGraphic_Device))))
+		CSlotInfo::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_PlayerHP_Back*/
@@ -668,9 +668,9 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CMouse_Item::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Mouse_item*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemFont"),
-		CItemFont::Create(m_pGraphic_Device))))
+	/* For.Prototype_GameObject_Mouse_ItemFont*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_ItemFont"),
+		CMouse_ItemFont::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	/*================================================================================================*/
 

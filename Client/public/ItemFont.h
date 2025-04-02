@@ -26,16 +26,15 @@ public:
 
 public:
 	UIOBJECT_DESC Get_ItemPos() { return Desc; }
+
 public:
 	void Set_ItemPos(UIOBJECT_DESC _UIOBJECT_DESC) { Desc = _UIOBJECT_DESC; }
 
-public:
+private:
+	HRESULT Ready_Components();
 	HRESULT RendeTexture(CTexture* pTextureCom, _int _TextureNun, _float _fX, _float _fY);
 	HRESULT SetUp_RenderState();
 	HRESULT Reset_RenderState();
-
-private:
-	HRESULT Ready_Components();
 
 private:
 	UIOBJECT_DESC		Desc{};

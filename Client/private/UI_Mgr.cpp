@@ -16,7 +16,6 @@ void CUI_Mgr::Update(_float fTimeDelta)
 {
 	/* 퀵슬롯, 메인 인벤토리 동기화 */
 	Synchronize_Slots();
-
 }
 
 void CUI_Mgr::Late_Update(_float fTimeDelta)
@@ -26,44 +25,16 @@ void CUI_Mgr::Late_Update(_float fTimeDelta)
 
 void CUI_Mgr::Synchronize_Slots()
 {
-	if (m_vecItemlist.size() != 0)
+	if (m_vecSlotInfolist.size() != 0)
 	{
 		/* ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_COBBLESTONE, ITEMNAME_DIRT, ITEMNAME_DANDELION, ITEMNAME_END */
-		/*=====================================*/
-		/* 테스트용 (임시로 아이템 저장해둠 -> 나중에 지움)*/
-		CItem* pItem9 = m_vecItemlist[9];
-		CItem* pItem10 = m_vecItemlist[10];
-		CItem* pItem11 = m_vecItemlist[11];
-		CItem* pItem15 = m_vecItemlist[15];
-		CItem* pItem17 = m_vecItemlist[17];
 		
-		if (!pItem9->Get_Test())
-		{
-			pItem9->Set_ItemName(ITEMNAME_COBBLESTONE);
-		}
-		if (!pItem10->Get_Test())
-		{
-			pItem10->Set_ItemName(ITEMNAME_WOOD);
-		}
-		if (!pItem11->Get_Test())
-		{
-			pItem11->Set_ItemName(ITEMNAME_OAKPLANKS);
-		}
-		if (!pItem15->Get_Test())
-		{
-			pItem15->Set_ItemName(ITEMNAME_DIRT);
-		}
-		if (!pItem17->Get_Test())
-		{
-			pItem17->Set_ItemName(ITEMNAME_DANDELION);
-		}
-		/*=====================================*/
-
 		for (int i = 0; i < 9; ++i)
 		{
-			if (m_vecItemlist[i] && m_vecItemlist[i + 9])
+			if (m_vecSlotInfolist[i] && m_vecSlotInfolist[i + 9])
 			{
-				m_vecItemlist[i]->Set_ItemName(m_vecItemlist[i + 9]->Get_ItemName());
+				m_vecSlotInfolist[i]->Set_ItemName(m_vecSlotInfolist[i + 9]->Get_ItemName());
+				m_vecSlotInfolist[i]->Set_ItemCount(m_vecSlotInfolist[i + 9]->Get_ItemCount());
 			}
 		}
 	}
@@ -147,14 +118,11 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 			}
 		}
 
-
 		if (m_iallZeroCount == 10)
 		{
 			SetHP();
-			
 			/* 음식 먹어서 배고픔 회복?하면 m_iallZeroCount 초기화 */
 		}
-		
 	}
 }
 
@@ -188,7 +156,6 @@ void CUI_Mgr::PlayerExp_Set()
 					break;
 				}
 			}
-
 			/* 마지막 back -> 5가된다면 LevelUp() 호출 */
 		}
 	}
@@ -197,36 +164,65 @@ void CUI_Mgr::PlayerExp_Set()
 void CUI_Mgr::LevelUp()
 {
 	/* 레벨 표기 숫자 변경 */
-
 	for (auto iter = m_PlayerExplist.begin(); iter != m_PlayerExplist.end(); ++iter)
 	{
 		(*iter)->Set_RenderOn(false);
 	}
-
-
 }
 
-void CUI_Mgr::Set_ItemCount()
+void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 {
-	for (int i = 0; i < m_vecItemlist.size(); ++i)
-	{
-		if (m_vecItemlist[i] != nullptr && m_vecItemFontlist[i] != nullptr)
-		{
+	/* 인벤토리 슬롯에 같은 아이템이 존재하는지 확인 
+	*  슬롯 인덱스 9~47까지 */
 
+	/* 인벤토리에 해당 아이템이 존재하는지 확인*/
+	for (int i = 9; i < m_vecSlotInfolist.size(); ++i)
+	{
+		if (m_vecSlotInfolist[i]->Get_ItemName() == _ItemName)
+		{
+			if (AddCount + m_vecSlotInfolist[i]->Get_ItemCount() < 65)
+			{
+				m_vecSlotInfolist[i]->Set_ItemCount(m_vecSlotInfolist[i]->Get_ItemCount() + AddCount);
+				return;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+	static const vector<int> vecSlotOrder =
+	{
+		 9, 10, 11, 12, 13, 14, 15, 16, 17,
+		36, 37, 38, 39, 40, 41, 42, 43, 44,
+		27, 28, 29, 30, 31, 32, 33, 34, 35,
+		18, 19, 20, 21, 22, 23, 24, 25, 26
+
+	};
+
+	/* 슬롯에 아이템이 없을때 추가 */
+	for (auto iter : vecSlotOrder)
+	{
+		/* 슬롯에 아이템이 비어있을때*/
+		if (m_vecSlotInfolist[iter]->Get_ItemName() == ITEMNAME_END)
+		{
+			m_vecSlotInfolist[iter]->Set_ItemName(_ItemName);
+			m_vecSlotInfolist[iter]->Set_ItemCount(AddCount);
+			break;
 		}
 	}
 }
 
-void CUI_Mgr::Add_Item(CItem* pItem)
+void CUI_Mgr::Add_SlotUpdate(CSlotInfo* pItem)
 {
-	m_vecItemlist.push_back(pItem);
+	m_vecSlotInfolist.push_back(pItem);
 }
 
-CItem* CUI_Mgr::Get_Item(int slotIndex)
+CSlotInfo* CUI_Mgr::Get_Item(int slotIndex)
 {
-	if (slotIndex >= 0 && slotIndex < m_vecItemlist.size())
+	if (slotIndex >= 0 && slotIndex < m_vecSlotInfolist.size())
 	{
-		return m_vecItemlist[slotIndex];
+		return m_vecSlotInfolist[slotIndex];
 	}
 
 	return nullptr;
@@ -234,10 +230,18 @@ CItem* CUI_Mgr::Get_Item(int slotIndex)
 
 void CUI_Mgr::Free()
 {
+	__super::Free();
 	Safe_Release(pSteve);
-	m_vecItemlist.clear();
+	m_vecSlotInfolist.clear();
 	m_vecPlayerHPlist.clear();
 	m_PlayerHungerlist.clear();
 	m_PlayerExplist.clear();
+	m_PlayerLevellist.clear();
+	m_vecCheckBoxlist.clear();
+	m_MainInventorylist.clear();
+	m_SubInventorylist.clear();
+	m_InventoryBacklist.clear();
+	m_MouseItemlist.clear();
+	m_MouseItemFontlist.clear();
 }
 
