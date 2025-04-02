@@ -43,6 +43,8 @@ public:
 	/* 아이템 개수 업데이트*/
 	void ItemCount_Update(ITEMNAME _ItemNamem, _int AddCount);
 
+	ITEMNAME GetItemTypeName();
+
 public:
 	CSlotInfo*						Get_Item(int slotIndex);
 

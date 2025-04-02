@@ -36,7 +36,6 @@ HRESULT CRight_hand::Initialize(void* pArg)
     Safe_AddRef(m_pRect_Model);
     Safe_AddRef(m_pCube_Model);
 
-
     return S_OK;
 }
 
@@ -48,10 +47,6 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
         {
             m_pSteve->SetRender(true);
 
-            m_pArm_Model->SetRender(false);
-            m_pRect_Model->SetRender(false);
-            m_pCube_Model->SetRender(false);
-
             m_pArm_Model->Set_isTps(true);
             m_pRect_Model->Set_isTps(true);
             m_pCube_Model->Set_isTps(true);
@@ -61,83 +56,100 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
         { 
             m_pSteve->SetRender(false);
 
-            m_pArm_Model->SetRender(true);
-            m_pRect_Model->SetRender(true);
-            m_pCube_Model->SetRender(true);
-
             m_pArm_Model->Set_isTps(false);
             m_pRect_Model->Set_isTps(false);
             m_pCube_Model->Set_isTps(false);
             isTPS = false;
         }
-         
+
+        Chage_RightHand();
     }
 }
 
 void CRight_hand::Update(_float fTimeDelta)
 {
-    
+
+  
 }
 
 void CRight_hand::Late_Update(_float fTimeDelta)
 {
-    // Arm
-    if (m_pGameInstance->Key_Down('P'))
+ 
+    for (char key = '1'; key <= '9'; ++key)
     {
-        if (isTPS)
-            m_pArm_Model->SetRender(false);
-        else
-            m_pArm_Model->SetRender(true);
-       
-        m_pRect_Model->SetRender(false);
-        m_pCube_Model->SetRender(false);
+        if (m_pGameInstance->Key_Down(key))
+        {
+            Chage_RightHand();
+            break;
+        }
     }
 
-    // Rect
-    if (m_pGameInstance->Key_Down('O'))
-    {
-        m_pArm_Model->SetRender(false);
-        m_pRect_Model->SetRender(true);
-        m_pCube_Model->SetRender(false);
-    }
-
-    // Cube
-    if (m_pGameInstance->Key_Down('I'))
-    {
-        m_pArm_Model->SetRender(false);
-        m_pRect_Model->SetRender(false);
-        m_pCube_Model->SetRender(true);
-    }
-
-    if (m_pGameInstance->Key_Down('1'))
-        Chage_RightHand(0);
-    if (m_pGameInstance->Key_Down('2'))
-        Chage_RightHand(1);
-    if (m_pGameInstance->Key_Down('3'))
-        Chage_RightHand(2);
-    if (m_pGameInstance->Key_Down('4'))
-        Chage_RightHand(3);
-    if (m_pGameInstance->Key_Down('5'))
-        Chage_RightHand(4);
-    if (m_pGameInstance->Key_Down('6'))
-        Chage_RightHand(5);
-    if (m_pGameInstance->Key_Down('7'))
-        Chage_RightHand(6);
-    if (m_pGameInstance->Key_Down('8'))
-        Chage_RightHand(7);
-    if (m_pGameInstance->Key_Down('9'))
-        Chage_RightHand(8);
 }
 
-void CRight_hand::Chage_RightHand(int slot)
+void CRight_hand::Chage_RightHand()
 {
-    // 현재 슬롯의 아이템 타입을 받아 띄우는 함수임
-    // 아무것도 없으면 스티브 주먹
+    ITEMNAME Name = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
-    ITEMNAME temp = CUI_Mgr::Get_Instance()->Get_vecSlotInfolist()->at(slot)->Get_ItemName();
-    cout << temp << endl;
-
+    Select_Render(Name);
+    Change_Texture(Name);
 }
+
+void CRight_hand::Select_Render(ITEMNAME name)
+{
+    int index = -1;
+
+    if (name == 999)
+    {
+        Render_Arm();
+        return;
+    }
+    else if (name < 100)
+    {
+        Render_Cube();
+        index = name;
+        m_pCube_Model->ChangeTexture(index);
+        return;
+    }
+    else
+    {
+        Render_Rect();
+        index = name - 100;
+        m_pRect_Model->ChangeTexture(index);
+        return;
+    }
+}
+
+void CRight_hand::Change_Texture(ITEMNAME name)
+{
+    // 먹기가능
+    //if(name == ITEMNAME_APPLE)
+        //m_pRect_Model.
+}
+
+void CRight_hand::Render_Arm()
+{
+    if (isTPS)
+        m_pArm_Model->SetRender(false);
+    else
+        m_pArm_Model->SetRender(true);
+    m_pRect_Model->SetRender(false);
+    m_pCube_Model->SetRender(false);
+}
+
+void CRight_hand::Render_Rect()
+{
+    m_pArm_Model->SetRender(false);
+    m_pRect_Model->SetRender(true);
+    m_pCube_Model->SetRender(false);
+}
+
+void CRight_hand::Render_Cube()
+{
+    m_pArm_Model->SetRender(false);
+    m_pRect_Model->SetRender(false);
+    m_pCube_Model->SetRender(true);
+}
+
 
 CRight_hand* CRight_hand::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {

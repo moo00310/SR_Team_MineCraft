@@ -213,6 +213,12 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 	}
 }
 
+ITEMNAME CUI_Mgr::GetItemTypeName()
+{
+	// 현재 슬록 인덱스의  아이템 이름을 가져옴
+	return m_vecSlotInfolist[(*Get_vecCheckBoxlist()->begin())->Get_CheckBoxIndex()]->Get_ItemName();
+}
+
 void CUI_Mgr::Add_SlotUpdate(CSlotInfo* pItem)
 {
 	m_vecSlotInfolist.push_back(pItem);

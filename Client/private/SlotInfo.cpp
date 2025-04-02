@@ -240,7 +240,13 @@ HRESULT CSlotInfo::Render()
 HRESULT CSlotInfo::RenderItemTexture(CTexture* pTextureCom, _int _TextureNun)
 {
 
-    if (FAILED(m_pItem_TextureCom->Bind_Resource(_TextureNun)))
+    int TextureIndex = -1;
+	if (_TextureNun < 100)
+		TextureIndex = _TextureNun;
+	else if (_TextureNun < 200)
+		TextureIndex = (_TextureNun - 100) + ITEMNAME_CUBE_END;
+
+    if (FAILED(m_pItem_TextureCom->Bind_Resource(TextureIndex)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))

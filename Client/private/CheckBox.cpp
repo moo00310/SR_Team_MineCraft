@@ -18,7 +18,6 @@ HRESULT CCheckBox::Initialize_Prototype()
 
 HRESULT CCheckBox::Initialize(void* pArg)
 {
-
     Desc.fSizeX = 85.f;
     Desc.fSizeY = 100.f;
     
@@ -39,25 +38,26 @@ HRESULT CCheckBox::Initialize(void* pArg)
 
 void CCheckBox::Priority_Update(_float fTimeDelta)
 {
+    
 }
 
 void CCheckBox::Update(_float fTimeDelta)
 {
-    if (GetKeyState('1') & 0x8000) { Desc.fX = 360.f; m_iCheckBoxIndex = 0; }
-    if (GetKeyState('2') & 0x8000) { Desc.fX = 430.f; m_iCheckBoxIndex = 1; }
-    if (GetKeyState('3') & 0x8000) { Desc.fX = 500.f; m_iCheckBoxIndex = 2; }
-    if (GetKeyState('4') & 0x8000) { Desc.fX = 570.f; m_iCheckBoxIndex = 3; }
-    if (GetKeyState('5') & 0x8000) { Desc.fX = 640.f; m_iCheckBoxIndex = 4; }
-    if (GetKeyState('6') & 0x8000) { Desc.fX = 710.f; m_iCheckBoxIndex = 5; }
-    if (GetKeyState('7') & 0x8000) { Desc.fX = 780.f; m_iCheckBoxIndex = 6; }
-    if (GetKeyState('8') & 0x8000) { Desc.fX = 850.f; m_iCheckBoxIndex = 7; }
-    if (GetKeyState('9') & 0x8000) { Desc.fX = 920.f; m_iCheckBoxIndex = 8; }
+    if (m_pGameInstance->Key_Down('1')) { Desc.fX = 360.f; m_iCheckBoxIndex = 0;}
+    if (m_pGameInstance->Key_Down('2')) { Desc.fX = 430.f; m_iCheckBoxIndex = 1;}
+    if (m_pGameInstance->Key_Down('3')) { Desc.fX = 500.f; m_iCheckBoxIndex = 2;}
+    if (m_pGameInstance->Key_Down('4')) { Desc.fX = 570.f; m_iCheckBoxIndex = 3;}
+    if (m_pGameInstance->Key_Down('5')) { Desc.fX = 640.f; m_iCheckBoxIndex = 4;}
+    if (m_pGameInstance->Key_Down('6')) { Desc.fX = 710.f; m_iCheckBoxIndex = 5;}
+    if (m_pGameInstance->Key_Down('7')) { Desc.fX = 780.f; m_iCheckBoxIndex = 6;}
+    if (m_pGameInstance->Key_Down('8')) { Desc.fX = 850.f; m_iCheckBoxIndex = 7;}
+    if (m_pGameInstance->Key_Down('9')) { Desc.fX = 920.f; m_iCheckBoxIndex = 8;}
 
-    if(m_fCheckBox != Desc.fX)
+    if (m_fCheckBox != Desc.fX)
     {
-       m_fCheckBox = Desc.fX;
-       __super::Initialize(&Desc);
-       m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
+        m_fCheckBox = Desc.fX;
+        __super::Initialize(&Desc);
+        m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
     }
 }
 

@@ -165,7 +165,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 m_DestroyCube->GetTransform()->Set_State(CTransform::STATE_POSITION, hitPosition);
 
                 // hp 감소.
-                pBreakableCube->Attacked_Block(hitPosition);
+                pBreakableCube->Attacked_Block(hitPosition,1);
 
 
                 // 꺠지는 블럭 hp 값 넘겨줌.
