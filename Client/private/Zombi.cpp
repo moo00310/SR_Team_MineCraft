@@ -54,14 +54,7 @@ void CZombi::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta); Attack;
 
-    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
-    {
-        Update_State(fTimeDelta);
-        m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
-
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-            return;
-    }
+    Update_State(fTimeDelta);
 }
 
 void CZombi::Late_Update(_float fTimeDelta)
@@ -71,7 +64,13 @@ void CZombi::Late_Update(_float fTimeDelta)
         m_eCurAnim = ATTACK;
     }
 
+    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+    {
+        m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+            return;
+    }
 
 }
 

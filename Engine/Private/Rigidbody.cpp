@@ -48,6 +48,8 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 	if (fTimeDelta > MAX_DELTA_TIME)
 		return S_OK;
 
+	//fTimeDelta = 0.032f; FixedUpdate???
+
 	// 1. 예측 위치로 Collider 업데이트
 	_float3 vOriginalPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	_float3 vNextPosition = vOriginalPos + m_vVelocity * fTimeDelta; // 예측 위치

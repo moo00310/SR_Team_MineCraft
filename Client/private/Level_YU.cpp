@@ -86,10 +86,10 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
-	return E_FAIL;
+		return E_FAIL;
 
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
-	return E_FAIL;
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
 		return E_FAIL;
