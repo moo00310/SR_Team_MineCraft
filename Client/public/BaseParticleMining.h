@@ -1,6 +1,7 @@
 #pragma once
 #include "ParticleSystem.h"
 #include "Client_Defines.h"
+#include "Sun.h"
 
 BEGIN(Client)
 
@@ -30,6 +31,9 @@ protected:
 	virtual void OnBoundingExit(ParticleAttribute& particle) override;
 
 	virtual void OnReplay(ParticleAttribute& particle) override;
+
+private:
+	CSun* m_Sun = { nullptr };
 };
 
 END

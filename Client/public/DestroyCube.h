@@ -29,8 +29,15 @@ public:
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 
+	CTransform* GetTransform() const;
+
+	// 금 가는 거 텍스쳐 여러갠데
+	// 암튼 느낌 알지
+	void SetTextureIndex(int _hp);
+
 protected:
 	CVIBuffer_Cube_Only* m_pVIBufferOnlyCom = {nullptr};
+	_uint				m_iTextureIndex = {0};
 };
 
 END

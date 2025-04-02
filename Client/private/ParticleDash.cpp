@@ -96,7 +96,7 @@ ParticleAttribute CParticleDash::OnSetAddParticle()
 {
 	ParticleAttribute att;
 	att.vPosition = {0.f, 0.f, 0.f};	
-	att.vColor = {GetRandomFloat(0.1f, 0.5f), 0.f, 0.f, 1.f };
+	//att.vColor = Float3ToHex({GetRandomFloat(0.1f, 0.5f), 0.f, 0.f});
 	att.vVelocity = {GetRandomFloat(-1.f, 1.f), 0.f, GetRandomFloat(-3.f, -1.f) };
 	att.IsTime = true;
 	att.fCurrentTime = 0.f;

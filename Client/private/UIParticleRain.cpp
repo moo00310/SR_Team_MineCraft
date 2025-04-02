@@ -87,7 +87,7 @@ ParticleAttribute CUIParticleRain::OnSetAddParticle()
 {
 	ParticleAttribute att;
 	att.vPosition = { GetRandomFloat(float(0.f - g_iWinSizeX), float(g_iWinSizeX)), GetRandomFloat(200.f, 700.f), 0.f};
-	att.vColor = { 0.1f, 0.f, 0.f, 1.f };
+	att.vColor = Float3ToHex({ 0.f, 0.f, 1.f });
 	//att.vVelocity = { 0.f, GetRandomFloat(-1200.f, -900.f), 0.f };	
 	att.vVelocity = { 0.f, GetRandomFloat(-800.f, -500.f), 0.f };
 	att.IsAlive = true;

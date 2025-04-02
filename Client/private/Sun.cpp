@@ -164,6 +164,11 @@ HRESULT CSun::Render()
 	return S_OK;
 }
 
+float CSun::GetBight() const
+{
+	return m_fBright;
+}
+
 void CSun::Orbit_Around_Earth()
 {
 	// 뷰 행렬을 가져와서 카메라 위치를 알아낸다.

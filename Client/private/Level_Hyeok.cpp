@@ -151,6 +151,21 @@ HRESULT CLevel_Hyeok::Ready_Layer_Particle(const _wstring& strLayerTag)
 		return E_FAIL;
 	}
 
+	// 불꽃 검 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,	// 가져올 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,			// 가져올 프로토타입.
+		LEVEL_STATIC,		// 적용 씬.
+		strLayerTag,		// 애드오브젝트에 추가할 레이어.
+		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}	
+
+	CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+		{ 0.f, 0.f, 0.f }
+	);
+
 	return S_OK;
 }
 

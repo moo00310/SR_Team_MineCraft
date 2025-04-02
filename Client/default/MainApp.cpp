@@ -26,6 +26,7 @@
 #include "ParticleExplosion.h"
 #include "Mouse.h"
 #include "ParticleDie.h"
+#include "ParticleSwordFlame.h"
 
 
 CMainApp::CMainApp()
@@ -146,6 +147,9 @@ HRESULT CMainApp::Ready_Component_For_Static()
 	if (FAILED(Ready_Steve()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Particle()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -201,6 +205,57 @@ HRESULT CMainApp::Ready_Steve()
 	return S_OK;
 }
 
+HRESULT CMainApp::Ready_Particle()
+{
+	// TODO : 파티클.
+	// 비 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
+		CParticleRain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// UI 비 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_UI_PARTICLE_RAIN,
+		CUIParticleRain::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 달리기 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,
+		CParticleDash::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 흙 캐는 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
+		CParticleSandMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 나무 캐는 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING,
+		CParticleWoodMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 흙 파괴 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+		CParticleSandDestroy::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 폭발 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
+		CParticleExplosion::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 사망 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
+		CParticleDie::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 불꽃 검 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+		CParticleSwordFlame::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 HRESULT CMainApp::Ready_Texture()
 {
@@ -251,44 +306,11 @@ HRESULT CMainApp::Ready_Texture()
 	// 사망 텍스쳐.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DIE,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/die_%d.png"), 3))))
-		return E_FAIL;
+		return E_FAIL;	
 
-	// TODO : 파티클.
-	// 비 파티클.
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_RAIN,
-		CParticleRain::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// UI 비 파티클.
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_UI_PARTICLE_RAIN,
-		CUIParticleRain::Create(m_pGraphic_Device))))
-		return E_FAIL;
-	
-	// 달리기 파티클.
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DASH,
-		CParticleDash::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
-		CParticleSandMining::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING,
-		CParticleWoodMining::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
-		CParticleSandDestroy::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// 폭발 파티클.
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
-		CParticleExplosion::Create(m_pGraphic_Device))))
-		return E_FAIL;
-
-	// 사망 파티클.
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
-		CParticleDie::Create(m_pGraphic_Device))))
+	// 불꽃 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_FLAME,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/flame.png"), 1))))
 		return E_FAIL;
 
 	return S_OK;

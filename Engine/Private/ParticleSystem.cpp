@@ -378,6 +378,17 @@ float CParticleSystem::GetRandomFloat(float lowBound, float highBound)
 	return (f * (highBound - lowBound)) + lowBound;
 }
 
+DWORD CParticleSystem::Float3ToHex(_float3 color)
+{
+	// RGBA 값을 0-255 범위로 변환
+	int r = static_cast<int>(color.x * 255);
+	int g = static_cast<int>(color.y * 255);
+	int b = static_cast<int>(color.z * 255);	
+
+	// 16진수 색상 코드로 반환 (0xRRGGBBAA 형식)
+	return (r << 16) | (g << 8) | b;
+}
+
 void CParticleSystem::Free()
 {
 	__super::Free();

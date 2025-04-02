@@ -506,7 +506,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 
 	// 깨지는 블럭 모델.
-	Engine::CUBE_ONLY cubeOnly{ _float3(1.1f, 1.1f, 1.1f) };
+	Engine::CUBE_ONLY cubeOnly{ _float3(1.01f, 1.01f, 1.01f) };
 	/* For.Prototype_Component_VIBuffer_RectShader */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_RectShader"),
 		CVIBuffer_RectShader::Create(m_pGraphic_Device))))

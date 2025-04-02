@@ -16,14 +16,18 @@ HRESULT CBaseParticleMining::Initialize_Prototype()
 
 HRESULT CBaseParticleMining::Initialize(void* pArg)
 {
-	iParticleCount = 10;
+	m_Sun = (CSun*)m_pGameInstance->Get_Object(LEVEL_YU,
+		TEXT("Layer_Sun"),
+		0);
+
+	iParticleCount = 1;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
 		return E_FAIL;
 	}
 
-	dwVpBatchSize = 10;
+	dwVpBatchSize = 1;
 	dwPointSize = GetScale(0.1f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
@@ -38,7 +42,7 @@ HRESULT CBaseParticleMining::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 	{
 		return E_FAIL;
-	}
+	}	
 
 	return S_OK;
 }
@@ -50,10 +54,12 @@ void CBaseParticleMining::Free()
 
 ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 {
-	ParticleAttribute att;
-	att.vPosition = { 0.f, 0.f, 0.f };
-	att.vColor = { 0.1f, 0.f, 0.f, 1.f };
-	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, 0.f };
+	float bight = m_Sun->GetBight();
+
+	ParticleAttribute att;	
+	att.vPosition = { GetRandomFloat(-0.2f, 0.2f), GetRandomFloat(-0.2f, 0.2f), 0.f };	
+	att.vColor = Float3ToHex({ bight, bight, bight });
+	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };
 	att.IsTime = true;
 	att.fCurrentTime = 0.f;
 	att.fEndTime = 0.6f;	
@@ -61,9 +67,9 @@ ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 
 	// 중력 적용.
 	att.IsGravity = true;
-	att.fGravityJumpPower = GetRandomFloat(1.8f, 2.f);
+	att.fGravityJumpPower = GetRandomFloat(0.1f, 0.5f);
 	att.fGravityTime = 0.f;
-	att.fGravity = 9.8f;
+	att.fGravity = 14.8f;
 
 	return att;
 }

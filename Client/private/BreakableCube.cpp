@@ -174,6 +174,15 @@ void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
     m_attackedBlockPos = fPos;
     m_resetHpFrame = 0;
     cout << "Damage" << m_iHp << endl;
+
+    CParticleEventManager::Get_Instance()->OnParticle(
+        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
+        fPos);
+}
+
+int CBreakableCube::GetHP() const
+{
+    return m_iHp;
 }
 
 void CBreakableCube::Set_Bright(float _f)
