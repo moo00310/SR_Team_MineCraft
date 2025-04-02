@@ -87,9 +87,16 @@ HRESULT CItemCube::Render()
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
 
+    m_pTransformCom->Bind_Resource(m_pShaderCom);
+    m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+    m_pShaderCom->SetFloat("g_Bright", m_fBright + 0.2f);
+    m_pShaderCom->Begin(1);
+
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
+
+    m_pShaderCom->End();
 
     return S_OK;
 }
@@ -137,14 +144,6 @@ HRESULT CItemCube::Ready_Components()
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
         return E_FAIL;
 
-    ///* For.Com_Collider */
-    //CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-    //Desc.fRadiusX = .5f; Desc.fRadiusY = .5f; Desc.fRadiusZ = .5f;
-    //Desc.pTransformCom = m_pTransformCom;
-    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-    //    TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_pColliderCom), &Desc)))
-    //    return E_FAIL;
-
 	/* For.Com_Rigidbody */
 	CRigidbody::RIGIDBODY_DESC RigidbodyDesc{};
 	RigidbodyDesc.pTransform = m_pTransformCom;
@@ -154,6 +153,10 @@ HRESULT CItemCube::Ready_Components()
 		TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
 		return E_FAIL;
 
+    // 쉐이더 컴포넌트
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Cube"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
+        return E_FAIL;
 
 
     return S_OK;
@@ -191,5 +194,5 @@ void CItemCube::Free()
     __super::Free();
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pRigidbodyCom);
-    //Safe_Release(m_pColliderCom);
+    Safe_Release(m_pShaderCom);
 }

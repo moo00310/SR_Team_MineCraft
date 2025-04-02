@@ -55,6 +55,15 @@ void CSun::Priority_Update(_float fTimeDelta)
 					_Tree->Get_Wood()->Set_Bright(m_fBright);
 					_Tree->Get_Leaf()->Set_Bright(m_fBright);
 				}
+
+
+				if (CItemRect* _itemRect = dynamic_cast<CItemRect*>(obj)) {
+					_itemRect->Set_Bright(m_fBright);
+				}
+
+				if (CItemCube* _itemCube = dynamic_cast<CItemCube*>(obj)) {
+					_itemCube->Set_Bright(m_fBright);
+				}
 			}
 		}
 
