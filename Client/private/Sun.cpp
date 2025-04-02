@@ -28,6 +28,7 @@ HRESULT CSun::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pTransformCom->Scaling(0.4, 0.4, 0.4);
 	return S_OK;
 }
 

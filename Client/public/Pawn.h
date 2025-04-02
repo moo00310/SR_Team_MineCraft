@@ -16,7 +16,7 @@ class CPawn abstract : public CGameObject
 public:
 	enum ANIM
 	{
-		IDLE, RUN, WALK, ATTACK, DEAD, ANIM_END
+		IDLE, RUN, WALK, ATTACK, DEAD, BOOM, ANIM_END
 	};
 
 protected:
@@ -43,7 +43,7 @@ public:
 	_float		Get_Hp() { return m_Hp; }
 
 	void Set_Bright(float _bright) { m_bright = _bright; }
-
+	ANIM Get_ANIM() { return m_eCurAnim; }
 public:
 	void Reset_Ainmation();
 	virtual void Knock_back(const _float3& vforce) = 0;
@@ -58,7 +58,7 @@ protected:
 protected:
 	CCollider_Cube* m_pCollider_CubeCom = { nullptr };
 	CRigidbody* m_pRigidbodyCom = { nullptr };
-	float m_bright = { 1 };
+	float m_bright = { 0.6 };
 
 protected:
 	virtual HRESULT Ready_Components();

@@ -40,7 +40,7 @@ private:
 	HRESULT Ready_Components();
 
 	int m_iChunkCnt;
-	float m_fBright = 1.f;
+	float m_fBright = 0.6f;
 	float m_fBrightPercent = -0.01f;
 	int m_brightFrame = 0;
 

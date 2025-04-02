@@ -121,7 +121,7 @@ void CBreakableRect::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 
     for (int i = 0; i < position.size(); ++i) {
         m_vecPositions.push_back(position[i]); //위치 넣어줌
-        m_vecBrights.push_back(1.f);
+        m_vecBrights.push_back(0.6f);
 
         /* For.Com_Collider */
         CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
