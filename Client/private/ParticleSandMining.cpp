@@ -42,5 +42,9 @@ HRESULT CParticleSandMining::Ready_Components()
 		TEXT("Com_Component_Sand_Mining"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransform))))
+		return E_FAIL;
+
 	return S_OK;
 }

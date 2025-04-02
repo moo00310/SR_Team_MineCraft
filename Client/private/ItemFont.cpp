@@ -23,8 +23,11 @@ HRESULT CItemFont::Initialize(void* pArg)
 
 	Desc.fSizeX = 14.f;
 	Desc.fSizeY = 14.f;
+
 	Desc.fX = 482.f;
 	Desc.fY = 520.f;
+
+
 	m_fOffsetX = 18.f;
 
 	if (FAILED(__super::Initialize(&Desc)))
@@ -73,6 +76,9 @@ HRESULT CItemFont::Render()
 
 HRESULT CItemFont::RendeTexture(CTexture* pTextureCom, _int _TextureNun, _float _fX, _float _fY)
 {
+	_fX += 15.f;
+	_fY += 12.f;
+
 	if (FAILED(m_pTextureCom->Bind_Resource(_TextureNun)))
 		return E_FAIL;
 

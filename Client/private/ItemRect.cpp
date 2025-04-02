@@ -77,12 +77,6 @@ void CItemRect::Late_Update(_float fTimeDelta)
 
 HRESULT CItemRect::Render()
 {
-    m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, FALSE);
-    m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 254);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
-
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
@@ -92,13 +86,16 @@ HRESULT CItemRect::Render()
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
         return E_FAIL;
 
+    m_pTransformCom->Bind_Resource(m_pShaderCom);
+    m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+    m_pShaderCom->SetFloat("g_Bright", m_fBright + 0.2f);
+    m_pShaderCom->Begin(1);
+
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
-    m_pGraphic_Device->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-    m_pGraphic_Device->SetRenderState(D3DRS_LIGHTING, TRUE);
+    m_pShaderCom->End();
 
     return S_OK;
 }
@@ -154,7 +151,7 @@ HRESULT CItemRect::Set_ItemTypeAndBindTexture(ITEMNAME _name)
 HRESULT CItemRect::Ready_Components()
 {
     /* For.Com_VIBuffer */
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_RectShader"),
         TEXT("m_pVIBufferCom_Rect"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
         return E_FAIL;
 
@@ -171,6 +168,11 @@ HRESULT CItemRect::Ready_Components()
     RigidbodyDesc.fMass = 1.f;
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Rigidbody"),
         TEXT("Com_Rigidbody"), reinterpret_cast<CComponent**>(&m_pRigidbodyCom), &RigidbodyDesc)))
+        return E_FAIL;
+
+    /* For.Com_Shader */
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
     return S_OK;
@@ -208,4 +210,5 @@ void CItemRect::Free()
     __super::Free();
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pRigidbodyCom);
+    Safe_Release(m_pShaderCom);
 }

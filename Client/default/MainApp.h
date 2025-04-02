@@ -32,6 +32,7 @@ private:
 	HRESULT Ready_Texture();
 	HRESULT Ready_Component();
 	HRESULT Ready_Steve();
+	HRESULT Ready_Particle();
 
 public:
 	static CMainApp* Create();

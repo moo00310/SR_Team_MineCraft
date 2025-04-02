@@ -25,8 +25,12 @@ public:
 	virtual HRESULT Render()override;
 
 	void Set_ChunkCount(int _cnt) { m_iChunkCnt = _cnt; }
+
+	float GetBight() const;
+
 private:
 	CTexture* m_pTextureCom = { nullptr };
+	CTexture* m_pTextureCom2 = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
@@ -39,9 +43,12 @@ private:
 	HRESULT Ready_Components();
 
 	int m_iChunkCnt;
-	float m_fBright = 1.f;
-	float m_fBrightPercent = -0.03f;
+	float m_fBright = 0.6f;
+	float m_fBrightPercent = -0.01f;
 	int m_brightFrame = 0;
+
+	float m_fAngle = -60.5f;
+	bool m_isSun = true;
 public:
 	static CSun* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

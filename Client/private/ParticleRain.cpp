@@ -101,7 +101,7 @@ ParticleAttribute CParticleRain::OnSetAddParticle()
 {
 	ParticleAttribute att;
 	att.vPosition = {GetRandomFloat(-30.f, 30.f), 20.f, GetRandomFloat(-30.f, 30.f) };	
-	att.vColor = { 0.1f, 0.f, 0.f, 1.f };
+	att.vColor = Float3ToHex({ 0.f, 0.f, 1.f });
 	att.vVelocity = { 0.f, GetRandomFloat(-180.f, -10.f), 0.f };
 	att.IsAlive = true;
 

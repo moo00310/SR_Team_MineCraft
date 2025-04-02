@@ -1,4 +1,5 @@
 #include "CheckBox.h"
+#include "UI_Mgr.h"
 
 CCheckBox::CCheckBox(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
@@ -42,15 +43,15 @@ void CCheckBox::Priority_Update(_float fTimeDelta)
 
 void CCheckBox::Update(_float fTimeDelta)
 {
-    if (GetKeyState('1') & 0x8000) Desc.fX = 360.f;
-    if (GetKeyState('2') & 0x8000) Desc.fX = 430.f;
-    if (GetKeyState('3') & 0x8000) Desc.fX = 500.f;
-    if (GetKeyState('4') & 0x8000) Desc.fX = 570.f;
-    if (GetKeyState('5') & 0x8000) Desc.fX = 640.f;
-    if (GetKeyState('6') & 0x8000) Desc.fX = 710.f;
-    if (GetKeyState('7') & 0x8000) Desc.fX = 780.f;
-    if (GetKeyState('8') & 0x8000) Desc.fX = 850.f;
-    if (GetKeyState('9') & 0x8000) Desc.fX = 920.f;
+    if (GetKeyState('1') & 0x8000) { Desc.fX = 360.f; m_iCheckBoxIndex = 0; }
+    if (GetKeyState('2') & 0x8000) { Desc.fX = 430.f; m_iCheckBoxIndex = 1; }
+    if (GetKeyState('3') & 0x8000) { Desc.fX = 500.f; m_iCheckBoxIndex = 2; }
+    if (GetKeyState('4') & 0x8000) { Desc.fX = 570.f; m_iCheckBoxIndex = 3; }
+    if (GetKeyState('5') & 0x8000) { Desc.fX = 640.f; m_iCheckBoxIndex = 4; }
+    if (GetKeyState('6') & 0x8000) { Desc.fX = 710.f; m_iCheckBoxIndex = 5; }
+    if (GetKeyState('7') & 0x8000) { Desc.fX = 780.f; m_iCheckBoxIndex = 6; }
+    if (GetKeyState('8') & 0x8000) { Desc.fX = 850.f; m_iCheckBoxIndex = 7; }
+    if (GetKeyState('9') & 0x8000) { Desc.fX = 920.f; m_iCheckBoxIndex = 8; }
 
     if(m_fCheckBox != Desc.fX)
     {
@@ -125,6 +126,9 @@ CGameObject* CCheckBox::Clone(void* pArg)
         MSG_BOX("Failed to Created : CEdition");
         Safe_Release(pInstance);
     }
+
+    CUI_Mgr::Get_Instance()->Get_vecCheckBoxlist()->push_back(pInstance);
+
     return pInstance;
 }
 

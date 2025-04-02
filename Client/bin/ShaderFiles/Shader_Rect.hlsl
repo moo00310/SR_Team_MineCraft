@@ -18,12 +18,27 @@ struct VS_OUT
 
 sampler2D DefaultSampler : register(s0);
 
-VS_OUT VS_MAIN(VS_IN In)
+VS_OUT VS_MAIN_SKYBOX(VS_IN In)
 {
     VS_OUT Out;
+    
+    float4 worldPosition = float4(In.vPosition, 0.1f); // 
+    worldPosition = mul(worldPosition, g_WorldMatrix); // 월드 변환
+    worldPosition = mul(worldPosition, g_ViewMatrix); // 뷰 변환
+    worldPosition = mul(worldPosition, g_ProjMatrix); // 프로젝션 변환
+    
+    
+    Out.vPosition = worldPosition;
+    Out.vTexcoord = In.vTexcoord;
 
-    // 인스턴스 위치를 월드 변환에 추가
-    float4 worldPosition = float4(In.vPosition, 0.1f); // vPosition을 float4로 처리
+    return Out;
+}
+
+VS_OUT VS_MAIN_ITEMRECT(VS_IN In)
+{
+    VS_OUT Out;
+    
+    float4 worldPosition = float4(In.vPosition, 1.0f); // 
     worldPosition = mul(worldPosition, g_WorldMatrix); // 월드 변환
     worldPosition = mul(worldPosition, g_ViewMatrix); // 뷰 변환
     worldPosition = mul(worldPosition, g_ProjMatrix); // 프로젝션 변환
@@ -69,7 +84,17 @@ technique DefaultTechnique
         ZWRITEENABLE = true;
         LIGHTING = false;
         CULLMODE = NONE;
-        VertexShader = compile vs_3_0 VS_MAIN();
+        VertexShader = compile vs_3_0 VS_MAIN_SKYBOX();
+        PixelShader = compile ps_3_0 PS_MAIN();
+    }
+
+    pass ItemRectPass
+    {
+        ZENABLE = true;
+        ZWRITEENABLE = true;
+        LIGHTING = false;
+        CULLMODE = NONE;
+        VertexShader = compile vs_3_0 VS_MAIN_ITEMRECT();
         PixelShader = compile ps_3_0 PS_MAIN();
     }
 }

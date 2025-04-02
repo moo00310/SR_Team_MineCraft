@@ -26,6 +26,12 @@ public:
 	virtual HRESULT Render()override;
 
 public:
+	_int Get_CheckBoxIndex() { return m_iCheckBoxIndex; }
+
+public:
+	void Set_CheckBoxIndex(_int _index) { m_iCheckBoxIndex = _index; }
+
+public:
 	UIOBJECT_DESC Desc{};
 
 private:
@@ -38,6 +44,7 @@ private:
 
 private:
 	_float m_fCheckBox = { 0.f };
+	_int   m_iCheckBoxIndex = { 0 };
 
 public:
 	static CCheckBox* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

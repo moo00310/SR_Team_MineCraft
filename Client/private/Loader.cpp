@@ -58,7 +58,7 @@
 #include "MainInventory.h"
 #include "SubInventory.h"
 #include "Inventory_Back.h"
-#include "Item.h"
+#include "SlotInfo.h"
 #include "CheckBox.h"
 #include "PlayerHP_Back.h"
 #include "PlayerHP.h"
@@ -68,7 +68,7 @@
 #include "PlayerExp.h"
 #include "PlayerLevel.h"
 #include "Mouse_Item.h"
-#include "ItemFont.h"
+#include "Mouse_ItemFont.h"
 
 #define Rect_Model_Count 3
 #define Cube_Model_Count 7
@@ -355,6 +355,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/sun.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Sun */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Moon"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/moon.png"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Clouds */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Clouds"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/clouds.png"), 1))))
@@ -504,7 +509,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 
 	// 깨지는 블럭 모델.
-	Engine::CUBE_ONLY cubeOnly{ _float3(1.1f, 1.1f, 1.1f) };
+	Engine::CUBE_ONLY cubeOnly{ _float3(1.01f, 1.01f, 1.01f) };
 	/* For.Prototype_Component_VIBuffer_RectShader */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_RectShader"),
 		CVIBuffer_RectShader::Create(m_pGraphic_Device))))
@@ -623,7 +628,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	/* For.Prototype_GameObject_Item*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
-		CItem::Create(m_pGraphic_Device))))
+		CSlotInfo::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_PlayerHP_Back*/
@@ -666,9 +671,9 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CMouse_Item::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Mouse_item*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemFont"),
-		CItemFont::Create(m_pGraphic_Device))))
+	/* For.Prototype_GameObject_Mouse_ItemFont*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_ItemFont"),
+		CMouse_ItemFont::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	/*================================================================================================*/
 

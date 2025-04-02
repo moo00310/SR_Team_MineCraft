@@ -30,10 +30,10 @@ HRESULT CParticleExplosion::Initialize(void* pArg)
 	}
 
 	dwVpBatchSize = 12;
-	dwPointSize = GetScale(2.f);	// 포인트 스프라이트 크기.
+	dwPointSize = GetScale(1.f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
-	dwPointScaleC = GetScale(5.f);
+	dwPointScaleC = GetScale(3.f);
 
 	// 부모 Initialize 호출시켜서 버텍스 초기화 시키고 이거 호출 시킬 것.
 	if (FAILED(Create_VertexBuffer()))
@@ -98,7 +98,7 @@ ParticleAttribute CParticleExplosion::OnSetAddParticle()
 {	
 	ParticleAttribute att;
 	att.vPosition = { GetRandomFloat(-2.f, 2.f), GetRandomFloat(-2.f, 2.f), GetRandomFloat(-2.f, 2.f)};
-	att.vColor = { 0.1f, 0.f, 0.f, 1.f };
+	att.vColor = Float3ToHex({ 0.f, 1.f, 0.f });
 	att.vVelocity = { 0.f, 0.f, 0.f };
 	//att.IsTime = true;
 	att.fCurrentTime = 0.f;

@@ -3,7 +3,7 @@
 #include "MapTool.h"
 #include "Camera_Player.h"
 #include "Steve.h"
-#include "Item.h"
+#include "SlotInfo.h"
 #include "UI_Mgr.h"
 
 
@@ -38,6 +38,9 @@ HRESULT CLevel_YU::Initialize()
 //	SetConsoleWindowInfo(hConsole, TRUE, &windowSize);
 //
 //#endif // _DEBUG
+
+	if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
@@ -82,17 +85,11 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Particle(LAYER_PARTICLE)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_SandDestroyParticle(LAYER_PARTICLE)))
-		return E_FAIL;
-
 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
 	return E_FAIL;
 
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 	return E_FAIL;
-
-	if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -212,13 +209,10 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
-	/* Prototype_GameObject_Mouse_item */
-	for (int i = 0; i < 56; ++i)
-	{
-		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemFont"),
-			LEVEL_YU, strLayerTag, (int*)&i)))
-			return E_FAIL;
-	}
+	/* Prototype_GameObject_Mouse_ItemFont */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_ItemFont"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -286,14 +280,17 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-		LEVEL_YU, strLayerTag, 5)))
+		LEVEL_YU, strLayerTag, 1)))
 		return E_FAIL;
 
-	for (_uint i = 0; i < 5; i++)
-	{
-		m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-			LEVEL_YU, strLayerTag);
-	}
+	m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+		LEVEL_YU, strLayerTag);
+
+	//for (_uint i = 0; i < 5; i++)
+	//{
+	//	m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+	//		LEVEL_YU, strLayerTag);
+	//}
 
 	return S_OK;
 }
@@ -388,18 +385,22 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		return E_FAIL;
 	}
 
-	return S_OK;
-}
+	// 흙 캐는 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
 
-HRESULT CLevel_YU::Ready_Layer_SandDestroyParticle(const _wstring& strLayerTag)
-{
-	HRESULT hr = m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+	// 흙 파괴 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
 		PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,	// 가져올 프로토타입.
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
-		3);				// 풀링 갯수.
-
-	if (FAILED(hr))
+		3)))				// 풀링 갯수.
 	{
 		return E_FAIL;
 	}

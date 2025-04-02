@@ -2,6 +2,7 @@
 #include "Client_Defines.h"
 #include "Camera.h"
 #include "Steve.h"
+#include "DestroyCube.h"
 
 BEGIN(Client)
 
@@ -35,7 +36,7 @@ private:
     _float              m_fYaw{};
     _float              m_fPitch{};
     enum class E_CAMERA_MODE { FPS, TPS };
-    E_CAMERA_MODE       m_eCameraMode = E_CAMERA_MODE::TPS; // �⺻�� TPS
+    E_CAMERA_MODE       m_eCameraMode = E_CAMERA_MODE::TPS; // ±âº»°ª TPS
     CSteve*             m_pPlayer = {nullptr};
 
 private:
@@ -43,6 +44,7 @@ private:
     _bool               m_isActiveMouse{ false };
     _float              m_fWalkTime{};
     _float              m_fSpringArmLength{ 5.f };
+    CDestroyCube*       m_DestroyCube = { nullptr };
 
 private:
     void    Input_Key(_float fTimeDelta);

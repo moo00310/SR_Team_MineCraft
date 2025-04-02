@@ -1,6 +1,7 @@
 ﻿#include "BreakableCube.h"
 #include "MCTerrain.h"
 #include "GameInstance.h"
+#include "Creeper.h"
 #include <iostream>
 
 CBreakableCube::CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -26,6 +27,33 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
+    list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
+
+    for (CGameObject* pMonster : Monsters)
+    {
+        if (CCreeper* _creeper = dynamic_cast<CCreeper*>(pMonster)) {
+            _float3 creeperPos = _creeper->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+            for (CCollider_Cube* pCollider : m_Colliders)
+            {
+                _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
+
+                _float3 vDiff{ creeperPos - vColliderPos };
+                //vDiff.y *= 2.f; //y축으로는 충돌 계산 적게 하기위해
+                _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+                if (fLengthSq < 7.f) {
+                    if (CPawn* _pawn = dynamic_cast<CPawn*>(_creeper)) {
+                        if (CPawn::BOOM == _pawn->Get_ANIM()) {
+                            Delete_Cube(vColliderPos);
+                            m_pGameInstance->PopPool(pMonster);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     if (m_iHp < 100) {
 
         m_resetHpFrame++;
@@ -112,7 +140,7 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 
     for (int i = 0; i < position.size(); ++i) {
         m_vecPositions.push_back(position[i]); //위치 넣어줌
-        m_vecBrights.push_back(1.f);
+        m_vecBrights.push_back(0.6f);
 
         /* For.Com_Collider */
         CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
@@ -136,16 +164,25 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
     return E_NOTIMPL;
 }
 
-void CBreakableCube::Attacked_Block(_float3 fPos)
+void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
 {
     if (m_attackedBlockPos != fPos) {
         m_iHp = 100;
         cout << "Change Block" << m_iHp << endl;
     }
-    m_iHp -= 1;
+    m_iHp -= attackDamage;
     m_attackedBlockPos = fPos;
     m_resetHpFrame = 0;
     cout << "Damage" << m_iHp << endl;
+
+    CParticleEventManager::Get_Instance()->OnParticle(
+        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
+        fPos);
+}
+
+int CBreakableCube::GetHP() const
+{
+    return m_iHp;
 }
 
 void CBreakableCube::Set_Bright(float _f)
