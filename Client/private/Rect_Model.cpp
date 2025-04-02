@@ -41,6 +41,19 @@ void CRect_Model::Late_Update(_float fTimeDelta)
 
 HRESULT CRect_Model::Render()
 {
+	if (m_isTPS)
+	{
+		Matrix mat = m_pSteve->GetSoketMatrix();
+		mat._42 += 3.f/16.f;
+		Matrix mat2 = {};
+		mat2.Turn_Radian(_float3(1.f, 0.f, 1.f), D3DXToRadian(90));
+		mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(20));
+
+		mat2.Scaling(0.8f, 0.8f, 0.8f);
+
+		m_pVIBufferComs[0]->SetMatrix(mat2*mat);
+	}
+
 	__super::Render();
 
 	return S_OK;
@@ -72,8 +85,10 @@ HRESULT CRect_Model::Ready_Bone()
 	mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
 
 	BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
+	BONE bone2 = { "Fx", 1, MAtrixTranslation(4.f/16.f, 4.f / 16.f, 0.f), MAtrixTranslation(4.f / 16.f, 4.f / 16.f, 0.f), Matrix(), Matrix()};
 
 	m_pSkeletalAnimator->Add_Bone(bone);
+	m_pSkeletalAnimator->Add_Bone(bone2);
 
 	return S_OK;
 }
@@ -84,13 +99,14 @@ HRESULT CRect_Model::Ready_Animation()
 	//* Init 
 	//----------------------------*/
 	Matrix mat = {};
+
 	KEYFREAME Init1 = { 0.f, mat };
 	m_pSkeletalAnimator->Add_Animation(INIT, Init1);
 
 	///*------------------------
 	//* Swing 애니메이션 
 	//----------------------------*/
-	Matrix matrix1 = {};
+	Matrix matrix1 = {  };
 	matrix1.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(100));
 	matrix1.Set_State(matrix1.STATE_POSITION, _float3(-1.5f, 0.2f, -0.3f));
 
@@ -111,10 +127,10 @@ HRESULT CRect_Model::Ready_Animation()
 	//* WALK 애니메이션 
 	//----------------------------*/
 
-	matrix1 = {};
+	matrix1 = { };
 	matrix1.Set_State(matrix1.STATE_POSITION, _float3(-0.04f, -0.04f, -0.04f));
 
-	matrix2 = {};
+	matrix2 = { };
 	matrix2.Set_State(matrix2.STATE_POSITION, _float3(-0.04f, 0.04f, -0.04f));
 
 	KEYFREAME Walk1 = { 0.f, mat };
@@ -135,17 +151,37 @@ HRESULT CRect_Model::Ready_Animation()
 	//----------------------------*/
 
 
-	matrix1 = {};
-	matrix1.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-70));
-	matrix1.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-45));
-	matrix1.Set_State(mat.STATE_POSITION, _float3(-1.f, 0.5f, -1.2f));;
+	matrix1 = { };
+	matrix1.Set_State(mat.STATE_POSITION, _float3(-0.8f, 0.5f, -0.6f));
+	matrix1.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-25));
+	matrix1.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-80));
+	matrix1.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-20));
+
+	matrix2 = matrix1;
+	matrix2.Set_State(mat.STATE_POSITION, _float3(-1.2f, 0.5f, -0.6f));
 
 	KEYFREAME EAT1 = { 0.f, mat };
-	KEYFREAME EAT2 = { 0.4f, matrix1 };
+	KEYFREAME EAT2 = { 0.2f, matrix1 };
+	KEYFREAME EAT3 = { 0.3f, matrix2 };
+	KEYFREAME EAT4 = { 0.4f, matrix1 };
+	KEYFREAME EAT5 = { 0.5f, matrix2 };
+	KEYFREAME EAT6 = { 0.6f, matrix1 };
+	KEYFREAME EAT7 = { 0.7f, matrix2 };
+	KEYFREAME EAT8 = { 0.8f, matrix1 };
+	KEYFREAME EAT9 = { 0.9f, matrix2 };
+	KEYFREAME EAT10 = { 1.0f, matrix1 };
 
 
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT1);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT2);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT2); 
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT3);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT4);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT5);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT6);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT7);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT8);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT9);
+	m_pSkeletalAnimator->Add_Animation(EAT, EAT10);
 
 
 	return S_OK;
@@ -192,7 +228,10 @@ void CRect_Model::Motion_Swing(_float fTimeDelta)
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
-		m_eCurAnim = INIT;
+		if (m_pSteve->Get_AttackContinue())
+			m_eCurAnim = SWING;
+		else
+			m_eCurAnim = INIT;
 	}
 }
 

@@ -70,6 +70,9 @@
 #include "Mouse_Item.h"
 #include "Mouse_ItemFont.h"
 
+#define Rect_Model_Count 3
+#define Cube_Model_Count 7
+
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
 	, m_pGameInstance { CGameInstance::Get_Instance() }
@@ -441,7 +444,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	// 1인칭 Rect_Texture
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Rect_Model"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Rect_model/Rect_model_%d.png"), 2))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Rect_model/Rect_model_%d.png"), 3))))
 		return E_FAIL;
 
 	// 1인칭 Cube_Texture

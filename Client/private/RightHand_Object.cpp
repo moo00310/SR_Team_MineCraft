@@ -1,5 +1,6 @@
 #include "RightHand_Object.h"
 
+
 CRightHand_Object::CRightHand_Object(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
 {
@@ -17,8 +18,11 @@ HRESULT CRightHand_Object::Initialize_Prototype()
 
 HRESULT CRightHand_Object::Initialize(void* pArg)
 {
-    m_isActive = false;
     m_isRender = false;
+    m_pSteve = static_cast<CSteve*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")));
+
+    if (m_pSteve == nullptr) return E_FAIL;
+    Safe_AddRef(m_pSteve);
 
     m_pVIBufferComs.resize(1);
     if (FAILED(Ready_Components()))
@@ -44,10 +48,14 @@ void CRightHand_Object::Update(_float fTimeDelta)
 
 void CRightHand_Object::Late_Update(_float fTimeDelta)
 {
-    Update_State(fTimeDelta);
+  
+    if (!m_isTPS)
+    {
+        Update_State(fTimeDelta);
 
-    if (FAILED(Update_Root(fTimeDelta)))
-        return;
+        if (FAILED(Update_Root(fTimeDelta)))
+            return;
+    }
 
     if (m_isRender)
     {
@@ -59,7 +67,6 @@ void CRightHand_Object::Late_Update(_float fTimeDelta)
 
 HRESULT CRightHand_Object::Render()
 {
- 
     if (FAILED(m_pTextureCom->Bind_Resource(m_TextrueNum)))
         return E_FAIL;
 
@@ -121,6 +128,7 @@ void CRightHand_Object::Free()
 {
     __super::Free();
 
+    Safe_Release(m_pSteve);
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pSkeletalAnimator);
     Safe_Release(m_pShaderCom);

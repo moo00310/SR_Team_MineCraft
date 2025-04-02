@@ -169,7 +169,10 @@ void CArm_Steve::Motion_Swing(_float fTimeDelta)
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
-		m_eCurAnim = INIT;
+		if (m_pSteve->Get_AttackContinue())
+			m_eCurAnim = SWING;
+		else
+			m_eCurAnim = INIT;
 	}
 }
 
