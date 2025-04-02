@@ -58,38 +58,92 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 	// 2. 충돌 검사 (예측 위치 기준)
 	if (m_pCollider)
 	{
+		//=== y축충돌 검사하고 나서 ===	
 		list<CCollider_Cube::COLLISION_INFO> Collision_Infos;
 		_bool isHit = m_pGameInstance->Collision_Check_Group_Multi(iCollsionGroup, Collision_Infos, m_pCollider, CCollider_Manager::COLLSIION_CUBE);
 
 		if (isHit)
 		{
-			_float fMinY{ 0 }; // 충돌 깊이를 찾기 위한 초기값
+			_float fMinY{ 0 }; // Y축 충돌 깊이
 			_float fMaxY{ 0 };
+
 			for (const auto& tInfo : Collision_Infos)
 			{
+				// 위쪽 충돌 처리
 				if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::UP)
 				{
 					fMinY = min(fMinY, tInfo.vDepth.y);
 					m_isGround = true;
-					m_vVelocity.y = 0.0f; // 속도 초기화
+					m_vVelocity.y = 0.0f;
 				}
 
+				// 아래쪽 충돌 처리
 				if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::DOWN)
 				{
 					fMaxY = max(fMaxY, tInfo.vDepth.y);
-					m_vVelocity.y = 0.f; // 속도 초기화
+					m_vVelocity.y = 0.f;
 				}
 			}
 
-			vNextPosition.y -= fMinY;
-			vNextPosition.y -= fMaxY;
+			// Y축 보정
+			vNextPosition.y -= fMinY + fMaxY;
+		}
+
+		m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
+
+		if (m_vVelocity.x != 0.f || m_vVelocity.z != 0.f) // 이동중이면
+		{
+			//=== xz축 충돌 검사 ===
+			Collision_Infos.clear();
+			isHit = m_pGameInstance->Collision_Check_Group_Multi(iCollsionGroup, Collision_Infos, m_pCollider, CCollider_Manager::COLLSIION_CUBE);
+
+			if (isHit)
+			{
+				_float fMinX{ 0 }; // Y축 충돌 깊이
+				_float fMaxX{ 0 };
+
+				_float fMinZ{ 0 }; // Y축 충돌 깊이
+				_float fMaxZ{ 0 };
+
+				for (const auto& tInfo : Collision_Infos)
+				{
+
+					// 수평 방향 충돌 처리
+					if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::FRONT)
+					{
+						fMinZ = min(fMinZ, tInfo.vDepth.z);
+						m_vVelocity.z = 0.0f;
+					}
+
+					if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::BACK)
+					{
+						fMaxZ = max(fMaxZ, tInfo.vDepth.z);
+						m_vVelocity.z = 0.0f;
+					}
+
+					if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::LEFT)
+					{
+						fMaxX = max(fMaxX, tInfo.vDepth.x);
+						m_vVelocity.x = 0.0f;
+					}
+
+					if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::RIGHT)
+					{
+						fMinX = min(fMinX, tInfo.vDepth.x);
+						m_vVelocity.x = 0.0f;
+					}
+				}
+
+				vNextPosition.x -= fMinX + fMaxX;
+				vNextPosition.z -= fMinZ + fMaxZ;
+			}
 		}
 	}
 
 	m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
 
 #pragma region TEST
-	//이놈은 0.f일 때 못내려가게 해주는거 나중에 없앨만 한놈
+	// 바닥을 뚫고 내려가지 않도록 보정
 	if (vNextPosition.y < 0.f)
 	{
 		m_isGround = true;
@@ -110,10 +164,9 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 	Compute_Velocity(fTimeDelta);
 
-	//printf_s("isGround: %d\n", m_isGround);
-
 	return S_OK;
 }
+
 
 
 HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist)
@@ -138,8 +191,6 @@ HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _flo
 	{
 		m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
 	}
-
-	Compute_Velocity(fTimeDelta);
 
 	return S_OK;
 }
@@ -168,9 +219,142 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 		m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
 	}
 
-	Compute_Velocity(fTimeDelta);
-
 	return S_OK;
+}
+
+void CRigidbody::Move(_float3 vDir)
+{
+	D3DXVec3Normalize(&vDir, &vDir);
+
+	m_vVelocity.x = vDir.x * m_fMaxSpeed;
+	m_vVelocity.z = vDir.z * m_fMaxSpeed;
+
+	ClampVelocityXZ();
+}
+
+void CRigidbody::Chase(const _float3& vTargetPos, _float fMinDistance)
+{
+	_float3 vDir = vTargetPos - m_pTransform->Get_State(CTransform::STATE_POSITION);
+	_float fDistance = D3DXVec3Length(&vDir);
+	if (fDistance < fMinDistance)
+	{
+		m_vVelocity.x = 0.f;
+		m_vVelocity.z = 0.f;
+		return;
+	}
+	D3DXVec3Normalize(&vDir, &vDir);
+	m_vVelocity.x = vDir.x * m_fMaxSpeed;
+	m_vVelocity.z = vDir.z * m_fMaxSpeed;
+	ClampVelocityXZ();
+}
+
+void CRigidbody::Go_Straight()
+{
+	_float3 vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	//미끄러짐
+	//m_vVelocity += vLook * m_fMoveSpeed;
+
+	// 기존 속도 제거 후 새로운 속도 적용
+	m_vVelocity.x = vLook.x * m_fMaxSpeed;
+	m_vVelocity.z = vLook.z * m_fMaxSpeed;
+
+	ClampVelocityXZ();
+}
+
+void CRigidbody::Go_Backward()
+{
+	_float3 vLook = m_pTransform->Get_State(CTransform::STATE_LOOK);
+	D3DXVec3Normalize(&vLook, &vLook);
+
+	//미끄러짐
+	//m_vVelocity += vLook * m_fMoveSpeed;
+
+	// 기존 속도 제거 후 새로운 속도 적용
+	m_vVelocity.x = -vLook.x * m_fMaxSpeed;
+	m_vVelocity.z = -vLook.z * m_fMaxSpeed;
+
+	ClampVelocityXZ();
+}
+
+void CRigidbody::Go_Left()
+{
+	_float3 vRight = m_pTransform->Get_State(CTransform::STATE_RIGHT);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	//미끄러짐
+	//m_vVelocity += vLook * m_fMoveSpeed;
+
+	// 기존 속도 제거 후 새로운 속도 적용
+	m_vVelocity.x = -vRight.x * m_fMaxSpeed;
+	m_vVelocity.z = -vRight.z * m_fMaxSpeed;
+
+	ClampVelocityXZ();
+}
+
+void CRigidbody::Go_Right()
+{
+	_float3 vRight = m_pTransform->Get_State(CTransform::STATE_RIGHT);
+	D3DXVec3Normalize(&vRight, &vRight);
+
+	//미끄러짐
+	//m_vVelocity += vLook * m_fMoveSpeed;
+
+	// 기존 속도 제거 후 새로운 속도 적용
+	m_vVelocity.x = vRight.x * m_fMaxSpeed;
+	m_vVelocity.z = vRight.z * m_fMaxSpeed;
+
+	ClampVelocityXZ();
+}
+
+void CRigidbody::StopMovement()
+{
+	m_vVelocity.x = 0.f;
+	m_vVelocity.z = 0.f;
+}
+
+
+void CRigidbody::ClampVelocity()
+{
+	_float speed = D3DXVec3Length(&m_vVelocity);
+
+	if (speed > m_fMaxSpeed)
+	{
+		D3DXVec3Normalize(&m_vVelocity, &m_vVelocity);
+		m_vVelocity *= m_fMaxSpeed;
+	}
+}
+
+void CRigidbody::ClampVelocityXZ()
+{
+	// XZ 평면에서의 속도 벡터 계산
+	_float2 vVelocityXZ(m_vVelocity.x, m_vVelocity.z);
+
+	_float speedXZ = D3DXVec2Length(&vVelocityXZ);
+
+	if (speedXZ > m_fMaxSpeed)
+	{
+		D3DXVec2Normalize(&vVelocityXZ, &vVelocityXZ);
+		vVelocityXZ *= m_fMaxSpeed;
+
+		// XZ 속도만 조정
+		m_vVelocity.x = vVelocityXZ.x;
+		m_vVelocity.z = vVelocityXZ.y;
+	}
+}
+
+void CRigidbody::Compute_Velocity(_float fTimeDelta)
+{
+	if (fTimeDelta <= 0.f) return; // 델타 타임이 0이면 계산하지 않음
+
+	//속도는 위치 변화량 / 시간
+	_float3 vCurrentPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
+	m_vReadOnly_Velocity = (vCurrentPosition - m_vPrevPosition) / fTimeDelta;
+
+	//printf_s("velocity: %f, %f, %f\n", m_vReadOnly_Velocity.x, m_vReadOnly_Velocity.y, m_vReadOnly_Velocity.z);
+
+	m_vPrevPosition = vCurrentPosition;
 }
 
 
@@ -191,9 +375,9 @@ void CRigidbody::Knock_back(const _float3& vfroce)
 {
 	if (!m_isKnockBack) 
 	{
-		m_vVelocity.x = vfroce.x;
-		m_vVelocity.y = vfroce.y;
-		m_vVelocity.z = vfroce.z;
+		m_vVelocity.x += vfroce.x;
+		m_vVelocity.y += vfroce.y;
+		m_vVelocity.z += vfroce.z;
 		m_isKnockBack = true;
 	}
 }
@@ -204,20 +388,6 @@ void CRigidbody::Knock_back(const _float3& vfroce)
 //
 //}
 
-
-void CRigidbody::Compute_Velocity(_float fTimeDelta)
-{
-	if (fTimeDelta <= 0.f) return; // 델타 타임이 0이면 계산하지 않음
-
-	//속도는 위치 변화량 / 시간
-	_float3 vCurrentPosition = m_pTransform->Get_State(CTransform::STATE_POSITION);
-	m_vReadOnly_Velocity = (vCurrentPosition - m_vPrevPosition) / fTimeDelta;
-
-	//printf_s("velocity: %f, %f, %f\n", m_vReadOnly_Velocity.x, m_vReadOnly_Velocity.y, m_vReadOnly_Velocity.z);
-
-	m_vPrevPosition = vCurrentPosition;
-
-}
 
 
 

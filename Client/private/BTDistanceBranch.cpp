@@ -20,6 +20,7 @@ STATUS CBTDistanceBranch::Excute(CGameObject* _Obj, _float _fTimeDelta)
     {
         if (fDistance <= m_fAttack_Distnace)
         {
+            pMonster->Get_RigidBody()->StopMovement();
             bIsAttack = true;
             return m_pAttackAction ? m_pAttackAction->Excute(_Obj, _fTimeDelta) : STATUS::FAIL;
         }

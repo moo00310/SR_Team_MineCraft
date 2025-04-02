@@ -9,8 +9,9 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
     pMonster->Set_Animation(CMonster::WALK);
 
     // Transform 컴포넌트 가져오기
-    CTransform* pTransform = pMonster->Get_Transform();
-    if (!pTransform) return STATUS::FAIL;
+    CRigidbody* pRigidbody = pMonster->Get_RigidBody();
+	CTransform* pTransform = pMonster->Get_Transform();
+    if (!pRigidbody) return STATUS::FAIL;
 
     m_fElapsedTime += _fTimeDelta;
     m_fToIdle += _fTimeDelta;
@@ -44,7 +45,7 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
     }
 
     // 직진 이동
-    pTransform->Go_Straight(pMonster->Get_Collider(), COLLISION_BLOCK, _fTimeDelta);
+    pRigidbody->Go_Straight();
     return STATUS::RUNNING;
 }
 
