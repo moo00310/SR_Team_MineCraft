@@ -201,6 +201,19 @@ void CSteve::Move(_float fTimeDelta)
 	{
 		CUI_Mgr::Get_Instance()->PlayerExp_Set();
 	}
+
+	if (m_pGameInstance->Key_Down('C'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_COBBLESTONE, 1);
+	}
+	if (m_pGameInstance->Key_Down('V'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_COBBLESTONE, 64);
+	}
+	if (m_pGameInstance->Key_Down('B'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_WOOD, 1);
+	}
 }
 
 HRESULT CSteve::Ready_Components()

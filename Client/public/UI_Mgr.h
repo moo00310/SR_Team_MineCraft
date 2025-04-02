@@ -1,6 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
-#include "Item.h"
+#include "SlotInfo.h"
 #include "MainInventory.h"
 #include "SubInventory.h"
 #include "Inventory_Back.h"
@@ -10,7 +10,8 @@
 #include "PlayerLevel.h"
 #include "Mouse_Item.h"
 #include "Steve.h"
-#include "ItemFont.h"
+#include "Mouse_ItemFont.h"
+#include "CheckBox.h"
 
 BEGIN(Client)
 
@@ -28,7 +29,7 @@ public:
 	void Late_Update(_float fTimeDelta);
 
 public:
-	void Add_Item(CItem* pItem);
+	void Add_SlotUpdate(CSlotInfo* pItem);
 	/* 퀵슬롯과 인벤토리 동기화*/
 	void Synchronize_Slots();
 	/* 플레이어 체력 */
@@ -39,21 +40,21 @@ public:
 	void PlayerExp_Set();
 	/* 플레이어 레벨업*/
 	void LevelUp();
-	/* 아이템 개수 업데이트 */
-	void Set_ItemCount();
-
+	/* 아이템 개수 업데이트*/
+	void ItemCount_Update(ITEMNAME _ItemNamem, _int AddCount);
 
 public:
-	CItem*							Get_Item(int slotIndex);
+	CSlotInfo*						Get_Item(int slotIndex);
 
 	vector<CPlayerHP*>*				Get_vecPlayerHPlist(void)		{ return &m_vecPlayerHPlist; }
+	vector<CSlotInfo*>*				Get_vecSlotInfolist(void)		{ return &m_vecSlotInfolist; }
+	vector<CCheckBox*>*				Get_vecCheckBoxlist(void)		{ return &m_vecCheckBoxlist; }
+
 	list<CPlayerHunger*>*			Get_PlayerHungerlist(void)		{ return &m_PlayerHungerlist; }
 	list<CPlayerExp*>*				Get_PlayerExplist(void)			{ return &m_PlayerExplist; }
 	list<CPlayerLevel*>*			Get_PlayerLevellist(void)		{ return &m_PlayerLevellist; }
 	list<CMouse_Item*>*				Get_MouseItemlist(void)			{ return &m_MouseItemlist; }
-
-	vector<CItem*>*					Get_vecItemlist(void)			{ return &m_vecItemlist; }
-	vector<CItemFont*>*				Get_vecItemFontlist(void)		{ return &m_vecItemFontlist; }
+	list<CMouse_ItemFont*>*			Get_MouseItemFontlist(void)		{ return &m_MouseItemFontlist; }
 
 	_bool							Get_PlayerHP_Shader()			{ return m_bPlayerHP_Shader; }
 	
@@ -81,14 +82,14 @@ private:
 
 
 	/* Inventory 관련 */
-	vector<CItem*>			m_vecItemlist;
-	vector<CItemFont*>		m_vecItemFontlist;
+	vector<CSlotInfo*>		m_vecSlotInfolist;
+	vector<CCheckBox*>		m_vecCheckBoxlist;
 	list<CMainInventory*>	m_MainInventorylist;
 	list<CSubInventory*>	m_SubInventorylist;
 	list<CInventory_Back*>	m_InventoryBacklist;
 	list<CMouse_Item*>		m_MouseItemlist;
-
-
+	list<CMouse_ItemFont*>	m_MouseItemFontlist;
+	
 
 private:
 	CSteve* pSteve = { nullptr };

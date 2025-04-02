@@ -1,27 +1,29 @@
-﻿#include "Item.h"
+﻿#include "SlotInfo.h"
 #include "UI_Mgr.h"
 #include "Mouse.h"
 
-CItem::CItem(LPDIRECT3DDEVICE9 pGraphic_Device)
+CSlotInfo::CSlotInfo(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
 {
 }
 
-CItem::CItem(CItem& Prototype)
+CSlotInfo::CSlotInfo(CSlotInfo& Prototype)
     : CUIObject(Prototype)
 {
 }
 
 
-HRESULT CItem::Initialize_Prototype()
+HRESULT CSlotInfo::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CItem::Initialize(void* pArg)
+HRESULT CSlotInfo::Initialize(void* pArg)
 {
     m_iSlotIndex = (int*)pArg;
     m_iSlotIndexNum = *m_iSlotIndex;
+
+    m_fOffsetX = 18.f;
 
     static UIOBJECT_DESC slotTable[] = {
         {0, 42.f, 42.f, 360.f, 672.f},  // 0~8 (퀵슬롯)
@@ -72,28 +74,37 @@ HRESULT CItem::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-    m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
+    m_pItemTexture_TransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
+    m_pItemTexture_TransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
 
     return S_OK;
 }
 
-void CItem::Priority_Update(_float fTimeDelta)
+void CSlotInfo::Priority_Update(_float fTimeDelta)
 {
    
 }
 
-void CItem::Update(_float fTimeDelta)
+void CSlotInfo::Update(_float fTimeDelta)
 {
- 
+    m_iTensDigit = m_iItemCount / 10;
+    m_iOnesDigit = m_iItemCount % 10;
 }
 
-void CItem::Late_Update(_float fTimeDelta)
+void CSlotInfo::Late_Update(_float fTimeDelta)
 {
+    /* 인벤토리 활성화되어있을때만 마우스 피킹 가능*/
     if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
+    {
         return;
-  
+    }
+
+    /* 아이템 정보 저장*/
     CMouse* pMouse = CMouse::Get_Instance();
+    CUI_Mgr* pUI_Mgr = CUI_Mgr::Get_Instance();
+
+    auto mouseItem = pUI_Mgr->Get_MouseItemlist()->begin();
+    auto mouseItemFont = pUI_Mgr->Get_MouseItemFontlist()->begin();
 
     /* 마우스와 아이템 슬롯 간 충돌 체크 */
     RECT rcRect;
@@ -104,13 +115,9 @@ void CItem::Late_Update(_float fTimeDelta)
     GetCursorPos(&ptMouse);
     ScreenToClient(g_hWnd, &ptMouse);
 
-    CUI_Mgr* pUI_Mgr = CUI_Mgr::Get_Instance();
-
-    auto mouse = pUI_Mgr->Get_MouseItemlist()->begin();
-
     /* 마우스 클릭 시 아이템 선택 및 교체 */
     /* 마우스가 아이템 슬롯 위에 있고, 좌클릭이 떼어졌을 때 실행*/
-    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON) && m_iSlotIndexNum >= 9)
+    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON))
     {
         /* 마우스에 아이템이 없으면 => 현재 슬롯의 아이템을 집음 */
         if (pMouse->Get_Picked() == false)
@@ -125,12 +132,21 @@ void CItem::Late_Update(_float fTimeDelta)
             pMouse->Set_Picked(true);
             /* 현재 슬롯에 있는 아이템 개수 저장 */
             pMouse->Set_ItemCount(m_iItemCount);
-
+           
             /* 마우스가 아이템을 들고 있는 상태로 저장*/
-            (*mouse)->Set_Check(true);
+            (*mouseItem)->Set_Check(true);           
             /* 마우스에 표시할 아이템 이미지 설정 */
-            (*mouse)->Set_ItemName(m_ItemName);
+            (*mouseItem)->Set_ItemName(m_ItemName);
 
+            /* 마우스에 표시할 아이템 개수 이미지 설정*/
+            if (m_iTensDigit != 0 && m_iOnesDigit != 0)
+            {
+                /* 마우스가 아이템 개수를 들고 있는 상태로 저장*/
+                (*mouseItemFont)->Set_Check(true);
+                (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
+                (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
+            }
+          
             Set_ItemName(ITEMNAME_END);
         }
         /* 이미 아이템이 있다면 => 슬롯과 마우스의 아이템을 교환 */
@@ -141,16 +157,16 @@ void CItem::Late_Update(_float fTimeDelta)
             {
                 pMouse->Set_ItemMatch(true);
             }
-              
+            /* 다른 아이템이면 선택한 슬롯 이미지 비움*/
             else
             {
                 pMouse->Set_ItemMatch(false);
-                pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
+                pUI_Mgr->Get_vecSlotInfolist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
             }
                 
 
             ///* 이미 슬롯의 아이템이 있다면 교체 못함 */ // 이 부분을 변경해야할듯 -> 이미 슬롯의 아이템이 있다면 마우스가 들고있는 아이템과  슬롯 아이템 교체
-            if (pUI_Mgr->Get_vecItemlist()->at(m_iSlotIndexNum)->Get_ItemName() < ITEMNAME_END)
+            if (pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Get_ItemName() < ITEMNAME_END)
             {
                 return;
             }
@@ -177,22 +193,16 @@ void CItem::Late_Update(_float fTimeDelta)
 			/* 마우스 상태 갱신 */
 			m_bCheck = true;
 
-            /* 요부분 변경 */
 			/* 마우스가 더 이상 아이템을 들고 있지 않도록 변경 = 빈 상태*/
 			pMouse->Set_ItemID(ITEMID_END);
 			/* 마우스의 이미지를 ITEMID_END로 변경 = 마우스가 들고 있는 아이템을 비움*/
-			(*mouse)->Set_ItemName(ITEMNAME_END);
+			(*mouseItem)->Set_ItemName(ITEMNAME_END);
 			/* 마우스 상태 비활성화 */
-			(*mouse)->Set_Check(false);
-      
-      // 뭔지 몰라서 살려둠 필요없으면 지우세용 -무결-
-			///* 슬롯 아이템 이미지 비우기 */
-      //      if (pMouse->Get_SlotIndex() != m_iSlotIndexNum)
-      //          pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
-			//
-
+			(*mouseItem)->Set_Check(false);
+            (*mouseItemFont)->Set_Check(false);
+      		
             /* 테스트 함수 활성 */
-			pUI_Mgr->Get_vecItemlist()->at(pMouse->Get_SlotIndex())->Set_Test(true);
+			//pUI_Mgr->Get_vecSlotInfolist()->at(pMouse->Get_SlotIndex())->Set_Test(true);
         }
     }
 
@@ -200,58 +210,109 @@ void CItem::Late_Update(_float fTimeDelta)
 		return;
 }
 
-HRESULT CItem::Render()
+HRESULT CSlotInfo::Render()
 {
+    /* 인덱스가 9보다 큰데 인벤토리가 오픈 활성상태 아니면 렌더 안함*/
+    if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
+    {
+        return S_OK;
+    }
+
     if (m_bCheck)
     {
-        /* 메인 인벤토리 활성화일때만 렌더*/
-        if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
-        {
-            return S_OK;
-        }
-
-        if (FAILED(m_pTextureCom->Bind_Resource(m_ItemName)))
+        /* 아이템 이미지 렌더*/
+        if (FAILED(RenderItemTexture(m_pItem_TextureCom, m_ItemName)))
             return E_FAIL;
 
-        if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+        /* 아이템 텍스쳐와 개수 텍스쳐 사이즈 다르게 처리 */
+        /* 10의 자리 아이템 개수 렌더 */
+        if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iTensDigit, Desc.fX, Desc.fY, 14.f, 14.f)))
             return E_FAIL;
 
-        if (FAILED(m_pTransformCom->Bind_Resource()))
+        /* 1의 자리 아이템 개수 렌더 */
+        if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iOnesDigit, Desc.fX - m_fOffsetX, Desc.fY, 14.f, 14.f)))
             return E_FAIL;
-
-        __super::Begin();
-        SetUp_RenderState();
-
-        if (FAILED(m_pVIBufferCom->Render()))
-            return E_FAIL;
-
-        __super::End();
-        Reset_RenderState();
     }
 
 	return S_OK;
 }
 
-HRESULT CItem::SetUp_RenderState()
+HRESULT CSlotInfo::RenderItemTexture(CTexture* pTextureCom, _int _TextureNun)
+{
+
+    if (FAILED(m_pItem_TextureCom->Bind_Resource(_TextureNun)))
+        return E_FAIL;
+
+    if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+        return E_FAIL;
+
+    if (FAILED(m_pItemTexture_TransformCom->Bind_Resource()))
+        return E_FAIL;
+
+    __super::Begin();
+    SetUp_RenderState();
+
+    if (FAILED(m_pVIBufferCom->Render()))
+        return E_FAIL;
+
+    __super::End();
+    Reset_RenderState();
+}
+
+HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNun, _float _fX, _float _fY, _float _fsizeX, _float _fsizeY)
+{
+    _fX += 15.f;
+    _fY += 12.f;
+
+    if (FAILED(m_pItemCount_TextureCom->Bind_Resource(_TextureNun)))
+        return E_FAIL;
+
+    if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+        return E_FAIL;
+
+    if (FAILED(m_pItemCountTexture_TransformCom->Bind_Resource()))
+        return E_FAIL;
+
+    /* 크기 및 위치 조정 */
+    m_pItemCountTexture_TransformCom->Scaling(_fsizeX, _fsizeY, 1.f);
+    m_pItemCountTexture_TransformCom->Set_State(CTransform::STATE_POSITION, _float3(_fX - g_iWinSizeX * 0.5f, -_fY + g_iWinSizeY * 0.5f, 0.f));
+
+    __super::Begin();
+    //SetUp_RenderState();
+
+    if (FAILED(m_pVIBufferCom->Render()))
+        return E_FAIL;
+
+    __super::End();
+    //Reset_RenderState();
+
+    return S_OK;
+}
+
+HRESULT CSlotInfo::SetUp_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 190);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 80);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
     return S_OK;
 }
 
-HRESULT CItem::Reset_RenderState()
+HRESULT CSlotInfo::Reset_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
     return S_OK;
 }
 
-HRESULT CItem::Ready_Components()
+HRESULT CSlotInfo::Ready_Components()
 {
     if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Item"), TEXT("Com_Texture"),
-        reinterpret_cast<CComponent**>(&m_pTextureCom))))
+        reinterpret_cast<CComponent**>(&m_pItem_TextureCom))))
+        return E_FAIL;
+
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Font"), TEXT("Com_Texture"),
+        reinterpret_cast<CComponent**>(&m_pItemCount_TextureCom))))
         return E_FAIL;
 
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"),
@@ -259,15 +320,19 @@ HRESULT CItem::Ready_Components()
         return E_FAIL;
 
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-        TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
+        TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pItemTexture_TransformCom))))
+        return E_FAIL;
+
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+        TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pItemCountTexture_TransformCom))))
         return E_FAIL;
 
     return S_OK;
 }
 
-CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CSlotInfo* CSlotInfo::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CItem* pInstance = new CItem(pGraphic_Device);
+    CSlotInfo* pInstance = new CSlotInfo(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
@@ -277,9 +342,9 @@ CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
     return pInstance;
 }
 
-CGameObject* CItem::Clone(void* pArg)
+CGameObject* CSlotInfo::Clone(void* pArg)
 {
-    CItem* pInstance = new CItem(*this);
+    CSlotInfo* pInstance = new CSlotInfo(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -287,15 +352,17 @@ CGameObject* CItem::Clone(void* pArg)
         Safe_Release(pInstance);
     }
 
-    CUI_Mgr::Get_Instance()->Add_Item(pInstance);
+    CUI_Mgr::Get_Instance()->Add_SlotUpdate(pInstance);
 
     return pInstance;
 }
 
-void CItem::Free()
+void CSlotInfo::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);
-    Safe_Release(m_pTextureCom);
-    Safe_Release(m_pTransformCom);
+    Safe_Release(m_pItem_TextureCom);
+    Safe_Release(m_pItemCount_TextureCom);
+    Safe_Release(m_pItemTexture_TransformCom);
+    Safe_Release(m_pItemCountTexture_TransformCom);
 }

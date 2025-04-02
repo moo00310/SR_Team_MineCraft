@@ -198,11 +198,11 @@
     <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Inventory_Back.h" />
     <ClInclude Include="..\public\ISubject.h" />
-    <ClInclude Include="..\public\ItemFont.h" />
     <ClInclude Include="..\public\ItemRect.h" />
     <ClInclude Include="..\public\IObserver.h" />
     <ClInclude Include="..\public\Mouse.h" />
     <ClInclude Include="..\public\Mouse_Item.h" />
+    <ClInclude Include="..\public\Mouse_ItemFont.h" />
     <ClInclude Include="..\public\ParticleDie.h" />
     <ClInclude Include="..\public\ParticleEventManager.h" />
     <ClInclude Include="..\public\ParticleExplosion.h" />
@@ -223,7 +223,7 @@
     <ClInclude Include="..\public\RedTulip.h" />
     <ClInclude Include="..\public\SubInventory.h" />
     <ClInclude Include="..\public\IronOre.h" />
-    <ClInclude Include="..\public\Item.h" />
+    <ClInclude Include="..\public\SlotInfo.h" />
     <ClInclude Include="..\public\Leaf.h" />
     <ClInclude Include="..\public\HeroEnemy.h" />
     <ClInclude Include="..\public\Level_GamePlay.h" />
@@ -306,11 +306,11 @@
     <ClCompile Include="..\private\HyockCube.cpp" />
     <ClCompile Include="..\private\Inventory_Back.cpp" />
     <ClCompile Include="..\private\ISubject.cpp" />
-    <ClCompile Include="..\private\ItemFont.cpp" />
     <ClCompile Include="..\private\ItemRect.cpp" />
     <ClCompile Include="..\private\IObserver.cpp" />
     <ClCompile Include="..\private\Mouse.cpp" />
     <ClCompile Include="..\private\Mouse_Item.cpp" />
+    <ClCompile Include="..\private\Mouse_ItemFont.cpp" />
     <ClCompile Include="..\private\ParticleDie.cpp" />
     <ClCompile Include="..\private\ParticleEventManager.cpp" />
     <ClCompile Include="..\private\ParticleExplosion.cpp" />
@@ -330,7 +330,7 @@
     <ClCompile Include="..\private\RedTulip.cpp" />
     <ClCompile Include="..\private\SubInventory.cpp" />
     <ClCompile Include="..\private\IronOre.cpp" />
-    <ClCompile Include="..\private\Item.cpp" />
+    <ClCompile Include="..\private\SlotInfo.cpp" />
     <ClCompile Include="..\private\Leaf.cpp" />
     <ClCompile Include="..\private\HeroEnemy.cpp" />
     <ClCompile Include="..\private\Level_GamePlay.cpp" />

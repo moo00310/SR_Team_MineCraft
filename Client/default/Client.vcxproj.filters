@@ -91,9 +91,6 @@
     <Filter Include="03.UI\04.Inventory\03.Inventory_Back">
       <UniqueIdentifier>{b21708e2-0b09-473f-ad1f-34ff0d083809}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.UI\04.Inventory\05.Item">
-      <UniqueIdentifier>{7bcd92a0-958a-4574-a45f-9d3fd6353c56}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Behavior_Tree">
       <UniqueIdentifier>{6c2d2db5-6575-4350-96b5-f1680963c5d7}</UniqueIdentifier>
     </Filter>
@@ -277,8 +274,14 @@
     <Filter Include="02.GameObjects\06.Right_Hand\RIght_hand_Object">
       <UniqueIdentifier>{42dd935a-5469-468e-b5db-7bfcae7026e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.UI\04.Inventory\05.Item\00.ItemFont">
-      <UniqueIdentifier>{54d27d30-5b59-4f22-8244-a05800c45db9}</UniqueIdentifier>
+    <Filter Include="03.UI\07.Mouse_UI\00.Mouse_Item">
+      <UniqueIdentifier>{160c0cc7-67a0-46a3-9ec0-06b125b8d733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\07.Mouse_UI\01.Mouse_ItemFont">
+      <UniqueIdentifier>{ad7a7ce3-55b3-497f-b0f0-d1fb8e0846a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Inventory\05.SlotInfo">
+      <UniqueIdentifier>{7bcd92a0-958a-4574-a45f-9d3fd6353c56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -529,12 +532,8 @@
     <ClInclude Include="..\public\UI_Mgr.h">
       <Filter>03.UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\RedTulip.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
-    </ClInclude>
-    <ClInclude Include="..\public\Item.h">
-      <Filter>03.UI\04.Inventory\05.Item</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerHP.h">
       <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
@@ -584,9 +583,6 @@
     <ClInclude Include="..\public\Mouse.h">
       <Filter>05.Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\Mouse_Item.h">
-      <Filter>03.UI\07.Mouse_UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Pawn.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
     </ClInclude>
@@ -614,8 +610,14 @@
     <ClInclude Include="..\public\RightHand_Object.h">
       <Filter>02.GameObjects\06.Right_Hand\RIght_hand_Object</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ItemFont.h">
-      <Filter>03.UI\04.Inventory\05.Item\00.ItemFont</Filter>
+    <ClInclude Include="..\public\Mouse_Item.h">
+      <Filter>03.UI\07.Mouse_UI\00.Mouse_Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Mouse_ItemFont.h">
+      <Filter>03.UI\07.Mouse_UI\01.Mouse_ItemFont</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\SlotInfo.h">
+      <Filter>03.UI\04.Inventory\05.SlotInfo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -818,8 +820,8 @@
     <ClCompile Include="..\private\MainInventory.cpp">
       <Filter>03.UI\04.Inventory\00.MainInventory</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Item.cpp">
-      <Filter>03.UI\04.Inventory\05.Item</Filter>
+    <ClCompile Include="..\private\SlotInfo.cpp">
+      <Filter>03.UI\04.Inventory\05.SlotInfo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Inventory_Back.cpp">
       <Filter>03.UI\04.Inventory\03.Inventory_Back</Filter>
@@ -908,9 +910,6 @@
     <ClCompile Include="..\private\Mouse.cpp">
       <Filter>05.Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\Mouse_Item.cpp">
-      <Filter>03.UI\07.Mouse_UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Pawn.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn</Filter>
     </ClCompile>
@@ -938,8 +937,11 @@
     <ClCompile Include="..\private\RightHand_Object.cpp">
       <Filter>02.GameObjects\06.Right_Hand\RIght_hand_Object</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ItemFont.cpp">
-      <Filter>03.UI\04.Inventory\05.Item\00.ItemFont</Filter>
+    <ClCompile Include="..\private\Mouse_Item.cpp">
+      <Filter>03.UI\07.Mouse_UI\00.Mouse_Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Mouse_ItemFont.cpp">
+      <Filter>03.UI\07.Mouse_UI\01.Mouse_ItemFont</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

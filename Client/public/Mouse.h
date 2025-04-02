@@ -13,6 +13,13 @@ private:
 	virtual ~CMouse() = default;
 
 public:
+	typedef struct tagItemDesc
+	{
+		_float  fSizeX, fSizeY;
+		_float	fX, fY;
+	}ITEM_DESC;
+
+public:
 	ITEMNAME	Get_ItemName(void)			{ return m_ItemName; }
 	ITEMNAME	Get_OldItemName(void)		{ return m_OldItem; }
 	ITEMNAME	Get_UpdateItemName(void)	{ return m_OldItem; }
@@ -34,6 +41,7 @@ public:
 	void Set_ItemCount(_int _ItemCount)			{ m_iItemCount = _ItemCount; }
 	void Set_OldItemCount(_int OldItemCount)	{ m_iOldItemCount = OldItemCount; }
 	void Set_SlotIndex(_int _ISlotIndex)		{ m_iSlotIndex = _ISlotIndex; }
+	//void Set_ItemPos()
 
 public:
 	void Clear(_uint iLevelIndex);
