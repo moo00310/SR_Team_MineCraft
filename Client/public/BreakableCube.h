@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "ItemCube.h"
 #include "ItemRect.h"
+#include "ParticleEventManager.h"
 
 BEGIN(Engine)
 class CVIBuffer_CubeInstance;
