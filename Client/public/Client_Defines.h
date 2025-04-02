@@ -22,7 +22,9 @@ extern _bool g_bMainInventoryOpen;
 
 using namespace Client;
 
-
+#define Rect_Model_Count 10
+#define Cube_Model_Count 7
+#define Item_Textue_Count 17
 
 
 

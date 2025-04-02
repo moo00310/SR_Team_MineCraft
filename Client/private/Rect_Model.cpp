@@ -18,7 +18,6 @@ HRESULT CRect_Model::Initialize_Prototype()
 HRESULT CRect_Model::Initialize(void* pArg)
 {
 	m_RederID = 2;
-	m_TextrueNum = 0;
 
 	__super::Initialize(pArg);
 	return S_OK;

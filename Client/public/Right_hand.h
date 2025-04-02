@@ -29,7 +29,12 @@ private:
 	bool isTPS = true;
 
 private:
-	void Chage_RightHand(int solt);
+	void Chage_RightHand();
+	void Select_Render(ITEMNAME name);
+	void Change_Texture(ITEMNAME name);
+	void Render_Arm();
+	void Render_Rect();
+	void Render_Cube();
 
 public:
 	static CRight_hand* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

@@ -204,7 +204,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down('C'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_COBBLESTONE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_COAL, 1);
 	}
 	if (m_pGameInstance->Key_Down('V'))
 	{
@@ -213,6 +213,18 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down('B'))
 	{
 		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_WOOD, 1);
+	}
+	if (m_pGameInstance->Key_Down('N'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_APPLE, 1);
+	}
+	if (m_pGameInstance->Key_Down('M'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_SWORD, 1);
+	}
+	if (m_pGameInstance->Key_Down('L'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_PICKAXE, 1);
 	}
 }
 

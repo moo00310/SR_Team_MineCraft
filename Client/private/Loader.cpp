@@ -70,8 +70,6 @@
 #include "Mouse_Item.h"
 #include "Mouse_ItemFont.h"
 
-#define Rect_Model_Count 3
-#define Cube_Model_Count 7
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -444,12 +442,12 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	// 1인칭 Rect_Texture
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Rect_Model"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Rect_model/Rect_model_%d.png"), 3))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Rect_model/Rect_model_%d.png"), Rect_Model_Count))))
 		return E_FAIL;
 
 	// 1인칭 Cube_Texture
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Cube_Model"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Cube_model/Cube_model_%d.png"), 7))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Cube_model/Cube_model_%d.png"), Cube_Model_Count))))
 		return E_FAIL;
 
 	/* UI Component */
@@ -471,7 +469,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	/* For.Prototype_Component_Texture_Item*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Item"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Item/Item_%03d.png"), 5))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Item/Item_%d.png"), Item_Textue_Count))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_PlayerHP*/
