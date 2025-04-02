@@ -135,13 +135,21 @@ HRESULT CCollider_Cube::Update_Collider()
 
 HRESULT CCollider_Cube::Render_Collider(_bool isHit)
 {
-	// 세계 변환 행렬 설정
-	m_pGraphic_Device->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+	// 세계 변환 행렬 가져오기
+	_float4x4 matWorld = *m_pTransformCom->Get_WorldMatrix();
+
+	// 회전 값 제거 (단위 행렬의 방향 벡터 유지)
+	matWorld._11 = 1.0f; matWorld._12 = 0.0f; matWorld._13 = 0.0f;
+	matWorld._21 = 0.0f; matWorld._22 = 1.0f; matWorld._23 = 0.0f;
+	matWorld._31 = 0.0f; matWorld._32 = 0.0f; matWorld._33 = 1.0f;
+
+	// 변환 행렬 적용
+	m_pGraphic_Device->SetTransform(D3DTS_WORLD, &matWorld);
 
 	// 와이어프레임 모드 설정
 	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-	// bRed가 true일 때 빨간색 적용
+	// 충돌 여부에 따른 색상 적용
 	if (isHit)
 	{
 		m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 0, 0)); // 빨간색
@@ -150,7 +158,7 @@ HRESULT CCollider_Cube::Render_Collider(_bool isHit)
 	}
 	else
 	{
-		// 원래 텍스처를 사용하도록 설정 복구
+		// 원래 텍스처 사용
 		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
@@ -161,196 +169,85 @@ HRESULT CCollider_Cube::Render_Collider(_bool isHit)
 	m_pGraphic_Device->SetFVF(m_dwFVF);
 	m_pGraphic_Device->SetIndices(m_pIB);
 
-	// 프리미티브(도형) 그리기
+	// 도형 그리기
 	m_pGraphic_Device->DrawIndexedPrimitive(m_ePrimitiveType, 0, 0, m_iNumVertices, 0, m_iNumPrimitive);
 
-	// 원래 상태(솔리드 모드)로 복구
+	// 상태 복구 - 솔리드 모드로 변경
 	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-	// 상태 복구 - 텍스처 팩터 상태를 기본값으로 복구
+	// 상태 복구 - 텍스처 팩터 기본값으로 변경
 	m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
 
-	// 텍스처 단계 복구
+	// 텍스처 단계 원래대로 복구
 	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
 	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
 
 	return S_OK;
-
 }
 
-_bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDistance, _Out_ CCollider::COLLISION_DIR* pOutDir, _Out_ _float3* pOutNormal)
-{
-	if (pOutDistance)
-		*pOutDistance = { 0.f, 0.f, 0.f };
 
-	COLLISION_DIR Collision_Dir{ COLLISION_DIR::NONE };
+bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDepth, _Out_ CCollider::COLLISION_DIR* pOutDir, _Out_ _float3* pOutNormal)
+{
+	if (pOutDepth)
+		*pOutDepth = { 0.f, 0.f, 0.f };
+
+	CCollider_Cube::COLLISION_DIR Collision_Dir{ CCollider_Cube::COLLISION_DIR::NONE };
 	if (pOutDir)
 		*pOutDir = Collision_Dir;
 
 	if (pTarget == nullptr)
 		return false;
 
-	// 월드 행렬 추출
-	const _float4x4* pWorldMatrixA = m_pTransformCom->Get_WorldMatrix();
-	const _float4x4* pWorldMatrixB = pTarget->m_pTransformCom->Get_WorldMatrix();
+	_float3 vMyPosition{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + Get_Offset() };
+	_float3 vTargetPosition{ pTarget->m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pTarget->Get_Offset() };
 
-	// 로컬 축 및 중심 계산
-	_float3 axesA[3] = {
-		_float3(pWorldMatrixA->_11, pWorldMatrixA->_12, pWorldMatrixA->_13),
-		_float3(pWorldMatrixA->_21, pWorldMatrixA->_22, pWorldMatrixA->_23),
-		_float3(pWorldMatrixA->_31, pWorldMatrixA->_32, pWorldMatrixA->_33)
-	};
+	// AABB 최소/최대 좌표 계산
+	_float3 minA = { vMyPosition - m_vRadius };
+	_float3 maxA = { vMyPosition + m_vRadius };
+	_float3 minB = { vTargetPosition - pTarget->Get_Radius() };
+	_float3 maxB = { vTargetPosition + pTarget->Get_Radius() };
 
-	// offset 적용된 중심 계산
-	_float3 centerA(pWorldMatrixA->_41 + m_vOffset.x,
-		pWorldMatrixA->_42 + m_vOffset.y,
-		pWorldMatrixA->_43 + m_vOffset.z);
-
-	_float3 halfA = { m_vRadius.x, m_vRadius.y, m_vRadius.z };
-
-	_float3 axesB[3] = {
-		_float3(pWorldMatrixB->_11, pWorldMatrixB->_12, pWorldMatrixB->_13),
-		_float3(pWorldMatrixB->_21, pWorldMatrixB->_22, pWorldMatrixB->_23),
-		_float3(pWorldMatrixB->_31, pWorldMatrixB->_32, pWorldMatrixB->_33)
-	};
-
-	// offset 적용된 중심 계산
-	_float3 centerB(pWorldMatrixB->_41 + pTarget->m_vOffset.x,
-		pWorldMatrixB->_42 + pTarget->m_vOffset.y,
-		pWorldMatrixB->_43 + pTarget->m_vOffset.z);
-
-	_float3 halfB = { pTarget->m_vRadius.x, pTarget->m_vRadius.y, pTarget->m_vRadius.z };
-
-	// 정규화
-	for (int i = 0; i < 3; ++i)
+	// AABB 충돌 검사
+	if (maxA.x < minB.x || minA.x > maxB.x ||
+		maxA.y < minB.y || minA.y > maxB.y ||
+		maxA.z < minB.z || minA.z > maxB.z)
 	{
-		D3DXVec3Normalize(&axesA[i], &axesA[i]);
-		D3DXVec3Normalize(&axesB[i], &axesB[i]);
+		return false;
 	}
 
-	// 8개 꼭짓점 계산
-	_float3 cornersA[8], cornersB[8];
-	for (int i = 0; i < 8; ++i)
-	{
-		float offsetX = (i & 1) ? halfA.x : -halfA.x;
-		float offsetY = (i & 2) ? halfA.y : -halfA.y;
-		float offsetZ = (i & 4) ? halfA.z : -halfA.z;
-		cornersA[i] = centerA + axesA[0] * offsetX + axesA[1] * offsetY + axesA[2] * offsetZ;
+	// 충돌 방향 계산
+	_float3 overlap = { min(maxA.x, maxB.x) - max(minA.x, minB.x),
+						min(maxA.y, maxB.y) - max(minA.y, minB.y),
+						min(maxA.z, maxB.z) - max(minA.z, minB.z) };
 
-		offsetX = (i & 1) ? halfB.x : -halfB.x;
-		offsetY = (i & 2) ? halfB.y : -halfB.y;
-		offsetZ = (i & 4) ? halfB.z : -halfB.z;
-		cornersB[i] = centerB + axesB[0] * offsetX + axesB[1] * offsetY + axesB[2] * offsetZ;
+	if (pOutDir)
+	{
+		if (overlap.y <= overlap.x && overlap.y <= overlap.z)
+			Collision_Dir = (minA.y > minB.y) ? COLLISION_DIR::UP : COLLISION_DIR::DOWN;
+		else if (overlap.x <= overlap.z)
+			Collision_Dir = (minA.x > minB.x) ? COLLISION_DIR::RIGHT : COLLISION_DIR::LEFT;
+		else
+			Collision_Dir = (minA.z > minB.z) ? COLLISION_DIR::FRONT : COLLISION_DIR::BACK;
+
+		*pOutDir = Collision_Dir;
 	}
 
-	// SAT 충돌 검사
-	std::vector<_float3> testAxes = { axesA[0], axesA[1], axesA[2], axesB[0], axesB[1], axesB[2] };
-	for (int i = 0; i < 3; ++i)
+	if (pOutDepth)
 	{
-		for (int j = 0; j < 3; ++j)
+		if (Collision_Dir == COLLISION_DIR::UP || Collision_Dir == COLLISION_DIR::RIGHT || Collision_Dir == COLLISION_DIR::FRONT)
 		{
-			_float3 axis;
-			D3DXVec3Cross(&axis, &axesA[i], &axesB[j]);
-			if (D3DXVec3Length(&axis) > 1e-6f)
-			{
-				D3DXVec3Normalize(&axis, &axis);
-				testAxes.push_back(axis);
-			}
-		}
-	}
-
-	float minPenetration = FLT_MAX;
-	_float3 smallestAxis(0, 0, 0);
-	for (const auto& axis : testAxes)
-	{
-		float minA = FLT_MAX, maxA = -FLT_MAX;
-		float minB = FLT_MAX, maxB = -FLT_MAX;
-
-		for (int i = 0; i < 8; ++i)
-		{
-			float projA = D3DXVec3Dot(&cornersA[i], &axis);
-			minA = min(minA, projA);
-			maxA = max(maxA, projA);
-
-			float projB = D3DXVec3Dot(&cornersB[i], &axis);
-			minB = min(minB, projB);
-			maxB = max(maxB, projB);
-		}
-
-		if (maxA < minB || maxB < minA)
-			return false;
-
-		float overlap = min(maxA, maxB) - max(minA, minB);
-		if (overlap < minPenetration)
-		{
-			minPenetration = overlap;
-			smallestAxis = axis;
-		}
-	}
-
-	// 충돌 방향 분석 (위/아래/옆 구분)
-	if (pOutDistance)
-	{
-		_float3 d = centerB - centerA;
-		if (D3DXVec3Dot(&d, &smallestAxis) < 0)
-			smallestAxis = -smallestAxis;
-
-		// minPenetration이 정상적인 값인지 확인
-		if (minPenetration <= 0)
-			return false;
-
-		*pOutDistance = smallestAxis * minPenetration;
-
-		// pOutDistance 값이 이상하면 0 벡터로 보정
-		if (D3DXVec3LengthSq(pOutDistance) < 1e-6f)
-			*pOutDistance = { 0, 0, 0 };
-
-		// 충돌 방향 판정
-		if (fabs(smallestAxis.y) > fabs(smallestAxis.x) && fabs(smallestAxis.y) > fabs(smallestAxis.z))
-		{
-			if (smallestAxis.y > 0)
-			{
-				Collision_Dir = COLLISION_DIR::DOWN;
-			}
-			else
-			{
-				Collision_Dir = COLLISION_DIR::UP;
-			}
-		}
-		else if (fabs(smallestAxis.x) > fabs(smallestAxis.z))
-		{
-			if (smallestAxis.x > 0)
-			{
-				Collision_Dir = COLLISION_DIR::LEFT;
-			}
-			else
-			{
-				Collision_Dir = COLLISION_DIR::RIGHT;
-			}
+			*pOutDepth = { -overlap.x, -overlap.y, -overlap.z };
 		}
 		else
 		{
-			if (smallestAxis.z > 0)
-			{
-				Collision_Dir = COLLISION_DIR::BACK;
-			}
-			else
-			{
-				Collision_Dir = COLLISION_DIR::FRONT;
-			}
+			*pOutDepth = overlap;
 		}
 	}
 
-	if (pOutDir)
-		*pOutDir = Collision_Dir;
-
-	// 법선 벡터 반환
-	if (pOutNormal)
-		*pOutNormal = smallestAxis;
-
 	return true;
 }
+
 
 
 

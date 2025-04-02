@@ -57,16 +57,13 @@ void CMonster::Update(_float fTimeDelta)
 	//땅 콜라이더 활성화 되기전 여기가 먼저 실행되어가지고 문제가 생김
     //두개다 키면 땅으로 사라지는 게 좀 줄어들긴 한데 거리방식 좀 보기 별론데
 
-    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+    if (m_pBehaviorTree && !isDead)
     {
-        if (m_pBehaviorTree && !isDead)
-        {
-            m_pBehaviorTree->Excute(this, fTimeDelta);
-        }
-
-        // 땅 충돌 + 중력 처리
-        m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+        m_pBehaviorTree->Excute(this, fTimeDelta);
     }
+
+    // 땅 충돌 + 중력 처리
+    m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
 }
 
@@ -94,14 +91,15 @@ float CMonster::Comput_Distance()
 
 void CMonster::Chase_Player(float _fTimeDelta)
 {
-    _float3 vTarget =  m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-    m_pTransformCom->LookAt_XZ(vTarget);
-    m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTarget.x, vTarget.y, vTarget.z), _fTimeDelta, 1.0f);
+    _float3 vTargetPos =  m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    m_pTransformCom->LookAt_XZ(vTargetPos);
+    m_pRigidbodyCom->Chase(vTargetPos, 2.f);
+    //m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTargetPos.x, vTargetPos.y, vTargetPos.z), _fTimeDelta, 1.0f);
 
     //움직일라 하는데 속도가 안난다 점프함 ㅋㅋ
     if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 1.f)
     {
-		m_pRigidbodyCom->Jump(7.f);
+		m_pRigidbodyCom->Jump(6.5f);
     }
 }
 

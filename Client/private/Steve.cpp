@@ -39,6 +39,9 @@ HRESULT CSteve::Initialize(void* pArg)
 
 	if (FAILED(Ready_Animation()))
 		return E_FAIL;
+
+	m_pRigidbodyCom->Set_MoveSpeed(0.1f);
+	m_pRigidbodyCom->Set_MaxSpeed(5.f);
 	
 	return S_OK;
 }
@@ -54,7 +57,6 @@ void CSteve::Priority_Update(_float fTimeDelta)
 
 void CSteve::Update(_float fTimeDelta)
 {
-	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
 	//1. 키입력에 따른 이동
 	Input_Key(fTimeDelta);
@@ -64,6 +66,8 @@ void CSteve::Update(_float fTimeDelta)
 		MSG_BOX("Update_Collider()");
 		return;
 	}
+
+	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
 }
 
@@ -122,64 +126,60 @@ void CSteve::Input_Key(_float fTimeDelta)
 
 void CSteve::Move(_float fTimeDelta)
 {
-	bool isMoving = false;
-
-	CGameObject* collider{ nullptr };
-	////블럭 충돌 여부 확인.	
-	//collider = m_pGameInstance->Collision_Check_with_Group(
-	//	COLLISION_BLOCK,		
-	//	m_pColliderCom,	
-	//	CCollider_Manager::COLLSIION_CUBE
-	//	);		
-	
 	Matrix mat = *m_pTransformCom->Get_WorldMatrix();
-	//_float3 vDirection{ 0.f, 0.f, 0.f };
+	_float3 vDirection = { 0.f, 0.f, 0.f };
+
+	// 캐릭터의 로컬 Look (전방) & Right (우측) 벡터 가져오기
+	_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+	_float3 vRight = m_pTransformCom->Get_State(CTransform::STATE_RIGHT);
+
+	// 정규화
+	D3DXVec3Normalize(&vLook, &vLook);
+	D3DXVec3Normalize(&vRight, &vRight);
 
 	if (m_pGameInstance->Key_Pressing('W'))
-	{		
-		m_pTransformCom->Go_Straight(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
-		//vDirection += _float3(0.f, 0.f, 1.f);
-
-		m_skelAnime->Set_BoneLocalMatrix(0, mat);
-		isMoving = true;
-
-		if (m_pRigidbodyCom->isGround())
-		{
-			PlayDashParticle(fTimeDelta);
-		}		
-	}
-	if (m_pGameInstance->Key_Up('W'))
 	{
-		ResetDashParticle();
+		vDirection += vLook;
+		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 	}
 
 	if (m_pGameInstance->Key_Pressing('S'))
 	{
-		m_pTransformCom->Go_Backward(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
-		//vDirection += _float3(0.f, 0.f, -1.f);
+		vDirection -= vLook;
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
-		isMoving = true;
 	}
 	if (m_pGameInstance->Key_Pressing('A'))
 	{
-		m_pTransformCom->Go_Left(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
-		//vDirection += _float3(-1.f, 0.f, 0.f);
-		mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-45));
+		vDirection -= vRight;
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
-		isMoving = true;
+
 	}
 	if (m_pGameInstance->Key_Pressing('D'))
 	{
-		m_pTransformCom->Go_Right(m_pCollider_CubeCom, COLLISION_BLOCK, fTimeDelta);
-		//vDirection += _float3(1.f, 0.f, 0.f);
-		mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(45));
+		vDirection += vRight;
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
-		isMoving = true;
+
 	}
 
-	//m_pTransformCom->Go_Direction(m_pCollider_CubeCom, COLLISION_BLOCK, vDirection, fTimeDelta);
+	// 방향 벡터 정규화 (대각선 이동 시 속도 보정)
+ 	if (D3DXVec3Length(&vDirection) > 0)
+	{
+		D3DXVec3Normalize(&vDirection, &vDirection);
+		m_pRigidbodyCom->Move(vDirection);
+		m_eCurAnim = WALK;
 
-	m_eCurAnim = isMoving ? WALK : IDLE;
+		if (m_pRigidbodyCom->isGround())
+			PlayDashParticle(fTimeDelta);
+	}
+	else
+	{
+		ResetDashParticle();
+		m_eCurAnim = IDLE;
+
+		if(!m_pRigidbodyCom->Get_isKnockBack())
+			m_pRigidbodyCom->StopMovement();
+
+	}
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
 	{
@@ -528,8 +528,8 @@ void CSteve::Knock_back(const _float3& vforce)
 {
 	_float3 temp = {};
 	D3DXVec3Normalize(&temp, &vforce);
-	temp *= 3.f;
-	temp.y = 4.f;
+	temp *= 5.f;
+	temp.y = 5.f;
 
 	m_pRigidbodyCom->Knock_back(temp);
 }
