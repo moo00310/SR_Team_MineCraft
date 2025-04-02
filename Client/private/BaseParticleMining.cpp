@@ -53,7 +53,7 @@ ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 	ParticleAttribute att;
 	att.vPosition = { GetRandomFloat(-0.2f, 0.2f), GetRandomFloat(-0.2f, 0.2f), 0.f };
 	//att.vColor = Float3ToHex({ 0.1f, 0.f, 0.f });
-	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, 0.f };
+	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };
 	att.IsTime = true;
 	att.fCurrentTime = 0.f;
 	att.fEndTime = 0.6f;	
@@ -61,7 +61,7 @@ ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 
 	// 중력 적용.
 	att.IsGravity = true;
-	att.fGravityJumpPower = GetRandomFloat(0.f, 0.5f);
+	att.fGravityJumpPower = GetRandomFloat(0.1f, 0.5f);
 	att.fGravityTime = 0.f;
 	att.fGravity = 14.8f;
 
