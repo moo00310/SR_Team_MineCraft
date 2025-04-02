@@ -18,6 +18,7 @@ CVIBuffer_CubeShader::CVIBuffer_CubeShader(const CVIBuffer_CubeShader& Prototype
     CVIBuffer (Prototype)
     ,pVertexDecl(Prototype.pVertexDecl)
 {
+    Safe_AddRef(pVertexDecl);
     D3DXMatrixIdentity(&m_WorldMatrix);
 }
 
