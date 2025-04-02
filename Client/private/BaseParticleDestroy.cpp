@@ -53,7 +53,7 @@ ParticleAttribute CBaseParticleDestroy::OnSetAddParticle()
 {
 	ParticleAttribute att;
 	att.vPosition = { 0.f, 0.f, 0.f };
-	att.vColor = { 0.1f, 0.f, 0.f, 1.f };
+	//att.vColor = Float3ToHex({ 0.f, 0.f, 0.f });
 	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };
 	att.IsTime = true;
 	att.fCurrentTime = 0.f;

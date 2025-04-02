@@ -61,6 +61,9 @@ protected:
 	// 단, IsBounding이 true 상태여야 함.
 	virtual void OnBoundingExit(ParticleAttribute& particle) = 0;
 
+	// rgb형식을 dword로 변환.
+	DWORD Float3ToHex(_float3 color);
+
 protected:
 	_uint	m_iFVF = {};
 	LPDIRECT3DVERTEXBUFFER9 m_pVB = { nullptr };

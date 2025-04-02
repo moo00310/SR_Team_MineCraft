@@ -28,10 +28,10 @@ HRESULT CParticleDie::Initialize(void* pArg)
 	}
 
 	dwVpBatchSize = 6;
-	dwPointSize = GetScale(20.f);	// 포인트 스프라이트 크기.
+	dwPointSize = GetScale(0.2f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
-	dwPointScaleC = GetScale(0.f);
+	dwPointScaleC = GetScale(1.f);
 
 	// 부모 Initialize 호출시켜서 버텍스 초기화 시키고 이거 호출 시킬 것.
 	if (FAILED(Create_VertexBuffer()))
@@ -85,9 +85,9 @@ HRESULT CParticleDie::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Shader */
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_SHADER_PARTICLE,
+	/*if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_SHADER_PARTICLE,
 		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShader))))
-		return E_FAIL;
+		return E_FAIL;*/
 
 	return S_OK;
 }

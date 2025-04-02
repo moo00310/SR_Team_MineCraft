@@ -52,7 +52,7 @@ namespace Engine
 	typedef struct tagVertexParticle
 	{
 		_float3		Position;
-		D3DXCOLOR	Color;
+		D3DCOLOR	Color;
 	}VTXPARTICLE;
 
 	// 파티클 속성 구조체.
@@ -65,7 +65,7 @@ namespace Engine
 		_float3 vVelocity;		
 
 		// 파티클 컬러 (DWORD 자료형).
-		D3DXCOLOR vColor;	
+		D3DCOLOR vColor;	
 
 		// 파티클 생존 여부.
 		bool IsAlive = false;
