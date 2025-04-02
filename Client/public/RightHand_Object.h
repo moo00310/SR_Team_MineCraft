@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "GameObject.h"
+#include "Steve.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -34,17 +35,20 @@ public:
 public:
 	void ChangeTexture(int Num);
 	void Set_Bright(float _bright) { m_bright = _bright; }
+	void Set_isTps(bool isTps) { m_isTPS = isTps;  }
 
 protected:
 	CTexture* m_pTextureCom = { nullptr };
 	vector<CVIBuffer_Anim*> m_pVIBufferComs = { nullptr };
 	CSkeletalAnimator* m_pSkeletalAnimator = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
+	CSteve* m_pSteve = { nullptr };
 
 protected:
 	int m_RederID = {};
 	ANIM m_eCurAnim = { INIT };
 	float m_bright = { 1 };
+	bool m_isTPS = { true };
 
 protected:
 	virtual HRESULT Ready_Components();

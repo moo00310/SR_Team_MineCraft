@@ -51,6 +51,11 @@ bool CSkeletalAnimator::is_AnimtionEND(int type)
     }
 }
 
+const Matrix& CSkeletalAnimator::GetBoneWorldMatrix(int index)
+{
+    return vecBones[index].worldTransform;
+}
+
 void CSkeletalAnimator::IkLookAt(float fTimeDelta, int boneIndex, int targetInex)
 {
     _float3 vLook = vecBones[targetInex].localTransform.Get_State(Matrix::STATE_LOOK);

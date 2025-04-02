@@ -35,15 +35,21 @@ public:
 public:
 	void SetPos(_float3 v3);
 	_float3 GetPos();
+	void Set_AttackContinue(bool _bool) { m_isAttackContinue = _bool; };
+	bool Get_AttackContinue() { return m_isAttackContinue; };
 	void Knock_back(const _float3& vforce) override;
+	const _float4x4& GetSoketMatrix();
 
 private:
 	_float   m_fMouseSensor = { 0.03f };
 	ANIM m_eCurAnim = { ANIM_END };
+	ANIM m_eRreAnim = { ANIM_END };
+
 	bool isAttack = { false };	
 	bool m_IsDashCoolTime = {false};
 	float m_fCurrentDashTime = { 0.f };
 	float m_fCoolTimeDash = { 0.4f };
+	bool m_isAttackContinue = { false };
 
 
 private:

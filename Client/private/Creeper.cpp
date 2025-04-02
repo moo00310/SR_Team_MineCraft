@@ -329,8 +329,6 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
             m_pTransformCom
         );
 
-        //m_eCurAnim = IDLE;
-        
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
         //m_pTargetPawn->Set_Hp(95);

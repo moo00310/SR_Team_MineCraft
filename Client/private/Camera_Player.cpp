@@ -37,6 +37,10 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 	if (!Desc.pTarget)
  		return E_FAIL;
 
+    // 플레이어 받기
+    m_pPlayer = static_cast<CSteve*>(Desc.pTarget);
+    Safe_AddRef(m_pPlayer);
+
 	// 플레이어 트랜스폼 받기
 	m_pTarget_Transform_Com = static_cast<CTransform*>(Desc.pTarget->Find_Component(TEXT("Com_Transform")));
     Safe_AddRef(m_pTarget_Transform_Com);
@@ -102,6 +106,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
 	_float3 vHeadPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
 
+    m_pPlayer->Set_AttackContinue(false);
     if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
     {
         _float fDist;                  // 광선과 오브젝트 간의 거리
@@ -133,6 +138,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
                 // 충돌한 콜라이더의 위치를 가져와 해당 블록 삭제
                 _float3 hitPosition{ pCollider_Cube->Get_Offset() };
+              
 
                 if (FAILED(pBreakableRect->Delete_Cube(hitPosition)))
                 {
@@ -146,6 +152,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 CCollider_Cube* pCollider_Cube = static_cast<CCollider_Cube*>(pHitComponent);
                 if (!pCollider_Cube)
                     return;
+
+                m_pPlayer->Set_AttackContinue(true);
 
                 // 충돌한 콜라이더의 위치를 가져와 해당 블록 삭제
                 _float3 hitPosition{ pCollider_Cube->Get_Offset()};
@@ -390,6 +398,7 @@ void CCamera_Player::Free()
 {
 	__super::Free();
 
+    Safe_Release(m_pPlayer);
     Safe_Release(m_pTarget_Transform_Com);
     Safe_Release(m_pTarget_Rigidbody_Com);
 }

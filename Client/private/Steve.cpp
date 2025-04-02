@@ -246,7 +246,7 @@ HRESULT CSteve::Ready_Components()
 
 HRESULT CSteve::Ready_Bone()
 {
-	BONE bone[7] =
+	BONE bone[8] =
 	{
 		 { "Root"  , -1,  MAtrixTranslation(0.f, 0.f,0.f),	MAtrixTranslation(0.f	,0.f,	0.f),	Matrix(), Matrix() },  // root
 		 { "Pelvis",  0,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 6.f / 16.f, 0.f)},
@@ -255,9 +255,10 @@ HRESULT CSteve::Ready_Bone()
 		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     0,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(6.f / 16.f,   12.f / 16.f	,0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-6.f / 16.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Soket" ,  5,  MAtrixTranslation(0.f,  -12.f / 16.f,	4.f / 16.f),	MAtrixTranslation(0.f,  -12.f / 16.f,	4.f / 16.f), Matrix(), Matrix()},
 	};
 
-	for (int i = 0; i < 7; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		m_skelAnime->Add_Bone(bone[i]);
 	}
@@ -378,6 +379,12 @@ HRESULT CSteve::Ready_Animation()
 
 void CSteve::Update_State(_float fTimeDelta)
 {
+	if (m_eRreAnim != m_eCurAnim)
+	{
+		m_skelAnime->Set_ZeroAnimTime();
+		m_eRreAnim = m_eCurAnim;
+	}
+
 	switch (m_eCurAnim)
 	{
 	case CSteve::IDLE:
@@ -390,19 +397,22 @@ void CSteve::Update_State(_float fTimeDelta)
 		break;
 	default:
 		break;
-	}
+	}	
 
 	if (isAttack)
 	{
 		if (m_skelAnime->is_AnimtionEND(Attack))
 		{
-			isAttack = false;
-			m_skelAnime->Reset_fElapsedTime(Swing_FA, Swing_BA);
+			// 캐릭터 레이어 걸려있으면 어택 반복
+			if (!m_isAttackContinue)
+			{
+				isAttack = false;
+				m_skelAnime->Reset_fElapsedTime(Swing_FA, Swing_BA);
+			}	
 		}
 
 		m_skelAnime->Update_Animetion(Attack, fTimeDelta, 5);
 	}
-		
 }
 
 void CSteve::Motion_Idle(_float fTimeDelta)
@@ -497,6 +507,11 @@ void CSteve::Knock_back(const _float3& vforce)
 	temp.y = 4.f;
 
 	m_pRigidbodyCom->Knock_back(temp);
+}
+
+const _float4x4& CSteve::GetSoketMatrix()
+{
+	return m_skelAnime->GetBoneWorldMatrix(7);
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

@@ -47,17 +47,27 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
         if (isTPS == false)
         {
             m_pSteve->SetRender(true);
-            m_pArm_Model->SetActive(false);
-            m_pRect_Model->SetActive(false);
-            m_pCube_Model->SetActive(false);
+
+            m_pArm_Model->SetRender(false);
+            m_pRect_Model->SetRender(false);
+            m_pCube_Model->SetRender(false);
+
+            m_pArm_Model->Set_isTps(true);
+            m_pRect_Model->Set_isTps(true);
+            m_pCube_Model->Set_isTps(true);
             isTPS = true;
         }
         else
         { 
             m_pSteve->SetRender(false);
-            m_pArm_Model->SetActive(true);
-            m_pRect_Model->SetActive(true);
-            m_pCube_Model->SetActive(true);
+
+            m_pArm_Model->SetRender(true);
+            m_pRect_Model->SetRender(true);
+            m_pCube_Model->SetRender(true);
+
+            m_pArm_Model->Set_isTps(false);
+            m_pRect_Model->Set_isTps(false);
+            m_pCube_Model->Set_isTps(false);
             isTPS = false;
         }
          
@@ -71,11 +81,14 @@ void CRight_hand::Update(_float fTimeDelta)
 
 void CRight_hand::Late_Update(_float fTimeDelta)
 {
-
     // Arm
     if (m_pGameInstance->Key_Down('P'))
     {
-        m_pArm_Model->SetRender(true);
+        if (isTPS)
+            m_pArm_Model->SetRender(false);
+        else
+            m_pArm_Model->SetRender(true);
+       
         m_pRect_Model->SetRender(false);
         m_pCube_Model->SetRender(false);
     }

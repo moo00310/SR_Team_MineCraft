@@ -18,7 +18,7 @@ HRESULT CCube_Model::Initialize_Prototype()
 HRESULT CCube_Model::Initialize(void* pArg)
 {
     m_RederID = 1;
-    m_TextrueNum = 0;
+    m_TextrueNum = 1;
 
     __super::Initialize(pArg);
     return S_OK;
@@ -42,6 +42,12 @@ void CCube_Model::Late_Update(_float fTimeDelta)
 
 HRESULT CCube_Model::Render()
 {
+    if (m_isTPS)
+    {
+        Matrix mat = m_pSteve->GetSoketMatrix();
+        mat.Scaling(0.3f, 0.3f, 0.3f);
+        m_pVIBufferComs[0]->SetMatrix(mat);
+    }
 
     __super::Render();
 
@@ -70,7 +76,7 @@ HRESULT CCube_Model::Ready_Bone()
     // 스윙 프레임 행렬을 벡터에 저장
     Matrix mat = {};
     mat.Scaling(0.5f, 0.5f, 0.5f);
-    mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(80));
+    //mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(80));
     mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(45));
     mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.65f, 1.2f));
 
@@ -95,7 +101,7 @@ HRESULT CCube_Model::Ready_Animation()
     //----------------------------*/
     Matrix matrix1 = {};
     matrix1.Turn_Radian(_float3(1.f, 1.f, 0.f), D3DXToRadian(110));
-    matrix1.Set_State(matrix1.STATE_POSITION, _float3(-1.f, 1.f, 1.f));
+    matrix1.Set_State(matrix1.STATE_POSITION, _float3(-1.f, -1.f, 1.f));
 
 
     KEYFREAME Swing1 = { 0.f, mat };
@@ -148,7 +154,10 @@ void CCube_Model::Motion_Swing(_float fTimeDelta)
 
     if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
     {
-        m_eCurAnim = INIT;
+        if (m_pSteve->Get_AttackContinue())
+            m_eCurAnim = SWING;
+        else
+            m_eCurAnim = INIT;
     }
 }
 
