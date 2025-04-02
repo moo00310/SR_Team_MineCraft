@@ -617,6 +617,9 @@
     <ClInclude Include="..\public\ItemFont.h">
       <Filter>03.UI\04.Inventory\05.Item\00.ItemFont</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleSwordFlame.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -940,6 +943,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ItemFont.cpp">
       <Filter>03.UI\04.Inventory\05.Item\00.ItemFont</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleSwordFlame.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

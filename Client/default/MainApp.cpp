@@ -26,6 +26,7 @@
 #include "ParticleExplosion.h"
 #include "Mouse.h"
 #include "ParticleDie.h"
+#include "ParticleSwordFlame.h"
 
 
 CMainApp::CMainApp()
@@ -247,6 +248,11 @@ HRESULT CMainApp::Ready_Particle()
 		CParticleDie::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// 불꽃 검 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+		CParticleSwordFlame::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -301,6 +307,11 @@ HRESULT CMainApp::Ready_Texture()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DIE,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/die_%d.png"), 3))))
 		return E_FAIL;	
+
+	// 불꽃 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_FLAME,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/flame.png"), 1))))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -46,6 +46,12 @@ static const _wstring PROTOTYPE_COMPONENT_TEXTURE_DIE = TEXT("Prototype_Componen
 // 사망 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_DIE = TEXT("Prototype_GameObject_Particle_Die");
 
+// 불꽃 텍스쳐.
+static const _wstring PROTOTYPE_COMPONENT_TEXTURE_FLAME = TEXT("Prototype_Component_Texture_Flame");
+
+// 불꽃 검 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME = TEXT("Prototype_GameObject_ParticleSwordFlame");
+
 /////////////////////////////////////////////////////////////////////////////
 
 // VIBuffer_Only 클래스 컴포넌트 태그.

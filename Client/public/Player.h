@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "ParticleSystem.h"
+#include "ParticleEventManager.h"
 
 BEGIN(Engine)
 class CTexture;
