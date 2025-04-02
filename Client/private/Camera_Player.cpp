@@ -159,6 +159,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 // hp 감소.
                 pBreakableCube->Attacked_Block(hitPosition);
 
+
                 // 꺠지는 블럭 hp 값 넘겨줌.
                 m_DestroyCube->SetTextureIndex(pBreakableCube->GetHP());
 

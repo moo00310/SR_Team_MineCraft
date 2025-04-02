@@ -34,7 +34,7 @@ private:
 private:
 	HRESULT Ready_Components();
 
-	float m_fBright = 1;
+	float m_fBright = 0.6;
 public:
 	static CClouds* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
