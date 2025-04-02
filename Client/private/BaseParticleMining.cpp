@@ -51,7 +51,7 @@ void CBaseParticleMining::Free()
 ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 {
 	ParticleAttribute att;
-	att.vPosition = { 0.f, 0.f, 0.f };
+	att.vPosition = { GetRandomFloat(-0.2f, 0.2f), GetRandomFloat(-0.2f, 0.2f), 0.f };
 	//att.vColor = Float3ToHex({ 0.1f, 0.f, 0.f });
 	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, 0.f };
 	att.IsTime = true;
