@@ -55,7 +55,7 @@ public:
 	virtual HRESULT Delete_Cube(_float3 fPos);
 
 	// 큐브 Hp 줄이기
-	virtual void Attacked_Block(_float3 fPos);
+	virtual void Attacked_Block(_float3 fPos, int attackDamage);
 
 	//블럭 밝기 조절
 	void Set_Bright(float _f);

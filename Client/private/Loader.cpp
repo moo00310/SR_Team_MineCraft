@@ -352,6 +352,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/sun.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Sun */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Moon"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/moon.png"), 1))))
+		return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Clouds */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Clouds"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/clouds.png"), 1))))

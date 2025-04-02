@@ -35,7 +35,7 @@ private:
 	CVIBuffer_CubeShader* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 
-	float m_fBright = 1;
+	float m_fBright = 0.6;
 private:
 	HRESULT Ready_Components();
 public:

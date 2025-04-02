@@ -286,14 +286,17 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-		LEVEL_YU, strLayerTag, 5)))
+		LEVEL_YU, strLayerTag, 1)))
 		return E_FAIL;
 
-	for (_uint i = 0; i < 5; i++)
-	{
-		m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-			LEVEL_YU, strLayerTag);
-	}
+	m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+		LEVEL_YU, strLayerTag);
+
+	//for (_uint i = 0; i < 5; i++)
+	//{
+	//	m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+	//		LEVEL_YU, strLayerTag);
+	//}
 
 	return S_OK;
 }
