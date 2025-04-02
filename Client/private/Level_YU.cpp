@@ -39,6 +39,9 @@ HRESULT CLevel_YU::Initialize()
 //
 //#endif // _DEBUG
 
+	if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
 
@@ -90,9 +93,6 @@ HRESULT CLevel_YU::Initialize()
 
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 	return E_FAIL;
-
-	/*if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
-		return E_FAIL;*/
 
 	return S_OK;
 }

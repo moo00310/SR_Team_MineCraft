@@ -39,9 +39,6 @@ HRESULT CDestroyCube::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	// 테스트용 블럭 확인 위치.
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, {0.f, 2.f, 0.f});
-
 	return S_OK;
 }
 
@@ -155,7 +152,10 @@ CTransform* CDestroyCube::GetTransform() const
 void CDestroyCube::SetTextureIndex(int _hp)
 {
 	// 공식 대충 처리함
-	// 나중에 최대 hp 늘어날 수 있을거 생각해서 좀 수정할 것.
+	// 매직 넘버로 넣어준 100은 블럭의 최대 HP값을 넣어주면
+	// 블럭이 각각 최대 체력이 달라도 잘 적용될거임
+	// 근데 지금 블럭 모든 최대 체력이 100 고정인거같아서
+	// 그냥 100 넣어줌.
 	_hp = (100 - _hp) / 10;
 	m_iTextureIndex = _hp;
 }

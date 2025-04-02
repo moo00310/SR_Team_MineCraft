@@ -374,9 +374,12 @@ HRESULT CCamera_Player::Ready_Components()
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;
 
-    // 깨지는 블럭 생성 후.
-    m_DestroyCube = (CDestroyCube*)m_pGameInstance->Add_GameObjectReturnOBJ(LEVEL_YU, PROTOTYPE_GAMEOBJECT_DESTROY_CUBE,
-        LEVEL_YU, LAYER_DESTROY_CUBE);      
+    // 깨지는 블럭 가져오고.
+    m_DestroyCube = (CDestroyCube*)m_pGameInstance->Get_Object(
+        LEVEL_YU,
+        LAYER_DESTROY_CUBE.c_str(),
+        0
+        );
 
     // 비활성화.
     m_DestroyCube->SetActive(false);
