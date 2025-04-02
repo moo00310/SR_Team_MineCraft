@@ -66,7 +66,7 @@ _bool CFrustumCulling_Manager::Is_In_Frustum(_float3 vPos, _float fRadius)
     for (int i = 0; i < 6; ++i)
     {
         _float distance = m_FrustumPlane[i].a * vPos.x + m_FrustumPlane[i].b * vPos.y + m_FrustumPlane[i].c * vPos.z + m_FrustumPlane[i].d;
-        if (distance > fRadius/* + 1*/)
+        if (distance > fRadius + 1)
             return false;
     }
 

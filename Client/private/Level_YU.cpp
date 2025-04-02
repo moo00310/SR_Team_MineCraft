@@ -86,10 +86,10 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
-	return E_FAIL;
+		return E_FAIL;
 
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
-	return E_FAIL;
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -297,12 +297,17 @@ HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
-		LEVEL_YU, strLayerTag)))
-		return E_FAIL;
 
-	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
-	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 20.f, 20.f));
+	for (int i = 0; i < 5; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+			LEVEL_YU, strLayerTag)))
+			return E_FAIL;
+
+		CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
+		static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 15.f, 20.f));
+
+	}
 
 	return S_OK;
 }

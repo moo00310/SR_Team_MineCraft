@@ -27,16 +27,32 @@ public:
 	HRESULT Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist);
 	//인스턴싱 버전 레이캐스트 만들어야함
 	HRESULT Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCollsionGroup, _float fRayDist);
+
 public:
-	_bool	Jump(_float fJumpForce);
-	const _float3& Get_Velocity() { return m_vReadOnly_Velocity; }
-	_bool	isGround() { return m_isGround; }
-	void Knock_back(const _float3& vfroce);
+	void				Move(_float3 vDir);
+	void				Chase(const _float3& vTargetPos, _float fMinDistance = 0.1f);
+	void				Go_Straight();
+	void				Go_Backward();
+	void				Go_Left();
+	void				Go_Right();
+	void				StopMovement();
+	_bool				Jump(_float fJumpForce);
+	const _float3&		Get_Velocity() { return m_vReadOnly_Velocity; }
+	_bool				isGround() { return m_isGround; }
+	void				Knock_back(const _float3& vfroce);
+	void				Set_MaxSpeed(_float fMaxSpeed) { m_fMaxSpeed = fMaxSpeed; }
+	void				Set_MoveSpeed(_float fMoveSpeed) { m_fMoveSpeed = fMoveSpeed; }
+	_bool				Get_isKnockBack() { return m_isKnockBack; }
+private:
+	void				ClampVelocity();
+	void				ClampVelocityXZ();
+	_float				m_fMaxSpeed = { 3.f };
+	_float				m_fMoveSpeed = { 1.f };
 
 private:
+	void	Compute_Velocity(_float fTimeDelta);
 	//void	Fall_With_Gravity(_float fTimeDelta);
 	_bool	isFalling() { return m_vVelocity.y < 0.f; };
-	void	Compute_Velocity(_float fTimeDelta);
 private:
 	class CTransform*		m_pTransform{ nullptr };
 	class CCollider*		m_pCollider{ nullptr };
