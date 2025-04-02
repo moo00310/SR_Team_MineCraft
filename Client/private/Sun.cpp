@@ -36,7 +36,16 @@ void CSun::Priority_Update(_float fTimeDelta)
 	m_brightFrame++;
 
 	if (m_brightFrame > 20) {
-		m_fBright += m_fBrightPercent;
+		float t = (m_fAngle + 60.5f) / (-56.f + 60.5f); // 0 ~ 1 변환
+		float bright = 0.5f + 0.5f * sinf(t * D3DX_PI); // sin(0) = 0, sin(PI) = 1
+
+		if (m_isSun) {
+			m_fBright = bright;
+		}
+		else {
+			m_fBright = 1 - bright;
+		}
+		
 		m_brightFrame = 0;
 
 		for (int i = 0; i < m_iChunkCnt; ++i) {
@@ -128,8 +137,15 @@ void CSun::Late_Update(_float fTimeDelta)
 
 HRESULT CSun::Render()
 {
-	if (FAILED(m_pTextureCom->Bind_Resource(0)))
-		return E_FAIL;
+	if (m_isSun) {
+		if (FAILED(m_pTextureCom->Bind_Resource(0)))
+			return E_FAIL;
+	}
+	else {
+		if (FAILED(m_pTextureCom2->Bind_Resource(0)))
+			return E_FAIL;
+	}
+
 
 	if (FAILED(m_pTransformCom->Bind_Resource()))
 		return E_FAIL;
@@ -166,11 +182,15 @@ void CSun::Orbit_Around_Earth()
 	_float3 vSunPos = vCamPos + vOriginPos;
 
 	// 회전 변환 적용 (X축 기준 회전)
-	static float fAngle = 0.f;
-	fAngle += 0.01f; // 회전 속도 증가
+	m_fAngle += 0.003f; // 회전 속도 증가
+
+	if (-56 < m_fAngle) {
+		m_isSun = !m_isSun;
+		m_fAngle = -60.5f;
+	}
 
 	_float4x4 matRotX;
-	D3DXMatrixRotationX(&matRotX, fAngle); // X축 회전 행렬 생성
+	D3DXMatrixRotationX(&matRotX, m_fAngle); // X축 회전 행렬 생성
 
 	// vOriginPos를 기준으로 회전 변환 적용
 	D3DXVec3TransformCoord(&vSunPos, &vOriginPos, &matRotX);
@@ -223,6 +243,11 @@ HRESULT CSun::Ready_Components()
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
 		return E_FAIL;
 
+	/* For.Com_Texture */
+	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Moon"),
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom2))))
+		return E_FAIL;
+
 	/* For.Com_VIBuffer */
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
 		TEXT("Com_VIBuffer"), reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
@@ -269,6 +294,7 @@ void CSun::Free()
 	__super::Free();
 
 	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pTextureCom2);
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
 }
