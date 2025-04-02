@@ -25,6 +25,9 @@ public:
 	virtual HRESULT Render()override;
 
 	void Set_ChunkCount(int _cnt) { m_iChunkCnt = _cnt; }
+
+	float GetBight() const;
+
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };

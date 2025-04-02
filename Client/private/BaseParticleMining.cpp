@@ -16,6 +16,10 @@ HRESULT CBaseParticleMining::Initialize_Prototype()
 
 HRESULT CBaseParticleMining::Initialize(void* pArg)
 {
+	m_Sun = (CSun*)m_pGameInstance->Get_Object(LEVEL_YU,
+		TEXT("Layer_Sun"),
+		0);
+
 	iParticleCount = 1;
 
 	if (FAILED(__super::Initialize(pArg)))
@@ -38,7 +42,7 @@ HRESULT CBaseParticleMining::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 	{
 		return E_FAIL;
-	}
+	}	
 
 	return S_OK;
 }
@@ -50,9 +54,11 @@ void CBaseParticleMining::Free()
 
 ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 {
-	ParticleAttribute att;
-	att.vPosition = { GetRandomFloat(-0.2f, 0.2f), GetRandomFloat(-0.2f, 0.2f), 0.f };
-	//att.vColor = Float3ToHex({ 0.1f, 0.f, 0.f });
+	float bight = m_Sun->GetBight();
+
+	ParticleAttribute att;	
+	att.vPosition = { GetRandomFloat(-0.2f, 0.2f), GetRandomFloat(-0.2f, 0.2f), 0.f };	
+	att.vColor = Float3ToHex({ bight, bight, bight });
 	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };
 	att.IsTime = true;
 	att.fCurrentTime = 0.f;
