@@ -99,7 +99,7 @@ void CMonster::Chase_Player(float _fTimeDelta)
     //m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTargetPos.x, vTargetPos.y, vTargetPos.z), _fTimeDelta, 1.0f);
 
     //움직일라 하는데 속도가 안난다 점프함 ㅋㅋ
-    if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 1.f)
+    if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 0.5f)
     {
 		m_pRigidbodyCom->Jump(6.5f);
     }

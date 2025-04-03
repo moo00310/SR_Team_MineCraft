@@ -34,7 +34,13 @@ HRESULT CItemCube::Initialize(void* pArg)
     CTransform* pTransformCom{ nullptr };
     m_pPlayerTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
     Safe_AddRef(m_pPlayerTransformCom);
-   
+
+
+    const _float fPower{ 0.5f };
+    const _float fHorizonPower{ (rand() % 11 - 5) * fPower };
+    const _float fVerticalPower{ (rand() % 11 + 3) * fPower };
+    m_pRigidbodyCom->Knock_back(_float3{ fHorizonPower,fVerticalPower , fHorizonPower });
+
 
     return S_OK;
 }
@@ -66,10 +72,10 @@ void CItemCube::Update(_float fTimeDelta)
         _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
         m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
     }
-    else if (fDist < 20.f)
+    else if (fDist < 5.f)
     {
         //플레이어와 거리가 가까우면 중력적용
-        m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.5f);
+        m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);
     }
 
 }
