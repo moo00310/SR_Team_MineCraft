@@ -20,6 +20,8 @@ HRESULT CWood::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_fHardness = 2;
+
 	return S_OK;
 }
 

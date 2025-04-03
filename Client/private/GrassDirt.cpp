@@ -21,6 +21,8 @@ HRESULT CGrassDirt::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+    m_fHardness = 0.6;
+
     return S_OK;
 }
 

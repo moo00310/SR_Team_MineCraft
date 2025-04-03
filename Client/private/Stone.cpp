@@ -23,6 +23,7 @@ HRESULT CStone::Initialize(void* pArg)
         return E_FAIL;
 
     __super::Initialize(pArg);
+    m_fHardness = 1.5;
 
     return S_OK;
 }

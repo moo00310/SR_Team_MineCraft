@@ -118,6 +118,7 @@ void CBreakableRect::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 {
     m_Colliders.clear();
     m_Colliders.resize(position.size());
+    m_itemName = _name;
 
     for (int i = 0; i < position.size(); ++i) {
         m_vecPositions.push_back(position[i]); //위치 넣어줌

@@ -2,6 +2,7 @@
 #include "MCTerrain.h"
 #include "GameInstance.h"
 #include "Creeper.h"
+#include "UI_Mgr.h"
 #include <iostream>
 
 CBreakableCube::CBreakableCube(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -54,19 +55,19 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         }
     }
 
-    if (m_iHp < 100) {
+    if (m_fHp < 100) {
 
         m_resetHpFrame++;
         if (m_resetHpFrame > 10) {
             m_resetHpFrame = 0;
-            m_iHp = 100;
-            cout << "Reset Hp" << m_iHp << endl;
+            m_fHp = 100;
+            cout << "Reset Hp" << m_fHp << endl;
         }
     }
 
-    if (m_iHp <= 0) {
+    if (m_fHp <= 0) {
         Delete_Cube(m_attackedBlockPos);
-        m_iHp = 100;
+        m_fHp = 100;
     }
 
     if (m_vecPositions.size() == 0) {
@@ -137,6 +138,7 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 {
     m_Colliders.clear();
     m_Colliders.resize(position.size());
+    m_itemName = _name;
 
     for (int i = 0; i < position.size(); ++i) {
         m_vecPositions.push_back(position[i]); //위치 넣어줌
@@ -167,22 +169,89 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
 {
     if (m_attackedBlockPos != fPos) {
-        m_iHp = 100;
-        cout << "Change Block" << m_iHp << endl;
+        m_fHp = 100;
+        cout << "Change Block" << m_fHp << endl;
     }
-    m_iHp -= attackDamage;
+    
+    ITEMNAME _itemname = CUI_Mgr::Get_Instance()->GetItemTypeName();
+
+    switch (_itemname)
+    {
+    case Client::ITEMNAME_PICKAXE:
+        switch (m_itemName)
+        {
+        case Client::ITEMNAME_GRASSDIRT:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_DIRT:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_LEAF:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_WOOD:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_STONE:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
+        case Client::ITEMNAME_COBBLESTONE:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
+        case Client::ITEMNAME_COALORE:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
+        case Client::ITEMNAME_IRONORE:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
+        default:
+            break;
+        }
+    default:
+        switch (m_itemName)
+        {
+        case Client::ITEMNAME_GRASSDIRT:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_DIRT:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_LEAF:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_WOOD:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_STONE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        case Client::ITEMNAME_COBBLESTONE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        case Client::ITEMNAME_COALORE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        case Client::ITEMNAME_IRONORE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        default:
+            break;
+        }
+
+        break;
+    }
     m_attackedBlockPos = fPos;
     m_resetHpFrame = 0;
-    cout << "Damage" << m_iHp << endl;
+
 
     CParticleEventManager::Get_Instance()->OnParticle(
         PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
         fPos);
 }
 
-int CBreakableCube::GetHP() const
+float CBreakableCube::GetHP() const
 {
-    return m_iHp;
+    return m_fHp;
 }
 
 void CBreakableCube::Set_Bright()

@@ -59,12 +59,15 @@ public:
 	virtual void Attacked_Block(_float3 fPos, int attackDamage);
 
 	// 큐브 HP 반환.
-	int GetHP() const;
+	float GetHP() const;
 
 	//블럭 밝기 조절
 	void Set_Bright();
 
 	virtual HRESULT Create_Cube(_float3 fPos, _float3 _Dir);
+
+	//블럭 경도 가지고 오는 코드
+	_float Get_Hardness() { return m_fHardness; }
 
 	HRESULT Ready_Components();
 protected:
@@ -82,9 +85,12 @@ protected:
 
 	ITEMNAME m_itemName;
 
-	int m_iHp = 100;
+	float m_fHp = 100;
 	_float3 m_attackedBlockPos;
 	int m_resetHpFrame = 0;
+
+	//블럭 경도
+	_float m_fHardness;
 
 private:
 	//아래 두 함수를 나중에 Pawn으로 합쳐도 될지는 모르겠음, 일단 나눔
