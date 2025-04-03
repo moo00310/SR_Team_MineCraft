@@ -283,6 +283,9 @@
     <Filter Include="03.UI\04.Inventory\05.SlotInfo">
       <UniqueIdentifier>{7bcd92a0-958a-4574-a45f-9d3fd6353c56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\06.Right_Hand\03.Left_Rect_Model">
+      <UniqueIdentifier>{8b8f165a-c97a-4aaf-940e-36b6a8a8b484}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -622,6 +625,9 @@
     <ClInclude Include="..\public\ParticleSwordFlame.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Left_Rect_Model.h">
+      <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -948,6 +954,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleSwordFlame.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Left_Rect_Model.cpp">
+      <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -115,7 +115,7 @@ technique DefaultTechnique
         PixelShader = compile ps_3_0 PS_MAIN_SKYBOX();
     }
 
-    pass Steve
+    pass TPS_Cube
     {
         ZENABLE = true;
         ZWRITEENABLE = true;
@@ -124,16 +124,35 @@ technique DefaultTechnique
         PixelShader = compile ps_3_0 PS_MAIN_STEVE();
     }
 
-    pass Rect
+    pass TPS_Rect
     {
         CULLMODE = NONE;
         ALPHATESTENABLE = true;
         ALPHAREF = 100;
         ALPHAFUNC = GREATER;
-
         VertexShader = compile vs_3_0 VS_MAIN_Steve();
         PixelShader = compile ps_3_0 PS_MAIN_STEVE();
+    }
 
+    pass FPS_Cube
+    {
+        ZENABLE = false;
+        ZWRITEENABLE = false;
+        LIGHTING = true;
+        VertexShader = compile vs_3_0 VS_MAIN_Steve();
+        PixelShader = compile ps_3_0 PS_MAIN_STEVE();
+    }
+
+    pass FPS_Rect
+    {
+        CULLMODE = NONE;
+        ZENABLE = false;
+        ZWRITEENABLE = false;
+        ALPHATESTENABLE = true;
+        ALPHAREF = 100;
+        ALPHAFUNC = GREATER;
+        VertexShader = compile vs_3_0 VS_MAIN_Steve();
+        PixelShader = compile ps_3_0 PS_MAIN_STEVE();
     }
 
 }

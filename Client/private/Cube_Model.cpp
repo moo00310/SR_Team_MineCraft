@@ -32,19 +32,24 @@ void CCube_Model::Priority_Update(_float fTimeDelta)
 void CCube_Model::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+
 }
 
 void CCube_Model::Late_Update(_float fTimeDelta)
 {
     __super::Late_Update(fTimeDelta);
 
+    if (m_isTPS)
+        m_RederID = 1;
+    else
+        m_RederID = 3;
 }
 
 HRESULT CCube_Model::Render()
 {
     if (m_isTPS)
     {
-        Matrix mat = m_pSteve->GetSoketMatrix();
+        Matrix mat = m_pSteve->GetSoketMatrix(7);
         mat.Scaling(0.3f, 0.3f, 0.3f);
         m_pVIBufferComs[0]->SetMatrix(mat);
     }

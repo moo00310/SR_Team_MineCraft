@@ -138,6 +138,44 @@ namespace Engine
 
             return *this;
         }
+        _float4x4 Turn_Radian_Safe_Scale(const _float3& vAxis, _float Radian)
+        {
+            // 현재 방향 벡터 추출
+            _float3 vRight = Get_State(STATE_RIGHT);
+            _float3 vUp = Get_State(STATE_UP);
+            _float3 vLook = Get_State(STATE_LOOK);
+
+            // 스케일 추출 (각 축 벡터의 길이)
+            _float fScaleX = D3DXVec3Length(&vRight);
+            _float fScaleY = D3DXVec3Length(&vUp);
+            _float fScaleZ = D3DXVec3Length(&vLook);
+
+            // 방향 벡터 정규화
+            D3DXVec3Normalize(&vRight, &vRight);
+            D3DXVec3Normalize(&vUp, &vUp);
+            D3DXVec3Normalize(&vLook, &vLook);
+
+            // 회전 행렬 생성
+            _float4x4 RotationMatrix;
+            D3DXMatrixRotationAxis(&RotationMatrix, &vAxis, Radian);
+
+            // 회전 적용
+            D3DXVec3TransformNormal(&vRight, &vRight, &RotationMatrix);
+            D3DXVec3TransformNormal(&vUp, &vUp, &RotationMatrix);
+            D3DXVec3TransformNormal(&vLook, &vLook, &RotationMatrix);
+
+            // 원래 스케일 재적용
+            vRight *= fScaleX;
+            vUp *= fScaleY;
+            vLook *= fScaleZ;
+
+            // 상태 갱신
+            Set_State(STATE_RIGHT, vRight);
+            Set_State(STATE_UP, vUp);
+            Set_State(STATE_LOOK, vLook);
+
+            return *this;
+        }
 
         _float4x4 Scaling(_float fX, _float fY, _float fZ)
         {

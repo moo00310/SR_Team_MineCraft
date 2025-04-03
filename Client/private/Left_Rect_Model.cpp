@@ -1,21 +1,21 @@
-#include "Rect_Model.h"
+#include "Left_Rect_Model.h"
 
-CRect_Model::CRect_Model(LPDIRECT3DDEVICE9 pGraphic_Device)
+CLeft_Rect_Model::CLeft_Rect_Model(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CRightHand_Object{ pGraphic_Device }
 {
 }
 
-CRect_Model::CRect_Model(const CRect_Model& Prototype)
+CLeft_Rect_Model::CLeft_Rect_Model(const CLeft_Rect_Model& Prototype)
 	: CRightHand_Object(Prototype)
 {
 }
 
-HRESULT CRect_Model::Initialize_Prototype()
+HRESULT CLeft_Rect_Model::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CRect_Model::Initialize(void* pArg)
+HRESULT CLeft_Rect_Model::Initialize(void* pArg)
 {
 	m_RederID = 2;
 
@@ -23,20 +23,19 @@ HRESULT CRect_Model::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CRect_Model::Priority_Update(_float fTimeDelta)
+
+void CLeft_Rect_Model::Priority_Update(_float fTimeDelta)
 {
 	KeyInput();
 }
 
-void CRect_Model::Update(_float fTimeDelta)
+void CLeft_Rect_Model::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 }
 
-void CRect_Model::Late_Update(_float fTimeDelta)
-{	
-	//FireSword();
-
+void CLeft_Rect_Model::Late_Update(_float fTimeDelta)
+{
 	__super::Late_Update(fTimeDelta);
 
 	if (m_isTPS)
@@ -45,26 +44,23 @@ void CRect_Model::Late_Update(_float fTimeDelta)
 		m_RederID = 4;
 }
 
-HRESULT CRect_Model::Render()
+HRESULT CLeft_Rect_Model::Render()
 {
 	if (m_isTPS)
 	{
-		Matrix mat = m_pSteve->GetSoketMatrix(7);
+		Matrix mat = m_pSteve->GetSoketMatrix(8);
 		Matrix mat2 = {};
-		mat2.Turn_Radian(_float3(1.f, 0.f, 1.f), D3DXToRadian(90));
-		mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(20));
-
+		mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(110));
 		mat2.Scaling(0.8f, 0.8f, 0.8f);
 
 		m_pVIBufferComs[0]->SetMatrix(m_TPS_mat * mat2 * mat);
 	}
-
 	__super::Render();
 
 	return S_OK;
 }
 
-HRESULT CRect_Model::Ready_Components()
+HRESULT CLeft_Rect_Model::Ready_Components()
 {
 	/* For.Com_Texture */
 	if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Rect_Model"),
@@ -81,23 +77,21 @@ HRESULT CRect_Model::Ready_Components()
 	return S_OK;
 }
 
-HRESULT CRect_Model::Ready_Bone()
+HRESULT CLeft_Rect_Model::Ready_Bone()
 {
 	Matrix mat = {};
-	mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(70));
+	mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-70));
 	mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(45));
-	mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
+	mat.Set_State(mat.STATE_POSITION, _float3(-1.f, -0.5f, 1.2f));
 
 	BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
-	BONE bone2 = { "Fx", 0, MAtrixTranslation(4.f/16.f, 4.f / 16.f, 0.f), MAtrixTranslation(4.f / 16.f, 4.f / 16.f, 0.f), Matrix(), Matrix()};
 
 	m_pSkeletalAnimator->Add_Bone(bone);
-	m_pSkeletalAnimator->Add_Bone(bone2);
 
 	return S_OK;
 }
 
-HRESULT CRect_Model::Ready_Animation()
+HRESULT CLeft_Rect_Model::Ready_Animation()
 {
 	///*------------------------
 	//* Init 
@@ -150,49 +144,11 @@ HRESULT CRect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(WALK, Walk5);
 
 
-	///*------------------------
-	//* EAT 애니메이션 
-	//----------------------------*/
-
-
-	matrix1 = { };
-	matrix1.Set_State(mat.STATE_POSITION, _float3(-0.8f, 0.5f, -0.6f));
-	matrix1.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-25));
-	matrix1.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-80));
-	matrix1.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-20));
-
-	matrix2 = matrix1;
-	matrix2.Set_State(mat.STATE_POSITION, _float3(-1.2f, 0.5f, -0.6f));
-
-	KEYFREAME EAT1 = { 0.f, mat };
-	KEYFREAME EAT2 = { 0.2f, matrix1 };
-	KEYFREAME EAT3 = { 0.3f, matrix2 };
-	KEYFREAME EAT4 = { 0.4f, matrix1 };
-	KEYFREAME EAT5 = { 0.5f, matrix2 };
-	KEYFREAME EAT6 = { 0.6f, matrix1 };
-	KEYFREAME EAT7 = { 0.7f, matrix2 };
-	KEYFREAME EAT8 = { 0.8f, matrix1 };
-	KEYFREAME EAT9 = { 0.9f, matrix2 };
-	KEYFREAME EAT10 = { 1.0f, matrix1 };
-
-
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT1);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT2); 
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT3);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT4);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT5);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT6);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT7);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT8);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT9);
-	m_pSkeletalAnimator->Add_Animation(EAT, EAT10);
-
 
 	return S_OK;
 }
 
-
-void CRect_Model::Update_State(_float fTimeDelta)
+void CLeft_Rect_Model::Update_State(_float fTimeDelta)
 {
 	switch (m_eCurAnim)
 	{
@@ -205,18 +161,14 @@ void CRect_Model::Update_State(_float fTimeDelta)
 	case WALK:
 		Motion_Walk(fTimeDelta);
 		break;
-	case EAT:
-		Motion_EAT(fTimeDelta);
-		break;
 	case ANIM_END:
 		break;
 	default:
 		break;
 	}
-
 }
 
-void CRect_Model::Motion_Idle(_float fTimeDelta)
+void CLeft_Rect_Model::Motion_Idle(_float fTimeDelta)
 {
 	m_pSkeletalAnimator->Update_Animetion(INIT, fTimeDelta, 0);
 
@@ -226,7 +178,7 @@ void CRect_Model::Motion_Idle(_float fTimeDelta)
 	}
 }
 
-void CRect_Model::Motion_Swing(_float fTimeDelta)
+void CLeft_Rect_Model::Motion_Swing(_float fTimeDelta)
 {
 	m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0);
 
@@ -239,7 +191,7 @@ void CRect_Model::Motion_Swing(_float fTimeDelta)
 	}
 }
 
-void CRect_Model::Motion_Walk(_float fTimeDelta)
+void CLeft_Rect_Model::Motion_Walk(_float fTimeDelta)
 {
 	m_pSkeletalAnimator->Update_Animetion(WALK, fTimeDelta, 0);
 
@@ -249,40 +201,15 @@ void CRect_Model::Motion_Walk(_float fTimeDelta)
 	}
 }
 
-void CRect_Model::Motion_EAT(_float fTimeDelta)
+void CLeft_Rect_Model::KeyInput()
 {
-	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
-	if (name != ITEMNAME_APPLE)
-	{
-		return;
-	}
-		
-	m_pSkeletalAnimator->Update_Animetion(EAT, fTimeDelta, 0);
 
-	if (m_pSkeletalAnimator->is_AnimtionEND(EAT))
-	{
-		m_eCurAnim = INIT;
-	}
-}
-
-void CRect_Model::KeyInput()
-{
-	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	if (m_pGameInstance->Key_Down(VK_RBUTTON))
 	{
 		m_eCurAnim = SWING;
 		return;
 	}
 
-	if (m_pGameInstance->Key_Down(VK_RBUTTON))
-	{
-		m_eCurAnim = EAT;
-		return;
-	}
-
-	if (m_eCurAnim == SWING || m_eCurAnim == EAT)
-		return;
-
-	// 애니메이션 바꾸기
 	if (m_pGameInstance->Key_Pressing('W') ||
 		m_pGameInstance->Key_Pressing('A') ||
 		m_pGameInstance->Key_Pressing('S') ||
@@ -296,40 +223,22 @@ void CRect_Model::KeyInput()
 	}
 }
 
-void CRect_Model::FireSword()
+CLeft_Rect_Model* CLeft_Rect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	if (Compute_Texture_Name() != ITEMNAME_SWORD)
-	{
-		return;
-	}
-	_float3 vPos = m_pSkeletalAnimator->GetBoneWorldMatrix(1).Get_State(Matrix::STATE_POSITION);
-
-	CParticleEventManager::Get_Instance()->OnParticle(
-		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
-		vPos);
-}
-
-ITEMNAME CRect_Model::Compute_Texture_Name()
-{
-	return ITEMNAME(m_TextrueNum + 100);
-}
-
-CRect_Model* CRect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
-{
-	CRect_Model* pInstance = new CRect_Model(pGraphic_Device);
+	CLeft_Rect_Model* pInstance = new CLeft_Rect_Model(pGraphic_Device);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CRect_Model");
+		MSG_BOX("Failed to Created : CLeft_Rect_Model");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CGameObject* CRect_Model::Clone(void* pArg)
+CGameObject* CLeft_Rect_Model::Clone(void* pArg)
 {
-	CRect_Model* pInstance = new CRect_Model(*this);
+	CGameObject* pInstance = new CLeft_Rect_Model(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
@@ -339,7 +248,7 @@ CGameObject* CRect_Model::Clone(void* pArg)
 	return pInstance;
 }
 
-void CRect_Model::Free()
+void CLeft_Rect_Model::Free()
 {
 	__super::Free();
 }

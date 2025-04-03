@@ -23,18 +23,21 @@ HRESULT CRight_hand::Initialize(void* pArg)
     m_pArm_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),0));
     m_pRect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),1));
     m_pCube_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),2));
+    m_pLeft_Rect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"), 3));
 
  
     if (m_pArm_Model == nullptr ||
         m_pRect_Model == nullptr ||
         m_pSteve == nullptr ||
-        m_pCube_Model == nullptr)
+        m_pCube_Model == nullptr ||
+        m_pLeft_Rect_Model == nullptr)
         return E_FAIL;
 
     Safe_AddRef(m_pSteve);
     Safe_AddRef(m_pArm_Model);
     Safe_AddRef(m_pRect_Model);
     Safe_AddRef(m_pCube_Model);
+    Safe_AddRef(m_pLeft_Rect_Model);
 
     return S_OK;
 }
@@ -50,6 +53,7 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
             m_pArm_Model->Set_isTps(true);
             m_pRect_Model->Set_isTps(true);
             m_pCube_Model->Set_isTps(true);
+            m_pLeft_Rect_Model->Set_isTps(true);
             isTPS = true;
         }
         else
@@ -59,6 +63,7 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
             m_pArm_Model->Set_isTps(false);
             m_pRect_Model->Set_isTps(false);
             m_pCube_Model->Set_isTps(false);
+            m_pLeft_Rect_Model->Set_isTps(false);
             isTPS = false;
         }
 
@@ -90,13 +95,13 @@ void CRight_hand::Chage_RightHand()
 {
     ITEMNAME Name = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
-    Select_Render(Name);
-    Change_Texture(Name);
+    Select_Render_Texture(Name);
 }
 
-void CRight_hand::Select_Render(ITEMNAME name)
+void CRight_hand::Select_Render_Texture(ITEMNAME name)
 {
     int index = -1;
+
 
     if (name == 999)
     {
@@ -115,15 +120,41 @@ void CRight_hand::Select_Render(ITEMNAME name)
         Render_Rect();
         index = name - 100;
         m_pRect_Model->ChangeTexture(index);
+       
+
+
+        if (name == ITEMNAME_TORCH)
+            m_pLeft_Rect_Model->ChangeTexture(index);
+
+
+        Change_Matrix(name);
         return;
     }
 }
 
-void CRight_hand::Change_Texture(ITEMNAME name)
+void CRight_hand::Change_Matrix(ITEMNAME name)
 {
-    // ¸Ô±â°¡´É
-    //if(name == ITEMNAME_APPLE)
-        //m_pRect_Model.
+    Matrix TPS_mat = {};
+    Matrix FPS_mat = {};
+
+    if (name == ITEMNAME_TORCH)
+    {
+        TPS_mat.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-45));
+    }
+    else if (name == ITEM_WEPON_1)
+    {
+        TPS_mat.Scaling(4.f, 7.f, 4.f);
+        TPS_mat.Turn_Radian_Safe_Scale(_float3(0.f, 0.f, 1.f), D3DXToRadian(-45));
+        TPS_mat.Turn_Radian_Safe_Scale(_float3(0.f, 1.f, 0.f), D3DXToRadian(-25));
+
+        FPS_mat.Scaling(100.f, 100.f, 100.f);
+        //FPS_mat.Turn_Radian_Safe_Scale(_float3(0.f, 1.f, 0.f), D3DXToRadian(-45));
+        FPS_mat.Set_State(FPS_mat.STATE_POSITION, _float3(-1.f, 0.5f, -1.f));
+    }
+        
+    m_pRect_Model->Set_TPSMatrix(TPS_mat);
+    m_pRect_Model->Set_FPSMatrix(FPS_mat);
+
 }
 
 void CRight_hand::Render_Arm()
@@ -134,6 +165,8 @@ void CRight_hand::Render_Arm()
         m_pArm_Model->SetRender(true);
     m_pRect_Model->SetRender(false);
     m_pCube_Model->SetRender(false);
+
+    m_pLeft_Rect_Model->SetRender(false);
 }
 
 void CRight_hand::Render_Rect()
@@ -141,6 +174,8 @@ void CRight_hand::Render_Rect()
     m_pArm_Model->SetRender(false);
     m_pRect_Model->SetRender(true);
     m_pCube_Model->SetRender(false);
+
+    m_pLeft_Rect_Model->SetRender(true);
 }
 
 void CRight_hand::Render_Cube()
@@ -148,6 +183,8 @@ void CRight_hand::Render_Cube()
     m_pArm_Model->SetRender(false);
     m_pRect_Model->SetRender(false);
     m_pCube_Model->SetRender(true);
+
+    m_pLeft_Rect_Model->SetRender(false);
 }
 
 
@@ -185,4 +222,5 @@ void CRight_hand::Free()
     Safe_Release(m_pArm_Model);
     Safe_Release(m_pRect_Model);
     Safe_Release(m_pCube_Model);
+    Safe_Release(m_pLeft_Rect_Model);
 }

@@ -30,6 +30,7 @@ private:
 	HRESULT Ready_Laye_Rect_Model(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_Cube_Model(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_RightHand(const _wstring& strLayerTag); 	
+	HRESULT Ready_Laye_Left_Rect_Model(const _wstring& strLayerTag);
 
 	HRESULT Ready_Layer_Inventory(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_PlayerState(const _wstring& strLayerTag);

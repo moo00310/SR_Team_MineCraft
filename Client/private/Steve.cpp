@@ -204,28 +204,30 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down('C'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_COAL, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_1, 1);
 	}
 	if (m_pGameInstance->Key_Down('V'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_COBBLESTONE, 64);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_2, 1);
 	}
 	if (m_pGameInstance->Key_Down('B'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_WOOD, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_3, 1);
 	}
 	if (m_pGameInstance->Key_Down('N'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_APPLE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_4, 1);
 	}
 	if (m_pGameInstance->Key_Down('M'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_SWORD, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_5, 1);
 	}
+
 	if (m_pGameInstance->Key_Down('L'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_PICKAXE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_TORCH, 1);
 	}
+
 }
 
 HRESULT CSteve::Ready_Components()
@@ -271,7 +273,7 @@ HRESULT CSteve::Ready_Components()
 
 HRESULT CSteve::Ready_Bone()
 {
-	BONE bone[8] =
+	BONE bone[9] =
 	{
 		 { "Root"  , -1,  MAtrixTranslation(0.f, 0.f,0.f),	MAtrixTranslation(0.f	,0.f,	0.f),	Matrix(), Matrix() },  // root
 		 { "Pelvis",  0,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 6.f / 16.f, 0.f)},
@@ -280,10 +282,11 @@ HRESULT CSteve::Ready_Bone()
 		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     0,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(6.f / 16.f,   12.f / 16.f	,0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-6.f / 16.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
-		 { "Soket" ,  5,  MAtrixTranslation(0.f,  -12.f / 16.f,	4.f / 16.f),	MAtrixTranslation(0.f,  -12.f / 16.f,	4.f / 16.f), Matrix(), Matrix()},
+		 { "Soket_R" ,  5,  MAtrixTranslation(0.f,  -12.f / 16.f,	7.f / 16.f),	MAtrixTranslation(0.f,  -12.f / 16.f,	7.f / 16.f), Matrix(), Matrix()},
+		 { "Soket_L" ,  6,  MAtrixTranslation(0.f,  -12.f / 16.f,	7.f / 16.f),	MAtrixTranslation(0.f,  -12.f / 16.f,	7.f / 16.f), Matrix(), Matrix()}
 	};
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		m_skelAnime->Add_Bone(bone[i]);
 	}
@@ -534,9 +537,9 @@ void CSteve::Knock_back(const _float3& vforce)
 	m_pRigidbodyCom->Knock_back(temp);
 }
 
-const _float4x4& CSteve::GetSoketMatrix()
+const _float4x4& CSteve::GetSoketMatrix(int index)
 {
-	return m_skelAnime->GetBoneWorldMatrix(7);
+	return m_skelAnime->GetBoneWorldMatrix(index);
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

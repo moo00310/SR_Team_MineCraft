@@ -3,12 +3,12 @@
 #include "Client_Defines.h"
 #include "RightHand_Object.h"
 
-class CRect_Model final : public CRightHand_Object
+class CLeft_Rect_Model final : public CRightHand_Object
 {
 protected:
-	CRect_Model(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CRect_Model(const CRect_Model& Prototype);
-	virtual ~CRect_Model() = default;
+	CLeft_Rect_Model(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CLeft_Rect_Model(const CLeft_Rect_Model& Prototype);
+	virtual ~CLeft_Rect_Model() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -27,18 +27,15 @@ private:
 	void Update_State(_float fTimeDelta) override;
 	void Motion_Idle(_float fTimeDelta) override;
 	void Motion_Swing(_float fTimeDelta) override;
-	void Motion_Walk(_float fTimeDelta) override; 
-	void Motion_EAT(_float fTimeDelta); 
+	void Motion_Walk(_float fTimeDelta) override;
 	virtual void KeyInput() override;
 
-private:
-	void FireSword();
-	ITEMNAME Compute_Texture_Name();
 
 public:
-	static CRect_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CLeft_Rect_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 
 };
+
 

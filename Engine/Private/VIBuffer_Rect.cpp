@@ -12,7 +12,6 @@ CVIBuffer_Rect::CVIBuffer_Rect(const CVIBuffer_Rect& Prototype)
 
 HRESULT CVIBuffer_Rect::Initialize_Prototype()
 {
-
 	m_iNumVertices = 4;
 	m_iVertexStride = sizeof(VTXPOSTEX);
 	m_iFVF = D3DFVF_XYZ | D3DFVF_TEX1/* | D3DFVF_TEXCOORDSIZE2(0)*/;

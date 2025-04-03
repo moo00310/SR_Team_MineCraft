@@ -38,6 +38,11 @@ void CArm_Steve::Update(_float fTimeDelta)
 void CArm_Steve::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
+
+	if (m_isTPS)
+		m_RederID = 1;
+	else
+		m_RederID = 3;
 }
 
 HRESULT CArm_Steve::Render()

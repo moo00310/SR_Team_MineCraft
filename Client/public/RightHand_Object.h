@@ -37,6 +37,11 @@ public:
 	void Set_Bright(float _bright) { m_bright = _bright; }
 	void Set_isTps(bool isTps) { m_isTPS = isTps;  }
 
+public:
+	void Set_TPSMatrix(const Matrix& mat) { m_TPS_mat = mat; }
+	void Set_FPSMatrix(const Matrix& mat) { m_FPS_mat = mat; }
+
+
 protected:
 	CTexture* m_pTextureCom = { nullptr };
 	vector<CVIBuffer_Anim*> m_pVIBufferComs = { nullptr };
@@ -67,6 +72,8 @@ protected:
 
 protected:
 	int m_TextrueNum = 0;
+	Matrix m_TPS_mat = {};
+	Matrix m_FPS_mat = {};
 
 public:
 	virtual CGameObject* Clone(void* pArg) =0;

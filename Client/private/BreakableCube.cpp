@@ -323,8 +323,8 @@ void CBreakableCube::Should_Collide_With_Monster()
         CTransform* pTransformCom{ nullptr };
         pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
 
-        if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
-            continue;
+        /*if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+            continue;*/
 
         _float3 vMonsterPos = { pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.f, 0.f } };
 
