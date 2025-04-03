@@ -203,6 +203,7 @@
     <ClInclude Include="..\public\Mouse.h" />
     <ClInclude Include="..\public\Mouse_Item.h" />
     <ClInclude Include="..\public\Mouse_ItemFont.h" />
+    <ClInclude Include="..\public\ParticleCharging.h" />
     <ClInclude Include="..\public\ParticleDie.h" />
     <ClInclude Include="..\public\ParticleEventManager.h" />
     <ClInclude Include="..\public\ParticleExplosion.h" />
@@ -313,6 +314,7 @@
     <ClCompile Include="..\private\Mouse.cpp" />
     <ClCompile Include="..\private\Mouse_Item.cpp" />
     <ClCompile Include="..\private\Mouse_ItemFont.cpp" />
+    <ClCompile Include="..\private\ParticleCharging.cpp" />
     <ClCompile Include="..\private\ParticleDie.cpp" />
     <ClCompile Include="..\private\ParticleEventManager.cpp" />
     <ClCompile Include="..\private\ParticleExplosion.cpp" />
