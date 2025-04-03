@@ -21,6 +21,8 @@ HRESULT CCoalOre::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+    m_fHardness = 3;
+
     return S_OK;
 }
 
@@ -67,7 +69,6 @@ HRESULT CCoalOre::Delete_Cube(_float3 fPos)
             if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
                 _copy->SetPos(m_vecPositions[i]);
                 _copy->Set_ItemTypeAndBindTexture(ITEMNAME_COAL);
-                _copy->Set_Bright(m_vecBrights[i]);
 
             }
 

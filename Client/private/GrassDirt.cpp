@@ -21,6 +21,8 @@ HRESULT CGrassDirt::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+    m_fHardness = 0.6;
+
     return S_OK;
 }
 
@@ -67,7 +69,6 @@ HRESULT CGrassDirt::Delete_Cube(_float3 fPos)
             if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
                 _copy->SetPos(m_vecPositions[i]);
                 _copy->Set_ItemTypeAndBindTexture(ITEMNAME_DIRT);
-                _copy->Set_Bright(m_vecBrights[i]);
             }
 
             // Èë ÆÄ±« ÆÄÆ¼Å¬.

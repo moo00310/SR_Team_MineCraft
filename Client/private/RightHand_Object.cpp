@@ -78,7 +78,7 @@ HRESULT CRightHand_Object::Render()
         return E_FAIL;
 
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", m_TextrueNum);
-    m_pShaderCom->SetFloat("g_Bright", m_bright + 0.2f);
+    m_pShaderCom->SetFloat("g_Bright", g_fBright + 0.2f);
     m_pShaderCom->Begin(m_RederID);
 
     /* 정점을 그린다. */
