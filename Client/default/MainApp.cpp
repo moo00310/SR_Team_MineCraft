@@ -27,6 +27,7 @@
 #include "Mouse.h"
 #include "ParticleDie.h"
 #include "ParticleSwordFlame.h"
+#include "ParticleFireCracker.h"
 
 
 CMainApp::CMainApp()
@@ -251,6 +252,11 @@ HRESULT CMainApp::Ready_Particle()
 	// 불꽃 검 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
 		CParticleSwordFlame::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 폭죽 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER,
+		CParticleFireCracker::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;

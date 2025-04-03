@@ -98,8 +98,18 @@ void CPlayer::Update(_float fTimeDelta)
 		//	particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));					
 		//}		
 
+		//CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
+		//	PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,	// 가져올 프로토타입.
+		//	LEVEL_STATIC,	// 적용 씬.
+		//	LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
+
+		//if (particle != nullptr)
+		//{			
+		//	particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));			
+		//}
+
 		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
-			PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,	// 가져올 프로토타입.
+			PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER,	// 가져올 프로토타입.
 			LEVEL_STATIC,	// 적용 씬.
 			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
 
