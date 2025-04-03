@@ -26,9 +26,7 @@ void CUI_Mgr::Late_Update(_float fTimeDelta)
 void CUI_Mgr::Synchronize_Slots()
 {
 	if (m_vecSlotInfolist.size() != 0)
-	{
-		/* ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_COBBLESTONE, ITEMNAME_DIRT, ITEMNAME_DANDELION, ITEMNAME_END */
-		
+	{	
 		for (int i = 0; i < 9; ++i)
 		{
 			if (m_vecSlotInfolist[i] && m_vecSlotInfolist[i + 9])
@@ -172,17 +170,50 @@ void CUI_Mgr::LevelUp()
 
 void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 {
-	/* 인벤토리 슬롯에 같은 아이템이 존재하는지 확인 
-	*  슬롯 인덱스 9~47까지 */
+	/*
+	enum ITEMNAME
+	{
+		ITEMNAME_DIRT, ITEMNAME_GRASSDIRT, ITEMNAME_STONE, ITEMNAME_COBBLESTONE, ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_LEAF, ITEMNAME_CUBE_END,
 
+		ITEMNAME_SEED = 100, ITEMNAME_SAPLING, ITEMNAME_APPLE, ITEMNAME_REDTULIP, ITEMNAME_DANDELION, ITEMNAME_COAL, ITEMNAME_RAWIRON, ITEMNAME_IRON,
+		ITEMNAME_SWORD, ITEMNAME_PICKAXE, ITEMNAME_RECT_END,
+
+		ITEMNAME_IRONORE = 900, ITEMNAME_COALORE, ITEMNAME_GRASS,
+		ITEMNAME_END = 999
+	};
+
+	*/
+
+	if (_ItemName < ITEMNAME_CUBE_END)
+	{
+		m_ItemID = ITEMID_BLOCK;
+	}
+	
+	if (_ItemName == ITEMNAME_SWORD || _ItemName == ITEMNAME_PICKAXE)
+	{
+		m_ItemID = ITEMID_ARMOR;
+	}
+	else if (_ItemName == ITEMNAME_APPLE)
+	{
+		m_ItemID = ITEMID_FOOD;
+	}
+	else
+	{
+
+	}
+
+
+	/* 인벤토리 슬롯에 같은 아이템이 존재하는지 확인
+	*  슬롯 인덱스 9~47까지 */
 	/* 인벤토리에 해당 아이템이 존재하는지 확인*/
 	for (int i = 9; i < m_vecSlotInfolist.size(); ++i)
 	{
 		if (m_vecSlotInfolist[i]->Get_ItemName() == _ItemName)
 		{
-			if (AddCount + m_vecSlotInfolist[i]->Get_ItemCount() < 65)
+			if (AddCount + m_vecSlotInfolist[i]->Get_ItemCount() < 65 && m_ItemID != ITEMID_ARMOR)
 			{
 				m_vecSlotInfolist[i]->Set_ItemCount(m_vecSlotInfolist[i]->Get_ItemCount() + AddCount);
+				m_vecSlotInfolist[i]->Set_ItemID(m_ItemID);
 				return;
 			}
 			else
@@ -208,6 +239,7 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 		{
 			m_vecSlotInfolist[iter]->Set_ItemName(_ItemName);
 			m_vecSlotInfolist[iter]->Set_ItemCount(AddCount);
+			m_vecSlotInfolist[iter]->Set_ItemID(m_ItemID);
 			break;
 		}
 	}

@@ -70,6 +70,7 @@ public:
 	void Set_PlayerHP_Shader(_bool _bPlayerHP_Shader) { m_bPlayerHP_Shader = _bPlayerHP_Shader; }
 
 private:
+	ITEMID	m_ItemID = ITEMID_END;
 	_float	m_fHungerTime = { 0.f };
 	_int	m_iallZeroCount = { 0 };
 	_int	m_iHP_ChangeCount = { 0 };
@@ -82,7 +83,6 @@ private:
 	list<CPlayerExp*>			m_PlayerExplist;
 	list<CPlayerLevel*>			m_PlayerLevellist;
 
-
 	/* Inventory ฐüทร */
 	vector<CSlotInfo*>		m_vecSlotInfolist;
 	vector<CCheckBox*>		m_vecCheckBoxlist;
@@ -92,7 +92,6 @@ private:
 	list<CMouse_Item*>		m_MouseItemlist;
 	list<CMouse_ItemFont*>	m_MouseItemFontlist;
 	
-
 private:
 	CSteve* pSteve = { nullptr };
 

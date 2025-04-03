@@ -91,6 +91,7 @@ PS_OUT PS_Fluorescent(PS_IN In)
 	return Out;
 }
 
+/* 반짝이는 효과 */
 PS_OUT PS_PlayerHunger(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0; 
@@ -107,6 +108,36 @@ PS_OUT PS_PlayerHunger(PS_IN In)
 	return Out;
 }
 
+/* 폰트 선명도 조절 */
+PS_OUT PS_FontEnhance(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0; 
+
+	// 원본 텍스처 샘플링
+    Out.vColor = tex2D(TextureSampler, In.vTexcoord);
+
+	// 밝기 강화
+	float brightnessBoost = 1.5f;
+	Out.vColor.rgb *= brightnessBoost;
+
+	// 대비 증가 (어두운 부분은 더 어둡게, 밝은 부분은 더 밝게)
+	Out.vColor.rgb = pow(Out.vColor.rgb, 1.3f); // 1.2~1.5 사이가 적당함
+
+	// 숫자 경계 강화 (라플라시안 필터 적용)
+	 Out.vColor.rgb = lerp(Out.vColor.rgb, Out.vColor.rgb * 2.0 - 0.5, 0.5);
+
+	// 완전한 흰색으로 보이도록 조정 (너무 밝으면 순수 흰색으로 변경)
+     if (Out.vColor.r > 0.85 && Out.vColor.g > 0.85 && Out.vColor.b > 0.85)
+    {
+        Out.vColor.rgb = float3(1.0, 1.0, 1.0);
+    }
+
+	// 알파값 조정 (투명한 부분 없애고 선명하게)
+	 if (Out.vColor.a < 0.3)
+        discard;     // 완전히 투명한 픽셀 제거
+
+    return Out;
+}
 
 
 /* Technique 정의 */
@@ -151,6 +182,20 @@ technique DefaultTechnique
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_PlayerHunger();
     }
+
+	pass FontEnhancePass 
+	{
+        AlphaTestEnable = TRUE;  
+        AlphaFunc = GREATER;    
+        AlphaRef = 50;     
+		
+      	CULLMODE = NONE;		
+        ZWRITEENABLE = FALSE;   
+        ZENABLE = FALSE;        
+
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_MAIN();
+	}
 }
 
 

@@ -44,7 +44,7 @@ HRESULT CSlotInfo::Initialize(void* pArg)
     else if (m_iSlotIndexNum < 27) m_iCategory = 2;
     else if (m_iSlotIndexNum < 36) m_iCategory = 3;
     else if (m_iSlotIndexNum < 45) m_iCategory = 4;
-    else if (m_iSlotIndexNum < 49) m_iCategory = 5;
+    else if (m_iSlotIndexNum < 49) { m_iCategory = 5; m_ItemID = ITEMID_ARMOR; }
     else if (m_iSlotIndexNum == 49) m_iCategory = 6;
     else if (m_iSlotIndexNum == 50) m_iCategory = 7;
     else if (m_iSlotIndexNum < 53) m_iCategory = 8;
@@ -139,7 +139,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
             (*mouseItem)->Set_ItemName(m_ItemName);
 
             /* 마우스에 표시할 아이템 개수 이미지 설정*/
-            if (m_iTensDigit != 0 && m_iOnesDigit != 0)
+            if (m_iTensDigit != 0 || m_iOnesDigit != 0)
             {
                 /* 마우스가 아이템 개수를 들고 있는 상태로 저장*/
                 (*mouseItemFont)->Set_Check(true);
@@ -147,12 +147,17 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
                 (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
             }
           
+       
+
+
             Set_ItemName(ITEMNAME_END);
         }
         /* 이미 아이템이 있다면 => 슬롯과 마우스의 아이템을 교환 */
         else
         {   
             /* 같은 아이템인지 확인  => 개수 합치는 방식 (스택 처리) */
+            /* pMouse->Get_SlotIndex() 는 현재 마우스가 들고 있는 아이템이 원래있던 인덱스 
+               m_iSlotIndexNum 는 새로 놓을곳의 인덱스 */
             if (pMouse->Get_SlotIndex() == m_iSlotIndexNum)
             {
                 pMouse->Set_ItemMatch(true);
@@ -163,8 +168,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
                 pMouse->Set_ItemMatch(false);
                 pUI_Mgr->Get_vecSlotInfolist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
             }
-                
-
+            
             ///* 이미 슬롯의 아이템이 있다면 교체 못함 */ // 이 부분을 변경해야할듯 -> 이미 슬롯의 아이템이 있다면 마우스가 들고있는 아이템과  슬롯 아이템 교체
             if (pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Get_ItemName() < ITEMNAME_END)
             {
@@ -184,8 +188,8 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
               pMouse->Set_OldItemCount(m_iItemCount);
             }
 
-			/* 마우스에 있던 아이템을 슬롯애 배치 */
-			m_ItemName = (pMouse->Get_ItemName());
+            /* 마우스에 있던 아이템을 슬롯애 배치 */
+            m_ItemName = (pMouse->Get_ItemName());
 			/* 마우스가 들고 있던 아이템 개수를 슬롯의 아이템 개수로 설정 */
 			Set_ItemCount(pMouse->Get_ItemCount());
 			/* 마우스가 아이템을 내려놓음으로 변경 */
@@ -237,14 +241,13 @@ HRESULT CSlotInfo::Render()
 	return S_OK;
 }
 
-HRESULT CSlotInfo::RenderItemTexture(CTexture* pTextureCom, _int _TextureNun)
+HRESULT CSlotInfo::RenderItemTexture(CTexture* pTextureCom, _int _TextureNum)
 {
-
     int TextureIndex = -1;
-	if (_TextureNun < 100)
-		TextureIndex = _TextureNun;
-	else if (_TextureNun < 200)
-		TextureIndex = (_TextureNun - 100) + ITEMNAME_CUBE_END;
+	if (_TextureNum < 100)
+		TextureIndex = _TextureNum;
+	else if (_TextureNum < 200)
+		TextureIndex = (_TextureNum - 100) + ITEMNAME_CUBE_END;
 
     if (FAILED(m_pItem_TextureCom->Bind_Resource(TextureIndex)))
         return E_FAIL;
@@ -265,12 +268,12 @@ HRESULT CSlotInfo::RenderItemTexture(CTexture* pTextureCom, _int _TextureNun)
     Reset_RenderState();
 }
 
-HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNun, _float _fX, _float _fY, _float _fsizeX, _float _fsizeY)
+HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNum, _float _fX, _float _fY, _float _fsizeX, _float _fsizeY)
 {
     _fX += 15.f;
     _fY += 12.f;
 
-    if (FAILED(m_pItemCount_TextureCom->Bind_Resource(_TextureNun)))
+    if (FAILED(m_pItemCount_TextureCom->Bind_Resource(_TextureNum)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -279,18 +282,29 @@ HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNun, _flo
     if (FAILED(m_pItemCountTexture_TransformCom->Bind_Resource()))
         return E_FAIL;
 
+    __super::Begin();
+
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pItemCountTexture_TransformCom->Get_WorldMatrix())))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+        return E_FAIL;
+
+    m_pShaderCom->Bind_Texture("g_Texture", m_pItemCount_TextureCom->Get_Texture(_TextureNum));
+    m_pShaderCom->Begin(3);
+
     /* 크기 및 위치 조정 */
     m_pItemCountTexture_TransformCom->Scaling(_fsizeX, _fsizeY, 1.f);
     m_pItemCountTexture_TransformCom->Set_State(CTransform::STATE_POSITION, _float3(_fX - g_iWinSizeX * 0.5f, -_fY + g_iWinSizeY * 0.5f, 0.f));
 
-    __super::Begin();
-    //SetUp_RenderState();
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
+    m_pShaderCom->End();
+
     __super::End();
-    //Reset_RenderState();
 
     return S_OK;
 }
@@ -309,6 +323,17 @@ HRESULT CSlotInfo::Reset_RenderState()
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 
     return S_OK;
+}
+
+void CSlotInfo::TextureNum_Update(_int _TextureNum)
+{
+    int TextureIndex = -1;
+    if (_TextureNum < 100)
+        TextureIndex = _TextureNum;
+    else if (_TextureNum < 200)
+        TextureIndex = (_TextureNum - 100) + ITEMNAME_CUBE_END;
+
+    m_ItemName = static_cast<ITEMNAME>(TextureIndex);
 }
 
 HRESULT CSlotInfo::Ready_Components()
@@ -331,6 +356,10 @@ HRESULT CSlotInfo::Ready_Components()
 
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pItemCountTexture_TransformCom))))
+        return E_FAIL;
+
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI"),
+        TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
 
     return S_OK;
@@ -371,4 +400,5 @@ void CSlotInfo::Free()
     Safe_Release(m_pItemCount_TextureCom);
     Safe_Release(m_pItemTexture_TransformCom);
     Safe_Release(m_pItemCountTexture_TransformCom);
+    Safe_Release(m_pShaderCom); 
 }
