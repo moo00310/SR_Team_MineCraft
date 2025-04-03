@@ -20,6 +20,16 @@ HRESULT CRect_Model::Initialize(void* pArg)
 	m_RederID = 2;
 
 	__super::Initialize(pArg);
+
+	flameSword = (CParticleSystem*)m_pGameInstance->PushPool(
+		LEVEL_STATIC,
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+		LEVEL_STATIC,
+		LAYER_PARTICLE
+		);
+
+	//flameSword->GetTransform()->Set_State(CTransform::STATE_POSITION, {0.f, 20.f, 0.f});	
+
 	return S_OK;
 }
 
@@ -36,6 +46,8 @@ void CRect_Model::Update(_float fTimeDelta)
 void CRect_Model::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
+
+	FireSword();
 }
 
 HRESULT CRect_Model::Render()
@@ -84,7 +96,7 @@ HRESULT CRect_Model::Ready_Bone()
 	mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
 
 	BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
-	BONE bone2 = { "Fx", 1, MAtrixTranslation(4.f/16.f, 4.f / 16.f, 0.f), MAtrixTranslation(4.f / 16.f, 4.f / 16.f, 0.f), Matrix(), Matrix()};
+	BONE bone2 = { "Fx", 0, MAtrixTranslation(4.f/16.f, 4.f / 16.f, 0.f), MAtrixTranslation(4.f / 16.f, 4.f / 16.f, 0.f), Matrix(), Matrix()};
 
 	m_pSkeletalAnimator->Add_Bone(bone);
 	m_pSkeletalAnimator->Add_Bone(bone2);
@@ -246,6 +258,12 @@ void CRect_Model::Motion_Walk(_float fTimeDelta)
 
 void CRect_Model::Motion_EAT(_float fTimeDelta)
 {
+	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
+	if (name != ITEMNAME_APPLE)
+	{
+		return;
+	}
+		
 	m_pSkeletalAnimator->Update_Animetion(EAT, fTimeDelta, 0);
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(EAT))
@@ -283,6 +301,30 @@ void CRect_Model::KeyInput()
 	{
 		m_eCurAnim = INIT;
 	}
+}
+
+void CRect_Model::FireSword()
+{
+	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
+	if (name != ITEMNAME_SWORD)
+	{
+		return;
+	}
+
+	// 회전 행렬.
+	Matrix rotateMatrix = {};
+
+	// 본 월드행렬.
+	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
+
+	// 회전행렬 계산.
+	rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
+
+	// 파티클 적용.
+	flameSword->Replay(boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+
+	// 자전 * 부모
+	flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
 }
 
 CRect_Model* CRect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

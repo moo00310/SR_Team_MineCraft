@@ -34,11 +34,7 @@ public:
 	_float3 GetPos() { return m_pTransformCom->Get_State(CTransform::STATE_POSITION); }
 	void SetMatrix(const _float4x4& mat) { m_pTransformCom->MultiplyMatrix(mat); }
 	HRESULT Set_ItemTypeAndBindTexture(ITEMNAME _type);
-
 	
-
-	//블럭 밝기 조절
-	void Set_Bright(float _f) { m_fBright = _f; }
 protected:
 	HRESULT Ready_Components();
 
@@ -48,7 +44,6 @@ protected:
 
 	int m_iUpDownFrame;
 	float m_fUpDownSpeed;
-	float m_fBright = 1;
 
 	ITEMNAME m_eItemName;
 

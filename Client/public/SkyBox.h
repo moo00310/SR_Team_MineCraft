@@ -27,15 +27,12 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-	//블럭 밝기 조절
-	void Set_Bright(float _f) { m_fBright = _f; }
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_CubeShader* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 
-	float m_fBright = 0.6;
 private:
 	HRESULT Ready_Components();
 public:

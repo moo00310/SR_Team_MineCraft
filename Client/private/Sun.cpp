@@ -7,6 +7,7 @@
 #include "RightHand_Object.h"
 #include "Clouds.h"
 
+_float g_fBright = 0.6f;
 
 CSun::CSun(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject(pGraphic_Device)
@@ -41,83 +42,15 @@ void CSun::Priority_Update(_float fTimeDelta)
 		float bright = 0.5f + 0.5f * sinf(t * D3DX_PI); // sin(0) = 0, sin(PI) = 1
 
 		if (m_isSun) {
-			m_fBright = bright;
+			g_fBright = bright;
 		}
 		else {
-			m_fBright = 1 - bright;
+			g_fBright = 1 - bright;
 		}
 		
 		m_brightFrame = 0;
 
-		for (int i = 0; i < m_iChunkCnt; ++i) {
-			wchar_t layerName[100];
-			swprintf(layerName, 100, L"Layer_Chunk%d", i);
-			list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
-			for (auto obj : objlist) {
-				if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
-					_cube->Set_Bright(m_fBright);
-				}
-				if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
-					_rect->Set_Bright(m_fBright);
-				}
-
-				if (CTree* _Tree = dynamic_cast<CTree*>(obj)) {
-					_Tree->Get_Wood()->Set_Bright(m_fBright);
-					_Tree->Get_Leaf()->Set_Bright(m_fBright);
-				}
-
-
-				if (CItemRect* _itemRect = dynamic_cast<CItemRect*>(obj)) {
-					_itemRect->Set_Bright(m_fBright);
-				}
-
-				if (CItemCube* _itemCube = dynamic_cast<CItemCube*>(obj)) {
-					_itemCube->Set_Bright(m_fBright);
-				}
-			}
-		}
-
-		if (CSkyBox* _sky = dynamic_cast<CSkyBox*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_SkyBox"), 0))) {
-			_sky->Set_Bright(m_fBright);
-		}
-
-
-		//========================< 프레임 드랍 나면 바꿈 ㅋㅋ >=================================
-		// 모든 좀비 .. 스티브.. 크리퍼 찾아서 바꿔야하네.... t순회 해야하네,,, 좀더 좋은 방법없나,,, ㅌㅋㅋ
-		// 썬을 어디가 저장하고 
-		// 좀비 크리퍼 스티브가 썬 찾는건 어떰? 썬은 1개니까  이니셜 라이즈에서 썬 찾아서 주소 저장하고
-		// 주소 참조해서 밝기 가져온다/?
-		// addRef 가 있잔슴 
-		// 누가 누가 썬 들공 ㅣㅆ어야 하지?
-		// 블럭, 렉트, 스카이 블럭, 구름 , 바닥에 뒹구는 아이템 
-		// 블럭 ,, 이거 혹시 모든 블럭 돌면서 밝기 조 ㅋㅋㅋㅋㅋ 바꿔야겠네  ㅇㅎ 아하..
-
-
-		if (CPawn* _pawn = dynamic_cast<CPawn*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0)))
-		{
-			_pawn->Set_Bright(m_fBright);
-		}
-
-		list<CGameObject*> temp = m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster"));
-		for (auto& Moster : temp)
-		{
-			dynamic_cast<CPawn*>(Moster)->Set_Bright(m_fBright);
-		}
-		temp.clear();
-
-		temp = m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_RightHand"));
-		for (auto& RightObj : temp)
-		{
-			if(RightObj->GetActive())
-				dynamic_cast<CRightHand_Object*>(RightObj)->Set_Bright(m_fBright);
-		}
-		temp.clear();
-
-		if (CClouds* _cloud = dynamic_cast<CClouds*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Clouds"), 0))) {
-			_cloud->Set_Bright(m_fBright);
-		}
-
-		if (m_fBright <= 0.1f || m_fBright >= 1.f) {
+		if (g_fBright <= 0.1f || g_fBright >= 1.f) {
 			m_fBrightPercent *= -1;
 		}
 	}
@@ -166,7 +99,7 @@ HRESULT CSun::Render()
 
 float CSun::GetBight() const
 {
-	return m_fBright;
+	return g_fBright;
 }
 
 void CSun::Orbit_Around_Earth()

@@ -47,6 +47,7 @@ private:
 	void Motion_Dead(_float fTimeDelta) override;
 	void Turn(_float fTimeDelta) override;				
 
+	bool m_renderColor = false;
 public:
 	static CCreeper* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

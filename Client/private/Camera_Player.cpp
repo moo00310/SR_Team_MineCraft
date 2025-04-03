@@ -110,7 +110,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 	_float3 vHeadPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
 
     m_pPlayer->Set_AttackContinue(false);
-    if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
+    if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && !g_bMainInventoryOpen)
     {
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트

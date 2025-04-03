@@ -22,6 +22,8 @@ HRESULT CCoalOre::Initialize(void* pArg)
         return E_FAIL;
 
     m_itemName = ITEMNAME_COALORE;
+    m_fHardness = 3;
+
 
     return S_OK;
 }
@@ -69,20 +71,19 @@ HRESULT CCoalOre::Delete_Cube(_float3 fPos)
             if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
                 _copy->SetPos(m_vecPositions[i]);
                 _copy->Set_ItemTypeAndBindTexture(ITEMNAME_COAL);
-                _copy->Set_Bright(m_vecBrights[i]);
 
             }
 
-            // 2. º¤ÅÍ¿¡¼­ ÇØ´ç À§Ä¡ Á¦°Å
+            // 2. ë²¡í„°ì—ì„œ í•´ë‹¹ ìœ„ì¹˜ ì œê±°
             m_vecPositions.erase(m_vecPositions.begin() + i);
             m_vecBrights.erase(m_vecBrights.begin() + i);
 
-            // 3. ÄÝ¶óÀÌ´õ Á¦°Å
+            // 3. ì½œë¼ì´ë” ì œê±°
             Safe_Release(m_Colliders[i]);
             m_Colliders.erase(m_Colliders.begin() + i);
 
 
-            // 4. ÀÎ½ºÅÏ½º ¹öÆÛ ¾÷µ¥ÀÌÆ®
+            // 4. ì¸ìŠ¤í„´ìŠ¤ ë²„í¼ ì—…ë°ì´íŠ¸
             m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
             return S_OK;

@@ -21,7 +21,10 @@ HRESULT CGrassDirt::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+
     m_itemName = ITEMNAME_GRASSDIRT;
+    m_fHardness = 0.6;
+
 
     return S_OK;
 }
@@ -69,27 +72,26 @@ HRESULT CGrassDirt::Delete_Cube(_float3 fPos)
             if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
                 _copy->SetPos(m_vecPositions[i]);
                 _copy->Set_ItemTypeAndBindTexture(ITEMNAME_DIRT);
-                _copy->Set_Bright(m_vecBrights[i]);
             }
 
-            // Èë ÆÄ±« ÆÄÆ¼Å¬.
+            // í™ íŒŒê´´ íŒŒí‹°í´.
             CParticleEventManager::Get_Instance()->OnParticle(
                 PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
                 m_vecPositions[i]
             );            
 
-            // 2. º¤ÅÍ¿¡¼­ ÇØ´ç À§Ä¡ Á¦°Å
+            // 2. ë²¡í„°ì—ì„œ í•´ë‹¹ ìœ„ì¹˜ ì œê±°
             m_vecPositions.erase(m_vecPositions.begin() + i);
             m_vecBrights.erase(m_vecBrights.begin() + i);
 
-            // 3. ÄÝ¶óÀÌ´õ Á¦°Å
+            // 3. ì½œë¼ì´ë” ì œê±°
             Safe_Release(m_Colliders[i]);
             m_Colliders.erase(m_Colliders.begin() + i);
 
             if (m_vecPositions.size() == 0) {
             }
 
-            // 4. ÀÎ½ºÅÏ½º ¹öÆÛ ¾÷µ¥ÀÌÆ®
+            // 4. ì¸ìŠ¤í„´ìŠ¤ ë²„í¼ ì—…ë°ì´íŠ¸
             m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
             return S_OK;

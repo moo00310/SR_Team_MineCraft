@@ -19,6 +19,7 @@ extern HWND g_hWnd;
 
 extern _bool g_bChangeLevel;
 extern _bool g_bMainInventoryOpen;
+extern _float g_fBright;
 
 using namespace Client;
 

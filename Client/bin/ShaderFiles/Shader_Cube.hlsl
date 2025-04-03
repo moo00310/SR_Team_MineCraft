@@ -103,6 +103,28 @@ PS_OUT PS_MAIN_STEVE(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_HIT(PS_IN In)
+{
+    PS_OUT Out;
+    
+    float3 hitColor = float3(1.0, 0.2, 0.2);
+    Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
+    Out.vColor.rgb = lerp(Out.vColor.rgb, hitColor, 0.5);
+    Out.vColor.rgb *= g_Bright; 
+    return Out;
+}
+
+PS_OUT PS_MAIN_BOOM(PS_IN In)
+{
+    PS_OUT Out;
+    
+    float3 hitColor = float3(1.0, 1.0, 1.0);
+    Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
+    Out.vColor.rgb = lerp(Out.vColor.rgb, hitColor, 0.5);
+    Out.vColor.rgb *= g_Bright;
+    return Out;
+}
+
 technique DefaultTechnique
 {
     pass SkyBoxPass
@@ -134,6 +156,24 @@ technique DefaultTechnique
         VertexShader = compile vs_3_0 VS_MAIN_Steve();
         PixelShader = compile ps_3_0 PS_MAIN_STEVE();
 
+    }
+
+    pass Hit
+    {
+        ZENABLE = true;
+        ZWRITEENABLE = true;
+        LIGHTING = true;
+        VertexShader = compile vs_3_0 VS_MAIN_Steve();
+        PixelShader = compile ps_3_0 PS_MAIN_HIT();
+    }
+
+    pass Boom
+    {
+        ZENABLE = true;
+        ZWRITEENABLE = true;
+        LIGHTING = true;
+        VertexShader = compile vs_3_0 VS_MAIN_Steve();
+        PixelShader = compile ps_3_0 PS_MAIN_BOOM();
     }
 
 }
