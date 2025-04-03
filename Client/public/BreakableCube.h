@@ -67,6 +67,11 @@ public:
 	virtual HRESULT Create_Cube(_float3 fPos, _float3 _Dir);
 
 	HRESULT Ready_Components();
+
+	ITEMNAME	Get_ItemName() 
+	{ 
+		return m_itemName; 
+	}
 protected:
 
 	// 현재 청크를 충돌 매니저에 올릴지 

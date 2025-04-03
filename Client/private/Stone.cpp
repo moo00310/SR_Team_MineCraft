@@ -24,6 +24,8 @@ HRESULT CStone::Initialize(void* pArg)
 
     __super::Initialize(pArg);
 
+    m_itemName = ITEMNAME_STONE;
+
     return S_OK;
 }
 

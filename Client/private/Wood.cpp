@@ -20,6 +20,8 @@ HRESULT CWood::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_itemName = ITEMNAME_WOOD;
+
 	return S_OK;
 }
 

@@ -21,6 +21,8 @@ HRESULT CIronOre::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+    m_itemName = ITEMNAME_IRONORE;
+
     return S_OK;
 }
 

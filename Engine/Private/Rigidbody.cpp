@@ -44,7 +44,7 @@ HRESULT CRigidbody::Initialize(void* pArg)
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
 	// 델타타임이 너무 크면 리턴
-	const _float MAX_DELTA_TIME = 0.2f;
+	const _float MAX_DELTA_TIME = 0.1f;
 	if (fTimeDelta > MAX_DELTA_TIME)
 		return S_OK;
 

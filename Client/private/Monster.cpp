@@ -44,10 +44,12 @@ void CMonster::Priority_Update(_float fTimeDelta)
 void CMonster::Update(_float fTimeDelta)
 {
     //플레이어랑 멀면 여기 비활성화
-    _float3 vTargetPos{ static_cast<CTransform*>(m_pTargetPawn->Find_Component(TEXT("Com_Transform")))->Get_State(CTransform::STATE_POSITION) };
-    _float3 vDiff{ vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_POSITION)};
-    _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-    if (fLengthSq > 300.f)
+    //_float3 vTargetPos{ static_cast<CTransform*>(m_pTargetPawn->Find_Component(TEXT("Com_Transform")))->Get_State(CTransform::STATE_POSITION) };
+    //_float3 vDiff{ vTargetPos - m_pTransformCom->Get_State(CTransform::STATE_POSITION)};
+    //_float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+    //Comput_Distance();
+    if (Comput_Distance() > 15.f)
     {
 		//타겟과 너무 멀다면-> 비활성화
         return;

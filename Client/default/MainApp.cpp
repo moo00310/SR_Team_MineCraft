@@ -434,7 +434,6 @@ void CMainApp::Free()
 	Safe_Release(m_pGraphic_Device);
 
 	m_pGameInstance->Release_Engine();
-	CUI_Mgr::Get_Instance()->Destroy_Instance();
 	CMouse::Get_Instance()->Destroy_Instance();
 
 	/* 내멤버를 정리한다.*/	

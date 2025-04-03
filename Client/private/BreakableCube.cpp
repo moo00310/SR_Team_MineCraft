@@ -82,7 +82,7 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         //현재 거리 계산으로 하고 있음 구 형태
         //사각형 형태로 아래는 조금만 하게 하면 좋은데 y축 으로 말하는 거임
         Should_Collide_With_Player();
-        Should_Collide_With_Monster();
+        //Should_Collide_With_Monster();
     }
     //밖에 꺼내 놓은 이유(다른 청크가면 몬스터 떨어져버림) -> 안돼 프레임 개 떨어져 그냥 몬스터 멀어지면 비활성화 시키는게 나을 거 같음
     //Should_Collide_With_Monster();
@@ -320,11 +320,15 @@ void CBreakableCube::Should_Collide_With_Monster()
 
     for (CGameObject* pMonster : Monsters)
     {
+        /*_float3 pMonsterPos = static_cast<CPawn*>(pMonster)->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+        if (!m_pGameInstance->Is_In_Frustum(pMonsterPos, 0.5f))
+            continue;*/
+
         CTransform* pTransformCom{ nullptr };
         pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
 
-        if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
-            continue;
+        /*if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+            continue;*/
 
         _float3 vMonsterPos = { pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.f, 0.f } };
 

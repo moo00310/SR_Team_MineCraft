@@ -31,6 +31,9 @@ public:
 	int GetFileCount();
 
 	void ActivateChunkLayer(int chunkIndex, bool _b);
+
+	//현재 활성화된 청크의 블럭을 추가하는 함수
+	void Create_Cube(ITEMNAME eItemName, _float3 vPos, _float3 vDir);
 private:
 	HRESULT Ready_Layer_BackGround();
 

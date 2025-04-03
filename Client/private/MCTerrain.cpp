@@ -169,6 +169,42 @@ int CMCTerrain::GetFileCount()
     return m_iChunkCount;
 }
 
+void CMCTerrain::Create_Cube(ITEMNAME eItemName, _float3 vPos, _float3 vDir)
+{
+    //eItemName = ITEMNAME_GRASSDIRT;
+    //eItemName = ITEMNAME_DIRT;
+    //eItemName = ITEMNAME_COALORE;
+    //eItemName = ITEMNAME_WOOD;
+    //eItemName = ITEMNAME_IRONORE;
+
+    //현재 청크레이어 가져오기
+    wchar_t layerName[100];
+    swprintf(layerName, 100, L"Layer_Chunk%d", m_currentPlayerChunk);
+    list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+
+    for (CGameObject* pObj : Objects)
+    {
+        if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
+        {
+            if (eItemName == pBreakableCube->Get_ItemName())
+            {
+                pBreakableCube->Create_Cube(vPos, vDir);
+                break;
+            }
+        }
+
+        else if (CTree* pTree = dynamic_cast<CTree*>(pObj))
+        {
+            CBreakableCube* pWood = pTree->Get_Wood();
+            if (eItemName == pWood->Get_ItemName())
+            {
+                pWood->Create_Cube(vPos, vDir);
+                break;
+            }
+        }
+    }
+}
+
 HRESULT CMCTerrain::Ready_Layer_BackGround()
 {
 
@@ -265,10 +301,9 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
             {TEXT("Prototype_GameObject_RedTulip"), &vecTulip, ITEMNAME_REDTULIP}
         };
 
-
         for (size_t i = 0; i < blockTypes.size(); ++i)
         {
-            m_pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i]._name, LEVEL_YU, layerName);
+             m_pGameInstance->Add_GameObject(LEVEL_YU, blockTypes[i]._name, LEVEL_YU, layerName);
             CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
             if (pCube) {
                 pCube->Set_InstanceBuffer(*(blockTypes[i]._vec), 0.6f);
@@ -284,10 +319,21 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
             }
         }
 
+        //맵에서 자동 생성되지 않지만 컨테이너 용도로 만들어야함
+        //if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Wood"), LEVEL_YU, layerName)))
+        //    return E_FAIL;
+        //CBreakableCube* pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
+        //if (pCube) {
+        //    //pCube->Set_InstanceBuffer(*(blockTypes[i]._vec), 0.6f);
+        //    pCube->Set_MyChunk(static_cast<int>(i));
+        //    //pCube->Set_BlockPositions(*(blockTypes[i]._vec), blockTypes[i]._itemName);
+        //}
+
         for (auto desc : vecTreeDesc) {
             if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Tree"), LEVEL_YU, layerName, &desc)))
                 return E_FAIL;
         }
+
     }
 
     MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
