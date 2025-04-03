@@ -1,5 +1,6 @@
 #include "ItemCube.h"
 #include "GameInstance.h"
+#include "UI_Mgr.h"
 
 CItemCube::CItemCube(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
@@ -27,6 +28,14 @@ HRESULT CItemCube::Initialize(void* pArg)
 
     m_pTransformCom->Scaling(0.3f, 0.3f, 0.3f);
 
+
+    CGameObject* pSteve{ nullptr };
+    pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+    CTransform* pTransformCom{ nullptr };
+    m_pPlayerTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+    Safe_AddRef(m_pPlayerTransformCom);
+   
+
     return S_OK;
 }
 
@@ -44,21 +53,20 @@ void CItemCube::Priority_Update(_float fTimeDelta)
 
 void CItemCube::Update(_float fTimeDelta)
 {
-    //플레이어와 거리 계산해서 멀면 비활성화
-    CGameObject* pSteve{ nullptr };
-    pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+    _float fDist = Compute_PlayerDistance();
 
-    CTransform* pTransformCom{ nullptr };
-    pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
 
-    _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
-    _float3 vMyPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
-
-    _float3 vDiff{ vStevePos - vMyPos };
-
-    _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-
-    if (fLengthSq < 20.f)
+    if (fDist < 0.1f)
+    {
+        Destroy();
+        CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
+    }
+    else if (fDist < 1.5f)
+    {
+        _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
+        m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
+    }
+    else if (fDist < 20.f)
     {
         //플레이어와 거리가 가까우면 중력적용
         m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.5f);
@@ -163,6 +171,18 @@ HRESULT CItemCube::Ready_Components()
 }
 
 
+_float CItemCube::Compute_PlayerDistance()
+{
+    _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
+    _float3 vMyPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
+
+    _float3 vDiff{ vStevePos - vMyPos };
+
+    _float fLength{ D3DXVec3Length(&vDiff) };
+
+    return fLength;
+}
+
 CItemCube* CItemCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
     CItemCube* pInstance = new CItemCube(pGraphic_Device);
@@ -195,4 +215,5 @@ void CItemCube::Free()
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pRigidbodyCom);
     Safe_Release(m_pShaderCom);
+    Safe_Release(m_pPlayerTransformCom);
 }

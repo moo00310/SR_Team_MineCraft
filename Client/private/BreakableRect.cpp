@@ -22,7 +22,6 @@ HRESULT CBreakableRect::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-
     return S_OK;
 }
 
@@ -140,7 +139,8 @@ void CBreakableRect::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 
 HRESULT CBreakableRect::Delete_Cube(_float3 fPos)
 {
-    return S_OK;
+
+    return E_FAIL;
 }
 
 void CBreakableRect::Set_Bright(float _f)

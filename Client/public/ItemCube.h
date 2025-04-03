@@ -51,6 +51,11 @@ protected:
 
 	ITEMNAME m_eItemName;
 
+	CTransform* m_pPlayerTransformCom{ nullptr };
+
+private:
+	_float Compute_PlayerDistance();
+
 public:
 	static CItemCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

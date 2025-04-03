@@ -159,9 +159,8 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
-    //여기다가 구현해놔야지 나중에
-    //크리에이트 큐브 처럼
-    return E_NOTIMPL;
+
+    return E_FAIL;
 }
 
 void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
