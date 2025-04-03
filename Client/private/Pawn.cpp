@@ -45,6 +45,7 @@ void CPawn::Reset_Ainmation()
 {
 	m_skelAnime->Set_ZeroAnimTime();
 	m_skelAnime->InitBone();
+	m_eColor = RENDERORIGIN;
 }
 
 

@@ -72,8 +72,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
 	return E_FAIL;
 
-	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
-	return E_FAIL;
+	//if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
+	//return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -279,12 +279,18 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-		LEVEL_YU, strLayerTag, 1)))
-		return E_FAIL;
 
-	m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-		LEVEL_YU, strLayerTag);
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"), LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
+	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 15.f, 20.f));
+
+	//if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+	//	LEVEL_YU, strLayerTag, 1)))
+	//	return E_FAIL;
+
+	//m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+	//	LEVEL_YU, strLayerTag);
 
 	//for (_uint i = 0; i < 5; i++)
 	//{
