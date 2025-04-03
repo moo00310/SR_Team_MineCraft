@@ -25,7 +25,7 @@ HRESULT CPawn::Render()
 
 		m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 		m_pShaderCom->SetFloat("g_Bright", g_fBright + 0.2f);
-		m_pShaderCom->Begin(1);
+		m_pShaderCom->Begin(m_eColor);
 
 		/* 정점을 그린다. */
 		if (FAILED(m_pVIBufferComs[i]->Render()))

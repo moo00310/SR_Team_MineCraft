@@ -39,6 +39,15 @@ void CMonster::Priority_Update(_float fTimeDelta)
         m_eCurAnim = DEAD;
     }
 
+    if (m_bGetHit) {
+        m_iGetHitFrame++;
+        if (m_iGetHitFrame > 15 && (m_eCurAnim != DEAD)) {
+            m_bGetHit = false;
+            m_iGetHitFrame = 0;
+            m_eColor = RENDERORIGIN;
+        }
+    }
+
 }
 
 void CMonster::Update(_float fTimeDelta)
@@ -106,6 +115,8 @@ void CMonster::Chase_Player(float _fTimeDelta)
 
 void CMonster::Knock_back(const _float3& vforce)
 {
+    m_eColor = RENDERATTACKED;
+    m_bGetHit = true;
 
     _float3 temp = {};
     D3DXVec3Normalize(&temp, &vforce);

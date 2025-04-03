@@ -19,6 +19,10 @@ public:
 		IDLE, RUN, WALK, ATTACK, DEAD, BOOM, ANIM_END
 	};
 
+	enum RENDERCOLOR {
+		RENDERORIGIN=1, RENDERATTACKED=3, RENDERBOOM=4, RENDERCOLOR_END
+	};
+
 protected:
 	CPawn(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CPawn(const CPawn& Prototype);
@@ -80,7 +84,9 @@ protected:
 	_float3 m_Coll_Offset = {};
 	_bool isDead = { false };
 
-
+	RENDERCOLOR m_eColor = RENDERORIGIN;
+	int m_iGetHitFrame = 0;
+	bool m_bGetHit = false;
 protected:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free();
