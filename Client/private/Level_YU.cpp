@@ -69,11 +69,12 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Particle(LAYER_PARTICLE)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
-	return E_FAIL;
+	//if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
+	//	return E_FAIL;
 
 	//if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 	//return E_FAIL;
+
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -285,18 +286,16 @@ HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
 	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 15.f, 20.f));
 
-	//if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-	//	LEVEL_YU, strLayerTag, 1)))
-	//	return E_FAIL;
 
-	//m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-	//	LEVEL_YU, strLayerTag);
+	for (_uint i = 0; i < 5; i++)
+	{
+		CGameObject* pCreeper = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+			LEVEL_YU, strLayerTag);
 
-	//for (_uint i = 0; i < 5; i++)
-	//{
-	//	m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-	//		LEVEL_YU, strLayerTag);
-	//}
+
+		static_cast<CPawn*>(pCreeper)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(20.f + rand() % 5, 20.f, 20.f + rand() % 5));
+
+	}
 
 	return S_OK;
 }
@@ -308,16 +307,14 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
 	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 15.f, 20.f));
 
-	//for (int i = 0; i < 5; ++i)
-	//{
-	//	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
-	//		LEVEL_YU, strLayerTag)))
-	//		return E_FAIL;
+	for (int i = 0; i < 1; ++i)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+			LEVEL_YU, strLayerTag)))
+			return E_FAIL;
 
-	//	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
-	//	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 15.f, 20.f));
-
-	//}
+		CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
+		static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f + rand() % 5, 20.f, 20.f + rand() % 5));
 
 	return S_OK;
 }
@@ -489,5 +486,7 @@ CLevel_YU* CLevel_YU::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 void CLevel_YU::Free()
 {
 	__super::Free();
+
+	CUI_Mgr::Get_Instance()->Destroy_Instance();
 
 }

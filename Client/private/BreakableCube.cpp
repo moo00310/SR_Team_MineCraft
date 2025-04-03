@@ -161,9 +161,8 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
-    //여기다가 구현해놔야지 나중에
-    //크리에이트 큐브 처럼
-    return E_NOTIMPL;
+
+    return E_FAIL;
 }
 
 void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
@@ -383,12 +382,24 @@ void CBreakableCube::Should_Collide_With_Monster()
 
     for (CGameObject* pMonster : Monsters)
     {
-        _float3 _monPos;
-        if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
-            _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-        }
-        if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
-            continue;
+
+        /*_float3 pMonsterPos = static_cast<CPawn*>(pMonster)->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+        if (!m_pGameInstance->Is_In_Frustum(pMonsterPos, 0.5f))
+            continue;*/
+
+        CTransform* pTransformCom{ nullptr };
+        pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
+
+        /*if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+            continue;*/
+
+//         _float3 _monPos;
+//         if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
+//             _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+//         }
+//         if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
+//             continue;
+
 
         _monPos += _float3{ 0.f, 1.f, 0.f };
 

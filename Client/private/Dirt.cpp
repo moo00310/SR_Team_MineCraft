@@ -21,7 +21,9 @@ HRESULT CDirt::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+    m_itemName = ITEMNAME_DIRT;
     m_fHardness = 0.5;
+
 
     return S_OK;
 }

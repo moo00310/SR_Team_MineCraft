@@ -62,7 +62,8 @@ protected:
 
 	bool m_bChunkColliderActive = false;
 
-	ITEMNAME m_itemName;
+	ITEMNAME m_itemName{ ITEMNAME_END };
+
 public:
 	static CBreakableRect* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

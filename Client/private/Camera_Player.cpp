@@ -7,6 +7,9 @@ using namespace DirectX;
 
 #include "Monster.h"
 
+#include "UI_Mgr.h"
+#include "MCTerrain.h"
+
 CCamera_Player::CCamera_Player(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CCamera{ pGraphic_Device }
 {
@@ -203,6 +206,10 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
     if (m_pGameInstance->Key_Down(VK_RBUTTON))
     {
+        ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
+
+
+
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
         CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
@@ -237,8 +244,13 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 //Create_Cube 함수 실행
 
                 _float3 vPos = pCollider_Cube->Get_Offset() + pBreakableCube->GetPos();
-                pBreakableCube->Create_Cube(vPos, vDir);
 
+                CMCTerrain* pMCTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")));
+                pMCTerrain->Create_Cube(eCurItem, vPos, vDir);
+
+                //이놈이 실행하는게아니라
+                //활성화 된 청크에 있는 Breakable큐브 중 eHandBlock과 같은 타입의 큐브에서 Create 큐브를 호출해야함
+                //pBreakableCube->Create_Cube(vPos, vDir);
             }
         }
     }

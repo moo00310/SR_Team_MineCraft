@@ -52,9 +52,6 @@ public:
 	void Set_ChunkColliderActive(bool _b) { m_bChunkColliderActive = _b; }
 	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
 
-	//충돌된 큐브 삭제
-	virtual HRESULT Delete_Cube(_float3 fPos);
-
 	// 큐브 Hp 줄이기
 	virtual void Attacked_Block(_float3 fPos, int attackDamage);
 
@@ -64,12 +61,15 @@ public:
 	//블럭 밝기 조절
 	void Set_Bright();
 
+	virtual HRESULT Delete_Cube(_float3 fPos);
 	virtual HRESULT Create_Cube(_float3 fPos, _float3 _Dir);
 
 	//블럭 경도 가지고 오는 코드
 	_float Get_Hardness() { return m_fHardness; }
 
 	HRESULT Ready_Components();
+
+	ITEMNAME	Get_ItemName() { return m_itemName; }
 protected:
 
 	// 현재 청크를 충돌 매니저에 올릴지 
@@ -83,7 +83,7 @@ protected:
 	vector<_float> m_vecBrights;
 	vector<CCollider_Cube*> m_Colliders;
 
-	ITEMNAME m_itemName;
+	ITEMNAME m_itemName{ ITEMNAME_END };
 
 	float m_fHp = 100;
 	_float3 m_attackedBlockPos;

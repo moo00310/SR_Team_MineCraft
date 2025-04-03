@@ -21,7 +21,10 @@ HRESULT CIronOre::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+
+    m_itemName = ITEMNAME_IRONORE;
     m_fHardness = 3;
+
 
     return S_OK;
 }
@@ -72,18 +75,18 @@ HRESULT CIronOre::Delete_Cube(_float3 fPos)
 
             }
 
-            // 2. º¤ÅÍ¿¡¼­ ÇØ´ç À§Ä¡ Á¦°Å
+            // 2. ë²¡í„°ì—ì„œ í•´ë‹¹ ìœ„ì¹˜ ì œê±°
             m_vecPositions.erase(m_vecPositions.begin() + i);
             m_vecBrights.erase(m_vecBrights.begin() + i);
 
-            // 3. ÄÝ¶óÀÌ´õ Á¦°Å
+            // 3. ì½œë¼ì´ë” ì œê±°
             Safe_Release(m_Colliders[i]);
             m_Colliders.erase(m_Colliders.begin() + i);
 
             if (m_vecPositions.size() == 0) {
             }
 
-            // 4. ÀÎ½ºÅÏ½º ¹öÆÛ ¾÷µ¥ÀÌÆ®
+            // 4. ì¸ìŠ¤í„´ìŠ¤ ë²„í¼ ì—…ë°ì´íŠ¸
             m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
             return S_OK;
