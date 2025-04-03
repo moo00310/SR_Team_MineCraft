@@ -31,6 +31,9 @@ private:
 	void Motion_EAT(_float fTimeDelta); 
 	virtual void KeyInput() override;
 
+private:
+	void FireSword();
+
 public:
 	static CRect_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
