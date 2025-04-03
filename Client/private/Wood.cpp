@@ -87,7 +87,6 @@ HRESULT CWood::Delete_Cube(_float3 fPos)
 			if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
 				_copy->SetPos(m_vecPositions[i]);
 				_copy->Set_ItemTypeAndBindTexture(ITEMNAME_WOOD);
-				_copy->Set_Bright(m_vecBrights[i]);
 			}
 
 			// 2. 벡터에서 해당 위치 제거

@@ -66,7 +66,6 @@ HRESULT CDirt::Delete_Cube(_float3 fPos)
             if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
                 _copy->SetPos(m_vecPositions[i]);
                 _copy->Set_ItemTypeAndBindTexture(ITEMNAME_DIRT);
-                _copy->Set_Bright(m_vecBrights[i]);
             }
 
             // 흙 파괴 파티클.

@@ -75,7 +75,7 @@ void CBreakableRect::Priority_Update(_float fTimeDelta)
 
 void CBreakableRect::Update(_float fTimeDelta)
 {
-
+    Set_Bright();
 }
 
 void CBreakableRect::Late_Update(_float fTimeDelta)
@@ -143,7 +143,7 @@ HRESULT CBreakableRect::Delete_Cube(_float3 fPos)
     return S_OK;
 }
 
-void CBreakableRect::Set_Bright(float _f)
+void CBreakableRect::Set_Bright()
 {
     if (m_bChunkColliderActive)
     {
@@ -160,16 +160,16 @@ void CBreakableRect::Set_Bright(float _f)
             _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
 
             if (fLengthSq < 10.f) {
-                m_vecBrights[i] = _f + 0.2f;
+                m_vecBrights[i] = g_fBright + 0.2f;
             }
             else {
-                m_vecBrights[i] = _f;
+                m_vecBrights[i] = g_fBright;
             }
         }
     }
     else {
         for (auto& bright : m_vecBrights) {
-            bright = _f;
+            bright = g_fBright;
         }
     }
 }

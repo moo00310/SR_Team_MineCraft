@@ -86,11 +86,11 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
     }
     //밖에 꺼내 놓은 이유(다른 청크가면 몬스터 떨어져버림) -> 안돼 프레임 개 떨어져 그냥 몬스터 멀어지면 비활성화 시키는게 나을 거 같음
     //Should_Collide_With_Monster();
-    
 }
 
 void CBreakableCube::Update(_float fTimeDelta)
 {
+    Set_Bright();
 }
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
@@ -185,7 +185,7 @@ int CBreakableCube::GetHP() const
     return m_iHp;
 }
 
-void CBreakableCube::Set_Bright(float _f)
+void CBreakableCube::Set_Bright()
 {
 
     if (m_bChunkColliderActive)
@@ -203,19 +203,19 @@ void CBreakableCube::Set_Bright(float _f)
             _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
 
             if (fLengthSq < 5.f) {
-                m_vecBrights[i] = _f + 0.2f * m_vecPositions[i].y / 10.f;
+                m_vecBrights[i] = g_fBright + 0.2f * m_vecPositions[i].y / 10.f;
             }
             else if (fLengthSq < 10.f) {
-                m_vecBrights[i] = _f + 0.1f * m_vecPositions[i].y / 10.f;
+                m_vecBrights[i] = g_fBright + 0.1f * m_vecPositions[i].y / 10.f;
             }
             else {
-                m_vecBrights[i] = _f * m_vecPositions[i].y / 10.f;
+                m_vecBrights[i] = g_fBright * m_vecPositions[i].y / 10.f;
             }
         }
     }
     else {
         for (int i = 0; i < m_vecBrights.size(); ++i) {
-            m_vecBrights[i] = _f * m_vecPositions[i].y / 10.f;
+            m_vecBrights[i] = g_fBright * m_vecPositions[i].y / 10.f;
         }
     }
 }

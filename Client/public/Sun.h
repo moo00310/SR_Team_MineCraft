@@ -8,6 +8,7 @@ class CTransform;
 class CVIBuffer_Rect;
 END
 
+
 BEGIN(Client)
 class CSun : public CGameObject
 {
@@ -43,7 +44,6 @@ private:
 	HRESULT Ready_Components();
 
 	int m_iChunkCnt;
-	float m_fBright = 0.6f;
 	float m_fBrightPercent = -0.01f;
 	int m_brightFrame = 0;
 

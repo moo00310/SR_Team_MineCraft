@@ -42,7 +42,6 @@ public:
 	void		Add_Hp(float damage) { m_Hp += damage; }
 	_float		Get_Hp() { return m_Hp; }
 
-	void Set_Bright(float _bright) { m_bright = _bright; }
 	ANIM Get_ANIM() { return m_eCurAnim; }
 public:
 	void Reset_Ainmation();
@@ -58,7 +57,6 @@ protected:
 protected:
 	CCollider_Cube* m_pCollider_CubeCom = { nullptr };
 	CRigidbody* m_pRigidbodyCom = { nullptr };
-	float m_bright = { 0.6 };
 
 protected:
 	virtual HRESULT Ready_Components();

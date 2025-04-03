@@ -88,7 +88,6 @@ HRESULT CLeaf::Delete_Cube(_float3 fPos)
 				if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
 					_copy->SetPos(m_vecPositions[i]);
 					_copy->Set_ItemTypeAndBindTexture(ITEMNAME_SAPLING);
-					_copy->Set_Bright(m_vecBrights[i]);
 				}
 			}
 			else if (10 <= random && random < 20) {
@@ -99,7 +98,6 @@ HRESULT CLeaf::Delete_Cube(_float3 fPos)
 				if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
 					_copy->SetPos(m_vecPositions[i]);
 					_copy->Set_ItemTypeAndBindTexture(ITEMNAME_APPLE);
-					_copy->Set_Bright(m_vecBrights[i]);
 				}
 			}
 

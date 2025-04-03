@@ -62,7 +62,7 @@ public:
 	int GetHP() const;
 
 	//블럭 밝기 조절
-	void Set_Bright(float _f);
+	void Set_Bright();
 
 	virtual HRESULT Create_Cube(_float3 fPos, _float3 _Dir);
 
