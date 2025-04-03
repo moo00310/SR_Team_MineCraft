@@ -100,12 +100,18 @@ ParticleAttribute CParticleFireCracker::OnSetAddParticle()
 	D3DXVec3Normalize(&velocity, &velocity);
 
 	// 속도 줌.
-	velocity *= 1.4f;
+	velocity *= 4.4f;
 
 	ParticleAttribute att;
 	att.vPosition = {0.f, 0.f, 0.f};	
 	att.vColor = Float3ToHex({ GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f) });
 	att.vVelocity = velocity;		
+
+	// 중력 설정.
+	att.IsGravity = true;
+	att.fGravity = 0.4f;
+	att.fGravityJumpPower = 0.f;
+	att.fGravityTime = 0.f;	
 
 	return att;
 }
