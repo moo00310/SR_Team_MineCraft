@@ -75,6 +75,7 @@ HRESULT CLevel_YU::Initialize()
 	//
 	//if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 	//return E_FAIL;
+	//	return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -283,9 +284,19 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 {
+
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
 		LEVEL_YU, strLayerTag, 5)))
+
 		return E_FAIL;
+	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
+	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 15.f, 20.f));
+
+
+	for (_uint i = 0; i < 5; i++)
+	{
+		CGameObject* pCreeper = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+			LEVEL_YU, strLayerTag);
 
 	for (_uint i = 0; i < 5; i++)
 	{
@@ -293,6 +304,7 @@ HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 			LEVEL_YU, strLayerTag);
 
 		static_cast<CPawn*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(15.f, 15.f, 15.f));
+
 	}
 
 	return S_OK;
@@ -300,7 +312,6 @@ HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 {
-
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
 		LEVEL_YU, strLayerTag, 5)))
 		return E_FAIL;
@@ -428,6 +439,16 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,	// 가져올 프로토타입.
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		1)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
+	// 폭죽
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
 		3)))				// 풀링 갯수.
 	{
 		return E_FAIL;
@@ -482,5 +503,7 @@ CLevel_YU* CLevel_YU::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 void CLevel_YU::Free()
 {
 	__super::Free();
+
+	CUI_Mgr::Get_Instance()->Destroy_Instance();
 
 }

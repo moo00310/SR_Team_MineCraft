@@ -20,6 +20,16 @@ HRESULT CRect_Model::Initialize(void* pArg)
 	m_RederID = 2;
 
 	__super::Initialize(pArg);
+
+	flameSword = (CParticleSystem*)m_pGameInstance->PushPool(
+		LEVEL_STATIC,
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+		LEVEL_STATIC,
+		LAYER_PARTICLE
+		);
+
+	//flameSword->GetTransform()->Set_State(CTransform::STATE_POSITION, {0.f, 20.f, 0.f});	
+
 	return S_OK;
 }
 
@@ -302,11 +312,21 @@ void CRect_Model::FireSword()
 	{
 		return;
 	}
-	_float3 vPos = m_pSkeletalAnimator->GetBoneWorldMatrix(1).Get_State(Matrix::STATE_POSITION);
 
-	CParticleEventManager::Get_Instance()->OnParticle(
-		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
-		vPos);
+	// 회전 행렬.
+	Matrix rotateMatrix = {};
+
+	// 본 월드행렬.
+	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
+
+	// 회전행렬 계산.
+	rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
+
+	// 파티클 적용.
+	flameSword->Replay(boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+
+	// 자전 * 부모
+	flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
 }
 
 ITEMNAME CRect_Model::Compute_Texture_Name()

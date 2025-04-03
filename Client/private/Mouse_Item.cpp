@@ -72,6 +72,8 @@ void CMouse_Item::Late_Update(_float fTimeDelta)
         pMouse->Set_ItemID(ITEMID_BLOCK);
     }
 
+    Change_TextureNum(m_ItemName);
+
     if (m_bCheck)
     {
         __super::Late_Update(fTimeDelta);
@@ -100,6 +102,18 @@ HRESULT CMouse_Item::Render()
     __super::End();
 
     return S_OK;
+}
+
+void CMouse_Item::Change_TextureNum(_int _ItemName)
+{
+    int TextureIndex = -1;
+
+    if (_ItemName < 100)
+        TextureIndex = _ItemName;
+    else if (_ItemName < 200)
+        TextureIndex = (_ItemName - 100) + ITEMNAME_CUBE_END;
+
+    m_ItemName = static_cast<ITEMNAME>(TextureIndex);
 }
 
 HRESULT CMouse_Item::Ready_Components()

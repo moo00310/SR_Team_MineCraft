@@ -48,7 +48,7 @@ public:
 	virtual HRESULT Delete_Cube(_float3 fPos);
 
 	//블럭 밝기 조절
-	void Set_Bright(float _f);
+	void Set_Bright();
 protected:
 	HRESULT Ready_Components();
 
@@ -62,7 +62,8 @@ protected:
 
 	bool m_bChunkColliderActive = false;
 
-	ITEMNAME m_itemName;
+	ITEMNAME m_itemName{ ITEMNAME_END };
+
 public:
 	static CBreakableRect* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

@@ -44,7 +44,7 @@ HRESULT CRigidbody::Initialize(void* pArg)
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
 	// 델타타임이 너무 크면 리턴
-	const _float MAX_DELTA_TIME = 0.2f;
+	const _float MAX_DELTA_TIME = 0.1f;
 	if (fTimeDelta > MAX_DELTA_TIME)
 		return S_OK;
 
@@ -194,6 +194,14 @@ HRESULT CRigidbody::Update_RayCast(_float fTimeDelta, _uint iCollsionGroup, _flo
 		m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
 	}
 
+	// 7. 넉백 처리
+	if (m_isGround && m_isKnockBack)
+	{
+		m_vVelocity.x = 0.f;
+		m_vVelocity.z = 0.f;
+		m_isKnockBack = false;
+	}
+
 	return S_OK;
 }
 
@@ -219,6 +227,14 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 	else
 	{
 		m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
+	}
+
+	// 7. 넉백 처리
+	if (m_isGround && m_isKnockBack)
+	{
+		m_vVelocity.x = 0.f;
+		m_vVelocity.z = 0.f;
+		m_isKnockBack = false;
 	}
 
 	return S_OK;

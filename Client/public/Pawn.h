@@ -19,6 +19,10 @@ public:
 		IDLE, RUN, WALK, ATTACK, DEAD, BOOM, ANIM_END
 	};
 
+	enum RENDERCOLOR {
+		RENDERORIGIN=1, RENDERATTACKED=3, RENDERBOOM=4, RENDERCOLOR_END
+	};
+
 protected:
 	CPawn(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CPawn(const CPawn& Prototype);
@@ -42,7 +46,6 @@ public:
 	void		Add_Hp(float damage) { m_Hp += damage; }
 	_float		Get_Hp() { return m_Hp; }
 
-	void Set_Bright(float _bright) { m_bright = _bright; }
 	ANIM Get_ANIM() { return m_eCurAnim; }
 public:
 	void Reset_Ainmation();
@@ -58,7 +61,6 @@ protected:
 protected:
 	CCollider_Cube* m_pCollider_CubeCom = { nullptr };
 	CRigidbody* m_pRigidbodyCom = { nullptr };
-	float m_bright = { 0.6 };
 
 protected:
 	virtual HRESULT Ready_Components();
@@ -82,7 +84,9 @@ protected:
 	_float3 m_Coll_Offset = {};
 	_bool isDead = { false };
 
-
+	RENDERCOLOR m_eColor = RENDERORIGIN;
+	int m_iGetHitFrame = 0;
+	bool m_bGetHit = false;
 protected:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free();

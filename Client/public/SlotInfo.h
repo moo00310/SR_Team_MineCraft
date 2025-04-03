@@ -36,26 +36,27 @@ public:
 
 public:
 	void Set_ItemName(ITEMNAME _ItemName) { m_ItemName = _ItemName; }
+	void Set_ItemID(ITEMID _ItemID) { m_ItemID = _ItemID; }
 	void Set_ItemCount(_int _itemCount) { m_iItemCount = _itemCount; }
 	void Set_Test(_bool _Test) { m_bTest = _Test; }
 
 
 private:
 	HRESULT Ready_Components();
-	HRESULT RenderItemTexture(CTexture* pTextureCom, _int _TextureNun);
-	HRESULT RenderItemCount(CTexture* pTextureCom, _int _TextureNun, _float _fX, _float _fY, _float _fsizeX, _float _fsizeY);
+	HRESULT RenderItemTexture(CTexture* pTextureCom, _int _TextureNum);
+	HRESULT RenderItemCount(CTexture* pTextureCom, _int _TextureNum, _float _fX, _float _fY, _float _fsizeX, _float _fsizeY);
 	HRESULT SetUp_RenderState();
 	HRESULT Reset_RenderState();
+
+	void	TextureNum_Update(_int _TextureNum);
 
 private:
 	CTexture*			m_pItem_TextureCom = { nullptr };
 	CTexture*			m_pItemCount_TextureCom = { nullptr };
-
 	CTransform*			m_pItemTexture_TransformCom = { nullptr };
 	CTransform*			m_pItemCountTexture_TransformCom = { nullptr };
-
-
 	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
+	CShader*			m_pShaderCom = { nullptr };
 
 private:
 	UIOBJECT_DESC		Desc{};

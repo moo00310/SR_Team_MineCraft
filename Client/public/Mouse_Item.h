@@ -34,6 +34,8 @@ public:
 	void Set_ItemName(ITEMNAME _ItemName)	{ m_ItemName = _ItemName; }
 	void Set_ItemPos(UIOBJECT_DESC _Desc)	{ Desc = _Desc; }
 
+	void Change_TextureNum(_int _ItemName);
+
 private:
 	HRESULT Ready_Components();
 	HRESULT	SetUp_RenderState();

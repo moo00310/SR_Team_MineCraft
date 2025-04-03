@@ -24,8 +24,7 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
-	//블럭 밝기 조절
-	void Set_Bright(float _f) { m_fBright = _f; }
+
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
@@ -33,8 +32,6 @@ private:
 	CShader* m_pShaderCom = { nullptr };
 private:
 	HRESULT Ready_Components();
-
-	float m_fBright = 0.6;
 public:
 	static CClouds* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

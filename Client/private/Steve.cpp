@@ -48,6 +48,14 @@ HRESULT CSteve::Initialize(void* pArg)
 
 void CSteve::Priority_Update(_float fTimeDelta)
 {
+	if (m_bGetHit) {
+		m_iGetHitFrame++;
+		if (m_iGetHitFrame > 15) {
+			m_bGetHit = false;
+			m_iGetHitFrame = 0;
+			m_eColor = RENDERORIGIN;
+		}
+	}
 	//m_pGameInstance->Add_CollisionGroup(COLLISION_PLAYER, this);
 	
 	//테스트(Add_Collider_CollisionGroup)
@@ -529,6 +537,9 @@ void CSteve::ResetDashParticle()
 
 void CSteve::Knock_back(const _float3& vforce)
 {
+	m_eColor = RENDERATTACKED;
+	m_bGetHit = true;
+
 	_float3 temp = {};
 	D3DXVec3Normalize(&temp, &vforce);
 	temp *= 5.f;

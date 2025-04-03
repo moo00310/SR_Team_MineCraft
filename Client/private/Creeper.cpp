@@ -50,6 +50,16 @@ void CCreeper::Priority_Update(_float fTimeDelta)
 
 void CCreeper::Update(_float fTimeDelta)
 { 
+    if (m_eCurAnim == ATTACK) {
+        if (m_renderColor) {
+            m_eColor = RENDERORIGIN;
+        }
+        else {
+            m_eColor = RENDERBOOM;
+        }
+        m_renderColor = !m_renderColor;
+    }
+
     __super::Update(fTimeDelta);
 
     Update_State(fTimeDelta);

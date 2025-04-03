@@ -87,9 +87,9 @@ HRESULT CMouse_ItemFont::Render()
 	return S_OK;
 }
 
-HRESULT CMouse_ItemFont::RendeTexture(CTexture* pTextureCom, _int _TextureNun, _float _fX, _float _fY)
+HRESULT CMouse_ItemFont::RendeTexture(CTexture* pTextureCom, _int _TextureNum, _float _fX, _float _fY)
 {
-	if (FAILED(m_pTextureCom->Bind_Resource(_TextureNun)))
+	if (FAILED(m_pTextureCom->Bind_Resource(_TextureNum)))
 		return E_FAIL;
 
 	if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -98,16 +98,28 @@ HRESULT CMouse_ItemFont::RendeTexture(CTexture* pTextureCom, _int _TextureNun, _
 	if (FAILED(m_pTransformCom->Bind_Resource()))
 		return E_FAIL;
 
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(_fX - g_iWinSizeX * 0.5f, -_fY + g_iWinSizeY * 0.5f, 0.f));
-
 	__super::Begin();
-	SetUp_RenderState();
+	//SetUp_RenderState();
+
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+		return E_FAIL;
+
+	m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(_TextureNum));
+	m_pShaderCom->Begin(3);
+
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(_fX - g_iWinSizeX * 0.5f, -_fY + g_iWinSizeY * 0.5f, 0.f));
 
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
+
+	m_pShaderCom->End();
 	__super::End();
-	Reset_RenderState();
+	//Reset_RenderState();
 
 	return S_OK;
 }
@@ -124,6 +136,10 @@ HRESULT CMouse_ItemFont::Ready_Components()
 
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
+		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI"),
+		TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
 		return E_FAIL;
 
 	return S_OK;
@@ -179,4 +195,5 @@ void CMouse_ItemFont::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pShaderCom);
 }

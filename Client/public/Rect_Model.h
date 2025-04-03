@@ -35,6 +35,8 @@ private:
 	void FireSword();
 	ITEMNAME Compute_Texture_Name();
 
+	CParticleSystem* flameSword = {nullptr};
+
 public:
 	static CRect_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
