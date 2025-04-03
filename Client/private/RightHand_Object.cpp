@@ -55,6 +55,7 @@ void CRightHand_Object::Late_Update(_float fTimeDelta)
 
         if (FAILED(Update_Root(fTimeDelta)))
             return;
+
     }
 
     if (m_isRender)

@@ -36,6 +36,8 @@ void CRect_Model::Update(_float fTimeDelta)
 void CRect_Model::Late_Update(_float fTimeDelta)
 {
 	__super::Late_Update(fTimeDelta);
+
+	FireSword();
 }
 
 HRESULT CRect_Model::Render()
@@ -84,7 +86,7 @@ HRESULT CRect_Model::Ready_Bone()
 	mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
 
 	BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
-	BONE bone2 = { "Fx", 1, MAtrixTranslation(4.f/16.f, 4.f / 16.f, 0.f), MAtrixTranslation(4.f / 16.f, 4.f / 16.f, 0.f), Matrix(), Matrix()};
+	BONE bone2 = { "Fx", 0, MAtrixTranslation(4.f/16.f, 4.f / 16.f, 0.f), MAtrixTranslation(4.f / 16.f, 4.f / 16.f, 0.f), Matrix(), Matrix()};
 
 	m_pSkeletalAnimator->Add_Bone(bone);
 	m_pSkeletalAnimator->Add_Bone(bone2);
@@ -246,6 +248,12 @@ void CRect_Model::Motion_Walk(_float fTimeDelta)
 
 void CRect_Model::Motion_EAT(_float fTimeDelta)
 {
+	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
+	if (name != ITEMNAME_APPLE)
+	{
+		return;
+	}
+		
 	m_pSkeletalAnimator->Update_Animetion(EAT, fTimeDelta, 0);
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(EAT))
@@ -283,6 +291,20 @@ void CRect_Model::KeyInput()
 	{
 		m_eCurAnim = INIT;
 	}
+}
+
+void CRect_Model::FireSword()
+{
+	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
+	if (name != ITEMNAME_SWORD)
+	{
+		return;
+	}
+	_float3 vPos = m_pSkeletalAnimator->GetBoneWorldMatrix(1).Get_State(Matrix::STATE_POSITION);
+
+	CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+		vPos);
 }
 
 CRect_Model* CRect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
