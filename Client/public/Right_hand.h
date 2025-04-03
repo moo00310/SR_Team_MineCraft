@@ -24,14 +24,15 @@ private:
 	CRightHand_Object* m_pArm_Model = { nullptr };
 	CRightHand_Object* m_pRect_Model = { nullptr };
 	CRightHand_Object* m_pCube_Model = { nullptr };
+	CRightHand_Object* m_pLeft_Rect_Model = { nullptr };
 
 private:
 	bool isTPS = true;
 
 private:
 	void Chage_RightHand();
-	void Select_Render(ITEMNAME name);
-	void Change_Texture(ITEMNAME name);
+	void Select_Render_Texture(ITEMNAME name);
+	void Change_Matrix(ITEMNAME name);
 	void Render_Arm();
 	void Render_Rect();
 	void Render_Cube();

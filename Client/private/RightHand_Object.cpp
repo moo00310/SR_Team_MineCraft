@@ -119,7 +119,7 @@ HRESULT CRightHand_Object::Update_Root(_float fTimeDelta)
     D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
 
     // 카메라 위치로 따라오게 하는 코드임
-    m_pSkeletalAnimator->Update_RootBone(ViewMatrix);
+    m_pSkeletalAnimator->Update_RootBone(m_FPS_mat * ViewMatrix);
 
     return S_OK;
 }

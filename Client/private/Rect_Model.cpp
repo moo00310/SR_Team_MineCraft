@@ -44,25 +44,29 @@ void CRect_Model::Update(_float fTimeDelta)
 }
 
 void CRect_Model::Late_Update(_float fTimeDelta)
-{
+{	
+	//FireSword();
+
 	__super::Late_Update(fTimeDelta);
 
-	FireSword();
+	if (m_isTPS)
+		m_RederID = 2;
+	else
+		m_RederID = 4;
 }
 
 HRESULT CRect_Model::Render()
 {
 	if (m_isTPS)
 	{
-		Matrix mat = m_pSteve->GetSoketMatrix();
-		mat._42 += 3.f/16.f;
+		Matrix mat = m_pSteve->GetSoketMatrix(7);
 		Matrix mat2 = {};
 		mat2.Turn_Radian(_float3(1.f, 0.f, 1.f), D3DXToRadian(90));
 		mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(20));
 
 		mat2.Scaling(0.8f, 0.8f, 0.8f);
 
-		m_pVIBufferComs[0]->SetMatrix(mat2*mat);
+		m_pVIBufferComs[0]->SetMatrix(m_TPS_mat * mat2 * mat);
 	}
 
 	__super::Render();
@@ -89,7 +93,6 @@ HRESULT CRect_Model::Ready_Components()
 
 HRESULT CRect_Model::Ready_Bone()
 {
-	// 스윙 프레임 행렬을 벡터에 저장
 	Matrix mat = {};
 	mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(70));
 	mat.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(45));
@@ -305,8 +308,7 @@ void CRect_Model::KeyInput()
 
 void CRect_Model::FireSword()
 {
-	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
-	if (name != ITEMNAME_SWORD)
+	if (Compute_Texture_Name() != ITEMNAME_SWORD)
 	{
 		return;
 	}
@@ -325,6 +327,11 @@ void CRect_Model::FireSword()
 
 	// 자전 * 부모
 	flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
+}
+
+ITEMNAME CRect_Model::Compute_Texture_Name()
+{
+	return ITEMNAME(m_TextrueNum + 100);
 }
 
 CRect_Model* CRect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

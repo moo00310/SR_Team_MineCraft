@@ -37,9 +37,6 @@ HRESULT CZombi::Initialize(void* pArg)
     if (FAILED(Ready_Animation()))
         return E_FAIL;
 
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(2.f, 0.f, 0.f));
-
-
     return S_OK;
 }
 
@@ -59,11 +56,7 @@ void CZombi::Update(_float fTimeDelta)
 
 void CZombi::Late_Update(_float fTimeDelta)
 {
-    if (m_pGameInstance->Key_Down('Q'))
-    {
-        m_eCurAnim = ATTACK;
-    }
-
+  
     if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
     {
         m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
@@ -288,7 +281,8 @@ void CZombi::Motion_Dead(_float fTimeDelta)
 
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
-        m_isDestroyed = true;
+        //m_isDestroyed = true;
+        SetActive(false);
     }
 }
 
@@ -325,7 +319,5 @@ CGameObject* CZombi::Clone(void* pArg)
 void CZombi::Free()
 {
     __super::Free();
-    Safe_Release(m_pTextureCom);
-
 }
 

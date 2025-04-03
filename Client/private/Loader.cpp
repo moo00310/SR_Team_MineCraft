@@ -22,6 +22,7 @@
 #include "Rect_Model.h"
 #include "Cube_Model.h"
 #include "Right_hand.h"
+#include "Left_Rect_Model.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -784,7 +785,12 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CCube_Model::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	/* For.Prototype_GameObject_Right_hand */
+	/* For.Prototype_GameObject_Left_Rect_Model */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Left_Rect_Model"),
+		CLeft_Rect_Model::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	
+	/* For.Prototype_GameObject_RightHand */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_RightHand"),
 		CRight_hand::Create(m_pGraphic_Device))))
 		return E_FAIL;

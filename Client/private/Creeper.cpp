@@ -38,8 +38,6 @@ HRESULT CCreeper::Initialize(void* pArg)
     if (FAILED(Ready_Animation()))
         return E_FAIL;
 
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, {0.f, 0.f, 0.f});
-
     return S_OK;
 }
 
@@ -339,7 +337,6 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
             PROTOTYPE_GAMEOBJECT_PARTICLE_EXPLOSION,
             m_pTransformCom
         );
-
 
         m_eCurAnim = BOOM;
 
