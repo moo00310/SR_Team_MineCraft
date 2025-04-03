@@ -52,6 +52,15 @@ static const _wstring PROTOTYPE_COMPONENT_TEXTURE_FLAME = TEXT("Prototype_Compon
 // 불꽃 검 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME = TEXT("Prototype_GameObject_ParticleSwordFlame");
 
+// 폭죽 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER = TEXT("Prototype_GameObject_Particle_Fire_Cracker");
+
+// 플래시 텍스쳐.
+static const _wstring PROTOTYPE_COMPONENT_TEXUTRE_GLITTER = TEXT("Prototype_Component_Texture_Glitter");
+
+// 플래시 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_GLITTER = TEXT("Prototype_GameObject_Particle_Glitter");
+
 /////////////////////////////////////////////////////////////////////////////
 
 // VIBuffer_Only 클래스 컴포넌트 태그.

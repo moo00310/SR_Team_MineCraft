@@ -27,6 +27,8 @@
 #include "Mouse.h"
 #include "ParticleDie.h"
 #include "ParticleSwordFlame.h"
+#include "ParticleFireCracker.h"
+#include "ParticleCharging.h"
 
 
 CMainApp::CMainApp()
@@ -253,6 +255,16 @@ HRESULT CMainApp::Ready_Particle()
 		CParticleSwordFlame::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// 폭죽 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER,
+		CParticleFireCracker::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 차징 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_GLITTER,
+		CParticleCharging::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -311,6 +323,11 @@ HRESULT CMainApp::Ready_Texture()
 	// 불꽃 텍스쳐.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_FLAME,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/flame.png"), 1))))
+		return E_FAIL;
+
+	// 플래시 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXUTRE_GLITTER,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/glitter_%d.png"), 8))))
 		return E_FAIL;
 
 	return S_OK;

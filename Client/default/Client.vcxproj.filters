@@ -622,6 +622,12 @@
     <ClInclude Include="..\public\ParticleSwordFlame.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleFireCracker.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleCharging.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -947,6 +953,12 @@
       <Filter>03.UI\07.Mouse_UI\01.Mouse_ItemFont</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleSwordFlame.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleFireCracker.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleCharging.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
