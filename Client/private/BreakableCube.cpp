@@ -355,28 +355,23 @@ HRESULT CBreakableCube::Ready_Components()
 void CBreakableCube::Should_Collide_With_Player()
 {
     // 플레이어 밑에 있는 청크면 충돌 매니저에 올림(이제는 플레이어에다가 추가로 몬스터 크리퍼, 좀비 레이어)
-    CGameObject* pSteve{ nullptr };
-    pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
 
-    CTransform* pTransformCom{ nullptr };
-    pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
-    _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f } };
+    _float3 vStevePos; 
+
+    if (CPawn* _steve = dynamic_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")))) {
+        vStevePos = _steve->Get_Transform()->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
+    }
 
     //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-    for (CCollider_Cube* pCollider : m_Colliders)
-    {
-        _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
-
-        _float3 vDiff{ vStevePos - vColliderPos };
-        //vDiff.y *= 2.f;
+    for (int i = 0; i < m_vecPositions.size(); ++i) {
+        _float3 vDiff{ vStevePos - m_vecPositions[i]};
         _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-
         if (fLengthSq < 30.f)
         {
             //플레이어와 거리가 가까우면
-            m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+            m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, m_Colliders[i]);
 
-            pCollider->Set_bColliderActive(true);
+            m_Colliders[i]->Set_bColliderActive(true);
         }
     }
 }
@@ -384,34 +379,29 @@ void CBreakableCube::Should_Collide_With_Player()
 void CBreakableCube::Should_Collide_With_Monster()
 {
     // 플레이어 밑에 있는 청크면 충돌 매니저에 올림(이제는 플레이어에다가 추가로 몬스터 크리퍼, 좀비 레이어)
-
     list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
 
     for (CGameObject* pMonster : Monsters)
     {
-        CTransform* pTransformCom{ nullptr };
-        pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
-
-        if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+        _float3 _monPos;
+        if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
+            _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+        }
+        if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
             continue;
 
-        _float3 vMonsterPos = { pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.f, 0.f } };
+        _monPos += _float3{ 0.f, 1.f, 0.f };
 
         //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-        for (CCollider_Cube* pCollider : m_Colliders)
-        {
-            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
-
-            _float3 vDiff{ vMonsterPos - vColliderPos };
-			//vDiff.y *= 2.f; //y축으로는 충돌 계산 적게 하기위해
+        for (int i = 0; i < m_vecPositions.size(); ++i) {
+            _float3 vDiff{ _monPos - m_vecPositions[i]};
             _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-
             if (fLengthSq < /*0.f*/5.f)
             {
                 //플레이어와 거리가 가까우면
-                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, m_Colliders[i]);
 
-                pCollider->Set_bColliderActive(true);
+                m_Colliders[i]->Set_bColliderActive(true);
             }
         }
     } 
