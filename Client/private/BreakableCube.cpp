@@ -393,12 +393,12 @@ void CBreakableCube::Should_Collide_With_Monster()
         /*if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
             continue;*/
 
-//         _float3 _monPos;
-//         if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
-//             _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-//         }
-//         if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
-//             continue;
+        _float3 _monPos;
+        if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
+            _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+        }
+        if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
+            continue;
 
 
         _monPos += _float3{ 0.f, 1.f, 0.f };

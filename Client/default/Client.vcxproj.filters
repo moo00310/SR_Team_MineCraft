@@ -963,7 +963,7 @@
     </ClCompile>
     <ClCompile Include="..\private\Left_Rect_Model.cpp">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
- </ClInclude>
+	</ClCompile>
     <ClCompile Include="..\private\ParticleFireCracker.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
