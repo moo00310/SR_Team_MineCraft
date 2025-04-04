@@ -126,6 +126,17 @@ void CTransform::Go_Right(_float fTimeDelta)
 	Set_State(STATE_POSITION, vPosition);
 }
 
+void CTransform::Go_Direction(const _float3& _direction, _float fTimeDelta)
+{
+	_float3 vOriginPos{ Get_State(STATE_POSITION) };
+	_float3 vNextPosition{ vOriginPos };
+	_float3 vDirection{ _direction };
+
+	vNextPosition += *D3DXVec3Normalize(&vDirection, &vDirection) * m_fSpeedPerSec * fTimeDelta;
+
+	Set_State(STATE_POSITION, vNextPosition);
+}
+
 void CTransform::Go_Direction(CCollider* pCollider, _uint iGroupIndex, const _float3& vDirection, _float fTimeDelta)
 {
 	_float3 vOriginPos{ Get_State(STATE_POSITION) };

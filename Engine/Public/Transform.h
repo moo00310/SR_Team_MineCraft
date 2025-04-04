@@ -68,6 +68,9 @@ public:
 	void Go_Left(_float fTimeDelta);
 	void Go_Right(_float fTimeDelta);
 
+	// 해당 방향으로 감.
+	void Go_Direction(const _float3& _direction, _float fTimeDelta);
+
 #pragma region COLLIDER_MOVE
 	void Go_Direction(class CCollider* pCollider, _uint iGroupIndex, const _float3& vDirection, _float fTimeDelta);
 	void Go_Straight(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);
