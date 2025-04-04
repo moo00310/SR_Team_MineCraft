@@ -91,7 +91,10 @@ public:
 #pragma endregion
 
 #pragma region SOUND_MANAGER
-	//void		Play_Sound(const char* _EventPath);
+	void PlayBGM(const std::wstring& soundName);
+	void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f));
+	void StopAll();
+	void UpdateListener(_float3 pos, _float3 forward, _float3 up);
 #pragma endregion
 
 
@@ -121,7 +124,7 @@ private:
 	class CCollider_Manager*			m_pCollider_Manager = { nullptr };
 	class CFrustumCulling_Manager*		m_pFrustumCulling_Manager = { nullptr };
 	class CKey_Manager*					m_pKey_Manager = { nullptr };
-	//class CSound_Manager*				m_pSound_Manager = { nullptr };
+	class CSound_Manager*				m_pSound_Manager = { nullptr };
 	class CPoolManager*					m_pPoolManager = { nullptr };
 
 public:

@@ -164,6 +164,7 @@
     <ClInclude Include="..\..\Imgui\imstb_truetype.h" />
     <ClInclude Include="..\public\Arm_Steve.h" />
     <ClInclude Include="..\public\BackGround.h" />
+    <ClInclude Include="..\public\Bag.h" />
     <ClInclude Include="..\public\BaseParticleDestroy.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
@@ -280,6 +281,7 @@
     <ClCompile Include="..\..\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\private\Arm_Steve.cpp" />
     <ClCompile Include="..\Private\BackGround.cpp" />
+    <ClCompile Include="..\private\Bag.cpp" />
     <ClCompile Include="..\private\BaseParticleDestroy.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />

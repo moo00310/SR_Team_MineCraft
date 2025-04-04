@@ -28,6 +28,7 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
+
     //list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
 
     //for (CGameObject* pMonster : Monsters)
@@ -402,8 +403,8 @@ void CBreakableCube::Should_Collide_With_Monster()
         if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
             _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
         }
-        if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
-            continue;
+        //if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
+        //    continue;
 
 
         _monPos += _float3{ 0.f, 1.f, 0.f };

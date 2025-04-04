@@ -28,17 +28,19 @@ public:
 public:
 	ITEMNAME		Get_ItemName() { return m_ItemName; }
 	ITEMID			Get_ItemID() { return m_ItemID; }
+	UIOBJECT_DESC	Get_ItemPos() { return Desc; }
 	_int			Get_SlotIndex() { return m_iSlotIndexNum; }
 	_int			Get_ItemCount() { return m_iItemCount; }
-	UIOBJECT_DESC	Get_ItemPos() { return Desc; }
-	
+	_bool			Get_ItemCountRender() { return m_bCountRender; }
 	_bool			Get_Test() { return m_bTest; }
 
 public:
 	void Set_ItemName(ITEMNAME _ItemName) { m_ItemName = _ItemName; }
 	void Set_ItemID(ITEMID _ItemID) { m_ItemID = _ItemID; }
 	void Set_ItemCount(_int _itemCount) { m_iItemCount = _itemCount; }
+	void Set_ItemCountRender(_bool ItemCountRender) { m_bCountRender = ItemCountRender; }
 	void Set_Test(_bool _Test) { m_bTest = _Test; }
+	
 
 
 private:
@@ -73,6 +75,8 @@ private:
 	_float		m_fOffsetX			{0.f};
 	_bool		m_bCheck = {true};
 	_bool		m_bTest = { false };
+	_bool		m_bCountRender = { false };
+
 
 
 public:

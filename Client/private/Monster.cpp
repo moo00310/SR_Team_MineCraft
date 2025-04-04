@@ -129,6 +129,31 @@ void CMonster::Knock_back(const _float3& vforce)
     _float3 vTarget = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
     m_pTransformCom->LookAt_XZ(vTarget);
 
+    int random = rand() % 10;
+    switch (m_MonsterType)
+    {
+    case Client::CMonster::MT_Zombie:
+        if (random < 5) {
+            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt1"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        }
+        else {
+            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt2"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        }
+        break;
+    case Client::CMonster::MT_Creeper:
+        if (random < 5) {
+            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt1"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        }
+        else {
+            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt2"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        }
+        break;
+    case Client::CMonster::MT_END:
+        break;
+    default:
+        break;
+    }
+
 }
 
 HRESULT CMonster::Ready_BehaviorTree()
