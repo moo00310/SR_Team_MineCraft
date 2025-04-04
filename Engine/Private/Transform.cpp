@@ -527,6 +527,41 @@ inline _float3 CTransform::RotateVectorByQuaternion(const _float3& v, const D3DX
 	return _float3{ qResult.x, qResult.y, qResult.z };
 }
 
+_float3 CTransform::WorldToScreen()
+{
+	// 최종 스크린 좌표.
+	_float3 screenPos;
+
+	// 투영에 w 값 가져오기 위한 변수.
+	_float4 screenPos4;
+	
+	_float3 pos = Get_State(CTransform::STATE_POSITION);
+
+	_float4x4 worldMat;			// 항등 월드 행렬.
+	_float4x4 viewMat;			// 뷰 행렬.
+	_float4x4 projectionMat;	// 투영 행렬.
+
+	D3DXMatrixIdentity(&worldMat);
+
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &viewMat);
+	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &projectionMat);
+	
+	D3DXVec3TransformCoord((D3DXVECTOR3*)&screenPos4, &pos, &worldMat);  // 월드 -> 뷰 변환
+	D3DXVec4Transform(&screenPos4, &screenPos4, &viewMat);  // 뷰 -> 투영 변환
+	D3DXVec4Transform(&screenPos4, &screenPos4, &projectionMat);  // 투영 변환
+
+	screenPos4.x /= screenPos4.w;
+	screenPos4.y /= screenPos4.w;
+	screenPos4.z /= screenPos4.w;
+
+	float x = (screenPos4.x + 1.f) * 0.5f * 1280.f;
+	float y = (-screenPos4.y + 1.f) * 0.5f * 720.f;
+
+	screenPos = { x, y, screenPos4.z };
+
+	return screenPos;
+}
+
 
 CTransform* CTransform::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {

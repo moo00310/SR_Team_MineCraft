@@ -90,6 +90,9 @@ public:
 	void Quaternion_Revolution_Pos(const _float3& vAxis, const _float3& vCenter, _float fAngle);
 	_float3 RotateVectorByQuaternion(const _float3& v, const D3DXQUATERNION& q);
 
+	// 월드 좌표를 스크린 좌표료 변환.
+	_float3 WorldToScreen();
+
 private:
 	_float4x4				m_WorldMatrix = {};
 	_float4x4				m_WorldMatrixInverse = {};

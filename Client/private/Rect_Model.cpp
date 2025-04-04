@@ -26,9 +26,7 @@ HRESULT CRect_Model::Initialize(void* pArg)
 		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
 		LEVEL_STATIC,
 		LAYER_PARTICLE
-		);
-
-	//flameSword->GetTransform()->Set_State(CTransform::STATE_POSITION, {0.f, 20.f, 0.f});	
+		);	
 
 	return S_OK;
 }
@@ -268,6 +266,16 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 	}
 		
 	m_pSkeletalAnimator->Update_Animetion(EAT, fTimeDelta, 0);
+
+	// 본 월드행렬.
+	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);	
+
+	// 먹는 파티클 작동.
+	// TODO :: 추후 딜레이 만들 것.
+	CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
+		boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION)
+	);
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(EAT))
 	{

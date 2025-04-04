@@ -135,6 +135,9 @@ void CPlayer::Update(_float fTimeDelta)
 		CParticleEventManager::Get_Instance()->OnParticle(
 			PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
 			m_pTransformCom);
+
+		_float3 screenPos = m_pTransformCom->WorldToScreen();
+		int a = 10;
 	}
 
 	if (GetKeyState('Z') & 0x8000)

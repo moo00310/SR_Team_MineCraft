@@ -17,14 +17,14 @@ HRESULT CBaseParticleEating::Initialize_Prototype()
 
 HRESULT CBaseParticleEating::Initialize(void* pArg)
 {
-	iParticleCount = 20;
+	iParticleCount = 5;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
 		return E_FAIL;
 	}
 
-	dwVpBatchSize = 20;
+	dwVpBatchSize = 5;
 	dwPointSize = GetScale(0.18f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
@@ -60,19 +60,14 @@ HRESULT CBaseParticleEating::Ready_Components()
 ParticleAttribute CBaseParticleEating::OnSetAddParticle()
 {
 	ParticleAttribute att;
-	att.vPosition = { 0.f, 0.f, 0.f };
-	//att.vColor = Float3ToHex({ 0.f, 0.f, 0.f });
-	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };
-	att.IsTime = true;
-	att.fCurrentTime = 0.f;
-	att.fEndTime = 0.6f;
-	att.IsAlive = false;
+	att.vPosition = { 0.f, 0.f, 0.f };	
+	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, 0.f };	
 
 	// 중력 적용.
 	att.IsGravity = true;
-	att.fGravityJumpPower = GetRandomFloat(1.8f, 2.f);
+	att.fGravityJumpPower = 0.8f;
 	att.fGravityTime = 0.f;
-	att.fGravity = 9.8f;
+	att.fGravity = 5.8f;
 
 	return att;
 }
