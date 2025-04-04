@@ -121,15 +121,20 @@ void CPlayer::Update(_float fTimeDelta)
 		//}
 
 		// 기 모으기.
-		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
-			PROTOTYPE_GAMEOBJECT_PARTICLE_GLITTER,	// 가져올 프로토타입.
-			LEVEL_STATIC,	// 적용 씬.
-			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
+		//CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
+		//	PROTOTYPE_GAMEOBJECT_PARTICLE_GLITTER,	// 가져올 프로토타입.
+		//	LEVEL_STATIC,	// 적용 씬.
+		//	LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
 
-		if (particle != nullptr)
-		{			
-			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));			
-		}
+		//if (particle != nullptr)
+		//{			
+		//	particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));			
+		//}
+
+		// 사과 먹는 파티클.
+		CParticleEventManager::Get_Instance()->OnParticle(
+			PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
+			m_pTransformCom);
 	}
 
 	if (GetKeyState('Z') & 0x8000)

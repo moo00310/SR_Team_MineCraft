@@ -61,6 +61,9 @@ static const _wstring PROTOTYPE_COMPONENT_TEXUTRE_GLITTER = TEXT("Prototype_Comp
 // 플래시 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_GLITTER = TEXT("Prototype_GameObject_Particle_Glitter");
 
+// 먹는 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_EATING = TEXT("Prototype_GameObject_Particle_Eating");
+
 /////////////////////////////////////////////////////////////////////////////
 
 // VIBuffer_Only 클래스 컴포넌트 태그.

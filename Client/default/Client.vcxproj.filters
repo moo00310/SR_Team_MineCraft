@@ -627,11 +627,17 @@
     </ClInclude>
     <ClInclude Include="..\public\Left_Rect_Model.h">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
-   </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\ParticleFireCracker.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleCharging.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BaseParticleEating.h">
+      <Filter>02.GameObjects\05.Particle\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleAppleEating.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
   </ItemGroup>
@@ -963,11 +969,17 @@
     </ClCompile>
     <ClCompile Include="..\private\Left_Rect_Model.cpp">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\ParticleFireCracker.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleCharging.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BaseParticleEating.cpp">
+      <Filter>02.GameObjects\05.Particle\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleAppleEating.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
