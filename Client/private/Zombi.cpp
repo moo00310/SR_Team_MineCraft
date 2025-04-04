@@ -282,6 +282,7 @@ void CZombi::Motion_Dead(_float fTimeDelta)
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
         //m_isDestroyed = true;
+        m_pGameInstance->PlaySound(TEXT("Zombie_Death"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         SetActive(false);
     }
 }

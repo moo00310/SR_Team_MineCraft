@@ -28,32 +28,31 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
-    list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
+    if (m_bChunkColliderActive) {
+        list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
 
-    for (CGameObject* pMonster : Monsters)
-    {
-        if (CCreeper* _creeper = dynamic_cast<CCreeper*>(pMonster)) {
-            _float3 creeperPos = _creeper->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+        for (CGameObject* pMonster : Monsters)
+        {
+            if (CCreeper* _creeper = dynamic_cast<CCreeper*>(pMonster)) {
+                _float3 creeperPos = _creeper->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 
-            for (CCollider_Cube* pCollider : m_Colliders)
-            {
-                _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
-
-                _float3 vDiff{ creeperPos - vColliderPos };
-                //vDiff.y *= 2.f; //y축으로는 충돌 계산 적게 하기위해
-                _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-
-                if (fLengthSq < 7.f) {
-                    if (CPawn* _pawn = dynamic_cast<CPawn*>(_creeper)) {
-                        if (CPawn::BOOM == _pawn->Get_ANIM()) {
-                            Delete_Cube(vColliderPos);
-                            m_pGameInstance->PopPool(pMonster);
+                for (int i = 0; i < m_vecPositions.size(); ++i) {
+                    _float3 vDiff{ creeperPos - m_vecPositions[i]};
+                    _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+                    if (fLengthSq < 7.f) {
+                        if (CPawn* _pawn = dynamic_cast<CPawn*>(_creeper)) {
+                            if (CPawn::BOOM == _pawn->Get_ANIM()) {
+                                Delete_Cube(m_vecPositions[i]);
+                                m_pGameInstance->PopPool(pMonster);
+                            }
                         }
                     }
+
                 }
             }
         }
     }
+
 
     if (m_fHp < 100) {
 
@@ -397,8 +396,8 @@ void CBreakableCube::Should_Collide_With_Monster()
         if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
             _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
         }
-        if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
-            continue;
+        //if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
+        //    continue;
 
 
         _monPos += _float3{ 0.f, 1.f, 0.f };
