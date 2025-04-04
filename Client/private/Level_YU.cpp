@@ -188,6 +188,11 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
+	/* Prototype_GameObject_Inventory_Bag */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Bag"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
 	/* Prototype_GameObject_InventoryBack */
 	for (int i = 0; i < 56; ++i)
 	{
@@ -497,7 +502,4 @@ CLevel_YU* CLevel_YU::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 void CLevel_YU::Free()
 {
 	__super::Free();
-
-	CUI_Mgr::Get_Instance()->Destroy_Instance();
-
 }

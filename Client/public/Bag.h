@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CSubInventory final : public CUIObject
+class CBag final : public CUIObject
 {
 private:
-	CSubInventory(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CSubInventory(CSubInventory& Prototype);
-	virtual ~CSubInventory() = default;
+	CBag(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CBag(CBag& Prototype);
+	virtual ~CBag() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -25,10 +25,17 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+public:
+	void TestBag();
+
+
 private:
 	HRESULT Ready_Components();
 	HRESULT SetUp_RenderState();
 	HRESULT Reset_RenderState();
+
+private:
+	UIOBJECT_DESC Desc{};
 
 private:
 	CTexture* m_pTextureCom = { nullptr };
@@ -36,7 +43,7 @@ private:
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 public:
-	static CSubInventory* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CBag* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

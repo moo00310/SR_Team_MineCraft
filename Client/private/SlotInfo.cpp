@@ -93,122 +93,164 @@ void CSlotInfo::Update(_float fTimeDelta)
 
 void CSlotInfo::Late_Update(_float fTimeDelta)
 {
-    /* 인벤토리 활성화되어있을때만 마우스 피킹 가능*/
-    if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
-    {
-        return;
-    }
+	/* 인벤토리 활성화되어있을때만 마우스 피킹 가능*/
+	if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
+	{
+		return;
+	}
 
-    /* 아이템 정보 저장*/
-    CMouse* pMouse = CMouse::Get_Instance();
-    CUI_Mgr* pUI_Mgr = CUI_Mgr::Get_Instance();
+	/* 아이템 정보 저장*/
+	CMouse* pMouse = CMouse::Get_Instance();
+	CUI_Mgr* pUI_Mgr = CUI_Mgr::Get_Instance();
 
-    auto mouseItem = pUI_Mgr->Get_MouseItemlist()->begin();
-    auto mouseItemFont = pUI_Mgr->Get_MouseItemFontlist()->begin();
+	auto mouseItem = pUI_Mgr->Get_MouseItemlist()->begin();
+	auto mouseItemFont = pUI_Mgr->Get_MouseItemFontlist()->begin();
 
-    /* 마우스와 아이템 슬롯 간 충돌 체크 */
-    RECT rcRect;
-    SetRect(&rcRect, (int)(Desc.fX - Desc.fSizeX * 0.5f), (int)(Desc.fY - Desc.fSizeY * 0.5f),
-        (int)(Desc.fX + Desc.fSizeX * 0.5f), (int)(Desc.fY + Desc.fSizeY * 0.5f));
+	/* 마우스와 아이템 슬롯 간 충돌 체크 */
+	RECT rcRect;
+	SetRect(&rcRect, (int)(Desc.fX - Desc.fSizeX * 0.5f), (int)(Desc.fY - Desc.fSizeY * 0.5f),
+		(int)(Desc.fX + Desc.fSizeX * 0.5f), (int)(Desc.fY + Desc.fSizeY * 0.5f));
 
-    POINT ptMouse;
-    GetCursorPos(&ptMouse);
-    ScreenToClient(g_hWnd, &ptMouse);
+	POINT ptMouse;
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
 
-    /* 마우스 클릭 시 아이템 선택 및 교체 */
-    /* 마우스가 아이템 슬롯 위에 있고, 좌클릭이 떼어졌을 때 실행*/
-    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON))
-    {
-        /* 마우스에 아이템이 없으면 => 현재 슬롯의 아이템을 집음 */
-        if (pMouse->Get_Picked() == false)
-        {
-            /* 아이템 타입 저장*/
-            pMouse->Set_ItemID(m_ItemID);
-            /* 아이템 텍스쳐 번호 저장*/
-            pMouse->Set_ItemName(m_ItemName);
-            /* 아이템이 원래 있던 인벤토리 슬롯 번호 저장*/
-            pMouse->Set_SlotIndex(m_iSlotIndexNum);
-            /* 마우스가 아이템을 들고 있는 상태로 변경 */
-            pMouse->Set_Picked(true);
-            /* 현재 슬롯에 있는 아이템 개수 저장 */
-            pMouse->Set_ItemCount(m_iItemCount);
-           
-            /* 마우스가 아이템을 들고 있는 상태로 저장*/
-            (*mouseItem)->Set_Check(true);           
-            /* 마우스에 표시할 아이템 이미지 설정 */
-            (*mouseItem)->Set_ItemName(m_ItemName);
+	/* 마우스 클릭 시 아이템 선택 및 교체 */
+	/* 마우스가 아이템 슬롯 위에 있고, 좌클릭이 떼어졌을 때 실행*/
+	if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON))
+	{
+		/* 마우스에 아이템이 없으면 => 처음 실행 */
+		if (pMouse->Get_Picked() == false)
+		{
+			if (m_ItemName != ITEMNAME_END)
+			{
+				/* 클릭한 슬롯의 아이템 및 폰트 저장*/
+		        /* 1. 아이템 타입 저장*/
+                 pMouse->Set_ItemID(m_ItemID);
+				/* 2. 아이템 텍스쳐 번호 저장*/
+				pMouse->Set_ItemName(m_ItemName);
+				/* 3. 아이템이 원래 있던 인벤토리 슬롯 번호 저장*/
+				pMouse->Set_SlotIndex(m_iSlotIndexNum);
+				/* 4. 마우스가 아이템을 들고 있는 상태로 변경 */
+				pMouse->Set_Picked(true);
+				/* 5. 현재 슬롯에 있는 아이템 개수 저장 */
+				pMouse->Set_ItemCount(m_iItemCount);
 
-            /* 마우스에 표시할 아이템 개수 이미지 설정*/
-            if (m_iTensDigit != 0 || m_iOnesDigit != 0)
+				/* 6. 마우스가 아이템을 들고 있는 상태로 저장*/
+				(*mouseItem)->Set_Check(true);
+				/* 마우스에 표시할 아이템 이미지 설정 */
+				(*mouseItem)->Set_ItemName(m_ItemName);
+
+				/* 마우스에 표시할 아이템 개수 이미지 설정 (CMouse_ItemFont 클래스에서 렌더)*/
+				if (m_bCountRender && m_iTensDigit != 0 || m_iOnesDigit != 0)
+				{
+					/* 마우스가 아이템 개수를 들고 있는 상태로 저장*/
+					(*mouseItemFont)->Set_Check(true);
+					(*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
+					(*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
+				}
+
+				/* 마우스가 집었던 슬롯 아이템, 개수, 개수 렌더 비활성 */
+				Set_ItemName(ITEMNAME_END);
+				m_iItemCount = 0;
+				m_bCountRender = false;
+			}
+
+		}
+
+		/* 마우스에 이미 아이템이 있다면 */
+		else
+		{
+            if (pMouse->Get_ItemID() != ITEMID_ARMOR)
             {
-                /* 마우스가 아이템 개수를 들고 있는 상태로 저장*/
-                (*mouseItemFont)->Set_Check(true);
-                (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
-                (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
+                if (m_ItemID == ITEMID_ARMOR)
+                {
+                    return;
+                }
             }
-          
-       
 
+			/* 같은 아이템인지 확인  => 개수 합치는 방식 (스택 처리) */
+			/* pMouse->Get_SlotIndex() = 마우스가 들고 있는 아이템이 원래있던 인덱스
+			   m_iSlotIndexNum = 새로 놓을곳의 인덱스 */
+			if (pMouse->Get_ItemName() == m_ItemName)
+			{
+				pMouse->Set_ItemMatch(true);
+                /* 합을 확인해서 64가 넘어가면 합치기 X
+                   그게 아니면 마우스에 아이템 정보들 넘겨주기*/
+                _int iTotalCount = pMouse->Get_ItemCount() + m_iItemCount;
 
-            Set_ItemName(ITEMNAME_END);
-        }
-        /* 이미 아이템이 있다면 => 슬롯과 마우스의 아이템을 교환 */
-        else
-        {   
-            /* 같은 아이템인지 확인  => 개수 합치는 방식 (스택 처리) */
-            /* pMouse->Get_SlotIndex() 는 현재 마우스가 들고 있는 아이템이 원래있던 인덱스 
-               m_iSlotIndexNum 는 새로 놓을곳의 인덱스 */
-            if (pMouse->Get_SlotIndex() == m_iSlotIndexNum)
-            {
-                pMouse->Set_ItemMatch(true);
-            }
-            /* 다른 아이템이면 선택한 슬롯 이미지 비움*/
+                if (m_iItemCount >= 64)
+                {
+                    return;
+                }
+
+                if(pMouse->Get_ItemCount() == 64)
+                {
+                    _int iTempCount = m_iItemCount;
+                    m_iItemCount = pMouse->Get_ItemCount();
+                    pMouse->Set_ItemCount(iTempCount);
+                    (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit); 
+                    (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
+                }
+			}
+
+			/* 다른 아이템이면 */
             else
             {
                 pMouse->Set_ItemMatch(false);
-                pUI_Mgr->Get_vecSlotInfolist()->at(pMouse->Get_SlotIndex())->Set_ItemName(ITEMNAME_END);
+
+                if (m_ItemName != ITEMNAME_END && pMouse->Get_ItemName() != m_ItemName)
+                {
+                    /* 이전 슬롯과 현재 슬롯 아이템 교환*/
+                    ITEMID eTempItemID = m_ItemID;
+                    ITEMNAME eTempItemName = m_ItemName;                    
+                    _int iTempCount = m_iItemCount;
+
+                    /* 마우스에는 선택한 슬롯에 아이템 이미지와 아이템 개수 전달*/
+                    (*mouseItemFont)->Set_Check(true);
+                    (*mouseItem)->Set_ItemName(eTempItemName);
+                    (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
+                    (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
+
+                    // 선택한 슬롯의 아이템 정보를 마우스가 들고있던 정보들로 교체
+                    pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Set_ItemName(pMouse->Get_ItemName());
+                    pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Set_ItemCount(pMouse->Get_ItemCount());
+                    //pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Set_ItemID(pMouse->Get_ItemID());
+
+
+                    pMouse->Set_ItemName(eTempItemName);
+                    pMouse->Set_ItemCount(iTempCount);
+                    //pMouse->Set_ItemID(eTempItemID);
+                }
+
+                /* 이동한 슬롯의 아이템 개수 렌더 활성*/
+                m_bCountRender = true;              
             }
-            
-            ///* 이미 슬롯의 아이템이 있다면 교체 못함 */ // 이 부분을 변경해야할듯 -> 이미 슬롯의 아이템이 있다면 마우스가 들고있는 아이템과  슬롯 아이템 교체
+
             if (pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Get_ItemName() < ITEMNAME_END)
             {
                 return;
             }
 
-            /* 해당 칸에 아이템이 있을 경우 마우스가 들고있는 아이템과 교체  (수정해야함)*/
-            /*if (pMouse->Get_ItemName() < ITEMNAME_END)
-            {
-                
-            }*/
-           
-			/* 이전 아이템 저장 */
-            if (m_ItemName < ITEMNAME_END)
-            {
-              pMouse->Set_OldItem(m_ItemName);
-              pMouse->Set_OldItemCount(m_iItemCount);
-            }
-
-            /* 마우스에 있던 아이템을 슬롯애 배치 */
-            m_ItemName = (pMouse->Get_ItemName());
+           /* 마우스 상태 */
+           /* 마우스에 있던 아이템을 슬롯애 배치 */
+			m_ItemName = (pMouse->Get_ItemName());
 			/* 마우스가 들고 있던 아이템 개수를 슬롯의 아이템 개수로 설정 */
 			Set_ItemCount(pMouse->Get_ItemCount());
 			/* 마우스가 아이템을 내려놓음으로 변경 */
 			pMouse->Set_Picked(false);
 			/* 마우스 상태 갱신 */
 			m_bCheck = true;
-
 			/* 마우스가 더 이상 아이템을 들고 있지 않도록 변경 = 빈 상태*/
-			pMouse->Set_ItemID(ITEMID_END);
+            if (pMouse->Get_ItemID() != ITEMID_ARMOR)
+                pMouse->Set_ItemID(ITEMID_END);
 			/* 마우스의 이미지를 ITEMID_END로 변경 = 마우스가 들고 있는 아이템을 비움*/
 			(*mouseItem)->Set_ItemName(ITEMNAME_END);
 			/* 마우스 상태 비활성화 */
 			(*mouseItem)->Set_Check(false);
-            (*mouseItemFont)->Set_Check(false);
-      		
-            /* 테스트 함수 활성 */
-			//pUI_Mgr->Get_vecSlotInfolist()->at(pMouse->Get_SlotIndex())->Set_Test(true);
-        }
-    }
+			(*mouseItemFont)->Set_Check(false);
+		}
+	}
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
 		return;
@@ -229,18 +271,24 @@ HRESULT CSlotInfo::Render()
             return E_FAIL;
 
         /* 아이템 텍스쳐와 개수 텍스쳐 사이즈 다르게 처리 */
-        /* 10의 자리 아이템 개수 렌더 */
-        if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iTensDigit, Desc.fX, Desc.fY, 14.f, 14.f)))
-            return E_FAIL;
+        /* 여기서 0, 0 이 화면에 계속 출력되고있는 상태 */
 
-        /* 1의 자리 아이템 개수 렌더 */
-        if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iOnesDigit, Desc.fX - m_fOffsetX, Desc.fY, 14.f, 14.f)))
-            return E_FAIL;
+        if (m_bCountRender)
+        {
+            /* 10의 자리 아이템 개수 렌더 */
+            if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iTensDigit, Desc.fX, Desc.fY, 14.f, 14.f)))
+                return E_FAIL;
+
+            /* 1의 자리 아이템 개수 렌더 */
+            if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iOnesDigit, Desc.fX - m_fOffsetX, Desc.fY, 14.f, 14.f)))
+                return E_FAIL;
+        }
     }
 
-	return S_OK;
+    return S_OK;
 }
 
+	
 HRESULT CSlotInfo::RenderItemTexture(CTexture* pTextureCom, _int _TextureNum)
 {
     int TextureIndex = -1;
@@ -283,6 +331,7 @@ HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNum, _flo
         return E_FAIL;
 
     __super::Begin();
+    //SetUp_RenderState();
 
     if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pItemCountTexture_TransformCom->Get_WorldMatrix())))
         return E_FAIL;
@@ -305,6 +354,7 @@ HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNum, _flo
     m_pShaderCom->End();
 
     __super::End();
+    //Reset_RenderState();
 
     return S_OK;
 }
@@ -312,7 +362,7 @@ HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNum, _flo
 HRESULT CSlotInfo::SetUp_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 80);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 100);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
     return S_OK;
