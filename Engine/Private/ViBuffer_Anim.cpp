@@ -10,6 +10,7 @@ CVIBuffer_Anim::CVIBuffer_Anim(const CVIBuffer_Anim& Prototype)
 	: CVIBuffer(Prototype),
 	pVertexDecl(Prototype.pVertexDecl)
 {
+	Safe_AddRef(pVertexDecl);
 }
 
 HRESULT CVIBuffer_Anim::Initialize_Prototype()

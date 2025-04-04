@@ -89,9 +89,12 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Left_Rect_Model(TEXT("Layer_RightHand"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_UI_DropItem(LAYER_UI_POOL)))
+		return E_FAIL;
+
 	// 위 객체들을 관리하는 오브젝트
 	if (FAILED(Ready_Laye_RightHand(TEXT("Layer_Cube_RightHand"))))
-		return E_FAIL;
+		return E_FAIL;	
 
 	///////////////////////////////////////////////////////////
 
@@ -222,7 +225,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	/* Prototype_GameObject_Mouse_ItemFont */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_ItemFont"),
 		LEVEL_YU, strLayerTag)))
-		return E_FAIL;
+		return E_FAIL;	
 
 	return S_OK;
 }
@@ -331,6 +334,21 @@ HRESULT CLevel_YU::Ready_Layer_DestroyCube(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, PROTOTYPE_GAMEOBJECT_DESTROY_CUBE,
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_UI_DropItem(const _wstring& strLayerTag)
+{
+	// 드랍 아이템 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_UI_DROP_ITEM,	// 가져올 프로토타입.
+		LEVEL_YU,		// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))			// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -446,6 +464,16 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 	// 폭죽
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
 		PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
+	// 사과 먹는거.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,	// 가져올 프로토타입.
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
 		3)))				// 풀링 갯수.

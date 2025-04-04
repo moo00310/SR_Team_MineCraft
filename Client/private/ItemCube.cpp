@@ -67,6 +67,15 @@ void CItemCube::Update(_float fTimeDelta)
 
     if (fDist < 0.1f)
     {
+        CUIDropItem* dropItem = (CUIDropItem*)m_pGameInstance->PushPool(LEVEL_YU,		// 적용 씬.
+            PROTOTYPE_GAMEOBJECT_UI_DROP_ITEM,	// 가져올 프로토타입.
+            LEVEL_YU,		// 가져올 씬.
+            LAYER_UI_POOL	// 애드오브젝트에 추가할 레이어.
+            );
+
+        dropItem->SetTransform(m_pTransformCom->WorldToScreen());
+        dropItem->SetDirection({0.f, 1.f});
+
         Destroy();
         CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
     }

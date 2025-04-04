@@ -39,6 +39,7 @@ private:
 	HRESULT Ready_Laye_Zombi(const _wstring& strLayerTag);
 
 	HRESULT Ready_Layer_DestroyCube(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_UI_DropItem(const _wstring& strLayerTag);
 
 private:
 	wchar_t m_szFPS[20];

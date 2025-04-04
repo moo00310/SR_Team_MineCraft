@@ -29,7 +29,7 @@
 #include "ParticleSwordFlame.h"
 #include "ParticleFireCracker.h"
 #include "ParticleCharging.h"
-
+#include "ParticleAppleEating.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
@@ -265,6 +265,11 @@ HRESULT CMainApp::Ready_Particle()
 		CParticleCharging::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// 사과 먹는 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
+		CParticleAppleEating::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -439,12 +444,13 @@ void CMainApp::Free()
 
 	CUI_Mgr::Get_Instance()->Free();
 	CUI_Mgr::Get_Instance()->Destroy_Instance();
-	CMouse::Get_Instance()->Destroy_Instance();
 
 
 	// 파티클 매니저 메모리 해제.
 	CParticleEventManager::Get_Instance()->Free();
 	CParticleEventManager::Get_Instance()->Destroy_Instance();
+
+	CMouse::Get_Instance()->Destroy_Instance();
 
 	// Cleanup
 	ImGui_ImplDX9_Shutdown();

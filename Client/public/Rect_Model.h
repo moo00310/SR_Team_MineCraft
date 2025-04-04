@@ -2,6 +2,7 @@
 
 #include "Client_Defines.h"
 #include "RightHand_Object.h"
+#include "ParticleEventManager.h"
 
 class CRect_Model final : public CRightHand_Object
 {
@@ -35,7 +36,7 @@ private:
 	void FireSword();
 	ITEMNAME Compute_Texture_Name();
 
-	CParticleSystem* flameSword = {nullptr};
+	CParticleSystem* flameSword = {nullptr};	
 
 public:
 	static CRect_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

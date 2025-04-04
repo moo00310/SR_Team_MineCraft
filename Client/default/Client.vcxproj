@@ -205,8 +205,10 @@
     <ClInclude Include="..\public\Mouse.h" />
     <ClInclude Include="..\public\Mouse_Item.h" />
     <ClInclude Include="..\public\Mouse_ItemFont.h" />
+    <ClInclude Include="..\public\ParticleAppleEating.h" />
     <ClInclude Include="..\public\ParticleCharging.h" />
     <ClInclude Include="..\public\ParticleDie.h" />
+    <ClInclude Include="..\public\BaseParticleEating.h" />
     <ClInclude Include="..\public\ParticleEventManager.h" />
     <ClInclude Include="..\public\ParticleExplosion.h" />
     <ClInclude Include="..\public\ParticleFireCracker.h" />
@@ -220,6 +222,7 @@
     <ClInclude Include="..\public\Rect_Model.h" />
     <ClInclude Include="..\public\RightHand_Object.h" />
     <ClInclude Include="..\public\Right_hand.h" />
+    <ClInclude Include="..\public\UIDropItem.h" />
     <ClInclude Include="..\public\UIParticleRain.h" />
     <ClInclude Include="..\public\PlayerHunger.h" />
     <ClInclude Include="..\public\PlayerHunger_Back.h" />
@@ -318,8 +321,10 @@
     <ClCompile Include="..\private\Mouse.cpp" />
     <ClCompile Include="..\private\Mouse_Item.cpp" />
     <ClCompile Include="..\private\Mouse_ItemFont.cpp" />
+    <ClCompile Include="..\private\ParticleAppleEating.cpp" />
     <ClCompile Include="..\private\ParticleCharging.cpp" />
     <ClCompile Include="..\private\ParticleDie.cpp" />
+    <ClCompile Include="..\private\BaseParticleEating.cpp" />
     <ClCompile Include="..\private\ParticleEventManager.cpp" />
     <ClCompile Include="..\private\ParticleExplosion.cpp" />
     <ClCompile Include="..\private\ParticleFireCracker.cpp" />
@@ -332,6 +337,7 @@
     <ClCompile Include="..\private\Rect_Model.cpp" />
     <ClCompile Include="..\private\RightHand_Object.cpp" />
     <ClCompile Include="..\private\Right_hand.cpp" />
+    <ClCompile Include="..\private\UIDropItem.cpp" />
     <ClCompile Include="..\private\UIParticleRain.cpp" />
     <ClCompile Include="..\private\PlayerHunger.cpp" />
     <ClCompile Include="..\private\PlayerHunger_Back.cpp" />
