@@ -136,8 +136,7 @@ void CPlayer::Update(_float fTimeDelta)
 			PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
 			m_pTransformCom);
 
-		_float3 screenPos = m_pTransformCom->WorldToScreen();
-		int a = 10;
+		_float2 screenPos = m_pTransformCom->WorldToScreen();		
 	}
 
 	if (GetKeyState('Z') & 0x8000)
