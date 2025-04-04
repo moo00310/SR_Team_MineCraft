@@ -34,6 +34,10 @@ public:
 
 	//현재 활성화된 청크의 블럭을 추가하는 함수
 	void Create_Cube(ITEMNAME eItemName, _float3 vPos, _float3 vDir);
+
+	// 현재 청크에 스폰 가능한 위치를 가져오는 함수
+	const vector<_float3>& Get_SpwanAble();
+
 private:
 	HRESULT Ready_Layer_BackGround();
 
@@ -42,12 +46,17 @@ private:
 
 	// 모든 청크 비활성화
 	void OffAllChunkLayer();
+
 	//플레이어 주변 3x3 청크만 활성화
 	void GetPlayerChunk3x3();
 
 
-	int m_iChunkCount = 0; // 청크 개수 
+private:
+	map<int, vector<_float3>> m_SpawnPos;
+	vector<_float3> m_vecMerged;
 
+private:
+	int m_iChunkCount = 0; // 청크 개수 
 	int m_prePlayerChunk = 0; //이전 청크
 	int m_currentPlayerChunk = 0; //현재 청크
 	bool prevF1State = false;

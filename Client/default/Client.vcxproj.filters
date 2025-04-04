@@ -286,6 +286,9 @@
     <Filter Include="02.GameObjects\06.Right_Hand\03.Left_Rect_Model">
       <UniqueIdentifier>{8b8f165a-c97a-4aaf-940e-36b6a8a8b484}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08.GameMgr">
+      <UniqueIdentifier>{8632f159-1743-49bc-a2a3-b6fec4043883}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -627,12 +630,15 @@
     </ClInclude>
     <ClInclude Include="..\public\Left_Rect_Model.h">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
-   </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\ParticleFireCracker.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleCharging.h">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\GameMgr.h">
+      <Filter>02.GameObjects\08.GameMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -963,12 +969,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Left_Rect_Model.cpp">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\ParticleFireCracker.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleCharging.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameMgr.cpp">
+      <Filter>02.GameObjects\08.GameMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

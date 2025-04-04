@@ -37,41 +37,47 @@ HRESULT CZombi::Initialize(void* pArg)
     if (FAILED(Ready_Animation()))
         return E_FAIL;
 
+    // 콜백 등록
+    m_skelAnime->SetFrameCallback(std::bind(&CZombi::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
+
     return S_OK;
 }
 
 void CZombi::Priority_Update(_float fTimeDelta)
 {
     __super::Priority_Update(fTimeDelta);
-
+   
     m_pGameInstance->Add_CollisionGroup(COLLISION_MONSTER, this);
 }
 
 void CZombi::Update(_float fTimeDelta)
 {
-    __super::Update(fTimeDelta); Attack;
-
+    __super::Update(fTimeDelta);
+    
     Update_State(fTimeDelta);
-}
+
+  
+}   
 
 void CZombi::Late_Update(_float fTimeDelta)
 {
   
-    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
-    {
-        m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+   if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+   {
+       m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+  
+       if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+           return;
+   }
 
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-            return;
-    }
 
 }
 
 HRESULT CZombi::Render()
 {
-    __super::Render();
-
-    return S_OK;
+  __super::Render();
+  
+  return S_OK;
 }
 
 HRESULT CZombi::Ready_Components()
@@ -321,3 +327,26 @@ void CZombi::Free()
     __super::Free();
 }
 
+void CZombi::FrameCallback(int animType, int frame)
+{
+    //std::cout << " 좀비 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
+
+    // 애니메이션 타입 ANIM_TYPE 
+	// 애니메이션 타입 + 애니메이션 프레임에 맞는 행동을 하게끔 구현하면 됨
+    // 공격 마지막 프레임(2) 은 버그있음 넉백때문에 안들어감
+
+    if (animType == Attack && frame == 1)
+    {
+		cout << "공격" << endl;
+    }
+}
+
+void CZombi::Reset_Monster()
+{
+    m_eCurAnim = IDLE;
+    m_isFind = false;
+    m_bGetHit = false;
+    m_iGetHitFrame = 0;
+    m_Hp = m_MaxHp;
+    m_eColor = RENDERORIGIN;
+}

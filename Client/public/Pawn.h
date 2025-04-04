@@ -87,6 +87,11 @@ protected:
 	RENDERCOLOR m_eColor = RENDERORIGIN;
 	int m_iGetHitFrame = 0;
 	bool m_bGetHit = false;
+
+protected:
+	// 추상클래스 
+	virtual void FrameCallback(int animType, int frame) = 0;
+
 protected:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free();

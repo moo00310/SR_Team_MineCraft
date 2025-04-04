@@ -78,6 +78,10 @@ public:
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 
+
+	// 여기서 프레임 콜백을 받음
+	void FrameCallback(int animType, int frame) override;
+
 };
 
 

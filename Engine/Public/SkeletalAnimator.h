@@ -50,14 +50,13 @@ public:
 public:
 	void Add_Bone(const BONE& bone);
 	void Add_Animation(_int _type, const KEYFREAME& keyframe);
-	bool IsBlending() { return m_blendState.isBlending; }
 
 public:
 	HRESULT Update_Animetion(_int _type, float fTimeDelta, int boneIndex);
 	HRESULT Update_Bone(int BoneIndex, const Matrix& Matrix);
 	HRESULT Update_RootBone(const Matrix& matrix);
-	void Start_Blend(int fromAnim, int toAnim, float duration);
 	void Set_BoneLocalMatrix(int boneIndex, D3DMATRIX& mat);
+
 
 public:
 	void DeBugBone(int BoneIndex);
@@ -75,9 +74,32 @@ private:
 	BlendState m_blendState = {};
 
 private:
-	void Blend_Animations(float fTimeDelta, int boneIndex);
+	int m_curFream[AnimTimeCount] = {999};
+	bool m_isChangeFrame{ false };
+private:
 	void Update_Mesh();
 	Matrix CalcCurrentMatrix(int animType, int boneIndex);
+
+/// <summary>
+/// 콜백함수
+/// </summary>
+public:
+	using FrameCallback = std::function<void(int animType, int frame)>;
+
+	void SetFrameCallback(FrameCallback callback) 
+	{
+		m_pFrameCallback = callback;
+	}
+
+	void CallBack_Fream(int animType, int frame) 
+	{
+		if (m_pFrameCallback) {
+			m_pFrameCallback(animType, frame);
+		}
+	}
+
+private:
+	FrameCallback m_pFrameCallback = nullptr;
 
 public:
 	static CSkeletalAnimator* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

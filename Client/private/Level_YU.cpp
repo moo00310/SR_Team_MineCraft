@@ -58,6 +58,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_GameMgr(TEXT("Ready_Layer_GameMgr"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
@@ -119,6 +122,16 @@ HRESULT CLevel_YU::Render()
 HRESULT CLevel_YU::Ready_Layer_Terrain(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MCTerrain"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_GameMgr(const _wstring& strLayerTag)
+{
+	
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_GameMgr"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
@@ -283,22 +296,10 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 {
-
-	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+	/*if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
 		LEVEL_YU, strLayerTag, 5)))
-
-		return E_FAIL;
-	CGameObject* pGameObject = m_pGameInstance->Get_LastObject(LEVEL_YU, strLayerTag.c_str());
-	static_cast<CTransform*>(pGameObject->Find_Component(TEXT("Com_Transform")))->Set_State(CTransform::STATE_POSITION, _float3(20.f, 15.f, 20.f));
-
-	for (_uint i = 0; i < 5; i++)
-	{
-		CGameObject* ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-			LEVEL_YU, strLayerTag);
-
-		static_cast<CPawn*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(15.f, 15.f, 15.f));
-
-	}
+		return E_FAIL;*/
+	
 
 	return S_OK;
 }
@@ -309,13 +310,13 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag, 5)))
 		return E_FAIL;
 
-	for (int i = 0; i < 5; ++i)
+	/*for (int i = 0; i < 5; ++i)
 	{
 		CGameObject* ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
 			LEVEL_YU, strLayerTag);
 
 		static_cast<CPawn*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(25.f, 15.f, 25.f));
-	}
+	}*/
 
 	return S_OK;
 }

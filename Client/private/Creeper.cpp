@@ -38,6 +38,10 @@ HRESULT CCreeper::Initialize(void* pArg)
     if (FAILED(Ready_Animation()))
         return E_FAIL;
 
+    // 콜백 등록
+    m_skelAnime->SetFrameCallback(std::bind(&CCreeper::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
+
+
     return S_OK;
 }
 
@@ -398,5 +402,20 @@ CGameObject* CCreeper::Clone(void* pArg)
 void CCreeper::Free()
 {
     __super::Free();
+}
+
+void CCreeper::FrameCallback(int animType, int frame)
+{
+    //std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
+}
+
+void CCreeper::Reset_Monster()
+{
+    m_eCurAnim = IDLE;
+    m_isFind = false;
+    m_bGetHit = false;
+    m_iGetHitFrame = 0;
+    m_Hp = m_MaxHp;
+    m_eColor = RENDERORIGIN;
 }
 

@@ -5,6 +5,7 @@
 #include "VIBuffer_Anim_Cube.h"
 #include "GameInstance.h"
 #include "UI_Mgr.h"
+#include <iostream>
 
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CPawn{ pGraphic_Device }
@@ -42,6 +43,8 @@ HRESULT CSteve::Initialize(void* pArg)
 
 	m_pRigidbodyCom->Set_MoveSpeed(0.1f);
 	m_pRigidbodyCom->Set_MaxSpeed(5.f);
+
+	m_skelAnime->SetFrameCallback(std::bind(&CSteve::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
 	
 	return S_OK;
 }
@@ -195,8 +198,8 @@ void CSteve::Move(_float fTimeDelta)
 		{
 			//m_pGameInstance->Play_Sound("event:/Built_Fail");
 		}
-		
 	}
+
 
 	/* 현우 Test */
 	if (m_pGameInstance->Key_Down('Z'))
@@ -583,5 +586,10 @@ void CSteve::Free()
 {
 	__super::Free();
 
+}
+
+void CSteve::FrameCallback(int animType, int frame)
+{
+	//cout << "스티브 애니메이션: " << animType << ", 프레임: " << frame << endl;
 }
 

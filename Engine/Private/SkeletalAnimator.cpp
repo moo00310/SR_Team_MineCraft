@@ -35,6 +35,8 @@ HRESULT CSkeletalAnimator::Initialize(void* pArg)
 
 HRESULT CSkeletalAnimator::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
+
+
     return S_OK;
 }
 
@@ -136,33 +138,6 @@ void CSkeletalAnimator::Update_Mesh()
     }  
 }
 
-void CSkeletalAnimator::Blend_Animations(float fTimeDelta, int boneIndex)
-{
-    m_blendState.currentTime += fTimeDelta;
-
-    float blendT = m_blendState.currentTime / m_blendState.blendDuration;
-    if (blendT > 1.f)  blendT = 1.f;
-    else if (blendT < 0.f)  blendT = 0.f;
-
-    // 현재 애니메이션 결과
-    Matrix fromMat = CalcCurrentMatrix(m_blendState.fromAnim, boneIndex);
-
-    // 다음 애니메이션 첫 프레임 또는 현재 시간 보간
-    Matrix toMat = CalcCurrentMatrix(m_blendState.toAnim, boneIndex);
-
-    // 보간해서 최종 행렬 만들기
-    Matrix blended = InterpolateMatrix_Quat(fromMat, toMat, blendT);
-    vecBones[boneIndex].localTransform = blended * vecBones[boneIndex].baseTransform;
-
-    if (blendT >= 1.f)
-    {
-        // 블렌딩 완료 → 다음 애니메이션으로 전환
-        m_blendState.isBlending = false;
-        m_CurrentAnim = m_blendState.toAnim;
-        //fElapsedTime[_type] = 0.f;
-    }
-}
-
 HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int boneIndex)
 {
     m_CurrentAnim = _type;
@@ -183,12 +158,19 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
     {
         if (fElapsedTime[_type] >= m_Animations[_type][i].fTime && fElapsedTime[_type] <= m_Animations[_type][i + 1].fTime)
         {
+            if (m_curFream[_type] != i)
+            {
+                m_curFream[_type] = i;
+                CallBack_Fream(_type, m_curFream[_type]); // 콜백 함수
+            }
+
             key1 = m_Animations[_type][i];
             key2 = m_Animations[_type][i + 1];
             found = true;
             break;
         }
     }
+
     if (!found) return S_OK;
 
     // 보간 비율 계산 (0~1 사이 값)
@@ -207,19 +189,11 @@ HRESULT CSkeletalAnimator::Update_RootBone(const Matrix& matrix)
     return S_OK;
 }
 
-void CSkeletalAnimator::Start_Blend(int fromAnim, int toAnim, float duration)
-{
-    m_blendState.isBlending = true;
-    m_blendState.fromAnim = fromAnim;
-    m_blendState.toAnim = toAnim; 
-    m_blendState.blendDuration = duration;
-    m_blendState.currentTime = 0.f;
-}
-
 void CSkeletalAnimator::Set_BoneLocalMatrix(int boneIndex, D3DMATRIX& mat)
 {
     vecBones[boneIndex].localTransform = mat * vecBones[boneIndex].baseTransform;
 }
+
 
 void CSkeletalAnimator::DeBugBone(int BoneIndex)
 {

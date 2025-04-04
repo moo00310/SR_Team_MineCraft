@@ -13,6 +13,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <functional>
 using namespace std;
 
 

@@ -265,6 +265,10 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
                 else if (5 <= percent && percent < 6) {
                     vecTulip.push_back(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 1, eblockData.fPosition.z));
                 }
+                else
+                {
+                    m_SpawnPos[i].push_back(_float3(eblockData.fPosition.x, eblockData.fPosition.y + 1, eblockData.fPosition.z));
+                }
 
                 break;
             case DIRT:
@@ -298,7 +302,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
             {TEXT("Prototype_GameObject_IronOre"), &ironVec, ITEMNAME_IRONORE},
             {TEXT("Prototype_GameObject_CoalOre"), &coalVec,ITEMNAME_COALORE},
             {TEXT("Prototype_GameObject_Grass"), &vecGrass, ITEMNAME_GRASS},
-            {TEXT("Prototype_GameObject_RedTulip"), &vecTulip, ITEMNAME_REDTULIP}
+            {TEXT("Prototype_GameObject_RedTulip"), &vecTulip, ITEMNAME_REDTULIP},
         };
 
         for (size_t i = 0; i < blockTypes.size(); ++i)
@@ -397,7 +401,6 @@ void CMCTerrain::GetPlayerChunk3x3()
     // 플레이어 위치 가져오기
     auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
     if (!pSteve) return;
-
     _float3 playerPos = pSteve->GetPos();
 
     // 플레이어가 위치한 청크 계산
@@ -438,8 +441,47 @@ void CMCTerrain::GetPlayerChunk3x3()
     }
 }
 
+const vector<_float3>& CMCTerrain::Get_SpwanAble()
+{
+    // 플레이어 위치 가져오기
+    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
+    if (!pSteve) return vector<_float3>();
+    _float3 playerPos = pSteve->GetPos();
 
+    int x = static_cast<int>(playerPos.x) / 16;
+    int z = static_cast<int>(playerPos.z) / 16;
+    int width = static_cast<int>(sqrt(m_iChunkCount));
+    int height = m_iChunkCount / width;
+    int chunk = x + (width * z);
 
+    int row = chunk / width;
+    int col = chunk % width;
+
+    m_vecMerged.clear();
+
+    for (int dy = -1; dy <= 1; ++dy) {
+        for (int dx = -1; dx <= 1; ++dx) {
+            if (dx == 0 && dy == 0) continue; // 자기 자신은 제외
+
+            int newRow = row + dy;
+            int newCol = col + dx;
+
+            // 경계 체크 (예: 맵 밖은 제외)
+            if (newRow < 0 || newCol < 0) continue;
+            if (newCol >= width || newRow >= height) continue;
+
+            int neighborChunk = newRow * width + newCol;
+
+            // m_SpawnPos에 해당 청크가 존재하면 병합
+            auto it = m_SpawnPos.find(neighborChunk);
+            if (it != m_SpawnPos.end()) {
+                m_vecMerged.insert(m_vecMerged.end(), it->second.begin(), it->second.end());
+            }
+        }
+    }
+
+    return m_vecMerged;
+}
 
 CMCTerrain* CMCTerrain::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
