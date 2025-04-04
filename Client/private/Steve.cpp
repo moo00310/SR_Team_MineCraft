@@ -96,11 +96,6 @@ void CSteve::Late_Update(_float fTimeDelta)
 		if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
 			return;
 	}
-
-	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000)
-	{
-		m_pGameInstance->PlaySound(L"Player_Jump");
-	}
 }
 		
 

@@ -127,7 +127,27 @@ void CSound_Manager::UpdateListener(_float3 _pos, _float3 _forward, _float3 _up)
 
 void CSound_Manager::Add_SoundResource()
 {
-    LoadSound(L"Player_Jump", "../../FMOD/Assets/Built_Fail.wav", false);
+    LoadSound(L"Player_Walk_Grass1", "../../FMOD/Assets/player/Player_Walk_Grass1.wav", false);
+    LoadSound(L"Player_Walk_Grass2", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
+    LoadSound(L"Player_Walk_Wood1", "../../FMOD/Assets/player/Player_Walk_Wood1.wav", false);
+    LoadSound(L"Player_Walk_Wood2", "../../FMOD/Assets/player/Player_Walk_Wood2.wav", false);
+    LoadSound(L"Player_Hurt", "../../FMOD/Assets/player/Player_Hurt.wav", false);
+    LoadSound(L"Player_Eat1", "../../FMOD/Assets/player/Player_Eat1.wav", false);
+    LoadSound(L"Player_Eat2", "../../FMOD/Assets/player/Player_Eat2.wav", false);
+    LoadSound(L"Player_Eat3", "../../FMOD/Assets/player/Player_Eat3.wav", false);
+
+    LoadSound(L"Zombie_Walk1", "../../FMOD/Assets/zombie/Zombie_Walk1.wav", false);
+    LoadSound(L"Zombie_Walk2", "../../FMOD/Assets/zombie/Zombie_Walk2.wav", false);
+    LoadSound(L"Zombie_Say1", "../../FMOD/Assets/zombie/Zombie_Say1.wav", false);
+    LoadSound(L"Zombie_Say2", "../../FMOD/Assets/zombie/Zombie_Say2.wav", false);
+    LoadSound(L"Zombie_Say3", "../../FMOD/Assets/zombie/Zombie_Say3.wav", false);
+    LoadSound(L"Zombie_Hurt1", "../../FMOD/Assets/zombie/Zombie_Hurt1.wav", false);
+    LoadSound(L"Zombie_Hurt2", "../../FMOD/Assets/zombie/Zombie_Hurt2.wav", false);
+    LoadSound(L"Zombie_Death", "../../FMOD/Assets/zombie/Zombie_Death.wav", false);
+
+    LoadSound(L"Creeper_Hurt1", "../../FMOD/Assets/creeper/Creeper_Hurt1.wav", false);
+    LoadSound(L"Creeper_Hurt2", "../../FMOD/Assets/creeper/Creeper_Hurt2.wav", false);
+    LoadSound(L"Creeper_Death", "../../FMOD/Assets/creeper/Creeper_Death.wav", false);
 }
 
 void CSound_Manager::Update()
