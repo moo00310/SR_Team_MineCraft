@@ -286,6 +286,9 @@
     <Filter Include="02.GameObjects\06.Right_Hand\03.Left_Rect_Model">
       <UniqueIdentifier>{8b8f165a-c97a-4aaf-940e-36b6a8a8b484}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\08.GameMgr">
+      <UniqueIdentifier>{8632f159-1743-49bc-a2a3-b6fec4043883}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03.UI\08.DropItem">
       <UniqueIdentifier>{f5b13b2e-050c-4040-87aa-d6de24d20773}</UniqueIdentifier>
     </Filter>
@@ -640,7 +643,9 @@
     <ClInclude Include="..\public\ParticleCharging.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
-
+    <ClInclude Include="..\public\GameMgr.h">
+      <Filter>02.GameObjects\08.GameMgr</Filter>
+     </ClInclude>
     <ClInclude Include="..\public\BaseParticleEating.h">
       <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClInclude>
@@ -652,7 +657,6 @@
      </ClInclude>
     <ClInclude Include="..\public\Bag.h">
       <Filter>03.UI\04.Inventory\05.Bag</Filter>
-
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -989,6 +993,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleCharging.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\GameMgr.cpp">
+      <Filter>02.GameObjects\08.GameMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BaseParticleEating.cpp">
       <Filter>02.GameObjects\05.Particle\Base</Filter>

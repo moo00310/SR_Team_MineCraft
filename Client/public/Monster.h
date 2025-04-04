@@ -29,9 +29,10 @@ public:
 
 public:
 	CPawn* Get_Target() { return m_pTargetPawn;}
-	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
+	void  Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	float Comput_Distance();
 	void Knock_back(const _float3& vforce) override;
+	virtual void Reset_Monster() =0;
 
 //BT용 겟셋 함수
 public:
@@ -73,6 +74,9 @@ protected:
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
 	virtual void Free();
+
+	// 콜백 순수 가상함수
+	void FrameCallback(int animType, int frame) =0;
 
 };
 

@@ -23,7 +23,7 @@
 #include "Cube_Model.h"
 #include "Right_hand.h"
 #include "Left_Rect_Model.h"
-
+#include "GameMgr.h"
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
 #include "HeroCubeNoMove.h"
@@ -807,7 +807,9 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 	//=============================================================================================================
 	
-
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GameMgr"),
+		CGameMgr::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

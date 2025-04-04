@@ -19,6 +19,7 @@ public:
 private:
 	HRESULT Ready_Layer_Camera(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Terrain(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_GameMgr(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Tool(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Steve(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Sun(const _wstring& strLayerTag);

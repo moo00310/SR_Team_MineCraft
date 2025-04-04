@@ -45,13 +45,19 @@ private:
 	void Motion_Walk(_float fTimeDelta) override;
 	void Motion_Attack(_float fTimeDelta) override;
 	void Motion_Dead(_float fTimeDelta) override;
-	void Turn(_float fTimeDelta) override;				
+	void Turn(_float fTimeDelta) override;	
 
+private:
+	void Reset_Monster() override;
+	void FrameCallback(int animType, int frame) override;
+
+private:
 	bool m_renderColor = false;
 public:
 	static CCreeper* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
+
 };
 
 END

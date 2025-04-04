@@ -191,6 +191,7 @@
     <ClInclude Include="..\public\Cube_Model.h" />
     <ClInclude Include="..\public\DestroyCube.h" />
     <ClInclude Include="..\public\Edition.h" />
+    <ClInclude Include="..\public\GameMgr.h" />
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\GrassDirt.h" />
     <ClInclude Include="..\public\HeroCube.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="..\private\Cube_Model.cpp" />
     <ClCompile Include="..\private\DestroyCube.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
+    <ClCompile Include="..\private\GameMgr.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\GrassDirt.cpp" />
     <ClCompile Include="..\private\HeroCube.cpp" />
