@@ -23,6 +23,7 @@ HRESULT CSteve::Initialize_Prototype()
 
 HRESULT CSteve::Initialize(void* pArg)
 {
+
 	// 기타 스텟 초기화 ( Pawn 에 선언 되어 있음 )
 	m_fSpeed = 5.f;
 	m_MaxHp = 100.f;
@@ -48,6 +49,7 @@ HRESULT CSteve::Initialize(void* pArg)
 
 void CSteve::Priority_Update(_float fTimeDelta)
 {
+
 	if (m_bGetHit) {
 		m_iGetHitFrame++;
 		if (m_iGetHitFrame > 15) {
@@ -61,21 +63,13 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	//테스트(Add_Collider_CollisionGroup)
 	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pCollider_CubeCom);
 
+	//1. 키입력에 따른 이동
+	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
-
-	//1. 키입력에 따른 이동
-	Input_Key(fTimeDelta);
-
-	if (FAILED(m_pCollider_CubeCom->Update_Collider()))
-	{
-		MSG_BOX("Update_Collider()");
-		return;
-	}
-
-	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+	__super::Update(fTimeDelta);
 
 }
 

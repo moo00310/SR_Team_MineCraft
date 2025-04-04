@@ -34,6 +34,9 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
+	m_pTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")));
+	Safe_AddRef(m_pTerrain);
+
 	// 아규먼트 받기
 	CAMERA_PLAYER_DESC Desc{ *static_cast<CAMERA_PLAYER_DESC*>(pArg) };
 	m_fMouseSensor = Desc.fMouseSensor;
@@ -110,6 +113,20 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 	_float3 vHeadPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
 
     m_pPlayer->Set_AttackContinue(false);
+
+
+    list<CCollider*> Colliders;
+    if (m_pGameInstance->Key_Pressing(VK_LBUTTON) || m_pGameInstance->Key_Pressing(VK_RBUTTON))
+    {
+        //충돌체 추가
+
+		_float3 vStevePos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
+		_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+		_float3 vSearchPos = vStevePos + vLook * 2.f;
+
+        m_pTerrain->Active_Near_Chunk_Colliders(vSearchPos, 10.f);
+    }
+
     if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && !g_bMainInventoryOpen)
     {
         _float fDist;                  // 광선과 오브젝트 간의 거리
@@ -277,6 +294,11 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             ShowCursor(true);
         }
     }
+
+    for (auto pCollider : Colliders)
+    {
+        m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
+    }
 }
 
 void CCamera_Player::Follow_Player(_float fTimeDelta)
@@ -438,6 +460,7 @@ void CCamera_Player::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pTerrain);
     Safe_Release(m_pPlayer);
     Safe_Release(m_pTarget_Transform_Com);
     Safe_Release(m_pTarget_Rigidbody_Com);

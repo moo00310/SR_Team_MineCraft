@@ -1,6 +1,7 @@
 #include "ItemCube.h"
 #include "GameInstance.h"
 #include "UI_Mgr.h"
+#include "MCTerrain.h"
 
 CItemCube::CItemCube(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
@@ -28,6 +29,8 @@ HRESULT CItemCube::Initialize(void* pArg)
 
     m_pTransformCom->Scaling(0.3f, 0.3f, 0.3f);
 
+	m_pTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")));
+	Safe_AddRef(m_pTerrain);
 
     CGameObject* pSteve{ nullptr };
     pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
@@ -74,8 +77,16 @@ void CItemCube::Update(_float fTimeDelta)
     }
     else if (fDist < 5.f)
     {
+        list<CCollider*> Colliders;
+        Colliders = m_pTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
+
         //플레이어와 거리가 가까우면 중력적용
         m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);
+
+        for (CCollider* pCollider : Colliders)
+        {
+			m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
+        }
     }
 
 }
@@ -218,6 +229,7 @@ CGameObject* CItemCube::Clone(void* pArg)
 void CItemCube::Free()
 {
     __super::Free();
+	Safe_Release(m_pTerrain);
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pRigidbodyCom);
     Safe_Release(m_pShaderCom);
