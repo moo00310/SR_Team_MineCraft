@@ -438,6 +438,9 @@ void CMainApp::Free()
 	__super::Free();
 
 	CUI_Mgr::Get_Instance()->Free();
+	CUI_Mgr::Get_Instance()->Destroy_Instance();
+	CMouse::Get_Instance()->Destroy_Instance();
+
 
 	// 파티클 매니저 메모리 해제.
 	CParticleEventManager::Get_Instance()->Free();
@@ -451,7 +454,6 @@ void CMainApp::Free()
 	Safe_Release(m_pGraphic_Device);
 
 	m_pGameInstance->Release_Engine();
-	CMouse::Get_Instance()->Destroy_Instance();
 
 	/* 내멤버를 정리한다.*/	
 	Safe_Release(m_pGameInstance);

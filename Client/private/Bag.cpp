@@ -1,27 +1,27 @@
-#include "SubInventory.h"
+#include "Bag.h"
+#include "UI_Mgr.h"
 
-CSubInventory::CSubInventory(LPDIRECT3DDEVICE9 pGraphic_Device)
-    : CUIObject{ pGraphic_Device }
+CBag::CBag(LPDIRECT3DDEVICE9 pGraphic_Device)
+    :CUIObject{ pGraphic_Device }
 {
 }
 
-CSubInventory::CSubInventory(CSubInventory& Prototype)
-    : CUIObject( Prototype )
+CBag::CBag(CBag& Prototype)
+    :CUIObject(Prototype)
 {
 }
 
-HRESULT CSubInventory::Initialize_Prototype()
+HRESULT CBag::Initialize_Prototype()
 {
     return S_OK;
 }
 
-HRESULT CSubInventory::Initialize(void* pArg)
+HRESULT CBag::Initialize(void* pArg)
 {
-    UIOBJECT_DESC Desc{};
-
-    Desc.fSizeX = g_iWinSizeX * 0.5f;
-    Desc.fSizeY = 100.f;
-    Desc.fX = g_iWinSizeX * 0.5f;
+    
+    Desc.fSizeX = 64.f;
+    Desc.fSizeY = 64.f;
+    Desc.fX = 280.f;
     Desc.fY = 672.f;
 
     if (FAILED(__super::Initialize(&Desc)))
@@ -36,23 +36,23 @@ HRESULT CSubInventory::Initialize(void* pArg)
     return S_OK;
 }
 
-void CSubInventory::Priority_Update(_float fTimeDelta)
+void CBag::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CSubInventory::Update(_float fTimeDelta)
+void CBag::Update(_float fTimeDelta)
 {
 }
 
-void CSubInventory::Late_Update(_float fTimeDelta)
+void CBag::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
-HRESULT CSubInventory::Render()
+HRESULT CBag::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
+    if (FAILED(m_pTextureCom->Bind_Resource(2)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -61,7 +61,6 @@ HRESULT CSubInventory::Render()
     if (FAILED(m_pTransformCom->Bind_Resource()))
         return E_FAIL;
 
-    
     __super::Begin();
     SetUp_RenderState();
 
@@ -70,11 +69,11 @@ HRESULT CSubInventory::Render()
 
     __super::End();
     Reset_RenderState();
- 
-    return S_OK; 
+
+    return S_OK;
 }
 
-HRESULT CSubInventory::Ready_Components()
+HRESULT CBag::Ready_Components()
 {
     if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
@@ -91,47 +90,50 @@ HRESULT CSubInventory::Ready_Components()
     return S_OK;
 }
 
-HRESULT CSubInventory::SetUp_RenderState()
+HRESULT CBag::SetUp_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 170);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 200);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
     return S_OK;
 }
 
-HRESULT CSubInventory::Reset_RenderState()
+HRESULT CBag::Reset_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
     return S_OK;
 }
 
-CSubInventory* CSubInventory::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CBag* CBag::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CSubInventory* pInstance = new CSubInventory(pGraphic_Device);
+    CBag* pInstance = new CBag(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CSubInventory");
+        MSG_BOX("Failed to Created : CBag");
         Safe_Release(pInstance);
     }
     return pInstance;
 }
 
-CGameObject* CSubInventory::Clone(void* pArg)
+CGameObject* CBag::Clone(void* pArg)
 {
-    CSubInventory* pInstance = new CSubInventory(*this);
+    CBag* pInstance = new CBag(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CSubInventory");
+        MSG_BOX("Failed to Created : CBag");
         Safe_Release(pInstance);
     }
+
+    CUI_Mgr::Get_Instance()->Set_Bag(pInstance);
+
     return pInstance;
 }
 
-void CSubInventory::Free()
+void CBag::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);

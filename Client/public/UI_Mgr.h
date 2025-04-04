@@ -12,6 +12,7 @@
 #include "Steve.h"
 #include "Mouse_ItemFont.h"
 #include "CheckBox.h"
+#include "Bag.h"
 
 BEGIN(Client)
 
@@ -59,7 +60,8 @@ public:
 	list<CMouse_ItemFont*>*			Get_MouseItemFontlist(void)		{ return &m_MouseItemFontlist; }
 
 	_bool							Get_PlayerHP_Shader()			{ return m_bPlayerHP_Shader; }
-	
+	CBag*							Get_Bag()						{ return m_pBag; }
+
 public:
 	void Set_Steve(CSteve* _Steve) 
 	{ 
@@ -67,7 +69,8 @@ public:
 		Safe_AddRef(pSteve);
 	}
 
-	void Set_PlayerHP_Shader(_bool _bPlayerHP_Shader) { m_bPlayerHP_Shader = _bPlayerHP_Shader; }
+	void	Set_PlayerHP_Shader(_bool _bPlayerHP_Shader) { m_bPlayerHP_Shader = _bPlayerHP_Shader; }
+	CBag*	Set_Bag(CBag* pBag) { return m_pBag = pBag; }
 
 private:
 	ITEMID	m_ItemID = ITEMID_END;
@@ -91,6 +94,8 @@ private:
 	list<CInventory_Back*>	m_InventoryBacklist;
 	list<CMouse_Item*>		m_MouseItemlist;
 	list<CMouse_ItemFont*>	m_MouseItemFontlist;
+
+	CBag* m_pBag = { nullptr };
 	
 private:
 	CSteve* pSteve = { nullptr };
