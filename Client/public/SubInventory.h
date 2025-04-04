@@ -27,6 +27,8 @@ public:
 
 private:
 	HRESULT Ready_Components();
+	HRESULT SetUp_RenderState();
+	HRESULT Reset_RenderState();
 
 private:
 	CTexture* m_pTextureCom = { nullptr };

@@ -50,6 +50,7 @@
 #include "HyockCube.h"
 #include "VIBuffer_Cube_Only.h"
 #include "DestroyCube.h"
+#include "UIDropItem.h"
 
 //Woo
 #include "MainLogo.h"
@@ -70,6 +71,7 @@
 #include "PlayerLevel.h"
 #include "Mouse_Item.h"
 #include "Mouse_ItemFont.h"
+#include "Bag.h"
 
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -455,7 +457,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Inventory"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/inventory_%03d.png"), 2))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/inventory_%03d.png"), 3))))
 		return E_FAIL;
 
 	///* For.Prototype_Component_Texture_InventoryBack*/
@@ -674,6 +676,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_ItemFont"),
 		CMouse_ItemFont::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_Inventory_Bag*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Bag"),
+		CBag::Create(m_pGraphic_Device))))
+		return E_FAIL;
 	/*================================================================================================*/
 
 	/* For.Prototype_GameObject_Dirt */
@@ -793,6 +800,10 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_RightHand */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_RightHand"),
 		CRight_hand::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_GAMEOBJECT_UI_DROP_ITEM,
+		CUIDropItem::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	//=============================================================================================================
 	

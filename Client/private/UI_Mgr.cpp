@@ -33,6 +33,7 @@ void CUI_Mgr::Synchronize_Slots()
 			{
 				m_vecSlotInfolist[i]->Set_ItemName(m_vecSlotInfolist[i + 9]->Get_ItemName());
 				m_vecSlotInfolist[i]->Set_ItemCount(m_vecSlotInfolist[i + 9]->Get_ItemCount());
+				m_vecSlotInfolist[i]->Set_ItemCountRender(m_vecSlotInfolist[i + 9]->Get_ItemCountRender());
 			}
 		}
 	}
@@ -173,10 +174,12 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 	/*
 	enum ITEMNAME
 	{
-		ITEMNAME_DIRT, ITEMNAME_GRASSDIRT, ITEMNAME_STONE, ITEMNAME_COBBLESTONE, ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_LEAF, ITEMNAME_CUBE_END,
-
+		ITEMNAME_DIRT, ITEMNAME_GRASSDIRT, ITEMNAME_STONE, ITEMNAME_COBBLESTONE, ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_LEAF, 
+		ITEMNAME_CUBE_END,
+		
 		ITEMNAME_SEED = 100, ITEMNAME_SAPLING, ITEMNAME_APPLE, ITEMNAME_REDTULIP, ITEMNAME_DANDELION, ITEMNAME_COAL, ITEMNAME_RAWIRON, ITEMNAME_IRON,
-		ITEMNAME_SWORD, ITEMNAME_PICKAXE, ITEMNAME_RECT_END,
+		ITEMNAME_SWORD, ITEMNAME_PICKAXE, ITEMNAME_TORCH, ITEM_WEPON_1, ITEM_WEPON_2, ITEM_WEPON_3, ITEM_WEPON_4, ITEM_WEPON_5, ITEMNAME_RECT_END,
+
 
 		ITEMNAME_IRONORE = 900, ITEMNAME_COALORE, ITEMNAME_GRASS,
 		ITEMNAME_END = 999
@@ -189,19 +192,10 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 		m_ItemID = ITEMID_BLOCK;
 	}
 	
-	if (_ItemName == ITEMNAME_SWORD || _ItemName == ITEMNAME_PICKAXE)
+	else if (_ItemName >= 108 && _ItemName < 115)
 	{
 		m_ItemID = ITEMID_ARMOR;
 	}
-	else if (_ItemName == ITEMNAME_APPLE)
-	{
-		m_ItemID = ITEMID_FOOD;
-	}
-	else
-	{
-
-	}
-
 
 	/* 인벤토리 슬롯에 같은 아이템이 존재하는지 확인
 	*  슬롯 인덱스 9~47까지 */
@@ -213,7 +207,7 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 			if (AddCount + m_vecSlotInfolist[i]->Get_ItemCount() < 65 && m_ItemID != ITEMID_ARMOR)
 			{
 				m_vecSlotInfolist[i]->Set_ItemCount(m_vecSlotInfolist[i]->Get_ItemCount() + AddCount);
-				m_vecSlotInfolist[i]->Set_ItemID(m_ItemID);
+				//m_vecSlotInfolist[i]->Set_ItemID(m_ItemID);
 				return;
 			}
 			else
@@ -240,6 +234,7 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 			m_vecSlotInfolist[iter]->Set_ItemName(_ItemName);
 			m_vecSlotInfolist[iter]->Set_ItemCount(AddCount);
 			m_vecSlotInfolist[iter]->Set_ItemID(m_ItemID);
+			m_vecSlotInfolist[iter]->Set_ItemCountRender(true);
 			break;
 		}
 	}

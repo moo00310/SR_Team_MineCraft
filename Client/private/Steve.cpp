@@ -24,6 +24,7 @@ HRESULT CSteve::Initialize_Prototype()
 
 HRESULT CSteve::Initialize(void* pArg)
 {
+
 	// 기타 스텟 초기화 ( Pawn 에 선언 되어 있음 )
 	m_fSpeed = 5.f;
 	m_MaxHp = 100.f;
@@ -51,6 +52,7 @@ HRESULT CSteve::Initialize(void* pArg)
 
 void CSteve::Priority_Update(_float fTimeDelta)
 {
+
 	if (m_bGetHit) {
 		m_iGetHitFrame++;
 		if (m_iGetHitFrame > 15) {
@@ -64,26 +66,19 @@ void CSteve::Priority_Update(_float fTimeDelta)
 	//테스트(Add_Collider_CollisionGroup)
 	m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_PLAYER, m_pCollider_CubeCom);
 
+	//1. 키입력에 따른 이동
+	Input_Key(fTimeDelta);
 }
 
 void CSteve::Update(_float fTimeDelta)
 {
-
-	//1. 키입력에 따른 이동
-	Input_Key(fTimeDelta);
-
-	if (FAILED(m_pCollider_CubeCom->Update_Collider()))
-	{
-		MSG_BOX("Update_Collider()");
-		return;
-	}
-
-	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+	__super::Update(fTimeDelta);
 
 }
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
+	m_pGameInstance->UpdateListener(GetPos(), m_pTransformCom->Get_State(CTransform::STATE_LOOK), m_pTransformCom->Get_State(CTransform::STATE_UP));
 
 	// 회전 및 애니메이션 상태 변경
 	Turn(fTimeDelta);
@@ -215,28 +210,28 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down('C'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_1, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_APPLE, 1);
 	}
 	if (m_pGameInstance->Key_Down('V'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_2, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_DIRT, 64);
 	}
 	if (m_pGameInstance->Key_Down('B'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_3, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GRASSDIRT, 1);
 	}
 	if (m_pGameInstance->Key_Down('N'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_4, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_SAPLING, 1);
 	}
 	if (m_pGameInstance->Key_Down('M'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_5, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_APPLE, 1);
 	}
 
 	if (m_pGameInstance->Key_Down('L'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_TORCH, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_1, 1);
 	}
 
 }

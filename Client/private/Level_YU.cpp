@@ -46,6 +46,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
@@ -55,12 +58,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_GameMgr(TEXT("Ready_Layer_GameMgr"))))
 		return E_FAIL;
-
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
@@ -76,8 +75,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
 		return E_FAIL;
 	
-	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
+	//	return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -92,9 +91,12 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Left_Rect_Model(TEXT("Layer_RightHand"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_UI_DropItem(LAYER_UI_POOL)))
+		return E_FAIL;
+
 	// 위 객체들을 관리하는 오브젝트
 	if (FAILED(Ready_Laye_RightHand(TEXT("Layer_Cube_RightHand"))))
-		return E_FAIL;
+		return E_FAIL;	
 
 	///////////////////////////////////////////////////////////
 
@@ -105,6 +107,7 @@ void CLevel_YU::Update(_float fTimeDelta)
 {
 	ftime += fTimeDelta;
 	m_iFPS++;
+
 }
 
 HRESULT CLevel_YU::Render()
@@ -200,6 +203,11 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
+	/* Prototype_GameObject_Inventory_Bag */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Bag"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
 	/* Prototype_GameObject_InventoryBack */
 	for (int i = 0; i < 56; ++i)
 	{
@@ -229,7 +237,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	/* Prototype_GameObject_Mouse_ItemFont */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Mouse_ItemFont"),
 		LEVEL_YU, strLayerTag)))
-		return E_FAIL;
+		return E_FAIL;	
 
 	return S_OK;
 }
@@ -326,6 +334,21 @@ HRESULT CLevel_YU::Ready_Layer_DestroyCube(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, PROTOTYPE_GAMEOBJECT_DESTROY_CUBE,
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_UI_DropItem(const _wstring& strLayerTag)
+{
+	// 드랍 아이템 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_UI_DROP_ITEM,	// 가져올 프로토타입.
+		LEVEL_YU,		// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))			// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -448,6 +471,16 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		return E_FAIL;
 	}
 
+	// 사과 먹는거.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
 
 	return S_OK;
 }
@@ -497,7 +530,4 @@ CLevel_YU* CLevel_YU::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 void CLevel_YU::Free()
 {
 	__super::Free();
-
-	CUI_Mgr::Get_Instance()->Destroy_Instance();
-
 }

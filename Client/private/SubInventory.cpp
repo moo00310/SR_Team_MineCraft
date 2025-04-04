@@ -61,17 +61,16 @@ HRESULT CSubInventory::Render()
     if (FAILED(m_pTransformCom->Bind_Resource()))
         return E_FAIL;
 
+    
     __super::Begin();
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 170);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+    SetUp_RenderState();
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
     __super::End();
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-
+    Reset_RenderState();
+ 
     return S_OK; 
 }
 
@@ -88,6 +87,22 @@ HRESULT CSubInventory::Ready_Components()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
         TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CSubInventory::SetUp_RenderState()
+{
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 170);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+
+    return S_OK;
+}
+
+HRESULT CSubInventory::Reset_RenderState()
+{
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
     return S_OK;
 }

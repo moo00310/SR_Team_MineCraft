@@ -4,11 +4,14 @@
 #include "Client_Defines.h"
 #include "Cube.h"
 #include "Transform.h"
+#include "UIDropItem.h"
 
 BEGIN(Engine)
 class CVIBuffer_Cube;
 class CShader;
 END
+
+BEGIN(Client)	
 
 class CItemCube : public CCube
 {
@@ -49,6 +52,7 @@ protected:
 	ITEMNAME m_eItemName;
 
 	CTransform* m_pPlayerTransformCom{ nullptr };
+	class  CMCTerrain* m_pTerrain{ nullptr };
 
 private:
 	_float Compute_PlayerDistance();
@@ -59,3 +63,4 @@ public:
 	virtual void Free();
 };
 
+END

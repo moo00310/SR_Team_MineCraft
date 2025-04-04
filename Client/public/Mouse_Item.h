@@ -27,7 +27,8 @@ public:
 	virtual HRESULT Render()override;
 
 public:
-	_bool		Get_Check() { return m_bCheck; }
+	_bool		Get_Check()		{ return m_bCheck; }
+	ITEMNAME	Get_ItemName()	{ return m_ItemName; }
 
 public:
 	void Set_Check(_bool _bCheck)			{ m_bCheck = _bCheck; }
@@ -51,7 +52,6 @@ private:
 
 private:
 	_bool		m_bCheck = { false };
-
 	ITEMNAME	m_ItemName = ITEMNAME_END;
 
 public:

@@ -68,6 +68,9 @@ public:
 	void Go_Left(_float fTimeDelta);
 	void Go_Right(_float fTimeDelta);
 
+	// 해당 방향으로 감.
+	void Go_Direction(const _float3& _direction, _float fTimeDelta);
+
 #pragma region COLLIDER_MOVE
 	void Go_Direction(class CCollider* pCollider, _uint iGroupIndex, const _float3& vDirection, _float fTimeDelta);
 	void Go_Straight(class CCollider* pCollider, _uint iGroupIndex, _float fTimeDelta);
@@ -89,6 +92,9 @@ public:
 	void Quaternion_Revolution(const _float3& vAxis, const _float3& vCenter, _float fAngle);
 	void Quaternion_Revolution_Pos(const _float3& vAxis, const _float3& vCenter, _float fAngle);
 	_float3 RotateVectorByQuaternion(const _float3& v, const D3DXQUATERNION& q);
+
+	// 월드 좌표를 스크린 좌표료 변환.
+	_float2 WorldToScreen();
 
 private:
 	_float4x4				m_WorldMatrix = {};

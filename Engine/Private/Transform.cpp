@@ -126,6 +126,17 @@ void CTransform::Go_Right(_float fTimeDelta)
 	Set_State(STATE_POSITION, vPosition);
 }
 
+void CTransform::Go_Direction(const _float3& _direction, _float fTimeDelta)
+{
+	_float3 vOriginPos{ Get_State(STATE_POSITION) };
+	_float3 vNextPosition{ vOriginPos };
+	_float3 vDirection{ _direction };
+
+	vNextPosition += *D3DXVec3Normalize(&vDirection, &vDirection) * m_fSpeedPerSec * fTimeDelta;
+
+	Set_State(STATE_POSITION, vNextPosition);
+}
+
 void CTransform::Go_Direction(CCollider* pCollider, _uint iGroupIndex, const _float3& vDirection, _float fTimeDelta)
 {
 	_float3 vOriginPos{ Get_State(STATE_POSITION) };
@@ -525,6 +536,46 @@ inline _float3 CTransform::RotateVectorByQuaternion(const _float3& v, const D3DX
 	D3DXQuaternionMultiply(&qResult, &temp, &qConj);
 
 	return _float3{ qResult.x, qResult.y, qResult.z };
+}
+
+_float2 CTransform::WorldToScreen()
+{
+	// 최종 스크린 좌표.
+	_float2 screenPosision;
+
+	// 투영에 w 값 가져오기 위한 4열 변수.
+	_float4 screenPos4;
+	
+	// 현재 자신의 월드 포지션.
+	_float3 worldPosition = Get_State(CTransform::STATE_POSITION);
+
+	_float4x4 viewMat;			// 뷰 행렬.
+	_float4x4 projectionMat;	// 투영 행렬.	
+
+	// 행렬 얻어옴.
+	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &viewMat);
+	m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &projectionMat);
+	
+	// 월드 -> 뷰로 변환.
+	D3DXVec3TransformCoord((D3DXVECTOR3*)&screenPos4, &worldPosition, &viewMat);
+
+	// 뷰 -> 투영 변환하고 w값 얻어옴.
+	D3DXVec4Transform(&screenPos4, &screenPos4, &projectionMat);
+
+	// 스크린으로 끌고오기?라고 해야하나 암튼
+	// w 나누기를 수행하여 원근감을 없앤다.
+	// 이것이 뷰포트이다.
+	screenPos4.x /= screenPos4.w;
+	screenPos4.y /= screenPos4.w;	
+
+	// 뷰포트를 최종 스크린 좌표료 변환.
+	screenPos4.x = (screenPos4.x + 1.f) * 0.5f * 1280.f;
+	screenPos4.y = (-screenPos4.y + 1.f) * 0.5f * 720.f;
+
+	// 이것이 아름다운 과정을 거쳐서 나온 스크린 좌표다.
+	screenPosision = { screenPos4.x, screenPos4.y };
+
+	return screenPosision;
 }
 
 

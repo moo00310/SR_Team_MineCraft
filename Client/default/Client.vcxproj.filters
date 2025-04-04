@@ -289,6 +289,12 @@
     <Filter Include="02.GameObjects\08.GameMgr">
       <UniqueIdentifier>{8632f159-1743-49bc-a2a3-b6fec4043883}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\08.DropItem">
+      <UniqueIdentifier>{f5b13b2e-050c-4040-87aa-d6de24d20773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Inventory\05.Bag">
+      <UniqueIdentifier>{9e4d4d43-a141-4586-ab41-0def7821c9a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -639,6 +645,18 @@
     </ClInclude>
     <ClInclude Include="..\public\GameMgr.h">
       <Filter>02.GameObjects\08.GameMgr</Filter>
+     </ClInclude>
+    <ClInclude Include="..\public\BaseParticleEating.h">
+      <Filter>02.GameObjects\05.Particle\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleAppleEating.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\UIDropItem.h">
+      <Filter>03.UI\08.DropItem</Filter>
+     </ClInclude>
+    <ClInclude Include="..\public\Bag.h">
+      <Filter>03.UI\04.Inventory\05.Bag</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -978,6 +996,18 @@
     </ClCompile>
     <ClCompile Include="..\private\GameMgr.cpp">
       <Filter>02.GameObjects\08.GameMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BaseParticleEating.cpp">
+      <Filter>02.GameObjects\05.Particle\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleAppleEating.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UIDropItem.cpp">
+      <Filter>03.UI\08.DropItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Bag.cpp">
+      <Filter>03.UI\04.Inventory\05.Bag</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

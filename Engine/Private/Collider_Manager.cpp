@@ -53,6 +53,21 @@ void CCollider_Manager::Out_CollisiomGroup(_uint iGroupIndex, CGameObject * pGam
 	}*/
 }
 
+void CCollider_Manager::Out_Collider_CollisiomGroup(_uint iGroupIndex, CCollider* pCollider)
+{
+	auto iter = m_pColliders[iGroupIndex].begin();
+	while (iter != m_pColliders[iGroupIndex].end())
+	{
+		if (*iter == pCollider)
+		{
+			Safe_Release(*iter);
+			iter = m_pColliders[iGroupIndex].erase(iter);
+		}
+		else
+			++iter;
+	}
+}
+
 
 HRESULT CCollider_Manager::Reset_ColliderGroup()
 {

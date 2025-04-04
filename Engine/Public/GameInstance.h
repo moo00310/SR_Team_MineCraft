@@ -63,6 +63,9 @@ public:
 
 	//콜리전 그룹에서 빼기
 	void Out_CollisiomGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
+	//콜라이더를 그룹에서 빼기
+	void Out_Collider_CollisiomGroup(_uint eCollisionGroup, class CCollider* pCollider);
+
 	//특정 그룹의 오브젝트들과 충돌 검사
 	class CGameObject* Collision_Check_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDepth = nullptr, _Out_ CCollider_Cube::COLLISION_DIR* pOutDir = nullptr);
 	//특정 그룹의 오브젝트들과 충돌 검사(여러개의 오브젝트와 충돌 검사)
@@ -88,7 +91,10 @@ public:
 #pragma endregion
 
 #pragma region SOUND_MANAGER
-	//void		Play_Sound(const char* _EventPath);
+	void PlayBGM(const std::wstring& soundName);
+	void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f));
+	void StopAll();
+	void UpdateListener(_float3 pos, _float3 forward, _float3 up);
 #pragma endregion
 
 
@@ -118,7 +124,7 @@ private:
 	class CCollider_Manager*			m_pCollider_Manager = { nullptr };
 	class CFrustumCulling_Manager*		m_pFrustumCulling_Manager = { nullptr };
 	class CKey_Manager*					m_pKey_Manager = { nullptr };
-	//class CSound_Manager*				m_pSound_Manager = { nullptr };
+	class CSound_Manager*				m_pSound_Manager = { nullptr };
 	class CPoolManager*					m_pPoolManager = { nullptr };
 
 public:

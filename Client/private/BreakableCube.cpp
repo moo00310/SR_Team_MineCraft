@@ -28,32 +28,33 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
-    list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
 
-    for (CGameObject* pMonster : Monsters)
-    {
-        if (CCreeper* _creeper = dynamic_cast<CCreeper*>(pMonster)) {
-            _float3 creeperPos = _creeper->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    //list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
 
-            for (CCollider_Cube* pCollider : m_Colliders)
-            {
-                _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
+    //for (CGameObject* pMonster : Monsters)
+    //{
+    //    if (CCreeper* _creeper = dynamic_cast<CCreeper*>(pMonster)) {
+    //        _float3 creeperPos = _creeper->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 
-                _float3 vDiff{ creeperPos - vColliderPos };
-                //vDiff.y *= 2.f; //y축으로는 충돌 계산 적게 하기위해
-                _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+    //        for (CCollider_Cube* pCollider : m_Colliders)
+    //        {
+    //            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
 
-                if (fLengthSq < 7.f) {
-                    if (CPawn* _pawn = dynamic_cast<CPawn*>(_creeper)) {
-                        if (CPawn::BOOM == _pawn->Get_ANIM()) {
-                            Delete_Cube(vColliderPos);
-                            m_pGameInstance->PopPool(pMonster);
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //            _float3 vDiff{ creeperPos - vColliderPos };
+    //            //vDiff.y *= 2.f; //y축으로는 충돌 계산 적게 하기위해
+    //            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+
+    //            if (fLengthSq < 7.f) {
+    //                if (CPawn* _pawn = dynamic_cast<CPawn*>(_creeper)) {
+    //                    if (CPawn::BOOM == _pawn->Get_ANIM()) {
+    //                        Delete_Cube(vColliderPos);
+    //                        m_pGameInstance->PopPool(pMonster);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     if (m_fHp < 100) {
 
@@ -74,19 +75,24 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         Destroy();
     }
 
+
+    // ====== 여기서 하지말고 Pawn에서 하자 =======
+
     for (CCollider_Cube* pCollider : m_Colliders)
     {
         pCollider->Set_bColliderActive(false);
     }
-    if (m_bChunkColliderActive)
-    {
-        //현재 거리 계산으로 하고 있음 구 형태
-        //사각형 형태로 아래는 조금만 하게 하면 좋은데 y축 으로 말하는 거임
-        Should_Collide_With_Player();
-        Should_Collide_With_Monster();
-    }
+    //if (m_bChunkColliderActive)
+    //{
+    //    //현재 거리 계산으로 하고 있음 구 형태
+    //    //사각형 형태로 아래는 조금만 하게 하면 좋은데 y축 으로 말하는 거임
+    //    Should_Collide_With_Player();
+    //    Should_Collide_With_Monster();
+    //}
     //밖에 꺼내 놓은 이유(다른 청크가면 몬스터 떨어져버림) -> 안돼 프레임 개 떨어져 그냥 몬스터 멀어지면 비활성화 시키는게 나을 거 같음
     //Should_Collide_With_Monster();
+
+    // ====== 여기서 하지말고 Pawn에서 하자 =======
 }
 
 void CBreakableCube::Update(_float fTimeDelta)
@@ -397,8 +403,8 @@ void CBreakableCube::Should_Collide_With_Monster()
         if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
             _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
         }
-        if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
-            continue;
+        //if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
+        //    continue;
 
 
         _monPos += _float3{ 0.f, 1.f, 0.f };

@@ -29,36 +29,45 @@ public:
 public:
 	CGameInstance* GetGameInstance();
 	int GetFileCount();
+	//_int GetCurrentChunk() { return m_currentPlayerChunk; }
+	//set<_int>& GetActiveChunkIndexies() { return m_ActiveChunkIndexies; }
+	set<_int>& GetNearChunkIndexies(_float3 vPos);
+
+	//ê°€ê¹Œìš´ ì²­í¬ì¤‘ì—ì„œ íŠ¹ì • ê±°ë¦¬ë§Œí¼ ê°€ê¹Œìš´ ë¸”ëŸ­ì˜ ì½œë¼ì´ë”ë¥¼ í™œì„±í™” ì‹œí‚¤ê³  ê·¸ ì½œë¼ì´ë”ë“¤ì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
+	list<CCollider*> Active_Near_Chunk_Colliders(_float3 vPos, _float fDistSq);
+
 
 	void ActivateChunkLayer(int chunkIndex, bool _b);
 
-	//ÇöÀç È°¼ºÈ­µÈ Ã»Å©ÀÇ ºí·°À» Ãß°¡ÇÏ´Â ÇÔ¼ö
+	//í˜„ì¬ í™œì„±í™”ëœ ì²­í¬ì˜ ë¸”ëŸ­ì„ ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜
 	void Create_Cube(ITEMNAME eItemName, _float3 vPos, _float3 vDir);
 
-	// ÇöÀç Ã»Å©¿¡ ½ºÆù °¡´ÉÇÑ À§Ä¡¸¦ °¡Á®¿À´Â ÇÔ¼ö
+	// í˜„ì¬ ì²­í¬ì— ìŠ¤í° ê°€ëŠ¥í•œ ìœ„ì¹˜ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 	const vector<_float3>& Get_SpwanAble();
 
 private:
 	HRESULT Ready_Layer_BackGround();
 
-	//ÇÃ·¹ÀÌ¾î°¡ ÀÖ´Â Ã»Å©¿¡¼­¸¸ Ãæµ¹ ¸Å´ÏÀú¿¡ ¿Ã·ÁÁÜ
+	//í”Œë ˆì´ì–´ê°€ ìˆëŠ” ì²­í¬ì—ì„œë§Œ ì¶©ëŒ ë§¤ë‹ˆì €ì— ì˜¬ë ¤ì¤Œ
 	void SetColliderChunk();
 
-	// ¸ğµç Ã»Å© ºñÈ°¼ºÈ­
+	// ëª¨ë“  ì²­í¬ ë¹„í™œì„±í™”
 	void OffAllChunkLayer();
 
-	//ÇÃ·¹ÀÌ¾î ÁÖº¯ 3x3 Ã»Å©¸¸ È°¼ºÈ­
+	//í”Œë ˆì´ì–´ ì£¼ë³€ 3x3 ì²­í¬ë§Œ í™œì„±í™”
 	void GetPlayerChunk3x3();
 
+	set<_int> m_ActiveChunkIndexies; // í™œì„±í™” ëœ ì²­í¬ ì¸ë±ìŠ¤ ëª¨ìŒ
 
 private:
 	map<int, vector<_float3>> m_SpawnPos;
 	vector<_float3> m_vecMerged;
 
+
 private:
-	int m_iChunkCount = 0; // Ã»Å© °³¼ö 
-	int m_prePlayerChunk = 0; //ÀÌÀü Ã»Å©
-	int m_currentPlayerChunk = 0; //ÇöÀç Ã»Å©
+	int m_iChunkCount = 0; // ì²­í¬ ê°œìˆ˜ 
+	int m_prePlayerChunk = 0; //ì´ì „ ì²­í¬
+	int m_currentPlayerChunk = 0; //í˜„ì¬ ì²­í¬
 	bool prevF1State = false;
 	bool prevF2State = false;
 public:

@@ -58,7 +58,7 @@ void CMonster::Update(_float fTimeDelta)
     //_float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
 
     //Comput_Distance();
-    if (Comput_Distance() > 15.f)
+    if (Comput_Distance() > 20.f)
     {
 		//타겟과 너무 멀다면-> 비활성화
         return;
@@ -73,8 +73,7 @@ void CMonster::Update(_float fTimeDelta)
         m_pBehaviorTree->Excute(this, fTimeDelta);
     }
 
-    // 땅 충돌 + 중력 처리
-    m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+    __super::Update(fTimeDelta);
 
 }
 
@@ -129,6 +128,31 @@ void CMonster::Knock_back(const _float3& vforce)
 
     _float3 vTarget = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
     m_pTransformCom->LookAt_XZ(vTarget);
+
+    int random = rand() % 10;
+    switch (m_MonsterType)
+    {
+    case Client::CMonster::MT_Zombie:
+        if (random < 5) {
+            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt1"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        }
+        else {
+            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt2"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        }
+        break;
+    case Client::CMonster::MT_Creeper:
+        if (random < 5) {
+            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt1"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        }
+        else {
+            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt2"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        }
+        break;
+    case Client::CMonster::MT_END:
+        break;
+    default:
+        break;
+    }
 
 }
 
