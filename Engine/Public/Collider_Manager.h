@@ -27,6 +27,9 @@ public:
 	//콜라이더를 그룹에서 제거하는 함수
 	void Out_CollisiomGroup(_uint iGroupIndex, class CGameObject* pGameObject);
 
+	//콜라이더 하나를 그룹에서 제거하는 함수
+	void Out_Collider_CollisiomGroup(_uint iGroupIndex, class CCollider* pCollider);
+
 	//콜라이더 그룹을 초기화 하는 함수
 	HRESULT Reset_ColliderGroup();
 

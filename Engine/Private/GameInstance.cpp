@@ -237,6 +237,14 @@ void CGameInstance::Out_CollisiomGroup(_uint eCollisionGroup, CGameObject* pGame
 	m_pCollider_Manager->Out_CollisiomGroup(eCollisionGroup, pGameObject);
 }
 
+void CGameInstance::Out_Collider_CollisiomGroup(_uint eCollisionGroup, class CCollider* pCollider)
+{
+	if (!m_pCollider_Manager)
+		return;
+
+	m_pCollider_Manager->Out_Collider_CollisiomGroup(eCollisionGroup, pCollider);
+}
+
 CGameObject* CGameInstance::Collision_Check_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDepth, _Out_ CCollider_Cube::COLLISION_DIR* pOutDir)
 {
 	if (pOutDepth) *pOutDepth = { 0.f, 0.f, 0.f };

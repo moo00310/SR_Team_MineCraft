@@ -63,6 +63,9 @@ public:
 
 	//콜리전 그룹에서 빼기
 	void Out_CollisiomGroup(_uint eCollisionGroup, class CGameObject* pGameObject);
+	//콜라이더를 그룹에서 빼기
+	void Out_Collider_CollisiomGroup(_uint eCollisionGroup, class CCollider* pCollider);
+
 	//특정 그룹의 오브젝트들과 충돌 검사
 	class CGameObject* Collision_Check_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDepth = nullptr, _Out_ CCollider_Cube::COLLISION_DIR* pOutDir = nullptr);
 	//특정 그룹의 오브젝트들과 충돌 검사(여러개의 오브젝트와 충돌 검사)

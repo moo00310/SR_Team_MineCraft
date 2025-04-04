@@ -45,6 +45,7 @@ private:
     _float              m_fWalkTime{};
     _float              m_fSpringArmLength{ 5.f };
     CDestroyCube*       m_DestroyCube = { nullptr };
+	class CMCTerrain*   m_pTerrain = { nullptr };
 
 private:
     void    Input_Key(_float fTimeDelta);

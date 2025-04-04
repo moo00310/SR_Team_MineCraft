@@ -58,7 +58,7 @@ void CMonster::Update(_float fTimeDelta)
     //_float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
 
     //Comput_Distance();
-    if (Comput_Distance() > 15.f)
+    if (Comput_Distance() > 20.f)
     {
 		//타겟과 너무 멀다면-> 비활성화
         return;
@@ -73,8 +73,7 @@ void CMonster::Update(_float fTimeDelta)
         m_pBehaviorTree->Excute(this, fTimeDelta);
     }
 
-    // 땅 충돌 + 중력 처리
-    m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
+    __super::Update(fTimeDelta);
 
 }
 
