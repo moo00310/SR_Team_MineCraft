@@ -50,6 +50,7 @@
 #include "HyockCube.h"
 #include "VIBuffer_Cube_Only.h"
 #include "DestroyCube.h"
+#include "UIDropItem.h"
 
 //Woo
 #include "MainLogo.h"
@@ -793,6 +794,10 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_RightHand */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_RightHand"),
 		CRight_hand::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_GAMEOBJECT_UI_DROP_ITEM,
+		CUIDropItem::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	//=============================================================================================================
 	

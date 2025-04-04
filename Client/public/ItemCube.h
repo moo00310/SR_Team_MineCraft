@@ -4,6 +4,7 @@
 #include "Client_Defines.h"
 #include "Cube.h"
 #include "Transform.h"
+#include "UIDropItem.h"
 
 BEGIN(Engine)
 class CVIBuffer_Cube;

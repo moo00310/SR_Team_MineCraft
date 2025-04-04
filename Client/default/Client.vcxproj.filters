@@ -286,6 +286,9 @@
     <Filter Include="02.GameObjects\06.Right_Hand\03.Left_Rect_Model">
       <UniqueIdentifier>{8b8f165a-c97a-4aaf-940e-36b6a8a8b484}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\08.DropItem">
+      <UniqueIdentifier>{f5b13b2e-050c-4040-87aa-d6de24d20773}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -640,6 +643,9 @@
     <ClInclude Include="..\public\ParticleAppleEating.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UIDropItem.h">
+      <Filter>03.UI\08.DropItem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -981,6 +987,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleAppleEating.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\UIDropItem.cpp">
+      <Filter>03.UI\08.DropItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
