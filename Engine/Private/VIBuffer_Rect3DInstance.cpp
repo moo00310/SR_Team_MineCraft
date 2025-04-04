@@ -152,7 +152,7 @@ HRESULT CVIBuffer_Rect3DInstance::Update_InstanceBuffer(vector<D3DXVECTOR3>& pos
 	if (FAILED(m_pInstanceVB->Lock(0, 0, (void**)&pInstanceData, D3DLOCK_DISCARD)))
 		return E_FAIL;
 
-	for (int i = 0; i < m_iNumInstances; ++i) {
+	for (_uint i = 0; i < m_iNumInstances; ++i) {
 		pInstanceData[i].vPosition = positions[i];
 		pInstanceData[i].vBright = brights[i];
 	}
@@ -174,7 +174,7 @@ HRESULT CVIBuffer_Rect3DInstance::Update_InstanceBuffer(vector<D3DXVECTOR3>& pos
 	if (FAILED(m_pInstanceVB->Lock(0, 0, (void**)&pInstanceData, D3DLOCK_DISCARD)))
 		return E_FAIL;
 
-	for (int i = 0; i < m_iNumInstances; ++i) {
+	for (_uint i = 0; i < m_iNumInstances; ++i) {
 		pInstanceData[i].vPosition = positions[i];
 		pInstanceData[i].vBright = bright;
 	}

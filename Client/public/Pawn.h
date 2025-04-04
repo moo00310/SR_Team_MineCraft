@@ -11,6 +11,7 @@ class CSkeletalAnimator;
 class CShader;
 END
 
+BEGIN(Client)
 class CPawn abstract : public CGameObject
 {
 public:
@@ -20,7 +21,7 @@ public:
 	};
 
 	enum RENDERCOLOR {
-		RENDERORIGIN=1, RENDERATTACKED=3, RENDERBOOM=4, RENDERCOLOR_END
+		RENDERORIGIN=1, RENDERATTACKED=5, RENDERBOOM=6, RENDERCOLOR_END
 	};
 
 protected:
@@ -30,9 +31,9 @@ protected:
 
 public:
 	virtual HRESULT Initialize_Prototype() = 0;
-	virtual HRESULT Initialize(void* pArg) = 0;
-	virtual void Priority_Update(_float fTimeDelta) = 0;
-	virtual void Update(_float fTimeDelta) = 0;
+	virtual HRESULT Initialize(void* pArg);
+	virtual void Priority_Update(_float fTimeDelta);
+	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta) = 0;
 	virtual HRESULT Render();
 
@@ -92,4 +93,4 @@ protected:
 	virtual void Free();
 
 };
-
+END

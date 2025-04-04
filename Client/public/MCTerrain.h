@@ -29,6 +29,13 @@ public:
 public:
 	CGameInstance* GetGameInstance();
 	int GetFileCount();
+	//_int GetCurrentChunk() { return m_currentPlayerChunk; }
+	//set<_int>& GetActiveChunkIndexies() { return m_ActiveChunkIndexies; }
+	set<_int>& GetNearChunkIndexies(_float3 vPos);
+
+	//가까운 청크중에서 특정 거리만큼 가까운 블럭의 콜라이더를 활성화 시키고 그 콜라이더들을 반환하는 함수
+	list<CCollider*> Active_Near_Chunk_Colliders(_float3 vPos, _float fDistSq);
+
 
 	void ActivateChunkLayer(int chunkIndex, bool _b);
 
@@ -45,10 +52,11 @@ private:
 	//플레이어 주변 3x3 청크만 활성화
 	void GetPlayerChunk3x3();
 
+	set<_int> m_ActiveChunkIndexies; // 활성화 된 청크 인덱스 모음
 
 	int m_iChunkCount = 0; // 청크 개수 
 
-	int m_prePlayerChunk = 0; //이전 청크
+	//int m_prePlayerChunk = 0; //이전 청크
 	int m_currentPlayerChunk = 0; //현재 청크
 	bool prevF1State = false;
 	bool prevF2State = false;

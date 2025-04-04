@@ -46,6 +46,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
 		return E_FAIL;
 
@@ -53,9 +56,6 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Sun(TEXT("Layer_Sun"))))
-		return E_FAIL;
-
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
@@ -73,8 +73,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
 		return E_FAIL;
 	
-	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
+	//	return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -105,6 +105,7 @@ void CLevel_YU::Update(_float fTimeDelta)
 {
 	ftime += fTimeDelta;
 	m_iFPS++;
+
 }
 
 HRESULT CLevel_YU::Render()
@@ -187,6 +188,11 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 
 	/* Prototype_GameObject_SubInventory */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_SubInventory"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	/* Prototype_GameObject_Inventory_Bag */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Bag"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 

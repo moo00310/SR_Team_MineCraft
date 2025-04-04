@@ -8,7 +8,7 @@
 #include "Prototype_Manager.h"
 #include "Collider_Manager.h"
 #include "FrustumCulling_Manager.h"
-//#include "Sound_Manager.h"
+#include "Sound_Manager.h"
 #include "PoolManager.h"
 
 IMPLEMENT_SINGLETON(CGameInstance);
@@ -55,9 +55,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 	if (nullptr == m_pKey_Manager)
 		return E_FAIL;
 
-	/*m_pSound_Manager = CSound_Manager::Create();
+	m_pSound_Manager = CSound_Manager::Create();
 	if (nullptr == m_pSound_Manager)
-		return E_FAIL;*/
+		return E_FAIL;
 
 	m_pPoolManager = CPoolManager::Create();
 	if (nullptr == m_pPoolManager)
@@ -88,7 +88,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pCollider_Manager->Reset_ColliderGroup(); // 마지막에 호출하라고함 (그룹에 넣다 뺏다 반복 하는 듯)
 #pragma endregion
 
-
+	m_pSound_Manager->Update();
 
 }
 
@@ -237,6 +237,14 @@ void CGameInstance::Out_CollisiomGroup(_uint eCollisionGroup, CGameObject* pGame
 	m_pCollider_Manager->Out_CollisiomGroup(eCollisionGroup, pGameObject);
 }
 
+void CGameInstance::Out_Collider_CollisiomGroup(_uint eCollisionGroup, class CCollider* pCollider)
+{
+	if (!m_pCollider_Manager)
+		return;
+
+	m_pCollider_Manager->Out_Collider_CollisiomGroup(eCollisionGroup, pCollider);
+}
+
 CGameObject* CGameInstance::Collision_Check_with_Group(_uint eGroup, CComponent* pCollider, CCollider_Manager::COLLISION_TYPE eType, _Out_ _float3* pOutDepth, _Out_ CCollider_Cube::COLLISION_DIR* pOutDir)
 {
 	if (pOutDepth) *pOutDepth = { 0.f, 0.f, 0.f };
@@ -315,11 +323,30 @@ _bool CGameInstance::Key_Down(int _Key)
 {
 	return m_pKey_Manager->Key_Down(_Key);
 }
-//void CGameInstance::Play_Sound(const char* _EventPath)
-//{
-//	m_pSound_Manager->PlayEvent(_EventPath);
-//}
 #pragma endregion
+
+
+#pragma region SOUND_MANAGER
+void CGameInstance::PlayBGM(const std::wstring& soundName)
+{
+	m_pSound_Manager->PlayBGM(soundName);
+}
+void CGameInstance::PlaySound(const std::wstring& soundName, float volume, _float3 pPos)
+{
+	m_pSound_Manager->PlaySound(soundName, volume, pPos);
+}
+
+void CGameInstance::StopAll()
+{
+	m_pSound_Manager->StopAll();
+}
+
+void CGameInstance::UpdateListener(_float3 pos, _float3 forward, _float3 up)
+{
+	m_pSound_Manager->UpdateListener(pos, forward, up);
+}
+#pragma endregion
+
 
 #pragma region POOL_MANAGER
 HRESULT CGameInstance::CreatePool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag, int count, void* pArg)
@@ -347,7 +374,7 @@ int CGameInstance::GetPoolCount(_wstring _tag)
 
 void CGameInstance::Release_Engine()
 {
-	//Safe_Release(m_pSound_Manager);
+	Safe_Release(m_pSound_Manager);
 
 	Safe_Release(m_pKey_Manager);
 
