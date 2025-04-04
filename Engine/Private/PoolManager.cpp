@@ -71,6 +71,8 @@ HRESULT CPoolManager::CreatePool(_uint iPrototypeLevelIndex, const _wstring& str
 
 	// Àç±Í.
 	CreatePool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag, --count, pArg);
+
+	return S_OK;
 }
 
 CGameObject* CPoolManager::PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag)
