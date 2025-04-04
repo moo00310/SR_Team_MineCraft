@@ -4,74 +4,133 @@ CSound_Manager::CSound_Manager()
 {
 }
 
-void CSound_Manager::Update()
-{
-    m_pStudioSystem->update();
-    m_pCoreSystem->update();
-    // ?úÏàúÏ§ëÏöî??
-}
-
-FMOD::Studio::EventInstance* CSound_Manager::PlayEvent(const char* _EventPath)
-{
-    FMOD::Studio::EventDescription* pEventDescription; // ?¥Î≤§?∏Ïùò ?ïÎ≥¥Î•??Ä?•Ìïò???¥Îûò??
-    FMOD_RESULT result = m_pStudioSystem->getEvent(_EventPath, &pEventDescription); // ?úÏä§?úÏúºÎ°?Î∂Ä???¥Î¶Ñ???µÌï¥ ?¥Î≤§?∏Ïùò ?ïÎ≥¥Î•?Î∞õÏïÑ?®Îã§.
-
-    FMOD::Studio::EventInstance* pEventInstance = nullptr;
-    pEventDescription->createInstance(&pEventInstance); // ?¥Î≤§???∏Ïä§?¥Ïä§ ?ùÏÑ±
-    result = pEventInstance->start();
-    pEventInstance->setCallback(AutoRelease, FMOD_STUDIO_EVENT_CALLBACK_STOPPED); // ?¥Î≤§?∏Í? ?ùÎÇòÎ©?AutoRelease?®ÏàòÎ•??µÌï¥ ?êÎèô?ºÎ°ú Î©îÎ™®Î¶¨Î? Î∞òÌôò?¥Ï???
-
-    m_pStudioSystem->update();
-    return pEventInstance;
-}
-
-FMOD::Studio::Bank* CSound_Manager::LoadBank(const char* _BankFilePath)
-{
-    FMOD::Studio::Bank* pBank = nullptr;
-    FMOD_RESULT result = m_pStudioSystem->loadBankFile(_BankFilePath, FMOD_STUDIO_LOAD_BANK_NORMAL, &pBank);
-    return pBank;
-}
-
-FMOD_RESULT F_CALLBACK AutoRelease(FMOD_STUDIO_EVENT_CALLBACK_TYPE type, FMOD_STUDIO_EVENTINSTANCE* eventInstance, void* parameters) // ?¨ÏÉù???ùÎÇú ?¥Î≤§???êÎèô Î∞òÌôò???ÑÌïú
-{
-    reinterpret_cast<FMOD::Studio::EventInstance*>(eventInstance)->release(); // FMOD ÏΩúÎ∞±?®Ïàò??C?Ä C++??Î≤îÏö©???¨Ïö©???òÍ∏∞ ?ÑÌï¥ Íµ¨Ï°∞Ï≤??¨Ïù∏?∞Î? Í∏∞Î≥∏ Îß§Í∞úÎ≥Ä?òÎ°ú ?°Ïùå.
-    //?¥ÎïåÎ¨∏Ïóê C++?êÏÑú??reinterpret_castÎ•??µÌï¥ ?¥Îûò???¨Ïù∏?∞Î°ú ?ïÎ????úÏºúÏ£ºÏñ¥?ºÌï®.
-    return FMOD_OK;
-}
-
-void CSound_Manager::Stop_All_Event()
-{
-    FMOD::Studio::Bus* m_pBus = nullptr;
-    m_pStudioSystem->getBus("bus:/", &m_pBus);
-    m_pBus->stopAllEvents(FMOD_STUDIO_STOP_IMMEDIATE);
-    Update();
-}
-
 HRESULT CSound_Manager::Initialize()
 {
-    FMOD::Studio::System::create(&m_pStudioSystem);
-    m_pStudioSystem->getCoreSystem(&m_pCoreSystem);
-    m_pStudioSystem->initialize(32, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, nullptr);
+    FMOD_RESULT result = FMOD::System_Create(&m_pCoreSystem);
+    if (result != FMOD_OK) return E_FAIL;
 
-    // Í∏∞Î≥∏?ÅÏúºÎ°???ÉÅ ?ÑÏöî??Bank??Î°úÎìú
-    LoadBank("../../FMOD/Build/Desktop/Master.bank");
-    LoadBank("../../FMOD/Build/Desktop/Master.strings.bank");
-    //LoadBank("./examples/Build/Desktop/Music.bank");
-    //LoadBank("./examples/Build/Desktop/SFX.bank");
+    result = m_pCoreSystem->init(MAX_SFX_CHANNEL, FMOD_INIT_NORMAL, nullptr);
+    if (result != FMOD_OK) return E_FAIL;
 
-    if (!m_pStudioSystem)
-        return E_FAIL;
+    Add_SoundResource();
 
     return S_OK;
 }
+
+void CSound_Manager::LoadSound(const std::wstring& soundName, const char* filePath, bool bLoop)
+{
+    if (!m_pCoreSystem)
+        return;
+
+    // ¿ÃπÃ µÓ∑œµ» ªÁøÓµÂ∏È ∏Æ≈œ
+    auto iter = m_SoundMap.find(soundName);
+    if (iter != m_SoundMap.end())
+        return;
+
+
+    FMOD_MODE mode = FMOD_DEFAULT;
+    if (bLoop)
+        mode |= FMOD_LOOP_NORMAL;
+    else
+        mode |= FMOD_LOOP_OFF;
+
+    mode |= FMOD_3D;
+
+    FMOD::Sound* pSound = nullptr;
+    if (m_pCoreSystem->createSound(filePath, mode, nullptr, &pSound) != FMOD_OK)
+    {
+        return;
+    }
+
+    // ∏ ø° ¿˙¿Â
+    m_SoundMap[soundName] = pSound;
+
+    return;
+}
+
+// πË∞Ê¿Ω ¿¸øÎ ¿Áª˝
+void CSound_Manager::PlayBGM(const std::wstring& soundName)
+{
+    FMOD::Sound* pSound = nullptr;
+    auto iter = m_SoundMap.find(soundName);
+    if (iter != m_SoundMap.end())
+        pSound = iter->second;
+
+    if (pSound == nullptr)
+        return;
+
+    m_pCoreSystem->playSound(pSound, nullptr, false, &m_pBGMChannel);
+}
+
+void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, const _float3& pPos)
+{
+    FMOD::Sound* pSound = nullptr;
+    auto iter = m_SoundMap.find(soundName);
+     if (iter != m_SoundMap.end())
+         pSound = iter->second;
+
+    if (!pSound || !m_pCoreSystem) return;
+
+    for (int i = 0; i < MAX_SFX_CHANNEL; ++i)
+    {
+        bool isPlaying = false;
+        if (m_pChannels[i])
+            m_pChannels[i]->isPlaying(&isPlaying);
+
+        if (!isPlaying)
+        {
+            m_pCoreSystem->playSound(pSound, nullptr, false, &m_pChannels[i]);
+            m_pChannels[i]->setVolume(volume);
+
+            FMOD_VECTOR pos = { pPos.x, pPos.y, pPos.z };
+            FMOD_VECTOR vel = { 0.0f, 0.0f, 0.0f };
+            m_pChannels[i]->set3DAttributes(&pos, &vel);
+
+            break;
+        }
+    }
+}
+
+void CSound_Manager::StopAll()
+{
+    for (int i = 0; i < MAX_SFX_CHANNEL; ++i)
+    {
+        if (m_pChannels[i])
+            m_pChannels[i]->stop();
+    }
+
+    m_pBGMChannel->stop();
+}
+
+void CSound_Manager::UpdateListener(const _float3& _pos, const _float3& _forward, const _float3& _up)
+{
+    FMOD_VECTOR pos = { _pos.x, _pos.y, _pos.z };
+    FMOD_VECTOR forward = { _forward.x, _forward.y, _forward.z };
+    FMOD_VECTOR up = { _up.x, _up.y, _up.z };
+
+    FMOD_VECTOR vel = { 0.0f, 0.0f, 0.0f };
+    m_pCoreSystem->set3DListenerAttributes(0, &pos, &vel, &forward, &up);
+}
+
+void CSound_Manager::Add_SoundResource()
+{
+    LoadSound(L"Player_Jump", "../../FMOD/Assets/Built_Fail.wav", false);
+}
+
+void CSound_Manager::Update()
+{
+    if (m_pCoreSystem)
+        m_pCoreSystem->update();
+}
+
 CSound_Manager* CSound_Manager::Create()
 {
-    CSound_Manager* pInstance = new CSound_Manager;
+    CSound_Manager* pInstance = new CSound_Manager();
 
     if (FAILED(pInstance->Initialize()))
     {
-        MSG_BOX("Failed to Created : CSoundManager");
-        Safe_Release(pInstance);
+        delete pInstance;
+        return nullptr;
     }
 
     return pInstance;
@@ -79,8 +138,19 @@ CSound_Manager* CSound_Manager::Create()
 
 void CSound_Manager::Free()
 {
-    __super::Free();
+    StopAll();
 
-    m_pStudioSystem->release();
-    m_pCoreSystem->release();
+    for (auto& soundPair : m_SoundMap)
+    {
+        if (soundPair.second)
+            soundPair.second->release();
+    }
+    m_SoundMap.clear();
+
+    if (m_pCoreSystem)
+    {
+        m_pCoreSystem->close();
+        m_pCoreSystem->release();
+        m_pCoreSystem = nullptr;
+    }
 }

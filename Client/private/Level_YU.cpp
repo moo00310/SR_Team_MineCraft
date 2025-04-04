@@ -95,6 +95,8 @@ HRESULT CLevel_YU::Initialize()
 
 	///////////////////////////////////////////////////////////
 
+	m_pGameInstance->PlaySound(L"Player_Jump");
+
 	return S_OK;
 }
 
