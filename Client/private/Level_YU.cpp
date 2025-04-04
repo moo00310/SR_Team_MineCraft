@@ -496,7 +496,4 @@ CLevel_YU* CLevel_YU::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 void CLevel_YU::Free()
 {
 	__super::Free();
-
-	CUI_Mgr::Get_Instance()->Destroy_Instance();
-
 }
