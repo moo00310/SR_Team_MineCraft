@@ -22,7 +22,6 @@ void CSound_Manager::LoadSound(const std::wstring& soundName, const char* filePa
     if (!m_pCoreSystem)
         return;
 
-    // 이미 등록된 사운드면 리턴
     auto iter = m_SoundMap.find(soundName);
     if (iter != m_SoundMap.end())
         return;
@@ -35,6 +34,7 @@ void CSound_Manager::LoadSound(const std::wstring& soundName, const char* filePa
         mode |= FMOD_LOOP_OFF;
 
     mode |= FMOD_3D;
+    mode |= FMOD_3D_LINEARROLLOFF;
 
     FMOD::Sound* pSound = nullptr;
     if (m_pCoreSystem->createSound(filePath, mode, nullptr, &pSound) != FMOD_OK)
@@ -42,7 +42,9 @@ void CSound_Manager::LoadSound(const std::wstring& soundName, const char* filePa
         return;
     }
 
-    // 맵에 저장
+    // 거리가 3 -> 25로 갈수록 작아짐 (아예 안나게 하는 건 아님)
+    pSound->set3DMinMaxDistance(3.0f, 25.0f);
+
     m_SoundMap[soundName] = pSound;
 
     return;
@@ -62,8 +64,18 @@ void CSound_Manager::PlayBGM(const std::wstring& soundName)
     m_pCoreSystem->playSound(pSound, nullptr, false, &m_pBGMChannel);
 }
 
-void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, const _float3& pPos)
+void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, _float3 pPos)
 {
+    const float fListenerCutoffDistance = 25.0f; 
+
+    // 너무 멀어지면 소리가 깨져서 일정 거리이면 소리 아예 play 안하도록
+    _float3 listenerPos = m_vListenerPos; 
+    _float3 Diff = pPos - listenerPos;
+    float fDistance = D3DXVec3Length(&Diff);
+    if (fDistance > fListenerCutoffDistance)
+        return; 
+
+
     FMOD::Sound* pSound = nullptr;
     auto iter = m_SoundMap.find(soundName);
      if (iter != m_SoundMap.end())
@@ -102,7 +114,7 @@ void CSound_Manager::StopAll()
     m_pBGMChannel->stop();
 }
 
-void CSound_Manager::UpdateListener(const _float3& _pos, const _float3& _forward, const _float3& _up)
+void CSound_Manager::UpdateListener(_float3 _pos, _float3 _forward, _float3 _up)
 {
     FMOD_VECTOR pos = { _pos.x, _pos.y, _pos.z };
     FMOD_VECTOR forward = { _forward.x, _forward.y, _forward.z };
@@ -110,6 +122,7 @@ void CSound_Manager::UpdateListener(const _float3& _pos, const _float3& _forward
 
     FMOD_VECTOR vel = { 0.0f, 0.0f, 0.0f };
     m_pCoreSystem->set3DListenerAttributes(0, &pos, &vel, &forward, &up);
+    m_vListenerPos = _pos;
 }
 
 void CSound_Manager::Add_SoundResource()

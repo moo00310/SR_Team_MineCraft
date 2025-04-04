@@ -89,10 +89,9 @@ public:
 
 #pragma region SOUND_MANAGER
 	void PlayBGM(const std::wstring& soundName);
-	void PlaySound(const std::wstring& soundName, float volume = 1.0f, const _float3& pPos = _float3(0.f, 0.f, 0.f));
+	void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f));
 	void StopAll();
-	void SoundMGRUpdate();
-	void UpdateListener(const _float3& pos, const _float3& forward, const _float3& up);
+	void UpdateListener(_float3 pos, _float3 forward, _float3 up);
 #pragma endregion
 
 

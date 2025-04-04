@@ -88,7 +88,7 @@ void CGameInstance::Update_Engine(_float fTimeDelta)
 	m_pCollider_Manager->Reset_ColliderGroup(); // 마지막에 호출하라고함 (그룹에 넣다 뺏다 반복 하는 듯)
 #pragma endregion
 
-
+	m_pSound_Manager->Update();
 
 }
 
@@ -323,7 +323,7 @@ void CGameInstance::PlayBGM(const std::wstring& soundName)
 {
 	m_pSound_Manager->PlayBGM(soundName);
 }
-void CGameInstance::PlaySound(const std::wstring& soundName, float volume, const _float3& pPos)
+void CGameInstance::PlaySound(const std::wstring& soundName, float volume, _float3 pPos)
 {
 	m_pSound_Manager->PlaySound(soundName, volume, pPos);
 }
@@ -332,11 +332,8 @@ void CGameInstance::StopAll()
 {
 	m_pSound_Manager->StopAll();
 }
-void CGameInstance::SoundMGRUpdate()
-{
-	m_pSound_Manager->Update();
-}
-void CGameInstance::UpdateListener(const _float3& pos, const _float3& forward, const _float3& up)
+
+void CGameInstance::UpdateListener(_float3 pos, _float3 forward, _float3 up)
 {
 	m_pSound_Manager->UpdateListener(pos, forward, up);
 }
