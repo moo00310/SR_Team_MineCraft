@@ -86,8 +86,11 @@ void CItemCube::Update(_float fTimeDelta)
     }
     else if (fDist < 5.f)
     {
+        if (!m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.f))
+            return;
+
         list<CCollider*> Colliders;
-        Colliders = m_pTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
+        Colliders = m_pTerrain->Active_Current_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
 
         //플레이어와 거리가 가까우면 중력적용
         m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);

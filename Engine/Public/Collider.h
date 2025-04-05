@@ -31,6 +31,7 @@ public:
 
 	virtual _bool Collision_Check(class CCollider_Cube* pTarget, _Out_ _float3* pOutDistance = nullptr, _Out_ CCollider::COLLISION_DIR* pOutDir = nullptr, _Out_ _float3* pOutNormal = nullptr) = 0;
 	class CGameObject* Get_Owner() { return m_pOwner; }
+	class CTransform* Get_Transform() { return m_pTransformCom; }
 
 protected:
 	LPDIRECT3DVERTEXBUFFER9 m_pVB = { nullptr };

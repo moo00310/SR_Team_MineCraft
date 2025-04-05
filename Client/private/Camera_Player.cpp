@@ -124,7 +124,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 		_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
 		_float3 vSearchPos = vStevePos + vLook * 2.f;
 
-        m_pTerrain->Active_Near_Chunk_Colliders(vSearchPos, 10.f);
+        Colliders = m_pTerrain->Active_Near_Chunk_Colliders(vSearchPos, 8.f);
     }
 
     if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && !g_bMainInventoryOpen)
@@ -260,10 +260,10 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 //콜라이더 큐브의 위치 + 방향을 계산해서
                 //Create_Cube 함수 실행
 
-                _float3 vPos = pCollider_Cube->Get_Offset() + pBreakableCube->GetPos();
+                _float3 vCreatePos = pCollider_Cube->Get_Offset() + pBreakableCube->GetPos();
 
                 CMCTerrain* pMCTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")));
-                pMCTerrain->Create_Cube(eCurItem, vPos, vDir);
+                pMCTerrain->Create_Cube(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION), eCurItem, vCreatePos, vDir);
 
                 //이놈이 실행하는게아니라
                 //활성화 된 청크에 있는 Breakable큐브 중 eHandBlock과 같은 타입의 큐브에서 Create 큐브를 호출해야함
@@ -295,6 +295,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         }
     }
 
+    //충돌체 해제
     for (auto pCollider : Colliders)
     {
         m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
@@ -347,6 +348,8 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     // === 카메라 위치 설정 ===
     m_pTransformCom->Set_State(CTransform::STATE_POSITION, playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f));
 
+	list<CCollider*> Colliders;
+
     // === 카메라 모드에 따라 다른 처리 ===
     if (m_eCameraMode == E_CAMERA_MODE::FPS)
     {
@@ -354,6 +357,11 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     }
     else if (m_eCameraMode == E_CAMERA_MODE::TPS)
     {
+        //충돌체 추가
+        _float3 vStevePos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
+        _float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+        Colliders = m_pTerrain->Active_Near_Chunk_Colliders(vStevePos, m_fSpringArmLength * m_fSpringArmLength);
+
         // === 3인칭 스프링 암 거리 조절 ===
         _float fTargetDist{};
         CGameObject* pGameObject = m_pGameInstance->Ray_Cast_InstancedObjects(m_pTransformCom->Get_State(CTransform::STATE_POSITION), -vLookDir, m_fSpringArmLength, COLLISION_BLOCK, &fTargetDist);
@@ -375,6 +383,13 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
         // === 카메라 위치 바로 적용 ===
         m_pTransformCom->Set_State(CTransform::STATE_POSITION, vFinalCameraPos);
         m_pTransformCom->LookAt(playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f));
+
+        //충돌체 해제
+            //충돌체 해제
+        for (auto pCollider : Colliders)
+        {
+            m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
+        }
     }
 }
 

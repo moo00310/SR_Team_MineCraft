@@ -1,5 +1,7 @@
 ﻿#include "Creeper.h"
 #include "GameInstance.h"
+#include "MCTerrain.h"
+#include "BreakableRect.h"
 
 CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CMonster{ pGraphic_Device }
@@ -347,6 +349,34 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
         //m_pTargetPawn->Set_Hp(95);
+
+        //주변 큐브 콜라이더 가져와서
+		list<CCollider*> Colliders;
+        CMCTerrain* pTerrain{ static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain"))) };
+        Colliders = pTerrain->Active_Near_Chunk_Colliders(
+			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f },
+			10.f
+		);
+        //파괴
+		for (auto pCollider : Colliders)
+		{
+            if (CBreakableCube * pBreakableCube{ dynamic_cast<CBreakableCube*>(pCollider->Get_Owner()) })
+            {
+				CCollider_Cube* pCubeCollider{ dynamic_cast<CCollider_Cube*>(pCollider) };
+
+				pBreakableCube->Delete_Cube(pCubeCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCubeCollider->Get_Offset());
+            }
+			else if (CBreakableRect * pBreakableRect{ dynamic_cast<CBreakableRect*>(pCollider->Get_Owner()) })
+			{
+                CCollider_Cube* pCubeCollider{ dynamic_cast<CCollider_Cube*>(pCollider) };
+				pBreakableRect->Delete_Cube(pCubeCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCubeCollider->Get_Offset());
+			}
+		}
+        //주변 큐브 콜라이더 해제
+		for (auto pCollider : Colliders)
+		{
+			m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
+		}
     }
 
 }

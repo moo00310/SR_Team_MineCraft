@@ -10,6 +10,7 @@ class CVIBuffer_Rect;
 class CShader;
 END
 
+BEGIN(Client)
 class CItemRect : public CCube
 {
 public:
@@ -48,6 +49,8 @@ protected:
 	ITEMNAME m_eItemName;
 
 	CTransform* m_pPlayerTransformCom{ nullptr };
+	class  CMCTerrain* m_pTerrain{ nullptr };
+
 private:
 	_float Compute_PlayerDistance();
 public:
@@ -55,4 +58,4 @@ public:
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };
-
+END
