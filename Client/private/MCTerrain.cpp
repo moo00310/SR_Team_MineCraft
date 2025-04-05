@@ -440,7 +440,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
                     int randWood = rand() % 3 + 4;
                     int ranLeaf = rand() % 8 + 4;
 
-                    CTree::DESC desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.5, eblockData.fPosition.z),0 };
+                    CTree::DESC desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.5f, eblockData.fPosition.z), 0};
                     vecTreeDesc.push_back(desc);
                 }
                 else if (1 <= percent && percent < 5) {
@@ -629,7 +629,7 @@ const vector<_float3>& CMCTerrain::Get_SpwanAble()
 {
     // 플레이어 위치 가져오기
     auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
-    if (!pSteve) return vector<_float3>();
+    if (!pSteve) return m_vecMerged;
     _float3 playerPos = pSteve->GetPos();
 
     int x = static_cast<int>(playerPos.x) / 16;

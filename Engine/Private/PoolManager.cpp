@@ -120,13 +120,13 @@ void CPoolManager::PopPool(CGameObject* _object)
 	_object->SetActive(false);
 }
 
-int CPoolManager::GetPoolCount(_wstring _tag)
+_uint CPoolManager::GetPoolCount(_wstring _tag)
 {
 	auto poolObject = m_mapPoolObjects->find(_tag);
 	if (m_mapPoolObjects->end() != poolObject)
 	{
 		// 키가 존재함.
-		return poolObject->second.size();
+		return static_cast<_uint>(poolObject->second.size());
 	}
 
 	// 키가 없으면 0 리턴.

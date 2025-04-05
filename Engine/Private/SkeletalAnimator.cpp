@@ -70,8 +70,8 @@ void CSkeletalAnimator::IkLookAt(float fTimeDelta, int boneIndex, int targetInex
     float fYawDelta = fCamYaw - fSpineYaw;
 
     // -PI ~ +PI 사이로 정규화
-    while (fYawDelta > PI) fYawDelta -= 2 * PI;
-    while (fYawDelta < -PI) fYawDelta += 2 * PI;
+    while (fYawDelta > PI) fYawDelta -= static_cast < _float>(2 * PI);
+    while (fYawDelta < -PI) fYawDelta += static_cast<_float>(2 * PI);
 
     float fThreshold = D3DXToRadian(25.f); 
 
@@ -154,7 +154,7 @@ HRESULT CSkeletalAnimator::Update_Animetion(_int _type, float fTimeDelta, int bo
     KEYFREAME key1{}, key2{};
     bool found = false;
 
-    for (size_t i = 0; i < m_Animations[_type].size() - 1; ++i)
+    for (_uint i = 0; i < m_Animations[_type].size() - 1; ++i)
     {
         if (fElapsedTime[_type] >= m_Animations[_type][i].fTime && fElapsedTime[_type] <= m_Animations[_type][i + 1].fTime)
         {

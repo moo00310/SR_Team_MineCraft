@@ -314,6 +314,8 @@ HRESULT CSlotInfo::RenderItemTexture(CTexture* pTextureCom, _int _TextureNum)
 
     __super::End();
     Reset_RenderState();
+
+	return S_OK;
 }
 
 HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNum, _float _fX, _float _fY, _float _fsizeX, _float _fsizeY)

@@ -1,4 +1,5 @@
-#include "Wood.h"
+﻿#include "Wood.h"
+
 
 CWood::CWood(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CBreakableCube(pGraphic_Device)

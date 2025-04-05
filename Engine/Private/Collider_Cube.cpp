@@ -189,6 +189,9 @@ HRESULT CCollider_Cube::Render_Collider(_bool isHit)
 
 bool CCollider_Cube::Collision_Check(CCollider_Cube* pTarget, _Out_ _float3* pOutDepth, _Out_ CCollider::COLLISION_DIR* pOutDir, _Out_ _float3* pOutNormal)
 {
+	if (pOutNormal)
+		*pOutNormal = { 0.f, 0.f, 0.f };
+
 	if (pOutDepth)
 		*pOutDepth = { 0.f, 0.f, 0.f };
 

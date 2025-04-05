@@ -46,7 +46,7 @@ protected:
 	_uint m_iIndicesByte = {};
 	D3DFORMAT m_eIndexFormat = {};
 
-	bool m_bColliderActive;
+	_bool m_bColliderActive{ false };
 
 protected:
 

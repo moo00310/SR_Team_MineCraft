@@ -189,7 +189,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
 
                 // 꺠지는 블럭 hp 값 넘겨줌.
-                m_DestroyCube->SetTextureIndex(pBreakableCube->GetHP());
+                m_DestroyCube->SetTextureIndex(static_cast<_int>(pBreakableCube->GetHP()));
 
                 return;
             }

@@ -1,4 +1,4 @@
-#include "Level_YU.h"
+﻿#include "Level_YU.h"
 #include "GameInstance.h"
 #include "MapTool.h"
 #include "Camera_Player.h"
@@ -6,7 +6,6 @@
 #include "SlotInfo.h"
 #include "UI_Mgr.h"
 #include "Pawn.h"
-
 
 CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }

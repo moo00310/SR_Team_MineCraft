@@ -1,4 +1,4 @@
-#include "GrassDirt.h"
+﻿#include "GrassDirt.h"
 #include "GameInstance.h"
 
 CGrassDirt::CGrassDirt(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -23,7 +23,7 @@ HRESULT CGrassDirt::Initialize(void* pArg)
 
 
     m_itemName = ITEMNAME_GRASSDIRT;
-    m_fHardness = 0.6;
+    m_fHardness = 0.6f;
 
 
     return S_OK;

@@ -41,7 +41,7 @@ void CUI_Mgr::Synchronize_Slots()
 
 void CUI_Mgr::SetHP()
 {
-	_int SteveHp = pSteve->Get_Hp();
+	_int SteveHp = static_cast<_int>(pSteve->Get_Hp());
 	
 	if (!m_vecPlayerHPlist.empty())
 	{

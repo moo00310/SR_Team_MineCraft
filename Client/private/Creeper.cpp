@@ -217,7 +217,7 @@ HRESULT CCreeper::Ready_Animation()
     mat2.Scaling(1.12f, 1.04f, 1.04f); // 성장 1
 
     mat3 = {};
-    mat3.Scaling(1.10, 1.02f, 1.02f);
+    mat3.Scaling(1.10f, 1.02f, 1.02f);
 
     Matrix mat4 = {};
     mat4.Scaling(1.24f, 1.08f, 1.08f);  // 성장 2
