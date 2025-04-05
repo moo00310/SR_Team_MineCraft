@@ -54,23 +54,24 @@ void CGameMgr::Spwan_Monster()
 	// 몬스터 스폰가능한 위치 들고옴
 	m_SpawnPos = m_pTerrain->Get_SpwanAble();
 
-	//for (_uint i = 0; i < 1; i++)
-	//{
-	//	CGameObject* ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-	//		LEVEL_YU, TEXT("Layer_Monster"));
+	/*for (_uint i = 0; i < 1; i++)
+	{
+		int Random = rand() % m_SpawnPos.size();
 
-	//	static_cast<CMonster*>(ptemp)->Reset_Monster();
-	//	static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[9]));
-	//}
+		CGameObject* ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+			LEVEL_YU, TEXT("Layer_Monster"));
+
+		static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random]));
+	}*/
 
 	for (_uint i = 0; i < 1; i++)
 	{
+		int Random = rand() % m_SpawnPos.size();
+
 		CGameObject* ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
 			LEVEL_YU, TEXT("Layer_Monster"));
 
-		static_cast<CMonster*>(ptemp)->Reset_Monster();
-		static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[11]));
-		
+		static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random]));
 	}
 }
 

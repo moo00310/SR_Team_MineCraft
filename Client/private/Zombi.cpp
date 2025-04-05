@@ -149,7 +149,7 @@ HRESULT CZombi::Ready_Animation()
 /*----------
 * INIT 모션
 ------------*/
-    Matrix mat = {};
+     Matrix mat = {};
     KEYFREAME Init = { 0.f, mat };
     m_skelAnime->Add_Animation(ANIM_type::INIT, Init);
 
@@ -243,10 +243,7 @@ void CZombi::Update_State(_float fTimeDelta)
 
 void CZombi::Motion_Idle(_float fTimeDelta)
 {
-    if (m_skelAnime->is_AnimtionEND(INIT))
-    {
-        m_eCurAnim = IDLE;
-    }
+    m_skelAnime->Update_Animetion(INIT, fTimeDelta, 0);
 }
 
 void CZombi::Motion_Walk(_float fTimeDelta)
@@ -334,20 +331,10 @@ void CZombi::FrameCallback(int animType, int frame)
 
     // 애니메이션 타입 ANIM_TYPE 
 	// 애니메이션 타입 + 애니메이션 프레임에 맞는 행동을 하게끔 구현하면 됨
-    // 공격 마지막 프레임(2) 은 버그있음 넉백때문에 안들어감
+    // 공격 마지막 프레임(2) 은 버그있음 넉백때문에 마지막프레임에 안들어감
 
     if (animType == Attack && frame == 1)
     {
 		cout << "공격" << endl;
     }
-}
-
-void CZombi::Reset_Monster()
-{
-    m_eCurAnim = IDLE;
-    m_isFind = false;
-    m_bGetHit = false;
-    m_iGetHitFrame = 0;
-    m_Hp = m_MaxHp;
-    m_eColor = RENDERORIGIN;
 }

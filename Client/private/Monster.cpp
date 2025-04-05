@@ -199,6 +199,18 @@ HRESULT CMonster::Ready_Components()
     return S_OK;
 }
 
+void CMonster::OnPushPool()
+{
+    m_eCurAnim = IDLE;
+    m_isFind = false;
+    m_bGetHit = false;
+    m_iGetHitFrame = 0;
+    m_Hp = m_MaxHp;
+    m_eColor = RENDERORIGIN;
+    isDead = false;
+    m_skelAnime->InitBone();
+}
+
 void CMonster::Free()
 {
     __super::Free();
