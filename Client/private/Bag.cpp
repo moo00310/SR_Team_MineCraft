@@ -73,6 +73,11 @@ HRESULT CBag::Render()
     return S_OK;
 }
 
+CTransform* CBag::GetTransform() const
+{
+    return m_pTransformCom;
+}
+
 HRESULT CBag::Ready_Components()
 {
     if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Inventory"), TEXT("Com_Texture"),

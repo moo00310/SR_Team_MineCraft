@@ -28,12 +28,17 @@ public:
 	virtual void OnPushPool() override;
 	void SetTransform(_float2 _position);
 	void SetDirection(_float2 _direction);
+	CTransform* GetTransform() const;
+	void SetTargetPosition(_float2 _target);
 
 private:
 	HRESULT Ready_Components();
 
-	// Ω∫≈©∏∞ ªÛ πÊ«‚ ∫§≈Õ.
+	// UI ¡¬«•∞Ë ±‚¡ÿ πÊ«‚ ∫§≈Õ.
 	_float2 m_vDirection = {0.f, 0.f};
+
+	// µµ¬¯ ∫§≈Õ.
+	_float2 m_vTargetPosition;
 
 private:
 	CTransform* m_pTransformCom = { nullptr };
