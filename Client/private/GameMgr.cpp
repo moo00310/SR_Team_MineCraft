@@ -18,6 +18,8 @@ HRESULT CGameMgr::Initialize_Prototype()
 
 HRESULT CGameMgr::Initialize(void* pArg)
 {
+	m_fSpwanCoolTime = 0.f;
+
 	m_pTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")));
 	m_pSun = static_cast<CSun*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Sun")));
 
@@ -32,47 +34,57 @@ HRESULT CGameMgr::Initialize(void* pArg)
 
 void CGameMgr::Priority_Update(_float fTimeDelta)
 {
+	// 스폰 쿨 10초가 돌았고 현재 밤이며 활성화된 몬스터 개수가 20보다 작으면 몬스터 스폰
+	// 20 마리 유지
+	m_fSpwanCoolTime += fTimeDelta;
+
+	if (m_fSpwanCoolTime >= 10.f && !m_pSun->Get_Sun())
+	{
+		int spawnCount = 20 - m_pGameInstance->GetActiveCount(TEXT("Layer_Monster"));
+		if (spawnCount == 0) return;
+
+		Spwan_Monster(spawnCount);
+		m_fSpwanCoolTime = 0.f;
+	}
+
 }
 
 void CGameMgr::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down('P'))
-	{
-		Spwan_Monster();
-	}
-
+	
 }
 
 void CGameMgr::Late_Update(_float fTimeDelta)
 {
 
-
 }
 
-void CGameMgr::Spwan_Monster()
+void CGameMgr::Spwan_Monster(int count)
 {
 	// 몬스터 스폰가능한 위치 들고옴
 	m_SpawnPos = m_pTerrain->Get_SpwanAble();
 
-	/*for (_uint i = 0; i < 1; i++)
+	for (int i = 0; i < count; i++)
 	{
-		int Random = rand() % m_SpawnPos.size();
+		int Random_pos = rand() % m_SpawnPos.size();
+		int Random_type = rand() % 2;
+		CGameObject* ptemp = nullptr;
 
-		CGameObject* ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
-			LEVEL_YU, TEXT("Layer_Monster"));
+		if (Random_type == 0)
+		{
+			ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+				LEVEL_YU, TEXT("Layer_Monster"));
+		}
+		else
+		{
+			ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+				LEVEL_YU, TEXT("Layer_Monster"));
+		}
 
-		static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random]));
-	}*/
-
-	for (_uint i = 0; i < 1; i++)
-	{
-		int Random = rand() % m_SpawnPos.size();
-
-		CGameObject* ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
-			LEVEL_YU, TEXT("Layer_Monster"));
-
-		static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random]));
+		if (ptemp == nullptr) return;
+		static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
 	}
+
 }
 
 CGameMgr* CGameMgr::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

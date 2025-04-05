@@ -362,13 +362,17 @@ CGameObject* CGameInstance::PushPool(_uint iPrototypeLevelIndex, const _wstring&
 {
 	return m_pPoolManager->PushPool(iPrototypeLevelIndex, strPrototypeTag, iLevelIndex, strLayerTag);
 }
-void CGameInstance::PopPool(CGameObject* _object)
+void CGameInstance::PopPool(CGameObject* _object, const _wstring& strPrototypeTag)
 {
-	m_pPoolManager->PopPool(_object);
+	m_pPoolManager->PopPool(_object, strPrototypeTag);
 }
 int CGameInstance::GetPoolCount(_wstring _tag)
 {
 	return m_pPoolManager->GetPoolCount(_tag);
+}
+int CGameInstance::GetActiveCount(const _wstring& strPrototypeTag)
+{
+	return m_pPoolManager->GetActiveCount(strPrototypeTag);
 }
 #pragma endregion
 

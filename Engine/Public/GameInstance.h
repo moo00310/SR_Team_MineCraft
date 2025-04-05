@@ -107,10 +107,13 @@ public:
 	CGameObject* PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
 
 	// 풀링으로 돌아감.
-	void PopPool(CGameObject* _object);
+	void PopPool(CGameObject* _object, const _wstring& strPrototypeTag);
 
 	// 해당 프로토타입 태그 풀링 객체 갯수 반환.
 	int GetPoolCount(_wstring _tag);
+
+	// 현재 태그 액티브 된 오브젝트 개수 반환.
+	int GetActiveCount(const _wstring& strPrototypeTag);
 	
 #pragma endregion
 

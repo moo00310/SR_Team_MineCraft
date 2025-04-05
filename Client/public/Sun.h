@@ -28,6 +28,7 @@ public:
 	void Set_ChunkCount(int _cnt) { m_iChunkCnt = _cnt; }
 
 	float GetBight() const;
+	bool Get_Sun() const { return m_isSun; }
 
 private:
 	CTexture* m_pTextureCom = { nullptr };

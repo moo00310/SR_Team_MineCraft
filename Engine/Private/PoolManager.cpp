@@ -95,7 +95,8 @@ CGameObject* CPoolManager::PushPool(_uint iPrototypeLevelIndex, const _wstring& 
 		{			
 			// init 해주고 활성화.
 			object->OnPushPool();
-			object->SetActive(true);					
+			object->SetActive(true);	
+			m_mapActiveCount[strLayerTag]++;
 
 			// 이 새기 반환함.
 			return object;
@@ -115,9 +116,10 @@ CGameObject* CPoolManager::PushPool(_uint iPrototypeLevelIndex, const _wstring& 
 		strLayerTag);
 }
 
-void CPoolManager::PopPool(CGameObject* _object)
+void CPoolManager::PopPool(CGameObject* _object, const _wstring& strPrototypeTag)
 {
 	_object->SetActive(false);
+	m_mapActiveCount[strPrototypeTag]--;
 }
 
 int CPoolManager::GetPoolCount(_wstring _tag)
