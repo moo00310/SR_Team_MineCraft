@@ -89,12 +89,6 @@ HRESULT CCreeper::Render()
     return S_OK;
 }
 
-void CCreeper::OnPushPool()
-{
-    // 푸시 할 때마다 호출
-
-}
-
 HRESULT CCreeper::Ready_Components()
 {
 #pragma region 외형
@@ -396,7 +390,7 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
     {
         //m_isDestroyed = true;
         m_pGameInstance->PlaySound(TEXT("Creeper_Death"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-        SetActive(false);
+        m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
     }
 }
 
@@ -438,15 +432,5 @@ void CCreeper::Free()
 void CCreeper::FrameCallback(int animType, int frame)
 {
     //std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
-}
-
-void CCreeper::Reset_Monster()
-{
-    m_eCurAnim = IDLE;
-    m_isFind = false;
-    m_bGetHit = false;
-    m_iGetHitFrame = 0;
-    m_Hp = m_MaxHp;
-    m_eColor = RENDERORIGIN;
 }
 

@@ -25,7 +25,7 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 
 private:
-	void Spwan_Monster();
+	void Spwan_Monster(int count);
 
 private:
 	CMCTerrain* m_pTerrain = { nullptr };
@@ -34,6 +34,8 @@ private:
 private:
 	vector<_float3> m_SpawnPos;
 	_float m_fSunAngle = {};
+	int m_iMonsterCount = 0;
+	_float m_fSpwanCoolTime = {};
 
 public:
 	static CGameMgr* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

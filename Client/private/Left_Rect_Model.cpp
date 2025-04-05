@@ -23,7 +23,6 @@ HRESULT CLeft_Rect_Model::Initialize(void* pArg)
 	return S_OK;
 }
 
-
 void CLeft_Rect_Model::Priority_Update(_float fTimeDelta)
 {
 	KeyInput();
@@ -42,6 +41,7 @@ void CLeft_Rect_Model::Late_Update(_float fTimeDelta)
 		m_RederID = 2;
 	else
 		m_RederID = 4;
+
 }
 
 HRESULT CLeft_Rect_Model::Render()
@@ -203,13 +203,6 @@ void CLeft_Rect_Model::Motion_Walk(_float fTimeDelta)
 
 void CLeft_Rect_Model::KeyInput()
 {
-
-	if (m_pGameInstance->Key_Down(VK_RBUTTON))
-	{
-		m_eCurAnim = SWING;
-		return;
-	}
-
 	if (m_pGameInstance->Key_Pressing('W') ||
 		m_pGameInstance->Key_Pressing('A') ||
 		m_pGameInstance->Key_Pressing('S') ||

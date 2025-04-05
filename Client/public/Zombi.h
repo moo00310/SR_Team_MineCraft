@@ -45,9 +45,6 @@ private:
 	void Motion_Attack(_float fTimeDelta) override;
 	void Motion_Dead(_float fTimeDelta) override;
 	void Turn(_float fTimeDelta) override;	
-	
-private:
-	void Reset_Monster() override;
 
 public:
 	static CZombi* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

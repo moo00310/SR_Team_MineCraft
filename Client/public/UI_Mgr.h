@@ -45,6 +45,7 @@ public:
 	void ItemCount_Update(ITEMNAME _ItemNamem, _int AddCount);
 
 	ITEMNAME GetItemTypeName();
+	ITEMNAME GetItemTypeName_Left();
 
 public:
 	CSlotInfo*						Get_Item(int slotIndex);

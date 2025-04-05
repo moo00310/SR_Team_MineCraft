@@ -32,8 +32,6 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-	virtual void OnPushPool() override;
-
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone() override;
@@ -48,7 +46,6 @@ private:
 	void Turn(_float fTimeDelta) override;	
 
 private:
-	void Reset_Monster() override;
 	void FrameCallback(int animType, int frame) override;
 
 private:

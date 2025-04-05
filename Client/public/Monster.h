@@ -32,7 +32,6 @@ public:
 	void  Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	float Comput_Distance();
 	void Knock_back(const _float3& vforce) override;
-	virtual void Reset_Monster() =0;
 
 //BT¿ë °Ù¼Â ÇÔ¼ö
 public:
@@ -53,9 +52,6 @@ protected:
 	_bool m_isFind = { false };
 
 protected:
-
-
-protected:
 	HRESULT Ready_BehaviorTree();
 
 protected:
@@ -70,6 +66,8 @@ protected:
 	virtual void Motion_Attack(_float fTimeDelta) = 0;
 	virtual void Motion_Dead(_float fTimeDelta) = 0;
 	virtual void Turn(_float fTimeDelta) = 0;
+protected:
+	void OnPushPool() override;
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;

@@ -31,11 +31,13 @@ private:
 
 private:
 	void Chage_RightHand();
+	void Chage_LeftHand();
 	void Select_Render_Texture(ITEMNAME name);
 	void Change_Matrix(ITEMNAME name);
 	void Render_Arm();
 	void Render_Rect();
 	void Render_Cube();
+	void Render_Left_Rect();
 
 public:
 	static CRight_hand* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

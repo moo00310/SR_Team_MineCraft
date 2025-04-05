@@ -22,10 +22,14 @@ public:
 	CGameObject* PushPool(_uint iPrototypeLevelIndex, const _wstring& strPrototypeTag, _uint iLevelIndex, const _wstring& strLayerTag);
 
 	// 해당 오브젝트 풀매니저로 반환.
-	void PopPool(CGameObject* _object);
+	void PopPool(CGameObject* _object, const _wstring& strPrototypeTag);
 
 	// 해당 프로토타입 태그 풀링 갯수 반환.
 	_uint GetPoolCount(_wstring _tag);
+
+	// 현재 활성화 된 몬스터 갯수 반환.
+	int GetActiveCount(const _wstring& strPrototypeTag) 
+	{ return m_mapActiveCount[strPrototypeTag]; }
 
 	virtual void Free() override;
 
@@ -34,6 +38,7 @@ private:
 	
 	// 풀 시킨 객체들.
 	unordered_map<_wstring, list<CGameObject*>>* m_mapPoolObjects = {nullptr};
+	unordered_map <_wstring, int> m_mapActiveCount;
 };
 
 END
