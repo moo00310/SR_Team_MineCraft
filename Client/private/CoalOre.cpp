@@ -1,4 +1,4 @@
-#include "CoalOre.h"
+﻿#include "CoalOre.h"
 #include "GameInstance.h"
 
 CCoalOre::CCoalOre(LPDIRECT3DDEVICE9 pGraphic_Device)

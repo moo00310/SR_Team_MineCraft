@@ -245,6 +245,8 @@ HRESULT CLevel_HERO::Ready_Laye_Zombi(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_HERO, TEXT("Prototype_GameObject_Zombi"),
 		LEVEL_HERO, strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CLevel_HERO::Ready_Laye_Particle(const _wstring& strLayerTag)

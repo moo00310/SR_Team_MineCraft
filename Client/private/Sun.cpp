@@ -1,4 +1,4 @@
-#include "Sun.h"
+﻿#include "Sun.h"
 #include "BreakableCube.h"
 #include "BreakableRect.h"
 #include "Tree.h"
@@ -29,7 +29,7 @@ HRESULT CSun::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_pTransformCom->Scaling(0.4, 0.4, 0.4);
+	m_pTransformCom->Scaling(0.4f, 0.4f, 0.4f);
 	return S_OK;
 }
 

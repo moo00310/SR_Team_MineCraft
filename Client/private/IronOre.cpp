@@ -1,4 +1,4 @@
-#include "IronOre.h"
+﻿#include "IronOre.h"
 #include "GameInstance.h"
 
 CIronOre::CIronOre(LPDIRECT3DDEVICE9 pGraphic_Device)

@@ -58,11 +58,11 @@ protected:
 	CSkeletalAnimator* m_skelAnime = { nullptr };
 	vector<CVIBuffer_Anim*> m_pVIBufferComs;
 	CShader* m_pShaderCom = { nullptr };
+	class CMCTerrain* m_pTerrain = { nullptr };
 
 protected:
 	CCollider_Cube* m_pCollider_CubeCom = { nullptr };
 	CRigidbody* m_pRigidbodyCom = { nullptr };
-
 protected:
 	virtual HRESULT Ready_Components();
 	virtual HRESULT Ready_Bone() = 0;

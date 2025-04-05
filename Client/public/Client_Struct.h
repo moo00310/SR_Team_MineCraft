@@ -5,7 +5,7 @@ namespace Client
 {
 	typedef struct tagBlockDesc
 	{
-		BLOCKTYPE eBlockType;
-		_float3 fPosition;
+		BLOCKTYPE eBlockType{ BLOCKTYPE::BLOCKTYPE_END };
+		_float3 fPosition{ 0.f, 0.f, 0.f };
 	}BLOCKDESC;
 }
