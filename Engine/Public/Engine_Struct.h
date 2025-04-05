@@ -161,7 +161,7 @@ namespace Engine
 #pragma region Anime_Keyfream
 	struct KEYFREAME
 	{
-		float fTime;
+		float fTime{0.f};
 		D3DXMATRIX matTransform;
 	};
 #pragma endregion

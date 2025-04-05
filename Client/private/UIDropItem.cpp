@@ -49,6 +49,15 @@ void CUIDropItem::Update(_float fTimeDelta)
 {
 	_float3 direction = { m_vDirection.x, m_vDirection.y, 0.f};
 	m_pTransformCom->Go_Direction(direction, fTimeDelta);
+
+	_float2 distancePosition = m_vTargetPosition - (_float2)m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	float distance = D3DXVec2Length(&distancePosition);
+
+	if (distance < 5.f)
+	{
+		SetActive(false);
+		return;
+	}
 }
 
 void CUIDropItem::Late_Update(_float fTimeDelta)
@@ -132,12 +141,24 @@ void CUIDropItem::SetTransform(_float2 _position)
 
 void CUIDropItem::SetDirection(_float2 _direction)
 {
+	D3DXVec2Normalize(&_direction, &_direction);
+
 	m_vDirection = _direction;
+}
+
+CTransform* CUIDropItem::GetTransform() const
+{
+	return m_pTransformCom;
+}
+
+void CUIDropItem::SetTargetPosition(_float2 _target)
+{
+	m_vTargetPosition = _target;
 }
 
 HRESULT CUIDropItem::Ready_Components()
 {
-	CTransform::TRANSFORM_DESC		TransformDesc{ 40.f, D3DXToRadian(90.f) };
+	CTransform::TRANSFORM_DESC		TransformDesc{ 600.f, D3DXToRadian(90.f) };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;

@@ -43,7 +43,7 @@ private:
 	HRESULT Ready_Layer_UI_DropItem(const _wstring& strLayerTag);
 
 private:
-	wchar_t m_szFPS[20];
+	wchar_t m_szFPS[20]{};
 	float  ftime = { 0 };
 	int m_iFPS = {};
 

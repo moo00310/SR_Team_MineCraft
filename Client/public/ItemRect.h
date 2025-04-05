@@ -10,6 +10,7 @@ class CVIBuffer_Rect;
 class CShader;
 END
 
+BEGIN(Client)
 class CItemRect : public CCube
 {
 public:
@@ -42,12 +43,14 @@ protected:
 	CRigidbody* m_pRigidbodyCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 
-	int m_iUpDownFrame;
-	float m_fUpDownSpeed;
+	int m_iUpDownFrame{ 0 };
+	float m_fUpDownSpeed{ 0.f };
 
-	ITEMNAME m_eItemName;
+	ITEMNAME m_eItemName{ ITEMNAME_END };
 
 	CTransform* m_pPlayerTransformCom{ nullptr };
+	class  CMCTerrain* m_pTerrain{ nullptr };
+
 private:
 	_float Compute_PlayerDistance();
 public:
@@ -55,4 +58,4 @@ public:
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };
-
+END

@@ -67,14 +67,7 @@ void CItemCube::Update(_float fTimeDelta)
 
     if (fDist < 0.1f)
     {
-        CUIDropItem* dropItem = (CUIDropItem*)m_pGameInstance->PushPool(LEVEL_YU,		// 적용 씬.
-            PROTOTYPE_GAMEOBJECT_UI_DROP_ITEM,	// 가져올 프로토타입.
-            LEVEL_YU,		// 가져올 씬.
-            LAYER_UI_POOL	// 애드오브젝트에 추가할 레이어.
-            );
-
-        dropItem->SetTransform(m_pTransformCom->WorldToScreen());
-        dropItem->SetDirection({0.f, 1.f});
+        OnDropItem();
 
         Destroy();
         CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
@@ -84,18 +77,19 @@ void CItemCube::Update(_float fTimeDelta)
         _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
         m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
     }
-    else if (fDist < 5.f)
+
+    if (!m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.f))
+        return;
+
+    list<CCollider*> Colliders;
+    Colliders = m_pTerrain->Active_Current_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
+
+    //플레이어와 거리가 가까우면 중력적용
+    m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);
+
+    for (CCollider* pCollider : Colliders)
     {
-        list<CCollider*> Colliders;
-        Colliders = m_pTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
-
-        //플레이어와 거리가 가까우면 중력적용
-        m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);
-
-        for (CCollider* pCollider : Colliders)
-        {
-			m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
-        }
+        m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
     }
 
 }
@@ -207,6 +201,30 @@ _float CItemCube::Compute_PlayerDistance()
     _float fLength{ D3DXVec3Length(&vDiff) };
 
     return fLength;
+}
+
+void CItemCube::OnDropItem()
+{
+    CUIDropItem* dropItem = (CUIDropItem*)m_pGameInstance->PushPool(LEVEL_YU,		// 적용 씬.
+        PROTOTYPE_GAMEOBJECT_UI_DROP_ITEM,	// 가져올 프로토타입.
+        LEVEL_YU,		// 가져올 씬.
+        LAYER_UI_POOL	// 애드오브젝트에 추가할 레이어.
+    );
+
+    // UI 가방 좌표.
+    _float3 bagPos = CUI_Mgr::Get_Instance()->Get_Bag()->GetTransform()->Get_State(CTransform::STATE_POSITION);
+
+    // 좌표 넣어줌 (이 함수 안에서 스크린 좌표를 UI 좌표계로 변환함).
+    dropItem->SetTransform(m_pTransformCom->WorldToScreen());
+
+    // UI 가방 좌표 - 블럭 UI 좌표.
+    _float2 direction = (_float2)bagPos - (_float2)dropItem->GetTransform()->Get_State(CTransform::STATE_POSITION);
+
+    // 방향벡터 부여.
+    dropItem->SetDirection(direction);
+
+    // 도착벡터 부여.
+    dropItem->SetTargetPosition((_float2)bagPos);
 }
 
 CItemCube* CItemCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

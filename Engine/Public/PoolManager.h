@@ -25,7 +25,7 @@ public:
 	void PopPool(CGameObject* _object, const _wstring& strPrototypeTag);
 
 	// 해당 프로토타입 태그 풀링 갯수 반환.
-	int GetPoolCount(_wstring _tag);
+	_uint GetPoolCount(_wstring _tag);
 
 	// 현재 활성화 된 몬스터 갯수 반환.
 	int GetActiveCount(const _wstring& strPrototypeTag) 

@@ -1,4 +1,4 @@
-#include "Level_YU.h"
+﻿#include "Level_YU.h"
 #include "GameInstance.h"
 #include "MapTool.h"
 #include "Camera_Player.h"
@@ -6,7 +6,6 @@
 #include "SlotInfo.h"
 #include "UI_Mgr.h"
 #include "Pawn.h"
-
 
 CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -43,10 +42,10 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))
@@ -305,9 +304,10 @@ HRESULT CLevel_YU::Ready_Layer_PlayerState(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Laye_Creeper(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+
 		LEVEL_YU, strLayerTag, 20)))
 		return E_FAIL;
-	
+
 
 	return S_OK;
 }

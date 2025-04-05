@@ -49,6 +49,8 @@ public:
 
 	//블럭 밝기 조절
 	void Set_Bright();
+
+	vector<CCollider_Cube*>& Get_ColliderRect() { return m_Colliders; }
 protected:
 	HRESULT Ready_Components();
 

@@ -20,7 +20,7 @@ HRESULT CLeaf::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 		return E_FAIL;
 
-	m_fHardness = 0.2;
+	m_fHardness = 0.2f;
 
 	return S_OK;
 }

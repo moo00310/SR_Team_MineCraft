@@ -42,7 +42,7 @@ public:
 
 	// 충돌 큐브 생성 & 위치 설정
 	void Set_BlockPositions(vector<_float3> position, ITEMNAME _name);
-	int Get_PositionSize() { return m_vecPositions.size(); }
+	_uint Get_PositionSize() { return static_cast<_uint>(m_vecPositions.size()); }
 
 	// 충돌 활성화 & 비활성화 관리를 위함
 	vector<CCollider_Cube*> Get_ColliderCube() { return m_Colliders; }
@@ -90,7 +90,7 @@ protected:
 	int m_resetHpFrame = 0;
 
 	//블럭 경도
-	_float m_fHardness;
+	_float m_fHardness{ 0.f };
 
 private:
 	//아래 두 함수를 나중에 Pawn으로 합쳐도 될지는 모르겠음, 일단 나눔

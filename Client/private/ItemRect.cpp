@@ -1,6 +1,7 @@
 #include "ItemRect.h"
 #include "GameInstance.h"
 #include "UI_Mgr.h"
+#include "MCTerrain.h"
 
 CItemRect::CItemRect(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
@@ -27,6 +28,9 @@ HRESULT CItemRect::Initialize(void* pArg)
     m_iUpDownFrame = 0;
 
     m_pTransformCom->Scaling(0.5, 0.5, 0.5);
+
+    m_pTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")));
+    Safe_AddRef(m_pTerrain);
 
     CGameObject* pSteve{ nullptr };
     pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
@@ -59,20 +63,31 @@ void CItemRect::Update(_float fTimeDelta)
     _float fDist = Compute_PlayerDistance();
 
 
+    //먹어서 사라지는 거리
     if (fDist < 0.1f)
     {
         Destroy();
         CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
     }
+    //플레이어한테 딸려오는 거리
     else if (fDist < 1.5f)
     {
         _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
         m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
     }
-    else if (fDist < 5.f)
+
+    if (!m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.f))
+        return;
+
+    list<CCollider*> Colliders;
+    Colliders = m_pTerrain->Active_Current_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
+
+    //플레이어와 거리가 가까우면 중력적용
+    m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);
+
+    for (CCollider* pCollider : Colliders)
     {
-        //플레이어와 거리가 가까우면 중력적용
-        m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);
+        m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
     }
 }
 
@@ -231,6 +246,7 @@ CGameObject* CItemRect::Clone(void* pArg)
 void CItemRect::Free()
 {
     __super::Free();
+	Safe_Release(m_pTerrain);
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pRigidbodyCom);
     Safe_Release(m_pShaderCom);

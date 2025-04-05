@@ -75,24 +75,11 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         Destroy();
     }
 
-
-    // ====== 여기서 하지말고 Pawn에서 하자 =======
-
     for (CCollider_Cube* pCollider : m_Colliders)
     {
         pCollider->Set_bColliderActive(false);
     }
-    //if (m_bChunkColliderActive)
-    //{
-    //    //현재 거리 계산으로 하고 있음 구 형태
-    //    //사각형 형태로 아래는 조금만 하게 하면 좋은데 y축 으로 말하는 거임
-    //    Should_Collide_With_Player();
-    //    Should_Collide_With_Monster();
-    //}
-    //밖에 꺼내 놓은 이유(다른 청크가면 몬스터 떨어져버림) -> 안돼 프레임 개 떨어져 그냥 몬스터 멀어지면 비활성화 시키는게 나을 거 같음
-    //Should_Collide_With_Monster();
 
-    // ====== 여기서 하지말고 Pawn에서 하자 =======
 }
 
 void CBreakableCube::Update(_float fTimeDelta)

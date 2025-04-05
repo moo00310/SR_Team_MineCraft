@@ -13,55 +13,23 @@ CPawn::CPawn(const CPawn& Prototype)
 
 HRESULT CPawn::Initialize(void* pArg)
 {
-	////MCTerrain 가져와서 저장
-	//m_pMCTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0));
-	//Safe_AddRef(m_pMCTerrain);	
+	//MCTerrain 가져와서 저장
+	m_pTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0));
+	Safe_AddRef(m_pTerrain);
 
 	return E_NOTIMPL;
 }
 
 void CPawn::Priority_Update(_float fTimeDelta)
 {
-	//주변 충돌 해야할 블럭들을 찾아서 넣는다
-	//현재 청크레이어 가져오기
-	//wchar_t layerName[100];
-	//
-	//m_pMCTerrain->GetFileCount();
 
-	//swprintf(layerName, 100, L"Layer_Chunk%d", m_pMCTerrain->GetCurrentChunk());
-	//list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
-
-	//for (CGameObject* pObj : Objects)
-	//{
-	//	if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
-	//	{
-	//		//pBreakableCube->Set_ChunkColliderActive(true);
-	//	}
-
-	//	//else if (CTree* pTree = dynamic_cast<CTree*>(pObj))
-	//	//{
-	//	//	CBreakableCube* pWood = pTree->Get_Wood();
-	//	//	if (eItemName == pWood->Get_ItemName())
-	//	//	{
-	//	//		pWood->Create_Cube(vPos, vDir);
-	//	//		break;
-	//	//	}
-	//	//}
-	//}
-
-	//Update에서 충돌 검사 후
-
-	//LateUpdate에서 추가했던 블럭들을 빼낸다
-
-	//어떤데 천재임?
 
 }
 
 void CPawn::Update(_float fTimeDelta)
 {
 	//주위 충돌 할 녀석들 가져오기
-	CMCTerrain* pMCTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Terrain"), 0));
-	list<CCollider*> Colliders = pMCTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f }, 10.f);
+	list<CCollider*> Colliders = m_pTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f }, 8.f);
 
 	/*if (FAILED(m_pCollider_CubeCom->Update_Collider()))
 	{
@@ -122,6 +90,7 @@ void CPawn::Free()
 {
 	__super::Free();
 
+	Safe_Release(m_pTerrain);
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRigidbodyCom);
 	Safe_Release(m_pCollider_CubeCom);

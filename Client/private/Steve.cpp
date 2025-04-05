@@ -24,6 +24,7 @@ HRESULT CSteve::Initialize_Prototype()
 
 HRESULT CSteve::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
 
 	// 기타 스텟 초기화 ( Pawn 에 선언 되어 있음 )
 	m_fSpeed = 5.f;
