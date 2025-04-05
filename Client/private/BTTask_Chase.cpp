@@ -4,7 +4,7 @@
 STATUS CBTTask_Chase::Excute(CGameObject* _Obj, _float _fTimeDelta)
 {
 	CMonster* pMonster = static_cast<CMonster*>(_Obj);
-	pMonster->Set_Animation(CMonster::WALK);
+
 
 	if (!pMonster->isFind())
 	{
@@ -12,6 +12,7 @@ STATUS CBTTask_Chase::Excute(CGameObject* _Obj, _float _fTimeDelta)
 	}
 
 	pMonster->Chase_Player(_fTimeDelta);
+	pMonster->Set_Animation(CMonster::WALK);
 
 
 	return STATUS::SUCCESS;

@@ -43,106 +43,70 @@ HRESULT CRigidbody::Initialize(void* pArg)
 
 HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 {
-	// 델타타임이 너무 크면 리턴
 	const _float MAX_DELTA_TIME = 0.05f;
 	if (fTimeDelta > MAX_DELTA_TIME)
 		return S_OK;
 
-	//fTimeDelta = 0.032f; FixedUpdate???
-
-	// 1. 예측 위치로 Collider 업데이트
 	_float3 vOriginalPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
 	_float3 vNextPosition = vOriginalPos + m_vVelocity * fTimeDelta; // 예측 위치
-
 	m_isGround = false;
 	m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
 
-	// 2. 충돌 검사 (예측 위치 기준)
+	// === 충돌 검사 ===
 	if (m_pCollider)
 	{
-		//=== y축충돌 검사하고 나서 ===	
 		list<CCollider_Cube::COLLISION_INFO> Collision_Infos;
 		_bool isHit = m_pGameInstance->Collision_Check_Group_Multi(iCollsionGroup, Collision_Infos, m_pCollider, CCollider_Manager::COLLSIION_CUBE);
 
 		if (isHit)
 		{
-			_float fMinY{ 0 }; // Y축 충돌 깊이
-			_float fMaxY{ 0 };
+			_float fMinX{ 0 }, fMaxX{ 0 };
+			_float fMinY{ 0 }, fMaxY{ 0 };
+			_float fMinZ{ 0 }, fMaxZ{ 0 };
 
 			for (const auto& tInfo : Collision_Infos)
 			{
-				// 위쪽 충돌 처리
-				if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::UP)
+				switch (tInfo.eCollisionDir)
 				{
+				case CCollider_Cube::COLLISION_DIR::UP:
 					fMinY = min(fMinY, tInfo.vDepth.y);
 					m_isGround = true;
 					m_vVelocity.y = 0.0f;
-				}
-
-				// 아래쪽 충돌 처리
-				if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::DOWN)
-				{
+					break;
+				case CCollider_Cube::COLLISION_DIR::DOWN:
 					fMaxY = max(fMaxY, tInfo.vDepth.y);
-					m_vVelocity.y = 0.f;
+					m_vVelocity.y = 0.0f;
+					break;
+				case CCollider_Cube::COLLISION_DIR::FRONT:
+					fMinZ = min(fMinZ, tInfo.vDepth.z);
+					m_vVelocity.z = 0.0f;
+					break;
+				case CCollider_Cube::COLLISION_DIR::BACK:
+					fMaxZ = max(fMaxZ, tInfo.vDepth.z);
+					m_vVelocity.z = 0.0f;
+					break;
+				case CCollider_Cube::COLLISION_DIR::LEFT:
+					fMaxX = max(fMaxX, tInfo.vDepth.x);
+					m_vVelocity.x = 0.0f;
+					break;
+				case CCollider_Cube::COLLISION_DIR::RIGHT:
+					fMinX = min(fMinX, tInfo.vDepth.x);
+					m_vVelocity.x = 0.0f;
+					break;
 				}
 			}
 
-			// Y축 보정
-			vNextPosition.y -= fMinY + fMaxY;
-		}
+			// 위치 보정
+			vNextPosition.x -= (fMinX + fMaxX);
+			vNextPosition.y -= (fMinY + fMaxY);
+			vNextPosition.z -= (fMinZ + fMaxZ);
 
-		m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
-
-		if (m_vVelocity.x != 0.f || m_vVelocity.z != 0.f) // 이동중이면
-		{
-			//=== xz축 충돌 검사 ===
-			Collision_Infos.clear();
-			isHit = m_pGameInstance->Collision_Check_Group_Multi(iCollsionGroup, Collision_Infos, m_pCollider, CCollider_Manager::COLLSIION_CUBE);
-
-			if (isHit)
-			{
-				_float fMinX{ 0 }; // Y축 충돌 깊이
-				_float fMaxX{ 0 };
-
-				_float fMinZ{ 0 }; // Y축 충돌 깊이
-				_float fMaxZ{ 0 };
-
-				for (const auto& tInfo : Collision_Infos)
-				{
-
-					// 수평 방향 충돌 처리
-					if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::FRONT)
-					{
-						fMinZ = min(fMinZ, tInfo.vDepth.z);
-						m_vVelocity.z = 0.0f;
-					}
-
-					if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::BACK)
-					{
-						fMaxZ = max(fMaxZ, tInfo.vDepth.z);
-						m_vVelocity.z = 0.0f;
-					}
-
-					if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::LEFT)
-					{
-						fMaxX = max(fMaxX, tInfo.vDepth.x);
-						m_vVelocity.x = 0.0f;
-					}
-
-					if (tInfo.eCollisionDir == CCollider_Cube::COLLISION_DIR::RIGHT)
-					{
-						fMinX = min(fMinX, tInfo.vDepth.x);
-						m_vVelocity.x = 0.0f;
-					}
-				}
-
-				vNextPosition.x -= fMinX + fMaxX;
-				vNextPosition.z -= fMinZ + fMaxZ;
-			}
+			m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
 		}
 	}
 
 	m_vVelocity.y += (-GRAVITY * fTimeDelta); // 중력 적용
+
 
 #pragma region TEST
 	// 바닥을 뚫고 내려가지 않도록 보정
@@ -154,7 +118,7 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 #pragma endregion
 
 	// 5. 최종 위치 업데이트
-	m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
+	//m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
 
 	// 7. 넉백 처리
 	if (m_isGround && m_isKnockBack)

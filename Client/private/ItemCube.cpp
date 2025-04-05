@@ -84,21 +84,19 @@ void CItemCube::Update(_float fTimeDelta)
         _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
         m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
     }
-    else if (fDist < 5.f)
+
+    if (!m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.f))
+        return;
+
+    list<CCollider*> Colliders;
+    Colliders = m_pTerrain->Active_Current_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
+
+    //플레이어와 거리가 가까우면 중력적용
+    m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);
+
+    for (CCollider* pCollider : Colliders)
     {
-        if (!m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.f))
-            return;
-
-        list<CCollider*> Colliders;
-        Colliders = m_pTerrain->Active_Current_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
-
-        //플레이어와 거리가 가까우면 중력적용
-        m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.25f);
-
-        for (CCollider* pCollider : Colliders)
-        {
-			m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
-        }
+        m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
     }
 
 }

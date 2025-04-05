@@ -261,9 +261,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 //Create_Cube 함수 실행
 
                 _float3 vCreatePos = pCollider_Cube->Get_Offset() + pBreakableCube->GetPos();
-
-                CMCTerrain* pMCTerrain = static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")));
-                pMCTerrain->Create_Cube(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION), eCurItem, vCreatePos, vDir);
+                m_pTerrain->Create_Cube(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION), eCurItem, vCreatePos, vDir);
 
                 //이놈이 실행하는게아니라
                 //활성화 된 청크에 있는 Breakable큐브 중 eHandBlock과 같은 타입의 큐브에서 Create 큐브를 호출해야함

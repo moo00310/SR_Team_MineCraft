@@ -58,17 +58,20 @@ HRESULT CMCTerrain::Initialize(void* pArg)
     return S_OK;
 }
 
-set<_int>& CMCTerrain::GetNearChunkIndexies(_float3 vPos)
+set<_int>& CMCTerrain::Compute_Near_Chunk_Indexies(_float3 vPos)
 {
-    constexpr int chunkSize = 16;
-    int width = static_cast<int>(sqrt(m_iChunkCount));
+	_float chunkSize = 16.f;
+    _float width = static_cast<int>(sqrt(m_iChunkCount));
 
     static std::set<_int> nearChunks;
     nearChunks.clear();
 
-    for (int z = 0; z < width; ++z) {
-        for (int x = 0; x < width; ++x) {
-            _float3 chunkCenter = {
+    for (int z = 0; z < width; ++z) 
+    {
+        for (int x = 0; x < width; ++x) 
+        {
+            _float3 chunkCenter = 
+            {
                 x * chunkSize + chunkSize * 0.5f,
                 0.f,
                 z * chunkSize + chunkSize * 0.5f
@@ -78,7 +81,8 @@ set<_int>& CMCTerrain::GetNearChunkIndexies(_float3 vPos)
             _float dz = vPos.z - chunkCenter.z;
             _float distance = sqrtf(dx * dx + dz * dz);
 
-            if (distance < chunkSize) {
+            if (distance <= chunkSize * 0.5f * sqrtf(2.f) + 0.5f)//대각선 거리 + 블럭 반칸 거리 0.5f (여유)
+            {
                 int chunkIndex = x + z * width;
                 nearChunks.emplace(chunkIndex);
             }
@@ -92,7 +96,7 @@ list<CCollider*> CMCTerrain::Active_Near_Chunk_Colliders(_float3 vPos, _float fD
 {
     //주위 충돌 할 녀석들 가져오기
     list<CCollider*> Colliders;
-    set<_int> AcitveChunkIndexies = GetNearChunkIndexies(vPos);
+    set<_int> AcitveChunkIndexies = Compute_Near_Chunk_Indexies(vPos);
     wchar_t layerName[100];
 
     //활성화된 청크 인덱스 순회

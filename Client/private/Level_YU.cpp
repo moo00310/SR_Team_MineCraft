@@ -42,10 +42,10 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
+	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
+	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_SkyBox(TEXT("Layer_SkyBox"))))

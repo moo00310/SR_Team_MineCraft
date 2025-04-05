@@ -98,36 +98,38 @@ HRESULT CCollider_Cube::Initialize(void* pArg)
 
 
 HRESULT CCollider_Cube::Update_Collider()
-{
-	const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
-	_float4x4 StateMatrix = *pWorldMatrix;
+{ 
+	//이거 왜 필요하지?
+	
+	//const _float4x4* pWorldMatrix = m_pTransformCom->Get_WorldMatrix();
+	//_float4x4 StateMatrix = *pWorldMatrix;
 
-	// 기본 8개의 꼭짓점 설정
-	m_vPoint[0] = _float3(-m_vRadius.x, m_vRadius.y, -m_vRadius.z);
-	m_vPoint[1] = _float3(m_vRadius.x, m_vRadius.y, -m_vRadius.z);
-	m_vPoint[2] = _float3(m_vRadius.x, -m_vRadius.y, -m_vRadius.z);
-	m_vPoint[3] = _float3(-m_vRadius.x, -m_vRadius.y, -m_vRadius.z);
-	m_vPoint[4] = _float3(-m_vRadius.x, m_vRadius.y, m_vRadius.z);
-	m_vPoint[5] = _float3(m_vRadius.x, m_vRadius.y, m_vRadius.z);
-	m_vPoint[6] = _float3(m_vRadius.x, -m_vRadius.y, m_vRadius.z);
-	m_vPoint[7] = _float3(-m_vRadius.x, -m_vRadius.y, m_vRadius.z);
+	//// 기본 8개의 꼭짓점 설정
+	//m_vPoint[0] = _float3(-m_vRadius.x, m_vRadius.y, -m_vRadius.z);
+	//m_vPoint[1] = _float3(m_vRadius.x, m_vRadius.y, -m_vRadius.z);
+	//m_vPoint[2] = _float3(m_vRadius.x, -m_vRadius.y, -m_vRadius.z);
+	//m_vPoint[3] = _float3(-m_vRadius.x, -m_vRadius.y, -m_vRadius.z);
+	//m_vPoint[4] = _float3(-m_vRadius.x, m_vRadius.y, m_vRadius.z);
+	//m_vPoint[5] = _float3(m_vRadius.x, m_vRadius.y, m_vRadius.z);
+	//m_vPoint[6] = _float3(m_vRadius.x, -m_vRadius.y, m_vRadius.z);
+	//m_vPoint[7] = _float3(-m_vRadius.x, -m_vRadius.y, m_vRadius.z);
 
 
-	// 월드 위치에 offset 적용
-	_float3 vecOffsetPos = *(_float3*)&(StateMatrix.m[3][0]);
+	//// 월드 위치에 offset 적용
+	//_float3 vecOffsetPos = *(_float3*)&(StateMatrix.m[3][0]);
 
-	vecOffsetPos += m_vOffset;
+	//vecOffsetPos += m_vOffset;
 
-	// 월드 행렬의 위치 부분 업데이트
-	StateMatrix.m[3][0] = vecOffsetPos.x;
-	StateMatrix.m[3][1] = vecOffsetPos.y;
-	StateMatrix.m[3][2] = vecOffsetPos.z;
+	//// 월드 행렬의 위치 부분 업데이트
+	//StateMatrix.m[3][0] = vecOffsetPos.x;
+	//StateMatrix.m[3][1] = vecOffsetPos.y;
+	//StateMatrix.m[3][2] = vecOffsetPos.z;
 
-	// 8개의 꼭짓점을 월드 행렬로 변환
-	for (int i = 0; i < 8; ++i)
-	{
-		D3DXVec3TransformCoord(&m_vPoint[i], &m_vPoint[i], &StateMatrix);
-	}
+	//// 8개의 꼭짓점을 월드 행렬로 변환
+	//for (int i = 0; i < 8; ++i)
+	//{
+	//	D3DXVec3TransformCoord(&m_vPoint[i], &m_vPoint[i], &StateMatrix);
+	//}
 
 	return S_OK;
 }
