@@ -152,9 +152,9 @@ void CRight_hand::Change_Matrix(ITEMNAME name)
         TPS_mat.Turn_Radian_Safe_Scale(_float3(0.f, 0.f, 1.f), D3DXToRadian(-45));
         TPS_mat.Turn_Radian_Safe_Scale(_float3(0.f, 1.f, 0.f), D3DXToRadian(-25));
 
-        FPS_mat.Scaling(100.f, 100.f, 100.f);
-        //FPS_mat.Turn_Radian_Safe_Scale(_float3(0.f, 1.f, 0.f), D3DXToRadian(-45));
-        FPS_mat.Set_State(FPS_mat.STATE_POSITION, _float3(-1.f, 0.5f, -1.f));
+        FPS_mat.Scaling(4.f, 7.f, 4.f);
+        FPS_mat.Turn_Radian_Safe_Scale(_float3(1.f, 0.f, 0.f), D3DXToRadian(-45));
+        FPS_mat.Set_State(FPS_mat.STATE_POSITION, _float3(-1.5f, -3.5f, -1.f));
     }
         
     m_pRect_Model->Set_TPSMatrix(TPS_mat);

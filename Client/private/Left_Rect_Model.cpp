@@ -1,5 +1,4 @@
 #include "Left_Rect_Model.h"
-#include <iostream>
 
 CLeft_Rect_Model::CLeft_Rect_Model(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CRightHand_Object{ pGraphic_Device }
@@ -24,7 +23,6 @@ HRESULT CLeft_Rect_Model::Initialize(void* pArg)
 	return S_OK;
 }
 
-
 void CLeft_Rect_Model::Priority_Update(_float fTimeDelta)
 {
 	KeyInput();
@@ -44,7 +42,6 @@ void CLeft_Rect_Model::Late_Update(_float fTimeDelta)
 	else
 		m_RederID = 4;
 
-	cout << m_isRender << endl;
 }
 
 HRESULT CLeft_Rect_Model::Render()
