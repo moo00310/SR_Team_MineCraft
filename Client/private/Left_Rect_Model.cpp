@@ -1,4 +1,5 @@
 #include "Left_Rect_Model.h"
+#include <iostream>
 
 CLeft_Rect_Model::CLeft_Rect_Model(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CRightHand_Object{ pGraphic_Device }
@@ -42,6 +43,8 @@ void CLeft_Rect_Model::Late_Update(_float fTimeDelta)
 		m_RederID = 2;
 	else
 		m_RederID = 4;
+
+	cout << m_isRender << endl;
 }
 
 HRESULT CLeft_Rect_Model::Render()
@@ -203,13 +206,6 @@ void CLeft_Rect_Model::Motion_Walk(_float fTimeDelta)
 
 void CLeft_Rect_Model::KeyInput()
 {
-
-	if (m_pGameInstance->Key_Down(VK_RBUTTON))
-	{
-		m_eCurAnim = SWING;
-		return;
-	}
-
 	if (m_pGameInstance->Key_Pressing('W') ||
 		m_pGameInstance->Key_Pressing('A') ||
 		m_pGameInstance->Key_Pressing('S') ||

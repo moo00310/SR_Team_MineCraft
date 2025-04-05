@@ -68,6 +68,7 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
         }
 
         Chage_RightHand();
+        Chage_LeftHand();
     }
 }
 
@@ -85,17 +86,27 @@ void CRight_hand::Late_Update(_float fTimeDelta)
         if (m_pGameInstance->Key_Down(key))
         {
             Chage_RightHand();
+            Chage_LeftHand();
+
             break;
         }
     }
-
 }
 
 void CRight_hand::Chage_RightHand()
 {
     ITEMNAME Name = CUI_Mgr::Get_Instance()->GetItemTypeName();
-
     Select_Render_Texture(Name);
+}
+
+void CRight_hand::Chage_LeftHand()
+{
+    ITEMNAME Name = CUI_Mgr::Get_Instance()->GetItemTypeName_Left();
+
+    if (Name == ITEMNAME_TORCH)
+        Render_Left_Rect();
+    else
+        m_pLeft_Rect_Model->SetRender(false);
 }
 
 void CRight_hand::Select_Render_Texture(ITEMNAME name)
@@ -120,13 +131,7 @@ void CRight_hand::Select_Render_Texture(ITEMNAME name)
         Render_Rect();
         index = name - 100;
         m_pRect_Model->ChangeTexture(index);
-       
-
-
-        if (name == ITEMNAME_TORCH)
-            m_pLeft_Rect_Model->ChangeTexture(index);
-
-
+      
         Change_Matrix(name);
         return;
     }
@@ -165,8 +170,6 @@ void CRight_hand::Render_Arm()
         m_pArm_Model->SetRender(true);
     m_pRect_Model->SetRender(false);
     m_pCube_Model->SetRender(false);
-
-    m_pLeft_Rect_Model->SetRender(false);
 }
 
 void CRight_hand::Render_Rect()
@@ -174,8 +177,6 @@ void CRight_hand::Render_Rect()
     m_pArm_Model->SetRender(false);
     m_pRect_Model->SetRender(true);
     m_pCube_Model->SetRender(false);
-
-    m_pLeft_Rect_Model->SetRender(true);
 }
 
 void CRight_hand::Render_Cube()
@@ -183,10 +184,14 @@ void CRight_hand::Render_Cube()
     m_pArm_Model->SetRender(false);
     m_pRect_Model->SetRender(false);
     m_pCube_Model->SetRender(true);
-
-    m_pLeft_Rect_Model->SetRender(false);
 }
 
+void CRight_hand::Render_Left_Rect()
+{
+    int  num = ITEMNAME_TORCH - 100;
+    m_pLeft_Rect_Model->SetRender(true);
+    m_pLeft_Rect_Model->ChangeTexture(num);
+}
 
 CRight_hand* CRight_hand::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
