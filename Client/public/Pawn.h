@@ -79,7 +79,7 @@ protected:
 	_float m_fSpeed = {};
 	_float m_MaxHp = {};
 	_float m_Hp = {};
-
+	_float m_sound = {};
 protected:
 	_float3 m_Coll_Size = {};
 	_float3 m_Coll_Offset = {};

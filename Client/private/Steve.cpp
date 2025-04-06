@@ -47,6 +47,8 @@ HRESULT CSteve::Initialize(void* pArg)
 	m_pRigidbodyCom->Set_MaxSpeed(5.f);
 
 	m_skelAnime->SetFrameCallback(std::bind(&CSteve::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
+
+	m_sound = 0.8f;
 	
 	return S_OK;
 }

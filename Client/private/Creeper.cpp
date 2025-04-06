@@ -389,7 +389,7 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
         //m_isDestroyed = true;
-        m_pGameInstance->PlaySound(TEXT("Creeper_Death"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->PlaySound(TEXT("Creeper_Death"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
     }
 }
@@ -432,5 +432,9 @@ void CCreeper::Free()
 void CCreeper::FrameCallback(int animType, int frame)
 {
     //std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
+    if (animType == Dead && frame == 1)
+    {
+
+    }
 }
 

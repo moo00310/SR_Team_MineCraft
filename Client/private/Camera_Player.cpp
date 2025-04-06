@@ -164,6 +164,9 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 {
                     MSG_BOX("Delete_Rect: Fail");
                 }
+
+
+                return;
             }
 
             // 충돌한 오브젝트가 CBreakableCube인지 확인 후 형변환
@@ -194,6 +197,16 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 return;
             }
         }
+    }
+
+    //몬스터는 keydown
+    if (m_pGameInstance->Key_Down(VK_LBUTTON)) {
+        _float fDist;                  // 광선과 오브젝트 간의 거리
+        CGameObject* pHitObject;       // 충돌한 오브젝트
+        CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
+        _float3 vDir{};
+
+        vector<_uint> Groups = { COLLISION_NON_PHYSIC_BLOCK, COLLISION_BLOCK };
 
         // 몬스터와 충돌 검사
         pHitObject = m_pGameInstance->Ray_Cast(
@@ -209,6 +222,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             {
                 monster->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK));
                 monster->Set_Hp(0);
+                return;
             }
 
         }
