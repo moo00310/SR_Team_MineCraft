@@ -664,6 +664,7 @@
     <ClInclude Include="..\public\ParticleStoneMining.h">
       <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleStoneDestroy.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1018,6 +1019,7 @@
     <ClCompile Include="..\private\ParticleStoneMining.cpp">
       <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\ParticleStoneDestroy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

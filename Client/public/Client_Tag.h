@@ -34,6 +34,9 @@ static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING = TEXT("Prototyp
 // 돌 채굴 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING = TEXT("Prototype_GameObject_Particle_Stone_Mining");
 
+// 돌 파괴 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_DESTROY = TEXT("Prototype_GameObject_Particle_Stone_Destroy");
+
 // 폭발 텍스쳐.
 static const _wstring PROTOTYPE_COMPONENT_TEXTURE_EXPLOSION = TEXT("Prototype_Component_Texture_Explosion");
 

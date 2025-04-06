@@ -31,6 +31,7 @@
 #include "ParticleCharging.h"
 #include "ParticleAppleEating.h"
 #include "ParticleStoneMining.h"
+#include "ParticleStoneDestroy.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
@@ -244,6 +245,11 @@ HRESULT CMainApp::Ready_Particle()
 	// 흙 파괴 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
 		CParticleSandDestroy::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 돌 파괴 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_DESTROY,
+		CParticleStoneDestroy::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	// 폭발 파티클.
