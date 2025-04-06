@@ -295,6 +295,9 @@
     <Filter Include="03.UI\04.Inventory\05.Bag">
       <UniqueIdentifier>{9e4d4d43-a141-4586-ab41-0def7821c9a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.Cube\ItemObj\Items">
+      <UniqueIdentifier>{3539fe27-fc9f-41fc-ae2f-03844b52dc7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -645,7 +648,7 @@
     </ClInclude>
     <ClInclude Include="..\public\GameMgr.h">
       <Filter>02.GameObjects\08.GameMgr</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\BaseParticleEating.h">
       <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClInclude>
@@ -654,7 +657,7 @@
     </ClInclude>
     <ClInclude Include="..\public\UIDropItem.h">
       <Filter>03.UI\08.DropItem</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Bag.h">
       <Filter>03.UI\04.Inventory\05.Bag</Filter>
     </ClInclude>

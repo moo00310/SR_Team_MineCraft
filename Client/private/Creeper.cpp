@@ -69,6 +69,8 @@ void CCreeper::Update(_float fTimeDelta)
     __super::Update(fTimeDelta);
 
     Update_State(fTimeDelta);
+
+    m_pGameInstance->CheckSoundStop(this, m_eCurAnim,0);
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
@@ -232,7 +234,11 @@ HRESULT CCreeper::Ready_Animation()
     mat9.Scaling(1.46f, 1.14f, 1.14f); 
 
     Matrix mat10 = {};
-    mat10.Scaling(1.60f, 1.2f, 1.2f); //마지막 크기
+    mat10.Scaling(1.60f, 1.2f, 1.2f); 
+
+
+    Matrix mat11 = {};
+    mat11.Scaling(1.64f, 1.24f, 1.24f); //마지막 크기
 
     KEYFREAME Attack_1 = { 0.0f,   mat };
     KEYFREAME Attack_2 = { 0.2f,   mat2 };
@@ -244,6 +250,7 @@ HRESULT CCreeper::Ready_Animation()
     KEYFREAME Attack_8 = { 0.8f,   mat8 };
     KEYFREAME Attack_9 = { 0.85f,  mat9 };
     KEYFREAME Attack_10 = { 1.0f,  mat10 };
+    KEYFREAME Attack_11 = { 1.3f,  mat11 };
 
 
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_1);
@@ -256,6 +263,7 @@ HRESULT CCreeper::Ready_Animation()
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_8);
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_9);
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_10);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_11);
 
 
 /*----------
@@ -338,8 +346,6 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
             m_pTransformCom
         );
 
-        m_eCurAnim = BOOM;
-
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
         //m_pTargetPawn->Add_Hp(-40);
@@ -371,6 +377,10 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
 		{
 			m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
 		}
+
+        // 소리 재생 초기화
+        m_pGameInstance->CheckSoundStop(this, 0,0);
+        m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
     }
 
 }
@@ -389,7 +399,7 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
         //m_isDestroyed = true;
-        m_pGameInstance->PlaySound(TEXT("Creeper_Death"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->PlaySound(TEXT("Creeper_Death"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
     }
 }
@@ -432,5 +442,10 @@ void CCreeper::Free()
 void CCreeper::FrameCallback(int animType, int frame)
 {
     //std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
+    if (animType == Attack && frame == 0)
+    {
+        std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
+        m_pGameInstance->PlaySound(TEXT("Creeper_Explosion"), m_sound-0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this,0);
+    }
 }
 

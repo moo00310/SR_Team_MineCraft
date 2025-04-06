@@ -64,7 +64,7 @@ void CSound_Manager::PlayBGM(const std::wstring& soundName)
     m_pCoreSystem->playSound(pSound, nullptr, false, &m_pBGMChannel);
 }
 
-void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, _float3 pPos)
+void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, _float3 pPos, void* _obj, int _type)
 {
     const float fListenerCutoffDistance = 25.0f; 
 
@@ -98,6 +98,11 @@ void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, _flo
             FMOD_VECTOR vel = { 0.0f, 0.0f, 0.0f };
             m_pChannels[i]->set3DAttributes(&pos, &vel);
 
+            if (_obj) {
+                TrackedSound _sound = { m_pChannels[i], _obj, static_cast<SEPCIALSOUNDTYPE>(_type) };
+                m_TrackedSounds.push_back(_sound);
+            }
+
             break;
         }
     }
@@ -125,6 +130,51 @@ void CSound_Manager::UpdateListener(_float3 _pos, _float3 _forward, _float3 _up)
     m_vListenerPos = _pos;
 }
 
+void CSound_Manager::CheckSoundStop(void* obj, int _anim, int _type)
+{
+    SEPCIALSOUNDTYPE soundType = static_cast<SEPCIALSOUNDTYPE>(_type);
+    switch (soundType)
+    {
+    case Engine::CSound_Manager::CREEPER:
+        for (auto iter = m_TrackedSounds.begin(); iter != m_TrackedSounds.end(); )
+        {
+            if (iter->pObj == obj && _anim != 3 && iter->type == 0)
+            {
+                if (iter->pChannel)
+                    iter->pChannel->stop();
+
+                iter = m_TrackedSounds.erase(iter); // 요소 제거 후 다음 요소로 이동
+            }
+            else
+            {
+                ++iter; // 조건이 안 맞으면 그냥 다음으로
+            }
+        }
+        break;
+    case Engine::CSound_Manager::BREAKING:
+        for (auto iter = m_TrackedSounds.begin(); iter != m_TrackedSounds.end(); )
+        {
+            if (iter->type == 1)
+            {
+                if (iter->pChannel)
+                    iter->pChannel->stop();
+
+                iter = m_TrackedSounds.erase(iter); // 요소 제거 후 다음 요소로 이동
+            }
+            else
+            {
+                ++iter; // 조건이 안 맞으면 그냥 다음으로
+            }
+        }
+        break;
+    case Engine::CSound_Manager::SOUND_END:
+        break;
+    default:
+        break;
+    }
+
+}
+
 void CSound_Manager::Add_SoundResource()
 {
     LoadSound(L"Player_Walk_Grass1", "../../FMOD/Assets/player/Player_Walk_Grass1.wav", false);
@@ -148,11 +198,15 @@ void CSound_Manager::Add_SoundResource()
     LoadSound(L"Creeper_Hurt1", "../../FMOD/Assets/creeper/Creeper_Hurt1.wav", false);
     LoadSound(L"Creeper_Hurt2", "../../FMOD/Assets/creeper/Creeper_Hurt2.wav", false);
     LoadSound(L"Creeper_Death", "../../FMOD/Assets/creeper/Creeper_Death.wav", false);
+    LoadSound(L"Creeper_Explosion", "../../FMOD/Assets/creeper/Creeper_Explosion.wav", false);
+
+    LoadSound(L"Block_Breaking", "../../FMOD/Assets/Block/Block_Breaking.wav", false);
+    LoadSound(L"Block_BreakingFinish", "../../FMOD/Assets/Block/Block_BreakingFinish.wav", false);
 }
 
 void CSound_Manager::Update()
 {
-    if (m_pCoreSystem)
+     if (m_pCoreSystem)
         m_pCoreSystem->update();
 }
 

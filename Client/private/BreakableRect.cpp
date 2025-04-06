@@ -105,8 +105,8 @@ void CBreakableRect::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 
 HRESULT CBreakableRect::Delete_Cube(_float3 fPos)
 {
-
-    return E_FAIL;
+    m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 1, fPos);
+    return S_OK;
 }
 
 void CBreakableRect::Set_Bright()

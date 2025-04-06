@@ -30,6 +30,10 @@ HRESULT CSkeletalAnimator::Initialize(void* pArg)
             m_pVIBufferComs[i]->AddRef();
     }
 
+    for (int i = 0; i < 20; i++) {
+        m_curFream[i] = 999;
+    }
+
     return S_OK;
 }
 
