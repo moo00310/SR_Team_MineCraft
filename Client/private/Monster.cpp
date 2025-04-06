@@ -58,16 +58,17 @@ void CMonster::Update(_float fTimeDelta)
 
 	_float fDist = Comput_Distance();
 
-    if (fDist > 10.f && !m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+    if (fDist > 30.f)
+    {
+        //타겟과 너무 멀다면-> 비활성화
+        return;
+    }
+    else if (fDist > 10.f && !m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
     {
         //타겟과 적당히 멀고, 눈에 안보이면 비활성화
         return;
     }
-    else if (fDist > 30.f)
-    {
-		//타겟과 너무 멀다면-> 비활성화
-        return;
-    }
+
 
     if (m_pBehaviorTree && !isDead)
     {

@@ -28,19 +28,13 @@ void CPawn::Priority_Update(_float fTimeDelta)
 
 void CPawn::Update(_float fTimeDelta)
 {
-	//주위 충돌 할 녀석들 가져오기
+	//1. 주위 충돌 할 녀석들 가져오기
 	list<CCollider*> Colliders = m_pTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f }, 8.f);
 
-	/*if (FAILED(m_pCollider_CubeCom->Update_Collider()))
-	{
-		MSG_BOX("Update_Collider()");
-		return;
-	}*/
-
+	//2. 충돌 처리
 	m_pRigidbodyCom->Update(fTimeDelta, COLLISION_BLOCK);
 
-	//주위 충돌 할 녀석들 빼기
-
+	//3. 주위 충돌 할 녀석들 빼기
 	for (auto pCollider : Colliders)
 	{
 		m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);

@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include "BreakableCube.h"
+#include "ThreadPool.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -10,7 +11,9 @@ class CTransform;
 class CVIBuffer_Cube;
 END
 
+
 BEGIN(Client)
+
 
 class CMCTerrain final : public CGameObject
 {
@@ -73,6 +76,10 @@ private:
 	int m_currentPlayerChunk = 0; //현재 청크
 	bool prevF1State = false;
 	bool prevF2State = false;
+
+	//스레드풀 적용 해봤는데 효과가 없었음...애초에 여기 연산이 그리 오래 걸리는게 아니었나?
+    //CThreadPool m_ThreadPool;
+
 public:
 	static CMCTerrain* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
@@ -81,3 +88,4 @@ public:
 };
 
 END
+
