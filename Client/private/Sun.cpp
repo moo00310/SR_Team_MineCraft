@@ -121,7 +121,13 @@ void CSun::Orbit_Around_Earth()
 	_float3 vSunPos = vCamPos + vOriginPos;
 
 	// 회전 변환 적용 (X축 기준 회전)
-	m_fAngle += 0.003f; // 회전 속도 증가
+	if (m_bAddTimeFast) {
+		m_fAngle += 0.005f; // 회전 속도 증가
+	}
+	else {
+		m_fAngle += 0.003f; // 회전 속도 증가
+	}
+	
 
 	if (-56 < m_fAngle) {
 		m_isSun = !m_isSun;

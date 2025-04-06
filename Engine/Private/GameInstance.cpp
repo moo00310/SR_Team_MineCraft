@@ -331,9 +331,9 @@ void CGameInstance::PlayBGM(const std::wstring& soundName)
 {
 	m_pSound_Manager->PlayBGM(soundName);
 }
-void CGameInstance::PlaySound(const std::wstring& soundName, float volume, _float3 pPos)
+void CGameInstance::PlaySound(const std::wstring& soundName, float volume, _float3 pPos, void* _obj)
 {
-	m_pSound_Manager->PlaySound(soundName, volume, pPos);
+	m_pSound_Manager->PlaySound(soundName, volume, pPos, _obj);
 }
 
 void CGameInstance::StopAll()
@@ -344,6 +344,10 @@ void CGameInstance::StopAll()
 void CGameInstance::UpdateListener(_float3 pos, _float3 forward, _float3 up)
 {
 	m_pSound_Manager->UpdateListener(pos, forward, up);
+}
+void CGameInstance::CheckCreeperExplosion(void* obj, int _anim)
+{
+	m_pSound_Manager->CheckCreeperExplosion(obj, _anim);
 }
 #pragma endregion
 

@@ -92,9 +92,10 @@ public:
 
 #pragma region SOUND_MANAGER
 	void PlayBGM(const std::wstring& soundName);
-	void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f));
+	void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f), void* _obj = nullptr);
 	void StopAll();
 	void UpdateListener(_float3 pos, _float3 forward, _float3 up);
+	void CheckCreeperExplosion(void* obj, int _anim);
 #pragma endregion
 
 

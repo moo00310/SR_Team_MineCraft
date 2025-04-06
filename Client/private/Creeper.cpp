@@ -69,6 +69,8 @@ void CCreeper::Update(_float fTimeDelta)
     __super::Update(fTimeDelta);
 
     Update_State(fTimeDelta);
+
+    m_pGameInstance->CheckCreeperExplosion(this, m_eCurAnim);
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
@@ -338,8 +340,6 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
             m_pTransformCom
         );
 
-        m_eCurAnim = BOOM;
-
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
         //m_pTargetPawn->Add_Hp(-40);
@@ -432,9 +432,10 @@ void CCreeper::Free()
 void CCreeper::FrameCallback(int animType, int frame)
 {
     //std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
-    if (animType == Dead && frame == 1)
+    if (animType == Attack && frame == 0)
     {
-
+        std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
+        m_pGameInstance->PlaySound(TEXT("Creeper_Explosion"), m_sound-0.1, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this);
     }
 }
 
