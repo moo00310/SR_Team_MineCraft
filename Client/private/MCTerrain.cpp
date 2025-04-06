@@ -182,7 +182,6 @@ list<CCollider*> CMCTerrain::Active_Near_Chunk_Colliders(_float3 vPos, _float fD
 
     return Colliders;
 }
-
 list<CCollider*> CMCTerrain::Active_Current_Chunk_Colliders(_float3 vPos, _float fDistSq)
 {
     //주위 충돌 할 녀석들 가져오기
@@ -270,6 +269,121 @@ list<CCollider*> CMCTerrain::Active_Current_Chunk_Colliders(_float3 vPos, _float
 
     return Colliders;
 }
+
+
+//스레드풀 버전 해봤는데 별 차이가없음
+#pragma region 스레드풀 버전
+//스레드풀 버전
+//list<CCollider*> CMCTerrain::Active_Near_Chunk_Colliders(_float3 vPos, _float fDistSq)
+//{
+//    list<CCollider*> Colliders;
+//    set<_int> ActiveChunkIndexies = Compute_Near_Chunk_Indexies(vPos);
+//    wchar_t layerName[100];
+//    std::mutex mtx;
+//
+//    m_ThreadPool; // 스레드 풀 생성
+//
+//    for (auto chunkIndex : ActiveChunkIndexies)
+//    {
+//        swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
+//        list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+//
+//        for (CGameObject* pObj : Objects)
+//        {
+//            m_ThreadPool.Enqueue([&, pObj]() {
+//                auto HandleColliderList = [&](const vector<CCollider_Cube*>& colliderList, COLLISION_GROUP eGroup) {
+//                    for (auto pCollider : colliderList)
+//                    {
+//                        _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
+//                        _float3 vDiff = vPos - vColliderPos;
+//                        _float fLengthSq = D3DXVec3LengthSq(&vDiff);
+//
+//                        if (fLengthSq < fDistSq)
+//                        {
+//                            std::lock_guard<std::mutex> lock(mtx);
+//                            m_pGameInstance->Add_Collider_CollisionGroup(eGroup, pCollider);
+//                            pCollider->Set_bColliderActive(true);
+//                            Colliders.push_back(pCollider);
+//                        }
+//                    }
+//                    };
+//
+//                if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
+//                {
+//                    HandleColliderList(pBreakableCube->Get_ColliderCube(), COLLISION_BLOCK);
+//                }
+//                else if (CTree* pTree = dynamic_cast<CTree*>(pObj))
+//                {
+//                    HandleColliderList(pTree->Get_Wood()->Get_ColliderCube(), COLLISION_BLOCK);
+//                    HandleColliderList(pTree->Get_Leaf()->Get_ColliderCube(), COLLISION_BLOCK);
+//                }
+//                else if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pObj))
+//                {
+//                    HandleColliderList(pBreakableRect->Get_ColliderRect(), COLLISION_NON_PHYSIC_BLOCK);
+//                }
+//                });
+//        }
+//    }
+//
+//    // 모든 작업 대기
+//    m_ThreadPool.WaitAll();
+//
+//    return Colliders;
+//}
+//
+//list<CCollider*> CMCTerrain::Active_Current_Chunk_Colliders(_float3 vPos, _float fDistSq)
+//{
+//    list<CCollider*> Colliders;
+//    std::mutex mtx;
+//
+//    wchar_t layerName[100];
+//    swprintf(layerName, 100, L"Layer_Chunk%d", Compute_ChunkIndex(vPos));
+//
+//    list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+//
+//    for (CGameObject* pObj : Objects)
+//    {
+//        m_ThreadPool.Enqueue([&, pObj]() {
+//            auto HandleColliderList = [&](const vector<CCollider_Cube*>& colliderList, COLLISION_GROUP eGroup) {
+//                for (auto pCollider : colliderList)
+//                {
+//                    _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
+//                    _float3 vDiff = vPos - vColliderPos;
+//                    _float fLengthSq = D3DXVec3LengthSq(&vDiff);
+//
+//                    if (fLengthSq < fDistSq)
+//                    {
+//                        std::lock_guard<std::mutex> lock(mtx);
+//                        m_pGameInstance->Add_Collider_CollisionGroup(eGroup, pCollider);
+//                        pCollider->Set_bColliderActive(true);
+//                        Colliders.push_back(pCollider);
+//                    }
+//                }
+//                };
+//
+//            if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
+//            {
+//                HandleColliderList(pBreakableCube->Get_ColliderCube(), COLLISION_BLOCK);
+//            }
+//            else if (CTree* pTree = dynamic_cast<CTree*>(pObj))
+//            {
+//                HandleColliderList(pTree->Get_Wood()->Get_ColliderCube(), COLLISION_BLOCK);
+//                HandleColliderList(pTree->Get_Leaf()->Get_ColliderCube(), COLLISION_BLOCK);
+//            }
+//            else if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pObj))
+//            {
+//                HandleColliderList(pBreakableRect->Get_ColliderRect(), COLLISION_NON_PHYSIC_BLOCK);
+//            }
+//            });
+//    }
+//
+//    m_ThreadPool.WaitAll();
+//
+//    return Colliders;
+//}
+#pragma endregion
+
+
 
 
 void CMCTerrain::ActivateChunkLayer(int chunkIndex, bool _b) {

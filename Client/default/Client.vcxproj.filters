@@ -295,6 +295,9 @@
     <Filter Include="03.UI\04.Inventory\05.Bag">
       <UniqueIdentifier>{9e4d4d43-a141-4586-ab41-0def7821c9a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07.ThreadPool">
+      <UniqueIdentifier>{0783da55-7a07-4269-b997-e343d746f55b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -645,7 +648,7 @@
     </ClInclude>
     <ClInclude Include="..\public\GameMgr.h">
       <Filter>02.GameObjects\08.GameMgr</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\BaseParticleEating.h">
       <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClInclude>
@@ -654,9 +657,12 @@
     </ClInclude>
     <ClInclude Include="..\public\UIDropItem.h">
       <Filter>03.UI\08.DropItem</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Bag.h">
       <Filter>03.UI\04.Inventory\05.Bag</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ThreadPool.h">
+      <Filter>07.ThreadPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1008,6 +1014,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Bag.cpp">
       <Filter>03.UI\04.Inventory\05.Bag</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ThreadPool.cpp">
+      <Filter>07.ThreadPool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

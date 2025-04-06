@@ -223,6 +223,7 @@
     <ClInclude Include="..\public\Rect_Model.h" />
     <ClInclude Include="..\public\RightHand_Object.h" />
     <ClInclude Include="..\public\Right_hand.h" />
+    <ClInclude Include="..\public\ThreadPool.h" />
     <ClInclude Include="..\public\UIDropItem.h" />
     <ClInclude Include="..\public\UIParticleRain.h" />
     <ClInclude Include="..\public\PlayerHunger.h" />
@@ -339,6 +340,7 @@
     <ClCompile Include="..\private\Rect_Model.cpp" />
     <ClCompile Include="..\private\RightHand_Object.cpp" />
     <ClCompile Include="..\private\Right_hand.cpp" />
+    <ClCompile Include="..\private\ThreadPool.cpp" />
     <ClCompile Include="..\private\UIDropItem.cpp" />
     <ClCompile Include="..\private\UIParticleRain.cpp" />
     <ClCompile Include="..\private\PlayerHunger.cpp" />
