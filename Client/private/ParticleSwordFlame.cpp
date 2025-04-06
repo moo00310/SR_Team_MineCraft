@@ -51,6 +51,30 @@ HRESULT CParticleSwordFlame::Initialize(void* pArg)
 	return S_OK;
 }
 
+void CParticleSwordFlame::Late_Update(_float fTimeDelta)
+{
+	// 불검 파티클은 오른손이 깊이 값이 꺼져서 순서를 늦게 출력하기 위해 블렌드로 줌.
+	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_BLEND, this)))
+		return;
+}
+
+HRESULT CParticleSwordFlame::Render()
+{
+	// 불검 파티클은 오른손이 깊이 값이 꺼져서 같이 꺼줌.
+	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, false);
+	m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, false);
+
+	if (FAILED(__super::Render()))
+	{
+		return E_FAIL;
+	}
+
+	m_pGraphic_Device->SetRenderState(D3DRS_ZENABLE, true);
+	m_pGraphic_Device->SetRenderState(D3DRS_ZWRITEENABLE, true);
+
+	return S_OK;
+}
+
 CGameObject* CParticleSwordFlame::Clone(void* pArg)
 {
 	CParticleSwordFlame* pInstance = new CParticleSwordFlame(*this);
