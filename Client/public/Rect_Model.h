@@ -43,5 +43,11 @@ public:
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 
+private:
+	// ¸Ô´Â°Å ÇöÀç ÄğÅ¸ÀÓ.
+	_float m_fCurrentEatTime = {0.f};
+
+	// ¸Ô´Â°Å ÄğÅ¸ÀÓ.
+	const _float m_fEatCoolTime = {0.23f};
 };
 
