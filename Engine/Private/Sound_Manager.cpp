@@ -176,7 +176,7 @@ void CSound_Manager::Add_SoundResource()
 
 void CSound_Manager::Update()
 {
-    if (m_pCoreSystem)
+     if (m_pCoreSystem)
         m_pCoreSystem->update();
 }
 

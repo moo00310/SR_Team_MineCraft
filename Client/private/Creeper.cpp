@@ -234,7 +234,11 @@ HRESULT CCreeper::Ready_Animation()
     mat9.Scaling(1.46f, 1.14f, 1.14f); 
 
     Matrix mat10 = {};
-    mat10.Scaling(1.60f, 1.2f, 1.2f); //마지막 크기
+    mat10.Scaling(1.60f, 1.2f, 1.2f); 
+
+
+    Matrix mat11 = {};
+    mat11.Scaling(1.64f, 1.24f, 1.24f); //마지막 크기
 
     KEYFREAME Attack_1 = { 0.0f,   mat };
     KEYFREAME Attack_2 = { 0.2f,   mat2 };
@@ -246,6 +250,7 @@ HRESULT CCreeper::Ready_Animation()
     KEYFREAME Attack_8 = { 0.8f,   mat8 };
     KEYFREAME Attack_9 = { 0.85f,  mat9 };
     KEYFREAME Attack_10 = { 1.0f,  mat10 };
+    KEYFREAME Attack_11 = { 1.3f,  mat11 };
 
 
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_1);
@@ -258,6 +263,7 @@ HRESULT CCreeper::Ready_Animation()
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_8);
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_9);
     m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_10);
+    m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_11);
 
 
 /*----------
@@ -371,6 +377,10 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
 		{
 			m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
 		}
+
+        // 소리 재생 초기화
+        m_pGameInstance->CheckCreeperExplosion(this, 0);
+        m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
     }
 
 }

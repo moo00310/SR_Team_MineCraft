@@ -74,7 +74,7 @@ private:
 	BlendState m_blendState = {};
 
 private:
-	int m_curFream[AnimTimeCount] = {999};
+	int m_curFream[AnimTimeCount] = {0};
 	bool m_isChangeFrame{ false };
 private:
 	void Update_Mesh();
