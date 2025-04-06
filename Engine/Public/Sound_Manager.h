@@ -16,9 +16,12 @@ BEGIN(Engine)
 class CSound_Manager : public CBase
 {
 public:
+    enum SEPCIALSOUNDTYPE { CREEPER=0, BREAKING=1, SOUND_END=999 };
+public:
     struct TrackedSound {
         FMOD::Channel* pChannel = nullptr;
         void* pObj = nullptr;
+        SEPCIALSOUNDTYPE type;
     };
 private:
     CSound_Manager();
@@ -33,14 +36,13 @@ public:
     // bgm 재생
     void PlayBGM(const std::wstring& soundName);
     // 소리 재생
-    void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f), void* _obj = nullptr);
+    void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f), void* _obj = nullptr, int _type = SOUND_END);
     // 이펙트 소리와 bgm 소리 모두 끔
     void StopAll();
     // 플레이어 위치 업데이트
     void UpdateListener(_float3 pos, _float3 forward, _float3 up);
 
-    // 크리퍼 터지고 있는 지
-    void CheckCreeperExplosion(void* obj, int _anim);
+    void CheckSoundStop(void* obj, int _anim, int _type);
 
 private:
     void Add_SoundResource();

@@ -63,6 +63,8 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
             m_resetHpFrame = 0;
             m_fHp = 100;
             cout << "Reset Hp" << m_fHp << endl;
+
+            m_pGameInstance->CheckSoundStop(this, 0, 1);
         }
     }
 
@@ -154,8 +156,9 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
-
-    return E_FAIL;
+    m_pGameInstance->CheckSoundStop(this, 0, 1);
+    m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 1, fPos);
+    return S_OK;
 }
 
 void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
@@ -163,6 +166,10 @@ void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
     if (m_attackedBlockPos != fPos) {
         m_fHp = 100;
         cout << "Change Block" << m_fHp << endl;
+    }
+
+    if (m_fHp == 100) {
+        m_pGameInstance->PlaySound(TEXT("Block_Breaking"), 1, fPos, this,1);
     }
     
     ITEMNAME _itemname = CUI_Mgr::Get_Instance()->GetItemTypeName();

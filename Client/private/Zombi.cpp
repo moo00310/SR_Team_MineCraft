@@ -341,13 +341,13 @@ void CZombi::FrameCallback(int animType, int frame)
             switch (random)
             {
             case 0:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say1"), m_sound - 0.1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say1"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
                 break;
             case 1:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say2"), m_sound - 0.1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say2"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
                 break;
             case 2:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say3"), m_sound - 0.1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say3"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
                 break;
             default:
                 break;
@@ -356,19 +356,19 @@ void CZombi::FrameCallback(int animType, int frame)
     }
     if (animType == Swing_BF && frame == 2)
     {
-        m_pGameInstance->PlaySound(TEXT("Zombie_Walk2"), m_sound-0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->PlaySound(TEXT("Zombie_Walk2"), m_sound-0.35f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         int random = rand() % 10;
         if (random < 4) {
             switch (random)
             {
             case 0:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say1"), m_sound - 0.1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say1"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
                 break;
             case 1:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say2"), m_sound - 0.1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say2"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
                 break;
             case 2:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say3"), m_sound - 0.1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say3"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
                 break;
             default:
                 break;
