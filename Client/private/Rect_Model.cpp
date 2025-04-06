@@ -43,7 +43,7 @@ void CRect_Model::Update(_float fTimeDelta)
 
 void CRect_Model::Late_Update(_float fTimeDelta)
 {	
-	//FireSword();
+	FireSword();
 
 	__super::Late_Update(fTimeDelta);
 
@@ -267,18 +267,31 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 		
 	m_pSkeletalAnimator->Update_Animetion(EAT, fTimeDelta, 0);
 
-	// 본 월드행렬.
-	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);	
+	// 먹는 파티클.
+	if (m_fCurrentEatTime >= m_fEatCoolTime)
+	{
+		// 본 행렬.
+		Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
 
-	// 먹는 파티클 작동.
-	// TODO :: 추후 딜레이 만들 것.
-	CParticleEventManager::Get_Instance()->OnParticle(
-		PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
-		boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION)
-	);
+		// 먹는 파티클 작동.	
+		CParticleSystem* particle = CParticleEventManager::Get_Instance()->OnParticle(
+			PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
+			boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION)
+		);
+
+		// 포지션만 넣으면 회전 어긋나니까 이것도 똑같이해.
+		particle->GetTransform()->Set_Matrix(boneWorldMatrix);
+
+		// 시간 초기화.
+		m_fCurrentEatTime = 0.f;
+	}	
+
+	// 먹는 쿨타임.
+	m_fCurrentEatTime += fTimeDelta;
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(EAT))
 	{
+		m_fCurrentEatTime = 0.f;
 		m_eCurAnim = INIT;
 	}
 }

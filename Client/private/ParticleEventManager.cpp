@@ -9,7 +9,7 @@ void CParticleEventManager::Initialization(CGameInstance* _device)
 	Safe_AddRef(m_pGameInstance);
 }
 
-void CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, CTransform* _transform, _float _yUp)
+CParticleSystem* CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, CTransform* _transform, _float _yUp)
 {
 	CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬.
 		strPrototypeTag,	// 가져올 프로토타입.
@@ -20,7 +20,7 @@ void CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, CTransfo
 	if (particle == nullptr)
 	{
 		MSG_BOX("파티클 객체를 생성하기 위한 풀 객체가 없습니다");
-		return;
+		return nullptr;
 	}
 
 	// 파티클 적용.
@@ -32,9 +32,11 @@ void CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, CTransfo
 	_pos.y += _yUp;
 
 	particle->Replay(_pos);
+
+	return particle;
 }
 
-void CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, _float3 _position)
+CParticleSystem* CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, _float3 _position)
 {
 	CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬.
 		strPrototypeTag,	// 가져올 프로토타입.
@@ -45,11 +47,13 @@ void CParticleEventManager::OnParticle(const _wstring& strPrototypeTag, _float3 
 	if (particle == nullptr)
 	{
 		MSG_BOX("파티클 객체를 생성하기 위한 풀 객체가 없습니다");
-		return;
+		return nullptr;
 	}
 
 	// 파티클 적용.	
 	particle->Replay(_position);
+	
+	return particle;
 }
 
 void CParticleEventManager::Free()

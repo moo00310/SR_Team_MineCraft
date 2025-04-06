@@ -58,7 +58,7 @@ private:
 	_float Compute_PlayerDistance();
 
 	// UI 드랍 아이템 나오게한다.
-	void OnDropItem();
+	void OnDropItem(ITEMNAME _itemName);
 
 public:
 	static CItemCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

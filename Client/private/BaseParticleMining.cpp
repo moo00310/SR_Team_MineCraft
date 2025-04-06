@@ -1,6 +1,6 @@
 #include "BaseParticleMining.h"
 
-// 나무 캘 때 파티클.
+// 캘 때 파티클.
 CBaseParticleMining::CBaseParticleMining(LPDIRECT3DDEVICE9 pGraphic_Device) : CParticleSystem(pGraphic_Device)
 {
 }
@@ -59,7 +59,7 @@ ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 	ParticleAttribute att;	
 	att.vPosition = { GetRandomFloat(-0.2f, 0.2f), GetRandomFloat(-0.2f, 0.2f), 0.f };	
 	att.vColor = Float3ToHex({ bight, bight, bight });
-	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };
+	att.vVelocity = { GetRandomFloat(-2.f, 2.f), 0.f, GetRandomFloat(-2.f, 2.f) };
 	att.IsTime = true;
 	att.fCurrentTime = 0.f;
 	att.fEndTime = 0.6f;	
@@ -67,9 +67,9 @@ ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 
 	// 중력 적용.
 	att.IsGravity = true;
-	att.fGravityJumpPower = GetRandomFloat(0.1f, 0.5f);
+	att.fGravityJumpPower = GetRandomFloat(0.5f, 1.f);
 	att.fGravityTime = 0.f;
-	att.fGravity = 14.8f;
+	att.fGravity = 6.8f;
 
 	return att;
 }
@@ -80,6 +80,7 @@ void CBaseParticleMining::OnBoundingExit(ParticleAttribute& particle)
 
 void CBaseParticleMining::OnReplay(ParticleAttribute& particle)
 {
-	particle.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, 0.f };
-	particle.fGravityJumpPower = GetRandomFloat(1.8f, 2.f);
+	particle.vVelocity = { GetRandomFloat(-2.f, 2.f), 0.f, GetRandomFloat(-2.f, 2.f) };
+	particle.fGravityJumpPower = GetRandomFloat(0.5f, 1.f);
+	particle.fGravityTime = 0.f;
 }

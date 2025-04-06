@@ -234,7 +234,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down('L'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_1, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_SWORD, 1);
 	}
 
 }

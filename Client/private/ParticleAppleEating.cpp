@@ -29,7 +29,7 @@ CParticleAppleEating* CParticleAppleEating::Create(LPDIRECT3DDEVICE9 pGraphic_De
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CParticleDash");
+		MSG_BOX("Failed to Created : CParticleAppleEating");
 		Safe_Release(pInstance);
 	}
 

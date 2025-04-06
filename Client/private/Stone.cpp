@@ -76,6 +76,12 @@ HRESULT CStone::Delete_Cube(_float3 fPos)
 
             }
 
+            // 돌 파괴 파티클.
+            CParticleEventManager::Get_Instance()->OnParticle(
+                PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_DESTROY,
+                m_vecPositions[i]
+            );
+
             // 2. 벡터에서 해당 위치 제거
             m_vecPositions.erase(m_vecPositions.begin() + i);
             m_vecBrights.erase(m_vecBrights.begin() + i);

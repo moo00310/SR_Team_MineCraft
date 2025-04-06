@@ -36,16 +36,21 @@ CParticleSandDestroy* CParticleSandDestroy::Create(LPDIRECT3DDEVICE9 pGraphic_De
 	return pInstance;
 }
 
+void CParticleSandDestroy::OnPushPool()
+{
+	iCurrentTextureIndex = kMINING::MINING_DIRT;
+}
+
 HRESULT CParticleSandDestroy::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SAND_MINING,
-		TEXT("Com_Component_Sand_Mining"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_MINING,
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Component_Transform"), reinterpret_cast<CComponent**>(&m_pTransform), &TransformDesc)))
-		return E_FAIL;
+		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransform), &TransformDesc)))
+		return E_FAIL;	
 
 	return S_OK;
 }
