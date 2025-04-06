@@ -36,15 +36,20 @@ CParticleSandMining* CParticleSandMining::Create(LPDIRECT3DDEVICE9 pGraphic_Devi
 	return pInstance;
 }
 
+void CParticleSandMining::OnPushPool()
+{
+	iCurrentTextureIndex = kMINING::MINING_DIRT;
+}
+
 HRESULT CParticleSandMining::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SAND_MINING,
-		TEXT("Com_Component_Sand_Mining"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_MINING,
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransform))))
-		return E_FAIL;
+		return E_FAIL;	
 
 	return S_OK;
 }

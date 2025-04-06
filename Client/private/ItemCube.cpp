@@ -67,7 +67,7 @@ void CItemCube::Update(_float fTimeDelta)
 
     if (fDist < 0.1f)
     {
-        OnDropItem();
+        OnDropItem(m_eItemName);
 
         Destroy();
         CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
@@ -203,13 +203,15 @@ _float CItemCube::Compute_PlayerDistance()
     return fLength;
 }
 
-void CItemCube::OnDropItem()
+void CItemCube::OnDropItem(ITEMNAME _itemName)
 {
     CUIDropItem* dropItem = (CUIDropItem*)m_pGameInstance->PushPool(LEVEL_YU,		// 적용 씬.
         PROTOTYPE_GAMEOBJECT_UI_DROP_ITEM,	// 가져올 프로토타입.
         LEVEL_YU,		// 가져올 씬.
         LAYER_UI_POOL	// 애드오브젝트에 추가할 레이어.
     );
+
+    dropItem->SetItemName(_itemName);
 
     // UI 가방 좌표.
     _float3 bagPos = CUI_Mgr::Get_Instance()->Get_Bag()->GetTransform()->Get_State(CTransform::STATE_POSITION);

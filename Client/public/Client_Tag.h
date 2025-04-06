@@ -19,8 +19,8 @@ static const _wstring PROTOTYPE_COMPONENT_TEXTURE_DASH = TEXT("Prototype_Compone
 // ´Þ¸®±â ÆÄÆ¼Å¬.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_DASH = TEXT("Prototype_GameObject_ParticleDash");
 
-// Èë Ã¤±¼/ÆÄ±« ÅØ½ºÃÄ.
-static const _wstring PROTOTYPE_COMPONENT_TEXTURE_SAND_MINING = TEXT("Prototype_Component_Texture_Sand_Mining");
+// Ã¤±¼/ÆÄ±« ÅØ½ºÃÄ.
+static const _wstring PROTOTYPE_COMPONENT_TEXTURE_MINING = TEXT("Prototype_Component_Texture_Mining");
 
 // Èë Ã¤±¼ ÆÄÆ¼Å¬.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING = TEXT("Prototype_GameObject_ParticleSandMining");
@@ -28,11 +28,11 @@ static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING = TEXT("Prototyp
 // Èë ÆÄ±« ÆÄÆ¼Å¬.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY = TEXT("Prototype_GameObject_ParticleSandDestroy");
 
-// ³ª¹« Ã¤±¼/ÆÄ±« ÅØ½ºÃÄ.
-static const _wstring PROTOTYPE_COMPONENT_TEXTURE_WOOD_MINING = TEXT("Prototype_Component_Texture_Wood_Mining");
-
 // ³ª¹« Ã¤±¼ ÆÄÆ¼Å¬.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING = TEXT("Prototype_GameObject_ParticleWoodMining");
+
+// µ¹ Ã¤±¼ ÆÄÆ¼Å¬.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING = TEXT("Prototype_GameObject_Particle_Stone_Mining");
 
 // Æø¹ß ÅØ½ºÃÄ.
 static const _wstring PROTOTYPE_COMPONENT_TEXTURE_EXPLOSION = TEXT("Prototype_Component_Texture_Explosion");

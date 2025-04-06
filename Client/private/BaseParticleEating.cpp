@@ -46,13 +46,15 @@ HRESULT CBaseParticleEating::Initialize(void* pArg)
 
 HRESULT CBaseParticleEating::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SAND_MINING,
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_MINING,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransform))))
 		return E_FAIL;
+
+	iCurrentTextureIndex = 0;
 
 	return S_OK;
 }

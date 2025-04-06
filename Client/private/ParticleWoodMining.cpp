@@ -36,11 +36,22 @@ CParticleWoodMining* CParticleWoodMining::Create(LPDIRECT3DDEVICE9 pGraphic_Devi
 	return pInstance;
 }
 
+void CParticleWoodMining::OnPushPool()
+{
+	iCurrentTextureIndex = kMINING::MINING_WOOD;
+}
+
 HRESULT CParticleWoodMining::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_WOOD_MINING,
-		TEXT("Com_Component_Wood_Mining"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_MINING,
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
+
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransform))))
+		return E_FAIL;
+
+	iCurrentTextureIndex = 1;
 
 	return S_OK;
 }

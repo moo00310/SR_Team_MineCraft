@@ -80,7 +80,7 @@ HRESULT CUIDropItem::Render()
 		return E_FAIL;
 	}		
 
-	if (FAILED(m_pTextureCom->Bind_Resource(0)))
+	if (FAILED(m_pTextureCom->Bind_Resource(m_kITEM_NAME)))
 	{
 		return E_FAIL;
 	}	
@@ -154,6 +154,11 @@ CTransform* CUIDropItem::GetTransform() const
 void CUIDropItem::SetTargetPosition(_float2 _target)
 {
 	m_vTargetPosition = _target;
+}
+
+void CUIDropItem::SetItemName(ITEMNAME _itemName)
+{
+	m_kITEM_NAME = _itemName;
 }
 
 HRESULT CUIDropItem::Ready_Components()

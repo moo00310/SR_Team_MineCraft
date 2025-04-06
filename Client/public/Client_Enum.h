@@ -37,6 +37,13 @@ namespace Client
 		ITEMNAME_END = 999
 	};
 
-
+	// 캐는 이미지 넘버.
+	enum kMINING
+	{
+		MINING_DIRT = 0,		// 흙.
+		MINING_WOOD,			// 나무.
+		MINING_STONE,			// 돌.
+		MINING_END
+	};
 }
 

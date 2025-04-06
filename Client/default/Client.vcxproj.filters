@@ -645,7 +645,7 @@
     </ClInclude>
     <ClInclude Include="..\public\GameMgr.h">
       <Filter>02.GameObjects\08.GameMgr</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\BaseParticleEating.h">
       <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClInclude>
@@ -654,9 +654,12 @@
     </ClInclude>
     <ClInclude Include="..\public\UIDropItem.h">
       <Filter>03.UI\08.DropItem</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Bag.h">
       <Filter>03.UI\04.Inventory\05.Bag</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleStoneMining.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1008,6 +1011,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Bag.cpp">
       <Filter>03.UI\04.Inventory\05.Bag</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleStoneMining.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

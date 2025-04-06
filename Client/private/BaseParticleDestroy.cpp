@@ -77,4 +77,5 @@ void CBaseParticleDestroy::OnReplay(ParticleAttribute& particle)
 {
 	particle.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };
 	particle.fGravityJumpPower = GetRandomFloat(1.8f, 2.f);
+	particle.fGravityTime = 0.f;
 }

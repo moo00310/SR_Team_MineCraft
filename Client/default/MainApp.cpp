@@ -30,6 +30,7 @@
 #include "ParticleFireCracker.h"
 #include "ParticleCharging.h"
 #include "ParticleAppleEating.h"
+#include "ParticleStoneMining.h"
 
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
@@ -235,6 +236,11 @@ HRESULT CMainApp::Ready_Particle()
 		CParticleWoodMining::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// 돌 캐는 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING,
+		CParticleStoneMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// 흙 파괴 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
 		CParticleSandDestroy::Create(m_pGraphic_Device))))
@@ -304,15 +310,9 @@ HRESULT CMainApp::Ready_Texture()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/dash.png"), 1))))
 		return E_FAIL;
 
-	// TODO : 블럭 채굴/파괴 텍스쳐.
-	// 흙.
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SAND_MINING,
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/sand_mining.png"), 1))))
-		return E_FAIL;
-
-	// 나무.
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_WOOD_MINING,
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/wood_mining.png"), 1))))
+	// TODO : 블럭 채굴/파괴 텍스쳐.	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_MINING,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/mining_%d.png"), 3))))
 		return E_FAIL;
 
 	// TODO : 폭발 텍스쳐.

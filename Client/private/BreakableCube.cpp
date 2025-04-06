@@ -167,6 +167,8 @@ void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
     
     ITEMNAME _itemname = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
+    _wstring particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING;
+
     switch (_itemname)
     {
     case Client::ITEMNAME_PICKAXE:
@@ -212,9 +214,11 @@ void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_WOOD:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_STONE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_COBBLESTONE:
@@ -237,7 +241,7 @@ void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
 
 
     CParticleEventManager::Get_Instance()->OnParticle(
-        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_MINING,
+        particleTag,
         fPos);
 }
 

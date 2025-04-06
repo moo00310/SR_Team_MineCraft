@@ -30,6 +30,7 @@ public:
 	void SetDirection(_float2 _direction);
 	CTransform* GetTransform() const;
 	void SetTargetPosition(_float2 _target);
+	void SetItemName(ITEMNAME _itemName);
 
 private:
 	HRESULT Ready_Components();
@@ -39,6 +40,8 @@ private:
 
 	// µµÂø º¤ÅÍ.
 	_float2 m_vTargetPosition;
+
+	ITEMNAME m_kITEM_NAME;
 
 private:
 	CTransform* m_pTransformCom = { nullptr };

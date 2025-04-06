@@ -14,6 +14,7 @@ public:
 	// CParticleSystem을(를) 통해 상속됨
 	CGameObject* Clone(void* pArg) override;
 	static CParticleSandMining* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	virtual void OnPushPool() override;	
 
 protected:
 	virtual HRESULT Ready_Components() override;
