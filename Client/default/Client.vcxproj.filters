@@ -295,6 +295,9 @@
     <Filter Include="03.UI\04.Inventory\05.Bag">
       <UniqueIdentifier>{9e4d4d43-a141-4586-ab41-0def7821c9a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.Particle\Eat">
+      <UniqueIdentifier>{f3839b38-8c13-4998-a407-3bbd409c0e84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -649,17 +652,17 @@
     <ClInclude Include="..\public\BaseParticleEating.h">
       <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ParticleAppleEating.h">
-      <Filter>02.GameObjects\05.Particle</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\UIDropItem.h">
       <Filter>03.UI\08.DropItem</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bag.h">
       <Filter>03.UI\04.Inventory\05.Bag</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleAppleEating.h">
+      <Filter>02.GameObjects\05.Particle\Eat</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\ParticleStoneMining.h">
-      <Filter>02.GameObjects\05.Particle</Filter>
+      <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1003,17 +1006,17 @@
     <ClCompile Include="..\private\BaseParticleEating.cpp">
       <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ParticleAppleEating.cpp">
-      <Filter>02.GameObjects\05.Particle</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\UIDropItem.cpp">
       <Filter>03.UI\08.DropItem</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bag.cpp">
       <Filter>03.UI\04.Inventory\05.Bag</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\ParticleAppleEating.cpp">
+      <Filter>02.GameObjects\05.Particle\Eat</Filter>
+    </ClCompile>
     <ClCompile Include="..\private\ParticleStoneMining.cpp">
-      <Filter>02.GameObjects\05.Particle</Filter>
+      <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
