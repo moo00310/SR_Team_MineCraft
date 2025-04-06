@@ -298,6 +298,9 @@
     <Filter Include="07.ThreadPool">
       <UniqueIdentifier>{0783da55-7a07-4269-b997-e343d746f55b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.Cube\ItemObj\Items">
+      <UniqueIdentifier>{3539fe27-fc9f-41fc-ae2f-03844b52dc7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">

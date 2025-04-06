@@ -285,7 +285,7 @@ void CZombi::Motion_Dead(_float fTimeDelta)
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
         //m_isDestroyed = true;
-        m_pGameInstance->PlaySound(TEXT("Zombie_Death"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->PlaySound(TEXT("Zombie_Death"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
     }
 }
@@ -333,8 +333,47 @@ void CZombi::FrameCallback(int animType, int frame)
 	// 애니메이션 타입 + 애니메이션 프레임에 맞는 행동을 하게끔 구현하면 됨
     // 공격 마지막 프레임(2) 은 버그있음 넉백때문에 마지막프레임에 안들어감
 
-    if (animType == Attack && frame == 1)
+    if (animType == Swing_FF && frame == 2)
     {
-		cout << "공격" << endl;
+        m_pGameInstance->PlaySound(TEXT("Zombie_Walk1"), m_sound-0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        int random = rand() % 10;
+        if (random < 4) {
+            switch (random)
+            {
+            case 0:
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say1"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                break;
+            case 1:
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say2"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                break;
+            case 2:
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say3"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                break;
+            default:
+                break;
+            }
+        }
     }
+    if (animType == Swing_BF && frame == 2)
+    {
+        m_pGameInstance->PlaySound(TEXT("Zombie_Walk2"), m_sound-0.35f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        int random = rand() % 10;
+        if (random < 4) {
+            switch (random)
+            {
+            case 0:
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say1"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                break;
+            case 1:
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say2"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                break;
+            case 2:
+                m_pGameInstance->PlaySound(TEXT("Zombie_Say3"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
 }

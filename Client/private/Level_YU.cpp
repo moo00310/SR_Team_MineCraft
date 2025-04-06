@@ -7,6 +7,8 @@
 #include "UI_Mgr.h"
 #include "Pawn.h"
 
+#include "Sun.h"
+
 CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
 {
@@ -99,6 +101,7 @@ HRESULT CLevel_YU::Initialize()
 
 	///////////////////////////////////////////////////////////
 
+
 	return S_OK;
 }
 
@@ -107,6 +110,12 @@ void CLevel_YU::Update(_float fTimeDelta)
 	ftime += fTimeDelta;
 	m_iFPS++;
 
+	// 시간 빨리 가게 하려고
+	if (m_pGameInstance->Key_Down(VK_F1)) {
+		if (CSun* _sun = dynamic_cast<CSun*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Sun")))) {
+			_sun->Set_bAddTime();
+		}
+	}
 }
 
 HRESULT CLevel_YU::Render()

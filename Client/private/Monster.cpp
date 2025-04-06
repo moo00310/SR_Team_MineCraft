@@ -29,6 +29,7 @@ HRESULT CMonster::Initialize(void* pArg)
 
     m_pTargetPawn = static_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")));
     Safe_AddRef(m_pTargetPawn);
+    m_sound = 0.5f;
 
     return S_OK;
 }
@@ -136,18 +137,18 @@ void CMonster::Knock_back(const _float3& vforce)
     {
     case Client::CMonster::MT_Zombie:
         if (random < 5) {
-            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt1"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt1"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         else {
-            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt2"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt2"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         break;
     case Client::CMonster::MT_Creeper:
         if (random < 5) {
-            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt1"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt1"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         else {
-            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt2"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt2"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         break;
     case Client::CMonster::MT_END:
