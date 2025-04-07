@@ -41,7 +41,8 @@ private:
 	void InitMissions3();
 	CSun* m_sun = nullptr;
 
-	bool m_bFinish = false;
+	bool m_bDayFinish = false;
+	bool m_bNightFinish = false;
 private:
 	int m_currentStage=0;
 	vector<vector<missionDetail>> m_Round1;

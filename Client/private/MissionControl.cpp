@@ -34,7 +34,7 @@ void CMissionControl::InitMissions1() {
         { L"나무", 5 }
     });
 
-    m_Round1Finish.emplace_back(std::vector<missionCheck>{
+  /*  m_Round1Finish.emplace_back(std::vector<missionCheck>{
         { L"제작대", 1 }
     });
 
@@ -50,7 +50,7 @@ void CMissionControl::InitMissions1() {
 
     m_Round1Finish.emplace_back(std::vector<missionCheck>{
         { L"블럭", 5 }
-    });
+    });*/
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1WaveFinish.emplace_back(std::vector<missionCheck>{
@@ -62,7 +62,7 @@ void CMissionControl::InitMissions1() {
         { L"나무", L"나무 5개 벌목하기"}
     });
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
+   /* m_Round1.emplace_back(std::vector<missionDetail>{
         { L"제작대", L"제작대 만들기"}
     });
 
@@ -78,7 +78,7 @@ void CMissionControl::InitMissions1() {
 
     m_Round1.emplace_back(std::vector<missionDetail>{
         { L"블럭", L"블럭 5개 설치"}
-    });
+    });*/
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
@@ -163,11 +163,17 @@ void CMissionControl::InitMissions3()
 void CMissionControl::Priority_Update(_float fTimeDelta)
 {
     // 끝났으면 시간 빠르게 가기
-    if (m_bFinish) {
-        m_sun->Set_bAddTime();
+    if (m_bDayFinish) {
         if (g_fBright <= 0.25) {
             m_sun->Set_bAddTime();
-            m_bFinish = false;
+            m_bDayFinish = false;
+        }
+    }
+
+    if (m_bNightFinish) {
+        if (g_fBright >= 0.75) {
+            m_sun->Set_bAddTime();
+            m_bNightFinish = false;
         }
     }
 }
@@ -193,10 +199,33 @@ void CMissionControl::Update(_float fTimeDelta)
 
         if (m_checkFinishStage) {
             m_currentStage++;
-            m_bFinish = true;
+            m_bDayFinish = true;
+            m_pGameInstance->PlayBGM(L"MoogCity2");
+            m_sun->Set_bAddTime();
         }
         break;
     case 1:
+        for (int i = 0; i < m_Round1WaveFinish.size(); ++i) {
+            for (int j = 0; j < m_Round1WaveFinish[i].size(); ++j) {
+                if (m_Round1Wave[i][j].name == m_Round1WaveFinish[i][j].name) {
+                    if (m_Round1Wave[i][j].count == m_Round1WaveFinish[i][j].count) {
+                        m_Round1Wave[i][j].finish = true;
+                    }
+                    else {
+                        m_checkFinishStage = false;
+                    }
+                }
+            }
+        }
+
+        if (m_checkFinishStage) {
+            m_currentStage++;
+            m_bNightFinish = true;
+            m_pGameInstance->PlayBGM(L"sweden");
+            m_sun->Set_bAddTime();
+        }
+        break;
+    case 2:
         for (int i = 0; i < m_Round2Finish.size(); ++i) {
             for (int j = 0; j < m_Round2Finish[i].size(); ++j) {
                 if (m_Round2[i][j].name == m_Round2Finish[i][j].name) {
@@ -214,7 +243,7 @@ void CMissionControl::Update(_float fTimeDelta)
             m_currentStage++;
         }
         break;
-    case 2:
+    case 3:
         for (int i = 0; i < m_Round3Finish.size(); ++i) {
             for (int j = 0; j < m_Round3Finish[i].size(); ++j) {
                 if (m_Round3[i][j].name == m_Round3Finish[i][j].name) {
@@ -256,6 +285,13 @@ void CMissionControl::Update_Mission(wstring name)
         }
         break;
     case 1:
+        for (int i = 0; i < m_Round1Wave.size(); ++i) {
+            for (int j = 0; j < m_Round1Wave[i].size(); ++j) {
+                if (m_Round1Wave[i][j].name == name) {
+                    m_Round1Wave[i][j].count++;
+                }
+            }
+        }
         break;
     case 2:
         break;
@@ -278,6 +314,14 @@ vector<CMissionControl::showMission> CMissionControl::Get_MissionList()
         }
         break;
     case 1:
+        for (int i = 0; i < m_Round1Wave.size(); ++i) {
+            for (int j = 0; j < m_Round1Wave[i].size(); ++j) {
+                showMission _mission = { m_Round1Wave[i][j].word, m_Round1Wave[i][j].count, m_Round1WaveFinish[i][j].count };
+                _vec.push_back(_mission);
+            }
+        }
+        break;
+    case 2:
         for (int i = 0; i < m_Round2.size(); ++i) {
             for (int j = 0; j < m_Round2[i].size(); ++j) {
                 showMission _mission = { m_Round2[i][j].word, m_Round2[i][j].count, m_Round2Finish[i][j].count };
@@ -285,7 +329,7 @@ vector<CMissionControl::showMission> CMissionControl::Get_MissionList()
             }
         }
         break;
-    case 2:
+    case 3:
         for (int i = 0; i < m_Round3.size(); ++i) {
             for (int j = 0; j < m_Round3[i].size(); ++j) {
                 showMission _mission = { m_Round3[i][j].word, m_Round3[i][j].count, m_Round3Finish[i][j].count };

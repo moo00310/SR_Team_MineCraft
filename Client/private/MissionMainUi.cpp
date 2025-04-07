@@ -91,6 +91,7 @@ HRESULT CMissionMainUi::Render()
 
     if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
         vector<CMissionControl::showMission> _vecMission = _control->Get_MissionList();
+
         RECT rect = { 1000, 220, 1280, 300 };
         for (int i = 0; i < _vecMission.size(); ++i) {
             wstring _word;

@@ -103,6 +103,7 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////////
+	m_pGameInstance->PlayBGM(L"sweden");
 
 	return S_OK;
 }

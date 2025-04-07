@@ -1,6 +1,7 @@
 #include "Zombi.h"
 #include "ItemRect.h"
 #include "MCTerrain.h"
+#include "MissionControl.h"
 
 CZombi::CZombi(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CMonster{ pGraphic_Device }
@@ -307,6 +308,10 @@ void CZombi::Motion_Dead(_float fTimeDelta)
         if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
             _copy->SetPos(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
             _copy->Set_ItemTypeAndBindTexture(ITEMNAME_ROTTENFLESH);
+        }
+
+        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+            _control->Update_Mission(L"Á»ºñ");
         }
     }
 }
