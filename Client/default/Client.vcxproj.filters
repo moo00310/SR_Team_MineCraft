@@ -309,7 +309,7 @@
    </Filter>
     <Filter Include="02.GameObjects\09.Effect">
       <UniqueIdentifier>{0c0e97dc-4081-4894-8b9c-53b4466b61bb}</UniqueIdentifier>
-    /Filter>
+    </Filter>
     <Filter Include="08.Mission">
       <UniqueIdentifier>{4d903306-9314-4904-b66e-9358099703b1}</UniqueIdentifier>
     </Filter>

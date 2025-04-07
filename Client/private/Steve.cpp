@@ -214,28 +214,28 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down('C'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_TORCH, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_WOOD_PICKAXE, 1);
 	}
 	if (m_pGameInstance->Key_Down('V'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_APPLE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STONE_SWORD, 1);
 	}
 	if (m_pGameInstance->Key_Down('B'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GRASSDIRT, 64);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STONE_AXE, 1);
 	}
 	if (m_pGameInstance->Key_Down('N'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_SAPLING, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STONE_PICKAXE, 1);
 	}
 	if (m_pGameInstance->Key_Down('M'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_1, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STEEL_SWORD, 1);
 	}
 
 	if (m_pGameInstance->Key_Down('L'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_SWORD, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_1, 1);
 	}
 
 }

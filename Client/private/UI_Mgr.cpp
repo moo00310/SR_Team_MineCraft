@@ -186,7 +186,7 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 	{
 		m_ItemID = ITEMID_BLOCK;
 	}
-	else if (_ItemName >= 109 && _ItemName < ITEMNAME_RECT_END)
+	else if (_ItemName >= ITEMNAME_WOOD_PICKAXE && _ItemName < ITEMNAME_RECT_END)
 		m_ItemID = ITEMID_ARMOR;
 	else
 		m_ItemID = ITEMID_END;

@@ -87,43 +87,48 @@ HRESULT CWood::Drop_Item_OnDestroy(const _float3& fPos)
 		pItem->SetPos(fPos);
 		pItem->Set_ItemTypeAndBindTexture(ITEMNAME_WOOD);
 
-	for (size_t i = 0; i < m_vecPositions.size(); ++i)
-	{
-		if (m_vecPositions[i].x == fPos.x &&
-			m_vecPositions[i].y == fPos.y &&
-			m_vecPositions[i].z == fPos.z)
-		{
-			if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
-				return E_FAIL;
+		////////////////////////////////////////
+		// 여기도 뭔가 병합하면서 꼬임 -무결-
+		// /////////////////////////////////
+	
+		//for (size_t i = 0; i < m_vecPositions.size(); ++i)
+		//{
+		//	if (m_vecPositions[i].x == fPos.x &&
+		//		m_vecPositions[i].y == fPos.y &&
+		//		m_vecPositions[i].z == fPos.z)
+		//	{
+		//		if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
+		//			return E_FAIL;
 
-			wchar_t layerName[100];
-			swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
-			if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"), LEVEL_YU, layerName)))
-				return E_FAIL;
-			if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
-				_copy->SetPos(m_vecPositions[i]);
-				_copy->Set_ItemTypeAndBindTexture(ITEMNAME_WOOD);
-			}
+		//		wchar_t layerName[100];
+		//		swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+		//		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"), LEVEL_YU, layerName)))
+		//			return E_FAIL;
+		//		if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+		//			_copy->SetPos(m_vecPositions[i]);
+		//			_copy->Set_ItemTypeAndBindTexture(ITEMNAME_WOOD);
+		//		}
 
-			// 2. 벡터에서 해당 위치 제거
-			m_vecPositions.erase(m_vecPositions.begin() + i);
-			m_vecBrights.erase(m_vecBrights.begin() + i);
+		//		// 2. 벡터에서 해당 위치 제거
+		//		m_vecPositions.erase(m_vecPositions.begin() + i);
+		//		m_vecBrights.erase(m_vecBrights.begin() + i);
 
-			// 3. 콜라이더 제거
-			Safe_Release(m_Colliders[i]);
-			m_Colliders.erase(m_Colliders.begin() + i);
+		//		// 3. 콜라이더 제거
+		//		Safe_Release(m_Colliders[i]);
+		//		m_Colliders.erase(m_Colliders.begin() + i);
 
-			// 4. 인스턴스 버퍼 업데이트
-			m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
-			__super::Delete_Cube(fPos);
+		//		// 4. 인스턴스 버퍼 업데이트
+		//		m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
+		//		__super::Delete_Cube(fPos);
 
-			if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
-				_control->Update_Mission(L"나무");
-			}
+		//		if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+		//			_control->Update_Mission(L"나무");
+		//		}
 
-			return S_OK;
-		}
+		//		return S_OK;
+		//	}
 
+		//}
 	}
 
 	return S_OK;
