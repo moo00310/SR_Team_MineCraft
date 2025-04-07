@@ -99,6 +99,11 @@ HRESULT CCamera_Player::Render()
 	return S_OK;
 }
 
+CTransform* CCamera_Player::GetTransform() const
+{
+    return m_pTransformCom;
+}
+
 void CCamera_Player::Input_Key(_float fTimeDelta)
 {
     // 창이 활성화 상태가 아닐 경우 입력을 무시

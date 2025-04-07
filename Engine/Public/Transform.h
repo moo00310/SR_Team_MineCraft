@@ -67,6 +67,8 @@ public:
 	void Go_Backward(_float fTimeDelta);
 	void Go_Left(_float fTimeDelta);
 	void Go_Right(_float fTimeDelta);
+	void Go_Up(_float fTimeDelta);
+	void Go_Down(_float fTimeDelta);
 
 	// 해당 방향으로 감.
 	void Go_Direction(const _float3& _direction, _float fTimeDelta);

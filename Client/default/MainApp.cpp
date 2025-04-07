@@ -32,6 +32,7 @@
 #include "ParticleAppleEating.h"
 #include "ParticleStoneMining.h"
 #include "ParticleStoneDestroy.h"
+#include "ParticleSwordAura.h"
 
 LPD3DXFONT g_pTitleFont = nullptr;
 LPD3DXFONT g_pDetailFont = nullptr;
@@ -286,6 +287,11 @@ HRESULT CMainApp::Ready_Particle()
 		CParticleAppleEating::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// 검기 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA,
+		CParticleSwordAura::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -376,6 +382,11 @@ HRESULT CMainApp::Ready_Texture()
 	// 플래시 텍스쳐.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXUTRE_GLITTER,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/glitter_%d.png"), 8))))
+		return E_FAIL;
+
+	// 검기 파티클 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTYPE_COMPONENT_TEXTURE_GLOW,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/glow.png"), 1))))
 		return E_FAIL;
 
 	return S_OK;

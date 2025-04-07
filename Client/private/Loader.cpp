@@ -51,6 +51,7 @@
 #include "VIBuffer_Cube_Only.h"
 #include "DestroyCube.h"
 #include "UIDropItem.h"
+#include "SwordAura.h"
 
 //Woo
 #include "MainLogo.h"
@@ -459,6 +460,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Cube_model/Cube_model_%d.png"), Cube_Model_Count))))
 		return E_FAIL;
 
+	// 검기 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_COMPONENT_TEXTURE_SWORD_AURA,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/sword_aura.png"), 1))))
+    return E_FAIL;
+
 	/* For.Prototype_Component_Texture_Gunpowder*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Gunpowder"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/gunpowder.png"), 1))))
@@ -783,6 +789,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_ItemRect */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"),
 		CItemRect::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_SwordAura */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_GAMEOBJECT_SWORD_AURA,
+		CSwordAura::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	//===============================================================================================
