@@ -28,6 +28,9 @@ public:
 
 	CTransform* GetTransform() const;
 
+	// 타이머 활성화.
+	void SetTimer(_float _endTime);
+
 protected:
 	// 렌더링 전 상태 셋팅.
 	virtual HRESULT PrevRender();
