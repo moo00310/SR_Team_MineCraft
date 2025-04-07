@@ -221,7 +221,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('B'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GRASSDIRT, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GRASSDIRT, 64);
 	}
 	if (m_pGameInstance->Key_Down('N'))
 	{

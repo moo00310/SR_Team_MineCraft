@@ -70,7 +70,7 @@ void CItemCube::Update(_float fTimeDelta)
         OnDropItem(m_eItemName);
 
         Destroy();
-        CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
+     CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
     }
     else if (fDist < 1.5f)
     {

@@ -27,14 +27,13 @@ public:
 	virtual HRESULT Render()override;
 
 public:
-	_bool		Get_Check()		{ return m_bCheck; }
-	ITEMNAME	Get_ItemName()	{ return m_ItemName; }
+	_bool		Get_Check()			{ return m_bCheck; }
+	ITEMNAME	Get_ItemName()		{ return m_ItemName; }
 
 public:
 	void Set_Check(_bool _bCheck)			{ m_bCheck = _bCheck; }
 	void Set_ItemName(ITEMNAME _ItemName)	{ m_ItemName = _ItemName; }
 	void Set_ItemPos(UIOBJECT_DESC _Desc)	{ Desc = _Desc; }
-
 	void Change_TextureNum(_int _ItemName);
 
 private:
