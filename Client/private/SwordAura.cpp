@@ -63,7 +63,7 @@ HRESULT CSwordAura::Initialize(void* pArg)
 }
 
 void CSwordAura::Priority_Update(_float fTimeDelta)
-{
+{	
 }
 
 void CSwordAura::Update(_float fTimeDelta)
@@ -71,6 +71,18 @@ void CSwordAura::Update(_float fTimeDelta)
 	// 전진이 아니라 다운인 이유는
 	// 90도 회전 시켜서 나아갸아하기 때문.
 	m_pTransformCom->Go_Down(fTimeDelta);	
+
+	// 여기 각도 관련 보완해야댐.
+	_float3 pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+	CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA,
+		{pos.x - 3.f, pos.y, pos.z}
+	);
+
+	CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA,
+		{ pos.x + 3.f, pos.y, pos.z }
+	);
 }
 
 void CSwordAura::Late_Update(_float fTimeDelta)

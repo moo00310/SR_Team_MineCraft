@@ -528,6 +528,16 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		return E_FAIL;
 	}
 
+	// 검기 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		20)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
 
 	return S_OK;
 }

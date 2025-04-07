@@ -682,6 +682,9 @@
     <ClInclude Include="..\public\SwordAura.h">
       <Filter>02.GameObjects\09.Effect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleSwordAura.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1044,6 +1047,9 @@
     </ClCompile>
     <ClCompile Include="..\private\SwordAura.cpp">
       <Filter>02.GameObjects\09.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleSwordAura.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
