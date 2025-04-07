@@ -91,7 +91,7 @@ HRESULT CSwordAura::Render()
 
 	m_pTransformCom->Bind_Resource(m_pShaderCom);
 	m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
-	m_pShaderCom->Begin(1);
+	m_pShaderCom->Begin(2);
 
 	/* 정점을 그린다. */
 	if (FAILED(m_pVIBufferRectCom->Render()))
