@@ -43,6 +43,9 @@ public:
 	void LevelUp();
 	/* 아이템 개수 업데이트*/
 	void ItemCount_Update(ITEMNAME _ItemNamem, _int AddCount);
+	/* 아이템 개수 나누기 */
+	void Split_ItemStack(_int _SlotIndex, ITEMID _ItemID, ITEMNAME _ItemName);
+
 
 	ITEMNAME GetItemTypeName();
 	ITEMNAME GetItemTypeName_Left();
@@ -53,6 +56,7 @@ public:
 	vector<CPlayerHP*>*				Get_vecPlayerHPlist(void)		{ return &m_vecPlayerHPlist; }
 	vector<CSlotInfo*>*				Get_vecSlotInfolist(void)		{ return &m_vecSlotInfolist; }
 	vector<CCheckBox*>*				Get_vecCheckBoxlist(void)		{ return &m_vecCheckBoxlist; }
+	vector<CInventory_Back*>*		Get_vecInventoryBacklist(void)	{ return &m_InventoryBacklist; }
 
 	list<CPlayerHunger*>*			Get_PlayerHungerlist(void)		{ return &m_PlayerHungerlist; }
 	list<CPlayerExp*>*				Get_PlayerExplist(void)			{ return &m_PlayerExplist; }
@@ -88,13 +92,13 @@ private:
 	list<CPlayerLevel*>			m_PlayerLevellist;
 
 	/* Inventory 관련 */
-	vector<CSlotInfo*>		m_vecSlotInfolist;
-	vector<CCheckBox*>		m_vecCheckBoxlist;
-	list<CMainInventory*>	m_MainInventorylist;
-	list<CSubInventory*>	m_SubInventorylist;
-	list<CInventory_Back*>	m_InventoryBacklist;
-	list<CMouse_Item*>		m_MouseItemlist;
-	list<CMouse_ItemFont*>	m_MouseItemFontlist;
+	vector<CSlotInfo*>			m_vecSlotInfolist;
+	vector<CCheckBox*>			m_vecCheckBoxlist;
+	vector<CInventory_Back*>	m_InventoryBacklist;
+	list<CMainInventory*>		m_MainInventorylist;
+	list<CSubInventory*>		m_SubInventorylist;
+	list<CMouse_Item*>			m_MouseItemlist;
+	list<CMouse_ItemFont*>		m_MouseItemFontlist;
 
 	CBag* m_pBag = { nullptr };
 	

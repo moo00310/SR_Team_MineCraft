@@ -171,51 +171,87 @@ void CUI_Mgr::LevelUp()
 
 void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 {
-	/*
-	enum ITEMNAME
-	{
-		ITEMNAME_DIRT, ITEMNAME_GRASSDIRT, ITEMNAME_STONE, ITEMNAME_COBBLESTONE, ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_LEAF, 
+	
+	/*	ITEMNAME_DIRT, ITEMNAME_GRASSDIRT, ITEMNAME_STONE, ITEMNAME_COBBLESTONE, ITEMNAME_WOOD, ITEMNAME_OAKPLANKS, ITEMNAME_LEAF,
 		ITEMNAME_CUBE_END,
 		
 		ITEMNAME_SEED = 100, ITEMNAME_SAPLING, ITEMNAME_APPLE, ITEMNAME_REDTULIP, ITEMNAME_DANDELION, ITEMNAME_COAL, ITEMNAME_RAWIRON, ITEMNAME_IRON,
-		ITEMNAME_SWORD, ITEMNAME_PICKAXE, ITEMNAME_TORCH, ITEM_WEPON_1, ITEM_WEPON_2, ITEM_WEPON_3, ITEM_WEPON_4, ITEM_WEPON_5, ITEMNAME_RECT_END,
-
+		ITEMNAME_TORCH, ITEMNAME_PICKAXE, ITEMNAME_SWORD, ITEM_WEPON_1, ITEM_WEPON_2, ITEM_WEPON_3, ITEM_WEPON_4, ITEM_WEPON_5, ITEMNAME_RECT_END,
 
 		ITEMNAME_IRONORE = 900, ITEMNAME_COALORE, ITEMNAME_GRASS,
 		ITEMNAME_END = 999
-	};
-
 	*/
 
 	if (_ItemName < ITEMNAME_CUBE_END)
 	{
 		m_ItemID = ITEMID_BLOCK;
 	}
-	
-	else if (_ItemName >= 108 && _ItemName < 115)
-	{
+	else if (_ItemName >= 109 && _ItemName < ITEMNAME_RECT_END)
 		m_ItemID = ITEMID_ARMOR;
+	else
+		m_ItemID = ITEMID_END;
+
+
+	if (AddCount == -1)
+	{
+		for (int i = 0; i < 9; ++i)
+		{
+			if (m_vecSlotInfolist[i]->Get_ItemName() == _ItemName)
+			{
+				_int iCurrentCount = m_vecSlotInfolist[i]->Get_ItemCount();
+
+				if (iCurrentCount > 1)
+				{	
+					m_vecSlotInfolist[i]->Set_ItemCount(iCurrentCount + AddCount);			
+					m_vecSlotInfolist[i + 9]->Set_ItemCount(m_vecSlotInfolist[i]->Get_ItemCount());
+				}
+				else
+				{
+					m_vecSlotInfolist[i]->Set_ItemCount(0);
+					m_vecSlotInfolist[i]->Set_ItemName(ITEMNAME_END);
+					m_vecSlotInfolist[i]->Set_ItemID(ITEMID_END);
+					m_vecSlotInfolist[i]->Set_ItemCountRender(false);
+
+					m_vecSlotInfolist[i + 9]->Set_ItemCount(m_vecSlotInfolist[i]->Get_ItemCount());
+					m_vecSlotInfolist[i + 9]->Set_ItemName(m_vecSlotInfolist[i]->Get_ItemName());
+					m_vecSlotInfolist[i + 9]->Set_ItemID(m_vecSlotInfolist[i]->Get_ItemID());
+					m_vecSlotInfolist[i + 9]->Set_ItemCountRender(m_vecSlotInfolist[i]->Get_ItemCountRender());
+
+				}
+				return;
+			}
+		}
+		return;
 	}
+
+	_int iRemain = AddCount;
 
 	/* 인벤토리 슬롯에 같은 아이템이 존재하는지 확인
 	*  슬롯 인덱스 9~47까지 */
 	/* 인벤토리에 해당 아이템이 존재하는지 확인*/
 	for (int i = 9; i < m_vecSlotInfolist.size(); ++i)
 	{
-		if (m_vecSlotInfolist[i]->Get_ItemName() == _ItemName)
+		if (m_vecSlotInfolist[i]->Get_ItemName() == _ItemName && m_ItemID != ITEMID_ARMOR)
 		{
-			if (AddCount + m_vecSlotInfolist[i]->Get_ItemCount() < 65 && m_ItemID != ITEMID_ARMOR)
+			_int currentCount = m_vecSlotInfolist[i]->Get_ItemCount();
+			if (currentCount < 64)
 			{
-				m_vecSlotInfolist[i]->Set_ItemCount(m_vecSlotInfolist[i]->Get_ItemCount() + AddCount);
-				//m_vecSlotInfolist[i]->Set_ItemID(m_ItemID);
-				return;
-			}
-			else
-			{
-				break;
+				_int space = 64 - currentCount;
+
+				if (iRemain <= space)
+				{
+					m_vecSlotInfolist[i]->Set_ItemCount(currentCount + iRemain);
+					return;
+				}
+				else
+				{
+					m_vecSlotInfolist[i]->Set_ItemCount(64);
+					iRemain -= space;
+				}
 			}
 		}
 	}
+
 	static const vector<int> vecSlotOrder =
 	{
 		 9, 10, 11, 12, 13, 14, 15, 16, 17,
@@ -224,18 +260,30 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 		18, 19, 20, 21, 22, 23, 24, 25, 26
 
 	};
-
-	/* 슬롯에 아이템이 없을때 추가 */
+	// 남은 수량을 빈 슬롯에 추가
 	for (auto iter : vecSlotOrder)
 	{
-		/* 슬롯에 아이템이 비어있을때*/
+		if (iRemain <= 0)
+			break;
+
 		if (m_vecSlotInfolist[iter]->Get_ItemName() == ITEMNAME_END)
 		{
-			m_vecSlotInfolist[iter]->Set_ItemName(_ItemName);
-			m_vecSlotInfolist[iter]->Set_ItemCount(AddCount);
-			m_vecSlotInfolist[iter]->Set_ItemID(m_ItemID);
-			m_vecSlotInfolist[iter]->Set_ItemCountRender(true);
-			break;
+			if (iRemain <= 64)
+			{
+				m_vecSlotInfolist[iter]->Set_ItemName(_ItemName);
+				m_vecSlotInfolist[iter]->Set_ItemCount(iRemain);
+				m_vecSlotInfolist[iter]->Set_ItemID(m_ItemID);
+				m_vecSlotInfolist[iter]->Set_ItemCountRender(true);
+				break;
+			}
+			else
+			{
+				m_vecSlotInfolist[iter]->Set_ItemName(_ItemName);
+				m_vecSlotInfolist[iter]->Set_ItemCount(64);
+				m_vecSlotInfolist[iter]->Set_ItemID(m_ItemID);
+				m_vecSlotInfolist[iter]->Set_ItemCountRender(true);
+				iRemain -= 64;
+			}
 		}
 	}
 }

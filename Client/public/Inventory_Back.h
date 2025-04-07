@@ -25,6 +25,9 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
+
+	//ITEMID	Get_BackID() {return m_eBackID;}
+
 private:
 	HRESULT Ready_Components();
 
@@ -41,6 +44,7 @@ private:
 	_int	m_iSlotIndexNum;
 	_int	m_iCategory;
 	_int	m_iTextureNum;
+	//ITEMID	m_eBackID;
 
 public:
 	static CInventory_Back* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
