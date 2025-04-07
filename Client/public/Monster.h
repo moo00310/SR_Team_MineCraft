@@ -11,7 +11,7 @@ class CMonster abstract : public CPawn
 public:
 	enum MonsterType
 	{
-		MT_Zombie, MT_Creeper, MT_END
+		MT_Zombie, MT_Creeper, MT_WARDEN, MT_END
 	};
 
 protected:
@@ -52,10 +52,10 @@ protected:
 	_bool m_isFind = { false };
 
 protected:
-	HRESULT Ready_BehaviorTree();
+	virtual HRESULT Ready_BehaviorTree();
 
 protected:
-	virtual HRESULT Ready_Components();
+	HRESULT Ready_Components();
 	virtual HRESULT Ready_Bone()= 0;
 	virtual HRESULT Ready_Animation() = 0;
 

@@ -135,7 +135,7 @@ void CSkeletalAnimator::Update_Mesh()
     }
     else
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < m_pVIBufferComs.size(); i++)
         {
             m_pVIBufferComs[i]->SetMatrix(vecBones[i + 1].Correction * vecBones[i + 1].worldTransform);
         }

@@ -161,6 +161,9 @@
     <ClInclude Include="..\Public\VIBuffer_RectShader.h">
       <Filter>04.Components\VIBuffer\Rect</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\VIBuffer_Anim_UVRect.h">
+      <Filter>04.Components\VIBuffer\ViBuffer_Anim\02.VIBuffer_Anim_UVRect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="99.Headers">
@@ -288,6 +291,9 @@
     </Filter>
     <Filter Include="09.FrustumCullingManager">
       <UniqueIdentifier>{a75b4fe6-5964-48d1-aec2-0a109c19f9a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Components\VIBuffer\ViBuffer_Anim\02.VIBuffer_Anim_UVRect">
+      <UniqueIdentifier>{cc11543a-8aad-4274-8045-3ff9785bd52b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -425,6 +431,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_RectShader.cpp">
       <Filter>04.Components\VIBuffer\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\VIBuffer_Anim_UVRect.cpp">
+      <Filter>04.Components\VIBuffer\ViBuffer_Anim\02.VIBuffer_Anim_UVRect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

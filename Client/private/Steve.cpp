@@ -218,7 +218,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('V'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_DIRT, 64);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_APPLE, 1);
 	}
 	if (m_pGameInstance->Key_Down('B'))
 	{
@@ -230,7 +230,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('M'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_APPLE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_1, 1);
 	}
 
 	if (m_pGameInstance->Key_Down('L'))

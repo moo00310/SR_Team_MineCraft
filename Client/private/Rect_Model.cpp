@@ -332,25 +332,34 @@ void CRect_Model::KeyInput()
 
 void CRect_Model::FireSword()
 {
-	if (Compute_Texture_Name() != ITEMNAME_SWORD)
+	
+	if (!m_isRender)
 	{
 		return;
 	}
+	if (Compute_Texture_Name() == ITEMNAME_SWORD)
+	{
+		// 회전 행렬.
+		Matrix rotateMatrix = {};
 
-	// 회전 행렬.
-	Matrix rotateMatrix = {};
+		// 본 월드행렬.
+		Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
 
-	// 본 월드행렬.
-	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
+		// 회전행렬 계산.
+		rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
 
-	// 회전행렬 계산.
-	rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
+		// 파티클 적용.
+		flameSword->Replay(boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
 
-	// 파티클 적용.
-	flameSword->Replay(boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+		// 자전 * 부모
+		flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
+	}
+	else
+	{
+		flameSword->Replay(_float3(0.f,0.f,0.f));
+	}
 
-	// 자전 * 부모
-	flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
+	
 }
 
 void CRect_Model::AuraSword()

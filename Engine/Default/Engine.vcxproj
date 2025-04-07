@@ -189,6 +189,7 @@
     <ClInclude Include="..\public\Transform.h" />
     <ClInclude Include="..\public\UIObject.h" />
     <ClInclude Include="..\public\UIParticleSystem.h" />
+    <ClInclude Include="..\public\VIBuffer_Anim_UVRect.h" />
     <ClInclude Include="..\public\VIBuffer.h" />
     <ClInclude Include="..\public\ViBuffer_Anim.h" />
     <ClInclude Include="..\public\VIBuffer_Anim_Cube.h" />
@@ -239,6 +240,7 @@
     <ClCompile Include="..\private\Transform.cpp" />
     <ClCompile Include="..\private\UIObject.cpp" />
     <ClCompile Include="..\private\UIParticleSystem.cpp" />
+    <ClCompile Include="..\private\VIBuffer_Anim_UVRect.cpp" />
     <ClCompile Include="..\private\VIBuffer.cpp" />
     <ClCompile Include="..\private\ViBuffer_Anim.cpp" />
     <ClCompile Include="..\private\VIBuffer_Anim_Cube.cpp" />

@@ -24,6 +24,8 @@
 #include "Right_hand.h"
 #include "Left_Rect_Model.h"
 #include "GameMgr.h"
+#include "Warden.h"
+
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
 #include "HeroCubeNoMove.h"
@@ -609,12 +611,69 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CZombi::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_GAMEOBJECT_DESTROY_CUBE,
-		CDestroyCube::Create(m_pGraphic_Device))))
+#pragma endregion
+
+#pragma region 워든 텍스쳐 모델 원형객체
+	//텍스처
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Warden"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Warden/warden.png"), 1))))
+		return E_FAIL;
+
+	// 모델
+	/* For.Prototype_Component_VIBuffer_Warden */
+	cube = { _float2(128.f, 128.f), _float3(16.f, 16.f, 10.f), _float2(0.f, 32.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Head"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(128.f, 128.f), _float3(18.f, 21.f, 11.f), _float2(0.f, 0.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Body"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	// 다리
+	cube = { _float2(128.f, 128.f), _float3(6.f, 13.f, 6.f), _float2(76.f, 48.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Leg_R"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(128.f, 128.f), _float3(6.f, 13.f, 6.f), _float2(76.f, 76.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Leg_L"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	// 팔
+	cube = { _float2(128.f, 128.f), _float3(8.f, 28.f, 8.f),_float2(44.f, 50.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Arm_R"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	cube = { _float2(128.f, 128.f), _float3(8.f, 28.f, 8.f), _float2(0, 58.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Arm_L"),
+		CVIBuffer_Anim_Cube::Create(m_pGraphic_Device, cube))))
+		return E_FAIL;
+
+	RECT_INFO rect = { _float2(128.f, 128.f), _float2(10.f, 10.f), _float2(58, 6.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Horn_R"),
+		CVIBuffer_Anim_UVRect::Create(m_pGraphic_Device, rect))))
+		return E_FAIL;
+
+	rect = { _float2(128.f, 128.f), _float2(10.f, 10.f), _float2(58, 38.f) };
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Horn_L"),
+		CVIBuffer_Anim_UVRect::Create(m_pGraphic_Device, rect))))
+		return E_FAIL;
+
+	// 원형 객체
+	/* For.Prototype_GameObject_Warden */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
+		CWarden::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 #pragma endregion
 
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_GAMEOBJECT_DESTROY_CUBE,
+		CDestroyCube::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	/* For.Prototype_Component_VIBuffer_CubeShader */
  	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_CubeShader"),
