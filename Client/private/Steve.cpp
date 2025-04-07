@@ -589,5 +589,21 @@ void CSteve::Free()
 void CSteve::FrameCallback(int animType, int frame)
 {
 	//cout << "스티브 애니메이션: " << animType << ", 프레임: " << frame << endl;
+	if (animType == Swing_FF && frame == 0)
+	{
+		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass1"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+	if (animType == Swing_FF && frame == 1)
+	{
+		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass2"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+	if (animType == Swing_FF && frame == 2)
+	{
+		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass2"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+	if (animType == Swing_FF && frame == 3)
+	{
+		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass4"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
 }
 

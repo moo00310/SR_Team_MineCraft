@@ -113,7 +113,9 @@ HRESULT CLeaf::Delete_Cube(_float3 fPos)
 
 			// 4. 인스턴스 버퍼 업데이트
 			m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
-			__super::Delete_Cube(fPos);
+
+			m_pGameInstance->CheckSoundStop(this, 0, 1);
+			m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 0.4, fPos);
 
 			return S_OK;
 		}

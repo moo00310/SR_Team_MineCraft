@@ -138,6 +138,17 @@ PS_OUT PS_FontEnhance(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MissionMainUi(PS_IN In)
+{
+    PS_OUT Out;
+
+    float4 texColor = tex2D(TextureSampler, In.vTexcoord);
+    texColor.a *= 0.7; // 알파값을 반으로 (127.5 정도)
+
+    Out.vColor = texColor;
+    return Out;
+}
+
 
 /* Technique 정의 */
 technique DefaultTechnique
@@ -195,6 +206,22 @@ technique DefaultTechnique
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_MAIN();
 	}
+
+    pass MissionMainUiPass
+    {
+        AlphaBlendEnable = TRUE;
+        SrcBlend = SRCALPHA;
+        DestBlend = INVSRCALPHA;
+        BlendOp = ADD;
+
+
+        CULLMODE = NONE;
+        ZWRITEENABLE = FALSE;
+        ZENABLE = FALSE;
+
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_MissionMainUi();
+    }
 }
 
 

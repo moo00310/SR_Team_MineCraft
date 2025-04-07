@@ -1,5 +1,5 @@
 ﻿#include "Wood.h"
-
+#include "MissionControl.h"
 
 CWood::CWood(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CBreakableCube(pGraphic_Device)
@@ -105,6 +105,10 @@ HRESULT CWood::Delete_Cube(_float3 fPos)
 			// 4. 인스턴스 버퍼 업데이트
 			m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 			__super::Delete_Cube(fPos);
+
+			if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+				_control->Update_Mission(L"나무");
+			}
 
 			return S_OK;
 		}

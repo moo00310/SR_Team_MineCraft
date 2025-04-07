@@ -73,6 +73,9 @@
 #include "Mouse_ItemFont.h"
 #include "Bag.h"
 
+//미션 관련
+#include "MissionControl.h"
+#include "MissionMainUi.h"
 
 CLoader::CLoader(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: m_pGraphic_Device { pGraphic_Device }
@@ -345,12 +348,15 @@ HRESULT CLoader::Loading_For_MOOPlay()
 HRESULT CLoader::Loading_For_YUPlay()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_MissionMainUi"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/missionMainUi.png"), 1))))
+		return E_FAIL;
 
 	// 깨지는 블럭 텍스쳐.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_COMPONENT_TEXTURE_DESTROY,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/destroy_stage_%d.png"), 10))))
 		return E_FAIL;
-
+	
 	/* For.Prototype_Component_Texture_Sun */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Sun"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/sun.png"), 1))))
@@ -451,6 +457,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 	// 1인칭 Cube_Texture
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Cube_Model"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Cube_model/Cube_model_%d.png"), Cube_Model_Count))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_Gunpowder*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Gunpowder"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/gunpowder.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_rottenFlesh */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_rottenFlesh"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/rottenFlesh.png"), 1))))
 		return E_FAIL;
 
 	/* UI Component */
@@ -809,6 +825,14 @@ HRESULT CLoader::Loading_For_YUPlay()
 	
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GameMgr"),
 		CGameMgr::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MissionControl"),
+		CMissionControl::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MissionMainUi"),
+		CMissionMainUi::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
