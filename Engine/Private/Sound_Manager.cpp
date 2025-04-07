@@ -1,4 +1,8 @@
 #include "Sound_Manager.h"
+
+#include <windows.h>
+#include <filesystem> // C++17 ÏïÑÎãò! Í∑∏ÎÉ• Í≤ΩÎ°ú Í∞ÄÍ≥µÏö©ÏúºÎ°úÎßå ÏîÄ
+
 CSound_Manager::CSound_Manager()
 {
 }
@@ -44,7 +48,7 @@ void CSound_Manager::LoadSound(const std::wstring& soundName, const char* filePa
         return;
     }
 
-    // ∞≈∏Æ∞° 3 -> 25∑Œ ∞•ºˆ∑œ ¿€æ∆¡¸ (æ∆øπ æ»≥™∞‘ «œ¥¬ ∞« æ∆¥‘)
+    // Í±∞Î¶¨Í∞Ä 3 -> 25Î°ú Í∞àÏàòÎ°ù ÏûëÏïÑÏßê (ÏïÑÏòà ÏïàÎÇòÍ≤å ÌïòÎäî Í±¥ ÏïÑÎãò)
     pSound->set3DMinMaxDistance(3.0f, 25.0f);
 
     m_SoundMap[soundName] = pSound;
@@ -52,7 +56,7 @@ void CSound_Manager::LoadSound(const std::wstring& soundName, const char* filePa
     return;
 }
 
-// πË∞Ê¿Ω ¿¸øÎ ¿Áª˝
+// Î∞∞Í≤ΩÏùå Ï†ÑÏö© Ïû¨ÏÉù
 void CSound_Manager::PlayBGM(const std::wstring& soundName)
 {
     FMOD::Sound* pSound = nullptr;
@@ -81,7 +85,7 @@ void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, _flo
 {
     const float fListenerCutoffDistance = 25.0f; 
 
-    // ≥ π´ ∏÷æÓ¡ˆ∏È º“∏Æ∞° ±˙¡Æº≠ ¿œ¡§ ∞≈∏Æ¿Ã∏È º“∏Æ æ∆øπ play æ»«œµµ∑œ
+    // ÎÑàÎ¨¥ Î©ÄÏñ¥ÏßÄÎ©¥ ÏÜåÎ¶¨Í∞Ä Íπ®Ï†∏ÏÑú ÏùºÏ†ï Í±∞Î¶¨Ïù¥Î©¥ ÏÜåÎ¶¨ ÏïÑÏòà play ÏïàÌïòÎèÑÎ°ù
     _float3 listenerPos = m_vListenerPos; 
     _float3 Diff = pPos - listenerPos;
     float fDistance = D3DXVec3Length(&Diff);
@@ -156,11 +160,11 @@ void CSound_Manager::CheckSoundStop(void* obj, int _anim, int _type)
                 if (iter->pChannel)
                     iter->pChannel->stop();
 
-                iter = m_TrackedSounds.erase(iter); // ø‰º“ ¡¶∞≈ »ƒ ¥Ÿ¿Ω ø‰º“∑Œ ¿Ãµø
+                iter = m_TrackedSounds.erase(iter); // ÏöîÏÜå Ï†úÍ±∞ ÌõÑ Îã§Ïùå ÏöîÏÜåÎ°ú Ïù¥Îèô
             }
             else
             {
-                ++iter; // ¡∂∞«¿Ã æ» ∏¬¿∏∏È ±◊≥… ¥Ÿ¿Ω¿∏∑Œ
+                ++iter; // Ï°∞Í±¥Ïù¥ Ïïà ÎßûÏúºÎ©¥ Í∑∏ÎÉ• Îã§ÏùåÏúºÎ°ú
             }
         }
         break;
@@ -172,11 +176,11 @@ void CSound_Manager::CheckSoundStop(void* obj, int _anim, int _type)
                 if (iter->pChannel)
                     iter->pChannel->stop();
 
-                iter = m_TrackedSounds.erase(iter); // ø‰º“ ¡¶∞≈ »ƒ ¥Ÿ¿Ω ø‰º“∑Œ ¿Ãµø
+                iter = m_TrackedSounds.erase(iter); // ÏöîÏÜå Ï†úÍ±∞ ÌõÑ Îã§Ïùå ÏöîÏÜåÎ°ú Ïù¥Îèô
             }
             else
             {
-                ++iter; // ¡∂∞«¿Ã æ» ∏¬¿∏∏È ±◊≥… ¥Ÿ¿Ω¿∏∑Œ
+                ++iter; // Ï°∞Í±¥Ïù¥ Ïïà ÎßûÏúºÎ©¥ Í∑∏ÎÉ• Îã§ÏùåÏúºÎ°ú
             }
         }
         break;
@@ -188,8 +192,75 @@ void CSound_Manager::CheckSoundStop(void* obj, int _anim, int _type)
 
 }
 
+string CSound_Manager::WStringToString(const std::wstring& wstr)
+{
+    if (wstr.empty())
+        return std::string();
+
+    // ÎÑê Ìè¨Ìï® Í∏∏Ïù¥ Í≥ÑÏÇ∞
+    int sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1,
+        nullptr, 0, nullptr, nullptr);
+
+    std::string result(sizeNeeded, 0);
+
+    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1,
+        &result[0], sizeNeeded, nullptr, nullptr);
+
+    // ÎßàÏßÄÎßâ ÎÑêÎ¨∏Ïûê Ï†úÍ±∞ (Î¨∏ÏûêÏó¥ Í∏∏Ïù¥ Ï°∞Ï†ï)
+    if (!result.empty() && result.back() == '\0')
+        result.pop_back();
+
+    return result;
+}
+
 void CSound_Manager::Add_SoundResource()
 {
+    LoadAllWavFiles(L"../../FMOD/Assets");
+}
+
+void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
+{
+    std::wstring searchPath = folderPath + L"\\*";
+
+    WIN32_FIND_DATA findData;
+    HANDLE hFind = FindFirstFile(searchPath.c_str(), &findData);
+
+    if (hFind == INVALID_HANDLE_VALUE)
+        return;
+
+    do {
+        const std::wstring name = findData.cFileName;
+
+        if (name == L"." || name == L"..")
+            continue;
+
+        std::wstring fullPath = folderPath + L"\\" + name;
+
+        if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            LoadAllWavFiles(fullPath); // Ïû¨Í∑Ä ÌÉêÏÉâ
+        }
+        else {
+            if (fullPath.size() >= 4 &&
+                fullPath.substr(fullPath.size() - 4) == L".wav")
+            {
+                // ÏÇ¨Ïö¥Îìú Ïù¥Î¶Ñ: ÌôïÏû•Ïûê Ï†úÍ±∞
+                size_t lastSlash = fullPath.find_last_of(L"\\/");
+                std::wstring fileName = (lastSlash != std::wstring::npos) ? fullPath.substr(lastSlash + 1) : fullPath;
+                std::wstring soundNameW = fileName.substr(0, fileName.length() - 4);
+
+                // Î≥ÄÌôò: std::wstring ‚Üí std::string
+                //std::string soundName = WStringToString(soundNameW);
+                std::string filePath = WStringToString(fullPath);
+
+                // ÏÇ¨Ïö¥Îìú Îì±Î°ù
+                LoadSound(soundNameW.c_str(), filePath.c_str(), false);
+            }
+        }
+
+    } while (FindNextFile(hFind, &findData));
+
+    FindClose(hFind);
+
     LoadSound(L"Player_Walk_Grass1", "../../FMOD/Assets/player/Player_Walk_Grass1.wav", false);
     LoadSound(L"Player_Walk_Grass2", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
     LoadSound(L"Player_Walk_Grass3", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
@@ -220,7 +291,10 @@ void CSound_Manager::Add_SoundResource()
     LoadSound(L"MoogCity2", "../../FMOD/Assets/background/MoogCity2.wav", true);
     LoadSound(L"pigstep", "../../FMOD/Assets/background/pigstep.wav", true);
     LoadSound(L"sweden", "../../FMOD/Assets/background/sweden.wav", true);
+
 }
+
+
 
 void CSound_Manager::Update()
 {

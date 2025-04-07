@@ -411,7 +411,7 @@ void CRect_Model::SwingFireSword()
 
 	particle->GetTransform()->Set_Matrix(boneWorldMatrix);
 
-	particle->SetTimer(0.3f);
+	//particle->SetTimer(0.3f);
 }
 
 ITEMNAME CRect_Model::Compute_Texture_Name()

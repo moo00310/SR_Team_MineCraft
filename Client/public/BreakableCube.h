@@ -45,7 +45,7 @@ public:
 	_uint Get_PositionSize() { return static_cast<_uint>(m_vecPositions.size()); }
 
 	// 충돌 활성화 & 비활성화 관리를 위함
-	vector<CCollider_Cube*> Get_ColliderCube() { return m_Colliders; }
+	unordered_map<_int3, CCollider_Cube*>& Get_ColliderCube() { return m_Colliders; }
 	vector<_float3> Get_Positions() { return m_vecPositions; }
 
 	// 충돌할 청크만 활성화 시킴
@@ -53,7 +53,10 @@ public:
 	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
 
 	// 큐브 Hp 줄이기
-	virtual void Attacked_Block(_float3 fPos, int attackDamage);
+	virtual void Attacked_Block(_float3 vPos, int attackDamage);
+
+	//부수는 사운드
+	virtual void PlaySound_Breaking(_float3 vPos);
 
 	// 큐브 HP 반환.
 	float GetHP() const;
@@ -64,12 +67,19 @@ public:
 	virtual HRESULT Delete_Cube(_float3 fPos);
 	virtual HRESULT Create_Cube(_float3 fPos, _float3 _Dir);
 
+
+
 	//블럭 경도 가지고 오는 코드
 	_float Get_Hardness() { return m_fHardness; }
 
 	HRESULT Ready_Components();
 
 	ITEMNAME	Get_ItemName() { return m_itemName; }
+
+protected:
+	virtual HRESULT Drop_Item_OnDestroy(const _float3& fPos) { return S_OK; }
+	virtual HRESULT Play_Destroy_Effect(const _float3& fPos) { return S_OK; }
+
 protected:
 
 	// 현재 청크를 충돌 매니저에 올릴지 
@@ -81,7 +91,9 @@ protected:
 	int m_iMyChunk = 0;
 	vector<_float3> m_vecPositions;
 	vector<_float> m_vecBrights;
-	vector<CCollider_Cube*> m_Colliders;
+
+
+	unordered_map<_int3, CCollider_Cube*> m_Colliders;
 
 	ITEMNAME m_itemName{ ITEMNAME_END };
 
@@ -91,11 +103,6 @@ protected:
 
 	//블럭 경도
 	_float m_fHardness{ 0.f };
-
-private:
-	//아래 두 함수를 나중에 Pawn으로 합쳐도 될지는 모르겠음, 일단 나눔
-	void Should_Collide_With_Player();
-	void Should_Collide_With_Monster();
   
 public:
 	static CBreakableCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

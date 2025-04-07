@@ -40,6 +40,9 @@ private:
 	set<_int>& Compute_Near_Chunk_Indexies(_float3 vPos);
 	//현재 위치로 청크 인덱스를 알아오는 함수
 	_int Compute_ChunkIndex(_float3 vPos);
+
+	vector<_float3> Get_Positions_Within_DistSq(_float3 vPos, float fDistSq);
+
 #pragma endregion
 
 public:

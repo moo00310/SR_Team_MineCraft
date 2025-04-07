@@ -16,7 +16,7 @@ BEGIN(Engine)
 class CSound_Manager : public CBase
 {
 public:
-    enum SEPCIALSOUNDTYPE { CREEPER=0, BREAKING=1, SOUND_END=999 };
+    enum SEPCIALSOUNDTYPE { CREEPER=0, BREAKING=1, PLAYER, ITEM, SOUND_END=999 };
 public:
     struct TrackedSound {
         FMOD::Channel* pChannel = nullptr;
@@ -46,6 +46,8 @@ public:
 
 private:
     void Add_SoundResource();
+    void LoadAllWavFiles(const std::wstring& folderPath);
+    string WStringToString(const std::wstring& wstr);
 
     FMOD::System* m_pCoreSystem{ nullptr };
     FMOD::Channel* m_pChannels[MAX_SFX_CHANNEL]{ nullptr };

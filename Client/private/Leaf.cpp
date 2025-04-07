@@ -59,7 +59,7 @@ HRESULT CLeaf::Render()
 
 	m_pShaderCom->Begin(0);
 
-	/* Á¤Á¡À» ±×¸°´Ù. */
+	/* ì •ì ì„ ê·¸ë¦°ë‹¤. */
 	if (FAILED(m_pVIBufferCom->Render()))
 		return E_FAIL;
 
@@ -70,10 +70,26 @@ HRESULT CLeaf::Render()
 	return S_OK;
 }
 
-HRESULT CLeaf::Delete_Cube(_float3 fPos)
+HRESULT CLeaf::Drop_Item_OnDestroy(const _float3& fPos)
 {
-	for (size_t i = 0; i < m_vecPositions.size(); ++i)
+	int random = rand() % 100;
+
+	if (random < 10 || random < 20) // 10% í™•ë¥  ì‚¬ê³¼ or ë¬˜ëª©
 	{
+		wchar_t layerName[100];
+		swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+
+		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+			return E_FAIL;
+
+		if (CItemRect* pItem = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+			pItem->SetPos(fPos);
+
+			if (random < 10)
+				pItem->Set_ItemTypeAndBindTexture(ITEMNAME_SAPLING);
+			else
+				pItem->Set_ItemTypeAndBindTexture(ITEMNAME_APPLE);
+      
 		if (m_vecPositions[i].x == fPos.x &&
 			m_vecPositions[i].y == fPos.y &&
 			m_vecPositions[i].z == fPos.z)
@@ -103,15 +119,15 @@ HRESULT CLeaf::Delete_Cube(_float3 fPos)
 				}
 			}
 
-			// 2. º¤ÅÍ¿¡¼­ ÇØ´ç À§Ä¡ Á¦°Å
+			// 2. ë²¡í„°ì—ì„œ í•´ë‹¹ ìœ„ì¹˜ ì œê±°
 			m_vecPositions.erase(m_vecPositions.begin() + i);
 			m_vecBrights.erase(m_vecBrights.begin() + i);
 
-			// 3. ÄÝ¶óÀÌ´õ Á¦°Å
+			// 3. ì½œë¼ì´ë” ì œê±°
 			Safe_Release(m_Colliders[i]);
 			m_Colliders.erase(m_Colliders.begin() + i);
 
-			// 4. ÀÎ½ºÅÏ½º ¹öÆÛ ¾÷µ¥ÀÌÆ®
+			// 4. ì¸ìŠ¤í„´ìŠ¤ ë²„í¼ ì—…ë°ì´íŠ¸
 			m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
 			m_pGameInstance->CheckSoundStop(this, 0, 1);
@@ -121,7 +137,20 @@ HRESULT CLeaf::Delete_Cube(_float3 fPos)
 		}
 	}
 
-	return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CLeaf::Play_Destroy_Effect(const _float3& fPos)
+{
+	m_pGameInstance->CheckSoundStop(this, 0, 1);
+	m_pGameInstance->PlaySound(TEXT("Grass_dig1"), 1, fPos);
+
+	return S_OK;
+}
+
+void CLeaf::PlaySound_Breaking(_float3 vPos)
+{
+	m_pGameInstance->PlaySound(TEXT("Grass_hit1"), 1, vPos, this, 1);
 }
 
 void CLeaf::RemoveLeaf()

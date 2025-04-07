@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "UI_Mgr.h"
 #include "MCTerrain.h"
+#include "Sound_Manager.h"
 
 CItemRect::CItemRect(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
@@ -66,6 +67,8 @@ void CItemRect::Update(_float fTimeDelta)
     //먹어서 사라지는 거리
     if (fDist < 0.1f)
     {
+        m_pGameInstance->PlaySound(TEXT("Minecraft - Item Pop"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this, CSound_Manager::ITEM);
+
         Destroy();
         CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
     }
