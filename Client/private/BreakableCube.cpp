@@ -144,10 +144,10 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
         m_vecPositions.push_back(position[i]); // 위치 넣어줌
         m_vecBrights.push_back(0.6f);
 
-        wstring key =
-            to_wstring(static_cast<_int>(position[i].x)) + L"," +
-            to_wstring(static_cast<_int>(position[i].y)) + L"," +
-            to_wstring(static_cast<_int>(position[i].z));
+        _int3 key{};
+        key.x = static_cast<_int>(position[i].x);
+        key.y = static_cast<_int>(position[i].y);
+        key.z = static_cast<_int>(position[i].z);
 
         // 이미 키가 존재하면 콜라이더 생성하지 않음
         if (m_Colliders.find(key) != m_Colliders.end())
@@ -175,8 +175,46 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
+    _int3 key{
+    static_cast<_int>(fPos.x),
+    static_cast<_int>(fPos.y),
+    static_cast<_int>(fPos.z)
+    };
+
+    auto it = m_Colliders.find(key);
+    if (it == m_Colliders.end())
+        return E_FAIL;
+
+    CCollider_Cube* pCollider = it->second;
+    if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), pCollider)))
+        return E_FAIL;
+
+    if (FAILED(Drop_Item_OnDestroy(fPos)))
+        return E_FAIL;
+
+    if (FAILED(Play_Destroy_Effect(fPos)))
+        return E_FAIL;
+
+    for (size_t i = 0; i < m_vecPositions.size(); ++i)
+    {
+        if (m_vecPositions[i].x == fPos.x &&
+            m_vecPositions[i].y == fPos.y &&
+            m_vecPositions[i].z == fPos.z)
+        {
+            m_vecPositions.erase(m_vecPositions.begin() + i);
+            m_vecBrights.erase(m_vecBrights.begin() + i);
+            break;
+        }
+    }
+
+    Safe_Release(pCollider);
+    m_Colliders.erase(it);
+
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
+
     m_pGameInstance->CheckSoundStop(this, 0, 1);
     m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 1, fPos);
+
     return S_OK;
 }
 

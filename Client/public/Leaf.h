@@ -15,7 +15,8 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
-	HRESULT Delete_Cube(_float3 fPos) override;
+	HRESULT Drop_Item_OnDestroy(const _float3& fPos);
+
 	void RemoveLeaf();
 protected:
 	HRESULT Ready_Components();

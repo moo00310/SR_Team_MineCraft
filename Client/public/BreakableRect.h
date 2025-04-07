@@ -50,7 +50,12 @@ public:
 	//블럭 밝기 조절
 	void Set_Bright();
 
-	vector<CCollider_Cube*>& Get_ColliderRect() { return m_Colliders; }
+	unordered_map<_int3, CCollider_Cube*>& Get_ColliderRect() { return m_Colliders; }
+
+protected:
+	virtual HRESULT Drop_Item_OnDestroy(const _float3& fPos) { return S_OK; }
+	virtual HRESULT Play_Destroy_Effect(const _float3& fPos) { return S_OK; }
+
 protected:
 	HRESULT Ready_Components();
 
@@ -60,7 +65,7 @@ protected:
 	int m_iMyChunk = 0;
 	vector<_float3> m_vecPositions;
 	vector<_float> m_vecBrights;
-	vector<CCollider_Cube*> m_Colliders;
+	unordered_map<_int3, CCollider_Cube*> m_Colliders;
 
 	bool m_bChunkColliderActive = false;
 
