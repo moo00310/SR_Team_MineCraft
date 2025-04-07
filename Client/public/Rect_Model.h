@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 #include "RightHand_Object.h"
 #include "ParticleEventManager.h"
+#include "SwordAura.h"
+#include "Camera_Player.h"
 
 class CRect_Model final : public CRightHand_Object
 {
@@ -35,6 +37,9 @@ private:
 private:
 	// 불검.
 	void FireSword();
+
+	// 검기.
+	void AuraSword();
 
 	// 불검 휘두를 때 잔상.
 	void SwingFireSword();

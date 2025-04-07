@@ -57,7 +57,7 @@ HRESULT CSwordAura::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 	{
 		return E_FAIL;
-	}
+	}	
 
 	return S_OK;
 }
@@ -67,7 +67,10 @@ void CSwordAura::Priority_Update(_float fTimeDelta)
 }
 
 void CSwordAura::Update(_float fTimeDelta)
-{	
+{
+	// 전진이 아니라 다운인 이유는
+	// 90도 회전 시켜서 나아갸아하기 때문.
+	m_pTransformCom->Go_Down(fTimeDelta);	
 }
 
 void CSwordAura::Late_Update(_float fTimeDelta)
