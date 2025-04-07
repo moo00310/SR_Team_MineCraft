@@ -1,5 +1,6 @@
 #pragma once
 #include "Client_Defines.h"
+#include "Sun.h"
 
 BEGIN(Client)
 class CMissionControl :public CGameObject
@@ -26,11 +27,15 @@ public:
 	virtual void Priority_Update(_float fTimeDelta);
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
+
+	void Update_Mission(wstring name);
 private:
 	void InitMissions1();
 	void InitMissions2();
 	void InitMissions3();
+	CSun* m_sun = nullptr;
 
+	bool m_bFinish = false;
 private:
 	int m_currentStage=0;
 	vector<vector<missionDetail>> m_Round1;

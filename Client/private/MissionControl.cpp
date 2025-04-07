@@ -20,6 +20,10 @@ HRESULT CMissionControl::Initialize(void* pArg)
     InitMissions1();
     InitMissions2();
     InitMissions3();
+
+    if (CSun* _sun = dynamic_cast<CSun*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Sun")))) {
+        m_sun = _sun;
+    }
 	return S_OK;
 }
 
@@ -158,6 +162,14 @@ void CMissionControl::InitMissions3()
 
 void CMissionControl::Priority_Update(_float fTimeDelta)
 {
+    // 끝났으면 시간 빠르게 가기
+    if (m_bFinish) {
+        m_sun->Set_bAddTime();
+        if (g_fBright <= 0.25) {
+            m_sun->Set_bAddTime();
+            m_bFinish = false;
+        }
+    }
 }
 
 void CMissionControl::Update(_float fTimeDelta)
@@ -181,11 +193,44 @@ void CMissionControl::Update(_float fTimeDelta)
 
         if (m_checkFinishStage) {
             m_currentStage++;
+            m_bFinish = true;
         }
         break;
     case 1:
+        for (int i = 0; i < m_Round2Finish.size(); ++i) {
+            for (int j = 0; j < m_Round2Finish[i].size(); ++j) {
+                if (m_Round2[i][j].name == m_Round2Finish[i][j].name) {
+                    if (m_Round2[i][j].count == m_Round2Finish[i][j].count) {
+                        m_Round2[i][j].finish = true;
+                    }
+                    else {
+                        m_checkFinishStage = false;
+                    }
+                }
+            }
+        }
+
+        if (m_checkFinishStage) {
+            m_currentStage++;
+        }
         break;
     case 2:
+        for (int i = 0; i < m_Round3Finish.size(); ++i) {
+            for (int j = 0; j < m_Round3Finish[i].size(); ++j) {
+                if (m_Round3[i][j].name == m_Round3Finish[i][j].name) {
+                    if (m_Round3[i][j].count == m_Round3Finish[i][j].count) {
+                        m_Round3[i][j].finish = true;
+                    }
+                    else {
+                        m_checkFinishStage = false;
+                    }
+                }
+            }
+        }
+
+        if (m_checkFinishStage) {
+            m_currentStage++;
+        }
         break;
     default:
         break;
@@ -195,6 +240,28 @@ void CMissionControl::Update(_float fTimeDelta)
 void CMissionControl::Late_Update(_float fTimeDelta)
 {
 
+}
+
+void CMissionControl::Update_Mission(wstring name)
+{
+    switch (m_currentStage)
+    {
+    case 0:
+        for (int i = 0; i < m_Round1.size(); ++i) {
+            for (int j = 0; j < m_Round1[i].size(); ++j) {
+                if (m_Round1[i][j].name == name) {
+                    m_Round1[i][j].count++;
+                }
+            }
+        }
+        break;
+    case 1:
+        break;
+    case 2:
+        break;
+    default:
+        break;
+    }
 }
 
 CMissionControl* CMissionControl::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

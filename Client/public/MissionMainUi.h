@@ -29,7 +29,6 @@ private:
 
 private:
 	UIOBJECT_DESC Desc{};
-
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };

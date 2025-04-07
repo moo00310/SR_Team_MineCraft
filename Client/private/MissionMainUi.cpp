@@ -65,7 +65,7 @@ HRESULT CMissionMainUi::Render()
     if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
         return E_FAIL;
 
-    m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+    m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(0));
 
     m_pShaderCom->Begin(4);
 

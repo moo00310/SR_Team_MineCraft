@@ -143,7 +143,7 @@ PS_OUT PS_MissionMainUi(PS_IN In)
     PS_OUT Out;
 
     float4 texColor = tex2D(TextureSampler, In.vTexcoord);
-    //texColor.a *= 0.5; // 알파값을 반으로 (127.5 정도)
+    texColor.a *= 0.7; // 알파값을 반으로 (127.5 정도)
 
     Out.vColor = texColor;
     return Out;
