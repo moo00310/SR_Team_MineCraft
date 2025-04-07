@@ -179,8 +179,8 @@ void CSound_Manager::Add_SoundResource()
 {
     LoadSound(L"Player_Walk_Grass1", "../../FMOD/Assets/player/Player_Walk_Grass1.wav", false);
     LoadSound(L"Player_Walk_Grass2", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
-    LoadSound(L"Player_Walk_Wood1", "../../FMOD/Assets/player/Player_Walk_Wood1.wav", false);
-    LoadSound(L"Player_Walk_Wood2", "../../FMOD/Assets/player/Player_Walk_Wood2.wav", false);
+    LoadSound(L"Player_Walk_Grass3", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
+    LoadSound(L"Player_Walk_Grass4", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
     LoadSound(L"Player_Hurt", "../../FMOD/Assets/player/Player_Hurt.wav", false);
     LoadSound(L"Player_Eat1", "../../FMOD/Assets/player/Player_Eat1.wav", false);
     LoadSound(L"Player_Eat2", "../../FMOD/Assets/player/Player_Eat2.wav", false);
