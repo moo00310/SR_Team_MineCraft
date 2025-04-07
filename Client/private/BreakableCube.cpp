@@ -29,33 +29,6 @@ HRESULT CBreakableCube::Initialize(void* pArg)
 void CBreakableCube::Priority_Update(_float fTimeDelta)
 {
 
-    //list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
-
-    //for (CGameObject* pMonster : Monsters)
-    //{
-    //    if (CCreeper* _creeper = dynamic_cast<CCreeper*>(pMonster)) {
-    //        _float3 creeperPos = _creeper->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-
-    //        for (CCollider_Cube* pCollider : m_Colliders)
-    //        {
-    //            _float3 vColliderPos{ m_pTransformCom->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset() };
-
-    //            _float3 vDiff{ creeperPos - vColliderPos };
-    //            //vDiff.y *= 2.f; //y축으로는 충돌 계산 적게 하기위해
-    //            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-
-    //            if (fLengthSq < 7.f) {
-    //                if (CPawn* _pawn = dynamic_cast<CPawn*>(_creeper)) {
-    //                    if (CPawn::BOOM == _pawn->Get_ANIM()) {
-    //                        Delete_Cube(vColliderPos);
-    //                        m_pGameInstance->PopPool(pMonster);
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
     if (m_fHp < 100) {
 
         m_resetHpFrame++;
@@ -77,13 +50,15 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         Destroy();
     }
 
-    for (auto& pair : m_Colliders)
-    {
-		if (!pair.second)
-			continue;
+    
+    //콜라이더 끄는 디버깅 코드 렉 심함
+  //  for (auto& pair : m_Colliders)
+  //  {
+		//if (!pair.second)
+		//	continue;
 
-        pair.second->Set_bColliderActive(false);
-    }
+  //      pair.second->Set_bColliderActive(false);
+  //  }
 
 }
 
@@ -119,16 +94,16 @@ HRESULT CBreakableCube::Render()
 
     m_pShaderCom->End();
 
-    for (auto& pair : m_Colliders)
-    {
-        if (!pair.second)
-            continue;
+    //for (auto& pair : m_Colliders)
+    //{
+    //    if (!pair.second)
+    //        continue;
 
-        if (pair.second->Get_bColliderActive())
-        {
-            pair.second->Render_Collider(true);
-        }
-    }
+    //    if (pair.second->Get_bColliderActive())
+    //    {
+    //        pair.second->Render_Collider(true);
+    //    }
+    //}
 
 
     return S_OK;
