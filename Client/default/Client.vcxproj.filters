@@ -304,6 +304,9 @@
     <Filter Include="02.GameObjects\00.Cube\ItemObj\Items">
       <UniqueIdentifier>{3539fe27-fc9f-41fc-ae2f-03844b52dc7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.BossMonster">
+      <UniqueIdentifier>{de74e917-c0ed-42d7-b233-f6cdd993b7d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -674,6 +677,9 @@
     <ClInclude Include="..\public\ThreadPool.h">
       <Filter>07.ThreadPool</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Warden.h">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.BossMonster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1031,6 +1037,9 @@
     <ClCompile Include="..\private\ParticleStoneDestroy.cpp" />
     <ClCompile Include="..\private\ThreadPool.cpp">
       <Filter>07.ThreadPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Warden.cpp">
+      <Filter>02.GameObjects\01.Actor\00.Pawn\02.BossMonster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

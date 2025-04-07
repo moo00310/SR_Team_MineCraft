@@ -64,17 +64,17 @@ HRESULT CVIBuffer_Anim_Cube::Initialize_Prototype(CUBE& tInfo)
     pVertices[2].vPosition = VertInex[2];
     pVertices[3].vPosition = VertInex[3];
 
-    // Right 오른쪽 면
-    pVertices[4].vPosition = VertInex[3];
-    pVertices[5].vPosition = VertInex[2];
-    pVertices[6].vPosition = VertInex[6];
-    pVertices[7].vPosition = VertInex[7];
-
     // back 뒷면
-    pVertices[8].vPosition = VertInex[7];
-    pVertices[9].vPosition = VertInex[6];
-    pVertices[10].vPosition = VertInex[5];
-    pVertices[11].vPosition = VertInex[4];
+    pVertices[4].vPosition = VertInex[7];
+    pVertices[5].vPosition = VertInex[6];
+    pVertices[6].vPosition = VertInex[5];
+    pVertices[7].vPosition = VertInex[4];
+
+    // Right 오른쪽 면
+    pVertices[8].vPosition = VertInex[3];
+    pVertices[9].vPosition = VertInex[2];
+    pVertices[10].vPosition = VertInex[6];
+    pVertices[11].vPosition = VertInex[7];
 
     // left 왼쪽면
     pVertices[12].vPosition = VertInex[4];
@@ -98,10 +98,15 @@ HRESULT CVIBuffer_Anim_Cube::Initialize_Prototype(CUBE& tInfo)
 
     _float2 UvPexel[6] =
     {
+        // front,back
         {_float2(startPixelpos.x + fBoxSize.z * 2 + fBoxSize.x,  startPixelpos.y + fBoxSize.z)},
-        {_float2(startPixelpos.x,                                startPixelpos.y + fBoxSize.z)},
         {_float2(startPixelpos.x + fBoxSize.z,                   startPixelpos.y + fBoxSize.z)},
+
+        // right, left
+        {_float2(startPixelpos.x,                                startPixelpos.y + fBoxSize.z)},
         {_float2(startPixelpos.x + fBoxSize.z + fBoxSize.x,      startPixelpos.y + fBoxSize.z)},
+
+        // top, bottom
         {_float2(startPixelpos.x + fBoxSize.z,                   startPixelpos.y)},
         {_float2(startPixelpos.x + fBoxSize.z + fBoxSize.x,      startPixelpos.y)}
     };
@@ -109,21 +114,29 @@ HRESULT CVIBuffer_Anim_Cube::Initialize_Prototype(CUBE& tInfo)
 #pragma region UV 매핑
 
     _uint		iUvIndices = { 0 };
-    // front, Right, back, left
-    for (int i = 0; i < 4; i++)
+
+    for (int i = 0; i < 2; i++)
     {
-        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y);
-        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y + fBoxSize.y) / Imagesize.y);
-        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y + fBoxSize.y) / Imagesize.y);
-        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x,               (UvPexel[i].y) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x,               (UvPexel[i].y + fBoxSize.y) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x,  (UvPexel[i].y + fBoxSize.y) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x,  (UvPexel[i].y) / Imagesize.y);
+    }
+
+    for (int i = 2; i < 4; i++)
+    {
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x,                (UvPexel[i].y) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x,                (UvPexel[i].y + fBoxSize.y) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.z) / Imagesize.x,   (UvPexel[i].y + fBoxSize.y) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.z) / Imagesize.x,   (UvPexel[i].y) / Imagesize.y);
     }
 
     for (int i = 4; i < 6; i++)
     {
-        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y);
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y + fBoxSize.z) / Imagesize.y);
-        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y + fBoxSize.z) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y);
         pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y) / Imagesize.y);
+        pVertices[iUvIndices++].vTexcoord = _float2((UvPexel[i].x + fBoxSize.x) / Imagesize.x, (UvPexel[i].y + fBoxSize.z) / Imagesize.y);
     }
 
 #pragma endregion

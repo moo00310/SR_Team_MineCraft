@@ -46,7 +46,7 @@ HRESULT CPawn::Render()
 	if (FAILED(m_pTextureCom->Bind_Resource(0)))
 		return E_FAIL;
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < m_pVIBufferComs.size(); i++)
 	{
 		if (FAILED(m_pVIBufferComs[i]->Bind_WorldMatrix(m_pShaderCom)))
 			return E_FAIL;
@@ -55,6 +55,7 @@ HRESULT CPawn::Render()
 			return E_FAIL;
 
 		m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
+
 		m_pShaderCom->SetFloat("g_Bright", g_fBright + 0.2f);
 		m_pShaderCom->Begin(m_eColor);
 
@@ -65,6 +66,7 @@ HRESULT CPawn::Render()
 		m_pShaderCom->End();
 	}
 
+	// 뿔 렉트에 쓰레기값 들어가 있음
 
 	if (FAILED(m_pCollider_CubeCom->Render_Collider(true)))
 		return E_FAIL;

@@ -6,7 +6,6 @@
 #include "SlotInfo.h"
 #include "UI_Mgr.h"
 #include "Pawn.h"
-
 #include "Sun.h"
 
 CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -73,10 +72,13 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Particle(LAYER_PARTICLE)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
+	/*if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
 		return E_FAIL;
 	
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
+		return E_FAIL;*/
+
+	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
@@ -328,6 +330,13 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Laye_Warden(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 }
 
 HRESULT CLevel_YU::Ready_Layer_DestroyCube(const _wstring& strLayerTag)

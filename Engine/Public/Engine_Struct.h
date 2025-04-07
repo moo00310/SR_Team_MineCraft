@@ -42,6 +42,14 @@ namespace Engine
 		D3DXVECTOR2 Pixelpos;
 
 	}CUBE;
+
+	typedef struct tagCreateRect
+	{
+		D3DXVECTOR2 Imagesize;
+		D3DXVECTOR2 XY_SIze;
+		D3DXVECTOR2 Pixelpos;
+
+	}RECT_INFO;
 	
 	typedef struct tagCreateCubeOnly
 	{
