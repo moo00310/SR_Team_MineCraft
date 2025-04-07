@@ -453,6 +453,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Cube_model/Cube_model_%d.png"), Cube_Model_Count))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Gunpowder*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Gunpowder"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/gunpowder.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_rottenFlesh */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_rottenFlesh"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/rottenFlesh.png"), 1))))
+		return E_FAIL;
+
 	/* UI Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
