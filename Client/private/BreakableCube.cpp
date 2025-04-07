@@ -77,9 +77,12 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         Destroy();
     }
 
-    for (CCollider_Cube* pCollider : m_Colliders)
+    for (auto& pair : m_Colliders)
     {
-        pCollider->Set_bColliderActive(false);
+		if (!pair.second)
+			continue;
+
+        pair.second->Set_bColliderActive(false);
     }
 
 }
@@ -116,14 +119,17 @@ HRESULT CBreakableCube::Render()
 
     m_pShaderCom->End();
 
-    for (int i = 0; i < m_Colliders.size(); ++i)
+    for (auto& pair : m_Colliders)
     {
-        if (m_Colliders[i]->Get_bColliderActive())
-        {
-            m_Colliders[i]->Render_Collider(true);
+        if (!pair.second)
+            continue;
 
+        if (pair.second->Get_bColliderActive())
+        {
+            pair.second->Render_Collider(true);
         }
     }
+
 
     return S_OK;
 }
@@ -132,44 +138,138 @@ HRESULT CBreakableCube::Render()
 void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name)
 {
     m_Colliders.clear();
-    m_Colliders.resize(position.size());
     m_itemName = _name;
 
     for (int i = 0; i < position.size(); ++i) {
-        m_vecPositions.push_back(position[i]); //위치 넣어줌
+        m_vecPositions.push_back(position[i]); // 위치 넣어줌
         m_vecBrights.push_back(0.6f);
 
-        /* For.Com_Collider */
-        CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-        Desc.vRadius = { .5f, .5f, .5f };
+        _int3 key{};
+        key.x = static_cast<_int>(position[i].x);
+        key.y = static_cast<_int>(position[i].y);
+        key.z = static_cast<_int>(position[i].z);
+
+        // 이미 키가 존재하면 콜라이더 생성하지 않음
+        if (m_Colliders.find(key) != m_Colliders.end())
+            continue;
+
+        // 콜라이더 생성
+        CCollider_Cube::COLLCUBE_DESC Desc{};
+        Desc.vRadius = { 0.5f, 0.5f, 0.5f };
         Desc.vOffset = { position[i].x , position[i].y, position[i].z };
         Desc.pTransformCom = m_pTransformCom;
         Desc.pOwner = this;
-        if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-            TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_Colliders[i]), &Desc)))
-        {
 
+        CComponent* pCom = nullptr;
+        if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+            TEXT("Com_Collider_Cube"), &pCom, &Desc)))
+        {
+            MSG_BOX("Failed To Add_Collider_Cube");
+            continue;
         }
 
+        m_Colliders.emplace(key, static_cast<CCollider_Cube*>(pCom));
     }
 }
 
-HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
+
+HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
 {
-    m_pGameInstance->CheckSoundStop(this, 0, 1);
-    m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 1, fPos);
+    int brightIndex = 0;
+    // 2. 벡터에서 해당 위치 추가
+    for (int i = 0; i < m_vecPositions.size(); ++i) {
+        if (fPos.x == m_vecPositions[i].x && fPos.y == m_vecPositions[i].y && fPos.z == m_vecPositions[i].z) {
+            brightIndex = i;
+            break;
+        }
+    }
+
+    _float3 blockPos = fPos + _Dir;
+    m_vecPositions.push_back(blockPos);
+    m_vecBrights.push_back(m_vecBrights[brightIndex]);
+
+    // 3. 콜라이더 추가
+    /* For.Com_Collider */
+    CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
+    Desc.vRadius = { .5f, .5f, .5f };
+    Desc.vOffset = { blockPos.x , blockPos.y, blockPos.z };
+    Desc.pTransformCom = m_pTransformCom;
+    Desc.pOwner = this;
+
+    CCollider_Cube* pCollder{ nullptr };
+
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+        TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&pCollder), &Desc)))
+    {
+        return E_FAIL;
+    }
+
+    _int3 key{
+    static_cast<_int>(blockPos.x),
+    static_cast<_int>(blockPos.y),
+    static_cast<_int>(blockPos.z)
+    };
+
+    m_Colliders.emplace(key, pCollder);
+
+    // 4. 인스턴스 버퍼 업데이트
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
+
     return S_OK;
 }
 
-void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
+
+HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
-    if (m_attackedBlockPos != fPos) {
+    _int3 key{
+    static_cast<_int>(fPos.x),
+    static_cast<_int>(fPos.y),
+    static_cast<_int>(fPos.z)
+    };
+
+    auto it = m_Colliders.find(key);
+    if (it == m_Colliders.end())
+        return E_FAIL;
+
+    CCollider_Cube* pCollider = it->second;
+    if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), pCollider)))
+        return E_FAIL;
+
+    if (FAILED(Drop_Item_OnDestroy(fPos)))
+        return E_FAIL;
+
+    if (FAILED(Play_Destroy_Effect(fPos)))
+        return E_FAIL;
+
+    for (size_t i = 0; i < m_vecPositions.size(); ++i)
+    {
+        if (m_vecPositions[i].x == fPos.x &&
+            m_vecPositions[i].y == fPos.y &&
+            m_vecPositions[i].z == fPos.z)
+        {
+            m_vecPositions.erase(m_vecPositions.begin() + i);
+            m_vecBrights.erase(m_vecBrights.begin() + i);
+            break;
+        }
+    }
+
+    Safe_Release(pCollider);
+    m_Colliders.erase(it);
+
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
+
+    return S_OK;
+}
+
+void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
+{
+    if (m_attackedBlockPos != vPos) {
         m_fHp = 100;
         cout << "Change Block" << m_fHp << endl;
     }
 
     if (m_fHp == 100) {
-        m_pGameInstance->PlaySound(TEXT("Block_Breaking"), 1, fPos, this,1);
+        PlaySound_Breaking(vPos);
     }
     
     ITEMNAME _itemname = CUI_Mgr::Get_Instance()->GetItemTypeName();
@@ -243,13 +343,18 @@ void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
 
         break;
     }
-    m_attackedBlockPos = fPos;
+    m_attackedBlockPos = vPos;
     m_resetHpFrame = 0;
 
 
     CParticleEventManager::Get_Instance()->OnParticle(
         particleTag,
-        fPos);
+        vPos);
+}
+
+void CBreakableCube::PlaySound_Breaking(_float3 vPos)
+{
+    m_pGameInstance->PlaySound(TEXT("Block_Breaking"), 1, vPos, this, 1);
 }
 
 float CBreakableCube::GetHP() const
@@ -292,42 +397,6 @@ void CBreakableCube::Set_Bright()
     }
 }
 
-HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
-{
-    int brightIndex = 0;
-    // 2. 벡터에서 해당 위치 추가
-    for (int i = 0; i < m_vecPositions.size(); ++i) {
-        if (fPos.x == m_vecPositions[i].x && fPos.y == m_vecPositions[i].y && fPos.z == m_vecPositions[i].z) {
-            brightIndex = i;
-            break;
-        }
-    }
-
-    _float3 blockPos = fPos + _Dir;
-    m_vecPositions.push_back(blockPos);
-    m_vecBrights.push_back(m_vecBrights[brightIndex]);
-
-    // 3. 콜라이더 추가
-    /* For.Com_Collider */
-    CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-    Desc.vRadius = { .5f, .5f, .5f };
-    Desc.vOffset = { blockPos.x , blockPos.y, blockPos.z };
-    Desc.pTransformCom = m_pTransformCom;
-    Desc.pOwner = this;
-    m_Colliders.resize(m_Colliders.size() + 1);
-    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-        TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_Colliders.back()), &Desc)))
-    {
-        return E_FAIL;
-    }
-
-    // 4. 인스턴스 버퍼 업데이트
-    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
-
-    return S_OK;
-}
-
-
 
 
 
@@ -352,74 +421,6 @@ HRESULT CBreakableCube::Ready_Components()
         return E_FAIL;
 
     return S_OK;
-}
-
-
-void CBreakableCube::Should_Collide_With_Player()
-{
-    // 플레이어 밑에 있는 청크면 충돌 매니저에 올림(이제는 플레이어에다가 추가로 몬스터 크리퍼, 좀비 레이어)
-
-    _float3 vStevePos; 
-
-    if (CPawn* _steve = dynamic_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")))) {
-        vStevePos = _steve->Get_Transform()->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
-    }
-
-    //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-    for (int i = 0; i < m_vecPositions.size(); ++i) {
-        _float3 vDiff{ vStevePos - m_vecPositions[i]};
-        _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-        if (fLengthSq < 30.f)
-        {
-            //플레이어와 거리가 가까우면
-            m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, m_Colliders[i]);
-
-            m_Colliders[i]->Set_bColliderActive(true);
-        }
-    }
-}
-
-void CBreakableCube::Should_Collide_With_Monster()
-{
-    // 플레이어 밑에 있는 청크면 충돌 매니저에 올림(이제는 플레이어에다가 추가로 몬스터 크리퍼, 좀비 레이어)
-    list<CGameObject*> Monsters{ m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster")) };
-
-    for (CGameObject* pMonster : Monsters)
-    {
-
-        /*_float3 pMonsterPos = static_cast<CPawn*>(pMonster)->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-        if (!m_pGameInstance->Is_In_Frustum(pMonsterPos, 0.5f))
-            continue;*/
-
-        CTransform* pTransformCom{ nullptr };
-        pTransformCom = static_cast<CTransform*>(pMonster->Find_Component(TEXT("Com_Transform")));
-
-        /*if (!m_pGameInstance->Is_In_Frustum(pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
-            continue;*/
-
-        _float3 _monPos;
-        if (CPawn* _monster = dynamic_cast<CPawn*>(pMonster)) {
-            _monPos = _monster->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-        }
-        //if (!m_pGameInstance->Is_In_Frustum(_monPos, 0.5f))
-        //    continue;
-
-
-        _monPos += _float3{ 0.f, 1.f, 0.f };
-
-        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-        for (int i = 0; i < m_vecPositions.size(); ++i) {
-            _float3 vDiff{ _monPos - m_vecPositions[i]};
-            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
-            if (fLengthSq < /*0.f*/5.f)
-            {
-                //플레이어와 거리가 가까우면
-                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, m_Colliders[i]);
-
-                m_Colliders[i]->Set_bColliderActive(true);
-            }
-        }
-    } 
 }
 
 CBreakableCube* CBreakableCube::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -458,8 +459,10 @@ void CBreakableCube::Free()
     Safe_Release(m_pVIBufferCom);
     //Safe_Release(m_pColliderCom);
 
-	for (CCollider_Cube* m_Colliders : m_Colliders)
-		Safe_Release(m_Colliders);
+    for (auto& pair : m_Colliders)
+    {
+        Safe_Release(pair.second);
+    }
 
     Safe_Release(m_pShaderCom);
 }

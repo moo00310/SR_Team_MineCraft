@@ -1,5 +1,5 @@
 ﻿#include "Wood.h"
-
+#include "MissionControl.h"
 
 CWood::CWood(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CBreakableCube(pGraphic_Device)
@@ -74,8 +74,19 @@ HRESULT CWood::Render()
 	return S_OK;
 }
 
-HRESULT CWood::Delete_Cube(_float3 fPos)
+HRESULT CWood::Drop_Item_OnDestroy(const _float3& fPos)
 {
+
+	wchar_t layerName[100];
+	swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"), LEVEL_YU, layerName)))
+		return E_FAIL;
+
+	if (CItemCube* pItem = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+		pItem->SetPos(fPos);
+		pItem->Set_ItemTypeAndBindTexture(ITEMNAME_WOOD);
+
 	for (size_t i = 0; i < m_vecPositions.size(); ++i)
 	{
 		if (m_vecPositions[i].x == fPos.x &&
@@ -106,11 +117,24 @@ HRESULT CWood::Delete_Cube(_float3 fPos)
 			m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 			__super::Delete_Cube(fPos);
 
+			if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+				_control->Update_Mission(L"나무");
+			}
+
 			return S_OK;
 		}
+
 	}
 
-	return E_FAIL;
+	return S_OK;
+}
+
+HRESULT CWood::Play_Destroy_Effect(const _float3& fPos)
+{
+	m_pGameInstance->CheckSoundStop(this, 0, 1);
+	m_pGameInstance->PlaySound(TEXT("Wood_BreakingFinish"), 1, fPos);
+
+	return S_OK;
 }
 
 HRESULT CWood::Ready_Components()

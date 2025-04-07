@@ -68,6 +68,9 @@ HRESULT CLevel_YU::Initialize()
 
 	if(FAILED(Ready_Layer_PlayerState(TEXT("Layer_PlayerState"))))
 		return E_FAIL;
+	
+	if (FAILED(Ready_Layer_Effect(LAYER_EFFECT)))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Particle(LAYER_PARTICLE)))
 		return E_FAIL;
@@ -101,8 +104,13 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_RightHand(TEXT("Layer_Cube_RightHand"))))
 		return E_FAIL;	
 
-	///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////	
 
+	if (FAILED(Ready_Layer_Missions(TEXT("Layer_Mission"))))
+		return E_FAIL;
+
+	///////////////////////////////////////////////////////////
+	m_pGameInstance->PlayBGM(L"sweden");
 
 	return S_OK;
 }
@@ -363,6 +371,19 @@ HRESULT CLevel_YU::Ready_Layer_UI_DropItem(const _wstring& strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionMainUi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionControl"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_YU::Ready_Layer_TPS_Arm(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_TPS_Arm"),
@@ -405,6 +426,20 @@ HRESULT CLevel_YU::Ready_Laye_Left_Rect_Model(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Left_Rect_Model"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Effect(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU,	// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_SWORD_AURA,	// 가져올 프로토타입.
+		LEVEL_YU,		// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))			// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -517,6 +552,16 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
 		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
+	// 검기 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		20)))				// 풀링 갯수.
 	{
 		return E_FAIL;
 	}

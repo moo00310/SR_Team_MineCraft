@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "UI_Mgr.h"
 #include "MCTerrain.h"
+#include "Sound_Manager.h"
 
 CItemRect::CItemRect(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
@@ -66,6 +67,8 @@ void CItemRect::Update(_float fTimeDelta)
     //먹어서 사라지는 거리
     if (fDist < 0.1f)
     {
+        m_pGameInstance->PlaySound(TEXT("Minecraft - Item Pop"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this, CSound_Manager::ITEM);
+
         Destroy();
         CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
     }
@@ -164,6 +167,18 @@ HRESULT CItemRect::Set_ItemTypeAndBindTexture(ITEMNAME _name)
     case Client::ITEMNAME_REDTULIP:
         /* For.Com_Texture */
         if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_RedTulip"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEMNAME_GUNPOWDER:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Gunpowder"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEMNAME_ROTTENFLESH:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_rottenFlesh"),
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;

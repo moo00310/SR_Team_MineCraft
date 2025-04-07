@@ -260,7 +260,7 @@ void CRect_Model::Motion_Walk(_float fTimeDelta)
 }
 
 void CRect_Model::Motion_EAT(_float fTimeDelta)
-{
+{	
 	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
 	if (name != ITEMNAME_APPLE)
 	{
@@ -308,7 +308,8 @@ void CRect_Model::KeyInput()
 
 	if (m_pGameInstance->Key_Down(VK_RBUTTON))
 	{
-		m_eCurAnim = EAT;
+		m_eCurAnim = EAT;		
+		AuraSword();
 		return;
 	}
 
@@ -361,6 +362,47 @@ void CRect_Model::FireSword()
 	
 }
 
+void CRect_Model::AuraSword()
+{
+	// 검기.
+	CSwordAura* swordAura = (CSwordAura*)m_pGameInstance->PushPool(
+		LEVEL_YU,	// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_SWORD_AURA,	// 가져올 프로토타입.
+		LEVEL_YU,		// 가져올 씬.
+		LAYER_EFFECT	// 애드오브젝트에 추가할 레이어.
+	);
+
+	// 카메라.
+	CCamera_Player* camera = (CCamera_Player*)m_pGameInstance->Get_Object(
+		LEVEL_YU,
+		TEXT("Layer_Camera"),
+		0
+	);
+
+	// 카메라 월드 행렬.
+	const _float4x4* cameraWorldmat = camera->GetTransform()->Get_WorldMatrix();
+
+	// 회전 행렬.
+	Matrix rotateMatrix = {};
+	Matrix scaleMatrix = {};
+
+	// 검기 90도 회전.
+	rotateMatrix = rotateMatrix.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-90.f));
+
+	// 검기 크기 늘림.
+	scaleMatrix = scaleMatrix.Scaling(5.f, 5.f, 5.f);
+
+	swordAura->GetTransform()->Set_Matrix((_float4x4)scaleMatrix * (_float4x4)rotateMatrix * (*cameraWorldmat));
+
+	// 기존 생성 위치가 좀 낮게.
+	_float3 pos = swordAura->GetTransform()->Get_State(CTransform::STATE_POSITION);
+
+	swordAura->GetTransform()->Set_State(
+		CTransform::STATE_POSITION,
+		{ pos.x, pos.y - 0.3f, pos.z}
+		);
+}
+
 void CRect_Model::SwingFireSword()
 {
 	if (Compute_Texture_Name() != ITEMNAME_SWORD)
@@ -378,7 +420,7 @@ void CRect_Model::SwingFireSword()
 
 	particle->GetTransform()->Set_Matrix(boneWorldMatrix);
 
-	particle->SetTimer(0.3f);
+	//particle->SetTimer(0.3f);
 }
 
 ITEMNAME CRect_Model::Compute_Texture_Name()

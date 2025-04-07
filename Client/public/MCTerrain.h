@@ -40,6 +40,9 @@ private:
 	set<_int>& Compute_Near_Chunk_Indexies(_float3 vPos);
 	//현재 위치로 청크 인덱스를 알아오는 함수
 	_int Compute_ChunkIndex(_float3 vPos);
+
+	vector<_float3> Get_Positions_Within_DistSq(_float3 vPos, float fDistSq);
+
 #pragma endregion
 
 public:
@@ -50,6 +53,8 @@ public:
 	void Create_Cube(_float3 vMyPos, ITEMNAME eItemName, _float3 vPos, _float3 vDir);
 	// 현재 청크에 스폰 가능한 위치를 가져오는 함수
 	const vector<_float3>& Get_SpwanAble();
+
+	int Get_ChunkCount() { return m_iChunkCount; }
 private:
 
 	HRESULT Ready_Layer_BackGround();

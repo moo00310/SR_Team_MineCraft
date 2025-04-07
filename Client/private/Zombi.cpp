@@ -1,4 +1,7 @@
 #include "Zombi.h"
+#include "ItemRect.h"
+#include "MCTerrain.h"
+#include "MissionControl.h"
 
 CZombi::CZombi(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CMonster{ pGraphic_Device }
@@ -265,6 +268,7 @@ void CZombi::Motion_Attack(_float fTimeDelta)
 
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
+        m_pTargetPawn->Add_Hp(-10.f);
     }
 
     m_skelAnime->Update_Animetion(Attack, fTimeDelta, 5);
@@ -287,6 +291,29 @@ void CZombi::Motion_Dead(_float fTimeDelta)
         //m_isDestroyed = true;
         m_pGameInstance->PlaySound(TEXT("Zombie_Death"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
+
+
+        _float3 Pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.0, 0.5, 0.0 };
+        
+        int x = static_cast<int>(Pos.x) / 16;
+        int z = static_cast<int>(Pos.z) / 16;
+        int width;
+        if (CMCTerrain* _terrain = dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")))) {
+            width = static_cast<int>(sqrt(_terrain->Get_ChunkCount()));
+        }
+        int myChunk =  x + (width * z);
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", myChunk);
+        if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+            return;
+        if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+            _copy->SetPos(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            _copy->Set_ItemTypeAndBindTexture(ITEMNAME_ROTTENFLESH);
+        }
+
+        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+            _control->Update_Mission(L"Á»ºñ");
+        }
     }
 }
 
@@ -354,26 +381,4 @@ void CZombi::FrameCallback(int animType, int frame)
             }
         }
     }
-    if (animType == Swing_BF && frame == 2)
-    {
-        m_pGameInstance->PlaySound(TEXT("Zombie_Walk2"), m_sound-0.35f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-        int random = rand() % 10;
-        if (random < 4) {
-            switch (random)
-            {
-            case 0:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say1"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-                break;
-            case 1:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say2"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-                break;
-            case 2:
-                m_pGameInstance->PlaySound(TEXT("Zombie_Say3"), m_sound - 0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-                break;
-            default:
-                break;
-            }
-        }
-    }
-
 }

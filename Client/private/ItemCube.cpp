@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "UI_Mgr.h"
 #include "MCTerrain.h"
+#include "Sound_Manager.h"
 
 CItemCube::CItemCube(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
@@ -69,8 +70,10 @@ void CItemCube::Update(_float fTimeDelta)
     {
         OnDropItem(m_eItemName);
 
+        m_pGameInstance->PlaySound(TEXT("Minecraft - Item Pop"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this, CSound_Manager::ITEM);
+
         Destroy();
-        CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
+     CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
     }
     else if (fDist < 1.5f)
     {

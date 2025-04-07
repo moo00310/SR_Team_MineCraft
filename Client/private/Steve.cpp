@@ -6,6 +6,7 @@
 #include "GameInstance.h"
 #include "UI_Mgr.h"
 #include <iostream>
+#include "Sound_Manager.h"
 
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CPawn{ pGraphic_Device }
@@ -221,7 +222,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('B'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GRASSDIRT, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GRASSDIRT, 64);
 	}
 	if (m_pGameInstance->Key_Down('N'))
 	{
@@ -554,6 +555,21 @@ const _float4x4& CSteve::GetSoketMatrix(int index)
 	return m_skelAnime->GetBoneWorldMatrix(index);
 }
 
+void CSteve::Add_Hp(_float fAmount)
+{
+	m_Hp += fAmount;
+	CUI_Mgr::Get_Instance()->SetHP();
+
+	m_pGameInstance->PlaySound(TEXT("Player_Hurt_Old"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this, CSound_Manager::PLAYER);
+	//if (m_Hp <= 0.f) 
+	//{
+	//	//죽으면 바로 리스폰
+	//	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3{ 10.f, 20.f, 10.f });
+	//	m_Hp = 100.f;
+	//	CUI_Mgr::Get_Instance()->SetHP(); //피가 왜 안차지?
+	//}
+}
+
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
 	CSteve* pInstance = new CSteve(pGraphic_Device);
@@ -589,5 +605,21 @@ void CSteve::Free()
 void CSteve::FrameCallback(int animType, int frame)
 {
 	//cout << "스티브 애니메이션: " << animType << ", 프레임: " << frame << endl;
+	if (animType == Swing_FF && frame == 0)
+	{
+		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass1"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+	if (animType == Swing_FF && frame == 1)
+	{
+		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass2"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+	if (animType == Swing_FF && frame == 2)
+	{
+		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass2"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
+	if (animType == Swing_FF && frame == 3)
+	{
+		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass4"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	}
 }
 

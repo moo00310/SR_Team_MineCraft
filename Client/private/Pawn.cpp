@@ -86,7 +86,11 @@ void CPawn::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pTerrain);
+	if (m_isCloned)
+	{
+		Safe_Release(m_pTerrain);
+	}
+
 	Safe_Release(m_pShaderCom);
 	Safe_Release(m_pRigidbodyCom);
 	Safe_Release(m_pCollider_CubeCom);

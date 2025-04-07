@@ -40,8 +40,6 @@ public:
 	void Set_ItemCount(_int _itemCount) { m_iItemCount = _itemCount; }
 	void Set_ItemCountRender(_bool ItemCountRender) { m_bCountRender = ItemCountRender; }
 	void Set_Test(_bool _Test) { m_bTest = _Test; }
-	
-
 
 private:
 	HRESULT Ready_Components();
@@ -60,6 +58,9 @@ private:
 	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
 	CShader*			m_pShaderCom = { nullptr };
 
+	ID3DXFont*			m_pFont = nullptr;
+
+	RECT textRect;
 private:
 	UIOBJECT_DESC		Desc{};
 	ITEMNAME			m_ItemName = ITEMNAME_END;
@@ -76,7 +77,9 @@ private:
 	_bool		m_bCheck = {true};
 	_bool		m_bTest = { false };
 	_bool		m_bCountRender = { false };
+	_bool		m_bTestInfo = { false };
 
+		
 
 
 public:

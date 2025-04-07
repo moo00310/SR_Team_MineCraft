@@ -99,6 +99,11 @@ HRESULT CCamera_Player::Render()
 	return S_OK;
 }
 
+CTransform* CCamera_Player::GetTransform() const
+{
+    return m_pTransformCom;
+}
+
 void CCamera_Player::Input_Key(_float fTimeDelta)
 {
     // 창이 활성화 상태가 아닐 경우 입력을 무시
@@ -221,7 +226,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             if (CMonster* monster = dynamic_cast<CMonster*>(pHitObject))
             {
                 monster->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK));
-                monster->Set_Hp(0);
+                monster->Add_Hp(-10.f);
                 return;
             }
 
@@ -235,7 +240,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         m_DestroyCube->SetActive(false);
     }
 
-    if (m_pGameInstance->Key_Down(VK_RBUTTON))
+    if (m_pGameInstance->Key_Down(VK_RBUTTON) && !g_bMainInventoryOpen)
     {
         ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
