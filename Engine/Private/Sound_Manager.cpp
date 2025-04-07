@@ -1,5 +1,4 @@
 #include "Sound_Manager.h"
-
 CSound_Manager::CSound_Manager()
 {
 }
@@ -28,13 +27,16 @@ void CSound_Manager::LoadSound(const std::wstring& soundName, const char* filePa
 
 
     FMOD_MODE mode = FMOD_DEFAULT;
-    if (bLoop)
+    if (bLoop) {
         mode |= FMOD_LOOP_NORMAL;
-    else
+        mode |= FMOD_2D;
+    }
+    else {
         mode |= FMOD_LOOP_OFF;
-
-    mode |= FMOD_3D;
-    mode |= FMOD_3D_LINEARROLLOFF;
+        mode |= FMOD_3D;
+        mode |= FMOD_3D_LINEARROLLOFF;
+    }
+        
 
     FMOD::Sound* pSound = nullptr;
     if (m_pCoreSystem->createSound(filePath, mode, nullptr, &pSound) != FMOD_OK)
@@ -61,8 +63,19 @@ void CSound_Manager::PlayBGM(const std::wstring& soundName)
     if (pSound == nullptr)
         return;
 
+    bool isPlaying = false;
+    if (m_pBGMChannel)
+    {
+        m_pBGMChannel->isPlaying(&isPlaying);
+        if (isPlaying)
+        {
+            m_pBGMChannel->stop();
+        }
+    }
+
     m_pCoreSystem->playSound(pSound, nullptr, false, &m_pBGMChannel);
 }
+
 
 void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, _float3 pPos, void* _obj, int _type)
 {
@@ -179,8 +192,8 @@ void CSound_Manager::Add_SoundResource()
 {
     LoadSound(L"Player_Walk_Grass1", "../../FMOD/Assets/player/Player_Walk_Grass1.wav", false);
     LoadSound(L"Player_Walk_Grass2", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
-    LoadSound(L"Player_Walk_Wood1", "../../FMOD/Assets/player/Player_Walk_Wood1.wav", false);
-    LoadSound(L"Player_Walk_Wood2", "../../FMOD/Assets/player/Player_Walk_Wood2.wav", false);
+    LoadSound(L"Player_Walk_Grass3", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
+    LoadSound(L"Player_Walk_Grass4", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
     LoadSound(L"Player_Hurt", "../../FMOD/Assets/player/Player_Hurt.wav", false);
     LoadSound(L"Player_Eat1", "../../FMOD/Assets/player/Player_Eat1.wav", false);
     LoadSound(L"Player_Eat2", "../../FMOD/Assets/player/Player_Eat2.wav", false);
@@ -202,6 +215,11 @@ void CSound_Manager::Add_SoundResource()
 
     LoadSound(L"Block_Breaking", "../../FMOD/Assets/Block/Block_Breaking.wav", false);
     LoadSound(L"Block_BreakingFinish", "../../FMOD/Assets/Block/Block_BreakingFinish.wav", false);
+
+
+    LoadSound(L"MoogCity2", "../../FMOD/Assets/background/MoogCity2.wav", true);
+    LoadSound(L"pigstep", "../../FMOD/Assets/background/pigstep.wav", true);
+    LoadSound(L"sweden", "../../FMOD/Assets/background/sweden.wav", true);
 }
 
 void CSound_Manager::Update()

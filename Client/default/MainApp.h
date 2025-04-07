@@ -34,6 +34,8 @@ private:
 	HRESULT Ready_Steve();
 	HRESULT Ready_Particle();
 
+	void InitFont();
+
 public:
 	static CMainApp* Create();
 	virtual void Free() override;

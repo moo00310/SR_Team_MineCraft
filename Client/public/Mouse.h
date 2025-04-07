@@ -30,7 +30,6 @@ public:
 	_int		Get_ItemCount()				{ return m_iItemCount; }
 	_int		Get_OldItemCount()			{ return m_iOldItemCount; }
 
-
 public:
 	void Set_ItemName(ITEMNAME _ItemName)		{ m_ItemName = _ItemName; }
 	void Set_OldItem(ITEMNAME _OldItem)			{ m_OldItem = _OldItem; }
@@ -41,7 +40,6 @@ public:
 	void Set_ItemCount(_int _ItemCount)			{ m_iItemCount = _ItemCount; }
 	void Set_OldItemCount(_int OldItemCount)	{ m_iOldItemCount = OldItemCount; }
 	void Set_SlotIndex(_int _ISlotIndex)		{ m_iSlotIndex = _ISlotIndex; }
-	//void Set_ItemPos()
 
 public:
 	void Clear(_uint iLevelIndex);

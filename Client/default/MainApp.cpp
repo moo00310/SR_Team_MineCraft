@@ -34,6 +34,9 @@
 #include "ParticleStoneDestroy.h"
 #include "ParticleSwordAura.h"
 
+LPD3DXFONT g_pTitleFont = nullptr;
+LPD3DXFONT g_pDetailFont = nullptr;
+
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
 {
@@ -108,6 +111,7 @@ HRESULT CMainApp::Initialize()
 	// 파티클 매니저 초기화.
 	CParticleEventManager::Get_Instance()->Initialization(m_pGameInstance);
 
+	InitFont();
 	return S_OK;
 }
 
@@ -291,6 +295,39 @@ HRESULT CMainApp::Ready_Particle()
 	return S_OK;
 }
 
+void CMainApp::InitFont()
+{
+	D3DXFONT_DESC fontDesc = {
+	24,                        // Height (크기)
+	0,                         // Width (0이면 자동)
+	FW_NORMAL,                 // Weight
+	1,                         // MipLevels
+	FALSE,                     // Italic
+	DEFAULT_CHARSET,           // CharSet
+	OUT_DEFAULT_PRECIS,        // OutputPrecision
+	ANTIALIASED_QUALITY,       // Quality
+	DEFAULT_PITCH | FF_DONTCARE, // PitchAndFamily
+	L"굴림"                    // FontFaceName (ex: 굴림, Arial, etc)
+	};
+
+	D3DXCreateFontIndirect(m_pGraphic_Device, &fontDesc, &g_pTitleFont);
+
+
+	D3DXFONT_DESC fontDesc2 = {
+	18,                        // Height (크기)
+	0,                         // Width (0이면 자동)
+	FW_NORMAL,                 // Weight
+	1,                         // MipLevels
+	FALSE,                     // Italic
+	DEFAULT_CHARSET,           // CharSet
+	OUT_DEFAULT_PRECIS,        // OutputPrecision
+	ANTIALIASED_QUALITY,       // Quality
+	DEFAULT_PITCH | FF_DONTCARE, // PitchAndFamily
+	L"굴림"                    // FontFaceName (ex: 굴림, Arial, etc)
+	};
+	D3DXCreateFontIndirect(m_pGraphic_Device, &fontDesc2, &g_pDetailFont);
+}
+
 
 HRESULT CMainApp::Ready_Texture()
 {
@@ -458,6 +495,18 @@ CMainApp* CMainApp::Create()
 void CMainApp::Free()
 {
 	__super::Free();
+
+	if (g_pTitleFont)
+	{
+		g_pTitleFont->Release();
+		g_pTitleFont = nullptr;
+	}
+
+	if (g_pDetailFont)
+	{
+		g_pDetailFont->Release();
+		g_pDetailFont = nullptr;
+	}
 
 	CUI_Mgr::Get_Instance()->Free();
 	CUI_Mgr::Get_Instance()->Destroy_Instance();

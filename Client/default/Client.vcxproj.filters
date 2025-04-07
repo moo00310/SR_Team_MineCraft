@@ -306,6 +306,12 @@
     </Filter>
     <Filter Include="02.GameObjects\09.Effect">
       <UniqueIdentifier>{0c0e97dc-4081-4894-8b9c-53b4466b61bb}</UniqueIdentifier>
+    /Filter>
+    <Filter Include="08.Mission">
+      <UniqueIdentifier>{4d903306-9314-4904-b66e-9358099703b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08.Mission\Ui">
+      <UniqueIdentifier>{2b3acd74-b303-407f-a52a-df4509624707}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -684,6 +690,12 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleSwordAura.h">
       <Filter>02.GameObjects\05.Particle</Filter>
+     </ClInclude>
+    <ClInclude Include="..\public\MissionControl.h">
+      <Filter>08.Mission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\MissionMainUi.h">
+      <Filter>08.Mission\Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1050,6 +1062,12 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleSwordAura.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MissionControl.cpp">
+      <Filter>08.Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\MissionMainUi.cpp">
+      <Filter>08.Mission\Ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

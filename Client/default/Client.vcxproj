@@ -203,6 +203,8 @@
     <ClInclude Include="..\public\ItemRect.h" />
     <ClInclude Include="..\public\IObserver.h" />
     <ClInclude Include="..\public\Left_Rect_Model.h" />
+    <ClInclude Include="..\public\MissionControl.h" />
+    <ClInclude Include="..\public\MissionMainUi.h" />
     <ClInclude Include="..\public\Mouse.h" />
     <ClInclude Include="..\public\Mouse_Item.h" />
     <ClInclude Include="..\public\Mouse_ItemFont.h" />
@@ -325,6 +327,8 @@
     <ClCompile Include="..\private\ItemRect.cpp" />
     <ClCompile Include="..\private\IObserver.cpp" />
     <ClCompile Include="..\private\Left_Rect_Model.cpp" />
+    <ClCompile Include="..\private\MissionControl.cpp" />
+    <ClCompile Include="..\private\MissionMainUi.cpp" />
     <ClCompile Include="..\private\Mouse.cpp" />
     <ClCompile Include="..\private\Mouse_Item.cpp" />
     <ClCompile Include="..\private\Mouse_ItemFont.cpp" />

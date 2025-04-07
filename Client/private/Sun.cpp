@@ -122,10 +122,10 @@ void CSun::Orbit_Around_Earth()
 
 	// 회전 변환 적용 (X축 기준 회전)
 	if (m_bAddTimeFast) {
-		m_fAngle += 0.008f; // 회전 속도 증가
+		m_fAngle += 0.01f; // 회전 속도 증가
 	}
 	else {
-		m_fAngle += 0.003f; // 회전 속도 증가
+		m_fAngle += 0.002f; // 회전 속도 증가
 	}
 	
 

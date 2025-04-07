@@ -104,6 +104,12 @@ HRESULT CLevel_YU::Initialize()
 
 	///////////////////////////////////////////////////////////	
 
+	if (FAILED(Ready_Layer_Missions(TEXT("Layer_Mission"))))
+		return E_FAIL;
+
+	///////////////////////////////////////////////////////////
+	m_pGameInstance->PlayBGM(L"sweden");
+
 	return S_OK;
 }
 
@@ -352,6 +358,19 @@ HRESULT CLevel_YU::Ready_Layer_UI_DropItem(const _wstring& strLayerTag)
 	{
 		return E_FAIL;
 	}
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionMainUi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionControl"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }

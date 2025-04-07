@@ -240,7 +240,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         m_DestroyCube->SetActive(false);
     }
 
-    if (m_pGameInstance->Key_Down(VK_RBUTTON))
+    if (m_pGameInstance->Key_Down(VK_RBUTTON) && !g_bMainInventoryOpen)
     {
         ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
