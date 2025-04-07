@@ -17,6 +17,11 @@ public:
 		wstring name = L"";
 		int count = 0;
 	};
+	struct showMission {
+		wstring word = L"";
+		int curCount = 0;
+		int endCount = 0;
+	};
 private:
 	CMissionControl(LPDIRECT3DDEVICE9 pGraphic_Device);
 	CMissionControl(const CMissionControl& Prototype);
@@ -29,6 +34,7 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 
 	void Update_Mission(wstring name);
+	vector<showMission> Get_MissionList();
 private:
 	void InitMissions1();
 	void InitMissions2();

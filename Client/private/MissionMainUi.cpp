@@ -1,4 +1,5 @@
 #include "MissionMainUi.h"
+#include "MissionControl.h"
 
 CMissionMainUi::CMissionMainUi(LPDIRECT3DDEVICE9 pGraphic_Device) :CUIObject{ pGraphic_Device }
 {
@@ -15,10 +16,10 @@ HRESULT CMissionMainUi::Initialize_Prototype()
 
 HRESULT CMissionMainUi::Initialize(void* pArg)
 {
-    Desc.fSizeX = 300.f;
-    Desc.fSizeY = 400.f;
-    Desc.fX = 500.f;
-    Desc.fY = 300.f;
+    Desc.fSizeX = 280.f;
+    Desc.fSizeY = 300.f;
+    Desc.fX = 1135.f;
+    Desc.fY = 325.f;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -31,6 +32,7 @@ HRESULT CMissionMainUi::Initialize(void* pArg)
 
     return S_OK;
 }
+
 
 void CMissionMainUi::Priority_Update(_float fTimeDelta)
 {
@@ -75,6 +77,51 @@ HRESULT CMissionMainUi::Render()
 
     m_pShaderCom->End();
     __super::End();
+
+    RECT rect = { 1000, 170, 1280, 250 };
+
+    g_pTitleFont->DrawTextW(
+        nullptr,              
+        L"Mission",    
+        -1,                       
+        &rect,                   
+        DT_CENTER | DT_VCENTER | DT_SINGLELINE,       
+        D3DCOLOR_ARGB(255, 255, 255, 0) 
+    );
+
+    if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+        vector<CMissionControl::showMission> _vecMission = _control->Get_MissionList();
+        RECT rect = { 1000, 220, 1280, 300 };
+        for (int i = 0; i < _vecMission.size(); ++i) {
+            wstring _word;
+            if (_vecMission[i].curCount == _vecMission[i].endCount) {
+                _word = _vecMission[i].word;
+                g_pDetailFont->DrawTextW(
+                    nullptr,                   
+                    _word.c_str(),
+                    -1,                         
+                    &rect,                       
+                    DT_CENTER | DT_VCENTER | DT_SINGLELINE,   
+                    D3DCOLOR_ARGB(255, 60, 179, 113) 
+                );
+            }
+            else {
+                _word = _vecMission[i].word + L" (" + to_wstring(_vecMission[i].curCount) + L"/" + to_wstring(_vecMission[i].endCount) +L")";
+                g_pDetailFont->DrawTextW(
+                    nullptr,
+                    _word.c_str(),
+                    -1,
+                    &rect,
+                    DT_CENTER | DT_VCENTER | DT_SINGLELINE,
+                    D3DCOLOR_ARGB(255, 255, 255, 255)
+                );
+
+            }
+            rect.top += 30;
+            rect.bottom += 30;
+        }
+    }
+
     return S_OK;
 }
 
@@ -109,6 +156,7 @@ CMissionMainUi* CMissionMainUi::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
         MSG_BOX("Failed to Created : CMissionMainUi");
         Safe_Release(pInstance);
     }
+
     return pInstance;
 }
 
