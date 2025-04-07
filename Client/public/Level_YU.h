@@ -26,6 +26,7 @@ private:
 	HRESULT Ready_Layer_Clouds(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_SkyBox(const _wstring& strLayerTag);
 
+	HRESULT Ready_Layer_Effect(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Particle(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_TPS_Arm(const _wstring& strLayerTag);
 	HRESULT Ready_Laye_Rect_Model(const _wstring& strLayerTag);
@@ -41,6 +42,8 @@ private:
 
 	HRESULT Ready_Layer_DestroyCube(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_UI_DropItem(const _wstring& strLayerTag);
+
+	HRESULT Ready_Layer_Missions(const _wstring& strLayerTag);
 
 private:
 	wchar_t m_szFPS[20]{};

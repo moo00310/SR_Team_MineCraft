@@ -1,4 +1,5 @@
 #include "Inventory_Back.h"
+#include "UI_Mgr.h"
 
 CInventory_Back::CInventory_Back(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CUIObject{ pGraphic_Device }
@@ -149,6 +150,9 @@ CGameObject* CInventory_Back::Clone(void* pArg)
 		MSG_BOX("Failed to Created : CInventory_Back");
 		Safe_Release(pInstance);
 	}
+
+	//CUI_Mgr::Get_Instance()->Get_vecInventoryBacklist()->push_back(pInstance);
+
 	return pInstance;
 }
 

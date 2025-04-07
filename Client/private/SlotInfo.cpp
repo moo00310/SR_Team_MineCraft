@@ -1,6 +1,8 @@
 ﻿#include "SlotInfo.h"
 #include "UI_Mgr.h"
 #include "Mouse.h"
+#include <Shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
 
 CSlotInfo::CSlotInfo(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
@@ -115,6 +117,51 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
+    if (PtInRect(&rcRect, ptMouse) && m_ItemName != ITEMNAME_END)
+    {
+        if (!m_bTestInfo)
+        {
+            m_bTestInfo = true;
+
+            _bool bTest = false;
+            if (!bTest)
+            {
+                WCHAR szPath[MAX_PATH] = {};
+                GetModuleFileName(nullptr, szPath, MAX_PATH);
+                PathRemoveFileSpec(szPath); // bin 경로
+
+                _wstring fontPath = _wstring(szPath) + L"\\Resources\\Fonts\\Minecraftia-Regular.ttf";
+                if (!AddFontResourceEx(fontPath.c_str(), FR_PRIVATE, 0))
+                {
+                    MSG_BOX("Failed to Created : Font");
+                    return;
+                }
+
+                bTest = true;
+            }
+
+            if (m_pFont == nullptr)
+            {
+                D3DXFONT_DESC fontDesc = {};
+                fontDesc.Height = 34;
+                fontDesc.Width = 0;
+                fontDesc.Weight = FW_NORMAL;
+                fontDesc.CharSet = DEFAULT_CHARSET;
+                fontDesc.OutputPrecision = OUT_DEFAULT_PRECIS;
+                fontDesc.Quality = CLEARTYPE_QUALITY;
+                fontDesc.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
+                lstrcpy(fontDesc.FaceName, L"Minecraftia");
+
+                D3DXCreateFontIndirect(m_pGraphic_Device, &fontDesc, &m_pFont);
+            }
+            SetRect(&textRect, Desc.fX + 50, Desc.fY - 40, Desc.fX + 250, Desc.fY - 10);
+        }
+    }
+	else
+	{
+        m_bTestInfo = false;
+	}
+ 
 	/* 마우스 클릭 시 아이템 선택 및 교체 */
 	/* 마우스가 아이템 슬롯 위에 있고, 좌클릭이 떼어졌을 때 실행*/
 	if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON))
@@ -124,9 +171,9 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 		{
 			if (m_ItemName != ITEMNAME_END)
 			{
-				/* 클릭한 슬롯의 아이템 및 폰트 저장*/
-		        /* 1. 아이템 타입 저장*/
-                 pMouse->Set_ItemID(m_ItemID);
+				/* 클릭한 슬롯의 아이템 및 폰트 저장*/		      
+                /* 1. 아이템 타입 저장*/
+                pMouse->Set_ItemID(m_ItemID);
 				/* 2. 아이템 텍스쳐 번호 저장*/
 				pMouse->Set_ItemName(m_ItemName);
 				/* 3. 아이템이 원래 있던 인벤토리 슬롯 번호 저장*/
@@ -135,7 +182,6 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 				pMouse->Set_Picked(true);
 				/* 5. 현재 슬롯에 있는 아이템 개수 저장 */
 				pMouse->Set_ItemCount(m_iItemCount);
-
 				/* 6. 마우스가 아이템을 들고 있는 상태로 저장*/
 				(*mouseItem)->Set_Check(true);
 				/* 마우스에 표시할 아이템 이미지 설정 */
@@ -150,29 +196,30 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 					(*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
 				}
 
-				/* 마우스가 집었던 슬롯 아이템, 개수, 개수 렌더 비활성 */
-				Set_ItemName(ITEMNAME_END);
-				m_iItemCount = 0;
+				/* 마우스가 집었던 슬롯 아이템 이미지, 개수, 개수 렌더 비활성 */
+                if (m_iSlotIndexNum > 48 || m_iSlotIndexNum < 45)
+                    Set_ItemID(ITEMID_END);
+                    
+                Set_ItemName(ITEMNAME_END);              
+                m_iItemCount = 0;
 				m_bCountRender = false;
 			}
-
 		}
-
 		/* 마우스에 이미 아이템이 있다면 */
 		else
 		{
             if (pMouse->Get_ItemID() != ITEMID_ARMOR)
             {
-                if (m_ItemID == ITEMID_ARMOR)
+                /* 마우스에있는 아이템이 방어구가 아닐때 방어구칸을 선택하면 return*/
+                if (m_iSlotIndexNum >= 45 && m_iSlotIndexNum <= 48)
                 {
                     return;
                 }
             }
 
 			/* 같은 아이템인지 확인  => 개수 합치는 방식 (스택 처리) */
-			/* pMouse->Get_SlotIndex() = 마우스가 들고 있는 아이템이 원래있던 인덱스
-			   m_iSlotIndexNum = 새로 놓을곳의 인덱스 */
-			if (pMouse->Get_ItemName() == m_ItemName)
+			/* pMouse->Get_SlotIndex() = 마우스가 들고 있는 아이템이 원래있던 인덱스, m_iSlotIndexNum = 새로 놓을곳의 인덱스 */
+			if (pMouse->Get_ItemName() == m_ItemName && m_ItemID != ITEMID_ARMOR)
 			{
 				pMouse->Set_ItemMatch(true);
                 /* 합을 확인해서 64가 넘어가면 합치기 X
@@ -183,23 +230,31 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
                 {
                     return;
                 }
-
+                /* 교체 */
                 if(pMouse->Get_ItemCount() == 64)
                 {
                     _int iTempCount = m_iItemCount;
-                    m_iItemCount = pMouse->Get_ItemCount();
+                    m_iItemCount = pMouse->Get_ItemCount(); // 슬롯 표시 개수
                     pMouse->Set_ItemCount(iTempCount);
                     (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit); 
                     (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
                 }
+                /* 합치기 구현*/
+                else
+                {
+                    Set_ItemCount(iTotalCount);
+                    pMouse->Set_Picked(false);
+                    (*mouseItem)->Set_ItemName(ITEMNAME_END);
+                    (*mouseItem)->Set_Check(false);
+                    (*mouseItemFont)->Set_Check(false);
+                }
 			}
-
 			/* 다른 아이템이면 */
             else
             {
                 pMouse->Set_ItemMatch(false);
 
-                if (m_ItemName != ITEMNAME_END && pMouse->Get_ItemName() != m_ItemName)
+                if (pMouse->Get_ItemName() != m_ItemName && m_ItemName != ITEMNAME_END)
                 {
                     /* 이전 슬롯과 현재 슬롯 아이템 교환*/
                     ITEMID eTempItemID = m_ItemID;
@@ -207,22 +262,29 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
                     _int iTempCount = m_iItemCount;
 
                     /* 마우스에는 선택한 슬롯에 아이템 이미지와 아이템 개수 전달*/
-                    (*mouseItemFont)->Set_Check(true);
                     (*mouseItem)->Set_ItemName(eTempItemName);
+                    (*mouseItemFont)->Set_Check(true);
                     (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
                     (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
 
                     // 선택한 슬롯의 아이템 정보를 마우스가 들고있던 정보들로 교체
                     pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Set_ItemName(pMouse->Get_ItemName());
                     pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Set_ItemCount(pMouse->Get_ItemCount());
-                    //pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Set_ItemID(pMouse->Get_ItemID());
-
+                    
+                    if (pMouse->Get_ItemID() == ITEMID_ARMOR && m_ItemID != ITEMID_ARMOR)
+                    {
+                        pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Set_ItemID(ITEMID_ARMOR);
+                        pMouse->Set_ItemID(eTempItemID);
+                    }
+                    else if (pMouse->Get_ItemID() != ITEMID_ARMOR && m_ItemID == ITEMID_ARMOR)
+                    {
+                        pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndexNum)->Set_ItemID(pMouse->Get_ItemID());
+                        pMouse->Set_ItemID(ITEMID_ARMOR);
+                    }
 
                     pMouse->Set_ItemName(eTempItemName);
                     pMouse->Set_ItemCount(iTempCount);
-                    //pMouse->Set_ItemID(eTempItemID);
                 }
-
                 /* 이동한 슬롯의 아이템 개수 렌더 활성*/
                 m_bCountRender = true;              
             }
@@ -231,7 +293,6 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
             {
                 return;
             }
-
            /* 마우스 상태 */
            /* 마우스에 있던 아이템을 슬롯애 배치 */
 			m_ItemName = (pMouse->Get_ItemName());
@@ -241,16 +302,58 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 			pMouse->Set_Picked(false);
 			/* 마우스 상태 갱신 */
 			m_bCheck = true;
-			/* 마우스가 더 이상 아이템을 들고 있지 않도록 변경 = 빈 상태*/
-            if (pMouse->Get_ItemID() != ITEMID_ARMOR)
-                pMouse->Set_ItemID(ITEMID_END);
-			/* 마우스의 이미지를 ITEMID_END로 변경 = 마우스가 들고 있는 아이템을 비움*/
+			/* 마우스가 방어구를 들고있을때 놓으면 해당 슬롯 방어구 저장*/
+            if (pMouse->Get_ItemID() == ITEMID_ARMOR)
+                m_ItemID = ITEMID_ARMOR;
+			/* 마우스의 이미지를 ITEMNAME_END로 변경 = 마우스가 들고 있는 아이템을 비움*/
 			(*mouseItem)->Set_ItemName(ITEMNAME_END);
 			/* 마우스 상태 비활성화 */
 			(*mouseItem)->Set_Check(false);
 			(*mouseItemFont)->Set_Check(false);
 		}
 	}
+
+
+    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_RBUTTON) && m_iItemCount > 1)
+    {
+        if (pMouse->Get_Picked() == false)
+        {
+            _int iHalf = (m_iItemCount +1 ) / 2;
+            _int iRemain = m_iItemCount - iHalf;
+
+
+            m_iTensDigit = iHalf / 10;
+            m_iOnesDigit = iHalf % 10;
+
+            /* 1. 아이템 아이디 저장 */
+            pMouse->Set_ItemID(m_ItemID);
+            /* 2. 아이템 텍스쳐 번호 저장*/
+            pMouse->Set_ItemName(m_ItemName);
+            /* 3. 아이템이 원래 있던 인벤토리 슬롯 번호 저장*/
+            pMouse->Set_SlotIndex(m_iSlotIndexNum);
+            /* 4. 마우스가 아이템을 들고 있는 상태로 변경 */
+            pMouse->Set_Picked(true);
+            /* 5. 현재 슬롯에 있는 아이템 개수 저장 */
+            pMouse->Set_ItemCount(iHalf);
+            /* 6. 마우스가 아이템을 들고 있는 상태로 저장*/
+            (*mouseItem)->Set_Check(true);
+            /* 마우스에 표시할 아이템 이미지 설정 */
+            (*mouseItem)->Set_ItemName(m_ItemName);
+
+            /* 마우스에 표시할 아이템 개수 이미지 설정 (CMouse_ItemFont 클래스에서 렌더)*/
+            if (m_bCountRender && m_iTensDigit != 0 || m_iOnesDigit != 0)
+            {
+                /* 마우스가 아이템 개수를 들고 있는 상태로 저장*/
+                (*mouseItemFont)->Set_Check(true);
+                (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
+                (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
+            }
+
+            m_iItemCount = iRemain;
+        }
+
+        //pUI_Mgr->Split_ItemStack(m_iSlotIndexNum);
+    }
 
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
 		return;
@@ -270,9 +373,21 @@ HRESULT CSlotInfo::Render()
         if (FAILED(RenderItemTexture(m_pItem_TextureCom, m_ItemName)))
             return E_FAIL;
 
+		if (m_pFont != nullptr && m_bTestInfo)
+		{
+			_wstring strText = L"Torch";
+			m_pFont->DrawTextW(
+				NULL,
+				strText.c_str(),
+				-1,
+				&textRect,
+				DT_NOCLIP,
+				D3DCOLOR_ARGB(255, 255, 255, 255)
+			);
+		}
+ 
         /* 아이템 텍스쳐와 개수 텍스쳐 사이즈 다르게 처리 */
         /* 여기서 0, 0 이 화면에 계속 출력되고있는 상태 */
-
         if (m_bCountRender)
         {
             /* 10의 자리 아이템 개수 렌더 */

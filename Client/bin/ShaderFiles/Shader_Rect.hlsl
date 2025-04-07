@@ -68,10 +68,28 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
     Out.vColor.rgb *= g_Bright;
-        // 검정색이면 픽셀을 버림
+    
+    // 검정색이면 픽셀을 버림
     if (Out.vColor.r == 0 && Out.vColor.g == 0 && Out.vColor.b == 0)
         discard;
 
+    return Out;
+}
+
+PS_OUT PS_MAIN_SWORD_AURA(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = tex2D(DefaultSampler, In.vTexcoord);       
+    
+    // 픽셀 버리기
+    if (Out.vColor.a < 0.2f)
+        discard;
+    
+    // 빨간색으로 줌.
+    Out.vColor.r = 1.f;        
+    Out.vColor.a = 0.1f;
+    
     return Out;
 }
 
@@ -96,5 +114,19 @@ technique DefaultTechnique
         CULLMODE = NONE;
         VertexShader = compile vs_3_0 VS_MAIN_ITEMRECT();
         PixelShader = compile ps_3_0 PS_MAIN();
+    }
+
+    pass SwordAuraPass
+    {
+        ZENABLE = true;
+        ZWRITEENABLE = true;
+        LIGHTING = false; 
+        CULLMODE = NONE;
+        ALPHATESTENABLE = true;
+        SrcBlend = SrcAlpha;
+        DestBlend = InvSrcAlpha;
+        BlendOp = Add;
+        VertexShader = compile vs_3_0 VS_MAIN_ITEMRECT();
+        PixelShader = compile ps_3_0 PS_MAIN_SWORD_AURA();
     }
 }

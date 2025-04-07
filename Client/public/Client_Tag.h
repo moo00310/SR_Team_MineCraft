@@ -67,6 +67,21 @@ static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_GLITTER = TEXT("Prototype_Ga
 // 먹는 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_EATING = TEXT("Prototype_GameObject_Particle_Eating");
 
+// 검기 텍스쳐.
+static const _wstring PROTOTYPE_COMPONENT_TEXTURE_SWORD_AURA = TEXT("Prototype_Component_Texture_Sword_Aura");
+
+// 검기 오브젝트.
+static const _wstring PROTOTYPE_GAMEOBJECT_SWORD_AURA = TEXT("Prototype_GameObject_Sword_Aura");
+
+// 폭죽?같은 텍스쳐.
+static const _wstring PROTOTYPE_COMPONENT_TEXTURE_GLINT = TEXT("Prototype_Component_Texture_Glint");
+
+// 검기에 쓸 파티클 텍스쳐.
+static const _wstring PROTYPE_COMPONENT_TEXTURE_GLOW = TEXT("Prototype_Component_Texture_Glow");
+
+// 검기 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA = TEXT("Prototype_GameObject_Particle_Sword_Aura");
+
 /////////////////////////////////////////////////////////////////////////////
 
 // VIBuffer_Only 클래스 컴포넌트 태그.
@@ -95,5 +110,8 @@ static const _wstring LAYER_PARTICLE = TEXT("Layer_Particle");
 static const _wstring LAYER_DESTROY_CUBE = TEXT("Layer_Destroy_Cube");
 
 static const _wstring LAYER_UI_POOL = TEXT("Layer_UI_Pool");
+
+// 이펙트 레이어.
+static const _wstring LAYER_EFFECT = TEXT("Layer_Effect");
 
 #pragma endregion

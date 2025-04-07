@@ -126,6 +126,26 @@ void CTransform::Go_Right(_float fTimeDelta)
 	Set_State(STATE_POSITION, vPosition);
 }
 
+void CTransform::Go_Up(_float fTimeDelta)
+{
+	_float3		vPosition = Get_State(STATE_POSITION);
+	_float3		vUp = Get_State(STATE_UP);
+
+	vPosition += *D3DXVec3Normalize(&vUp, &vUp) * m_fSpeedPerSec * fTimeDelta;
+
+	Set_State(STATE_POSITION, vPosition);
+}
+
+void CTransform::Go_Down(_float fTimeDelta)
+{
+	_float3		vPosition = Get_State(STATE_POSITION);
+	_float3		vUp = Get_State(STATE_UP);
+
+	vPosition -= *D3DXVec3Normalize(&vUp, &vUp) * m_fSpeedPerSec * fTimeDelta;
+
+	Set_State(STATE_POSITION, vPosition);
+}
+
 void CTransform::Go_Direction(const _float3& _direction, _float fTimeDelta)
 {
 	_float3 vOriginPos{ Get_State(STATE_POSITION) };

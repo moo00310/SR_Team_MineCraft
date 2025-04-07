@@ -203,6 +203,8 @@
     <ClInclude Include="..\public\ItemRect.h" />
     <ClInclude Include="..\public\IObserver.h" />
     <ClInclude Include="..\public\Left_Rect_Model.h" />
+    <ClInclude Include="..\public\MissionControl.h" />
+    <ClInclude Include="..\public\MissionMainUi.h" />
     <ClInclude Include="..\public\Mouse.h" />
     <ClInclude Include="..\public\Mouse_Item.h" />
     <ClInclude Include="..\public\Mouse_ItemFont.h" />
@@ -215,6 +217,7 @@
     <ClInclude Include="..\public\ParticleFireCracker.h" />
     <ClInclude Include="..\public\ParticleStoneDestroy.h" />
     <ClInclude Include="..\public\ParticleStoneMining.h" />
+    <ClInclude Include="..\public\ParticleSwordAura.h" />
     <ClInclude Include="..\public\ParticleSwordFlame.h" />
     <ClInclude Include="..\public\Pawn.h" />
     <ClInclude Include="..\public\PlayerExp.h" />
@@ -225,6 +228,7 @@
     <ClInclude Include="..\public\Rect_Model.h" />
     <ClInclude Include="..\public\RightHand_Object.h" />
     <ClInclude Include="..\public\Right_hand.h" />
+    <ClInclude Include="..\public\SwordAura.h" />
     <ClInclude Include="..\public\ThreadPool.h" />
     <ClInclude Include="..\public\UIDropItem.h" />
     <ClInclude Include="..\public\UIParticleRain.h" />
@@ -323,6 +327,8 @@
     <ClCompile Include="..\private\ItemRect.cpp" />
     <ClCompile Include="..\private\IObserver.cpp" />
     <ClCompile Include="..\private\Left_Rect_Model.cpp" />
+    <ClCompile Include="..\private\MissionControl.cpp" />
+    <ClCompile Include="..\private\MissionMainUi.cpp" />
     <ClCompile Include="..\private\Mouse.cpp" />
     <ClCompile Include="..\private\Mouse_Item.cpp" />
     <ClCompile Include="..\private\Mouse_ItemFont.cpp" />
@@ -335,6 +341,7 @@
     <ClCompile Include="..\private\ParticleFireCracker.cpp" />
     <ClCompile Include="..\private\ParticleStoneDestroy.cpp" />
     <ClCompile Include="..\private\ParticleStoneMining.cpp" />
+    <ClCompile Include="..\private\ParticleSwordAura.cpp" />
     <ClCompile Include="..\private\ParticleSwordFlame.cpp" />
     <ClCompile Include="..\private\Pawn.cpp" />
     <ClCompile Include="..\private\PlayerExp.cpp" />
@@ -344,6 +351,7 @@
     <ClCompile Include="..\private\Rect_Model.cpp" />
     <ClCompile Include="..\private\RightHand_Object.cpp" />
     <ClCompile Include="..\private\Right_hand.cpp" />
+    <ClCompile Include="..\private\SwordAura.cpp" />
     <ClCompile Include="..\private\ThreadPool.cpp" />
     <ClCompile Include="..\private\UIDropItem.cpp" />
     <ClCompile Include="..\private\UIParticleRain.cpp" />
