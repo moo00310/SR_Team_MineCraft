@@ -99,8 +99,11 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_RightHand(TEXT("Layer_Cube_RightHand"))))
 		return E_FAIL;	
 
-	///////////////////////////////////////////////////////////
+	if (FAILED(Ready_Layer_Missions(TEXT("Layer_Mission"))))
+		return E_FAIL;
 
+	///////////////////////////////////////////////////////////
+	m_pGameInstance->PlayBGM(L"sweden");
 
 	return S_OK;
 }
@@ -354,6 +357,19 @@ HRESULT CLevel_YU::Ready_Layer_UI_DropItem(const _wstring& strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionMainUi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionControl"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_YU::Ready_Layer_TPS_Arm(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_TPS_Arm"),
@@ -482,12 +498,12 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		return E_FAIL;
 	}
 
-	// 불검.
+	// 불검 파티클.
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
 		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,	// 가져올 프로토타입.
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
-		1)))				// 풀링 갯수.
+		20)))				// 풀링 갯수.
 	{
 		return E_FAIL;
 	}

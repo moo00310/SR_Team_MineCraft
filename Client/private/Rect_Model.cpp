@@ -236,7 +236,9 @@ void CRect_Model::Motion_Idle(_float fTimeDelta)
 
 void CRect_Model::Motion_Swing(_float fTimeDelta)
 {
-	m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0);
+	m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0);	
+
+	SwingFireSword();
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
@@ -348,6 +350,26 @@ void CRect_Model::FireSword()
 
 	// 자전 * 부모
 	flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
+}
+
+void CRect_Model::SwingFireSword()
+{
+	if (Compute_Texture_Name() != ITEMNAME_SWORD)
+	{
+		return;
+	}
+
+	// 본 행렬.
+	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
+
+	CParticleSystem* particle = CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+		boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION)
+	);
+
+	particle->GetTransform()->Set_Matrix(boneWorldMatrix);
+
+	particle->SetTimer(0.3f);
 }
 
 ITEMNAME CRect_Model::Compute_Texture_Name()

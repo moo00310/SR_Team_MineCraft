@@ -4,7 +4,7 @@
 
 // 풀링에 객체 등록하면
 // 활성화/비활성화 여부에 따라 풀링됨.
-// CreatePool로 등록하고 PoolPush로 꺼내서 그 객체를 비활성화 시키기만하면 됨.
+// CreatePool로 등록하고 PushPool로 꺼내서 그 객체를 비활성화 시키기만하면 됨.
 // PopPool 함수가 있지만 굳이 안 써도 되고 SetActive로 false 걸어도 됨.
 CPoolManager::CPoolManager() : 
 	m_pGameInstance(CGameInstance::Get_Instance())

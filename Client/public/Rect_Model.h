@@ -33,7 +33,12 @@ private:
 	virtual void KeyInput() override;
 
 private:
+	// ∫“∞À.
 	void FireSword();
+
+	// ∫“∞À »÷µŒ∏¶ ∂ß ¿‹ªÛ.
+	void SwingFireSword();
+
 	ITEMNAME Compute_Texture_Name();
 
 	CParticleSystem* flameSword = {nullptr};	

@@ -272,6 +272,12 @@ CTransform* CParticleSystem::GetTransform() const
 	return m_pTransform;
 }
 
+void CParticleSystem::SetTimer(_float _endTime)
+{
+	IsTimer = true;
+	fEndTimer = _endTime;
+}
+
 HRESULT CParticleSystem::PrevRender()
 {
 	// ºû ²ô±â.
