@@ -45,7 +45,7 @@ public:
 	_uint Get_PositionSize() { return static_cast<_uint>(m_vecPositions.size()); }
 
 	// 충돌 활성화 & 비활성화 관리를 위함
-	vector<CCollider_Cube*> Get_ColliderCube() { return m_Colliders; }
+	unordered_map<wstring, CCollider_Cube*>& Get_ColliderCube() { return m_Colliders; }
 	vector<_float3> Get_Positions() { return m_vecPositions; }
 
 	// 충돌할 청크만 활성화 시킴
@@ -81,7 +81,7 @@ protected:
 	int m_iMyChunk = 0;
 	vector<_float3> m_vecPositions;
 	vector<_float> m_vecBrights;
-	vector<CCollider_Cube*> m_Colliders;
+	unordered_map<wstring, CCollider_Cube*> m_Colliders;
 
 	ITEMNAME m_itemName{ ITEMNAME_END };
 

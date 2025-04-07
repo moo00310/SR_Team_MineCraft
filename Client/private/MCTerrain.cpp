@@ -99,84 +99,76 @@ list<CCollider*> CMCTerrain::Active_Near_Chunk_Colliders(_float3 vPos, _float fD
     set<_int> AcitveChunkIndexies = Compute_Near_Chunk_Indexies(vPos);
     wchar_t layerName[100];
 
+    auto Positions = Get_Positions_Within_DistSq(vPos, fDistSq);
+
     //활성화된 청크 인덱스 순회
     for (auto chunkIndex : AcitveChunkIndexies)
     {
         swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
         list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+
+
         //활성화된 청크의 큐브들 순회
         for (CGameObject* pObj : Objects)
         {
-            if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
-            {
-                //큐브의 콜라이더 순회
-                for (auto pCollider : pBreakableCube->Get_ColliderCube())
-                {
-                    _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
-                    _float3 vDiff = vPos - vColliderPos;
-                    _float fLengthSq = D3DXVec3LengthSq(&vDiff);
-
-                    if (fLengthSq < fDistSq)
-                    {
-                        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-                        m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
-                        pCollider->Set_bColliderActive(true);
-                        Colliders.push_back(pCollider);
-                    }
-                }
-            }
-            //나무일 때
-            else if (CTree * pTree{ dynamic_cast<CTree*>(pObj) })
-            {
-                //원목의 콜라이더 순회
-                for (auto pCollider : pTree->Get_Wood()->Get_ColliderCube())
-                {
-                    _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
-                    _float3 vDiff = vPos - vColliderPos;
-                    _float fLengthSq = D3DXVec3LengthSq(&vDiff);
-
-                    if (fLengthSq < fDistSq)
-                    {
-                        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-                        m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
-                        pCollider->Set_bColliderActive(true);
-                        Colliders.push_back(pCollider);
-                    }
-                }
-
-                //잎파리의 콜라이더 순회
-                for (auto pCollider : pTree->Get_Leaf()->Get_ColliderCube())
-                {
-                    _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
-                    _float3 vDiff = vPos - vColliderPos;
-                    _float fLengthSq = D3DXVec3LengthSq(&vDiff);
-
-                    if (fLengthSq < fDistSq)
-                    {
-                        //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-                        m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
-                        pCollider->Set_bColliderActive(true);
-                        Colliders.push_back(pCollider);
-                    }
-                }
-            }
-			else if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pObj))
+			for (auto vPosition : Positions)
 			{
-				//큐브의 콜라이더 순회
-				for (auto pCollider : pBreakableRect->Get_ColliderRect())
-				{
-					_float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
-					_float3 vDiff = vPos - vColliderPos;
-					_float fLengthSq = D3DXVec3LengthSq(&vDiff);
-					if (fLengthSq < fDistSq)
-					{
-						//플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-						m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_NON_PHYSIC_BLOCK, pCollider);
-						pCollider->Set_bColliderActive(true);
-						Colliders.push_back(pCollider);
-					}
-				}
+                wstring key =
+                    to_wstring(static_cast<_int>(vPosition.x)) + L"," +
+                    to_wstring(static_cast<_int>(vPosition.y)) + L"," +
+                    to_wstring(static_cast<_int>(vPosition.z));
+
+                if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
+                {
+                    auto& colliderMap = pBreakableCube->Get_ColliderCube();
+                    auto it = colliderMap.find(key);
+                    if (it == colliderMap.end())
+                        continue;
+
+                    CCollider_Cube* pCollider = it->second;
+
+                    m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+                    pCollider->Set_bColliderActive(true);
+                    Colliders.push_back(pCollider);
+                }
+                else if (CTree* pTree = dynamic_cast<CTree*>(pObj))
+                {
+                    auto& woodMap = pTree->Get_Wood()->Get_ColliderCube();
+                    auto& leafMap = pTree->Get_Leaf()->Get_ColliderCube();
+
+                    auto it = woodMap.find(key);
+                    if (it == woodMap.end())
+                        it = leafMap.find(key);
+
+                    if (it == leafMap.end())
+                        continue;
+
+                    CCollider_Cube* pCollider = it->second;
+
+                    m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+                    pCollider->Set_bColliderActive(true);
+                    Colliders.push_back(pCollider);
+                }
+
+                //else if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pObj))
+                //{
+                //    //큐브의 콜라이더 순회
+                //    for (auto pCollider : pBreakableRect->Get_ColliderRect())
+                //    {
+                //        _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
+                //        _float3 vDiff = vPos - vColliderPos;
+                //        _float fLengthSq = D3DXVec3LengthSq(&vDiff);
+                //        if (fLengthSq < fDistSq)
+                //        {
+                //            //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+                //            m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_NON_PHYSIC_BLOCK, pCollider);
+                //            pCollider->Set_bColliderActive(true);
+                //            Colliders.push_back(pCollider);
+                //        }
+                //    }
+                //}
 			}
+   
         }
     }
 
@@ -187,85 +179,85 @@ list<CCollider*> CMCTerrain::Active_Current_Chunk_Colliders(_float3 vPos, _float
     //주위 충돌 할 녀석들 가져오기
     list<CCollider*> Colliders;
     
-    wchar_t layerName[100];
+    //wchar_t layerName[100];
 
-    //활성화된 청크 인덱스 순회
-    swprintf(layerName, 100, L"Layer_Chunk%d", Compute_ChunkIndex(vPos));
-    list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
-    //활성화된 청크의 큐브들 순회
-    for (CGameObject* pObj : Objects)
-    {
-        if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
-        {
-            //큐브의 콜라이더 순회
-            for (auto pCollider : pBreakableCube->Get_ColliderCube())
-            {
-                _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
-                _float3 vDiff = vPos - vColliderPos;
-                _float fLengthSq = D3DXVec3LengthSq(&vDiff);
+    ////활성화된 청크 인덱스 순회
+    //swprintf(layerName, 100, L"Layer_Chunk%d", Compute_ChunkIndex(vPos));
+    //list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
+    ////활성화된 청크의 큐브들 순회
+    //for (CGameObject* pObj : Objects)
+    //{
+    //    if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
+    //    {
+    //        //큐브의 콜라이더 순회
+    //        for (auto pCollider : pBreakableCube->Get_ColliderCube())
+    //        {
+    //            _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
+    //            _float3 vDiff = vPos - vColliderPos;
+    //            _float fLengthSq = D3DXVec3LengthSq(&vDiff);
 
-                if (fLengthSq < fDistSq)
-                {
-                    //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-                    m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
-                    pCollider->Set_bColliderActive(true);
-                    Colliders.push_back(pCollider);
-                }
-            }
-        }
-        //나무일 때
-        else if (CTree * pTree{ dynamic_cast<CTree*>(pObj) })
-        {
-            //원목의 콜라이더 순회
-            for (auto pCollider : pTree->Get_Wood()->Get_ColliderCube())
-            {
-                _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
-                _float3 vDiff = vPos - vColliderPos;
-                _float fLengthSq = D3DXVec3LengthSq(&vDiff);
+    //            if (fLengthSq < fDistSq)
+    //            {
+    //                //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+    //                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+    //                pCollider->Set_bColliderActive(true);
+    //                Colliders.push_back(pCollider);
+    //            }
+    //        }
+    //    }
+    //    //나무일 때
+    //    else if (CTree * pTree{ dynamic_cast<CTree*>(pObj) })
+    //    {
+    //        //원목의 콜라이더 순회
+    //        for (auto pCollider : pTree->Get_Wood()->Get_ColliderCube())
+    //        {
+    //            _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
+    //            _float3 vDiff = vPos - vColliderPos;
+    //            _float fLengthSq = D3DXVec3LengthSq(&vDiff);
 
-                if (fLengthSq < fDistSq)
-                {
-                    //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-                    m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
-                    pCollider->Set_bColliderActive(true);
-                    Colliders.push_back(pCollider);
-                }
-            }
+    //            if (fLengthSq < fDistSq)
+    //            {
+    //                //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+    //                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+    //                pCollider->Set_bColliderActive(true);
+    //                Colliders.push_back(pCollider);
+    //            }
+    //        }
 
-            //잎파리의 콜라이더 순회
-            for (auto pCollider : pTree->Get_Leaf()->Get_ColliderCube())
-            {
-                _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
-                _float3 vDiff = vPos - vColliderPos;
-                _float fLengthSq = D3DXVec3LengthSq(&vDiff);
+    //        //잎파리의 콜라이더 순회
+    //        for (auto pCollider : pTree->Get_Leaf()->Get_ColliderCube())
+    //        {
+    //            _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
+    //            _float3 vDiff = vPos - vColliderPos;
+    //            _float fLengthSq = D3DXVec3LengthSq(&vDiff);
 
-                if (fLengthSq < fDistSq)
-                {
-                    //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-                    m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
-                    pCollider->Set_bColliderActive(true);
-                    Colliders.push_back(pCollider);
-                }
-            }
-        }
-        else if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pObj))
-        {
-            //큐브의 콜라이더 순회
-            for (auto pCollider : pBreakableRect->Get_ColliderRect())
-            {
-                _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
-                _float3 vDiff = vPos - vColliderPos;
-                _float fLengthSq = D3DXVec3LengthSq(&vDiff);
-                if (fLengthSq < fDistSq)
-                {
-                    //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
-                    m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_NON_PHYSIC_BLOCK, pCollider);
-                    pCollider->Set_bColliderActive(true);
-                    Colliders.push_back(pCollider);
-                }
-            }
-        }
-    }
+    //            if (fLengthSq < fDistSq)
+    //            {
+    //                //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+    //                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+    //                pCollider->Set_bColliderActive(true);
+    //                Colliders.push_back(pCollider);
+    //            }
+    //        }
+    //    }
+    //    else if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pObj))
+    //    {
+    //        //큐브의 콜라이더 순회
+    //        for (auto pCollider : pBreakableRect->Get_ColliderRect())
+    //        {
+    //            _float3 vColliderPos = pCollider->Get_Transform()->Get_State(CTransform::STATE_POSITION) + pCollider->Get_Offset();
+    //            _float3 vDiff = vPos - vColliderPos;
+    //            _float fLengthSq = D3DXVec3LengthSq(&vDiff);
+    //            if (fLengthSq < fDistSq)
+    //            {
+    //                //플레이어와 가까이 있는 콜라이더만 활성화 시키고 등록함
+    //                m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_NON_PHYSIC_BLOCK, pCollider);
+    //                pCollider->Set_bColliderActive(true);
+    //                Colliders.push_back(pCollider);
+    //            }
+    //        }
+    //    }
+    //}
 
     return Colliders;
 }
@@ -505,6 +497,35 @@ _int CMCTerrain::Compute_ChunkIndex(_float3 vPos)
 	int z = static_cast<int>(vPos.z) / 16;
 	int width = static_cast<int>(sqrt(m_iChunkCount));
 	return x + (width * z); 
+}
+
+vector<_float3> CMCTerrain::Get_Positions_Within_DistSq(_float3 vPos, float fDistSq)
+{
+    vector<_float3> result;
+
+    int radius = static_cast<int>(std::ceil(std::sqrt(fDistSq)));
+
+    for (int x = static_cast<int>(vPos.x) - radius; x <= static_cast<int>(vPos.x) + radius; ++x)
+    {
+        for (int y = static_cast<int>(vPos.y) - radius; y <= static_cast<int>(vPos.y) + radius; ++y)
+        {
+            for (int z = static_cast<int>(vPos.z) - radius; z <= static_cast<int>(vPos.z) + radius; ++z)
+            {
+                float dx = vPos.x - x;
+                float dy = vPos.y - y;
+                float dz = vPos.z - z;
+
+                float distSq = dx * dx + dy * dy + dz * dz;
+
+                if (distSq <= fDistSq)
+                {
+                    result.push_back({ static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
+                }
+            }
+        }
+    }
+
+    return result;
 }
 
 HRESULT CMCTerrain::Ready_Layer_BackGround()
