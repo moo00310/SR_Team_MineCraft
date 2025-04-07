@@ -1,5 +1,12 @@
 #include "Warden.h"
 
+#include "BTTask_DetectEnemy.h"
+#include "BTTask_Chase.h"
+#include "BTTask_Patrol.h"
+#include "BTDecorator_IsTargetNear.h"
+#include "BTTask_Attack.h"
+#include "BTDistanceBranch.h"
+
 CWarden::CWarden(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CMonster{ pGraphic_Device }
 {
@@ -23,8 +30,8 @@ HRESULT CWarden::Initialize(void* pArg)
     m_Hp = 100.f;
     m_MaxHp = 100.f;
 
-    m_Coll_Size = { 0.3f, 1.5f, 0.3f };
-    m_Coll_Offset = { 0.f, 0.8f, 0.f };
+    m_Coll_Size = { 0.5f, 1.5f, 0.5f };
+    m_Coll_Offset = { 0.f, 1.1f, 0.f };
 
     __super::Initialize(pArg);
 
@@ -40,7 +47,7 @@ HRESULT CWarden::Initialize(void* pArg)
     // 콜백 등록
     m_skelAnime->SetFrameCallback(std::bind(&CWarden::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
 
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION,_float3(5, 15, 5));
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION,_float3(10, 15, 10));
 	return S_OK;
 }
 
@@ -179,8 +186,8 @@ HRESULT CWarden::Ready_Bone()
          { "Root"  , -1,   MAtrixTranslation(0.f, 0.f,0.f),	MAtrixTranslation(0.f	,0.f,	0.f), Matrix(), Matrix() },  // root
          { "Pelvis",  0,   MAtrixTranslation(0.f,  6.f / 16.f ,0.f),	 MAtrixTranslation(0.f,  6.f / 16.f ,0.f), Matrix(), MAtrixTranslation(0.f,  10.5f/16.f, 0.f)},
          { "Neck"  ,  1,  MAtrixTranslation(0.f,  21.f/16.f ,1.f/16.f), MAtrixTranslation(0.f,  21.f / 16.f ,1.f / 16.f), Matrix(), MAtrixTranslation(0.f,  8.f /16.f ,0.f), },
-         { "Leg_R" ,  1,  MAtrixTranslation(6.f / 16.f, 0.f,  0.f),  MAtrixTranslation(6.f / 16.f, 0.f,  0.f), Matrix(),MAtrixTranslation(0.f,  -6.5f / 16.f ,0.f)},
-         { "Leg_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  0.f,  0.f),   MAtrixTranslation(-6.f / 16.f,  0.f,  0.f), Matrix(), MAtrixTranslation(0.f,  -6.5f / 16.f ,0.f)},
+         { "Leg_R" ,  0,  MAtrixTranslation(6.f / 16.f, 6.f / 16.f,  0.f),  MAtrixTranslation(6.f / 16.f, 6.f / 16.f,  0.f), Matrix(),MAtrixTranslation(0.f,  -6.5f / 16.f ,0.f)},
+         { "Leg_L" ,  0,  MAtrixTranslation(-6.f / 16.f, 6.f / 16.f,  0.f),   MAtrixTranslation(-6.f / 16.f, 6.f / 16.f,  0.f), Matrix(), MAtrixTranslation(0.f,  -6.5f / 16.f ,0.f)},
          { "Arm_R" ,  1,  MAtrixTranslation(13.f / 16.f,  21.f/16.f, 0.f),MAtrixTranslation(13.f / 16.f,  21.f / 16.f, 0.f), Matrix(), MAtrixTranslation(0, -14.f / 16.f,  0.f)},
          { "Arm_L" ,  1,  MAtrixTranslation(-13.f / 16, 21.f/16.f,  0.f), MAtrixTranslation(-13.f / 16, 21.f / 16.f,  0.f), Matrix(), MAtrixTranslation(0, -14.f / 16.f,  0.f)},
          { "Horn_R" ,  2, MAtrixTranslation(24.f / 16, 28.f/16.f,  0.f) * mat, MAtrixTranslation(24.f / 16, 28.f / 16.f,  0.f) * mat, Matrix(), Matrix()},
@@ -208,34 +215,59 @@ HRESULT CWarden::Ready_Animation()
     * Walk 모션
     ------------*/
     Matrix mat2 = {};
-    mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(50.f));
+    mat2.Turn_Radian(_float3(1.f, -0.1f, 0.2f), D3DXToRadian(25.f));
+
+    Matrix mat6 = {};
+    mat6.Turn_Radian(_float3(0.f, 0.2f, -0.15f), D3DXToRadian(25.f));
 
     Matrix mat3 = {};
-    mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-50.f));
+    mat3.Turn_Radian(_float3(1.f, 0.15f, -0.2f), D3DXToRadian(-25.f));
 
-    KEYFREAME Walk_1_F = { 0.f, mat }; //0
-    KEYFREAME Walk_2_F = { 0.5f, mat2 }; //60
-    KEYFREAME Walk_3_F = { 1.0f, mat }; // 0
-    KEYFREAME Walk_4_F = { 1.5f, mat3 }; // -60
-    KEYFREAME Walk_5_F = { 2.0f, mat }; // 0
 
-    KEYFREAME Walk_1_B = { 0.f,  mat };
-    KEYFREAME Walk_2_B = { 0.5f, mat3 };
-    KEYFREAME Walk_3_B = { 1.0f, mat };
-    KEYFREAME Walk_4_B = { 1.5f, mat2 };
-    KEYFREAME Walk_5_B = { 2.f, mat };
+    Matrix mat4 = {};
+    mat4.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-50.f));
 
-    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_1_F);
-    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_2_F);
-    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_3_F);
-    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_4_F);
-    m_skelAnime->Add_Animation(ANIM_type::Swing_FF, Walk_5_F);
+    Matrix mat5 = {};
+    mat5.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(50.f));
 
-    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_1_B);
-    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_2_B);
-    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_3_B);
-    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_4_B);
-    m_skelAnime->Add_Animation(ANIM_type::Swing_BF, Walk_5_B);
+    KEYFREAME Pelvis = { 0.f, mat }; //0
+    KEYFREAME Pelvis1 = { 1.f, mat2 }; // 25
+    KEYFREAME Pelvis2= { 2.f, mat6 }; // 0
+    KEYFREAME Pelvis3 = { 3.f, mat3 }; // -25
+    KEYFREAME Pelvis4 = { 4.f, mat }; // 0
+
+    KEYFREAME Leg_R1 = { 0.f, mat }; //0
+    KEYFREAME Leg_R2 = { 0.5f, mat4 }; // 
+    KEYFREAME Leg_R3 = { 1.f, mat }; // 0
+    KEYFREAME Leg_R4 = { 1.5f, mat5 }; // 
+    KEYFREAME Leg_R5 = { 2.f, mat }; // 0
+
+    KEYFREAME Leg_L1 = { 0.f, mat }; //0
+    KEYFREAME Leg_L2 = { 0.5f, mat5 }; // 
+    KEYFREAME Leg_L3 = { 1.f, mat }; // 0
+    KEYFREAME Leg_L4 = { 1.5f, mat4 }; // 
+    KEYFREAME Leg_L5 = { 2.f, mat }; // 0
+
+
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis1);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis2);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis3);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis4);
+
+
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_R, Leg_R1);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_R, Leg_R2);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_R, Leg_R3);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_R, Leg_R4);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_R, Leg_R5);
+
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_L, Leg_L1);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_L, Leg_L2);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_L, Leg_L3);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_L, Leg_L4);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_L, Leg_L5);
+
 
 
     /*----------
@@ -299,14 +331,16 @@ void CWarden::Motion_Idle(_float fTimeDelta)
 
 void CWarden::Motion_Walk(_float fTimeDelta)
 {
-    if (m_skelAnime->is_AnimtionEND(Swing_BF) &&
-        m_skelAnime->is_AnimtionEND(Swing_FF))
+    if (m_skelAnime->is_AnimtionEND(Swing_Leg_R) &&
+        m_skelAnime->is_AnimtionEND(Swing_Leg_L) &&
+        m_skelAnime->is_AnimtionEND(Swing_Pevis))
     {
         m_eCurAnim = WALK;
     }
 
-    m_skelAnime->Update_Animetion(Swing_BF, fTimeDelta, 3);
-    m_skelAnime->Update_Animetion(Swing_FF, fTimeDelta, 4);
+   m_skelAnime->Update_Animetion(Swing_Pevis, fTimeDelta, 1);
+   m_skelAnime->Update_Animetion(Swing_Leg_R, fTimeDelta, 3);
+   m_skelAnime->Update_Animetion(Swing_Leg_L, fTimeDelta, 4);
 }
 
 void CWarden::Motion_Attack(_float fTimeDelta)
@@ -340,6 +374,33 @@ void CWarden::Turn(_float fTimeDelta)
 
 HRESULT CWarden::Ready_BehaviorTree()
 {
+    // 루트 노드: Selector (적을 발견하면 따라가고, 아니면 순찰)
+    CSelectorNode* pRoot = new CSelectorNode(L"Root");
+
+    // 조건 검사 노드: 적이 있는지 확인
+    CBTTask_DetectEnemy* pDetectEnemy = new CBTTask_DetectEnemy;
+
+    // 행동노드
+    CBTTask_Chase* pChase = new CBTTask_Chase;
+    CBTTask_Patrol* pPatrol = new CBTTask_Patrol;
+    CBTTask_Attack* pAttack = new CBTTask_Attack;
+
+    // 공격, 추격,
+    CBTDistanceBranch* pDistanceBranch = new CBTDistanceBranch;
+    pDistanceBranch->Set_Actions(pAttack, pChase, m_fAttackDistance);
+
+    // 시퀀스
+    CSequenceNode* pChaseSequence = new CSequenceNode(L"ChaseSequence");
+    pChaseSequence->Add_Node(pDetectEnemy);
+    pChaseSequence->Add_Node(pDistanceBranch);
+
+    // 루트 노드에 추가
+    pRoot->Add_Node(pChaseSequence);
+    pRoot->Add_Node(pPatrol);
+
+    // 최종 트리 설정
+    m_pBehaviorTree = pRoot;
+
     return S_OK;
 }
 
