@@ -92,94 +92,85 @@ set<_int>& CMCTerrain::Compute_Near_Chunk_Indexies(_float3 vPos)
     return nearChunks;
 }
 
+// 함수 구현
 list<CCollider*> CMCTerrain::Active_Near_Chunk_Colliders(_float3 vPos, _float fDistSq)
 {
-    //주위 충돌 할 녀석들 가져오기
     list<CCollider*> Colliders;
     set<_int> AcitveChunkIndexies = Compute_Near_Chunk_Indexies(vPos);
     wchar_t layerName[100];
 
-    auto Positions = Get_Positions_Within_DistSq(vPos, fDistSq);
+    // 거리 안의 위치들을 리스트로 가져오기
+    list<_int3> PositionList = Get_Positions_Within_DistSq(vPos, fDistSq);
 
-    //활성화된 청크 인덱스 순회
+    // 각 청크의 오브젝트들 검사
     for (auto chunkIndex : AcitveChunkIndexies)
     {
         swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
         list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
 
-
-        //활성화된 청크의 큐브들 순회
         for (CGameObject* pObj : Objects)
         {
-			for (auto vPosition : Positions)
-			{
-                _int3 key{};
-                key.x = static_cast<_int> (vPosition.x);
-				key.y = static_cast<_int> (vPosition.y);
-				key.z = static_cast<_int> (vPosition.z);
-
-                if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
+            if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pObj))
+            {
+                const auto& colliderMap = pBreakableCube->Get_ColliderCube();
+                for (const auto& key : PositionList)
                 {
-                    auto& colliderMap = pBreakableCube->Get_ColliderCube();
                     auto it = colliderMap.find(key);
-                    if (it == colliderMap.end())
-                        continue;
+                    if (it == colliderMap.end()) continue;
 
                     CCollider_Cube* pCollider = it->second;
-
                     m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
                     pCollider->Set_bColliderActive(true);
                     Colliders.push_back(pCollider);
                 }
-                else if (CTree* pTree = dynamic_cast<CTree*>(pObj))
+            }
+            else if (CTree* pTree = dynamic_cast<CTree*>(pObj))
+            {
+                const auto& woodMap = pTree->Get_Wood()->Get_ColliderCube();
+                const auto& leafMap = pTree->Get_Leaf()->Get_ColliderCube();
+
+                for (const auto& key : PositionList)
                 {
-                    auto& woodMap = pTree->Get_Wood()->Get_ColliderCube();
-                    auto& leafMap = pTree->Get_Leaf()->Get_ColliderCube();
-
-                    CCollider_Cube* pCollider = nullptr;
-
-                    auto itWood = woodMap.find(key);
-                    if (itWood != woodMap.end())
+                    auto it = woodMap.find(key);
+                    if (it != woodMap.end())
                     {
-                        pCollider = itWood->second;
-                    }
-                    else
-                    {
-                        auto itLeaf = leafMap.find(key);
-                        if (itLeaf != leafMap.end())
-                        {
-                            pCollider = itLeaf->second;
-                        }
-                    }
-
-                    if (pCollider == nullptr)
+                        CCollider_Cube* pCollider = it->second;
+                        m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+                        pCollider->Set_bColliderActive(true);
+                        Colliders.push_back(pCollider);
                         continue;
+                    }
 
-                    m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
-                    pCollider->Set_bColliderActive(true);
-                    Colliders.push_back(pCollider);
+                    it = leafMap.find(key);
+                    if (it != leafMap.end())
+                    {
+                        CCollider_Cube* pCollider = it->second;
+                        m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_BLOCK, pCollider);
+                        pCollider->Set_bColliderActive(true);
+                        Colliders.push_back(pCollider);
+                    }
                 }
-                else if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pObj))
+            }
+            else if (CBreakableRect* pBreakableRect = dynamic_cast<CBreakableRect*>(pObj))
+            {
+                const auto& colliderMap = pBreakableRect->Get_ColliderRect();
+                for (const auto& key : PositionList)
                 {
-                    auto& colliderMap = pBreakableRect->Get_ColliderRect();
                     auto it = colliderMap.find(key);
-                    if (it == colliderMap.end())
-                        continue;
+                    if (it == colliderMap.end()) continue;
 
                     CCollider_Cube* pCollider = it->second;
-
                     m_pGameInstance->Add_Collider_CollisionGroup(COLLISION_NON_PHYSIC_BLOCK, pCollider);
                     pCollider->Set_bColliderActive(true);
                     Colliders.push_back(pCollider);
-
                 }
-			}
-   
+            }
         }
     }
 
     return Colliders;
 }
+
 list<CCollider*> CMCTerrain::Active_Current_Chunk_Colliders(_float3 vPos, _float fDistSq)
 {
     list<CCollider*> Colliders;
@@ -189,7 +180,7 @@ list<CCollider*> CMCTerrain::Active_Current_Chunk_Colliders(_float3 vPos, _float
     list<CGameObject*> Objects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
 
     // 거리 내의 타일 좌표 리스트
-    auto Positions = Get_Positions_Within_DistSq(vPos, fDistSq);
+    list<_int3> Positions = Get_Positions_Within_DistSq(vPos, fDistSq);
 
     for (CGameObject* pObj : Objects)
     {
@@ -497,27 +488,40 @@ _int CMCTerrain::Compute_ChunkIndex(_float3 vPos)
 	return x + (width * z); 
 }
 
-vector<_float3> CMCTerrain::Get_Positions_Within_DistSq(_float3 vPos, float fDistSq)
+list<_int3> CMCTerrain::Get_Positions_Within_DistSq(_float3 vPos, float fDistSq)
 {
-    vector<_float3> result;
+    list<_int3> result;
 
     int radius = static_cast<int>(std::ceil(std::sqrt(fDistSq)));
 
-    for (int x = static_cast<int>(vPos.x) - radius; x <= static_cast<int>(vPos.x) + radius; ++x)
-    {
-        for (int y = static_cast<int>(vPos.y) - radius; y <= static_cast<int>(vPos.y) + radius; ++y)
-        {
-            for (int z = static_cast<int>(vPos.z) - radius; z <= static_cast<int>(vPos.z) + radius; ++z)
-            {
-                float dx = vPos.x - x;
-                float dy = vPos.y - y;
-                float dz = vPos.z - z;
+    int cx = static_cast<int>(vPos.x);
+    int cy = static_cast<int>(vPos.y);
+    int cz = static_cast<int>(vPos.z);
 
-                float distSq = dx * dx + dy * dy + dz * dz;
+    float fx = vPos.x;
+    float fy = vPos.y;
+    float fz = vPos.z;
+
+    for (int x = cx - radius; x <= cx + radius; ++x)
+    {
+        float dx = fx - x;
+        float dx2 = dx * dx;
+        if (dx2 > fDistSq) continue;
+
+        for (int y = cy - radius; y <= cy + radius; ++y)
+        {
+            float dy = fy - y;
+            float dy2 = dy * dy;
+            if (dx2 + dy2 > fDistSq) continue;
+
+            for (int z = cz - radius; z <= cz + radius; ++z)
+            {
+                float dz = fz - z;
+                float distSq = dx2 + dy2 + dz * dz;
 
                 if (distSq <= fDistSq)
                 {
-                    result.push_back({ static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
+                    result.push_back({ x, y, z });
                 }
             }
         }
