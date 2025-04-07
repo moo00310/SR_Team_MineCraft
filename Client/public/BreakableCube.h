@@ -53,7 +53,10 @@ public:
 	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
 
 	// 큐브 Hp 줄이기
-	virtual void Attacked_Block(_float3 fPos, int attackDamage);
+	virtual void Attacked_Block(_float3 vPos, int attackDamage);
+
+	//부수는 사운드
+	virtual void PlaySound_Breaking(_float3 vPos);
 
 	// 큐브 HP 반환.
 	float GetHP() const;

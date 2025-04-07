@@ -1,4 +1,6 @@
 #include "Sound_Manager.h"
+#include <windows.h>
+#include <filesystem> // C++17 아님! 그냥 경로 가공용으로만 씀
 
 CSound_Manager::CSound_Manager()
 {
@@ -175,34 +177,77 @@ void CSound_Manager::CheckSoundStop(void* obj, int _anim, int _type)
 
 }
 
+string CSound_Manager::WStringToString(const std::wstring& wstr)
+{
+    if (wstr.empty())
+        return std::string();
+
+    // 널 포함 길이 계산
+    int sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1,
+        nullptr, 0, nullptr, nullptr);
+
+    std::string result(sizeNeeded, 0);
+
+    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1,
+        &result[0], sizeNeeded, nullptr, nullptr);
+
+    // 마지막 널문자 제거 (문자열 길이 조정)
+    if (!result.empty() && result.back() == '\0')
+        result.pop_back();
+
+    return result;
+}
+
 void CSound_Manager::Add_SoundResource()
 {
-    LoadSound(L"Player_Walk_Grass1", "../../FMOD/Assets/player/Player_Walk_Grass1.wav", false);
-    LoadSound(L"Player_Walk_Grass2", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
-    LoadSound(L"Player_Walk_Wood1", "../../FMOD/Assets/player/Player_Walk_Wood1.wav", false);
-    LoadSound(L"Player_Walk_Wood2", "../../FMOD/Assets/player/Player_Walk_Wood2.wav", false);
-    LoadSound(L"Player_Hurt", "../../FMOD/Assets/player/Player_Hurt.wav", false);
-    LoadSound(L"Player_Eat1", "../../FMOD/Assets/player/Player_Eat1.wav", false);
-    LoadSound(L"Player_Eat2", "../../FMOD/Assets/player/Player_Eat2.wav", false);
-    LoadSound(L"Player_Eat3", "../../FMOD/Assets/player/Player_Eat3.wav", false);
-
-    LoadSound(L"Zombie_Walk1", "../../FMOD/Assets/zombie/Zombie_Walk1.wav", false);
-    LoadSound(L"Zombie_Walk2", "../../FMOD/Assets/zombie/Zombie_Walk2.wav", false);
-    LoadSound(L"Zombie_Say1", "../../FMOD/Assets/zombie/Zombie_Say1.wav", false);
-    LoadSound(L"Zombie_Say2", "../../FMOD/Assets/zombie/Zombie_Say2.wav", false);
-    LoadSound(L"Zombie_Say3", "../../FMOD/Assets/zombie/Zombie_Say3.wav", false);
-    LoadSound(L"Zombie_Hurt1", "../../FMOD/Assets/zombie/Zombie_Hurt1.wav", false);
-    LoadSound(L"Zombie_Hurt2", "../../FMOD/Assets/zombie/Zombie_Hurt2.wav", false);
-    LoadSound(L"Zombie_Death", "../../FMOD/Assets/zombie/Zombie_Death.wav", false);
-
-    LoadSound(L"Creeper_Hurt1", "../../FMOD/Assets/creeper/Creeper_Hurt1.wav", false);
-    LoadSound(L"Creeper_Hurt2", "../../FMOD/Assets/creeper/Creeper_Hurt2.wav", false);
-    LoadSound(L"Creeper_Death", "../../FMOD/Assets/creeper/Creeper_Death.wav", false);
-    LoadSound(L"Creeper_Explosion", "../../FMOD/Assets/creeper/Creeper_Explosion.wav", false);
-
-    LoadSound(L"Block_Breaking", "../../FMOD/Assets/Block/Block_Breaking.wav", false);
-    LoadSound(L"Block_BreakingFinish", "../../FMOD/Assets/Block/Block_BreakingFinish.wav", false);
+    LoadAllWavFiles(L"../../FMOD/Assets");
 }
+
+void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
+{
+    std::wstring searchPath = folderPath + L"\\*";
+
+    WIN32_FIND_DATA findData;
+    HANDLE hFind = FindFirstFile(searchPath.c_str(), &findData);
+
+    if (hFind == INVALID_HANDLE_VALUE)
+        return;
+
+    do {
+        const std::wstring name = findData.cFileName;
+
+        if (name == L"." || name == L"..")
+            continue;
+
+        std::wstring fullPath = folderPath + L"\\" + name;
+
+        if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            LoadAllWavFiles(fullPath); // 재귀 탐색
+        }
+        else {
+            if (fullPath.size() >= 4 &&
+                fullPath.substr(fullPath.size() - 4) == L".wav")
+            {
+                // 사운드 이름: 확장자 제거
+                size_t lastSlash = fullPath.find_last_of(L"\\/");
+                std::wstring fileName = (lastSlash != std::wstring::npos) ? fullPath.substr(lastSlash + 1) : fullPath;
+                std::wstring soundNameW = fileName.substr(0, fileName.length() - 4);
+
+                // 변환: std::wstring → std::string
+                //std::string soundName = WStringToString(soundNameW);
+                std::string filePath = WStringToString(fullPath);
+
+                // 사운드 등록
+                LoadSound(soundNameW.c_str(), filePath.c_str(), false);
+            }
+        }
+
+    } while (FindNextFile(hFind, &findData));
+
+    FindClose(hFind);
+}
+
+
 
 void CSound_Manager::Update()
 {

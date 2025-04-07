@@ -6,6 +6,7 @@
 #include "GameInstance.h"
 #include "UI_Mgr.h"
 #include <iostream>
+#include "Sound_Manager.h"
 
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CPawn{ pGraphic_Device }
@@ -552,6 +553,21 @@ void CSteve::Knock_back(const _float3& vforce)
 const _float4x4& CSteve::GetSoketMatrix(int index)
 {
 	return m_skelAnime->GetBoneWorldMatrix(index);
+}
+
+void CSteve::Add_Hp(_float fAmount)
+{
+	m_Hp += fAmount;
+	CUI_Mgr::Get_Instance()->SetHP();
+
+	m_pGameInstance->PlaySound(TEXT("Player_Hurt_Old"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this, CSound_Manager::PLAYER);
+	//if (m_Hp <= 0.f) 
+	//{
+	//	//죽으면 바로 리스폰
+	//	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3{ 10.f, 20.f, 10.f });
+	//	m_Hp = 100.f;
+	//	CUI_Mgr::Get_Instance()->SetHP(); //피가 왜 안차지?
+	//}
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

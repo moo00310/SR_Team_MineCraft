@@ -265,6 +265,7 @@ void CZombi::Motion_Attack(_float fTimeDelta)
 
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
+        m_pTargetPawn->Add_Hp(-10.f);
     }
 
     m_skelAnime->Update_Animetion(Attack, fTimeDelta, 5);

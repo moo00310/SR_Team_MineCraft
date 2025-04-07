@@ -67,6 +67,14 @@ HRESULT CRedTulip::Drop_Item_OnDestroy(const _float3& fPos)
     return S_OK;
 }
 
+HRESULT CRedTulip::Play_Destroy_Effect(const _float3& fPos)
+{
+    m_pGameInstance->CheckSoundStop(this, 0, 1);
+    m_pGameInstance->PlaySound(TEXT("Grass_dig1"), 1, fPos);
+
+    return S_OK;
+}
+
 
 HRESULT CRedTulip::Ready_Components()
 {

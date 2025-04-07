@@ -15,6 +15,7 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 	HRESULT Drop_Item_OnDestroy(const _float3& fPos)override;
+	HRESULT Play_Destroy_Effect(const _float3& fPos)override;
 
 protected:
 	HRESULT Ready_Components();

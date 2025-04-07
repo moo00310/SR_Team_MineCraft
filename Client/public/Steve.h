@@ -40,6 +40,8 @@ public:
 	void Knock_back(const _float3& vforce) override;
 	const _float4x4& GetSoketMatrix(int index);
 
+	virtual void Add_Hp(_float fAmount) override;
+
 private:
 	_float   m_fMouseSensor = { 0.03f };
 	ANIM m_eCurAnim = { ANIM_END };

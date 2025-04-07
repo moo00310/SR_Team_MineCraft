@@ -44,7 +44,7 @@ public:
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	void		Set_Hp(float hp) { m_Hp = hp; }
 
-	void		Add_Hp(float damage) { m_Hp += damage; }
+	virtual void		Add_Hp(float damage) { m_Hp += damage; }
 	_float		Get_Hp() { return m_Hp; }
 
 	ANIM Get_ANIM() { return m_eCurAnim; }

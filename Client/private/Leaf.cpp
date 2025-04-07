@@ -95,6 +95,19 @@ HRESULT CLeaf::Drop_Item_OnDestroy(const _float3& fPos)
 	return S_OK;
 }
 
+HRESULT CLeaf::Play_Destroy_Effect(const _float3& fPos)
+{
+	m_pGameInstance->CheckSoundStop(this, 0, 1);
+	m_pGameInstance->PlaySound(TEXT("Grass_dig1"), 1, fPos);
+
+	return S_OK;
+}
+
+void CLeaf::PlaySound_Breaking(_float3 vPos)
+{
+	m_pGameInstance->PlaySound(TEXT("Grass_hit1"), 1, vPos, this, 1);
+}
+
 void CLeaf::RemoveLeaf()
 {
 	int random = rand() % m_vecPositions.size();

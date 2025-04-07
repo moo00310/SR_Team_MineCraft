@@ -346,16 +346,39 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
             m_pTransformCom
         );
 
+        const _float fDamage{ -40.f };
+        const _float fRange{ 10.f };
+
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
-        //m_pTargetPawn->Add_Hp(-40);
+        m_pTargetPawn->Add_Hp(fDamage);
+
+        auto GameObjects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster"));
+        for (CGameObject* pGameObject : GameObjects)
+        {
+            if (this == pGameObject)
+                continue;
+
+            CPawn* pPawn{ static_cast<CPawn*>(pGameObject) };
+
+            _float3 vOtherPos = pPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+            _float3 vMyPos = Get_Transform()->Get_State(CTransform::STATE_POSITION);
+            _float3 vDiff{ vOtherPos - vMyPos };
+
+            
+            if (D3DXVec3LengthSq(&vDiff) < fRange)
+            {
+                pPawn->Add_Hp(fDamage);
+                pPawn->Knock_back(temp);
+            }
+        }
 
         //주변 큐브 콜라이더 가져와서
 		list<CCollider*> Colliders;
         CMCTerrain* pTerrain{ static_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain"))) };
         Colliders = pTerrain->Active_Near_Chunk_Colliders(
 			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f },
-			10.f
+            fRange
 		);
         //파괴
 		for (auto pCollider : Colliders)

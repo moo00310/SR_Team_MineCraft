@@ -90,6 +90,14 @@ HRESULT CWood::Drop_Item_OnDestroy(const _float3& fPos)
 	return S_OK;
 }
 
+HRESULT CWood::Play_Destroy_Effect(const _float3& fPos)
+{
+	m_pGameInstance->CheckSoundStop(this, 0, 1);
+	m_pGameInstance->PlaySound(TEXT("Wood_BreakingFinish"), 1, fPos);
+
+	return S_OK;
+}
+
 HRESULT CWood::Ready_Components()
 {
 	/* For.Com_Texture */

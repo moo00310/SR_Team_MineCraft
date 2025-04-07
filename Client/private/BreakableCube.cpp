@@ -173,6 +173,52 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 }
 
 
+HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
+{
+    int brightIndex = 0;
+    // 2. 벡터에서 해당 위치 추가
+    for (int i = 0; i < m_vecPositions.size(); ++i) {
+        if (fPos.x == m_vecPositions[i].x && fPos.y == m_vecPositions[i].y && fPos.z == m_vecPositions[i].z) {
+            brightIndex = i;
+            break;
+        }
+    }
+
+    _float3 blockPos = fPos + _Dir;
+    m_vecPositions.push_back(blockPos);
+    m_vecBrights.push_back(m_vecBrights[brightIndex]);
+
+    // 3. 콜라이더 추가
+    /* For.Com_Collider */
+    CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
+    Desc.vRadius = { .5f, .5f, .5f };
+    Desc.vOffset = { blockPos.x , blockPos.y, blockPos.z };
+    Desc.pTransformCom = m_pTransformCom;
+    Desc.pOwner = this;
+
+    CCollider_Cube* pCollder{ nullptr };
+
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
+        TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&pCollder), &Desc)))
+    {
+        return E_FAIL;
+    }
+
+    _int3 key{
+    static_cast<_int>(blockPos.x),
+    static_cast<_int>(blockPos.y),
+    static_cast<_int>(blockPos.z)
+    };
+
+    m_Colliders.emplace(key, pCollder);
+
+    // 4. 인스턴스 버퍼 업데이트
+    m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
+
+    return S_OK;
+}
+
+
 HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 {
     _int3 key{
@@ -212,21 +258,18 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
 
     m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
-    m_pGameInstance->CheckSoundStop(this, 0, 1);
-    m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 1, fPos);
-
     return S_OK;
 }
 
-void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
+void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
 {
-    if (m_attackedBlockPos != fPos) {
+    if (m_attackedBlockPos != vPos) {
         m_fHp = 100;
         cout << "Change Block" << m_fHp << endl;
     }
 
     if (m_fHp == 100) {
-        m_pGameInstance->PlaySound(TEXT("Block_Breaking"), 1, fPos, this,1);
+        PlaySound_Breaking(vPos);
     }
     
     ITEMNAME _itemname = CUI_Mgr::Get_Instance()->GetItemTypeName();
@@ -300,13 +343,18 @@ void CBreakableCube::Attacked_Block(_float3 fPos, int attackDamage)
 
         break;
     }
-    m_attackedBlockPos = fPos;
+    m_attackedBlockPos = vPos;
     m_resetHpFrame = 0;
 
 
     CParticleEventManager::Get_Instance()->OnParticle(
         particleTag,
-        fPos);
+        vPos);
+}
+
+void CBreakableCube::PlaySound_Breaking(_float3 vPos)
+{
+    m_pGameInstance->PlaySound(TEXT("Block_Breaking"), 1, vPos, this, 1);
 }
 
 float CBreakableCube::GetHP() const
@@ -348,42 +396,6 @@ void CBreakableCube::Set_Bright()
         }
     }
 }
-
-HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
-{
-    //int brightIndex = 0;
-    //// 2. 벡터에서 해당 위치 추가
-    //for (int i = 0; i < m_vecPositions.size(); ++i) {
-    //    if (fPos.x == m_vecPositions[i].x && fPos.y == m_vecPositions[i].y && fPos.z == m_vecPositions[i].z) {
-    //        brightIndex = i;
-    //        break;
-    //    }
-    //}
-
-    //_float3 blockPos = fPos + _Dir;
-    //m_vecPositions.push_back(blockPos);
-    //m_vecBrights.push_back(m_vecBrights[brightIndex]);
-
-    //// 3. 콜라이더 추가
-    ///* For.Com_Collider */
-    //CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-    //Desc.vRadius = { .5f, .5f, .5f };
-    //Desc.vOffset = { blockPos.x , blockPos.y, blockPos.z };
-    //Desc.pTransformCom = m_pTransformCom;
-    //Desc.pOwner = this;
-    //m_Colliders.resize(m_Colliders.size() + 1);
-    //if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
-    //    TEXT("Com_Collider_Cube"), reinterpret_cast<CComponent**>(&m_Colliders.back()), &Desc)))
-    //{
-    //    return E_FAIL;
-    //}
-
-    //// 4. 인스턴스 버퍼 업데이트
-    //m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
-
-    return S_OK;
-}
-
 
 
 
