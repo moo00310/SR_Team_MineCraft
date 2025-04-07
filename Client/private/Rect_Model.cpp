@@ -337,7 +337,7 @@ void CRect_Model::FireSword()
 	{
 		return;
 	}
-	if (Compute_Texture_Name() == ITEMNAME_SWORD)
+	if (Compute_Texture_Name() == ITEM_WEPON_1)
 	{
 		// 회전 행렬.
 		Matrix rotateMatrix = {};
@@ -405,7 +405,7 @@ void CRect_Model::AuraSword()
 
 void CRect_Model::SwingFireSword()
 {
-	if (Compute_Texture_Name() != ITEMNAME_SWORD)
+	if (Compute_Texture_Name() != ITEM_WEPON_1)
 	{
 		return;
 	}

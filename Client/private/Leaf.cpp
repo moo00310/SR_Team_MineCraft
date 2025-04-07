@@ -89,57 +89,62 @@ HRESULT CLeaf::Drop_Item_OnDestroy(const _float3& fPos)
 				pItem->Set_ItemTypeAndBindTexture(ITEMNAME_SAPLING);
 			else
 				pItem->Set_ItemTypeAndBindTexture(ITEMNAME_APPLE);
-      
-		if (m_vecPositions[i].x == fPos.x &&
-			m_vecPositions[i].y == fPos.y &&
-			m_vecPositions[i].z == fPos.z)
-		{
-			if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
-				return E_FAIL;
 
-			int random = rand() % 100;
-			if (random < 10) {
-				wchar_t layerName[100];
-				swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
-				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
-					return E_FAIL;
-				if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
-					_copy->SetPos(m_vecPositions[i]);
-					_copy->Set_ItemTypeAndBindTexture(ITEMNAME_SAPLING);
-				}
-			}
-			else if (10 <= random && random < 20) {
-				wchar_t layerName[100];
-				swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
-				if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
-					return E_FAIL;
-				if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
-					_copy->SetPos(m_vecPositions[i]);
-					_copy->Set_ItemTypeAndBindTexture(ITEMNAME_APPLE);
-				}
-			}
 
-			// 2. 벡터에서 해당 위치 제거
-			m_vecPositions.erase(m_vecPositions.begin() + i);
-			m_vecBrights.erase(m_vecBrights.begin() + i);
+			////////////////////////////////////////////////////
+			// 영웅이형 쪽에서 온건데 병합하면서 뭔가 꼬인듯 -무결-
+			// ///////////////////////////////////////////////////
+			// 
+			//if (m_vecPositions[i].x == fPos.x &&
+			//	m_vecPositions[i].y == fPos.y &&
+			//	m_vecPositions[i].z == fPos.z)
+			//{
+			//	if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), m_Colliders[i])))
+			//		return E_FAIL;
 
-			// 3. 콜라이더 제거
-			Safe_Release(m_Colliders[i]);
-			m_Colliders.erase(m_Colliders.begin() + i);
+			//	int random = rand() % 100;
+			//	if (random < 10) {
+			//		wchar_t layerName[100];
+			//		swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+			//		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+			//			return E_FAIL;
+			//		if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+			//			_copy->SetPos(m_vecPositions[i]);
+			//			_copy->Set_ItemTypeAndBindTexture(ITEMNAME_SAPLING);
+			//		}
+			//	}
+			//	else if (10 <= random && random < 20) {
+			//		wchar_t layerName[100];
+			//		swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
+			//		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+			//			return E_FAIL;
+			//		if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+			//			_copy->SetPos(m_vecPositions[i]);
+			//			_copy->Set_ItemTypeAndBindTexture(ITEMNAME_APPLE);
+			//		}
+			//	}
 
-			// 4. 인스턴스 버퍼 업데이트
-			m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
+			//	// 2. 벡터에서 해당 위치 제거
+			//	m_vecPositions.erase(m_vecPositions.begin() + i);
+			//	m_vecBrights.erase(m_vecBrights.begin() + i);
 
-			m_pGameInstance->CheckSoundStop(this, 0, 1);
-			m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 0.4, fPos);
+			//	// 3. 콜라이더 제거
+			//	Safe_Release(m_Colliders[i]);
+			//	m_Colliders.erase(m_Colliders.begin() + i);
 
-			return S_OK;
+			//	// 4. 인스턴스 버퍼 업데이트
+			//	m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
+
+			//	m_pGameInstance->CheckSoundStop(this, 0, 1);
+			//	m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 0.4, fPos);
+
+			//	return S_OK;
+
 		}
+
+		return S_OK;
 	}
-
-	return S_OK;
 }
-
 HRESULT CLeaf::Play_Destroy_Effect(const _float3& fPos)
 {
 	m_pGameInstance->CheckSoundStop(this, 0, 1);

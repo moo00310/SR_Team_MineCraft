@@ -278,7 +278,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
 
     switch (_itemname)
     {
-    case Client::ITEMNAME_PICKAXE:
+    case Client::ITEMNAME_STONE_AXE:
         switch (m_itemName)
         {
         case Client::ITEMNAME_GRASSDIRT:
