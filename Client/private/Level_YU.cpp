@@ -6,6 +6,7 @@
 #include "SlotInfo.h"
 #include "UI_Mgr.h"
 #include "Pawn.h"
+#include "SwordAura.h"
 
 #include "Sun.h"
 
@@ -69,6 +70,9 @@ HRESULT CLevel_YU::Initialize()
 
 	if(FAILED(Ready_Layer_PlayerState(TEXT("Layer_PlayerState"))))
 		return E_FAIL;
+	
+	if (FAILED(Ready_Layer_Effect(LAYER_EFFECT)))
+		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Particle(LAYER_PARTICLE)))
 		return E_FAIL;
@@ -101,6 +105,15 @@ HRESULT CLevel_YU::Initialize()
 
 	///////////////////////////////////////////////////////////
 
+	// TODO :: 임시 검기 생성.
+	CSwordAura* obj = (CSwordAura*)m_pGameInstance->PushPool(LEVEL_YU,	// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_SWORD_AURA,	// 가져올 프로토타입.
+		LEVEL_YU,		// 가져올 씬.
+		LAYER_EFFECT);	// 애드오브젝트에 추가할 레이어.
+
+	obj->GetTransform()->Set_State(
+		CTransform::STATE_POSITION,
+		{2.f, 0.f, 0.f});
 
 	return S_OK;
 }
@@ -396,6 +409,20 @@ HRESULT CLevel_YU::Ready_Laye_Left_Rect_Model(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Left_Rect_Model"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Effect(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU,	// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_SWORD_AURA,	// 가져올 프로토타입.
+		LEVEL_YU,		// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))			// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
