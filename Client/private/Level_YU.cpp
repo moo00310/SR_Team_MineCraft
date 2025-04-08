@@ -75,11 +75,11 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Particle(LAYER_PARTICLE)))
 		return E_FAIL;
 
-	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
-		return E_FAIL;
+// 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
+// 		return E_FAIL;
 	
-	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
-		return E_FAIL;
+// 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
+// 		return E_FAIL;
 
 	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
 		return E_FAIL;
@@ -374,6 +374,9 @@ HRESULT CLevel_YU::Ready_Layer_UI_DropItem(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionMainUi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_WaveUi"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
