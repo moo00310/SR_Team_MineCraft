@@ -26,13 +26,13 @@ public:
 	virtual HRESULT Render()override;
 
 public:
-	ITEMNAME		Get_ItemName() { return m_ItemName; }
-	ITEMID			Get_ItemID() { return m_ItemID; }
-	UIOBJECT_DESC	Get_ItemPos() { return Desc; }
-	_int			Get_SlotIndex() { return m_iSlotIndexNum; }
-	_int			Get_ItemCount() { return m_iItemCount; }
-	_bool			Get_ItemCountRender() { return m_bCountRender; }
-	_bool			Get_Test() { return m_bTest; }
+	ITEMNAME		Get_ItemName()			{ return m_ItemName; }
+	ITEMID			Get_ItemID()			{ return m_ItemID; }
+	UIOBJECT_DESC	Get_ItemPos()			{ return Desc; }
+	_int			Get_SlotIndex()			{ return m_iSlotIndexNum; }
+	_int			Get_ItemCount()			{ return m_iItemCount; }
+	_bool			Get_ItemCountRender()	{ return m_bCountRender; }
+	_bool			Get_Test()				{ return m_bTest; }
 
 public:
 	void Set_ItemName(ITEMNAME _ItemName) { m_ItemName = _ItemName; }
@@ -48,8 +48,6 @@ private:
 	HRESULT SetUp_RenderState();
 	HRESULT Reset_RenderState();
 
-	void	TextureNum_Update(_int _TextureNum);
-
 private:
 	CTexture*			m_pItem_TextureCom = { nullptr };
 	CTexture*			m_pItemCount_TextureCom = { nullptr };
@@ -58,14 +56,11 @@ private:
 	CVIBuffer_Rect*		m_pVIBufferCom = { nullptr };
 	CShader*			m_pShaderCom = { nullptr };
 
-	ID3DXFont*			m_pFont = nullptr;
-
-	RECT textRect;
 private:
 	UIOBJECT_DESC		Desc{};
 	ITEMNAME			m_ItemName = ITEMNAME_END;
 	ITEMID				m_ItemID = ITEMID_END;
-
+	
 private:
 	_int*		m_iSlotIndex = { nullptr };
 	_int		m_iSlotIndexNum		{0};
@@ -78,9 +73,6 @@ private:
 	_bool		m_bTest = { false };
 	_bool		m_bCountRender = { false };
 	_bool		m_bTestInfo = { false };
-
-		
-
 
 public:
 	static CSlotInfo* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

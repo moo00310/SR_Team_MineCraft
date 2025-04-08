@@ -76,6 +76,8 @@
 #include "Mouse_Item.h"
 #include "Mouse_ItemFont.h"
 #include "Bag.h"
+#include "Item.h"
+#include "CraftingTable.h"
 
 //미션 관련
 #include "MissionControl.h"
@@ -486,7 +488,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Inventory"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/inventory_%03d.png"), 3))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/inventory/inventory_%03d.png"), 4))))
 		return E_FAIL;
 
 	///* For.Prototype_Component_Texture_InventoryBack*/
@@ -767,6 +769,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Inventory_Bag*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Bag"),
 		CBag::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Inventory_Item*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Item"),
+		CItem::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CraftingTable*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTable"),
+		CCraftingTable::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	/*================================================================================================*/
 

@@ -184,6 +184,7 @@
     <ClInclude Include="..\public\Client_Tag.h" />
     <ClInclude Include="..\public\Clouds.h" />
     <ClInclude Include="..\public\CoalOre.h" />
+    <ClInclude Include="..\public\CraftingTable.h" />
     <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\Client_Defines.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="..\public\HyockCube.h" />
     <ClInclude Include="..\public\Inventory_Back.h" />
     <ClInclude Include="..\public\ISubject.h" />
+    <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\ItemRect.h" />
     <ClInclude Include="..\public\IObserver.h" />
     <ClInclude Include="..\public\Left_Rect_Model.h" />
@@ -315,6 +317,7 @@
     <ClCompile Include="..\private\Check_Enemy_Node.cpp" />
     <ClCompile Include="..\private\Clouds.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
+    <ClCompile Include="..\private\CraftingTable.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
     <ClCompile Include="..\private\Cube_Model.cpp" />
@@ -409,6 +412,7 @@
     <ClCompile Include="..\private\WaveUi.cpp" />
     <ClCompile Include="..\private\Wood.cpp" />
     <ClCompile Include="..\private\Zombi.cpp" />
+    <ClCompile Include="..\public\Item.cpp" />
     <ClCompile Include="..\public\PlayerHP.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="MainApp.cpp" />

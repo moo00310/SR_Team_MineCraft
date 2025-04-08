@@ -10,12 +10,12 @@ END
 
 BEGIN(Client)
 
-class CMainInventory final : public CUIObject
+class CCraftingTable final : public CUIObject
 {
 private:
-	CMainInventory(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CMainInventory(CMainInventory& Prototype);
-	virtual ~CMainInventory() = default;
+	CCraftingTable(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CCraftingTable(CCraftingTable& Prototype);
+	virtual ~CCraftingTable() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -33,11 +33,11 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
-private:
+private:;
 	_bool m_bEKeyPressed = { false };
 
 public:
-	static CMainInventory* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CCraftingTable* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

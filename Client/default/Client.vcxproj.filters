@@ -73,21 +73,6 @@
     <Filter Include="03.UI\03.edition">
       <UniqueIdentifier>{bd44ce59-d87b-47ac-9a92-589a37bb1fe2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.UI\04.Inventory">
-      <UniqueIdentifier>{b81d3eea-ee7c-4da5-9c6b-b3d81e2cebc4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\04.Inventory\00.MainInventory">
-      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\04.Inventory\02.CheckBox">
-      <UniqueIdentifier>{5249cb73-c614-4b68-bd82-7f86d3bf1f9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\04.Inventory\01.SubInventory">
-      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\04.Inventory\03.Inventory_Back">
-      <UniqueIdentifier>{b21708e2-0b09-473f-ad1f-34ff0d083809}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Behavior_Tree">
       <UniqueIdentifier>{6c2d2db5-6575-4350-96b5-f1680963c5d7}</UniqueIdentifier>
     </Filter>
@@ -190,32 +175,14 @@
     <Filter Include="02.GameObjects\07.Tool\MapTool">
       <UniqueIdentifier>{33461eac-7793-4962-8246-dfcca5364f21}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.UI\05.PlayerState">
-      <UniqueIdentifier>{b9eb9284-00aa-4678-9b29-dfaf4238d7c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\05.PlayerState\00.PlayerHP">
-      <UniqueIdentifier>{2e6789bb-fc12-40c1-9880-f3f0e15053d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.Cube\ItemObj">
       <UniqueIdentifier>{ce8c2ebb-f3bb-40a8-92ce-87cef72f8883}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\06.UIParticle">
-      <UniqueIdentifier>{1b18e013-c1c8-40bf-99cf-d90c6df75a78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\05.PlayerState\01.PlayerHunger">
-      <UniqueIdentifier>{e70a954c-2a10-44ae-84f8-d638694a60fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\05.PlayerState\02.PlayerExp">
-      <UniqueIdentifier>{be029a2e-92dc-4ce0-83b6-400ee3eb2035}</UniqueIdentifier>
     </Filter>
     <Filter Include="04.Behavior_Tree\BTNode">
       <UniqueIdentifier>{f7a56e8f-dd64-483b-80fd-ddc4b35d8bd3}</UniqueIdentifier>
     </Filter>
     <Filter Include="101.ObserverPattern">
       <UniqueIdentifier>{c5b9c737-054a-4e33-bdce-ca55acc70337}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\05.PlayerState\03.PlayerLevel">
-      <UniqueIdentifier>{525bc881-5430-4351-8fbf-b197eb91c1ca}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\01.Monster\00.Creeper">
       <UniqueIdentifier>{f5fc1b17-0b57-4901-8000-3421299ffdff}</UniqueIdentifier>
@@ -256,20 +223,11 @@
     <Filter Include="99.Headers">
       <UniqueIdentifier>{fcace3ae-9159-40b6-9db2-b1157c2c1a8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.UI\04.Inventory\04.SlotInfo">
-      <UniqueIdentifier>{7bcd92a0-958a-4574-a45f-9d3fd6353c56}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\06.Right_Hand\03.Left_Rect_Model">
       <UniqueIdentifier>{8b8f165a-c97a-4aaf-940e-36b6a8a8b484}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\08.GameMgr">
       <UniqueIdentifier>{8632f159-1743-49bc-a2a3-b6fec4043883}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\08.DropItem">
-      <UniqueIdentifier>{f5b13b2e-050c-4040-87aa-d6de24d20773}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.UI\04.Inventory\05.Bag">
-      <UniqueIdentifier>{9e4d4d43-a141-4586-ab41-0def7821c9a7}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\05.Particle\Eat">
       <UniqueIdentifier>{f3839b38-8c13-4998-a407-3bbd409c0e84}</UniqueIdentifier>
@@ -291,6 +249,54 @@
     </Filter>
     <Filter Include="08.Mission\Ui">
       <UniqueIdentifier>{2b3acd74-b303-407f-a52a-df4509624707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\04.Item">
+      <UniqueIdentifier>{24b7fb92-b9fc-4c97-9b5f-dae000e94c4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.Inventory">
+      <UniqueIdentifier>{b81d3eea-ee7c-4da5-9c6b-b3d81e2cebc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.Inventory\00.MainInventory">
+      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.Inventory\02.CheckBox">
+      <UniqueIdentifier>{5249cb73-c614-4b68-bd82-7f86d3bf1f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.Inventory\01.SubInventory">
+      <UniqueIdentifier>{dbc2aa14-0264-4b7e-8c8a-6717b0bb176b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.Inventory\03.Inventory_Back">
+      <UniqueIdentifier>{b21708e2-0b09-473f-ad1f-34ff0d083809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.Inventory\04.SlotInfo">
+      <UniqueIdentifier>{7bcd92a0-958a-4574-a45f-9d3fd6353c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\05.Inventory\05.Bag">
+      <UniqueIdentifier>{9e4d4d43-a141-4586-ab41-0def7821c9a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\06.PlayerState">
+      <UniqueIdentifier>{b9eb9284-00aa-4678-9b29-dfaf4238d7c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\06.PlayerState\00.PlayerHP">
+      <UniqueIdentifier>{2e6789bb-fc12-40c1-9880-f3f0e15053d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\06.PlayerState\01.PlayerHunger">
+      <UniqueIdentifier>{e70a954c-2a10-44ae-84f8-d638694a60fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\06.PlayerState\02.PlayerExp">
+      <UniqueIdentifier>{be029a2e-92dc-4ce0-83b6-400ee3eb2035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\06.PlayerState\03.PlayerLevel">
+      <UniqueIdentifier>{525bc881-5430-4351-8fbf-b197eb91c1ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\08.CraftingTable">
+      <UniqueIdentifier>{3c671fd8-0547-4f83-b525-4d31c163393c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\09.DropItem">
+      <UniqueIdentifier>{f5b13b2e-050c-4040-87aa-d6de24d20773}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\10.UIParticle">
+      <UniqueIdentifier>{1b18e013-c1c8-40bf-99cf-d90c6df75a78}</UniqueIdentifier>
     </Filter>
     <Filter Include="04.Behavior_Tree\BTNode\Warden">
       <UniqueIdentifier>{bed2019c-3d91-4bea-8a67-e931027c6837}</UniqueIdentifier>
@@ -520,10 +526,10 @@
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SubInventory.h">
-      <Filter>03.UI\04.Inventory\01.SubInventory</Filter>
+      <Filter>03.UI\05.Inventory\01.SubInventory</Filter>
     </ClInclude>
     <ClInclude Include="..\public\CheckBox.h">
-      <Filter>03.UI\04.Inventory\02.CheckBox</Filter>
+      <Filter>03.UI\05.Inventory\02.CheckBox</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Monster.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster</Filter>
@@ -541,10 +547,10 @@
       <Filter>04.Behavior_Tree\BTNode\Normal\Decorator\Check_Distance</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MainInventory.h">
-      <Filter>03.UI\04.Inventory\00.MainInventory</Filter>
+      <Filter>03.UI\05.Inventory\00.MainInventory</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Inventory_Back.h">
-      <Filter>03.UI\04.Inventory\03.Inventory_Back</Filter>
+      <Filter>03.UI\05.Inventory\03.Inventory_Back</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Sun.h">
       <Filter>02.GameObjects\03.Sky\00.Sun</Filter>
@@ -584,28 +590,28 @@
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerHP.h">
-      <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
+      <Filter>03.UI\06.PlayerState\00.PlayerHP</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerHP_Back.h">
-      <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
+      <Filter>03.UI\06.PlayerState\00.PlayerHP</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ItemRect.h">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UIParticleRain.h">
-      <Filter>03.UI\06.UIParticle</Filter>
+      <Filter>03.UI\10.UIParticle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerHunger.h">
-      <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
+      <Filter>03.UI\06.PlayerState\01.PlayerHunger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerHunger_Back.h">
-      <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
+      <Filter>03.UI\06.PlayerState\01.PlayerHunger</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerExp.h">
-      <Filter>03.UI\05.PlayerState\02.PlayerExp</Filter>
+      <Filter>03.UI\06.PlayerState\02.PlayerExp</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerExp_Back.h">
-      <Filter>03.UI\05.PlayerState\02.PlayerExp</Filter>
+      <Filter>03.UI\06.PlayerState\02.PlayerExp</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_Attack.h">
       <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Attack</Filter>
@@ -623,7 +629,7 @@
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\PlayerLevel.h">
-      <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
+      <Filter>03.UI\06.PlayerState\03.PlayerLevel</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Zombi.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi</Filter>
@@ -665,7 +671,7 @@
       <Filter>03.UI\07.Mouse_UI\01.Mouse_ItemFont</Filter>
     </ClInclude>
     <ClInclude Include="..\public\SlotInfo.h">
-      <Filter>03.UI\04.Inventory\04.SlotInfo</Filter>
+      <Filter>03.UI\05.Inventory\04.SlotInfo</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleSwordFlame.h">
       <Filter>02.GameObjects\05.Particle</Filter>
@@ -683,10 +689,10 @@
       <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UIDropItem.h">
-      <Filter>03.UI\08.DropItem</Filter>
+      <Filter>03.UI\09.DropItem</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Bag.h">
-      <Filter>03.UI\04.Inventory\05.Bag</Filter>
+      <Filter>03.UI\05.Inventory\05.Bag</Filter>
     </ClInclude>
     <ClInclude Include="..\public\ParticleAppleEating.h">
       <Filter>02.GameObjects\05.Particle\Eat</Filter>
@@ -715,6 +721,12 @@
     <ClInclude Include="..\public\MissionMainUi.h">
       <Filter>08.Mission\Ui</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Item.h">
+      <Filter>03.UI\04.Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraftingTable.h">
+      <Filter>03.UI\08.CraftingTable</Filter>
+</ClInclude>
     <ClInclude Include="..\public\ParticleFireCracker.h">
       <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
     </ClInclude>
@@ -911,7 +923,7 @@
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SubInventory.cpp">
-      <Filter>03.UI\04.Inventory\01.SubInventory</Filter>
+      <Filter>03.UI\05.Inventory\01.SubInventory</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Monster.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster</Filter>
@@ -929,13 +941,13 @@
       <Filter>04.Behavior_Tree\BTNode\Normal\Decorator\Check_Distance</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MainInventory.cpp">
-      <Filter>03.UI\04.Inventory\00.MainInventory</Filter>
+      <Filter>03.UI\05.Inventory\00.MainInventory</Filter>
     </ClCompile>
     <ClCompile Include="..\private\SlotInfo.cpp">
-      <Filter>03.UI\04.Inventory\04.SlotInfo</Filter>
+      <Filter>03.UI\05.Inventory\04.SlotInfo</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Inventory_Back.cpp">
-      <Filter>03.UI\04.Inventory\03.Inventory_Back</Filter>
+      <Filter>03.UI\05.Inventory\03.Inventory_Back</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Sun.cpp">
       <Filter>02.GameObjects\03.Sky\00.Sun</Filter>
@@ -956,7 +968,7 @@
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CheckBox.cpp">
-      <Filter>03.UI\04.Inventory\02.CheckBox</Filter>
+      <Filter>03.UI\05.Inventory\02.CheckBox</Filter>
     </ClCompile>
     <ClCompile Include="..\private\RedTulip.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
@@ -974,28 +986,28 @@
       <Filter>03.UI</Filter>
     </ClCompile>
     <ClCompile Include="..\public\PlayerHP.cpp">
-      <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
+      <Filter>03.UI\06.PlayerState\00.PlayerHP</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PlayerHP_Back.cpp">
-      <Filter>03.UI\05.PlayerState\00.PlayerHP</Filter>
+      <Filter>03.UI\06.PlayerState\00.PlayerHP</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ItemRect.cpp">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UIParticleRain.cpp">
-      <Filter>03.UI\06.UIParticle</Filter>
+      <Filter>03.UI\10.UIParticle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PlayerHunger.cpp">
-      <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
+      <Filter>03.UI\06.PlayerState\01.PlayerHunger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PlayerHunger_Back.cpp">
-      <Filter>03.UI\05.PlayerState\01.PlayerHunger</Filter>
+      <Filter>03.UI\06.PlayerState\01.PlayerHunger</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PlayerExp.cpp">
-      <Filter>03.UI\05.PlayerState\02.PlayerExp</Filter>
+      <Filter>03.UI\06.PlayerState\02.PlayerExp</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PlayerExp_Back.cpp">
-      <Filter>03.UI\05.PlayerState\02.PlayerExp</Filter>
+      <Filter>03.UI\06.PlayerState\02.PlayerExp</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_Attack.cpp">
       <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Attack</Filter>
@@ -1013,7 +1025,7 @@
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
     <ClCompile Include="..\private\PlayerLevel.cpp">
-      <Filter>03.UI\05.PlayerState\03.PlayerLevel</Filter>
+      <Filter>03.UI\06.PlayerState\03.PlayerLevel</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Zombi.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster\01.Zombi</Filter>
@@ -1070,10 +1082,10 @@
       <Filter>02.GameObjects\05.Particle\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UIDropItem.cpp">
-      <Filter>03.UI\08.DropItem</Filter>
+      <Filter>03.UI\09.DropItem</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Bag.cpp">
-      <Filter>03.UI\04.Inventory\05.Bag</Filter>
+      <Filter>03.UI\05.Inventory\05.Bag</Filter>
     </ClCompile>
     <ClCompile Include="..\private\ParticleAppleEating.cpp">
       <Filter>02.GameObjects\05.Particle\Eat</Filter>
@@ -1101,6 +1113,12 @@
     </ClCompile>
     <ClCompile Include="..\private\MissionMainUi.cpp">
       <Filter>08.Mission\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\public\Item.cpp">
+      <Filter>03.UI\04.Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraftingTable.cpp">
+      <Filter>03.UI\08.CraftingTable</Filter>
     </ClCompile>
     <ClCompile Include="..\private\WaveUi.cpp">
       <Filter>08.Mission\Ui</Filter>

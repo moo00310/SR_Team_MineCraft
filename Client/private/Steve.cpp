@@ -251,7 +251,18 @@ void CSteve::Move(_float fTimeDelta)
 	{
 		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEM_WEPON_1, 1);
 	}
-
+	if (m_pGameInstance->Key_Down('K'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_APPLE, 1);
+	}
+	if (m_pGameInstance->Key_Down('J'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_DIRT, 1);
+	}
+	if (m_pGameInstance->Key_Down('H'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_ROTTENFLESH, 1);
+	}
 }
 
 HRESULT CSteve::Ready_Components()

@@ -330,4 +330,3 @@ void CUI_Mgr::Free()
 	m_MouseItemlist.clear();
 	m_MouseItemFontlist.clear();
 }
-
