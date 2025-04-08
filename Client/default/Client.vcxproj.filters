@@ -306,7 +306,7 @@
     </Filter>
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.BossMonster">
       <UniqueIdentifier>{de74e917-c0ed-42d7-b233-f6cdd993b7d1}</UniqueIdentifier>
-   </Filter>
+    </Filter>
     <Filter Include="02.GameObjects\09.Effect">
       <UniqueIdentifier>{0c0e97dc-4081-4894-8b9c-53b4466b61bb}</UniqueIdentifier>
     </Filter>
@@ -315,6 +315,9 @@
     </Filter>
     <Filter Include="08.Mission\Ui">
       <UniqueIdentifier>{2b3acd74-b303-407f-a52a-df4509624707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Particle\FireCracker">
+      <UniqueIdentifier>{fd189827-f7ba-4082-ac1f-539345ed00e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -658,9 +661,6 @@
     <ClInclude Include="..\public\Left_Rect_Model.h">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ParticleFireCracker.h">
-      <Filter>02.GameObjects\05.Particle</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ParticleCharging.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
@@ -687,7 +687,7 @@
     </ClInclude>
     <ClInclude Include="..\public\Warden.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn\02.BossMonster</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\ParticleStoneDestroy.h">
       <Filter>02.GameObjects\05.Particle\Destroy</Filter>
     </ClInclude>
@@ -696,12 +696,18 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleSwordAura.h">
       <Filter>02.GameObjects\05.Particle</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\MissionControl.h">
       <Filter>08.Mission</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MissionMainUi.h">
       <Filter>08.Mission\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleFireCracker.h">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleCrackerLoad.h">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1033,9 +1039,6 @@
     <ClCompile Include="..\private\Left_Rect_Model.cpp">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ParticleFireCracker.cpp">
-      <Filter>02.GameObjects\05.Particle</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ParticleCharging.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
@@ -1060,10 +1063,9 @@
     <ClCompile Include="..\private\ThreadPool.cpp">
       <Filter>07.ThreadPool</Filter>
     </ClCompile>
-
     <ClCompile Include="..\private\Warden.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn\02.BossMonster</Filter>
-</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\ParticleStoneDestroy.cpp">
       <Filter>02.GameObjects\05.Particle\Destroy</Filter>
     </ClCompile>
@@ -1078,6 +1080,12 @@
     </ClCompile>
     <ClCompile Include="..\private\MissionMainUi.cpp">
       <Filter>08.Mission\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleFireCracker.cpp">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleCrackerLoad.cpp">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

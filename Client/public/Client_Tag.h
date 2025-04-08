@@ -58,6 +58,9 @@ static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME = TEXT("Prototyp
 // ÆøÁ× ÆÄÆ¼Å¬.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER = TEXT("Prototype_GameObject_Particle_Fire_Cracker");
 
+// ÆøÁ× ±æ ÆÄÆ¼Å¬.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_CRACKER_LOAD = TEXT("Prototype_GameObject_Particle_Cracker_Load");
+
 // ÇÃ·¡½Ã ÅØ½ºÃÄ.
 static const _wstring PROTOTYPE_COMPONENT_TEXUTRE_GLITTER = TEXT("Prototype_Component_Texture_Glitter");
 

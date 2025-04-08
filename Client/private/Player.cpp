@@ -110,15 +110,20 @@ void CPlayer::Update(_float fTimeDelta)
 		//}
 
 		// 폭죽.
-		CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
-			PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER,	// 가져올 프로토타입.
-			LEVEL_STATIC,	// 적용 씬.
-			LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
+		//CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
+		//	PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER,	// 가져올 프로토타입.
+		//	LEVEL_STATIC,	// 적용 씬.
+		//	LAYER_PARTICLE);	// 애드오브젝트에 추가할 레이어
 
-		if (particle != nullptr)
-		{			
-			particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));			
-		}
+		//if (particle != nullptr)
+		//{			
+		//	particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));			
+		//}
+
+		// 폭죽 길
+		CParticleEventManager::Get_Instance()->OnParticle(
+			PROTOTYPE_GAMEOBJECT_PARTICLE_CRACKER_LOAD,
+			m_pTransformCom);
 
 		// 기 모으기.
 		//CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬

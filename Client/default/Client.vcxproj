@@ -210,6 +210,7 @@
     <ClInclude Include="..\public\Mouse_ItemFont.h" />
     <ClInclude Include="..\public\ParticleAppleEating.h" />
     <ClInclude Include="..\public\ParticleCharging.h" />
+    <ClInclude Include="..\public\ParticleCrackerLoad.h" />
     <ClInclude Include="..\public\ParticleDie.h" />
     <ClInclude Include="..\public\BaseParticleEating.h" />
     <ClInclude Include="..\public\ParticleEventManager.h" />
@@ -335,6 +336,7 @@
     <ClCompile Include="..\private\Mouse_ItemFont.cpp" />
     <ClCompile Include="..\private\ParticleAppleEating.cpp" />
     <ClCompile Include="..\private\ParticleCharging.cpp" />
+    <ClCompile Include="..\private\ParticleCrackerLoad.cpp" />
     <ClCompile Include="..\private\ParticleDie.cpp" />
     <ClCompile Include="..\private\BaseParticleEating.cpp" />
     <ClCompile Include="..\private\ParticleEventManager.cpp" />

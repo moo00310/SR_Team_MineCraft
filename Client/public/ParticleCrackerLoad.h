@@ -4,21 +4,21 @@
 
 BEGIN(Client)
 
-// ÆøÁ× ÆÄÆ¼Å¬.
-class CParticleFireCracker final : public CParticleSystem
+// ÆøÁ× ±æ? µû¶ó°¡´Â ÆÄÆ¼Å¬.
+class CParticleCrackerLoad final : public CParticleSystem
 {
 private:
-	CParticleFireCracker(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CParticleFireCracker(const CParticleFireCracker& Prototype);
-	virtual ~CParticleFireCracker() = default;
+	CParticleCrackerLoad(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CParticleCrackerLoad(const CParticleCrackerLoad& Prototype);
+	virtual ~CParticleCrackerLoad() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
-	virtual HRESULT Initialize(void* pArg) override;
+	virtual HRESULT Initialize(void* pArg) override;	
 
 	// CParticleSystemÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
 	CGameObject* Clone(void* pArg) override;
-	static CParticleFireCracker* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CParticleCrackerLoad* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual void Free();
 
 protected:
