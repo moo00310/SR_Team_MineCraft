@@ -44,7 +44,7 @@ public:
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	void		Set_Hp(float hp) { m_Hp = hp; }
 
-	virtual void		Add_Hp(float damage) { m_Hp += damage; }
+	virtual void		Add_Hp(_float damage);
 	_float		Get_Hp() { return m_Hp; }
 
 	ANIM Get_ANIM() { return m_eCurAnim; }
@@ -73,6 +73,7 @@ protected:
 	virtual void Motion_Idle(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
 	virtual void Turn(_float fTimeDelta) = 0;
+	virtual void Dead_Pawn();
 
 protected:
 	ANIM m_eCurAnim = { ANIM_END };

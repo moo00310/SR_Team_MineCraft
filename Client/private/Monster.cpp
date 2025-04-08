@@ -36,13 +36,11 @@ HRESULT CMonster::Initialize(void* pArg)
 
 void CMonster::Priority_Update(_float fTimeDelta)
 {
-    if (m_Hp <= 0.f)
-    {
-        isDead = true;
-        m_eCurAnim = DEAD;
-    }
+    if (!isDead)
+        m_pGameInstance->Add_CollisionGroup(COLLISION_MONSTER, this);
 
-    if (m_bGetHit) {
+    if (m_bGetHit) 
+    {
         m_iGetHitFrame++;
         if (m_iGetHitFrame > 15 && (m_eCurAnim != DEAD)) {
             m_bGetHit = false;
@@ -50,7 +48,6 @@ void CMonster::Priority_Update(_float fTimeDelta)
             m_eColor = RENDERORIGIN;
         }
     }
-
 }
 
 void CMonster::Update(_float fTimeDelta)
@@ -137,18 +134,18 @@ void CMonster::Knock_back(const _float3& vforce)
     {
     case Client::CMonster::MT_Zombie:
         if (random < 5) {
-            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt1"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Zombie_Hurt1"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         else {
-            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt2"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Zombie_Hurt2"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         break;
     case Client::CMonster::MT_Creeper:
         if (random < 5) {
-            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt1"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt1"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         else {
-            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt2"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt2"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         break;
     case Client::CMonster::MT_END:

@@ -17,7 +17,8 @@ public:
 	virtual HRESULT Render()override;
 	HRESULT Drop_Item_OnDestroy(const _float3& fPos);
 	HRESULT Play_Destroy_Effect(const _float3& fPos)override;
-
+	//부수는 사운드
+	virtual void PlaySound_Hit(_float3 vPos) override;
 
 protected:
 	HRESULT Ready_Components();

@@ -17,7 +17,7 @@ public:
 	virtual HRESULT Render()override;
 	HRESULT Drop_Item_OnDestroy(const _float3& fPos)override;
 	HRESULT Play_Destroy_Effect(const _float3& fPos)override;
-	void	PlaySound_Breaking(_float3 vPos) override;
+	void	PlaySound_Hit(_float3 vPos) override;
 	void RemoveLeaf();
 protected:
 	HRESULT Ready_Components();

@@ -37,7 +37,7 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
             m_fHp = 100;
             cout << "Reset Hp" << m_fHp << endl;
 
-            m_pGameInstance->CheckSoundStop(this, 0, 1);
+            //m_pGameInstance->Check_Sound_Stop(this, 0, 1);
         }
     }
 
@@ -236,15 +236,19 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
     return S_OK;
 }
 
-void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
+void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDeltaTime)
 {
     if (m_attackedBlockPos != vPos) {
         m_fHp = 100;
         cout << "Change Block" << m_fHp << endl;
     }
 
-    if (m_fHp == 100) {
-        PlaySound_Breaking(vPos);
+    m_fHitSoundDelayAcc += fDeltaTime;
+
+    if (m_fHitSoundDelayAcc >= m_fHitSoundDelayLimit)
+    {
+        PlaySound_Hit(vPos);
+        m_fHitSoundDelayAcc = 0.f;
     }
     
     ITEMNAME _itemname = CUI_Mgr::Get_Instance()->GetItemTypeName();
@@ -327,9 +331,12 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
         vPos);
 }
 
-void CBreakableCube::PlaySound_Breaking(_float3 vPos)
+void CBreakableCube::PlaySound_Hit(_float3 vPos)
 {
-    m_pGameInstance->PlaySound(TEXT("Block_Breaking"), 1, vPos, this, 1);
+
+    m_pGameInstance->Play_Sound(TEXT("Stone_hit1"), SOUND_BLOCK_HIT, this, 1.f, vPos);
+
+    //printf_s("Play Sound\n");
 }
 
 float CBreakableCube::GetHP() const
@@ -394,6 +401,23 @@ HRESULT CBreakableCube::Ready_Components()
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_CubeInstance"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
         return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CBreakableCube::Drop_Item_OnDestroy(const _float3& fPos)
+{
+    return E_NOTIMPL;
+}
+
+HRESULT CBreakableCube::Play_Destroy_Effect(const _float3& vPos)
+{
+    CParticleEventManager::Get_Instance()->OnParticle(
+        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+        vPos
+    );
+
+    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
 
     return S_OK;
 }

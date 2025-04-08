@@ -68,13 +68,21 @@ HRESULT CDirt::Drop_Item_OnDestroy(const _float3& fPos)
     return S_OK;
 }
 
-HRESULT CDirt::Play_Destroy_Effect(const _float3& fPos)
+HRESULT CDirt::Play_Destroy_Effect(const _float3& vPos)
 {
     CParticleEventManager::Get_Instance()->OnParticle(
         PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
-        fPos
+        vPos
     );
+
+    m_pGameInstance->Play_Sound(TEXT("Gravel_dig1"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+
     return S_OK;
+}
+
+void CDirt::PlaySound_Hit(_float3 vPos)
+{
+    m_pGameInstance->Play_Sound(TEXT("Gravel_hit1"), SOUND_BLOCK_HIT, this, 1.f, vPos);
 }
 
 HRESULT CDirt::Ready_Components()

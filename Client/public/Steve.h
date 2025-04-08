@@ -41,6 +41,7 @@ public:
 	const _float4x4& GetSoketMatrix(int index);
 
 	virtual void Add_Hp(_float fAmount) override;
+	virtual void Dead_Pawn() override;
 
 private:
 	_float   m_fMouseSensor = { 0.03f };

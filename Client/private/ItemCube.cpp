@@ -66,16 +66,16 @@ void CItemCube::Update(_float fTimeDelta)
     _float fDist = Compute_PlayerDistance();
 
 
-    if (fDist < 0.1f)
+    if (fDist < 0.2f)
     {
         OnDropItem(m_eItemName);
 
-        m_pGameInstance->PlaySound(TEXT("Minecraft - Item Pop"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this, CSound_Manager::ITEM);
+        m_pGameInstance->Play_Sound(TEXT("Minecraft - Item Pop"), SOUND_ITEM, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
         Destroy();
      CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
     }
-    else if (fDist < 1.5f)
+    else if (fDist < 2.5f)
     {
         _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
         m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);

@@ -97,15 +97,15 @@ HRESULT CLeaf::Drop_Item_OnDestroy(const _float3& fPos)
 }
 HRESULT CLeaf::Play_Destroy_Effect(const _float3& fPos)
 {
-	m_pGameInstance->CheckSoundStop(this, 0, 1);
-	m_pGameInstance->PlaySound(TEXT("Grass_dig1"), 1, fPos);
+	//m_pGameInstance->Check_Sound_Stop(this, 0, SOUND_BLOCK);
+	m_pGameInstance->Play_Sound(TEXT("Grass_dig1"), SOUND_BLOCK_DIG, this, 1.f, fPos);
 
 	return S_OK;
 }
 
-void CLeaf::PlaySound_Breaking(_float3 vPos)
+void CLeaf::PlaySound_Hit(_float3 vPos)
 {
-	m_pGameInstance->PlaySound(TEXT("Grass_hit1"), 1, vPos, this, 1);
+	m_pGameInstance->Play_Sound(TEXT("Grass_hit1"), SOUND_BLOCK_HIT, this, 1.f, vPos);
 }
 
 void CLeaf::RemoveLeaf()

@@ -8,6 +8,7 @@
 #endif
 
 #include "Base.h"
+#include "GameObject.h"
 
 #define MAX_SFX_CHANNEL 32
 
@@ -15,14 +16,6 @@ BEGIN(Engine)
 
 class CSound_Manager : public CBase
 {
-public:
-    enum SEPCIALSOUNDTYPE { CREEPER=0, BREAKING=1, PLAYER, ITEM, SOUND_END=999 };
-public:
-    struct TrackedSound {
-        FMOD::Channel* pChannel = nullptr;
-        void* pObj = nullptr;
-        SEPCIALSOUNDTYPE type;
-    };
 private:
     CSound_Manager();
     virtual ~CSound_Manager() = default;
@@ -32,17 +25,20 @@ public:
     void Update();
     // 파일 로드 하는 곳 init에서 모두 로드할 예정
     // bgm은 loop true 시켜주면 됨
-    void LoadSound(const std::wstring& soundName, const char* filePath, bool loop = false);
+    void LoadSound(const wstring& soundName, const char* filePath, bool loop = false);
     // bgm 재생
-    void PlayBGM(const std::wstring& soundName);
+    void PlayBGM(const wstring& soundName);
     // 소리 재생
-    void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f), void* _obj = nullptr, int _type = SOUND_END);
+    void Play_Sound(const wstring& soundName, _uint iType, CGameObject* pGameObject, _float volume = 1.0f, _float3 pPos = _float3{ 0.f, 0.f, 0.f });
     // 이펙트 소리와 bgm 소리 모두 끔
     void StopAll();
     // 플레이어 위치 업데이트
     void UpdateListener(_float3 pos, _float3 forward, _float3 up);
 
-    void CheckSoundStop(void* obj, int _anim, int _type);
+    //사운드가 플레이 중인가?
+    _bool   IsPlaying_Sound(_int iType);
+    //사운드 멈춰라
+    void    Stop_Sound(_int iType, CGameObject* pObject);
 
 private:
     void Add_SoundResource();
@@ -50,12 +46,16 @@ private:
     string WStringToString(const std::wstring& wstr);
 
     FMOD::System* m_pCoreSystem{ nullptr };
-    FMOD::Channel* m_pChannels[MAX_SFX_CHANNEL]{ nullptr };
-    FMOD::Channel* m_pBGMChannel;
+    // map<사운드 타입, 채널 목록>
+    std::map<_int, std::vector<FMOD::Channel*>> m_ChannelMap;
 
+    FMOD::Channel* m_pBGMChannel;
     std::map<std::wstring, FMOD::Sound*> m_SoundMap;
     _float3 m_vListenerPos;
-    std::vector<TrackedSound> m_TrackedSounds;
+
+    // [오브젝트][사운드 타입] → 채널 포인터
+    std::unordered_map<CGameObject*, std::unordered_map<_uint, FMOD::Channel*>> m_ObjectChannelMap;
+
 
 public:
     static CSound_Manager* Create();

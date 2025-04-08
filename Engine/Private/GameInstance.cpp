@@ -327,13 +327,13 @@ _bool CGameInstance::Key_Down(int _Key)
 
 
 #pragma region SOUND_MANAGER
-void CGameInstance::PlayBGM(const std::wstring& soundName)
+void CGameInstance::PlayBGM(const wstring& soundName)
 {
 	m_pSound_Manager->PlayBGM(soundName);
 }
-void CGameInstance::PlaySound(const std::wstring& soundName, float volume, _float3 pPos, void* _obj, int type)
+void CGameInstance::Play_Sound(const wstring& soundName, _uint iType, CGameObject* pGameObject, _float volume, _float3 pPos)
 {
-	m_pSound_Manager->PlaySound(soundName, volume, pPos, _obj, type);
+	m_pSound_Manager->Play_Sound(soundName, iType, pGameObject, volume, pPos );
 }
 
 void CGameInstance::StopAll()
@@ -345,10 +345,21 @@ void CGameInstance::UpdateListener(_float3 pos, _float3 forward, _float3 up)
 {
 	m_pSound_Manager->UpdateListener(pos, forward, up);
 }
-void CGameInstance::CheckSoundStop(void* obj, int _anim, int _type)
+
+_bool CGameInstance::IsPlaying_Sound(_int iType)
 {
-	m_pSound_Manager->CheckSoundStop(obj, _anim, _type);
+	return m_pSound_Manager->IsPlaying_Sound(iType);
 }
+
+void CGameInstance::Stop_Sound(_int iType, CGameObject* pGameObject)
+{
+	m_pSound_Manager->Stop_Sound(iType, pGameObject);
+}
+
+//_bool CGameInstance::Check_Sound_Stop(void* obj, int _type)
+//{
+//	return m_pSound_Manager->Check_Sound_Play(obj, _type);
+//}
 #pragma endregion
 
 
