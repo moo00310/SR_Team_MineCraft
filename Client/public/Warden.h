@@ -16,7 +16,8 @@ class CWarden : public CMonster
 public:
 	enum ANIM_type
 	{
-		Swing_Pevis, Swing_Leg_R, Swing_Leg_L, Swing_R50, Swing_R, Swing_L, Attack, Dead, INIT,
+		Swing_Pevis, Swing_Leg_R, Swing_Leg_L, Swing_Arm_R, Swing_Arm_L
+		, Swing_L, Attack, Dead, INIT,
 	};
 
 private:

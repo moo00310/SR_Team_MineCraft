@@ -103,11 +103,23 @@ float CMonster::Comput_Distance()
 
 void CMonster::Chase_Player(float _fTimeDelta)
 {
-    _float3 vTargetPos =  m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-    m_pTransformCom->LookAt_XZ(vTargetPos);
-    m_pRigidbodyCom->Chase(vTargetPos, 2.f);
-    //m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTargetPos.x, vTargetPos.y, vTargetPos.z), _fTimeDelta, 1.0f);
+    _float3 vTargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    if (m_MonsterType != MT_WARDEN)
+    {
+        m_pTransformCom->LookAt_XZ(vTargetPos);
+        m_pRigidbodyCom->Chase(vTargetPos, 2.f);
+        //m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTargetPos.x, vTargetPos.y, vTargetPos.z), _fTimeDelta, 1.0f);
+    }
+    else
+    {
+        m_skelAnime->LookAt(vTargetPos, 2);
+        float fAngle = m_skelAnime->RotateRootByNeckDelta(2, 0, _fTimeDelta);
+        m_pTransformCom->TurnByAngle(_float3(0.f,1.f,0.f), fAngle);
 
+        // 시선 방향으로 이동
+        m_pTransformCom->Go_Direction(m_skelAnime->GetBoneWorldMatrix(2).Get_State(Matrix::STATE_LOOK), _fTimeDelta);
+    }
+    
     //전 프레임 상태가 공격 이었으면 무조건 속도 안났을 테니 점프 하지 못하게 해야함
     //움직일라 하는데 속도가 안난다 점프함 ㅋㅋ
     if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 0.2f && m_eCurAnim == WALK)
@@ -157,6 +169,10 @@ void CMonster::Knock_back(const _float3& vforce)
         break;
     }
 
+}
+
+void CMonster::Turn_Head()
+{
 }
 
 HRESULT CMonster::Ready_BehaviorTree()

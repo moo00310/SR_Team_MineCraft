@@ -97,6 +97,43 @@ void CSkeletalAnimator::IkLookAt(float fTimeDelta, int boneIndex, int targetInex
     vecBones[boneIndex].localTransform = matNewSpine * vecBones[boneIndex].baseTransform;
 }
 
+// 월드 좌표를 받아서 해당 본의 월드만큼 로컬 매트릭스를 더해준다
+void CSkeletalAnimator::LookAt(_float3 vPos, int BoneIndex)
+{
+    _float3 boneWorldPos = vecBones[BoneIndex].worldTransform.Get_State(Matrix::STATE_POSITION);
+    _float3 lookDir = vPos - boneWorldPos;
+    D3DXVec3Normalize(&lookDir, &lookDir);
+
+    _float3 upDir = { 0.f, 1.f, 0.f };
+    _float3 right = {};
+    D3DXVec3Cross(&right, &upDir, &lookDir);
+    D3DXVec3Normalize(&right, &right);
+
+    _float3 up = {};
+    D3DXVec3Cross(&up, &lookDir, &right);
+    D3DXVec3Normalize(&up, &up);
+
+    Matrix worldRot;
+    worldRot.Set_State(Matrix::STATE_RIGHT, right);
+    worldRot.Set_State(Matrix::STATE_UP, up);
+    worldRot.Set_State(Matrix::STATE_LOOK, lookDir);
+    worldRot.Set_State(Matrix::STATE_POSITION, boneWorldPos);  // 위치는 원래 위치 유지
+
+    // 부모 월드 행렬
+    Matrix parentWorld = vecBones[vecBones[BoneIndex].parent].worldTransform;
+    Matrix invParent = parentWorld.Invert();
+
+    //  로컬 회전으로 변환
+    Matrix newLocal = worldRot * invParent;
+
+    // 기존 로컬 위치를 유지하고 싶다면 위치만 따로 설정
+    _float3 originalLocalPos = vecBones[BoneIndex].localTransform.Get_State(Matrix::STATE_POSITION);
+    newLocal.Set_State(Matrix::STATE_POSITION, originalLocalPos);
+
+    // 적용
+    vecBones[BoneIndex].localTransform = newLocal;
+}
+
 void CSkeletalAnimator::Add_Bone(const BONE& bone)
 {
     vecBones.push_back(bone);
@@ -211,6 +248,30 @@ void CSkeletalAnimator::InitBone()
     {
         bone.localTransform = bone.baseTransform;
     }
+}
+
+float CSkeletalAnimator::RotateRootByNeckDelta(int neckIndex, int rootIndex, float fTimeDelta)
+{
+    // 월드 기준으로 방향을 비교해야 정확
+    _float3 neckLookDir = vecBones[neckIndex].worldTransform.Get_State(Matrix::STATE_LOOK);
+    _float3 rootLookDir = vecBones[rootIndex].worldTransform.Get_State(Matrix::STATE_LOOK);
+
+    float neckYaw = atan2f(neckLookDir.x, neckLookDir.z);
+    float rootYaw = atan2f(rootLookDir.x, rootLookDir.z);
+
+    float deltaYaw = neckYaw - rootYaw;
+
+    // 정규화
+    while (deltaYaw > PI) deltaYaw -= static_cast<_float>(2 * PI);
+    while (deltaYaw < -PI) deltaYaw += static_cast<_float>(2 * PI);
+
+    float influence = 0.3f; // 얼마나 따라올지
+    float targetYaw = rootYaw + deltaYaw * influence;
+
+    float followSpeed = 5.f; // rad/sec
+    float newYaw = rootYaw + followSpeed * fTimeDelta * (targetYaw - rootYaw); 
+
+    return newYaw - rootYaw; // 회전량(델타) 반환
 }
 
 

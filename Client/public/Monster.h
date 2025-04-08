@@ -32,6 +32,7 @@ public:
 	void  Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	float Comput_Distance();
 	void Knock_back(const _float3& vforce) override;
+	void Turn_Head();
 
 //BT¿ë °Ù¼Â ÇÔ¼ö
 public:

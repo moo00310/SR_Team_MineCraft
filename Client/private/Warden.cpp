@@ -72,6 +72,7 @@ void CWarden::Late_Update(_float fTimeDelta)
 {
     if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
     {
+
         m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
 
         if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
@@ -104,7 +105,7 @@ HRESULT CWarden::Render()
         m_pShaderCom->End();
     }
 
-    // »Ô
+  // »Ô
     for (int i = 6; i < m_pVIBufferComs.size(); i++)
     {
         if (FAILED(m_pVIBufferComs[i]->Bind_WorldMatrix(m_pShaderCom)))
@@ -215,13 +216,13 @@ HRESULT CWarden::Ready_Animation()
     * Walk ¸ð¼Ç
     ------------*/
     Matrix mat2 = {};
-    mat2.Turn_Radian(_float3(1.f, -0.1f, 0.2f), D3DXToRadian(25.f));
+    mat2.Turn_Radian(_float3(1.f, -0.1f, 0.2f), D3DXToRadian(20.f));
 
     Matrix mat6 = {};
-    mat6.Turn_Radian(_float3(0.f, 0.2f, -0.15f), D3DXToRadian(25.f));
+    mat6.Turn_Radian(_float3(0.f, 0.2f, -0.15f), D3DXToRadian(15.f));
 
     Matrix mat3 = {};
-    mat3.Turn_Radian(_float3(1.f, 0.15f, -0.2f), D3DXToRadian(-25.f));
+    mat3.Turn_Radian(_float3(1.f, 0.15f, -0.2f), D3DXToRadian(-20.f));
 
 
     Matrix mat4 = {};
@@ -241,12 +242,20 @@ HRESULT CWarden::Ready_Animation()
     KEYFREAME Leg_R3 = { 1.f, mat }; // 0
     KEYFREAME Leg_R4 = { 1.5f, mat5 }; // 
     KEYFREAME Leg_R5 = { 2.f, mat }; // 0
+    KEYFREAME Leg_R6 = { 2.5f, mat4 }; // 0
+    KEYFREAME Leg_R7 = { 3.f, mat }; // 0
+    KEYFREAME Leg_R8 = { 3.5f, mat5 }; // 0
+    KEYFREAME Leg_R9 = { 4.f, mat }; // 0
 
-    KEYFREAME Leg_L1 = { 0.f, mat }; //0
-    KEYFREAME Leg_L2 = { 0.5f, mat5 }; // 
-    KEYFREAME Leg_L3 = { 1.f, mat }; // 0
-    KEYFREAME Leg_L4 = { 1.5f, mat4 }; // 
-    KEYFREAME Leg_L5 = { 2.f, mat }; // 0
+    KEYFREAME Leg_L1 = { 0.f, mat }; 
+    KEYFREAME Leg_L2 = { 0.5f, mat5 };  
+    KEYFREAME Leg_L3 = { 1.f, mat }; 
+    KEYFREAME Leg_L4 = { 1.5f, mat4 };  
+    KEYFREAME Leg_L5 = { 2.f, mat }; 
+    KEYFREAME Leg_L6 = { 2.5f, mat5 };
+    KEYFREAME Leg_L7 = { 3.f, mat }; 
+    KEYFREAME Leg_L8 = { 3.5f, mat4 };
+    KEYFREAME Leg_L9 = { 4.f, mat }; 
 
 
     m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis);
@@ -254,7 +263,6 @@ HRESULT CWarden::Ready_Animation()
     m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis2);
     m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis3);
     m_skelAnime->Add_Animation(ANIM_type::Swing_Pevis, Pelvis4);
-
 
     m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_R, Leg_R1);
     m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_R, Leg_R2);
@@ -268,7 +276,26 @@ HRESULT CWarden::Ready_Animation()
     m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_L, Leg_L4);
     m_skelAnime->Add_Animation(ANIM_type::Swing_Leg_L, Leg_L5);
 
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L1);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L2);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L3);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L4);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L5);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L6);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L7);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L8);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_R, Leg_L9);
 
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R1);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R2);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R3);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R4);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R5);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R6);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R7);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R8);
+    m_skelAnime->Add_Animation(ANIM_type::Swing_Arm_L, Leg_R9);
+   
 
     /*----------
     * Attack ¸ð¼Ç
@@ -333,14 +360,20 @@ void CWarden::Motion_Walk(_float fTimeDelta)
 {
     if (m_skelAnime->is_AnimtionEND(Swing_Leg_R) &&
         m_skelAnime->is_AnimtionEND(Swing_Leg_L) &&
-        m_skelAnime->is_AnimtionEND(Swing_Pevis))
+        m_skelAnime->is_AnimtionEND(Swing_Pevis) &&
+        m_skelAnime->is_AnimtionEND(Swing_Arm_R) &&
+        m_skelAnime->is_AnimtionEND(Swing_Arm_L)
+        )
     {
         m_eCurAnim = WALK;
     }
+    
+    m_skelAnime->Update_Animetion(Swing_Pevis, fTimeDelta, 1);
+    m_skelAnime->Update_Animetion(Swing_Leg_R, fTimeDelta, 3);
+    m_skelAnime->Update_Animetion(Swing_Leg_L, fTimeDelta, 4);
 
-   m_skelAnime->Update_Animetion(Swing_Pevis, fTimeDelta, 1);
-   m_skelAnime->Update_Animetion(Swing_Leg_R, fTimeDelta, 3);
-   m_skelAnime->Update_Animetion(Swing_Leg_L, fTimeDelta, 4);
+    m_skelAnime->Update_Animetion(Swing_Arm_R, fTimeDelta, 5);
+    m_skelAnime->Update_Animetion(Swing_Arm_L, fTimeDelta, 6);
 }
 
 void CWarden::Motion_Attack(_float fTimeDelta)
