@@ -48,6 +48,8 @@ public:
 	void IkLookAt(float fTimeDelta, int boneIndex, int targetInex);
 	void LookAt(_float3 vPos, int BoneIndex);
 
+	void LookAt_Anim(_float3 vTargetPos, int BoneIndex);
+
 public:
 	void Add_Bone(const BONE& bone);
 	void Add_Animation(_int _type, const KEYFREAME& keyframe);

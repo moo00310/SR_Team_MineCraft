@@ -39,6 +39,7 @@ public:
 	_bool isFind() { return m_isFind; }
 	void Set_Find(bool flag) { m_isFind = flag; }
 	void Chase_Player(float _fTimeDelta);
+	void LookAtPlayer(float _fTimeDelta);
 
 protected:
 	CPawn* m_pTargetPawn = nullptr;

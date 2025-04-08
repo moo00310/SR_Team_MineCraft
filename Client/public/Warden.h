@@ -16,8 +16,11 @@ class CWarden : public CMonster
 public:
 	enum ANIM_type
 	{
-		Swing_Pevis, Swing_Leg_R, Swing_Leg_L, Swing_Arm_R, Swing_Arm_L
-		, Swing_L, Attack, Dead, INIT,
+		Swing_Pevis, Swing_Leg_R, Swing_Leg_L, Swing_Arm_R, Swing_Arm_L,
+		Attack_Pevis, Attack_Arm_R, Attack_Arm_L,
+		Find_Pevis, Find_Arm_R, Find_Arm_L, Find_Neck,
+		Attack2_Pevis, Attack2_Arm_R, Attack2_Arm_L, Attack2_Neck,
+		Dead, INIT,
 	};
 
 private:
@@ -44,7 +47,9 @@ private:
 	void Motion_Idle(_float fTimeDelta) override;
 	void Motion_Walk(_float fTimeDelta) override;
 	void Motion_Attack(_float fTimeDelta) override;
+	void Motion_Attack2(_float fTimeDelta);
 	void Motion_Dead(_float fTimeDelta) override;
+	void Motion_Find(_float fTimeDelta);
 	void Turn(_float fTimeDelta) override;
 
 private:

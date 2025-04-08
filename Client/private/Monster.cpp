@@ -112,11 +112,7 @@ void CMonster::Chase_Player(float _fTimeDelta)
     }
     else
     {
-        m_skelAnime->LookAt(vTargetPos, 2);
-        float fAngle = m_skelAnime->RotateRootByNeckDelta(2, 0, _fTimeDelta);
-        m_pTransformCom->TurnByAngle(_float3(0.f,1.f,0.f), fAngle);
-
-        // 시선 방향으로 이동
+        LookAtPlayer(_fTimeDelta);
         m_pTransformCom->Go_Direction(m_skelAnime->GetBoneWorldMatrix(2).Get_State(Matrix::STATE_LOOK), _fTimeDelta);
     }
     
@@ -128,6 +124,17 @@ void CMonster::Chase_Player(float _fTimeDelta)
     }
 }
 
+void CMonster::LookAtPlayer(float _fTimeDelta)
+{
+    _float3 vTargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    vTargetPos.y += 1.f;
+    if(m_eCurAnim == FIND)
+        m_skelAnime->LookAt_Anim(vTargetPos, 2);
+    else
+        m_skelAnime->LookAt(vTargetPos, 2);
+    float fAngle = m_skelAnime->RotateRootByNeckDelta(2, 0, _fTimeDelta);
+    m_pTransformCom->TurnByAngle(_float3(0.f, 1.f, 0.f), fAngle);
+}
 
 void CMonster::Knock_back(const _float3& vforce)
 {
