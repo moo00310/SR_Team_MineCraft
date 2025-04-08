@@ -17,7 +17,7 @@ HRESULT CParticleCrackerLoad::Initialize_Prototype()
 
 HRESULT CParticleCrackerLoad::Initialize(void* pArg)
 {
-	iParticleCount = 80;
+	iParticleCount = 1;
 	IsTimer = true;
 	fEndTimer = 0.5f;
 
@@ -26,7 +26,7 @@ HRESULT CParticleCrackerLoad::Initialize(void* pArg)
 		return E_FAIL;
 	}
 
-	dwVpBatchSize = 80;
+	dwVpBatchSize = 1;
 	dwPointSize = GetScale(0.2f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
