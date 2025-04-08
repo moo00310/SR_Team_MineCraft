@@ -3,26 +3,18 @@
 #include "Client_Defines.h"
 #include "ParticleEventManager.h"
 
-BEGIN(Engine)
-class CTexture;
-class CTransform;
-class CVIBuffer_Rect;
-class CCollider_Cube;
-class CShader;
-END
-
 BEGIN(Client)
 
-// °Ë±â.
-class CSwordAura final : public CGameObject
+// ÆøÁ× ±æ.
+class CFireCrackerLoad final : public CGameObject
 {
 private:
-	CSwordAura(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CSwordAura(const CSwordAura& Prototype);
-	virtual ~CSwordAura() = default;
+	CFireCrackerLoad(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CFireCrackerLoad(const CFireCrackerLoad& Prototype);
+	virtual ~CFireCrackerLoad() = default;
 
 public:
-	static CSwordAura* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CFireCrackerLoad* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 
@@ -32,6 +24,7 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
+	virtual void OnPushPool() override;
 
 	CTransform* GetTransform() const;
 
@@ -39,14 +32,9 @@ private:
 	HRESULT Ready_Components();
 
 private:
-	CTexture* m_pTextureCom = {nullptr};
 	CTransform* m_pTransformCom = { nullptr };
-	CVIBuffer_Rect* m_pVIBufferRectCom = { nullptr };
-	CCollider_Cube* m_pColliderCom = { nullptr };
-	CShader* m_pShaderCom = {nullptr};
-
-	_float m_fEndTime = { 0.2f };
-	_float m_fCurrentTime = { 0.f };
+	_float fEndCount = { 0.5f };
+	_float fCurrentCount = { 0.f };
 };
 
 END

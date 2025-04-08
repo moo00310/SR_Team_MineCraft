@@ -328,6 +328,9 @@
     <Filter Include="04.Behavior_Tree\BTNode\Warden\Decorator">
       <UniqueIdentifier>{ac611a35-4c7c-40d8-81cc-ff45fdaa2567}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\05.Particle\FireCracker">
+      <UniqueIdentifier>{fd189827-f7ba-4082-ac1f-539345ed00e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -670,9 +673,6 @@
     <ClInclude Include="..\public\Left_Rect_Model.h">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ParticleFireCracker.h">
-      <Filter>02.GameObjects\05.Particle</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ParticleCharging.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
@@ -714,6 +714,18 @@
     </ClInclude>
     <ClInclude Include="..\public\MissionMainUi.h">
       <Filter>08.Mission\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleFireCracker.h">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleCrackerLoad.h">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FireCrackerLoad.h">
+      <Filter>02.GameObjects\09.Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleSonicBoom.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
     <ClInclude Include="..\public\WaveUi.h">
       <Filter>08.Mission\Ui</Filter>
@@ -1048,9 +1060,6 @@
     <ClCompile Include="..\private\Left_Rect_Model.cpp">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ParticleFireCracker.cpp">
-      <Filter>02.GameObjects\05.Particle</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ParticleCharging.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
@@ -1095,6 +1104,18 @@
     </ClCompile>
     <ClCompile Include="..\private\WaveUi.cpp">
       <Filter>08.Mission\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleFireCracker.cpp">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleCrackerLoad.cpp">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FireCrackerLoad.cpp">
+      <Filter>02.GameObjects\09.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleSonicBoom.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

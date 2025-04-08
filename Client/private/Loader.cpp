@@ -54,6 +54,7 @@
 #include "DestroyCube.h"
 #include "UIDropItem.h"
 #include "SwordAura.h"
+#include "FireCrackerLoad.h"
 
 //Woo
 #include "MainLogo.h"
@@ -522,6 +523,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Font"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/font/font_%03d.png"), 10))))
 		return E_FAIL;
+
 	/*================================================================================================*/
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -859,6 +861,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CSwordAura::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_FireCrackerLoad */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,
+		CFireCrackerLoad::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	//===============================================================================================
 		// 스티브 게임 오브젝트
 	/* For.Prototype_GameObject_Steve */
@@ -1165,6 +1172,11 @@ HRESULT CLoader::Loading_For_HECKPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, TEXT("Prototype_GameObject_Hyock_Cube"),
 		CHyockCube::Create(m_pGraphic_Device))))
 		return E_FAIL;		
+
+	/* For.Prototype_GameObject_FireCrackerLoad */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_HYEOK, PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,
+		CFireCrackerLoad::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
