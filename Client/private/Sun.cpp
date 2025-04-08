@@ -7,7 +7,7 @@
 #include "RightHand_Object.h"
 #include "Clouds.h"
 
-_float g_fBright = 0.6f;
+_float g_fBright = 0.75f;
 
 CSun::CSun(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject(pGraphic_Device)
@@ -122,10 +122,7 @@ void CSun::Orbit_Around_Earth()
 
 	// 회전 변환 적용 (X축 기준 회전)
 	if (m_bAddTimeFast) {
-		m_fAngle += 0.01f; // 회전 속도 증가
-	}
-	else {
-		m_fAngle += 0.001f; // 회전 속도 증가
+		m_fAngle += 0.015f; // 회전 속도 증가
 	}
 	
 

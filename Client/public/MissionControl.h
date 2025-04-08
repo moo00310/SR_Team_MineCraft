@@ -37,6 +37,8 @@ public:
 
 	void Update_Mission(wstring name);
 	vector<showMission> Get_MissionList();
+	bool Get_IsWave() { return m_bIsWave; }
+	bool Get_IsWaveStart() { return m_bIsWaveStart; }
 private:
 	void InitMissions1();
 	void InitMissions2();
@@ -47,6 +49,8 @@ private:
 
 	bool m_bDayFinish = false;
 	bool m_bNightFinish = false;
+	bool m_bIsWaveStart = false;
+	bool m_bIsWave = false;
 private:
 	int m_currentStage=0;
 	vector<vector<missionDetail>> m_Round1;

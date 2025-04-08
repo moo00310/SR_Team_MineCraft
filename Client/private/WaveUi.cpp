@@ -48,47 +48,105 @@ void CWaveUi::Late_Update(_float fTimeDelta)
         return;
 }
 
+struct CUSTOMVERTEX
+{
+    float x, y, z, rhw;  // 화면 좌표 + RHW (2D용)
+    DWORD color;         // 색상
+};
+#define D3DFVF_CUSTOMVERTEX (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
+
 HRESULT CWaveUi::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
-        return E_FAIL;
+    CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")));
 
-    if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-        return E_FAIL;
+    if (_control->Get_IsWaveStart()) {
+        m_pGraphic_Device->SetTexture(0, nullptr);
+        RECT rect2 = { 350, 0, 900, 100 };
 
-    if (FAILED(m_pTransformCom->Bind_Resource()))
-        return E_FAIL;
+        g_pWaveFont->DrawTextW(
+            nullptr,
+            L".. Wave Coming ..",
+            -1,
+            &rect2,
+            DT_CENTER | DT_VCENTER | DT_SINGLELINE,
+            D3DCOLOR_ARGB(255, 255, 50, 59)
+        );
 
-    __super::Begin();
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-        return E_FAIL;
-    if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-        return E_FAIL;
+        RECT rectGageBackground = { 350, 90, 900, 100 };
+        DWORD fillColor = D3DCOLOR_ARGB(255, 0, 0, 0);
 
-    m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(0));
+        CUSTOMVERTEX vertices[] =
+        {
+            { (float)rectGageBackground.left,  (float)rectGageBackground.top,    0.0f, 1.0f, fillColor },
+            { (float)rectGageBackground.right, (float)rectGageBackground.top,    0.0f, 1.0f, fillColor },
+            { (float)rectGageBackground.left,  (float)rectGageBackground.bottom, 0.0f, 1.0f, fillColor },
+            { (float)rectGageBackground.right, (float)rectGageBackground.bottom, 0.0f, 1.0f, fillColor },
+        };
+        m_pGraphic_Device->SetFVF(D3DFVF_CUSTOMVERTEX);
+        m_pGraphic_Device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vertices, sizeof(CUSTOMVERTEX));
 
-    m_pShaderCom->Begin(4);
+        m_pGraphic_Device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+        LONG gageLeft = 350;
+        LONG gageRight = gageLeft + m_fGageMount;
 
-    /* 정점을 그린다. */
-    if (FAILED(m_pVIBufferCom->Render()))
-        return E_FAIL;
+        RECT rectGage = { gageLeft, 90, gageRight, 100 };
+        DWORD fillColor2 = D3DCOLOR_ARGB(255, 60, 179, 113);
 
-    m_pShaderCom->End();
-    __super::End();
+        m_fGageMount += 1.88f;
+        m_fGageMount = min(m_fGageMount, 550.f);
+        CUSTOMVERTEX vertices2[] =
+        {
+            { (float)rectGage.left,  (float)rectGage.top,    0.0f, 1.0f, fillColor2 },
+            { (float)rectGage.right, (float)rectGage.top,    0.0f, 1.0f, fillColor2 },
+            { (float)rectGage.left,  (float)rectGage.bottom, 0.0f, 1.0f, fillColor2 },
+            { (float)rectGage.right, (float)rectGage.bottom, 0.0f, 1.0f, fillColor2 },
+        };
+        m_pGraphic_Device->SetFVF(D3DFVF_CUSTOMVERTEX);
+        m_pGraphic_Device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, vertices2, sizeof(CUSTOMVERTEX));
+    }
 
-    RECT rect = { 10, 0, 160, 100 };
+    if (_control->Get_IsWave()) {
+        m_fGageMount = 0;
+        if (FAILED(m_pTextureCom->Bind_Resource(0)))
+            return E_FAIL;
 
-    g_pTitleFont->DrawTextW(
-        nullptr,              
-        L"WAVE 1",    
-        -1,                       
-        &rect,                   
-        DT_CENTER | DT_VCENTER | DT_SINGLELINE,       
-        D3DCOLOR_ARGB(255, 255, 50, 59) 
-    );
+        if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+            return E_FAIL;
 
+        if (FAILED(m_pTransformCom->Bind_Resource()))
+            return E_FAIL;
+
+        __super::Begin();
+        if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
+            return E_FAIL;
+        if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+            return E_FAIL;
+        if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+            return E_FAIL;
+
+        m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(0));
+
+        m_pShaderCom->Begin(4);
+
+        /* 정점을 그린다. */
+        if (FAILED(m_pVIBufferCom->Render()))
+            return E_FAIL;
+
+        m_pShaderCom->End();
+        __super::End();
+
+
+        RECT rect = { 10, 0, 160, 100 };
+
+        g_pTitleFont->DrawTextW(
+            nullptr,
+            L"WAVE 1",
+            -1,
+            &rect,
+            DT_CENTER | DT_VCENTER | DT_SINGLELINE,
+            D3DCOLOR_ARGB(255, 255, 50, 59)
+        );
+    }
     return S_OK;
 }
 

@@ -35,6 +35,7 @@ private:
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 
+	_float m_fGageMount = 0;
 public:
 	static CWaveUi* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
