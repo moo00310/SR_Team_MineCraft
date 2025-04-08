@@ -104,7 +104,7 @@ ParticleAttribute CParticleFireCracker::OnSetAddParticle()
 
 	ParticleAttribute att;
 	att.vPosition = {0.f, 0.f, 0.f};	
-	att.vColor = Float3ToHex({ GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f) });
+	att.IsFrameColor = true;
 	att.vVelocity = velocity;	
 
 	// 중력 설정.
