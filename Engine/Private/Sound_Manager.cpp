@@ -99,14 +99,14 @@ void CSound_Manager::Play_Sound(const wstring& soundName, _uint iType, CGameObje
     float fNewDistance = D3DXVec3Length(&vDiff);
     if (fNewDistance > fListenerCutoffDistance)
         return;
-
-    //이미 같은 오브젝트 + 타입으로 재생 중인지 확인
-    auto& typeMap = m_ObjectChannelMap[pGameObject];
-    auto itChannel = typeMap.find(iType);
-
-
 #pragma region
-        // if (itChannel != typeMap.end())
+    ////이미 같은 오브젝트 + 타입으로 재생 중인지 확인
+    //auto& typeMap = m_ObjectChannelMap[pGameObject];
+    //auto itChannel = typeMap.find(iType);
+
+
+
+    //if (itChannel != typeMap.end())
     //{
     //    bool isPlaying = false;
     //    if (itChannel->second && itChannel->second->isPlaying(&isPlaying) == FMOD_OK && isPlaying)
@@ -312,16 +312,22 @@ void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
             if (fullPath.size() >= 4 &&
                 fullPath.substr(fullPath.size() - 4) == L".wav")
             {
+                //background 경로 걸러내기
+                std::wstring lowerPath = fullPath;
+                std::transform(lowerPath.begin(), lowerPath.end(), lowerPath.begin(), ::towlower);
+                if (lowerPath.find(L"\\background\\") != std::wstring::npos ||
+                    lowerPath.find(L"/background/") != std::wstring::npos)
+                {
+                    continue;
+                }
+
                 // 사운드 이름: 확장자 제거
                 size_t lastSlash = fullPath.find_last_of(L"\\/");
                 std::wstring fileName = (lastSlash != std::wstring::npos) ? fullPath.substr(lastSlash + 1) : fullPath;
                 std::wstring soundNameW = fileName.substr(0, fileName.length() - 4);
 
-                // 변환: std::wstring → std::string
-                //std::string soundName = WStringToString(soundNameW);
                 std::string filePath = WStringToString(fullPath);
 
-                // 사운드 등록
                 LoadSound(soundNameW.c_str(), filePath.c_str(), false);
             }
         }
@@ -330,38 +336,12 @@ void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
 
     FindClose(hFind);
 
-    /*LoadSound(L"Player_Walk_Grass1", "../../FMOD/Assets/player/Player_Walk_Grass1.wav", false);
-    LoadSound(L"Player_Walk_Grass2", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
-    LoadSound(L"Player_Walk_Grass3", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
-    LoadSound(L"Player_Walk_Grass4", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
-    LoadSound(L"Player_Hurt", "../../FMOD/Assets/player/Player_Hurt.wav", false);
-    LoadSound(L"Player_Eat1", "../../FMOD/Assets/player/Player_Eat1.wav", false);
-    LoadSound(L"Player_Eat2", "../../FMOD/Assets/player/Player_Eat2.wav", false);
-    LoadSound(L"Player_Eat3", "../../FMOD/Assets/player/Player_Eat3.wav", false);
-
-    LoadSound(L"Zombie_Walk1", "../../FMOD/Assets/zombie/Zombie_Walk1.wav", false);
-    LoadSound(L"Zombie_Walk2", "../../FMOD/Assets/zombie/Zombie_Walk2.wav", false);
-    LoadSound(L"Zombie_Say1", "../../FMOD/Assets/zombie/Zombie_Say1.wav", false);
-    LoadSound(L"Zombie_Say2", "../../FMOD/Assets/zombie/Zombie_Say2.wav", false);
-    LoadSound(L"Zombie_Say3", "../../FMOD/Assets/zombie/Zombie_Say3.wav", false);
-    LoadSound(L"Zombie_Hurt1", "../../FMOD/Assets/zombie/Zombie_Hurt1.wav", false);
-    LoadSound(L"Zombie_Hurt2", "../../FMOD/Assets/zombie/Zombie_Hurt2.wav", false);
-    LoadSound(L"Zombie_Death", "../../FMOD/Assets/zombie/Zombie_Death.wav", false);
-
-    LoadSound(L"Creeper_Hurt1", "../../FMOD/Assets/creeper/Creeper_Hurt1.wav", false);
-    LoadSound(L"Creeper_Hurt2", "../../FMOD/Assets/creeper/Creeper_Hurt2.wav", false);
-    LoadSound(L"Creeper_Death", "../../FMOD/Assets/creeper/Creeper_Death.wav", false);
-    LoadSound(L"Creeper_Explosion", "../../FMOD/Assets/creeper/Creeper_Explosion.wav", false);
-
-    LoadSound(L"Block_Breaking", "../../FMOD/Assets/Block/Block_Breaking.wav", false);
-    LoadSound(L"Block_BreakingFinish", "../../FMOD/Assets/Block/Block_BreakingFinish.wav", false);
-
-
+    // 배경음악은 수동 등록
     LoadSound(L"MoogCity2", "../../FMOD/Assets/background/MoogCity2.wav", true);
     LoadSound(L"pigstep", "../../FMOD/Assets/background/pigstep.wav", true);
-    LoadSound(L"sweden", "../../FMOD/Assets/background/sweden.wav", true);*/
-
+    LoadSound(L"sweden", "../../FMOD/Assets/background/sweden.wav", true);
 }
+
 
 
 

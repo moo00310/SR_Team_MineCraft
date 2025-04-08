@@ -31,6 +31,7 @@ HRESULT CSteve::Initialize(void* pArg)
 	m_fSpeed = 5.f;
 	m_MaxHp = 100.f;
 	m_Hp = 100.f;
+	m_fRun_Speed = 8.f;
 
 	m_Coll_Size = { 0.3f, 0.9f, 0.3f };
 	m_Coll_Offset = { 0.f, 0.9f, 0.f };
@@ -44,8 +45,7 @@ HRESULT CSteve::Initialize(void* pArg)
 	if (FAILED(Ready_Animation()))
 		return E_FAIL;
 
-	m_pRigidbodyCom->Set_MoveSpeed(0.1f);
-	m_pRigidbodyCom->Set_MaxSpeed(5.f);
+	m_pRigidbodyCom->Set_Speed(m_fSpeed);
 
 	m_skelAnime->SetFrameCallback(std::bind(&CSteve::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
 
@@ -129,6 +129,20 @@ void CSteve::Input_Key(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down(VK_LBUTTON))
 	{
 		isAttack = true;
+	}
+
+	if (m_pGameInstance->Key_Down(VK_LCONTROL))
+	{
+		if (m_isRun)
+		{
+			m_pRigidbodyCom->Set_Speed(m_fSpeed);
+			m_isRun = false;
+		}
+		else
+		{
+			m_pRigidbodyCom->Set_Speed(m_fRun_Speed);
+			m_isRun = true;
+		}
 	}
 
 	Move(fTimeDelta);

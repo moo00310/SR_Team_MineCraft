@@ -90,9 +90,16 @@ void CCamera_Player::Update(_float fTimeDelta)
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
+    // 목표 FOV 설정
+    _float fTargetFov = m_pPlayer->isRun() ? D3DXToRadian(80.f) : D3DXToRadian(60.f);
+
+    // 부드럽게 보간 (Lerp)
+    m_fFov = Lerp(m_fFov, fTargetFov, fTimeDelta * 5.f); // 5.f는 속도 조절용
+
     Follow_Player(fTimeDelta);
     __super::Update_VP_Matrices();
 }
+
 
 HRESULT CCamera_Player::Render()
 {

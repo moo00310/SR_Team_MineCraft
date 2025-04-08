@@ -75,9 +75,13 @@ protected:
 	virtual void Turn(_float fTimeDelta) = 0;
 	virtual void Dead_Pawn();
 
+public:
+	_bool isRun() { return m_isRun; }
+
 protected:
 	ANIM m_eCurAnim = { ANIM_END };
 	_float m_fSpeed = {};
+	_float m_fRun_Speed = {};
 	_float m_MaxHp = {};
 	_float m_Hp = {};
 	_float m_sound = {};
@@ -89,6 +93,7 @@ protected:
 	RENDERCOLOR m_eColor = RENDERORIGIN;
 	int m_iGetHitFrame = 0;
 	bool m_bGetHit = false;
+	_bool m_isRun{ false };
 
 protected:
 	// 추상클래스 

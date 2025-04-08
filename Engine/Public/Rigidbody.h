@@ -40,14 +40,14 @@ public:
 	const _float3&		Get_Velocity() { return m_vReadOnly_Velocity; }
 	_bool				isGround() { return m_isGround; }
 	void				Knock_back(const _float3& vfroce);
-	void				Set_MaxSpeed(_float fMaxSpeed) { m_fMaxSpeed = fMaxSpeed; }
-	void				Set_MoveSpeed(_float fMoveSpeed) { m_fAccel = fMoveSpeed; }
+	void				Set_Speed(_float fMaxSpeed) { m_fSpeed = fMaxSpeed; }
+
 	_bool				Get_isKnockBack() { return m_isKnockBack; }
 private:
 	void				ClampVelocity();
 	void				ClampVelocityXZ();
-	_float				m_fMaxSpeed = { 1.f };
-	_float				m_fAccel = { 0.5f };
+	_float				m_fSpeed = { 1.f };
+
 
 private:
 	void	Compute_Velocity(_float fTimeDelta);
