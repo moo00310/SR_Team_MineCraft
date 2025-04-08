@@ -18,8 +18,8 @@ HRESULT CParticleFireCracker::Initialize_Prototype()
 HRESULT CParticleFireCracker::Initialize(void* pArg)
 {
 	iParticleCount = 80;
-	/*IsTimer = true;
-	fEndTimer = 0.4f;*/
+	IsTimer = true;	
+	fEndTimer = 1.f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
@@ -79,7 +79,7 @@ void CParticleFireCracker::Free()
 
 HRESULT CParticleFireCracker::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DASH,
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_GLINT,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
@@ -105,7 +105,7 @@ ParticleAttribute CParticleFireCracker::OnSetAddParticle()
 	ParticleAttribute att;
 	att.vPosition = {0.f, 0.f, 0.f};	
 	att.vColor = Float3ToHex({ GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f) });
-	att.vVelocity = velocity;		
+	att.vVelocity = velocity;	
 
 	// 중력 설정.
 	att.IsGravity = true;

@@ -389,6 +389,11 @@ HRESULT CMainApp::Ready_Texture()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/glow.png"), 1))))
 		return E_FAIL;
 
+	// 폭죽 텍스쳐.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_GLINT,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/glint.png"), 1))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
