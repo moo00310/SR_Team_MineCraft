@@ -306,7 +306,7 @@
     </Filter>
     <Filter Include="02.GameObjects\01.Actor\00.Pawn\02.BossMonster">
       <UniqueIdentifier>{de74e917-c0ed-42d7-b233-f6cdd993b7d1}</UniqueIdentifier>
-   </Filter>
+    </Filter>
     <Filter Include="02.GameObjects\09.Effect">
       <UniqueIdentifier>{0c0e97dc-4081-4894-8b9c-53b4466b61bb}</UniqueIdentifier>
     </Filter>
@@ -687,7 +687,7 @@
     </ClInclude>
     <ClInclude Include="..\public\Warden.h">
       <Filter>02.GameObjects\01.Actor\00.Pawn\02.BossMonster</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\ParticleStoneDestroy.h">
       <Filter>02.GameObjects\05.Particle\Destroy</Filter>
     </ClInclude>
@@ -696,11 +696,14 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleSwordAura.h">
       <Filter>02.GameObjects\05.Particle</Filter>
-     </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\MissionControl.h">
       <Filter>08.Mission</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MissionMainUi.h">
+      <Filter>08.Mission\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WaveUi.h">
       <Filter>08.Mission\Ui</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1060,10 +1063,9 @@
     <ClCompile Include="..\private\ThreadPool.cpp">
       <Filter>07.ThreadPool</Filter>
     </ClCompile>
-
     <ClCompile Include="..\private\Warden.cpp">
       <Filter>02.GameObjects\01.Actor\00.Pawn\02.BossMonster</Filter>
-</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\ParticleStoneDestroy.cpp">
       <Filter>02.GameObjects\05.Particle\Destroy</Filter>
     </ClCompile>
@@ -1077,6 +1079,9 @@
       <Filter>08.Mission</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MissionMainUi.cpp">
+      <Filter>08.Mission\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaveUi.cpp">
       <Filter>08.Mission\Ui</Filter>
     </ClCompile>
   </ItemGroup>

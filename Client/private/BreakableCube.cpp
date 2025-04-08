@@ -253,7 +253,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
 
     switch (_itemname)
     {
-    case Client::ITEMNAME_STONE_AXE:
+    case Client::ITEMNAME_STONE_PICKAXE:
         switch (m_itemName)
         {
         case Client::ITEMNAME_GRASSDIRT:
@@ -283,6 +283,37 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
         default:
             break;
         }
+        break;
+    case Client::ITEMNAME_STONE_AXE:
+        switch (m_itemName)
+        {
+        case Client::ITEMNAME_GRASSDIRT:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_DIRT:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_LEAF:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_WOOD:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
+        case Client::ITEMNAME_STONE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        case Client::ITEMNAME_COBBLESTONE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        case Client::ITEMNAME_COALORE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        case Client::ITEMNAME_IRONORE:
+            m_fHp -= attackDamage / 5.f;
+        default:
+            break;
+        }
+        break;
     default:
         switch (m_itemName)
         {

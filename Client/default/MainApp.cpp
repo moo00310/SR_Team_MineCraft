@@ -36,6 +36,7 @@
 
 LPD3DXFONT g_pTitleFont = nullptr;
 LPD3DXFONT g_pDetailFont = nullptr;
+LPD3DXFONT g_pWaveFont = nullptr;
 
 CMainApp::CMainApp()
 	: m_pGameInstance{ CGameInstance::Get_Instance() }
@@ -298,9 +299,9 @@ HRESULT CMainApp::Ready_Particle()
 void CMainApp::InitFont()
 {
 	D3DXFONT_DESC fontDesc = {
-	24,                        // Height (크기)
+	18,                        // Height (크기)
 	0,                         // Width (0이면 자동)
-	FW_NORMAL,                 // Weight
+	FW_BOLD,                 // Weight
 	1,                         // MipLevels
 	FALSE,                     // Italic
 	DEFAULT_CHARSET,           // CharSet
@@ -314,7 +315,7 @@ void CMainApp::InitFont()
 
 
 	D3DXFONT_DESC fontDesc2 = {
-	18,                        // Height (크기)
+	15,                        // Height (크기)
 	0,                         // Width (0이면 자동)
 	FW_NORMAL,                 // Weight
 	1,                         // MipLevels
@@ -326,6 +327,20 @@ void CMainApp::InitFont()
 	L"굴림"                    // FontFaceName (ex: 굴림, Arial, etc)
 	};
 	D3DXCreateFontIndirect(m_pGraphic_Device, &fontDesc2, &g_pDetailFont);
+
+	D3DXFONT_DESC fontDesc3 = {
+	30,                        // Height (크기)
+	0,                         // Width (0이면 자동)
+	FW_BOLD,                 // Weight
+	1,                         // MipLevels
+	FALSE,                     // Italic
+	DEFAULT_CHARSET,           // CharSet
+	OUT_DEFAULT_PRECIS,        // OutputPrecision
+	ANTIALIASED_QUALITY,       // Quality
+	DEFAULT_PITCH | FF_DONTCARE, // PitchAndFamily
+	L"굴림"                    // FontFaceName (ex: 굴림, Arial, etc)
+	};
+	D3DXCreateFontIndirect(m_pGraphic_Device, &fontDesc3, &g_pWaveFont);	
 }
 
 
@@ -506,6 +521,12 @@ void CMainApp::Free()
 	{
 		g_pDetailFont->Release();
 		g_pDetailFont = nullptr;
+	}
+
+	if (g_pWaveFont)
+	{
+		g_pWaveFont->Release();
+		g_pWaveFont = nullptr;
 	}
 
 	CUI_Mgr::Get_Instance()->Free();

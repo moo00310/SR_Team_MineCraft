@@ -275,6 +275,7 @@
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\Warden.h" />
+    <ClInclude Include="..\public\WaveUi.h" />
     <ClInclude Include="..\public\Wood.h" />
     <ClInclude Include="..\public\Zombi.h" />
     <ClInclude Include="Client.h" />
@@ -399,6 +400,7 @@
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\Warden.cpp" />
+    <ClCompile Include="..\private\WaveUi.cpp" />
     <ClCompile Include="..\private\Wood.cpp" />
     <ClCompile Include="..\private\Zombi.cpp" />
     <ClCompile Include="..\public\PlayerHP.cpp" />
