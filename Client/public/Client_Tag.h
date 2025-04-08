@@ -76,6 +76,9 @@ static const _wstring PROTOTYPE_COMPONENT_TEXTURE_SWORD_AURA = TEXT("Prototype_C
 // 검기 오브젝트.
 static const _wstring PROTOTYPE_GAMEOBJECT_SWORD_AURA = TEXT("Prototype_GameObject_Sword_Aura");
 
+// 파티클 길 오브젝트.
+static const _wstring PROTOTYPE_GAMEOBJECT_CRACKER_LOAD = TEXT("Prototype_GameObject_Cracker_Load");
+
 // 폭죽?같은 텍스쳐.
 static const _wstring PROTOTYPE_COMPONENT_TEXTURE_GLINT = TEXT("Prototype_Component_Texture_Glint");
 

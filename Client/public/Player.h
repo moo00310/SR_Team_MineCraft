@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ParticleSystem.h"
 #include "ParticleEventManager.h"
+#include "FireCrackerLoad.h"
 
 BEGIN(Engine)
 class CTexture;

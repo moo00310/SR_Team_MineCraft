@@ -709,6 +709,9 @@
     <ClInclude Include="..\public\ParticleCrackerLoad.h">
       <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\FireCrackerLoad.h">
+      <Filter>02.GameObjects\09.Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1086,6 +1089,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleCrackerLoad.cpp">
       <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FireCrackerLoad.cpp">
+      <Filter>02.GameObjects\09.Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

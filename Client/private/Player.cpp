@@ -121,9 +121,16 @@ void CPlayer::Update(_float fTimeDelta)
 		//}
 
 		// ÆøÁ× ±æ
-		CParticleEventManager::Get_Instance()->OnParticle(
+		/*CParticleEventManager::Get_Instance()->OnParticle(
 			PROTOTYPE_GAMEOBJECT_PARTICLE_CRACKER_LOAD,
-			m_pTransformCom);
+			m_pTransformCom);*/
+
+		CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_HYEOK,	// °¡Á®¿Ã ¾À
+			PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// °¡Á®¿Ã ÇÁ·ÎÅäÅ¸ÀÔ.
+			LEVEL_HYEOK,	// Àû¿ë ¾À.
+			LAYER_PARTICLE);
+
+		obj->GetTransform()->Set_Matrix(*m_pTransformCom->Get_WorldMatrix());
 
 		// ±â ¸ðÀ¸±â.
 		//CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// °¡Á®¿Ã ¾À
