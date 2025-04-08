@@ -32,12 +32,14 @@ public:
 	void  Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	float Comput_Distance();
 	void Knock_back(const _float3& vforce) override;
+	void Turn_Head();
 
 //BT¿ë °Ù¼Â ÇÔ¼ö
 public:
 	_bool isFind() { return m_isFind; }
 	void Set_Find(bool flag) { m_isFind = flag; }
 	void Chase_Player(float _fTimeDelta);
+	void LookAtPlayer(float _fTimeDelta);
 
 protected:
 	CPawn* m_pTargetPawn = nullptr;

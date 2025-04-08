@@ -17,7 +17,7 @@ class CPawn abstract : public CGameObject
 public:
 	enum ANIM
 	{
-		IDLE, RUN, WALK, ATTACK, DEAD, ANIM_END
+		IDLE, RUN, WALK, ATTACK, DEAD, FIND, ATTACK2, ANIM_END
 	};
 
 	enum RENDERCOLOR {

@@ -97,6 +97,91 @@ void CSkeletalAnimator::IkLookAt(float fTimeDelta, int boneIndex, int targetInex
     vecBones[boneIndex].localTransform = matNewSpine * vecBones[boneIndex].baseTransform;
 }
 
+// 월드 좌표를 받아서 해당 본의 월드만큼 로컬 매트릭스를 더해준다
+void CSkeletalAnimator::LookAt(_float3 vPos, int BoneIndex)
+{
+    _float3 boneWorldPos = vecBones[BoneIndex].worldTransform.Get_State(Matrix::STATE_POSITION);
+    _float3 lookDir = vPos - boneWorldPos;
+    D3DXVec3Normalize(&lookDir, &lookDir);
+
+    _float3 upDir = { 0.f, 1.f, 0.f };
+    _float3 right = {};
+    D3DXVec3Cross(&right, &upDir, &lookDir);
+    D3DXVec3Normalize(&right, &right);
+
+    _float3 up = {};
+    D3DXVec3Cross(&up, &lookDir, &right);
+    D3DXVec3Normalize(&up, &up);
+    
+    Matrix animLocal = vecBones[BoneIndex].localTransform; // 애니메이션이 적용된 기존 본 행렬
+    Matrix parentWorld = vecBones[vecBones[BoneIndex].parent].worldTransform;    // 부모 월드 행렬
+    Matrix animWorld = animLocal * parentWorld;     // 현재 애니메이션 기준 월드 행렬
+
+    Matrix targetWorld = {};
+    targetWorld.Set_State(Matrix::STATE_POSITION, animWorld.Get_State(Matrix::STATE_POSITION));
+    targetWorld.Set_State(Matrix::STATE_LOOK, lookDir);
+    targetWorld.Set_State(Matrix::STATE_RIGHT, right);
+    targetWorld.Set_State(Matrix::STATE_UP, up);
+
+    // 애니메이션 기준에서의 보정 회전 (로컬로 환산)
+    Matrix invParentWorld = parentWorld.Invert();
+    Matrix correctedLocal = targetWorld * invParentWorld;
+
+    correctedLocal.Set_State(Matrix::STATE_POSITION, animLocal.Get_State(Matrix::STATE_POSITION));
+
+    // 적용
+    vecBones[BoneIndex].localTransform = correctedLocal;
+}
+
+void CSkeletalAnimator::LookAt_Anim(_float3 vTargetPos, int BoneIndex)
+{
+    // 1. 뼈의 월드 위치
+    _float3 boneWorldPos = vecBones[BoneIndex].worldTransform.Get_State(Matrix::STATE_POSITION);
+
+    // 2. LookAt 회전 계산
+    _float3 lookDir = vTargetPos - boneWorldPos;
+    if (D3DXVec3Length(&lookDir) < 0.001f) return;
+    D3DXVec3Normalize(&lookDir, &lookDir);
+
+    _float3 upDir = { 0.f, 1.f, 0.f };
+    _float3 right = {};
+    D3DXVec3Cross(&right, &upDir, &lookDir);
+    D3DXVec3Normalize(&right, &right);
+
+    _float3 up = {};
+    D3DXVec3Cross(&up, &lookDir, &right);
+    D3DXVec3Normalize(&up, &up);
+
+    // 3. 회전만 포함된 보정 월드 행렬 (위치는 없음)
+    Matrix correctionWorld;
+    correctionWorld.Set_State(Matrix::STATE_RIGHT, right);
+    correctionWorld.Set_State(Matrix::STATE_UP, up);
+    correctionWorld.Set_State(Matrix::STATE_LOOK, lookDir);
+    correctionWorld.Set_State(Matrix::STATE_POSITION, { 0.f, 0.f, 0.f }); // 위치 없음!
+
+    // 4. 부모의 월드 행렬
+    Matrix parentWorld = {};
+    int parentIndex = vecBones[BoneIndex].parent;
+    if (parentIndex >= 0)
+        parentWorld = vecBones[parentIndex].worldTransform;
+
+    // 5. 보정 회전을 로컬로 변환
+    Matrix invParentWorld = parentWorld.Invert();
+    Matrix correctionLocal = correctionWorld * invParentWorld;
+
+    // 6. 기존 애니메이션 localTransform과 곱해서 최종 회전 적용
+    Matrix animLocal = vecBones[BoneIndex].localTransform;
+
+    // 위치는 애니메이션 위치 유지
+    _float3 originalPos = animLocal.Get_State(Matrix::STATE_POSITION);
+
+    Matrix finalLocal = correctionLocal * animLocal;
+    finalLocal.Set_State(Matrix::STATE_POSITION, originalPos);
+
+    // 7. 최종 적용
+    vecBones[BoneIndex].localTransform = finalLocal;
+}
+
 void CSkeletalAnimator::Add_Bone(const BONE& bone)
 {
     vecBones.push_back(bone);
@@ -211,6 +296,30 @@ void CSkeletalAnimator::InitBone()
     {
         bone.localTransform = bone.baseTransform;
     }
+}
+
+float CSkeletalAnimator::RotateRootByNeckDelta(int neckIndex, int rootIndex, float fTimeDelta)
+{
+    // 월드 기준으로 방향을 비교해야 정확
+    _float3 neckLookDir = vecBones[neckIndex].worldTransform.Get_State(Matrix::STATE_LOOK);
+    _float3 rootLookDir = vecBones[rootIndex].worldTransform.Get_State(Matrix::STATE_LOOK);
+
+    float neckYaw = atan2f(neckLookDir.x, neckLookDir.z);
+    float rootYaw = atan2f(rootLookDir.x, rootLookDir.z);
+
+    float deltaYaw = neckYaw - rootYaw;
+
+    // 정규화
+    while (deltaYaw > PI) deltaYaw -= static_cast<_float>(2 * PI);
+    while (deltaYaw < -PI) deltaYaw += static_cast<_float>(2 * PI);
+
+    float influence = 0.3f; // 얼마나 따라올지
+    float targetYaw = rootYaw + deltaYaw * influence;
+
+    float followSpeed = 5.f; // rad/sec
+    float newYaw = rootYaw + followSpeed * fTimeDelta * (targetYaw - rootYaw); 
+
+    return newYaw - rootYaw; // 회전량(델타) 반환
 }
 
 
