@@ -218,7 +218,7 @@ void CMissionControl::Update(_float fTimeDelta)
                 if (m_Round1[i][j].name == m_Round1Finish[i][j].name) {
                     if (m_Round1[i][j].count == m_Round1Finish[i][j].count) {
                         if (!m_Round1[i][j].finish) {
-                            m_pGameInstance->PlaySound(TEXT("ding"), 0.5f, m_pPlayer->GetPos());
+                            m_pGameInstance->Play_Sound(TEXT("ding"), SOUND_DING, this, 0.5f, m_pPlayer->GetPos());
                         }
                         m_Round1[i][j].finish = true;
                     }
@@ -244,7 +244,7 @@ void CMissionControl::Update(_float fTimeDelta)
                 if (m_Round1Wave[i][j].name == m_Round1WaveFinish[i][j].name) {
                     if (m_Round1Wave[i][j].count == m_Round1WaveFinish[i][j].count) {
                         m_Round1Wave[i][j].finish = true;
-                        m_pGameInstance->PlaySound(TEXT("ding"), 0.5f, m_pPlayer->GetPos());
+                        m_pGameInstance->Play_Sound(TEXT("ding"), SOUND_DING, this, 0.5f, m_pPlayer->GetPos());
                     }
                     else {
                         m_checkFinishStage = false;
@@ -267,7 +267,7 @@ void CMissionControl::Update(_float fTimeDelta)
                 if (m_Round2[i][j].name == m_Round2Finish[i][j].name) {
                     if (m_Round2[i][j].count == m_Round2Finish[i][j].count) {
                         m_Round2[i][j].finish = true;
-                        m_pGameInstance->PlaySound(TEXT("ding"), 0.5f, m_pPlayer->GetPos());
+                        m_pGameInstance->Play_Sound(TEXT("ding"), SOUND_DING, this, 0.5f, m_pPlayer->GetPos());
                     }
                     else {
                         m_checkFinishStage = false;

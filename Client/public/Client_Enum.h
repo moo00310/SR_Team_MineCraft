@@ -25,7 +25,7 @@ namespace Client
 
 		SOUND_BLOCK_HIT, 
 		SOUND_BLOCK_DIG,
-
+		SOUND_DING,
 		SOUND_ITEM,
 		SOUND_WEED,
 		SOUND_END
