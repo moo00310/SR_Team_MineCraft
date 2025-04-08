@@ -13,9 +13,9 @@
 #include "Mouse_ItemFont.h"
 #include "CheckBox.h"
 #include "Bag.h"
+#include "Item.h"
 
 BEGIN(Client)
-
 class CUI_Mgr final : public CBase
 {
 	DECLARE_SINGLETON(CUI_Mgr);
@@ -46,17 +46,19 @@ public:
 	/* 아이템 개수 나누기 */
 	void Split_ItemStack(_int _SlotIndex, ITEMID _ItemID, ITEMNAME _ItemName);
 
-
 	ITEMNAME GetItemTypeName();
 	ITEMNAME GetItemTypeName_Left();
 
 public:
 	CSlotInfo*						Get_Item(int slotIndex);
+	CBag*							Get_Bag()						{ return m_pBag; }
+	CItem*							Get_Item()						{ return m_pItem; }
 
 	vector<CPlayerHP*>*				Get_vecPlayerHPlist(void)		{ return &m_vecPlayerHPlist; }
 	vector<CSlotInfo*>*				Get_vecSlotInfolist(void)		{ return &m_vecSlotInfolist; }
 	vector<CCheckBox*>*				Get_vecCheckBoxlist(void)		{ return &m_vecCheckBoxlist; }
 	vector<CInventory_Back*>*		Get_vecInventoryBacklist(void)	{ return &m_InventoryBacklist; }
+	vector<CSlotInfo*>*				Get_vecSlotFontRenderlist(void) { return &m_vecSlotFontRenderlist; }
 
 	list<CPlayerHunger*>*			Get_PlayerHungerlist(void)		{ return &m_PlayerHungerlist; }
 	list<CPlayerExp*>*				Get_PlayerExplist(void)			{ return &m_PlayerExplist; }
@@ -65,7 +67,6 @@ public:
 	list<CMouse_ItemFont*>*			Get_MouseItemFontlist(void)		{ return &m_MouseItemFontlist; }
 
 	_bool							Get_PlayerHP_Shader()			{ return m_bPlayerHP_Shader; }
-	CBag*							Get_Bag()						{ return m_pBag; }
 
 public:
 	void Set_Steve(CSteve* _Steve) 
@@ -74,8 +75,9 @@ public:
 		Safe_AddRef(pSteve);
 	}
 
-	void	Set_PlayerHP_Shader(_bool _bPlayerHP_Shader) { m_bPlayerHP_Shader = _bPlayerHP_Shader; }
-	CBag*	Set_Bag(CBag* pBag) { return m_pBag = pBag; }
+	void	Set_PlayerHP_Shader(_bool _bPlayerHP_Shader)	{ m_bPlayerHP_Shader = _bPlayerHP_Shader; }
+	CBag*	Set_Bag(CBag* pBag)								{ return m_pBag = pBag; }
+	CItem*  Set_Item(CItem* pItem)							{ return m_pItem = pItem; }
 
 private:
 	ITEMID	m_ItemID = ITEMID_END;
@@ -93,14 +95,17 @@ private:
 
 	/* Inventory 관련 */
 	vector<CSlotInfo*>			m_vecSlotInfolist;
+	vector<CSlotInfo*>			m_vecSlotFontRenderlist;
 	vector<CCheckBox*>			m_vecCheckBoxlist;
 	vector<CInventory_Back*>	m_InventoryBacklist;
+
 	list<CMainInventory*>		m_MainInventorylist;
 	list<CSubInventory*>		m_SubInventorylist;
 	list<CMouse_Item*>			m_MouseItemlist;
 	list<CMouse_ItemFont*>		m_MouseItemFontlist;
 
-	CBag* m_pBag = { nullptr };
+	CBag*	m_pBag = { nullptr };
+	CItem*	m_pItem = { nullptr };
 	
 private:
 	CSteve* pSteve = { nullptr };
@@ -108,5 +113,4 @@ private:
 public:
 	virtual void Free();
 };
-
 END

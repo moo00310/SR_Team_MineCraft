@@ -28,17 +28,17 @@ HRESULT CSlotInfo::Initialize(void* pArg)
     m_fOffsetX = 18.f;
 
     static UIOBJECT_DESC slotTable[] = {
-        {0, 42.f, 42.f, 360.f, 672.f},  // 0~8 (퀵슬롯)
-        {0, 42.f, 42.f, 408.f, 510.f},  // 9~17
-        {0, 42.f, 42.f, 408.f, 442.f},  // 18~26
-        {0, 42.f, 42.f, 408.f, 386.f},  // 27~35
-        {0, 42.f, 42.f, 408.f, 329.f},  // 36~44
-        {0, 42.f, 42.f, 407.f, 90.f},   // 45~48
+        {0, 44.f, 44.f, 360.f, 672.f},  // 0~8 (퀵슬롯)
+        {0, 44.f, 44.f, 408.f, 508.f},  // 9~17
+        {0, 44.f, 44.f, 408.f, 440.f},  // 18~26
+        {0, 44.f, 44.f, 408.f, 384.f},  // 27~35
+        {0, 44.f, 44.f, 408.f, 327.f},  // 36~44
+        {0, 44.f, 44.f, 407.f, 90.f},   // 45~48
         {0, 159.f, 223.f, 518.f, 173.f},// 49 (특수 슬롯)
-        {0, 42.f, 42.f, 630.f, 258.f},  // 50
-        {0, 42.f, 42.f, 697.f, 121.f},  // 51~52
-        {0, 42.f, 42.f, 697.f, 177.f},  // 53~54
-        {0, 42.f, 42.f, 878.f, 152.f}   // 55~
+        {0, 44.f, 44.f, 630.f, 258.f},  // 50
+        {0, 44.f, 44.f, 697.f, 121.f},  // 51~52
+        {0, 44.f, 44.f, 697.f, 177.f},  // 53~54
+        {0, 44.f, 44.f, 878.f, 152.f}   // 55~
     };
 
     if (m_iSlotIndexNum < 9) m_iCategory = 0;
@@ -122,39 +122,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
         if (!m_bTestInfo)
         {
             m_bTestInfo = true;
-
-            _bool bTest = false;
-            if (!bTest)
-            {
-                WCHAR szPath[MAX_PATH] = {};
-                GetModuleFileName(nullptr, szPath, MAX_PATH);
-                PathRemoveFileSpec(szPath); // bin 경로
-
-                _wstring fontPath = _wstring(szPath) + L"\\Resources\\Fonts\\Minecraftia-Regular.ttf";
-                if (!AddFontResourceEx(fontPath.c_str(), FR_PRIVATE, 0))
-                {
-                    MSG_BOX("Failed to Created : Font");
-                    return;
-                }
-
-                bTest = true;
-            }
-
-            if (m_pFont == nullptr)
-            {
-                D3DXFONT_DESC fontDesc = {};
-                fontDesc.Height = 34;
-                fontDesc.Width = 0;
-                fontDesc.Weight = FW_NORMAL;
-                fontDesc.CharSet = DEFAULT_CHARSET;
-                fontDesc.OutputPrecision = OUT_DEFAULT_PRECIS;
-                fontDesc.Quality = CLEARTYPE_QUALITY;
-                fontDesc.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-                lstrcpy(fontDesc.FaceName, L"Minecraftia");
-
-                D3DXCreateFontIndirect(m_pGraphic_Device, &fontDesc, &m_pFont);
-            }
-            SetRect(&textRect, Desc.fX + 50, Desc.fY - 40, Desc.fX + 250, Desc.fY - 10);
+            CUI_Mgr::Get_Instance()->Get_Item()->ItemMatch(m_ItemName, &m_bTestInfo, Desc.fX, Desc.fY);
         }
     }
 	else
@@ -373,29 +341,16 @@ HRESULT CSlotInfo::Render()
         if (FAILED(RenderItemTexture(m_pItem_TextureCom, m_ItemName)))
             return E_FAIL;
 
-		if (m_pFont != nullptr && m_bTestInfo)
-		{
-			_wstring strText = L"Torch";
-			m_pFont->DrawTextW(
-				NULL,
-				strText.c_str(),
-				-1,
-				&textRect,
-				DT_NOCLIP,
-				D3DCOLOR_ARGB(255, 255, 255, 255)
-			);
-		}
- 
         /* 아이템 텍스쳐와 개수 텍스쳐 사이즈 다르게 처리 */
         /* 여기서 0, 0 이 화면에 계속 출력되고있는 상태 */
         if (m_bCountRender)
         {
             /* 10의 자리 아이템 개수 렌더 */
-            if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iTensDigit, Desc.fX, Desc.fY, 14.f, 14.f)))
+            if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iTensDigit, Desc.fX, Desc.fY, 16.f, 16.f)))
                 return E_FAIL;
 
             /* 1의 자리 아이템 개수 렌더 */
-            if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iOnesDigit, Desc.fX - m_fOffsetX, Desc.fY, 14.f, 14.f)))
+            if (FAILED(RenderItemCount(m_pItemCount_TextureCom, m_iOnesDigit, Desc.fX - m_fOffsetX, Desc.fY, 16.f, 16.f)))
                 return E_FAIL;
         }
     }
@@ -435,7 +390,7 @@ HRESULT CSlotInfo::RenderItemTexture(CTexture* pTextureCom, _int _TextureNum)
 
 HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNum, _float _fX, _float _fY, _float _fsizeX, _float _fsizeY)
 {
-    _fX += 15.f;
+    _fX += 14.f;
     _fY += 12.f;
 
     if (FAILED(m_pItemCount_TextureCom->Bind_Resource(_TextureNum)))
@@ -492,16 +447,16 @@ HRESULT CSlotInfo::Reset_RenderState()
     return S_OK;
 }
 
-void CSlotInfo::TextureNum_Update(_int _TextureNum)
-{
-    int TextureIndex = -1;
-    if (_TextureNum < 100)
-        TextureIndex = _TextureNum;
-    else if (_TextureNum < 200)
-        TextureIndex = (_TextureNum - 100) + ITEMNAME_CUBE_END;
-
-    m_ItemName = static_cast<ITEMNAME>(TextureIndex);
-}
+//void CSlotInfo::TextureNum_Update(_int _TextureNum)
+//{
+//    int TextureIndex = -1;
+//    if (_TextureNum < 100)
+//        TextureIndex = _TextureNum;
+//    else if (_TextureNum < 200)
+//        TextureIndex = (_TextureNum - 100) + ITEMNAME_CUBE_END;
+//
+//    m_ItemName = static_cast<ITEMNAME>(TextureIndex);
+//}
 
 HRESULT CSlotInfo::Ready_Components()
 {
@@ -538,7 +493,7 @@ CSlotInfo* CSlotInfo::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CItem");
+        MSG_BOX("Failed to Created : CSlotInfo");
         Safe_Release(pInstance);
     }
     return pInstance;
@@ -550,7 +505,7 @@ CGameObject* CSlotInfo::Clone(void* pArg)
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Created : CItem");
+        MSG_BOX("Failed to Created : CSlotInfo");
         Safe_Release(pInstance);
     }
 

@@ -1,4 +1,5 @@
 #include "MainInventory.h"
+#include "UI_Mgr.h"
 
 _bool g_bMainInventoryOpen = false;
 
@@ -47,9 +48,15 @@ void CMainInventory::Update(_float fTimeDelta)
     if (GetKeyState('E') & 0x8000 && !m_bEKeyPressed)
     {
         if (!g_bMainInventoryOpen)
+        {
             g_bMainInventoryOpen = true;
+        }
         else
+        {
             g_bMainInventoryOpen = false;
+            CUI_Mgr::Get_Instance()->Get_Item()->Clear_ItemTextRender();
+        }
+            
 
         m_bEKeyPressed = true;
     }

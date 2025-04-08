@@ -18,8 +18,8 @@ HRESULT CMouse_ItemFont::Initialize_Prototype()
 
 HRESULT CMouse_ItemFont::Initialize(void* pArg)
 {
-	Desc.fSizeX = 14.f;
-	Desc.fSizeY = 14.f;
+	Desc.fSizeX = 16.f;
+	Desc.fSizeY = 16.f;
 	m_fOffsetX = 18.f;
 
 	if (FAILED(__super::Initialize(&Desc)))

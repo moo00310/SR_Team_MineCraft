@@ -19,6 +19,7 @@ extern HWND g_hWnd;
 
 extern _bool g_bChangeLevel;
 extern _bool g_bMainInventoryOpen;
+extern _bool g_bMCraftingTableOpen;
 extern _float g_fBright;
 extern LPD3DXFONT g_pTitleFont;
 extern LPD3DXFONT g_pDetailFont;
@@ -27,7 +28,7 @@ using namespace Client;
 
 #define Rect_Model_Count 17
 #define Cube_Model_Count 7
-#define Item_Textue_Count 24
+#define Item_Textue_Count 27
 
 
 
