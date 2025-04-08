@@ -34,6 +34,7 @@
 #include "ParticleStoneDestroy.h"
 #include "ParticleSwordAura.h"
 #include "ParticleCrackerLoad.h"
+#include "ParticleSonicBoom.h"
 
 LPD3DXFONT g_pTitleFont = nullptr;
 LPD3DXFONT g_pDetailFont = nullptr;
@@ -296,6 +297,11 @@ HRESULT CMainApp::Ready_Particle()
 	// 폭죽 길 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_CRACKER_LOAD,
 		CParticleCrackerLoad::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 워든 원거리 공격 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,
+		CParticleSonicBoom::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;

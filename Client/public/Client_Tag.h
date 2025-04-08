@@ -88,6 +88,12 @@ static const _wstring PROTYPE_COMPONENT_TEXTURE_GLOW = TEXT("Prototype_Component
 // 검기 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA = TEXT("Prototype_GameObject_Particle_Sword_Aura");
 
+// 워든 원거리 공격 텍스쳐.
+static const _wstring PROTOTYPE_COMPONENT_TEXTURE_SONIC_BOOM = TEXT("Prototype_Component_Texture_Sonic_Boom");
+
+// 워든 원거리 공격 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM = TEXT("Prototype_GameObject_Particle_Sonic_Boom");
+
 /////////////////////////////////////////////////////////////////////////////
 
 // VIBuffer_Only 클래스 컴포넌트 태그.
