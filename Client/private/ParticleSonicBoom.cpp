@@ -17,21 +17,20 @@ HRESULT CParticleSonicBoom::Initialize_Prototype()
 
 HRESULT CParticleSonicBoom::Initialize(void* pArg)
 {
-	iParticleCount = 6;
-	IsTimer = true;
+	iParticleCount = 10;
+	IsTimer = true;	
 	fEndTimer = 1.4f;
 	IsTextureAnimation = true;
 	fAnimationFrame = 0.1f;
-	iTextureIndex = 15;
-	iCurrentTextureIndex = 0;
+	iTextureIndex = 15;	
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
 		return E_FAIL;
 	}
 
-	dwVpBatchSize = 6;
-	dwPointSize = GetScale(0.5f);	// 포인트 스프라이트 크기.
+	dwVpBatchSize = 10;
+	dwPointSize = GetScale(6.5f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
 	dwPointScaleC = GetScale(1.f);
@@ -76,29 +75,35 @@ CParticleSonicBoom* CParticleSonicBoom::Create(LPDIRECT3DDEVICE9 pGraphic_Device
 	return pInstance;
 }
 
+void CParticleSonicBoom::OnPushPool()
+{
+	__super::OnPushPool();
+
+	m_particleIndex = 0;
+}
+
 HRESULT CParticleSonicBoom::Ready_Components()
 {
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SONIC_BOOM,
-		TEXT("Com_Component_Dash"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
+		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
 	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-		TEXT("Com_Component_Transform"), reinterpret_cast<CComponent**>(&m_pTransform), &TransformDesc)))
+		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransform), &TransformDesc)))
 		return E_FAIL;
 
 	return S_OK;
 }
 
 ParticleAttribute CParticleSonicBoom::OnSetAddParticle()
-{
+{	
 	ParticleAttribute att;
-	att.vPosition = { 0.f, 0.f, 0.f };
+	att.vPosition = { 0.f, 0.f, (_float)m_particleIndex };
 	//att.vColor = Float3ToHex({GetRandomFloat(0.1f, 0.5f), 0.f, 0.f});
-	//att.vVelocity = { GetRandomFloat(-1.f, 1.f), 0.f, GetRandomFloat(-3.f, -1.f) };	
+	att.vVelocity = {0.f, 0.f, 0.f};
 
-	// 첫 생성 시 파티클이 나오지 않게 비활성화.
-	att.IsAlive = false;
+	m_particleIndex++;
 
 	return att;
 }

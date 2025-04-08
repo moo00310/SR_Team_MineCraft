@@ -309,7 +309,8 @@ void CRect_Model::KeyInput()
 	if (m_pGameInstance->Key_Down(VK_RBUTTON))
 	{
 		m_eCurAnim = EAT;		
-		AuraSword();
+		//AuraSword();
+		SonicBoom();
 		return;
 	}
 
@@ -421,6 +422,24 @@ void CRect_Model::SwingFireSword()
 	particle->GetTransform()->Set_Matrix(boneWorldMatrix);
 
 	//particle->SetTimer(0.3f);
+}
+
+void CRect_Model::SonicBoom()
+{
+	// 카메라.
+	CCamera_Player* camera = (CCamera_Player*)m_pGameInstance->Get_Object(
+		LEVEL_YU,
+		TEXT("Layer_Camera"),
+		0
+	);
+
+	// 카메라 월드 행렬.
+	const _float4x4* cameraWorldmat = camera->GetTransform()->Get_WorldMatrix();
+
+	CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,
+		{0.f, 0.f, 0.f}
+	)->GetTransform()->Set_Matrix(*cameraWorldmat);
 }
 
 ITEMNAME CRect_Model::Compute_Texture_Name()

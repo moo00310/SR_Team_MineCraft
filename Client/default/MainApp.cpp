@@ -406,6 +406,11 @@ HRESULT CMainApp::Ready_Texture()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/glint.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_SonicBoom*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SONIC_BOOM,
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/sonic_boom_%d.png"), 16))))
+		return E_FAIL;
+
 	return S_OK;
 }
 
