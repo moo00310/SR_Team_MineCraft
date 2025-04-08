@@ -98,10 +98,16 @@ HRESULT CWood::Drop_Item_OnDestroy(const _float3& fPos)
 
 HRESULT CWood::Play_Destroy_Effect(const _float3& fPos)
 {
-	m_pGameInstance->CheckSoundStop(this, 0, 1);
-	m_pGameInstance->PlaySound(TEXT("Wood_BreakingFinish"), 1, fPos);
+	//m_pGameInstance->Check_Sound_Stop(this, 0, SOUND_BLOCK);
+	m_pGameInstance->Play_Sound(TEXT("Wood_dig"), SOUND_BLOCK_DIG, this, 1.f, fPos);
 
 	return S_OK;
+}
+
+void CWood::PlaySound_Hit(_float3 vPos)
+{
+	m_pGameInstance->Play_Sound(TEXT("Wood_hit3"), SOUND_BLOCK_HIT, this, 1.f, vPos);
+
 }
 
 HRESULT CWood::Ready_Components()

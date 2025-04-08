@@ -65,7 +65,7 @@ void CWarden::Update(_float fTimeDelta)
 
     Update_State(fTimeDelta);
 
-    m_pGameInstance->CheckSoundStop(this, m_eCurAnim, 0);
+    //m_pGameInstance->Check_Sound_Stop(this, m_eCurAnim, 0);
 }
 
 void CWarden::Late_Update(_float fTimeDelta)
@@ -363,7 +363,7 @@ void CWarden::Motion_Dead(_float fTimeDelta)
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
         //m_isDestroyed = true;
-        m_pGameInstance->PlaySound(TEXT("Zombie_Death"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->Play_Sound(TEXT("Zombie_Death"), SOUND_DEAD, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
     }
 }

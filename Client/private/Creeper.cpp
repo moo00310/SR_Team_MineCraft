@@ -51,8 +51,6 @@ HRESULT CCreeper::Initialize(void* pArg)
 void CCreeper::Priority_Update(_float fTimeDelta)
 {
     __super::Priority_Update(fTimeDelta);
-
-    m_pGameInstance->Add_CollisionGroup(COLLISION_MONSTER, this);
 }
 
 void CCreeper::Update(_float fTimeDelta)
@@ -71,7 +69,11 @@ void CCreeper::Update(_float fTimeDelta)
 
     Update_State(fTimeDelta);
 
-    m_pGameInstance->CheckSoundStop(this, m_eCurAnim,0);
+
+    if (m_eCurAnim != ANIM::ATTACK)
+        m_pGameInstance->Stop_Sound(SOUND_ATTACK, this);
+
+    //m_pGameInstance->Check_Sound_Stop(this, m_eCurAnim,0);
 }
 
 void CCreeper::Late_Update(_float fTimeDelta)
@@ -403,7 +405,7 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
 		}
 
         // 소리 재생 초기화
-        m_pGameInstance->CheckSoundStop(this, 0,0);
+        //m_pGameInstance->Check_Sound_Stop(this, 0,0);
         m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
     }
 
@@ -423,7 +425,6 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
     if (m_skelAnime->is_AnimtionEND(Dead))
     {
         //m_isDestroyed = true;
-        m_pGameInstance->PlaySound(TEXT("Creeper_Death"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
 
         _float3 Pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.0, 0.5, 0.0};
@@ -448,6 +449,13 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
 
 void CCreeper::Turn(_float fTimeDelta)
 {
+}
+
+void CCreeper::Dead_Pawn()
+{
+    CPawn::Dead_Pawn();
+    m_pGameInstance->Play_Sound(TEXT("Creeper_Death"), SOUND_DEAD, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
 }
 
 CCreeper* CCreeper::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -487,7 +495,7 @@ void CCreeper::FrameCallback(int animType, int frame)
     if (animType == Attack && frame == 0)
     {
         std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
-        m_pGameInstance->PlaySound(TEXT("Creeper_Explosion"), m_sound-0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this,0);
+        m_pGameInstance->Play_Sound(TEXT("Creeper_Explosion"), SOUND_ATTACK, this, m_sound-0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
     }
 }
 

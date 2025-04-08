@@ -90,9 +90,16 @@ void CCamera_Player::Update(_float fTimeDelta)
 
 void CCamera_Player::Late_Update(_float fTimeDelta)
 {
+    // 목표 FOV 설정
+    _float fTargetFov = m_pPlayer->isRun() ? D3DXToRadian(80.f) : D3DXToRadian(60.f);
+
+    // 부드럽게 보간 (Lerp)
+    m_fFov = Lerp(m_fFov, fTargetFov, fTimeDelta * 5.f); // 5.f는 속도 조절용
+
     Follow_Player(fTimeDelta);
     __super::Update_VP_Matrices();
 }
+
 
 HRESULT CCamera_Player::Render()
 {
@@ -193,7 +200,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 m_DestroyCube->GetTransform()->Set_State(CTransform::STATE_POSITION, hitPosition);
 
                 // hp 감소.
-                pBreakableCube->Attacked_Block(hitPosition,1);
+                pBreakableCube->Attacked_Block(hitPosition,1, fTimeDelta);
 
 
                 // 꺠지는 블럭 hp 값 넘겨줌.

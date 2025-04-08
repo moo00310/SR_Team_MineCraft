@@ -159,13 +159,6 @@ HRESULT CBreakableRect::Delete_Cube(_float3 fPos)
 
     m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
-
-    //m_pGameInstance->CheckSoundStop(this, 0, 1);
-    //m_pGameInstance->PlaySound(TEXT("Grass_dig1"), 1, fPos);
-
-    //m_pGameInstance->CheckSoundStop(this, 0, 1);
-    //m_pGameInstance->PlaySound(TEXT("Block_BreakingFinish"), 1, fPos);
-
     return S_OK;
 }
 

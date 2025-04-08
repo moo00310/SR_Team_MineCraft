@@ -81,59 +81,72 @@ void CSound_Manager::PlayBGM(const std::wstring& soundName)
 }
 
 
-void CSound_Manager::PlaySound(const std::wstring& soundName, float volume, _float3 pPos, void* _obj, int _type)
+void CSound_Manager::Play_Sound(const wstring& soundName, _uint iType, CGameObject* pGameObject, _float volume, _float3 pPos)
 {
-    const float fListenerCutoffDistance = 25.0f; 
+    if (!m_pCoreSystem || !pGameObject)
+        return;
 
-    // 너무 멀어지면 소리가 깨져서 일정 거리이면 소리 아예 play 안하도록
-    _float3 listenerPos = m_vListenerPos; 
-    _float3 Diff = pPos - listenerPos;
-    float fDistance = D3DXVec3Length(&Diff);
-    if (fDistance > fListenerCutoffDistance)
-        return; 
-
-
-    FMOD::Sound* pSound = nullptr;
     auto iter = m_SoundMap.find(soundName);
-     if (iter != m_SoundMap.end())
-         pSound = iter->second;
+    if (iter == m_SoundMap.end())
+        return;
 
-    if (!pSound || !m_pCoreSystem) return;
+    FMOD::Sound* pSound = iter->second;
+    if (!pSound)
+        return;
 
-    for (int i = 0; i < MAX_SFX_CHANNEL; ++i)
+    const float fListenerCutoffDistance = 25.0f;
+    _float3 vDiff{ pPos - m_vListenerPos };
+    float fNewDistance = D3DXVec3Length(&vDiff);
+    if (fNewDistance > fListenerCutoffDistance)
+        return;
+#pragma region
+    ////이미 같은 오브젝트 + 타입으로 재생 중인지 확인
+    //auto& typeMap = m_ObjectChannelMap[pGameObject];
+    //auto itChannel = typeMap.find(iType);
+
+
+
+    //if (itChannel != typeMap.end())
+    //{
+    //    bool isPlaying = false;
+    //    if (itChannel->second && itChannel->second->isPlaying(&isPlaying) == FMOD_OK && isPlaying)
+    //    {
+    //        return; // 이미 소리 재생 중 → 무시
+    //    }
+    //    else
+    //    {
+    //        // 죽은 채널 정리
+    //        typeMap.erase(itChannel);
+    //    }
+    //}
+#pragma endregion
+
+    // 새 채널 재생
+    FMOD::Channel* pNewChannel = nullptr;
+    if (m_pCoreSystem->playSound(pSound, nullptr, false, &pNewChannel) == FMOD_OK && pNewChannel)
     {
-        bool isPlaying = false;
-        if (m_pChannels[i])
-            m_pChannels[i]->isPlaying(&isPlaying);
+        pNewChannel->setVolume(volume);
 
-        if (!isPlaying)
-        {
-            m_pCoreSystem->playSound(pSound, nullptr, false, &m_pChannels[i]);
-            m_pChannels[i]->setVolume(volume);
+        FMOD_VECTOR pos = { pPos.x, pPos.y, pPos.z };
+        FMOD_VECTOR vel = { 0.f, 0.f, 0.f };
+        pNewChannel->set3DAttributes(&pos, &vel);
 
-            FMOD_VECTOR pos = { pPos.x, pPos.y, pPos.z };
-            FMOD_VECTOR vel = { 0.0f, 0.0f, 0.0f };
-            m_pChannels[i]->set3DAttributes(&pos, &vel);
-
-            if (_obj) {
-                TrackedSound _sound = { m_pChannels[i], _obj, static_cast<SEPCIALSOUNDTYPE>(_type) };
-                m_TrackedSounds.push_back(_sound);
-            }
-
-            break;
-        }
+        // 등록
+        m_ObjectChannelMap[pGameObject][iType] = pNewChannel;
     }
 }
 
+
+
 void CSound_Manager::StopAll()
 {
-    for (int i = 0; i < MAX_SFX_CHANNEL; ++i)
+   /* for (int i = 0; i < MAX_SFX_CHANNEL; ++i)
     {
         if (m_pChannels[i])
             m_pChannels[i]->stop();
     }
 
-    m_pBGMChannel->stop();
+    m_pBGMChannel->stop();*/
 }
 
 void CSound_Manager::UpdateListener(_float3 _pos, _float3 _forward, _float3 _up)
@@ -147,50 +160,106 @@ void CSound_Manager::UpdateListener(_float3 _pos, _float3 _forward, _float3 _up)
     m_vListenerPos = _pos;
 }
 
-void CSound_Manager::CheckSoundStop(void* obj, int _anim, int _type)
+_bool CSound_Manager::IsPlaying_Sound(_int iType)
 {
-    SEPCIALSOUNDTYPE soundType = static_cast<SEPCIALSOUNDTYPE>(_type);
-    switch (soundType)
+    _bool isPlaying = false;
+
+    //m_pChannels[iType]->isPlaying(&isPlaying);
+
+    return isPlaying;
+}
+
+void CSound_Manager::Stop_Sound(_int iType, CGameObject* pObject)
+{
+    if (!pObject)
+        return;
+
+    auto objIt = m_ObjectChannelMap.find(pObject);
+    if (objIt == m_ObjectChannelMap.end())
+        return;
+
+    auto& typeMap = objIt->second;
+    auto chIt = typeMap.find(iType);
+    if (chIt == typeMap.end())
+        return;
+
+    if (chIt->second)
     {
-    case Engine::CSound_Manager::CREEPER:
-        for (auto iter = m_TrackedSounds.begin(); iter != m_TrackedSounds.end(); )
-        {
-            if (iter->pObj == obj && _anim != 3 && iter->type == 0)
-            {
-                if (iter->pChannel)
-                    iter->pChannel->stop();
-
-                iter = m_TrackedSounds.erase(iter); // 요소 제거 후 다음 요소로 이동
-            }
-            else
-            {
-                ++iter; // 조건이 안 맞으면 그냥 다음으로
-            }
-        }
-        break;
-    case Engine::CSound_Manager::BREAKING:
-        for (auto iter = m_TrackedSounds.begin(); iter != m_TrackedSounds.end(); )
-        {
-            if (iter->type == 1)
-            {
-                if (iter->pChannel)
-                    iter->pChannel->stop();
-
-                iter = m_TrackedSounds.erase(iter); // 요소 제거 후 다음 요소로 이동
-            }
-            else
-            {
-                ++iter; // 조건이 안 맞으면 그냥 다음으로
-            }
-        }
-        break;
-    case Engine::CSound_Manager::SOUND_END:
-        break;
-    default:
-        break;
+        chIt->second->stop(); //사운드 정지
     }
 
+    typeMap.erase(chIt); // 채널 제거
+
+    // 해당 오브젝트의 사운드가 전부 제거됐으면 map도 제거
+    if (typeMap.empty())
+        m_ObjectChannelMap.erase(objIt);
 }
+
+
+//_bool CSound_Manager::Check_Sound_Play(void* obj, int _type)
+//{
+//    _bool isPlay = false;
+//
+//    for (auto iter = m_TrackedSounds.begin(); iter != m_TrackedSounds.end(); )
+//    {
+//        if (iter->pObj == obj && iter->iType == _type)
+//        {
+//            if (iter->pChannel)
+//                iter->pChannel->isPlaying(&isPlay);
+//
+//            iter = m_TrackedSounds.erase(iter);
+//            isPlay = true;
+//        }
+//        else
+//        {
+//            ++iter;
+//        }
+//    }
+//
+//    return isPlay;
+//
+//    //_int soundType = _type;
+//    //switch (soundType)
+//    //{
+//    //case Engine::CSound_Manager::CREEPER:
+//    //    for (auto iter = m_TrackedSounds.begin(); iter != m_TrackedSounds.end(); )
+//    //    {
+//    //        if (iter->pObj == obj && _anim != 3 && iter->iType == 0)
+//    //        {
+//    //            if (iter->pChannel)
+//    //                iter->pChannel->stop();
+//
+//    //            iter = m_TrackedSounds.erase(iter); // 요소 제거 후 다음 요소로 이동
+//    //        }
+//    //        else
+//    //        {
+//    //            ++iter; // 조건이 안 맞으면 그냥 다음으로
+//    //        }
+//    //    }
+//    //    break;
+//    //case Engine::CSound_Manager::BREAKING:
+//    //    for (auto iter = m_TrackedSounds.begin(); iter != m_TrackedSounds.end(); )
+//    //    {
+//    //        if (iter->iType == 1)
+//    //        {
+//    //            if (iter->pChannel)
+//    //                iter->pChannel->stop();
+//
+//    //            iter = m_TrackedSounds.erase(iter); // 요소 제거 후 다음 요소로 이동
+//    //        }
+//    //        else
+//    //        {
+//    //            ++iter; // 조건이 안 맞으면 그냥 다음으로
+//    //        }
+//    //    }
+//    //    break;
+//    //case Engine::CSound_Manager::SOUND_END:
+//    //    break;
+//    //default:
+//    //    break;
+//    //}
+//
+//}
 
 string CSound_Manager::WStringToString(const std::wstring& wstr)
 {
@@ -243,16 +312,22 @@ void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
             if (fullPath.size() >= 4 &&
                 fullPath.substr(fullPath.size() - 4) == L".wav")
             {
+                //background 경로 걸러내기
+                std::wstring lowerPath = fullPath;
+                std::transform(lowerPath.begin(), lowerPath.end(), lowerPath.begin(), ::towlower);
+                if (lowerPath.find(L"\\background\\") != std::wstring::npos ||
+                    lowerPath.find(L"/background/") != std::wstring::npos)
+                {
+                    continue;
+                }
+
                 // 사운드 이름: 확장자 제거
                 size_t lastSlash = fullPath.find_last_of(L"\\/");
                 std::wstring fileName = (lastSlash != std::wstring::npos) ? fullPath.substr(lastSlash + 1) : fullPath;
                 std::wstring soundNameW = fileName.substr(0, fileName.length() - 4);
 
-                // 변환: std::wstring → std::string
-                //std::string soundName = WStringToString(soundNameW);
                 std::string filePath = WStringToString(fullPath);
 
-                // 사운드 등록
                 LoadSound(soundNameW.c_str(), filePath.c_str(), false);
             }
         }
@@ -260,6 +335,8 @@ void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
     } while (FindNextFile(hFind, &findData));
 
     FindClose(hFind);
+
+    // 배경음악은 수동 등록
 
     LoadSound(L"Player_Walk_Grass1", "../../FMOD/Assets/player/Player_Walk_Grass1.wav", false);
     LoadSound(L"Player_Walk_Grass2", "../../FMOD/Assets/player/Player_Walk_Grass2.wav", false);
@@ -291,8 +368,8 @@ void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
     LoadSound(L"MoogCity2", "../../FMOD/Assets/background/MoogCity2.wav", true);
     LoadSound(L"pigstep", "../../FMOD/Assets/background/pigstep.wav", true);
     LoadSound(L"sweden", "../../FMOD/Assets/background/sweden.wav", true);
-
 }
+
 
 
 

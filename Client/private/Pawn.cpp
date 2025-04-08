@@ -74,6 +74,16 @@ HRESULT CPawn::Render()
 	return S_OK;
 }
 
+void CPawn::Add_Hp(_float damage)
+{
+	m_Hp += damage;
+
+	if (m_Hp <= 0.f)
+	{
+		Dead_Pawn();
+	}
+}
+
 void CPawn::Reset_Ainmation()
 {
 	m_skelAnime->Set_ZeroAnimTime();
@@ -140,4 +150,10 @@ HRESULT CPawn::Ready_Components()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+void CPawn::Dead_Pawn()
+{
+	isDead = true;
+	m_eCurAnim = DEAD;
 }

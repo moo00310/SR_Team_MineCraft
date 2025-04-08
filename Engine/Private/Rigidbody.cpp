@@ -110,7 +110,7 @@ HRESULT CRigidbody::Update(_float fTimeDelta, _uint iCollsionGroup)
 
 #pragma region TEST
 	// 바닥을 뚫고 내려가지 않도록 보정
-	if (vNextPosition.y < 0.f)
+	if (vNextPosition.y < -15.f)
 	{
 		m_isGround = true;
 		m_vVelocity.y = 0.0f;
@@ -208,8 +208,8 @@ void CRigidbody::Move(_float3 vDir)
 {
 	D3DXVec3Normalize(&vDir, &vDir);
 
-	m_vVelocity.x = vDir.x * m_fMaxSpeed;
-	m_vVelocity.z = vDir.z * m_fMaxSpeed;
+	m_vVelocity.x = vDir.x * m_fSpeed;
+	m_vVelocity.z = vDir.z * m_fSpeed;
 
 	ClampVelocityXZ();
 }
@@ -225,8 +225,8 @@ void CRigidbody::Chase(const _float3& vTargetPos, _float fMinDistance)
 		return;
 	}
 	D3DXVec3Normalize(&vDir, &vDir);
-	m_vVelocity.x = vDir.x * m_fMaxSpeed;
-	m_vVelocity.z = vDir.z * m_fMaxSpeed;
+	m_vVelocity.x = vDir.x * m_fSpeed;
+	m_vVelocity.z = vDir.z * m_fSpeed;
 	ClampVelocityXZ();
 }
 
@@ -239,8 +239,8 @@ void CRigidbody::Go_Straight()
 	//m_vVelocity += vLook * m_fMoveSpeed;
 
 	// 기존 속도 제거 후 새로운 속도 적용
-	m_vVelocity.x = vLook.x * m_fMaxSpeed;
-	m_vVelocity.z = vLook.z * m_fMaxSpeed;
+	m_vVelocity.x = vLook.x * m_fSpeed;
+	m_vVelocity.z = vLook.z * m_fSpeed;
 
 	ClampVelocityXZ();
 }
@@ -254,8 +254,8 @@ void CRigidbody::Go_Backward()
 	//m_vVelocity += vLook * m_fMoveSpeed;
 
 	// 기존 속도 제거 후 새로운 속도 적용
-	m_vVelocity.x = -vLook.x * m_fMaxSpeed;
-	m_vVelocity.z = -vLook.z * m_fMaxSpeed;
+	m_vVelocity.x = -vLook.x * m_fSpeed;
+	m_vVelocity.z = -vLook.z * m_fSpeed;
 
 	ClampVelocityXZ();
 }
@@ -269,8 +269,8 @@ void CRigidbody::Go_Left()
 	//m_vVelocity += vLook * m_fMoveSpeed;
 
 	// 기존 속도 제거 후 새로운 속도 적용
-	m_vVelocity.x = -vRight.x * m_fMaxSpeed;
-	m_vVelocity.z = -vRight.z * m_fMaxSpeed;
+	m_vVelocity.x = -vRight.x * m_fSpeed;
+	m_vVelocity.z = -vRight.z * m_fSpeed;
 
 	ClampVelocityXZ();
 }
@@ -284,8 +284,8 @@ void CRigidbody::Go_Right()
 	//m_vVelocity += vLook * m_fMoveSpeed;
 
 	// 기존 속도 제거 후 새로운 속도 적용
-	m_vVelocity.x = vRight.x * m_fMaxSpeed;
-	m_vVelocity.z = vRight.z * m_fMaxSpeed;
+	m_vVelocity.x = vRight.x * m_fSpeed;
+	m_vVelocity.z = vRight.z * m_fSpeed;
 
 	ClampVelocityXZ();
 }
@@ -301,10 +301,10 @@ void CRigidbody::ClampVelocity()
 {
 	_float speed = D3DXVec3Length(&m_vVelocity);
 
-	if (speed > m_fMaxSpeed)
+	if (speed > m_fSpeed)
 	{
 		D3DXVec3Normalize(&m_vVelocity, &m_vVelocity);
-		m_vVelocity *= m_fMaxSpeed;
+		m_vVelocity *= m_fSpeed;
 	}
 }
 
@@ -315,10 +315,10 @@ void CRigidbody::ClampVelocityXZ()
 
 	_float speedXZ = D3DXVec2Length(&vVelocityXZ);
 
-	if (speedXZ > m_fMaxSpeed)
+	if (speedXZ > m_fSpeed)
 	{
 		D3DXVec2Normalize(&vVelocityXZ, &vVelocityXZ);
-		vVelocityXZ *= m_fMaxSpeed;
+		vVelocityXZ *= m_fSpeed;
 
 		// XZ 속도만 조정
 		m_vVelocity.x = vVelocityXZ.x;

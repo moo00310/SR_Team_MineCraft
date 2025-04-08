@@ -43,7 +43,7 @@ void CGameMgr::Priority_Update(_float fTimeDelta)
 		int spawnCount = 20 - m_pGameInstance->GetActiveCount(TEXT("Layer_Monster"));
 		if (spawnCount == 0) return;
 
-		//Spwan_Monster(spawnCount);
+		Spwan_Monster(spawnCount);
 		m_fSpwanCoolTime = 0.f;
 	}
 

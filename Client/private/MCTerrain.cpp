@@ -665,7 +665,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
 
     }
 
-    MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
+    //MSG_BOX("모든 블록 데이터 처리가 완료되었습니다!");
     return S_OK;
 }
 

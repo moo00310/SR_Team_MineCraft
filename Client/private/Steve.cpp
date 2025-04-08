@@ -31,6 +31,7 @@ HRESULT CSteve::Initialize(void* pArg)
 	m_fSpeed = 5.f;
 	m_MaxHp = 100.f;
 	m_Hp = 100.f;
+	m_fRun_Speed = 8.f;
 
 	m_Coll_Size = { 0.3f, 0.9f, 0.3f };
 	m_Coll_Offset = { 0.f, 0.9f, 0.f };
@@ -44,8 +45,7 @@ HRESULT CSteve::Initialize(void* pArg)
 	if (FAILED(Ready_Animation()))
 		return E_FAIL;
 
-	m_pRigidbodyCom->Set_MoveSpeed(0.1f);
-	m_pRigidbodyCom->Set_MaxSpeed(5.f);
+	m_pRigidbodyCom->Set_Speed(m_fSpeed);
 
 	m_skelAnime->SetFrameCallback(std::bind(&CSteve::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
 
@@ -129,6 +129,20 @@ void CSteve::Input_Key(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down(VK_LBUTTON))
 	{
 		isAttack = true;
+	}
+
+	if (m_pGameInstance->Key_Down(VK_LCONTROL))
+	{
+		if (m_isRun)
+		{
+			m_pRigidbodyCom->Set_Speed(m_fSpeed);
+			m_isRun = false;
+		}
+		else
+		{
+			m_pRigidbodyCom->Set_Speed(m_fRun_Speed);
+			m_isRun = true;
+		}
 	}
 
 	Move(fTimeDelta);
@@ -560,14 +574,21 @@ void CSteve::Add_Hp(_float fAmount)
 	m_Hp += fAmount;
 	CUI_Mgr::Get_Instance()->SetHP();
 
-	m_pGameInstance->PlaySound(TEXT("Player_Hurt_Old"), 1, m_pTransformCom->Get_State(CTransform::STATE_POSITION), this, CSound_Manager::PLAYER);
-	//if (m_Hp <= 0.f) 
-	//{
-	//	//죽으면 바로 리스폰
-	//	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3{ 10.f, 20.f, 10.f });
-	//	m_Hp = 100.f;
-	//	CUI_Mgr::Get_Instance()->SetHP(); //피가 왜 안차지?
-	//}
+	m_pGameInstance->Play_Sound(TEXT("Player_Hurt_Old"), SOUND_HIT, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	if (m_Hp <= 0.f) 
+	{
+		Dead_Pawn();
+
+		//죽으면 바로 리스폰
+		//m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3{ 10.f, 20.f, 10.f });
+		//m_Hp = 100.f;
+		//CUI_Mgr::Get_Instance()->SetHP(); //피가 왜 안차지?
+	}
+}
+
+void CSteve::Dead_Pawn()
+{
+	//CPawn::Dead_Pawn();
 }
 
 CSteve* CSteve::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -604,22 +625,22 @@ void CSteve::Free()
 
 void CSteve::FrameCallback(int animType, int frame)
 {
-	//cout << "스티브 애니메이션: " << animType << ", 프레임: " << frame << endl;
+	cout << "스티브 애니메이션: " << animType << ", 프레임: " << frame << endl;
 	if (animType == Swing_FF && frame == 0)
 	{
-		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass1"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		m_pGameInstance->Play_Sound(TEXT("Player_Walk_Grass1"), SOUND_WALK1,this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 	if (animType == Swing_FF && frame == 1)
 	{
-		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass2"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		m_pGameInstance->Play_Sound(TEXT("Player_Walk_Grass2"), SOUND_WALK2, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 	if (animType == Swing_FF && frame == 2)
 	{
-		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass2"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		m_pGameInstance->Play_Sound(TEXT("Player_Walk_Grass2"), SOUND_WALK3, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 	if (animType == Swing_FF && frame == 3)
 	{
-		m_pGameInstance->PlaySound(TEXT("Player_Walk_Grass4"), m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		m_pGameInstance->Play_Sound(TEXT("Player_Walk_Grass4"), SOUND_WALK4, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 }
 
