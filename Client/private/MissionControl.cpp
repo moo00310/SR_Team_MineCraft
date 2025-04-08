@@ -1,4 +1,6 @@
 #include "MissionControl.h"
+#include "MCTerrain.h"
+#include "Monster.h"
 
 CMissionControl::CMissionControl(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
@@ -24,6 +26,13 @@ HRESULT CMissionControl::Initialize(void* pArg)
     if (CSun* _sun = dynamic_cast<CSun*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Sun")))) {
         m_sun = _sun;
     }
+    if (CMCTerrain* _terrain = dynamic_cast<CMCTerrain*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Terrain")))) {
+        m_pTerrain = _terrain;
+    }
+    if (CSteve* _terrain = dynamic_cast<CSteve*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")))) {
+        m_pPlayer = _terrain;
+    }
+
 	return S_OK;
 }
 
@@ -34,7 +43,7 @@ void CMissionControl::InitMissions1() {
         { L"나무", 5 }
     });
 
-    m_Round1Finish.emplace_back(std::vector<missionCheck>{
+  /*  m_Round1Finish.emplace_back(std::vector<missionCheck>{
         { L"제작대", 1 }
     });
 
@@ -50,7 +59,7 @@ void CMissionControl::InitMissions1() {
 
     m_Round1Finish.emplace_back(std::vector<missionCheck>{
         { L"블럭", 5 }
-    });
+    });*/
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1WaveFinish.emplace_back(std::vector<missionCheck>{
@@ -62,30 +71,29 @@ void CMissionControl::InitMissions1() {
         { L"나무", L"나무 5개 벌목하기"}
     });
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"제작대", L"제작대 만들기"}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"제작대", L"제작대 만들기"}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"돌칼", L"돌 칼 만들기"},
-        { L"돌도끼", L"돌 도끼 만들기"},
-        { L"돌곡괭이", L"돌 곡괭이 만들기"}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"돌칼", L"돌 칼 만들기"},
+    //    { L"돌도끼", L"돌 도끼 만들기"},
+    //    { L"돌곡괭이", L"돌 곡괭이 만들기"}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"사과", L"사과 먹고 배고픔 채우기"}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"사과", L"사과 먹고 배고픔 채우기"}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"블럭", L"블럭 5개 설치"}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"블럭", L"블럭 5개 설치"}
+    //});
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
         { L"좀비", L"좀비 5마리 처지"}
     });
 }
-
 void CMissionControl::InitMissions2()
 {
     m_Round2Finish.emplace_back(std::vector<missionCheck>{
@@ -167,6 +175,18 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
         if (g_fBright <= 0.25) {
             m_sun->Set_bAddTime();
             m_bDayFinish = false;
+            for (int i = 0; i < 5; i++)
+            {
+                vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
+                int Random_pos = rand() % m_SpawnPos.size();
+                CGameObject* ptemp = nullptr;
+
+                ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+                    LEVEL_YU, TEXT("Layer_Monster"));
+
+                if (ptemp == nullptr) return;
+                static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+            }
         }
     }
 
@@ -189,8 +209,7 @@ void CMissionControl::Update(_float fTimeDelta)
                 if (m_Round1[i][j].name == m_Round1Finish[i][j].name) {
                     if (m_Round1[i][j].count == m_Round1Finish[i][j].count) {
                         if (!m_Round1[i][j].finish) {
-                            CGameObject* pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
-                            m_pGameInstance->PlaySound(TEXT("ding"), 0.5f, static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")))->Get_State(CTransform::STATE_POSITION));
+                            m_pGameInstance->PlaySound(TEXT("ding"), 0.5f, m_pPlayer->GetPos());
                         }
                         m_Round1[i][j].finish = true;
                     }

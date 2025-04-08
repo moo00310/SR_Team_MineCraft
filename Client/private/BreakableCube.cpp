@@ -253,7 +253,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
 
     switch (_itemname)
     {
-    case Client::ITEMNAME_STONE_AXE:
+    case Client::ITEMNAME_STONE_PICKAXE:
         switch (m_itemName)
         {
         case Client::ITEMNAME_GRASSDIRT:
@@ -283,6 +283,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage)
         default:
             break;
         }
+        break;
     default:
         switch (m_itemName)
         {

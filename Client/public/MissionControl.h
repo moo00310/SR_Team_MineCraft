@@ -1,6 +1,8 @@
 #pragma once
 #include "Client_Defines.h"
 #include "Sun.h"
+#include "MCTerrain.h"
+#include "Steve.h"
 
 BEGIN(Client)
 class CMissionControl :public CGameObject
@@ -40,6 +42,8 @@ private:
 	void InitMissions2();
 	void InitMissions3();
 	CSun* m_sun = nullptr;
+	CMCTerrain* m_pTerrain = nullptr;
+	CSteve* m_pPlayer = nullptr;
 
 	bool m_bDayFinish = false;
 	bool m_bNightFinish = false;

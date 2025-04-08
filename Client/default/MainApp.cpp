@@ -507,6 +507,11 @@ void CMainApp::Free()
 		g_pDetailFont->Release();
 		g_pDetailFont = nullptr;
 	}
+	if (g_pCountDownFont)
+	{
+		g_pCountDownFont->Release();
+		g_pCountDownFont = nullptr;
+	}
 
 	CUI_Mgr::Get_Instance()->Free();
 	CUI_Mgr::Get_Instance()->Destroy_Instance();
