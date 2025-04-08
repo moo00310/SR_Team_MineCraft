@@ -281,7 +281,7 @@ void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
 
     LoadSound(L"Creeper_Hurt1", "../../FMOD/Assets/creeper/Creeper_Hurt1.wav", false);
     LoadSound(L"Creeper_Hurt2", "../../FMOD/Assets/creeper/Creeper_Hurt2.wav", false);
-    LoadSound(L"Creeper_Death", "../../FMOD/Assets/creeper/Creeper_Death.wav", false);
+    LoadSound(L"Creeper_Death", "../../FMOD/Assets/creeper/Creeper_Death.wav", false); 
     LoadSound(L"Creeper_Explosion", "../../FMOD/Assets/creeper/Creeper_Explosion.wav", false);
 
     LoadSound(L"Block_Breaking", "../../FMOD/Assets/Block/Block_Breaking.wav", false);

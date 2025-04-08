@@ -1,25 +1,25 @@
-#include "MissionMainUi.h"
+#include "WaveUi.h"
 #include "MissionControl.h"
 
-CMissionMainUi::CMissionMainUi(LPDIRECT3DDEVICE9 pGraphic_Device) :CUIObject{ pGraphic_Device }
+CWaveUi::CWaveUi(LPDIRECT3DDEVICE9 pGraphic_Device) :CUIObject{ pGraphic_Device }
 {
 }
 
-CMissionMainUi::CMissionMainUi(CMissionMainUi& Prototype) :CUIObject(Prototype)
+CWaveUi::CWaveUi(CWaveUi& Prototype) :CUIObject(Prototype)
 {
 }
 
-HRESULT CMissionMainUi::Initialize_Prototype()
+HRESULT CWaveUi::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CMissionMainUi::Initialize(void* pArg)
+HRESULT CWaveUi::Initialize(void* pArg)
 {
-    Desc.fSizeX = 280.f;
-    Desc.fSizeY = 300.f;
-    Desc.fX = 1135.f;
-    Desc.fY = 325.f;
+    Desc.fSizeX = 150.f;
+    Desc.fSizeY = 50.f;
+    Desc.fX = 80;
+    Desc.fY = 50;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -34,21 +34,21 @@ HRESULT CMissionMainUi::Initialize(void* pArg)
 }
 
 
-void CMissionMainUi::Priority_Update(_float fTimeDelta)
+void CWaveUi::Priority_Update(_float fTimeDelta)
 {
 }
 
-void CMissionMainUi::Update(_float fTimeDelta)
+void CWaveUi::Update(_float fTimeDelta)
 {
 }
 
-void CMissionMainUi::Late_Update(_float fTimeDelta)
+void CWaveUi::Late_Update(_float fTimeDelta)
 {
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
 
-HRESULT CMissionMainUi::Render()
+HRESULT CWaveUi::Render()
 {
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
@@ -78,57 +78,23 @@ HRESULT CMissionMainUi::Render()
     m_pShaderCom->End();
     __super::End();
 
-    RECT rect = { 1000, 170, 1280, 250 };
+    RECT rect = { 10, 0, 160, 100 };
 
     g_pTitleFont->DrawTextW(
         nullptr,              
-        L"Mission",    
+        L"WAVE 1",    
         -1,                       
         &rect,                   
         DT_CENTER | DT_VCENTER | DT_SINGLELINE,       
-        D3DCOLOR_ARGB(255, 255, 255, 0) 
+        D3DCOLOR_ARGB(255, 255, 50, 59) 
     );
-
-    if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
-        vector<CMissionControl::showMission> _vecMission = _control->Get_MissionList();
-
-        RECT rect = { 1000, 210, 1280, 290 };
-        for (int i = 0; i < _vecMission.size(); ++i) {
-            wstring _word;
-            if (_vecMission[i].curCount == _vecMission[i].endCount) {
-                _word = _vecMission[i].word;
-                g_pDetailFont->DrawTextW(
-                    nullptr,                   
-                    _word.c_str(),
-                    -1,                         
-                    &rect,                       
-                    DT_CENTER | DT_VCENTER | DT_SINGLELINE,   
-                    D3DCOLOR_ARGB(255, 60, 179, 113) 
-                );
-            }
-            else {
-                _word = _vecMission[i].word + L" (" + to_wstring(_vecMission[i].curCount) + L"/" + to_wstring(_vecMission[i].endCount) +L")";
-                g_pDetailFont->DrawTextW(
-                    nullptr,
-                    _word.c_str(),
-                    -1,
-                    &rect,
-                    DT_CENTER | DT_VCENTER | DT_SINGLELINE,
-                    D3DCOLOR_ARGB(255, 255, 255, 255)
-                );
-
-            }
-            rect.top += 30;
-            rect.bottom += 30;
-        }
-    }
 
     return S_OK;
 }
 
-HRESULT CMissionMainUi::Ready_Components()
+HRESULT CWaveUi::Ready_Components()
 {
-    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_MissionMainUi"), TEXT("Com_Texture"),
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_WaveUi"), TEXT("Com_Texture"),
         reinterpret_cast<CComponent**>(&m_pTextureCom))))
         return E_FAIL;
 
@@ -148,22 +114,22 @@ HRESULT CMissionMainUi::Ready_Components()
     return S_OK;
 }
 
-CMissionMainUi* CMissionMainUi::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CWaveUi* CWaveUi::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-    CMissionMainUi* pInstance = new CMissionMainUi(pGraphic_Device);
+    CWaveUi* pInstance = new CWaveUi(pGraphic_Device);
 
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Created : CMissionMainUi");
+        MSG_BOX("Failed to Created : CWaveUi");
         Safe_Release(pInstance);
     }
 
     return pInstance;
 }
 
-CGameObject* CMissionMainUi::Clone(void* pArg)
+CGameObject* CWaveUi::Clone(void* pArg)
 {
-    CMissionMainUi* pInstance = new CMissionMainUi(*this);
+    CWaveUi* pInstance = new CWaveUi(*this);
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
@@ -173,7 +139,7 @@ CGameObject* CMissionMainUi::Clone(void* pArg)
     return pInstance;
 }
 
-void CMissionMainUi::Free()
+void CWaveUi::Free()
 {
     __super::Free();
     Safe_Release(m_pVIBufferCom);

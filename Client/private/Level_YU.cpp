@@ -81,8 +81,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 		return E_FAIL;*/
 
-	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
+	//	return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -374,6 +374,9 @@ HRESULT CLevel_YU::Ready_Layer_UI_DropItem(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionMainUi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_WaveUi"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 

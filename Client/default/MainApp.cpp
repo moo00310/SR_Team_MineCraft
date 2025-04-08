@@ -298,9 +298,9 @@ HRESULT CMainApp::Ready_Particle()
 void CMainApp::InitFont()
 {
 	D3DXFONT_DESC fontDesc = {
-	24,                        // Height (크기)
+	18,                        // Height (크기)
 	0,                         // Width (0이면 자동)
-	FW_NORMAL,                 // Weight
+	FW_BOLD,                 // Weight
 	1,                         // MipLevels
 	FALSE,                     // Italic
 	DEFAULT_CHARSET,           // CharSet
@@ -314,7 +314,7 @@ void CMainApp::InitFont()
 
 
 	D3DXFONT_DESC fontDesc2 = {
-	18,                        // Height (크기)
+	15,                        // Height (크기)
 	0,                         // Width (0이면 자동)
 	FW_NORMAL,                 // Weight
 	1,                         // MipLevels

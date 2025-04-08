@@ -34,7 +34,7 @@ void CMissionControl::InitMissions1() {
         { L"나무", 5 }
     });
 
-  /*  m_Round1Finish.emplace_back(std::vector<missionCheck>{
+    m_Round1Finish.emplace_back(std::vector<missionCheck>{
         { L"제작대", 1 }
     });
 
@@ -50,7 +50,7 @@ void CMissionControl::InitMissions1() {
 
     m_Round1Finish.emplace_back(std::vector<missionCheck>{
         { L"블럭", 5 }
-    });*/
+    });
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1WaveFinish.emplace_back(std::vector<missionCheck>{
@@ -62,7 +62,7 @@ void CMissionControl::InitMissions1() {
         { L"나무", L"나무 5개 벌목하기"}
     });
 
-   /* m_Round1.emplace_back(std::vector<missionDetail>{
+    m_Round1.emplace_back(std::vector<missionDetail>{
         { L"제작대", L"제작대 만들기"}
     });
 
@@ -78,7 +78,7 @@ void CMissionControl::InitMissions1() {
 
     m_Round1.emplace_back(std::vector<missionDetail>{
         { L"블럭", L"블럭 5개 설치"}
-    });*/
+    });
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
@@ -188,6 +188,10 @@ void CMissionControl::Update(_float fTimeDelta)
             for (int j = 0; j < m_Round1Finish[i].size(); ++j) {
                 if (m_Round1[i][j].name == m_Round1Finish[i][j].name) {
                     if (m_Round1[i][j].count == m_Round1Finish[i][j].count) {
+                        if (!m_Round1[i][j].finish) {
+                            CGameObject* pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+                            m_pGameInstance->PlaySound(TEXT("ding"), 0.5f, static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")))->Get_State(CTransform::STATE_POSITION));
+                        }
                         m_Round1[i][j].finish = true;
                     }
                     else {

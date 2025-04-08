@@ -125,7 +125,7 @@ void CSun::Orbit_Around_Earth()
 		m_fAngle += 0.01f; // 회전 속도 증가
 	}
 	else {
-		m_fAngle += 0.002f; // 회전 속도 증가
+		m_fAngle += 0.001f; // 회전 속도 증가
 	}
 	
 
