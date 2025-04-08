@@ -46,6 +46,9 @@ public:
 
 public:
 	void IkLookAt(float fTimeDelta, int boneIndex, int targetInex);
+	void LookAt(_float3 vPos, int BoneIndex);
+
+	void LookAt_Anim(_float3 vTargetPos, int BoneIndex);
 
 public:
 	void Add_Bone(const BONE& bone);
@@ -61,6 +64,7 @@ public:
 public:
 	void DeBugBone(int BoneIndex);
 	void InitBone();
+	float RotateRootByNeckDelta(int neckIndex, int rootIndex, float fTimeDelta);
 
 private:
 	vector<BONE> vecBones;

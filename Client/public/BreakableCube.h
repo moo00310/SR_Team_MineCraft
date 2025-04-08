@@ -53,10 +53,10 @@ public:
 	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
 
 	// 큐브 Hp 줄이기
-	virtual void Attacked_Block(_float3 vPos, int attackDamage);
+	virtual void Attacked_Block(_float3 vPos, int attackDamage, _float fDeltaTime);
 
 	//부수는 사운드
-	virtual void PlaySound_Breaking(_float3 vPos);
+	virtual void PlaySound_Hit(_float3 vPos);
 
 	// 큐브 HP 반환.
 	float GetHP() const;
@@ -77,8 +77,8 @@ public:
 	ITEMNAME	Get_ItemName() { return m_itemName; }
 
 protected:
-	virtual HRESULT Drop_Item_OnDestroy(const _float3& fPos) { return S_OK; }
-	virtual HRESULT Play_Destroy_Effect(const _float3& fPos) { return S_OK; }
+	virtual HRESULT Drop_Item_OnDestroy(const _float3& fPos);
+	virtual HRESULT Play_Destroy_Effect(const _float3& fPos);
 
 protected:
 
@@ -103,6 +103,10 @@ protected:
 
 	//블럭 경도
 	_float m_fHardness{ 0.f };
+
+	_float m_fHitSoundDelayAcc{ 0.f };    // 누적 시간
+	const _float m_fHitSoundDelayLimit{ 0.25f }; // 쿨타임 제한
+
   
 public:
 	static CBreakableCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

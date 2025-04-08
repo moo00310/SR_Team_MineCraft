@@ -192,6 +192,7 @@
     <ClInclude Include="..\public\Cube_Model.h" />
     <ClInclude Include="..\public\DestroyCube.h" />
     <ClInclude Include="..\public\Edition.h" />
+    <ClInclude Include="..\public\FireCrackerLoad.h" />
     <ClInclude Include="..\public\GameMgr.h" />
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\GrassDirt.h" />
@@ -212,11 +213,13 @@
     <ClInclude Include="..\public\Mouse_ItemFont.h" />
     <ClInclude Include="..\public\ParticleAppleEating.h" />
     <ClInclude Include="..\public\ParticleCharging.h" />
+    <ClInclude Include="..\public\ParticleCrackerLoad.h" />
     <ClInclude Include="..\public\ParticleDie.h" />
     <ClInclude Include="..\public\BaseParticleEating.h" />
     <ClInclude Include="..\public\ParticleEventManager.h" />
     <ClInclude Include="..\public\ParticleExplosion.h" />
     <ClInclude Include="..\public\ParticleFireCracker.h" />
+    <ClInclude Include="..\public\ParticleSonicBoom.h" />
     <ClInclude Include="..\public\ParticleStoneDestroy.h" />
     <ClInclude Include="..\public\ParticleStoneMining.h" />
     <ClInclude Include="..\public\ParticleSwordAura.h" />
@@ -277,6 +280,7 @@
     <ClInclude Include="..\public\Tool.h" />
     <ClInclude Include="..\public\Tree.h" />
     <ClInclude Include="..\public\Warden.h" />
+    <ClInclude Include="..\public\WaveUi.h" />
     <ClInclude Include="..\public\Wood.h" />
     <ClInclude Include="..\public\Zombi.h" />
     <ClInclude Include="Client.h" />
@@ -319,6 +323,7 @@
     <ClCompile Include="..\private\Cube_Model.cpp" />
     <ClCompile Include="..\private\DestroyCube.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
+    <ClCompile Include="..\private\FireCrackerLoad.cpp" />
     <ClCompile Include="..\private\GameMgr.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\GrassDirt.cpp" />
@@ -338,11 +343,13 @@
     <ClCompile Include="..\private\Mouse_ItemFont.cpp" />
     <ClCompile Include="..\private\ParticleAppleEating.cpp" />
     <ClCompile Include="..\private\ParticleCharging.cpp" />
+    <ClCompile Include="..\private\ParticleCrackerLoad.cpp" />
     <ClCompile Include="..\private\ParticleDie.cpp" />
     <ClCompile Include="..\private\BaseParticleEating.cpp" />
     <ClCompile Include="..\private\ParticleEventManager.cpp" />
     <ClCompile Include="..\private\ParticleExplosion.cpp" />
     <ClCompile Include="..\private\ParticleFireCracker.cpp" />
+    <ClCompile Include="..\private\ParticleSonicBoom.cpp" />
     <ClCompile Include="..\private\ParticleStoneDestroy.cpp" />
     <ClCompile Include="..\private\ParticleStoneMining.cpp" />
     <ClCompile Include="..\private\ParticleSwordAura.cpp" />
@@ -402,6 +409,7 @@
     <ClCompile Include="..\private\Tool.cpp" />
     <ClCompile Include="..\private\Tree.cpp" />
     <ClCompile Include="..\private\Warden.cpp" />
+    <ClCompile Include="..\private\WaveUi.cpp" />
     <ClCompile Include="..\private\Wood.cpp" />
     <ClCompile Include="..\private\Zombi.cpp" />
     <ClCompile Include="..\public\Item.cpp" />

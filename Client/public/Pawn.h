@@ -17,7 +17,7 @@ class CPawn abstract : public CGameObject
 public:
 	enum ANIM
 	{
-		IDLE, RUN, WALK, ATTACK, DEAD, ANIM_END
+		IDLE, RUN, WALK, ATTACK, DEAD, FIND, ATTACK2, ANIM_END
 	};
 
 	enum RENDERCOLOR {
@@ -44,7 +44,7 @@ public:
 	void		Set_Animation(ANIM etype) { m_eCurAnim = etype; }
 	void		Set_Hp(float hp) { m_Hp = hp; }
 
-	virtual void		Add_Hp(float damage) { m_Hp += damage; }
+	virtual void		Add_Hp(_float damage);
 	_float		Get_Hp() { return m_Hp; }
 
 	ANIM Get_ANIM() { return m_eCurAnim; }
@@ -73,10 +73,15 @@ protected:
 	virtual void Motion_Idle(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
 	virtual void Turn(_float fTimeDelta) = 0;
+	virtual void Dead_Pawn();
+
+public:
+	_bool isRun() { return m_isRun; }
 
 protected:
 	ANIM m_eCurAnim = { ANIM_END };
 	_float m_fSpeed = {};
+	_float m_fRun_Speed = {};
 	_float m_MaxHp = {};
 	_float m_Hp = {};
 	_float m_sound = {};
@@ -88,6 +93,7 @@ protected:
 	RENDERCOLOR m_eColor = RENDERORIGIN;
 	int m_iGetHitFrame = 0;
 	bool m_bGetHit = false;
+	_bool m_isRun{ false };
 
 protected:
 	// 추상클래스 

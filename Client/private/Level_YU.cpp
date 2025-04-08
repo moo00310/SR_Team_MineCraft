@@ -75,11 +75,11 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Particle(LAYER_PARTICLE)))
 		return E_FAIL;
 
-	/*if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
-		return E_FAIL;
+// 	if (FAILED(Ready_Laye_Creeper(TEXT("Layer_Monster"))))
+// 		return E_FAIL;
 	
-	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
-		return E_FAIL;*/
+// 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
+// 		return E_FAIL;
 
 	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
 		return E_FAIL;
@@ -386,6 +386,9 @@ HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionMainUi"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_WaveUi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_MissionControl"),
 		LEVEL_YU, strLayerTag)))
@@ -576,6 +579,25 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		return E_FAIL;
 	}
 
+	// 폭죽 길 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_CRACKER_LOAD,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
+	// 워든 원거리 공격 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
 
 	return S_OK;
 }

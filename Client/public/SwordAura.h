@@ -44,6 +44,9 @@ private:
 	CVIBuffer_Rect* m_pVIBufferRectCom = { nullptr };
 	CCollider_Cube* m_pColliderCom = { nullptr };
 	CShader* m_pShaderCom = {nullptr};
+
+	_float m_fEndTime = { 0.2f };
+	_float m_fCurrentTime = { 0.f };
 };
 
 END

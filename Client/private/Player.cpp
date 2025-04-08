@@ -120,6 +120,18 @@ void CPlayer::Update(_float fTimeDelta)
 		//	particle->Replay(m_pTransformCom->Get_State(CTransform::STATE_POSITION));			
 		//}
 
+		// 폭죽 길
+		/*CParticleEventManager::Get_Instance()->OnParticle(
+			PROTOTYPE_GAMEOBJECT_PARTICLE_CRACKER_LOAD,
+			m_pTransformCom);*/
+
+		CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_HYEOK,	// 가져올 씬
+			PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// 가져올 프로토타입.
+			LEVEL_HYEOK,	// 적용 씬.
+			LAYER_PARTICLE);
+
+		obj->GetTransform()->Set_Matrix(*m_pTransformCom->Get_WorldMatrix());
+
 		// 기 모으기.
 		//CParticleSystem* particle = (CParticleSystem*)m_pGameInstance->PushPool(LEVEL_STATIC,	// 가져올 씬
 		//	PROTOTYPE_GAMEOBJECT_PARTICLE_GLITTER,	// 가져올 프로토타입.
@@ -132,9 +144,9 @@ void CPlayer::Update(_float fTimeDelta)
 		//}
 
 		// 사과 먹는 파티클.
-		CParticleEventManager::Get_Instance()->OnParticle(
+		/*CParticleEventManager::Get_Instance()->OnParticle(
 			PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
-			m_pTransformCom);
+			m_pTransformCom);*/
 	}
 
 	if (GetKeyState('Z') & 0x8000)

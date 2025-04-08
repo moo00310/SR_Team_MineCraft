@@ -89,9 +89,9 @@ HRESULT CParticleSwordAura::Ready_Components()
 ParticleAttribute CParticleSwordAura::OnSetAddParticle()
 {
 	ParticleAttribute att;
-	att.vPosition = { 0.f, 0.f, 0.f };
+	att.vPosition = { GetRandomFloat(-0.5f, 0.5f), 0.f, 0.f };
 	att.vColor = Float3ToHex({1.f, 0.f, 0.f});
-	att.vVelocity = { GetRandomFloat(-1.f, 1.f), -1.4f, 0.f};
+	att.vVelocity = { 0.f, 0.f, -0.5f};
 	att.IsTime = false;
 	att.fCurrentTime = 0.f;
 	att.IsAlive = false;

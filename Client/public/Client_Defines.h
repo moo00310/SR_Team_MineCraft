@@ -23,6 +23,7 @@ extern _bool g_bMCraftingTableOpen;
 extern _float g_fBright;
 extern LPD3DXFONT g_pTitleFont;
 extern LPD3DXFONT g_pDetailFont;
+extern LPD3DXFONT g_pWaveFont;
 
 using namespace Client;
 

@@ -5,7 +5,7 @@
 BEGIN(Client)
 
 // ÆøÁ× ÆÄÆ¼Å¬.
-class CParticleFireCracker : public CParticleSystem
+class CParticleFireCracker final : public CParticleSystem
 {
 private:
 	CParticleFireCracker(LPDIRECT3DDEVICE9 pGraphic_Device);

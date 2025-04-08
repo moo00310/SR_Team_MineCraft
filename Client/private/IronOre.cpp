@@ -53,7 +53,7 @@ HRESULT CIronOre::Render()
     return S_OK;
 }
 
-HRESULT CIronOre::Drop_Item_OnDestroy(const _float3& fPos)
+HRESULT CIronOre::Drop_Item_OnDestroy(const _float3& vPos)
 {
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
@@ -62,9 +62,12 @@ HRESULT CIronOre::Drop_Item_OnDestroy(const _float3& fPos)
         return E_FAIL;
 
     if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
-        _copy->SetPos(fPos);
+        _copy->SetPos(vPos);
         _copy->Set_ItemTypeAndBindTexture(ITEMNAME_RAWIRON);
     }
+
+    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+
 
     return S_OK;
 }

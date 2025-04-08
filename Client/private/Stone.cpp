@@ -54,7 +54,7 @@ HRESULT CStone::Render()
     return S_OK;
 }
 
-HRESULT CStone::Drop_Item_OnDestroy(const _float3& fPos)
+HRESULT CStone::Drop_Item_OnDestroy(const _float3& vPos)
 {
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
@@ -63,9 +63,12 @@ HRESULT CStone::Drop_Item_OnDestroy(const _float3& fPos)
         return E_FAIL;
 
     if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
-        _copy->SetPos(fPos);
+        _copy->SetPos(vPos);
         _copy->Set_ItemTypeAndBindTexture(ITEMNAME_COBBLESTONE);
     }
+
+    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+
 
     return S_OK;
 }

@@ -50,6 +50,11 @@ void CMissionMainUi::Late_Update(_float fTimeDelta)
 
 HRESULT CMissionMainUi::Render()
 {
+    if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+        if (_control->Get_IsWaveStart())
+            return S_OK;
+    }
+
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
         return E_FAIL;
 
@@ -82,17 +87,35 @@ HRESULT CMissionMainUi::Render()
 
     g_pTitleFont->DrawTextW(
         nullptr,              
-        L"Mission",    
+        L"MISSION",    
         -1,                       
         &rect,                   
         DT_CENTER | DT_VCENTER | DT_SINGLELINE,       
         D3DCOLOR_ARGB(255, 255, 255, 0) 
     );
 
+    rect = { 1000,210,1280,300 };
+    if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+        if (_control->Get_IsWave()) {
+            g_pTitleFont->DrawTextW(
+                nullptr,
+                L"! 몬스터를 처치해 !",
+                -1,
+                &rect,
+                DT_CENTER | DT_VCENTER | DT_SINGLELINE,
+                D3DCOLOR_ARGB(255, 255, 0, 0)
+            );
+
+            rect = { 1000, 280, 1280, 300 };
+        }
+        else {
+            rect = { 1000, 210, 1280, 290 };
+        }
+    }
+
     if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
         vector<CMissionControl::showMission> _vecMission = _control->Get_MissionList();
 
-        RECT rect = { 1000, 220, 1280, 300 };
         for (int i = 0; i < _vecMission.size(); ++i) {
             wstring _word;
             if (_vecMission[i].curCount == _vecMission[i].endCount) {

@@ -1,6 +1,8 @@
 #pragma once
 #include "Client_Defines.h"
 #include "Sun.h"
+#include "MCTerrain.h"
+#include "Steve.h"
 
 BEGIN(Client)
 class CMissionControl :public CGameObject
@@ -35,14 +37,20 @@ public:
 
 	void Update_Mission(wstring name);
 	vector<showMission> Get_MissionList();
+	bool Get_IsWave() { return m_bIsWave; }
+	bool Get_IsWaveStart() { return m_bIsWaveStart; }
 private:
 	void InitMissions1();
 	void InitMissions2();
 	void InitMissions3();
 	CSun* m_sun = nullptr;
+	CMCTerrain* m_pTerrain = nullptr;
+	CSteve* m_pPlayer = nullptr;
 
 	bool m_bDayFinish = false;
 	bool m_bNightFinish = false;
+	bool m_bIsWaveStart = false;
+	bool m_bIsWave = false;
 private:
 	int m_currentStage=0;
 	vector<vector<missionDetail>> m_Round1;

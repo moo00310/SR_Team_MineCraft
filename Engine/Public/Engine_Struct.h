@@ -78,6 +78,9 @@ namespace Engine
 		// 파티클 생존 여부.
 		bool IsAlive = false;
 
+		// 매 프레임마다 랜덤한 컬러.
+		bool IsFrameColor = false;
+
 		// 파티클 현재 지속 시간.
 		float fCurrentTime;
 

@@ -48,7 +48,7 @@ private:
 	float m_fBrightPercent = -0.01f;
 	int m_brightFrame = 0;
 
-	float m_fAngle = -60.5f;
+	float m_fAngle = -59.48f;
 	bool m_isSun = true;
 
 	bool m_bAddTimeFast = false;

@@ -91,11 +91,15 @@ public:
 #pragma endregion
 
 #pragma region SOUND_MANAGER
-	void PlayBGM(const std::wstring& soundName);
-	void PlaySound(const std::wstring& soundName, float volume = 1.0f, _float3 pPos = _float3(0.f, 0.f, 0.f), void* _obj = nullptr, int type = 2);
+	void PlayBGM(const wstring& soundName);
+	void Play_Sound(const wstring& soundName, _uint iType, CGameObject* pGameObject, _float volume = 1.0f, _float3 pPos = _float3{ 0.f, 0.f, 0.f });
 	void StopAll();
 	void UpdateListener(_float3 pos, _float3 forward, _float3 up);
-	void CheckSoundStop(void* obj, int _anim, int _type);
+	//_bool Check_Sound_Stop(void* obj, int _type);
+	//사운드가 플레이 중인가?
+	_bool   IsPlaying_Sound(_int iType);
+	//사운드 멈춰라
+	void    Stop_Sound(_int iType, CGameObject* pObject);
 #pragma endregion
 
 

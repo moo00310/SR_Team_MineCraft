@@ -181,30 +181,6 @@
     <Filter Include="04.Behavior_Tree\BTNode">
       <UniqueIdentifier>{f7a56e8f-dd64-483b-80fd-ddc4b35d8bd3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Tasks">
-      <UniqueIdentifier>{d16a0b49-37be-4fee-ba38-f43256748dc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Tasks\Detect_Enemy">
-      <UniqueIdentifier>{8862f7df-7ebb-492e-b952-c50812b2dedb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Tasks\Chase">
-      <UniqueIdentifier>{d745473e-bb1e-4df3-9421-f566c900b8ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Tasks\Patrol">
-      <UniqueIdentifier>{2de4bdd5-e366-4266-b747-9345a0f6f79c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Decorator">
-      <UniqueIdentifier>{7c91c559-e996-42c0-afde-ab9f0232197e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Decorator\Check_Distance">
-      <UniqueIdentifier>{7a7aae3a-9527-4d67-9d44-d7b51a196bb6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Tasks\Attack">
-      <UniqueIdentifier>{1a7ada9d-f435-4878-a2dc-479e6651e742}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Decorator\DistanceBranch">
-      <UniqueIdentifier>{38d7dc54-59c4-465f-87d0-21fd2447db23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="101.ObserverPattern">
       <UniqueIdentifier>{c5b9c737-054a-4e33-bdce-ca55acc70337}</UniqueIdentifier>
     </Filter>
@@ -321,6 +297,45 @@
     </Filter>
     <Filter Include="03.UI\10.UIParticle">
       <UniqueIdentifier>{1b18e013-c1c8-40bf-99cf-d90c6df75a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden">
+      <UniqueIdentifier>{bed2019c-3d91-4bea-8a67-e931027c6837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal">
+      <UniqueIdentifier>{d398b9e9-4384-45a4-8873-f9bcea5ff6b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal\Tasks">
+      <UniqueIdentifier>{d16a0b49-37be-4fee-ba38-f43256748dc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal\Tasks\Detect_Enemy">
+      <UniqueIdentifier>{8862f7df-7ebb-492e-b952-c50812b2dedb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal\Tasks\Chase">
+      <UniqueIdentifier>{d745473e-bb1e-4df3-9421-f566c900b8ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal\Tasks\Patrol">
+      <UniqueIdentifier>{2de4bdd5-e366-4266-b747-9345a0f6f79c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal\Tasks\Attack">
+      <UniqueIdentifier>{1a7ada9d-f435-4878-a2dc-479e6651e742}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal\Decorator">
+      <UniqueIdentifier>{7c91c559-e996-42c0-afde-ab9f0232197e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal\Decorator\Check_Distance">
+      <UniqueIdentifier>{7a7aae3a-9527-4d67-9d44-d7b51a196bb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Normal\Decorator\DistanceBranch">
+      <UniqueIdentifier>{38d7dc54-59c4-465f-87d0-21fd2447db23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Task">
+      <UniqueIdentifier>{8066f1fb-5f8c-42a2-9652-b655a421ce9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Decorator">
+      <UniqueIdentifier>{ac611a35-4c7c-40d8-81cc-ff45fdaa2567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\05.Particle\FireCracker">
+      <UniqueIdentifier>{fd189827-f7ba-4082-ac1f-539345ed00e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -520,16 +535,16 @@
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_DetectEnemy.h">
-      <Filter>04.Behavior_Tree\BTNode\Tasks\Detect_Enemy</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Detect_Enemy</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_Chase.h">
-      <Filter>04.Behavior_Tree\BTNode\Tasks\Chase</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Chase</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_Patrol.h">
-      <Filter>04.Behavior_Tree\BTNode\Tasks\Patrol</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Patrol</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTDecorator_IsTargetNear.h">
-      <Filter>04.Behavior_Tree\BTNode\Decorator\Check_Distance</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Decorator\Check_Distance</Filter>
     </ClInclude>
     <ClInclude Include="..\public\MainInventory.h">
       <Filter>03.UI\05.Inventory\00.MainInventory</Filter>
@@ -599,10 +614,10 @@
       <Filter>03.UI\06.PlayerState\02.PlayerExp</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_Attack.h">
-      <Filter>04.Behavior_Tree\BTNode\Tasks\Attack</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTDistanceBranch.h">
-      <Filter>04.Behavior_Tree\BTNode\Decorator\DistanceBranch</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Decorator\DistanceBranch</Filter>
     </ClInclude>
     <ClInclude Include="..\public\IObserver.h">
       <Filter>101.ObserverPattern</Filter>
@@ -664,9 +679,6 @@
     <ClInclude Include="..\public\Left_Rect_Model.h">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\ParticleFireCracker.h">
-      <Filter>02.GameObjects\05.Particle</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\ParticleCharging.h">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClInclude>
@@ -714,6 +726,21 @@
     </ClInclude>
     <ClInclude Include="..\public\CraftingTable.h">
       <Filter>03.UI\08.CraftingTable</Filter>
+</ClInclude>
+    <ClInclude Include="..\public\ParticleFireCracker.h">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleCrackerLoad.h">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FireCrackerLoad.h">
+      <Filter>02.GameObjects\09.Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\ParticleSonicBoom.h">
+      <Filter>02.GameObjects\05.Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\WaveUi.h">
+      <Filter>08.Mission\Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -902,16 +929,16 @@
       <Filter>02.GameObjects\01.Actor\00.Pawn\01.Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_DetectEnemy.cpp">
-      <Filter>04.Behavior_Tree\BTNode\Tasks\Detect_Enemy</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Detect_Enemy</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_Chase.cpp">
-      <Filter>04.Behavior_Tree\BTNode\Tasks\Chase</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Chase</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_Patrol.cpp">
-      <Filter>04.Behavior_Tree\BTNode\Tasks\Patrol</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Patrol</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp">
-      <Filter>04.Behavior_Tree\BTNode\Decorator\Check_Distance</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Decorator\Check_Distance</Filter>
     </ClCompile>
     <ClCompile Include="..\private\MainInventory.cpp">
       <Filter>03.UI\05.Inventory\00.MainInventory</Filter>
@@ -983,10 +1010,10 @@
       <Filter>03.UI\06.PlayerState\02.PlayerExp</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_Attack.cpp">
-      <Filter>04.Behavior_Tree\BTNode\Tasks\Attack</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Tasks\Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTDistanceBranch.cpp">
-      <Filter>04.Behavior_Tree\BTNode\Decorator\DistanceBranch</Filter>
+      <Filter>04.Behavior_Tree\BTNode\Normal\Decorator\DistanceBranch</Filter>
     </ClCompile>
     <ClCompile Include="..\private\IObserver.cpp">
       <Filter>101.ObserverPattern</Filter>
@@ -1045,9 +1072,6 @@
     <ClCompile Include="..\private\Left_Rect_Model.cpp">
       <Filter>02.GameObjects\06.Right_Hand\03.Left_Rect_Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\ParticleFireCracker.cpp">
-      <Filter>02.GameObjects\05.Particle</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\ParticleCharging.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
@@ -1095,6 +1119,21 @@
     </ClCompile>
     <ClCompile Include="..\private\CraftingTable.cpp">
       <Filter>03.UI\08.CraftingTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\WaveUi.cpp">
+      <Filter>08.Mission\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleFireCracker.cpp">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleCrackerLoad.cpp">
+      <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FireCrackerLoad.cpp">
+      <Filter>02.GameObjects\09.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleSonicBoom.cpp">
+      <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

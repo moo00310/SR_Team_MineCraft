@@ -153,6 +153,11 @@ HRESULT CParticleSystem::Render()
 			continue;
 		}
 
+		if (data.IsFrameColor == true)
+		{
+			data.vColor = Float3ToHex({ GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f), GetRandomFloat(0.f, 1.f) });
+		}
+
 		p->Position = data.vPosition;
 		p->Color = data.vColor;
 

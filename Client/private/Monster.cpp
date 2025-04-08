@@ -36,13 +36,11 @@ HRESULT CMonster::Initialize(void* pArg)
 
 void CMonster::Priority_Update(_float fTimeDelta)
 {
-    if (m_Hp <= 0.f)
-    {
-        isDead = true;
-        m_eCurAnim = DEAD;
-    }
+    if (!isDead)
+        m_pGameInstance->Add_CollisionGroup(COLLISION_MONSTER, this);
 
-    if (m_bGetHit) {
+    if (m_bGetHit) 
+    {
         m_iGetHitFrame++;
         if (m_iGetHitFrame > 15 && (m_eCurAnim != DEAD)) {
             m_bGetHit = false;
@@ -50,7 +48,6 @@ void CMonster::Priority_Update(_float fTimeDelta)
             m_eColor = RENDERORIGIN;
         }
     }
-
 }
 
 void CMonster::Update(_float fTimeDelta)
@@ -103,11 +100,19 @@ float CMonster::Comput_Distance()
 
 void CMonster::Chase_Player(float _fTimeDelta)
 {
-    _float3 vTargetPos =  m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-    m_pTransformCom->LookAt_XZ(vTargetPos);
-    m_pRigidbodyCom->Chase(vTargetPos, 2.f);
-    //m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTargetPos.x, vTargetPos.y, vTargetPos.z), _fTimeDelta, 1.0f);
-
+    _float3 vTargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    if (m_MonsterType != MT_WARDEN)
+    {
+        m_pTransformCom->LookAt_XZ(vTargetPos);
+        m_pRigidbodyCom->Chase(vTargetPos, 2.f);
+        //m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTargetPos.x, vTargetPos.y, vTargetPos.z), _fTimeDelta, 1.0f);
+    }
+    else
+    {
+        LookAtPlayer(_fTimeDelta);
+        m_pTransformCom->Go_Direction(m_skelAnime->GetBoneWorldMatrix(2).Get_State(Matrix::STATE_LOOK), _fTimeDelta);
+    }
+    
     //전 프레임 상태가 공격 이었으면 무조건 속도 안났을 테니 점프 하지 못하게 해야함
     //움직일라 하는데 속도가 안난다 점프함 ㅋㅋ
     if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 0.2f && m_eCurAnim == WALK)
@@ -116,6 +121,17 @@ void CMonster::Chase_Player(float _fTimeDelta)
     }
 }
 
+void CMonster::LookAtPlayer(float _fTimeDelta)
+{
+    _float3 vTargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    vTargetPos.y += 1.f;
+    if(m_eCurAnim == FIND)
+        m_skelAnime->LookAt_Anim(vTargetPos, 2);
+    else
+        m_skelAnime->LookAt(vTargetPos, 2);
+    float fAngle = m_skelAnime->RotateRootByNeckDelta(2, 0, _fTimeDelta);
+    m_pTransformCom->TurnByAngle(_float3(0.f, 1.f, 0.f), fAngle);
+}
 
 void CMonster::Knock_back(const _float3& vforce)
 {
@@ -137,18 +153,18 @@ void CMonster::Knock_back(const _float3& vforce)
     {
     case Client::CMonster::MT_Zombie:
         if (random < 5) {
-            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt1"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Zombie_Hurt1"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         else {
-            m_pGameInstance->PlaySound(TEXT("Zombie_Hurt2"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Zombie_Hurt2"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         break;
     case Client::CMonster::MT_Creeper:
         if (random < 5) {
-            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt1"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt1"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         else {
-            m_pGameInstance->PlaySound(TEXT("Creeper_Hurt2"), m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt2"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         }
         break;
     case Client::CMonster::MT_END:
@@ -157,6 +173,10 @@ void CMonster::Knock_back(const _float3& vforce)
         break;
     }
 
+}
+
+void CMonster::Turn_Head()
+{
 }
 
 HRESULT CMonster::Ready_BehaviorTree()
