@@ -71,18 +71,21 @@ void CSwordAura::Update(_float fTimeDelta)
 	// 전진이 아니라 다운인 이유는
 	// 90도 회전 시켜서 나아갸아하기 때문.
 	m_pTransformCom->Go_Down(fTimeDelta);	
-
-	// 여기 각도 관련 보완해야댐.
+	
 	_float3 pos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	CParticleEventManager::Get_Instance()->OnParticle(
 		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA,
-		{pos.x - 3.f, pos.y, pos.z}
-	);
+		m_pTransformCom
+	);	
 
-	CParticleEventManager::Get_Instance()->OnParticle(
-		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_AURA,
-		{ pos.x + 3.f, pos.y, pos.z }
-	);
+	if (m_fCurrentTime >= m_fEndTime)
+	{
+		m_fCurrentTime = 0.f;
+		SetActive(false);
+		return;
+	}
+
+	m_fCurrentTime += fTimeDelta;
 }
 
 void CSwordAura::Late_Update(_float fTimeDelta)
@@ -130,7 +133,7 @@ HRESULT CSwordAura::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Transform */
-	CTransform::TRANSFORM_DESC		TransformDesc{ 10.f, D3DXToRadian(90.f) };
+	CTransform::TRANSFORM_DESC		TransformDesc{ 90.f, D3DXToRadian(90.f) };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;
