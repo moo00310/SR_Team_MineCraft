@@ -78,6 +78,21 @@ void CSwordAura::Update(_float fTimeDelta)
 		m_pTransformCom
 	);	
 
+	CGameObject* pGameObject{ nullptr };
+
+	pGameObject = m_pGameInstance->Collision_Check_with_Group(
+		COLLISION_MONSTER,
+		m_pColliderCom,
+		CCollider_Manager::COLLSIION_CUBE);
+
+	if (pGameObject != nullptr)
+	{
+		// 몬스터 피격.
+		m_fCurrentTime = 0.f;
+		SetActive(false);
+		return;
+	}
+
 	if (m_fCurrentTime >= m_fEndTime)
 	{
 		m_fCurrentTime = 0.f;
@@ -150,7 +165,7 @@ HRESULT CSwordAura::Ready_Components()
 
 	/* For.Com_Collider_Cube */
 	CCollider_Cube::COLLCUBE_DESC Desc{}; //콜라이더 크기 설정
-	Desc.vRadius = { .5f, .5f, .5f };	
+	Desc.vRadius = { 2.5f, .5f, .5f };	
 	Desc.pTransformCom = m_pTransformCom;
 	Desc.pOwner = this;
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Collider_Cube"),
