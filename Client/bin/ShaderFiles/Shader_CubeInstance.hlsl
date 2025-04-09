@@ -71,23 +71,32 @@ struct PS_OUT
 
 PS_OUT PS_MAIN(PS_IN In)
 {
-    PS_OUT Out;    
+    PS_OUT Out;            
     
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
+    
+    // 안개와의 거리 차이.
+    float distance = saturate(In.vDistance - g_fFogDistance);
+        
+    // 선형 보간.
+    float4 color = lerp(Out.vColor, g_vFogColor, distance);
       
+    // 안개 범위 바깥인가?
     if (In.vDistance >= g_fFogDistance)
-    {        
-        Out.vColor.rgb *= g_vFogColor * ((In.vDistance + 1.f) - g_fFogDistance) * In.vBright;
+    {                
+        // 안개 색 입힘.
+        Out.vColor.rgb = color * In.vBright;
     }
     else
     {
+        // 안개 범위 안이면 기본색.
         Out.vColor.rgb *= In.vBright;
     }
     
     // 안개 색상 무시함.   
-    if (Out.vColor.r >= g_vFogColor.r || 
-        Out.vColor.g >= g_vFogColor.g || 
-        Out.vColor.b >= g_vFogColor.b)
+    if (Out.vColor.r >= (g_vFogColor.r - distance) * In.vBright ||
+        Out.vColor.g >= (g_vFogColor.g - distance) * In.vBright ||
+        Out.vColor.b >= (g_vFogColor.b - distance) * In.vBright)
     {
         discard;
     }
