@@ -7,7 +7,7 @@ vector g_CameraWorld;
 texture g_Texture;
 
 // 안개가 시작되는 거리.
-float g_fFogDistance = 5.f;
+float g_fFogDistance = 10.f;
 
 // 안개 색.
 vector g_vFogColor = vector(1.f, 1.f, 1.f, 1.f);
@@ -91,6 +91,14 @@ PS_OUT PS_MAIN(PS_IN In)
         if (Out.vColor.r >= (g_vFogColor.r - distance) * In.vBright ||
         Out.vColor.g >= (g_vFogColor.g - distance) * In.vBright ||
         Out.vColor.b >= (g_vFogColor.b - distance) * In.vBright)
+        {
+            discard;
+        }
+        
+        // 검은색은 위에 조건문 안 먹어서 따로 예외처리함.
+        if (Out.vColor.r <= 0.f &&
+        Out.vColor.g <= 0.f &&
+        Out.vColor.b <= 0.f)
         {
             discard;
         }
