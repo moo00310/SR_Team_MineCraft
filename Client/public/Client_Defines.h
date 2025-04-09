@@ -27,8 +27,8 @@ extern LPD3DXFONT g_pWaveFont;
 
 using namespace Client;
 
-#define Rect_Model_Count 17
-#define Cube_Model_Count 7
+#define Rect_Model_Count 18
+#define Cube_Model_Count 9
 #define Item_Textue_Count 27
 
 

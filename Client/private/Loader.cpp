@@ -472,7 +472,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 	// 검기 텍스쳐.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_COMPONENT_TEXTURE_SWORD_AURA,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/sword_aura.png"), 1))))
-    return E_FAIL;
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Gunpowder*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Gunpowder"),
