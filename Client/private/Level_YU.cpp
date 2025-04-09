@@ -279,6 +279,16 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
+	/* Prototype_GameObject_Crafting */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Crafting"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	/* Prototype_GameObject_CraftingTable */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTable"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

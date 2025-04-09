@@ -95,11 +95,13 @@ HRESULT CMouse_Item::Render()
         return E_FAIL;
 
     __super::Begin();
+    SetUp_RenderState();
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
     __super::End();
+    Reset_RenderState();
 
     return S_OK;
 }
@@ -136,7 +138,7 @@ HRESULT CMouse_Item::Ready_Components()
 HRESULT CMouse_Item::SetUp_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 40);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 150);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
     return S_OK;
