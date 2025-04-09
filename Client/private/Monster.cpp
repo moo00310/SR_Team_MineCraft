@@ -137,6 +137,13 @@ void CMonster::LookAtPlayer(float _fTimeDelta)
     m_pTransformCom->TurnByAngle(_float3(0.f, 1.f, 0.f), fAngle);
 }
 
+void CMonster::Init_BlackBoard()
+{
+    m_isFind = { false };
+    m_ChaseTime = { 0.f };
+    m_IdleTime = { 0.f };
+}
+
 void CMonster::Knock_back(const _float3& vforce)
 {
     m_eColor = RENDERATTACKED;
@@ -176,9 +183,6 @@ void CMonster::Knock_back(const _float3& vforce)
 
 }
 
-void CMonster::Turn_Head()
-{
-}
 
 HRESULT CMonster::Ready_BehaviorTree()
 {

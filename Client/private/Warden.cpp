@@ -1,11 +1,8 @@
 #include "Warden.h"
 
-#include "BTTask_DetectEnemy.h"
-#include "BTTask_Chase.h"
-#include "BTTask_Patrol.h"
-#include "BTDecorator_IsTargetNear.h"
-#include "BTTask_Attack.h"
-#include "BTDistanceBranch.h"
+#include "BTTask_WalkChase.h"
+#include "BTTask_Idle.h"
+
 
 CWarden::CWarden(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CMonster{ pGraphic_Device }
@@ -630,27 +627,20 @@ HRESULT CWarden::Ready_BehaviorTree()
 {
     // 루트 노드: Selector (적을 발견하면 따라가고, 아니면 순찰)
     CSelectorNode* pRoot = new CSelectorNode(L"Root");
-
-    // 조건 검사 노드: 적이 있는지 확인
-    CBTTask_DetectEnemy* pDetectEnemy = new CBTTask_DetectEnemy;
+    CRandomSelector* RandomSelector = new CRandomSelector();
 
     // 행동노드
-    CBTTask_Chase* pChase = new CBTTask_Chase;
-    CBTTask_Patrol* pPatrol = new CBTTask_Patrol;
-    CBTTask_Attack* pAttack = new CBTTask_Attack;
+    CBTTask_WalkChase* pChase = new CBTTask_WalkChase;
+    CBTTask_Idle* pIdle = new CBTTask_Idle;
 
-    // 공격, 추격,
-    CBTDistanceBranch* pDistanceBranch = new CBTDistanceBranch;
-    pDistanceBranch->Set_Actions(pAttack, pChase, m_fAttackDistance);
 
-    // 시퀀스
-    CSequenceNode* pChaseSequence = new CSequenceNode(L"ChaseSequence");
-    pChaseSequence->Add_Node(pDetectEnemy);
-    pChaseSequence->Add_Node(pDistanceBranch);
+    //RandomSelector->Add_Node();
+
 
     // 루트 노드에 추가
-    pRoot->Add_Node(pChaseSequence);
-    pRoot->Add_Node(pPatrol);
+    pRoot->Add_Node(pChase);
+    pRoot->Add_Node(RandomSelector);
+    pRoot->Add_Node(pIdle);
 
     // 최종 트리 설정
     m_pBehaviorTree = pRoot;

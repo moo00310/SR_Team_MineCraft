@@ -2,6 +2,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include <algorithm>
+#include <iostream>
 
 BEGIN(Client)
 enum class STATUS { NOT_STARTED, SUCCESS, FAIL, RUNNING, STATUS_END };

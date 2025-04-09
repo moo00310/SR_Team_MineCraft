@@ -646,7 +646,6 @@ void CSteve::Free()
 
 void CSteve::FrameCallback(int animType, int frame)
 {
-	cout << "스티브 애니메이션: " << animType << ", 프레임: " << frame << endl;
 	if (animType == Swing_FF && frame == 0)
 	{
 		m_pGameInstance->Play_Sound(TEXT("Player_Walk_Grass1"), SOUND_WALK1,this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
