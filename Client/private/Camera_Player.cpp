@@ -9,6 +9,7 @@ using namespace DirectX;
 
 #include "UI_Mgr.h"
 #include "MCTerrain.h"
+#include "Furnace.h"
 
 CCamera_Player::CCamera_Player(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CCamera{ pGraphic_Device }
@@ -251,8 +252,6 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     {
         ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
-
-
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
         CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
@@ -278,6 +277,17 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
             // 충돌한 오브젝트가 CBreakableCube인지 확인 후 형변환
             if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pHitObject)) {
+
+                if (CFurnace* _furnace = dynamic_cast<CFurnace*>(pHitObject)) {
+                    if (!g_bFurnaceUiOpen) {
+                        m_isActiveMouse = true;
+                        ShowCursor(true);
+                    }
+                    g_bFurnaceUiOpen = true;
+                    return;
+                }
+
+
                 // 충돌한 콜라이더를 CCollider_Cube로 형변환
                 CCollider_Cube* pCollider_Cube = static_cast<CCollider_Cube*>(pHitComponent);
                 if (!pCollider_Cube)

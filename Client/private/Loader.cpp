@@ -79,6 +79,7 @@
 #include "Bag.h"
 #include "Item.h"
 #include "CraftingTable.h"
+#include "FurnaceUi.h"
 
 //미션 관련
 #include "MissionControl.h"
@@ -495,6 +496,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceOn.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_FurnaceUi */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceUi"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceUi.png"), 1))))
+		return E_FAIL;
+
 	/* UI Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
@@ -786,11 +792,17 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Item"),
 		CItem::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
+	
 	/* For.Prototype_GameObject_CraftingTable*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTable"),
 		CCraftingTable::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	/* For.Prototype_GameObject_FurnaceUi*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_FurnaceUi"),
+		CFurnaceUi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/*================================================================================================*/
 
 	/* For.Prototype_GameObject_Furnace */

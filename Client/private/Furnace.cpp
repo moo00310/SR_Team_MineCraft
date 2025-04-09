@@ -23,6 +23,7 @@ HRESULT CFurnace::Initialize(void* pArg)
         return E_FAIL;
 
     __super::Initialize(pArg);
+
     m_fHardness = 1.5;
 
     m_itemName = ITEMNAME_FURANCE;
