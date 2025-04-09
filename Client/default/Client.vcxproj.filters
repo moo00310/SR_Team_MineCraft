@@ -339,6 +339,9 @@
     </Filter>
     <Filter Include="03.UI\09.Crafting">
       <UniqueIdentifier>{318ddc4e-c833-437c-a10b-072fec78c591}</UniqueIdentifier>
+</Filter>
+    <Filter Include="03.UI\11.FurnaceUi">
+      <UniqueIdentifier>{837d23d1-89f0-4a81-95eb-e97b9bf758cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -747,6 +750,15 @@
     </ClInclude>
     <ClInclude Include="..\public\Crafting.h">
       <Filter>03.UI\09.Crafting</Filter>
+ </ClInclude>
+    <ClInclude Include="..\public\Furnace.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FurnaceUi.h">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraftingTableCube.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1143,6 +1155,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Crafting.cpp">
       <Filter>03.UI\09.Crafting</Filter>
+     </ClCompile>
+    <ClCompile Include="..\private\Furnace.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FurnaceUi.cpp">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraftingTableCube.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

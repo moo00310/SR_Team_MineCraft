@@ -96,10 +96,11 @@ void CSlotInfo::Update(_float fTimeDelta)
 void CSlotInfo::Late_Update(_float fTimeDelta)
 {
 	/* 인벤토리 활성화되어있을때만 마우스 피킹 가능*/
-	if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
+	if (m_iSlotIndexNum >= 9 && (!g_bFurnaceUiOpen && !g_bMainInventoryOpen && !g_bMCraftingTableOpen))
 	{
-		return;
+        return;
 	}
+
 
 	/* 아이템 정보 저장*/
 	CMouse* pMouse = CMouse::Get_Instance();
@@ -334,12 +335,6 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 
 HRESULT CSlotInfo::Render()
 {
-    /* 인덱스가 9보다 큰데 인벤토리가 오픈 활성상태 아니면 렌더 안함*/
-    if (m_iSlotIndexNum >= 9 && !g_bMainInventoryOpen)
-    {
-        return S_OK;
-    }
-
     if (m_bCheck)
     {
         /* 아이템 이미지 렌더*/

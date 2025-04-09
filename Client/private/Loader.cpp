@@ -47,6 +47,8 @@
 #include "RedTulip.h"
 #include "ItemCube.h"
 #include "ItemRect.h"
+#include "Furnace.h"
+#include "CraftingTableCube.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -79,6 +81,7 @@
 #include "Item.h"
 #include "Crafting.h"
 #include "CraftingTable.h"
+#include "FurnaceUi.h"
 
 //미션 관련
 #include "MissionControl.h"
@@ -485,6 +488,26 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/rottenFlesh.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_FurnaceOff */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOff"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceOff.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_FurnaceOn */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOn"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceOn.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_FurnaceUi */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceUi"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceUi.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CraftingTable */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_CraftingTable"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/CraftingTable.png"), 1))))
+		return E_FAIL;
+
 	/* UI Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
@@ -786,13 +809,29 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CCrafting::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+
 	/* For.Prototype_GameObject_CraftingTable*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTable"),
 		CCraftingTable::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	
+
+	/* For.Prototype_GameObject_FurnaceUi*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_FurnaceUi"),
+		CFurnaceUi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/*================================================================================================*/
+
+	/* For.Prototype_GameObject_Furnace */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Furnace"),
+		CFurnace::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CraftingTableCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTableCube"),
+		CCraftingTableCube::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Dirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),
