@@ -40,7 +40,9 @@ HRESULT CTransform::Bind_Resource()
 
 HRESULT CTransform::Bind_Resource(CShader* pShader)
 {
-	D3DXMATRIX viewMatrix, projMatrix;
+	D3DXMATRIX viewMatrix, projMatrix, cameraWorldMatrix;
+	D3DXVECTOR4 cameraWorld;
+
 	// 디바이스에서 뷰 행렬 가져오기
 	if (FAILED(m_pGraphic_Device->GetTransform(D3DTS_VIEW, &viewMatrix)))
 		return E_FAIL;
@@ -49,11 +51,25 @@ HRESULT CTransform::Bind_Resource(CShader* pShader)
 	if (FAILED(m_pGraphic_Device->GetTransform(D3DTS_PROJECTION, &projMatrix)))
 		return E_FAIL;
 
+	// 카메라 월드 행렬 가져오기
+	D3DXMatrixInverse(&cameraWorldMatrix, 0, &viewMatrix);
+
+	// 카메라 월드 좌표 추출.
+	cameraWorld = 
+	{ 
+		cameraWorldMatrix.m[3][0],
+		cameraWorldMatrix.m[3][1],
+		cameraWorldMatrix.m[3][2],
+		cameraWorldMatrix.m[3][3]
+	};
+
 	if (FAILED(pShader->Bind_Matrix("g_WorldMatrix", &m_WorldMatrix)))
 		return E_FAIL;
 	if (FAILED(pShader->Bind_Matrix("g_ViewMatrix", &viewMatrix)))
 		return E_FAIL;
 	if (FAILED(pShader->Bind_Matrix("g_ProjMatrix", &projMatrix)))
+		return E_FAIL;
+	if (FAILED(pShader->Bind_Vector("g_CameraWorld", &cameraWorld)))
 		return E_FAIL;
 
 	return S_OK;

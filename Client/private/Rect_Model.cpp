@@ -19,14 +19,7 @@ HRESULT CRect_Model::Initialize(void* pArg)
 {
 	m_RederID = 2;
 
-	__super::Initialize(pArg);
-
-	flameSword = (CParticleSystem*)m_pGameInstance->PushPool(
-		LEVEL_STATIC,
-		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
-		LEVEL_STATIC,
-		LAYER_PARTICLE
-		);	
+	__super::Initialize(pArg);	
 
 	return S_OK;
 }
@@ -349,6 +342,16 @@ void CRect_Model::FireSword()
 		// 회전행렬 계산.
 		rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
 
+		if (flameSword == nullptr)
+		{
+			flameSword = (CParticleSystem*)m_pGameInstance->PushPool(
+				LEVEL_STATIC,
+				PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+				LEVEL_STATIC,
+				LAYER_PARTICLE
+			);
+		}
+
 		// 파티클 적용.
 		flameSword->Replay(boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
 
@@ -357,7 +360,7 @@ void CRect_Model::FireSword()
 	}
 	else
 	{
-		flameSword->Replay(_float3(0.f,0.f,0.f));
+		//flameSword->Replay(_float3(0.f,0.f,0.f));
 	}
 
 	

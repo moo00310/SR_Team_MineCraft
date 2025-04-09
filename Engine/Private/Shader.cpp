@@ -36,6 +36,11 @@ HRESULT CShader::Bind_Matrix(D3DXHANDLE hParameter, const _float4x4* pMatrix)
 	
 }
 
+HRESULT CShader::Bind_Vector(D3DXHANDLE hParameter, const _float4* pVector)
+{
+	return m_pEffect->SetVector(hParameter, pVector);
+}
+
 HRESULT CShader::SetFloat(const char* variableName, float value)
 {
 	if (!m_pEffect)
