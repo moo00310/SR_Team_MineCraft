@@ -329,4 +329,5 @@ void CUI_Mgr::Free()
 	m_InventoryBacklist.clear();
 	m_MouseItemlist.clear();
 	m_MouseItemFontlist.clear();
+	m_vecSlotFontRenderlist.clear();
 }

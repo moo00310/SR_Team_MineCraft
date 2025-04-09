@@ -322,7 +322,12 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 
         //pUI_Mgr->Split_ItemStack(m_iSlotIndexNum);
     }
-
+    
+    if (g_bMainInventoryOpen)
+    {
+        pUI_Mgr->Get_Crafting()->Crafing();
+    }
+    
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
 		return;
 }
@@ -434,7 +439,7 @@ HRESULT CSlotInfo::RenderItemCount(CTexture* pTextureCom, _int _TextureNum, _flo
 HRESULT CSlotInfo::SetUp_RenderState()
 {
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 100);
+    m_pGraphic_Device->SetRenderState(D3DRS_ALPHAREF, 150);
     m_pGraphic_Device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 
     return S_OK;

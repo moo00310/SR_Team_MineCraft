@@ -14,6 +14,7 @@
 #include "CheckBox.h"
 #include "Bag.h"
 #include "Item.h"
+#include "Crafting.h"
 
 BEGIN(Client)
 class CUI_Mgr final : public CBase
@@ -53,6 +54,7 @@ public:
 	CSlotInfo*						Get_Item(int slotIndex);
 	CBag*							Get_Bag()						{ return m_pBag; }
 	CItem*							Get_Item()						{ return m_pItem; }
+	CCrafting*						Get_Crafting()					{ return m_pCrafting; }
 
 	vector<CPlayerHP*>*				Get_vecPlayerHPlist(void)		{ return &m_vecPlayerHPlist; }
 	vector<CSlotInfo*>*				Get_vecSlotInfolist(void)		{ return &m_vecSlotInfolist; }
@@ -75,9 +77,11 @@ public:
 		Safe_AddRef(pSteve);
 	}
 
-	void	Set_PlayerHP_Shader(_bool _bPlayerHP_Shader)	{ m_bPlayerHP_Shader = _bPlayerHP_Shader; }
-	CBag*	Set_Bag(CBag* pBag)								{ return m_pBag = pBag; }
-	CItem*  Set_Item(CItem* pItem)							{ return m_pItem = pItem; }
+	void		Set_PlayerHP_Shader(_bool _bPlayerHP_Shader)	{ m_bPlayerHP_Shader = _bPlayerHP_Shader; }
+	CCrafting*	Set_Crafting(CCrafting* pCrafting)				{ return m_pCrafting = pCrafting; }
+	CItem*		Set_Item(CItem* pItem)							{ return m_pItem = pItem; }
+	CBag*		Set_Bag(CBag* pBag)								{ return m_pBag = pBag; }
+	
 
 private:
 	ITEMID	m_ItemID = ITEMID_END;
@@ -104,11 +108,11 @@ private:
 	list<CMouse_Item*>			m_MouseItemlist;
 	list<CMouse_ItemFont*>		m_MouseItemFontlist;
 
-	CBag*	m_pBag = { nullptr };
-	CItem*	m_pItem = { nullptr };
 	
-private:
-	CSteve* pSteve = { nullptr };
+	CCrafting*	m_pCrafting = { nullptr };
+	CSteve*		pSteve = { nullptr };
+	CItem*		m_pItem = { nullptr };
+	CBag*		m_pBag = { nullptr };
 
 public:
 	virtual void Free();
