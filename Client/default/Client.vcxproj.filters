@@ -726,7 +726,7 @@
     </ClInclude>
     <ClInclude Include="..\public\CraftingTable.h">
       <Filter>03.UI\08.CraftingTable</Filter>
-</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\ParticleFireCracker.h">
       <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
     </ClInclude>
@@ -741,6 +741,9 @@
     </ClInclude>
     <ClInclude Include="..\public\WaveUi.h">
       <Filter>08.Mission\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Furnace.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1134,6 +1137,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleSonicBoom.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Furnace.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

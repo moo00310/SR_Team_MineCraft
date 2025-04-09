@@ -47,6 +47,7 @@
 #include "RedTulip.h"
 #include "ItemCube.h"
 #include "ItemRect.h"
+#include "Furnace.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -484,6 +485,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/rottenFlesh.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_FurnaceOff */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOff"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceOff.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_FurnaceOn */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOn"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceOn.png"), 1))))
+		return E_FAIL;
+
 	/* UI Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
@@ -781,6 +792,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CCraftingTable::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	/*================================================================================================*/
+
+	/* For.Prototype_GameObject_Furnace */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Furnace"),
+		CFurnace::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Dirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),

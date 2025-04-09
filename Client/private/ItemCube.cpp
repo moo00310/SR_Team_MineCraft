@@ -155,6 +155,12 @@ HRESULT CItemCube::Set_ItemTypeAndBindTexture(ITEMNAME _name)
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
+    case Client::ITEMNAME_FURANCE:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOff"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
     default:
         break;
     }
