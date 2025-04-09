@@ -19,8 +19,8 @@ HRESULT CCrafting::Initialize_Prototype()
 HRESULT CCrafting::Initialize(void* pArg)
 {
 	/* 아이템 레시피 조합법 정의 */
-	RECIPE_DESC stick1 = { {{51, ITEMNAME_WOOD}, {53, ITEMNAME_WOOD}}, ITEMNAME_STICK, 1 };
-	RECIPE_DESC stick2 = { {{52, ITEMNAME_WOOD}, {54, ITEMNAME_WOOD}}, ITEMNAME_STICK, 1 };
+	RECIPE_DESC stick1 = { {{51, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1 };
+	RECIPE_DESC stick2 = { {{52, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1 };
 	
 	m_vecRecipelist.push_back(stick1);
 	m_vecRecipelist.push_back(stick2);
@@ -52,7 +52,6 @@ void CCrafting::Crafing()
 	if (pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount() > 0)
 		return;
 
-
 	for (const auto& recipe : m_vecRecipelist)
 	{
 		_bool bMatch = true;
@@ -72,16 +71,35 @@ void CCrafting::Crafing()
 
 		if (bMatch)
 		{
-			/* 레시피 조합 결과 아이템을 55번 슬롯에 넣기 */
-			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemName(recipe.resultItem);
-			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(recipe.resultCount);
-			//pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemID(ITEMID_END);
-
 			for (const auto& pair : recipe.inputPattern)
 			{
 				int iSlotIndex = pair.first;
-				pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemName(ITEMNAME_END);
+			
+				m_iItemCount += pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Get_ItemCount(); // => 5개 차감
+
+				if (pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Get_ItemCount() / 2 == 0)
+				{
+					pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemCount(0);
+					pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemName(ITEMNAME_END);
+					
+				}
+				else if (pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Get_ItemCount() / 2 == 1)
+				{
+					pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemCount(1);
+					
+				}
 			}
+
+			/* 결과 값 */
+			m_iItemCount /= 2;
+
+			/* 레시피 조합 결과 아이템을 55번 슬롯에 넣기 */
+			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemName(recipe.resultItem);
+			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(m_iItemCount);
+			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCountRender(true);
+			
+			m_iItemCount = 0;
+			//pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemID(ITEMID_END);
 
 			break;
 		}
