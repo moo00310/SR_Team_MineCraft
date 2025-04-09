@@ -48,6 +48,7 @@
 #include "ItemCube.h"
 #include "ItemRect.h"
 #include "Furnace.h"
+#include "CraftingTableCube.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -501,6 +502,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceUi.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_CraftingTable */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_CraftingTable"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/CraftingTable.png"), 1))))
+		return E_FAIL;
+
 	/* UI Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
@@ -808,6 +814,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Furnace */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Furnace"),
 		CFurnace::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CraftingTableCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTableCube"),
+		CCraftingTableCube::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Dirt */

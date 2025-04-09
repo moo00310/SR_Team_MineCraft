@@ -751,6 +751,9 @@
     <ClInclude Include="..\public\FurnaceUi.h">
       <Filter>03.UI\11.FurnaceUi</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CraftingTableCube.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1149,6 +1152,9 @@
     </ClCompile>
     <ClCompile Include="..\private\FurnaceUi.cpp">
       <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraftingTableCube.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

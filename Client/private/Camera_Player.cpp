@@ -10,6 +10,7 @@ using namespace DirectX;
 #include "UI_Mgr.h"
 #include "MCTerrain.h"
 #include "Furnace.h"
+#include "CraftingTableCube.h"
 
 CCamera_Player::CCamera_Player(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CCamera{ pGraphic_Device }
@@ -140,7 +141,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         Colliders = m_pTerrain->Active_Near_Chunk_Colliders(vSearchPos, 8.f);
     }
 
-    if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && !g_bMainInventoryOpen)
+    if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && !g_bMainInventoryOpen && !g_bFurnaceUiOpen)
     {
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
@@ -248,7 +249,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         m_DestroyCube->SetActive(false);
     }
 
-    if (m_pGameInstance->Key_Down(VK_RBUTTON) && !g_bMainInventoryOpen)
+    if (m_pGameInstance->Key_Down(VK_RBUTTON) && !g_bMainInventoryOpen && !g_bFurnaceUiOpen)
     {
         ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
@@ -279,11 +280,16 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pHitObject)) {
 
                 if (CFurnace* _furnace = dynamic_cast<CFurnace*>(pHitObject)) {
-                    if (!g_bFurnaceUiOpen) {
-                        m_isActiveMouse = true;
-                        ShowCursor(true);
-                    }
+                    m_isActiveMouse = true;
+                    ShowCursor(true);
                     g_bFurnaceUiOpen = true;
+                    return;
+                }
+
+                if (CCraftingTableCube* _craftingTable = dynamic_cast<CCraftingTableCube*>(pHitObject)) {
+                    m_isActiveMouse = true;
+                    ShowCursor(true);
+                    g_bMCraftingTableOpen = true;
                     return;
                 }
 

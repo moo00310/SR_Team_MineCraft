@@ -491,7 +491,18 @@ void CMCTerrain::Create_Cube(_float3 vMyPos, ITEMNAME eItemName, _float3 vCreate
             pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
             if (pCube) {
                 vector<D3DXVECTOR3> pos;
-                pos.push_back(vCreatePos);
+                pos.push_back(vCreatePos+ vDir);
+                pCube->Set_InstanceBuffer(pos, 0.6f);
+                pCube->Set_MyChunk(Compute_ChunkIndex(vCreatePos));
+                pCube->Set_BlockPositions(pos, eItemName);
+            }
+            break;
+        case Client::ITEMNAME_CRAFTINGTABLE:
+            m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTableCube"), LEVEL_YU, layerName);
+            pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
+            if (pCube) {
+                vector<D3DXVECTOR3> pos;
+                pos.push_back(vCreatePos+ vDir);
                 pCube->Set_InstanceBuffer(pos, 0.6f);
                 pCube->Set_MyChunk(Compute_ChunkIndex(vCreatePos));
                 pCube->Set_BlockPositions(pos, eItemName);
