@@ -38,14 +38,14 @@ void CGameMgr::Priority_Update(_float fTimeDelta)
 	// 20 마리 유지
 	m_fSpwanCoolTime += fTimeDelta;
 
-	if (m_fSpwanCoolTime >= 10.f && !m_pSun->Get_Sun())
-	{
-		int spawnCount = 20 - m_pGameInstance->GetActiveCount(TEXT("Layer_Monster"));
-		if (spawnCount == 0) return;
+	//if (m_fSpwanCoolTime >= 10.f && !m_pSun->Get_Sun())
+	//{
+	//	int spawnCount = 20 - m_pGameInstance->GetActiveCount(TEXT("Layer_Monster"));
+	//	if (spawnCount == 0) return;
 
-		Spwan_Monster(spawnCount);
-		m_fSpwanCoolTime = 0.f;
-	}
+	//	Spwan_Monster(spawnCount);
+	//	m_fSpwanCoolTime = 0.f;
+	//}
 
 }
 

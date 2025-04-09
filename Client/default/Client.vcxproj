@@ -186,6 +186,7 @@
     <ClInclude Include="..\public\CoalOre.h" />
     <ClInclude Include="..\public\CraftingTable.h" />
     <ClInclude Include="..\public\Crosshair.h" />
+    <ClInclude Include="..\public\CraftingTableCube.h" />
     <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\Client_Defines.h" />
     <ClInclude Include="..\public\Client_Enum.h" />
@@ -194,6 +195,8 @@
     <ClInclude Include="..\public\DestroyCube.h" />
     <ClInclude Include="..\public\Edition.h" />
     <ClInclude Include="..\public\FireCrackerLoad.h" />
+    <ClInclude Include="..\public\Furnace.h" />
+    <ClInclude Include="..\public\FurnaceUi.h" />
     <ClInclude Include="..\public\GameMgr.h" />
     <ClInclude Include="..\public\Grass.h" />
     <ClInclude Include="..\public\GrassDirt.h" />
@@ -320,12 +323,15 @@
     <ClCompile Include="..\private\CoalOre.cpp" />
     <ClCompile Include="..\private\CraftingTable.cpp" />
     <ClCompile Include="..\private\Crosshair.cpp" />
+    <ClCompile Include="..\private\CraftingTableCube.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
     <ClCompile Include="..\private\Cube_Model.cpp" />
     <ClCompile Include="..\private\DestroyCube.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
     <ClCompile Include="..\private\FireCrackerLoad.cpp" />
+    <ClCompile Include="..\private\Furnace.cpp" />
+    <ClCompile Include="..\private\FurnaceUi.cpp" />
     <ClCompile Include="..\private\GameMgr.cpp" />
     <ClCompile Include="..\private\Grass.cpp" />
     <ClCompile Include="..\private\GrassDirt.cpp" />

@@ -339,6 +339,9 @@
     </Filter>
     <Filter Include="03.UI\11.Crosshair">
       <UniqueIdentifier>{550ba6df-19c3-4c08-ba35-1c758e5a3fd2}</UniqueIdentifier>
+  </Filter>
+    <Filter Include="03.UI\11.FurnaceUi">
+      <UniqueIdentifier>{837d23d1-89f0-4a81-95eb-e97b9bf758cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -748,6 +751,15 @@
     <ClInclude Include="..\public\Crosshair.h">
       <Filter>03.UI\11.Crosshair</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Furnace.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FurnaceUi.h">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraftingTableCube.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1143,6 +1155,15 @@
     </ClCompile>
     <ClCompile Include="..\private\Crosshair.cpp">
       <Filter>03.UI\11.Crosshair</Filter>
+     </ClCompile>
+    <ClCompile Include="..\private\Furnace.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FurnaceUi.cpp">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraftingTableCube.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

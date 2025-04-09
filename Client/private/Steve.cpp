@@ -263,6 +263,16 @@ void CSteve::Move(_float fTimeDelta)
 	{
 		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_ROTTENFLESH, 1);
 	}
+
+	if (m_pGameInstance->Key_Down('T'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_FURANCE, 1);
+	}
+
+	if (m_pGameInstance->Key_Down('Y'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_CRAFTINGTABLE, 1);
+	}
 }
 
 HRESULT CSteve::Ready_Components()

@@ -8,17 +8,16 @@ BEGIN(Client)
 class CMissionControl :public CGameObject
 {
 public:
+	enum Stage {DAY1, WAVE1, DAY2, WAVE2, DAY3, WAVE3, STAGE_END};
+public:
 	struct missionDetail {
 		wstring name =L"";
 		wstring word =L"";
 		int count=0;
+		int finishCount = 0;
 		bool finish=false;
 	};
 
-	struct missionCheck {
-		wstring name = L"";
-		int count = 0;
-	};
 	struct showMission {
 		wstring word = L"";
 		int curCount = 0;
@@ -39,6 +38,7 @@ public:
 	vector<showMission> Get_MissionList();
 	bool Get_IsWave() { return m_bIsWave; }
 	bool Get_IsWaveStart() { return m_bIsWaveStart; }
+	int Get_CurrentStage() { return m_currentStage; }
 private:
 	void InitMissions1();
 	void InitMissions2();
@@ -51,20 +51,14 @@ private:
 	bool m_bNightFinish = false;
 	bool m_bIsWaveStart = false;
 	bool m_bIsWave = false;
-private:
-	int m_currentStage=0;
+
+	Stage m_currentStage= DAY1;
 	vector<vector<missionDetail>> m_Round1;
-	vector<vector<missionCheck>> m_Round1Finish;
 	vector<vector<missionDetail>> m_Round1Wave;
-	vector<vector<missionCheck>> m_Round1WaveFinish;
 	vector<vector<missionDetail>> m_Round2;
-	vector<vector<missionCheck>> m_Round2Finish;
 	vector<vector<missionDetail>> m_Round2Wave;
-	vector<vector<missionCheck>> m_Round2WaveFinish;
 	vector<vector<missionDetail>> m_Round3;
-	vector<vector<missionCheck>> m_Round3Finish;
 	vector<vector<missionDetail>> m_Round3Wave;
-	vector<vector<missionCheck>> m_Round3WaveFinish;
 public:
 	static CMissionControl* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

@@ -20,6 +20,7 @@ extern HWND g_hWnd;
 extern _bool g_bChangeLevel;
 extern _bool g_bMainInventoryOpen;
 extern _bool g_bMCraftingTableOpen;
+extern _bool g_bFurnaceUiOpen;
 extern _float g_fBright;
 extern LPD3DXFONT g_pTitleFont;
 extern LPD3DXFONT g_pDetailFont;
