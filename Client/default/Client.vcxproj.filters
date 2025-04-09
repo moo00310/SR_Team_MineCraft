@@ -361,14 +361,11 @@
     <Filter Include="04.Behavior_Tree\BTNode\Warden\Task\Idle">
       <UniqueIdentifier>{351b2b59-aa4f-4136-a0b9-8514c9260791}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Warden\Decorator\CheckElapsedTime">
-      <UniqueIdentifier>{f72e5ac2-1cda-47bf-9580-95c2171f8866}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04.Behavior_Tree\BTNode\Warden\Decorator\ChoseAttack">
-      <UniqueIdentifier>{bef3f71a-496f-42bf-beec-b442331a4b26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase">
       <UniqueIdentifier>{2c5ae45f-172c-4c5b-9a07-ef2af923f94a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Decorator\Is_Attack">
+      <UniqueIdentifier>{bef3f71a-496f-42bf-beec-b442331a4b26}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -805,8 +802,8 @@
     <ClInclude Include="..\public\BTTask_Idle.h">
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Idle</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\BTDecorator_ChoseAttack.h">
-      <Filter>04.Behavior_Tree\BTNode\Warden\Decorator\ChoseAttack</Filter>
+    <ClInclude Include="..\public\BTDecorator_IsAttack.h">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Decorator\Is_Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BTTask_WalkChase.h">
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
@@ -1234,8 +1231,8 @@
     <ClCompile Include="..\private\BTTask_Idle.cpp">
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Idle</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\BTDecorator_ChoseAttack.cpp">
-      <Filter>04.Behavior_Tree\BTNode\Warden\Decorator\ChoseAttack</Filter>
+    <ClCompile Include="..\private\BTDecorator_IsAttack.cpp">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Decorator\Is_Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BTTask_WalkChase.cpp">
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>

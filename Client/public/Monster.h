@@ -40,6 +40,7 @@ public:
 	void Chase_Player(float _fTimeDelta);
 	void LookAtPlayer(float _fTimeDelta);
 	void Init_BlackBoard();
+	bool GetAnimEnd(int type);
 
 public:
 	_float Get_ChaseTimeOver() { return m_ChaseTime; }
@@ -48,6 +49,8 @@ public:
 	_float Get_IDLETimeOver() { return m_IdleTime; }
 	void Set_IDLETimeOver(float _fTime) { m_IdleTime += _fTime; }
 
+	_float Get_isAttack() { return isAttack; }
+	void Set_isAttack(bool _b) { isAttack += _b; }
 protected:
 	CPawn* m_pTargetPawn = nullptr;
 
@@ -62,6 +65,11 @@ protected:
 	_bool m_isFind = { false };
 	_float m_ChaseTime = { 0.f };
 	_float m_IdleTime = { 0.f };
+	_bool isAttack = { false };
+
+protected:
+	bool m_bAnimEnd[ANIM_END];
+
 
 protected:
 	virtual HRESULT Ready_BehaviorTree();

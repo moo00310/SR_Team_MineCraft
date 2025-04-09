@@ -29,6 +29,12 @@ HRESULT CMonster::Initialize(void* pArg)
 
     m_pTargetPawn = static_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")));
     Safe_AddRef(m_pTargetPawn);
+    
+    for (size_t i = 0; i < ANIM_END; i++)
+    {
+        m_bAnimEnd[i] = false;
+    }
+
     m_sound = 0.5f;
 
     return S_OK;
@@ -142,6 +148,17 @@ void CMonster::Init_BlackBoard()
     m_isFind = { false };
     m_ChaseTime = { 0.f };
     m_IdleTime = { 0.f };
+    isAttack = { false };
+
+    for (size_t i = 0; i < ANIM_END; i++)
+    {
+        m_bAnimEnd[i] = false;
+    }
+}
+
+bool CMonster::GetAnimEnd(int type)
+{
+    return m_bAnimEnd[type];
 }
 
 void CMonster::Knock_back(const _float3& vforce)
