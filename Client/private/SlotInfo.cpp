@@ -96,7 +96,7 @@ void CSlotInfo::Update(_float fTimeDelta)
 void CSlotInfo::Late_Update(_float fTimeDelta)
 {
 	/* 인벤토리 활성화되어있을때만 마우스 피킹 가능*/
-	if (m_iSlotIndexNum >= 9 && (!g_bFurnaceUiOpen && !g_bMainInventoryOpen))
+	if (m_iSlotIndexNum >= 9 && (!g_bFurnaceUiOpen && !g_bMainInventoryOpen && !g_bMCraftingTableOpen))
 	{
         return;
 	}
