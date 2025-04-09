@@ -185,6 +185,7 @@
     <ClInclude Include="..\public\Clouds.h" />
     <ClInclude Include="..\public\CoalOre.h" />
     <ClInclude Include="..\public\CraftingTable.h" />
+    <ClInclude Include="..\public\Crosshair.h" />
     <ClInclude Include="..\public\CraftingTableCube.h" />
     <ClInclude Include="..\public\Cube.h" />
     <ClInclude Include="..\public\Client_Defines.h" />
@@ -321,6 +322,7 @@
     <ClCompile Include="..\private\Clouds.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
     <ClCompile Include="..\private\CraftingTable.cpp" />
+    <ClCompile Include="..\private\Crosshair.cpp" />
     <ClCompile Include="..\private\CraftingTableCube.cpp" />
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />

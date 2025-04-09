@@ -337,6 +337,9 @@
     <Filter Include="02.GameObjects\05.Particle\FireCracker">
       <UniqueIdentifier>{fd189827-f7ba-4082-ac1f-539345ed00e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\11.Crosshair">
+      <UniqueIdentifier>{550ba6df-19c3-4c08-ba35-1c758e5a3fd2}</UniqueIdentifier>
+  </Filter>
     <Filter Include="03.UI\11.FurnaceUi">
       <UniqueIdentifier>{837d23d1-89f0-4a81-95eb-e97b9bf758cb}</UniqueIdentifier>
     </Filter>
@@ -745,6 +748,9 @@
     <ClInclude Include="..\public\WaveUi.h">
       <Filter>08.Mission\Ui</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Crosshair.h">
+      <Filter>03.UI\11.Crosshair</Filter>
+    </ClInclude>
     <ClInclude Include="..\public\Furnace.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
@@ -1147,6 +1153,9 @@
     <ClCompile Include="..\private\ParticleSonicBoom.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Crosshair.cpp">
+      <Filter>03.UI\11.Crosshair</Filter>
+     </ClCompile>
     <ClCompile Include="..\private\Furnace.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>

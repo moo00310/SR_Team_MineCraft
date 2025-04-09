@@ -33,6 +33,7 @@
 #include "SkyBox.h"
 #include "Sun.h"
 #include "Clouds.h"
+#include "Crosshair.h"
 
 
 //지형 관련
@@ -358,9 +359,15 @@ HRESULT CLoader::Loading_For_MOOPlay()
 HRESULT CLoader::Loading_For_YUPlay()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Crosshair"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/crosshair/crosshair.png"), 1))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_MissionMainUi"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/missionMainUi.png"), 1))))
 		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_WaveUi"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/WaveUi.png"), 1))))
 		return E_FAIL;
@@ -716,6 +723,12 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+
+	/* For.Prototype_GameObject_Crosshair */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Crosshair"),
+		CCrosshair::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/* UI GameObject */
 	/*================================================================================================*/
 	/* For.Prototype_GameObject_MainInventory */
