@@ -228,7 +228,7 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down('C'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_WOOD, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_FURANCE, 1);
 	}
 	if (m_pGameInstance->Key_Down('V'))
 	{
@@ -257,7 +257,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('J'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_DIRT, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STICK, 1);
 	}
 	if (m_pGameInstance->Key_Down('H'))
 	{

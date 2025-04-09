@@ -78,13 +78,7 @@ void CCreeper::Update(_float fTimeDelta)
 
 void CCreeper::Late_Update(_float fTimeDelta)
 {
-    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
-    {
-        m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
-
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-            return;
-    }
+    __super::Late_Update(fTimeDelta);
 }
 
 HRESULT CCreeper::Render()
