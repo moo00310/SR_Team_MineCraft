@@ -8,7 +8,7 @@ texture g_Texture;
 float g_Bright;
 
 // 안개가 시작되는 거리.
-float g_fFogDistance = 10.f;
+float g_fFogDistance = 20.f;
 
 // 안개 색.
 vector g_vFogColor = vector(1.f, 1.f, 1.f, 1.f);
