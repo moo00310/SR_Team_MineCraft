@@ -2,6 +2,7 @@
 #include "Client_Defines.h"
 #include "GameObject.h"
 #include <algorithm>
+#include <iostream>
 
 BEGIN(Client)
 enum class STATUS { NOT_STARTED, SUCCESS, FAIL, RUNNING, STATUS_END };
@@ -120,30 +121,36 @@ class CRandomSelector : public CCompositeNode
 {
 protected:
 	virtual ~CRandomSelector() = default;
+
+private:
+	CNode* m_pCurrent = nullptr;
+
 public:
 	virtual STATUS Excute(CGameObject* _Obj, _float _fTimeDelta) override
 	{
-		for (CNode* iter : Get_ShuffeldNodes())
+		if (m_pCurrent == nullptr)
 		{
-			STATUS eResult = iter->Excute(_Obj, _fTimeDelta);
-
-			if (eResult == STATUS::SUCCESS)
-			{
-				return  STATUS::SUCCESS;
-			}
-			else if (eResult == STATUS::RUNNING)
-			{
-				return STATUS::RUNNING;
-			}
+			auto shuffled = Get_ShuffeldNodes();
+			m_pCurrent = shuffled[0];  // 하나만 선택
 		}
-		return STATUS::FAIL;
+
+		STATUS eResult = m_pCurrent->Excute(_Obj, _fTimeDelta);
+
+		if (eResult == STATUS::SUCCESS || eResult == STATUS::FAIL)
+		{
+			m_pCurrent = nullptr;  // 초기화
+		}
+
+		return eResult;
 	}
+	
 public:
 	virtual void Free() override
 	{
 		__super::Free();
 	}
 };
+
 //Decorator_If
 class CDecorator_If : public CCompositeNode
 {

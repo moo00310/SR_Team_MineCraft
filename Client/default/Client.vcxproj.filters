@@ -340,6 +340,33 @@
     <Filter Include="03.UI\09.Crafting">
       <UniqueIdentifier>{318ddc4e-c833-437c-a10b-072fec78c591}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\11.Crosshair">
+      <UniqueIdentifier>{550ba6df-19c3-4c08-ba35-1c758e5a3fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\11.FurnaceUi">
+      <UniqueIdentifier>{837d23d1-89f0-4a81-95eb-e97b9bf758cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Task\Attack_Near">
+      <UniqueIdentifier>{83225ec6-6c1a-4a1b-95f6-bb31fce6f8a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Task\Attack_Far">
+      <UniqueIdentifier>{0e2625fd-7f6d-42c4-97a2-2c6931e3b795}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Task\Find">
+      <UniqueIdentifier>{5bf8571f-b811-487b-b6c0-8649031aa847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Task\Run_Chase">
+      <UniqueIdentifier>{f03abd06-691a-4cea-a724-a1c3e2198ef2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Task\Idle">
+      <UniqueIdentifier>{351b2b59-aa4f-4136-a0b9-8514c9260791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase">
+      <UniqueIdentifier>{2c5ae45f-172c-4c5b-9a07-ef2af923f94a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Behavior_Tree\BTNode\Warden\Decorator\Is_Attack">
+      <UniqueIdentifier>{bef3f71a-496f-42bf-beec-b442331a4b26}</UniqueIdentifier>
+    </Filter>
     <Filter Include="03.UI\11.FurnaceUi">
       <UniqueIdentifier>{837d23d1-89f0-4a81-95eb-e97b9bf758cb}</UniqueIdentifier>
     </Filter>
@@ -766,6 +793,27 @@
     <ClInclude Include="..\public\CraftingTableCube.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BTTask_Attack_Near.h">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Attack_Near</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTTask_Attack_Far.h">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Attack_Far</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTTask_Find.h">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Find</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTTask_RunChase.h">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Run_Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTTask_Idle.h">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTDecorator_IsAttack.h">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Decorator\Is_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BTTask_WalkChase.h">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1173,6 +1221,27 @@
     </ClCompile>
     <ClCompile Include="..\private\CraftingTableCube.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_Attack_Near.cpp">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Attack_Near</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_Attack_Far.cpp">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Attack_Far</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_Find.cpp">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Find</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_RunChase.cpp">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Run_Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_Idle.cpp">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTDecorator_IsAttack.cpp">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Decorator\Is_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BTTask_WalkChase.cpp">
+      <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

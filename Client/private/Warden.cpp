@@ -1,11 +1,12 @@
 #include "Warden.h"
 
-#include "BTTask_DetectEnemy.h"
-#include "BTTask_Chase.h"
-#include "BTTask_Patrol.h"
-#include "BTDecorator_IsTargetNear.h"
-#include "BTTask_Attack.h"
-#include "BTDistanceBranch.h"
+#include "BTTask_WalkChase.h"
+#include "BTTask_Idle.h"
+#include "BTDecorator_IsAttack.h"
+#include "BTTask_Find.h"
+#include "BTTask_RunChase.h"
+#include "BTTask_Attack_Near.h"
+#include "BTTask_Attack_Far.h"
 
 CWarden::CWarden(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CMonster{ pGraphic_Device }
@@ -555,6 +556,7 @@ void CWarden::Motion_Attack(_float fTimeDelta)
         m_skelAnime->is_AnimtionEND(Attack_Arm_L) &&
         m_skelAnime->is_AnimtionEND(Attack_Pevis))
     {
+        m_bAnimEnd[ATTACK] = true;
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
     }
@@ -572,7 +574,7 @@ void CWarden::Motion_Attack2(_float fTimeDelta)
         m_skelAnime->is_AnimtionEND(Attack2_Arm_R)
         )
     {
-        m_eCurAnim = WALK;
+        m_bAnimEnd[ATTACK2] = true;
         isShootFollow = true;
     }
 
@@ -603,7 +605,7 @@ void CWarden::Motion_Find(_float fTimeDelta)
         m_skelAnime->is_AnimtionEND(Find_Neck) &&
         m_skelAnime->is_AnimtionEND(Find_Arm_L))
     {
-        m_eCurAnim = ATTACK;
+        m_bAnimEnd[FIND] = true;
     }
 
     m_skelAnime->Update_Animetion(Find_Pevis, fTimeDelta, 1);
@@ -630,27 +632,36 @@ HRESULT CWarden::Ready_BehaviorTree()
 {
     // 루트 노드: Selector (적을 발견하면 따라가고, 아니면 순찰)
     CSelectorNode* pRoot = new CSelectorNode(L"Root");
-
-    // 조건 검사 노드: 적이 있는지 확인
-    CBTTask_DetectEnemy* pDetectEnemy = new CBTTask_DetectEnemy;
+    CBTDecorator_IsAttack* pIsAttack = new CBTDecorator_IsAttack;
 
     // 행동노드
-    CBTTask_Chase* pChase = new CBTTask_Chase;
-    CBTTask_Patrol* pPatrol = new CBTTask_Patrol;
-    CBTTask_Attack* pAttack = new CBTTask_Attack;
+    CBTTask_WalkChase* pChase = new CBTTask_WalkChase;
+    CBTTask_Idle* pIdle = new CBTTask_Idle;
+    CRandomSelector* RandomSelector = new CRandomSelector;
 
-    // 공격, 추격,
-    CBTDistanceBranch* pDistanceBranch = new CBTDistanceBranch;
-    pDistanceBranch->Set_Actions(pAttack, pChase, m_fAttackDistance);
+    CSequenceNode* pNearAttack = new CSequenceNode(L"Near_Attack_Sequence");
+    CSequenceNode* pFarAttack = new CSequenceNode(L"Far_Attack_Sequence");
 
-    // 시퀀스
-    CSequenceNode* pChaseSequence = new CSequenceNode(L"ChaseSequence");
-    pChaseSequence->Add_Node(pDetectEnemy);
-    pChaseSequence->Add_Node(pDistanceBranch);
+    CBTTask_Find* pFind = new CBTTask_Find;
+    CBTTask_RunChase* pRunChase = new CBTTask_RunChase;
+    CBTTask_Attack_Near* pAttackNear = new CBTTask_Attack_Near;
+    CBTTask_Attack_Far* pAttackFar = new CBTTask_Attack_Far;
+
+    pNearAttack->Add_Node(pFind);
+    //pNearAttack->Add_Node(pRunChase);
+    pNearAttack->Add_Node(pAttackNear);
+
+    pFarAttack->Add_Node(pFind);
+    pFarAttack->Add_Node(pAttackFar);
+
+    pIsAttack->Set_DecoratorNodes(RandomSelector,nullptr);
+    RandomSelector->Add_Node(pNearAttack);
+    RandomSelector->Add_Node(pFarAttack);
 
     // 루트 노드에 추가
-    pRoot->Add_Node(pChaseSequence);
-    pRoot->Add_Node(pPatrol);
+    pRoot->Add_Node(pChase);
+    pRoot->Add_Node(pIsAttack);
+    pRoot->Add_Node(pIdle);
 
     // 최종 트리 설정
     m_pBehaviorTree = pRoot;
