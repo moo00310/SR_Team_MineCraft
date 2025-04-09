@@ -338,6 +338,7 @@ void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
 
     // 배경음악은 수동 등록
     LoadSound(L"MoogCity2", "../../FMOD/Assets/background/MoogCity2.wav", true);
+    LoadSound(L"Beginning", "../../FMOD/Assets/background/Beginning.wav", true);
     LoadSound(L"pigstep", "../../FMOD/Assets/background/pigstep.wav", true);
     LoadSound(L"sweden", "../../FMOD/Assets/background/sweden.wav", true);
 }

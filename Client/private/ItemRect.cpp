@@ -25,8 +25,8 @@ HRESULT CItemRect::Initialize(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-    m_fUpDownSpeed = 0.005f;
-    m_iUpDownFrame = 0;
+    m_fUpDownSpeed = 0.1f;
+    m_fUpDownTime = 0;
 
     m_pTransformCom->Scaling(0.5, 0.5, 0.5);
 
@@ -49,14 +49,16 @@ HRESULT CItemRect::Initialize(void* pArg)
 
 void CItemRect::Priority_Update(_float fTimeDelta)
 {
-    m_iUpDownFrame++;
-    if (m_iUpDownFrame > 20) {
-        m_iUpDownFrame = 0;
+    //아이템 위아래로 움직이는거 프레임말고 시간으로 바꿨음(프레임에 따라 속도가 달라지지 않도록)
+    m_fUpDownTime += fTimeDelta;
+    if (m_fUpDownTime > 1.f)
+    {
+        m_fUpDownTime = 0.f;
         m_fUpDownSpeed *= -1;
     }
     m_pTransformCom->Turn(_float3(0, 1, 0), fTimeDelta);
 
-    m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0, m_fUpDownSpeed, 0));
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3(0, m_fUpDownSpeed * fTimeDelta, 0));
 }
 
 void CItemRect::Update(_float fTimeDelta)

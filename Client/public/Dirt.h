@@ -20,6 +20,7 @@ public:
 	HRESULT Play_Destroy_Effect(const _float3& fPos);
 	//부수는 사운드
 	virtual void PlaySound_Hit(_float3 vPos)override;
+	virtual void Play_Create_Sound(_float3 vPos)override;
 
 protected:
 	HRESULT Ready_Components();

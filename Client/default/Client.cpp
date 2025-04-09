@@ -87,7 +87,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         fTimeAcc += pGameInstance->Get_TimeDelta(TEXT("Timer_Default"));
 
-        if (fTimeAcc >= 1.f / 60.f /*1초에 60번만 트루를 리턴한다. */ )
+        if (fTimeAcc >= 1.f / 120.f /*1초에 60번만 트루를 리턴한다. */ )
         {
             pGameInstance->Update_Timer(TEXT("Timer_60"));
 

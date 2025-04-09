@@ -22,6 +22,8 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(Ready_Layer_RainParticle(LAYER_PARTICLE)))
 		return E_FAIL;
 
+	m_pGameInstance->PlayBGM(L"Beginning");
+
 	return S_OK;
 }
 

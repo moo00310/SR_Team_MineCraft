@@ -124,25 +124,15 @@ void CSteve::Input_Key(_float fTimeDelta)
 	GetCursorInfo(&tCursorInfo);
 
 	if (tCursorInfo.flags == CURSOR_SHOWING)
+	{
+		//마우스 보일때 스티브 움직임 속도 없애기
+		m_pRigidbodyCom->Set_Velocity({ 0.f, 0.f, 0.f });
 		return;
+	}
 
 	if (m_pGameInstance->Key_Down(VK_LBUTTON))
 	{
 		isAttack = true;
-	}
-
-	if (m_pGameInstance->Key_Down(VK_LCONTROL))
-	{
-		if (m_isRun)
-		{
-			m_pRigidbodyCom->Set_Speed(m_fSpeed);
-			m_isRun = false;
-		}
-		else
-		{
-			m_pRigidbodyCom->Set_Speed(m_fRun_Speed);
-			m_isRun = true;
-		}
 	}
 
 	Move(fTimeDelta);
@@ -193,7 +183,7 @@ void CSteve::Move(_float fTimeDelta)
 		m_eCurAnim = WALK;
 
 		if (m_pRigidbodyCom->isGround())
-			PlayDashParticle(fTimeDelta);
+			PlayDashParticle(fTimeDelta * D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) * 0.05f); //현재 속도 만큼 빨리 파티클 나오도록
 	}
 	else
 	{
@@ -210,6 +200,30 @@ void CSteve::Move(_float fTimeDelta)
 		if (m_pRigidbodyCom->Jump(6.5f))
 		{
 			//m_pGameInstance->Play_Sound("event:/Built_Fail");
+		}
+	}
+
+	if (m_pGameInstance->Key_Down(VK_LCONTROL))
+	{
+		if (m_isRun)
+		{
+			m_pRigidbodyCom->Set_Speed(m_fSpeed);
+			m_isRun = false;
+		}
+		else
+		{
+			m_pRigidbodyCom->Set_Speed(m_fRun_Speed);
+			m_isRun = true;
+		}
+	}
+
+	//달리는 중에 w를 안누르고 있으면 달리기 해제
+	if (m_isRun)
+	{
+		if (!m_pGameInstance->Key_Pressing('W'))
+		{
+			m_pRigidbodyCom->Set_Speed(m_fSpeed);
+			m_isRun = false;
 		}
 	}
 
