@@ -127,6 +127,22 @@ PS_OUT PS_MAIN(PS_IN In)
     return Out;
 }
 
+// 구름은 안개 쉐이딩에 안 걸리게 따로 빼놈.
+PS_OUT PS_MAIN_CLOUD(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
+    
+    Out.vColor.rgb *= g_Bright;
+    
+    // 검정색이면 픽셀을 버림
+    if (Out.vColor.r == 0 && Out.vColor.g == 0 && Out.vColor.b == 0)
+        discard;
+
+    return Out;
+}
+
 PS_OUT PS_MAIN_SWORD_AURA(PS_IN In)
 {
     PS_OUT Out;
@@ -154,7 +170,7 @@ technique DefaultTechnique
         LIGHTING = false;
         CULLMODE = NONE;
         VertexShader = compile vs_3_0 VS_MAIN_SKYBOX();
-        PixelShader = compile ps_3_0 PS_MAIN();
+        PixelShader = compile ps_3_0 PS_MAIN_CLOUD();
     }
 
     pass ItemRectPass
