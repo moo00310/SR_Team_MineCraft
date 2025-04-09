@@ -337,6 +337,9 @@
     <Filter Include="02.GameObjects\05.Particle\FireCracker">
       <UniqueIdentifier>{fd189827-f7ba-4082-ac1f-539345ed00e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\11.FurnaceUi">
+      <UniqueIdentifier>{837d23d1-89f0-4a81-95eb-e97b9bf758cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -726,7 +729,7 @@
     </ClInclude>
     <ClInclude Include="..\public\CraftingTable.h">
       <Filter>03.UI\08.CraftingTable</Filter>
-</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\ParticleFireCracker.h">
       <Filter>02.GameObjects\05.Particle\FireCracker</Filter>
     </ClInclude>
@@ -741,6 +744,15 @@
     </ClInclude>
     <ClInclude Include="..\public\WaveUi.h">
       <Filter>08.Mission\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Furnace.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\FurnaceUi.h">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\CraftingTableCube.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1134,6 +1146,15 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleSonicBoom.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Furnace.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\FurnaceUi.cpp">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CraftingTableCube.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

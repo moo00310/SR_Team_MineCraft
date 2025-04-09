@@ -138,6 +138,15 @@ HRESULT CWaveUi::Render()
 
         RECT rect = { 10, 0, 160, 100 };
 
+        //switch (_control->Get_CurrentStage)
+        //{
+        //case 1:
+        //    break;
+        //case 3:
+        //    break;
+        //case 5:
+        //    break;
+        //}
         g_pTitleFont->DrawTextW(
             nullptr,
             L"WAVE 1",
