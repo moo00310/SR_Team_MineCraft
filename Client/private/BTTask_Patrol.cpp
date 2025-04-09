@@ -17,7 +17,7 @@ STATUS CBTTask_Patrol::Excute(CGameObject* _Obj, _float _fTimeDelta)
     m_fToIdle += _fTimeDelta;
 
    // 일정 시간이 지나면 새로운 랜덤 회전 설정
-   if (m_fElapsedTime > 3.0f && !m_isTurning)
+   if (m_fElapsedTime > 2.0f && !m_isTurning)
    {
        int randomValue = rand() % 361 - 180; // -180 ~ 180 정수값
        m_fTargetRotation = D3DXToRadian(static_cast<_float>(randomValue)); // 라디안 변환
