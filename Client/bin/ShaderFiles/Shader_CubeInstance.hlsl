@@ -86,20 +86,20 @@ PS_OUT PS_MAIN(PS_IN In)
     {                
         // 안개 색 입힘.
         Out.vColor.rgb = color * In.vBright;
+        
+        // 안개 색상 무시함.   
+        if (Out.vColor.r >= (g_vFogColor.r - distance) * In.vBright ||
+        Out.vColor.g >= (g_vFogColor.g - distance) * In.vBright ||
+        Out.vColor.b >= (g_vFogColor.b - distance) * In.vBright)
+        {
+            discard;
+        }
     }
     else
     {
         // 안개 범위 안이면 기본색.
         Out.vColor.rgb *= In.vBright;
-    }
-    
-    // 안개 색상 무시함.   
-    if (Out.vColor.r >= (g_vFogColor.r - distance) * In.vBright ||
-        Out.vColor.g >= (g_vFogColor.g - distance) * In.vBright ||
-        Out.vColor.b >= (g_vFogColor.b - distance) * In.vBright)
-    {
-        discard;
-    }
+    }       
     
     return Out;
 }
