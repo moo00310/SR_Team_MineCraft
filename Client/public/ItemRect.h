@@ -44,8 +44,8 @@ protected:
 	CRigidbody* m_pRigidbodyCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
 
-	int m_iUpDownFrame{ 0 };
-	float m_fUpDownSpeed{ 0.f };
+	_float m_fUpDownTime{ 0 };
+	_float m_fUpDownSpeed{ 0.f };
 
 	ITEMNAME m_eItemName{ ITEMNAME_END };
 

@@ -31,14 +31,14 @@ void CBreakableRect::Priority_Update(_float fTimeDelta)
         Destroy();
     }
 
-    for (auto& pair : m_Colliders)
-    {
-        if (!pair.second)
-            continue;
+    //for (auto& pair : m_Colliders)
+    //{
+    //    if (!pair.second)
+    //        continue;
 
-        pair.second->Set_bColliderActive(false);
+    //    pair.second->Set_bColliderActive(false);
 
-    }
+    //}
 }
 
 void CBreakableRect::Update(_float fTimeDelta)
@@ -71,16 +71,16 @@ HRESULT CBreakableRect::Render()
         return E_FAIL;
     m_pShaderCom->End();
 
-    for (auto& pair : m_Colliders)
-    {
-        if (!pair.second)
-            continue;
+    //for (auto& pair : m_Colliders)
+    //{
+    //    if (!pair.second)
+    //        continue;
 
-        if (pair.second->Get_bColliderActive())
-        {
-            pair.second->Render_Collider(true);
-        }
-    }
+    //    if (pair.second->Get_bColliderActive())
+    //    {
+    //        pair.second->Render_Collider(true);
+    //    }
+    //}
 
     return S_OK;
 }

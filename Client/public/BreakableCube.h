@@ -67,7 +67,7 @@ public:
 	virtual HRESULT Delete_Cube(_float3 fPos);
 	virtual HRESULT Create_Cube(_float3 fPos, _float3 _Dir);
 
-
+	virtual void Play_Create_Sound(_float3 vPos);
 
 	//블럭 경도 가지고 오는 코드
 	_float Get_Hardness() { return m_fHardness; }

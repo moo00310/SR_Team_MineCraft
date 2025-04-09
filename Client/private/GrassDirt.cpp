@@ -88,6 +88,11 @@ void CGrassDirt::PlaySound_Hit(_float3 vPos)
 
 }
 
+void CGrassDirt::Play_Create_Sound(_float3 vPos)
+{
+    m_pGameInstance->Play_Sound(TEXT("Gravel_dig1"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+}
+
 HRESULT CGrassDirt::Ready_Components()
 {
     /* For.Com_Texture */

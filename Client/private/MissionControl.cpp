@@ -200,6 +200,7 @@ void CMissionControl::Update(_float fTimeDelta)
         if (m_checkFinishStage) {
             m_currentStage = WAVE1;
             m_bDayFinish = true;
+            m_pGameInstance->Play_Sound(TEXT("raidhorn_02"), SOUND_EVENT, this, 1.0f, m_pPlayer->GetPos());
             m_pGameInstance->PlayBGM(L"MoogCity2");
             m_sun->Set_bAddTime();     
             m_bIsWaveStart = true;
@@ -246,6 +247,7 @@ void CMissionControl::Update(_float fTimeDelta)
         if (m_checkFinishStage) {
             m_currentStage = WAVE2;
             m_bDayFinish = true;
+            m_pGameInstance->Play_Sound(TEXT("raidhorn_02"), SOUND_EVENT, this, 1.0f, m_pPlayer->GetPos());
             m_pGameInstance->PlayBGM(L"MoogCity2");
             m_sun->Set_bAddTime();
             m_bIsWaveStart = true;
@@ -292,6 +294,7 @@ void CMissionControl::Update(_float fTimeDelta)
         if (m_checkFinishStage) {
             m_currentStage = WAVE3;
             m_bDayFinish = true;
+            m_pGameInstance->Play_Sound(TEXT("raidhorn_02"), SOUND_EVENT, this, 1.0f, m_pPlayer->GetPos());
             m_pGameInstance->PlayBGM(L"MoogCity2");
             m_sun->Set_bAddTime();
             m_bIsWaveStart = true;

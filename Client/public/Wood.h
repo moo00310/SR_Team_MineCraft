@@ -15,10 +15,11 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
-	HRESULT Drop_Item_OnDestroy(const _float3& fPos);
-	HRESULT Play_Destroy_Effect(const _float3& fPos)override;
+	HRESULT Drop_Item_OnDestroy(const _float3& vPos);
+	HRESULT Play_Destroy_Effect(const _float3& vPos)override;
 	//부수는 사운드
 	virtual void PlaySound_Hit(_float3 vPos) override;
+	virtual void Play_Create_Sound(_float3 vPos) override;
 
 protected:
 	HRESULT Ready_Components();
