@@ -148,18 +148,18 @@ void CBreakableCube::Set_BlockPositions(vector<_float3> position, ITEMNAME _name
 }
 
 
-HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
+HRESULT CBreakableCube::Create_Cube(_float3 vPos, _float3 _Dir)
 {
     int brightIndex = 0;
     // 2. 벡터에서 해당 위치 추가
     for (int i = 0; i < m_vecPositions.size(); ++i) {
-        if (fPos.x == m_vecPositions[i].x && fPos.y == m_vecPositions[i].y && fPos.z == m_vecPositions[i].z) {
+        if (vPos.x == m_vecPositions[i].x && vPos.y == m_vecPositions[i].y && vPos.z == m_vecPositions[i].z) {
             brightIndex = i;
             break;
         }
     }
 
-    _float3 blockPos = fPos + _Dir;
+    _float3 blockPos = vPos + _Dir;
     m_vecPositions.push_back(blockPos);
     m_vecBrights.push_back(m_vecBrights[brightIndex]);
 
@@ -190,16 +190,23 @@ HRESULT CBreakableCube::Create_Cube(_float3 fPos, _float3 _Dir)
     // 4. 인스턴스 버퍼 업데이트
     m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 
+    Play_Create_Sound(vPos);
+
     return S_OK;
 }
 
+void CBreakableCube::Play_Create_Sound(_float3 vPos)
+{
+    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+}
 
-HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
+
+HRESULT CBreakableCube::Delete_Cube(_float3 vPos)
 {
     _int3 key{
-    static_cast<_int>(fPos.x),
-    static_cast<_int>(fPos.y),
-    static_cast<_int>(fPos.z)
+    static_cast<_int>(vPos.x),
+    static_cast<_int>(vPos.y),
+    static_cast<_int>(vPos.z)
     };
 
     auto it = m_Colliders.find(key);
@@ -210,17 +217,17 @@ HRESULT CBreakableCube::Delete_Cube(_float3 fPos)
     if (FAILED(Delete_Component(TEXT("Com_Collider_Cube"), pCollider)))
         return E_FAIL;
 
-    if (FAILED(Drop_Item_OnDestroy(fPos)))
+    if (FAILED(Drop_Item_OnDestroy(vPos)))
         return E_FAIL;
 
-    if (FAILED(Play_Destroy_Effect(fPos)))
+    if (FAILED(Play_Destroy_Effect(vPos)))
         return E_FAIL;
 
     for (size_t i = 0; i < m_vecPositions.size(); ++i)
     {
-        if (m_vecPositions[i].x == fPos.x &&
-            m_vecPositions[i].y == fPos.y &&
-            m_vecPositions[i].z == fPos.z)
+        if (m_vecPositions[i].x == vPos.x &&
+            m_vecPositions[i].y == vPos.y &&
+            m_vecPositions[i].z == vPos.z)
         {
             m_vecPositions.erase(m_vecPositions.begin() + i);
             m_vecBrights.erase(m_vecBrights.begin() + i);
@@ -436,7 +443,7 @@ HRESULT CBreakableCube::Ready_Components()
     return S_OK;
 }
 
-HRESULT CBreakableCube::Drop_Item_OnDestroy(const _float3& fPos)
+HRESULT CBreakableCube::Drop_Item_OnDestroy(const _float3& vPos)
 {
     return E_NOTIMPL;
 }

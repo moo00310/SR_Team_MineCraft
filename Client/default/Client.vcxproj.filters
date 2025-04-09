@@ -367,6 +367,12 @@
     <Filter Include="04.Behavior_Tree\BTNode\Warden\Decorator\Is_Attack">
       <UniqueIdentifier>{bef3f71a-496f-42bf-beec-b442331a4b26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\11.FurnaceUi">
+      <UniqueIdentifier>{837d23d1-89f0-4a81-95eb-e97b9bf758cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\12.Crosshair">
+      <UniqueIdentifier>{550ba6df-19c3-4c08-ba35-1c758e5a3fd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -776,7 +782,7 @@
       <Filter>03.UI\09.Crafting</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Crosshair.h">
-      <Filter>03.UI\11.Crosshair</Filter>
+      <Filter>03.UI\12.Crosshair</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Furnace.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
@@ -1205,7 +1211,7 @@
       <Filter>03.UI\09.Crafting</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Crosshair.cpp">
-      <Filter>03.UI\11.Crosshair</Filter>
+      <Filter>03.UI\12.Crosshair</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Furnace.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>

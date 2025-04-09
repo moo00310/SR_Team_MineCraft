@@ -101,7 +101,7 @@ HRESULT CGameInstance::Draw()
 
 	m_pRenderer->Draw();
 
-	m_pCollider_Manager->Render();
+	//m_pCollider_Manager->Render();
 
 	m_pLevel_Manager->Render();
 
