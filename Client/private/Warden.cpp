@@ -25,7 +25,7 @@ HRESULT CWarden::Initialize_Prototype()
 HRESULT CWarden::Initialize(void* pArg)
 {
     m_MonsterType = MT_WARDEN;
-    m_fAttackDistance = 10.f;
+    m_fAttackDistance = 3.f;
     m_fSpeed = 1.5f;
     m_Hp = 100.f;
     m_MaxHp = 100.f;
@@ -47,7 +47,6 @@ HRESULT CWarden::Initialize(void* pArg)
     // 콜백 등록
     m_skelAnime->SetFrameCallback(std::bind(&CWarden::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
 
-    // 임시 스폰
     m_pTransformCom->Set_State(CTransform::STATE_POSITION,_float3(10, 15, 10));
 	return S_OK;
 }
@@ -71,7 +70,14 @@ void CWarden::Update(_float fTimeDelta)
 
 void CWarden::Late_Update(_float fTimeDelta)
 {
-    __super::Late_Update(fTimeDelta);
+    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+    {
+
+        m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+            return;
+    }
 }
 
 HRESULT CWarden::Render()
@@ -573,15 +579,12 @@ void CWarden::Motion_Attack2(_float fTimeDelta)
         )
     {
         m_eCurAnim = WALK;
-        isShootFollow = true;
     }
 
     m_skelAnime->Update_Animetion(Attack2_Pevis, fTimeDelta, 1);
     m_skelAnime->Update_Animetion(Attack2_Neck, fTimeDelta, 2);
     m_skelAnime->Update_Animetion(Attack2_Arm_L, fTimeDelta, 5);
     m_skelAnime->Update_Animetion(Attack2_Arm_R, fTimeDelta, 6);
-
-    Turn(fTimeDelta);
 }
 
 void CWarden::Motion_Dead(_float fTimeDelta)
@@ -617,13 +620,6 @@ void CWarden::Motion_Find(_float fTimeDelta)
 
 void CWarden::Turn(_float fTimeDelta)
 {
-    if (isShootFollow)
-    {
-        m_ShootPos = m_TargetPos;
-        m_ShootPos.y += 1.f;
-    }
-    
-    m_pTransformCom->LookAt_XZ(m_ShootPos);
 }
 
 HRESULT CWarden::Ready_BehaviorTree()
@@ -686,12 +682,6 @@ CGameObject* CWarden::Clone(void* pArg)
 
 void CWarden::FrameCallback(int animType, int frame)
 {
-    if (animType == CWarden::Attack2_Pevis &&
-        frame == 1)
-    {
-        isShootFollow = false;
-    }
-
 }
 
 void CWarden::Free()
