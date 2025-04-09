@@ -78,7 +78,13 @@ void CMonster::Update(_float fTimeDelta)
 
 void CMonster::Late_Update(_float fTimeDelta)
 {
-  
+    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+    {
+        m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+            return;
+    }
+
 }
 
 HRESULT CMonster::Render()
@@ -102,7 +108,6 @@ void CMonster::Chase_Player(float _fTimeDelta)
     {
         m_pTransformCom->LookAt_XZ(m_TargetPos);
         m_pRigidbodyCom->Chase(m_TargetPos, 2.f);
-        //m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTargetPos.x, vTargetPos.y, vTargetPos.z), _fTimeDelta, 1.0f);
     }
     else
     {
@@ -139,13 +144,10 @@ void CMonster::Knock_back(const _float3& vforce)
 
     _float3 temp = {};
     D3DXVec3Normalize(&temp, &vforce);
-    temp *= 3.f;
-    temp.y = 4.f;
+    temp *= 3.f;     temp.y = 4.f;
 
     m_pRigidbodyCom->Knock_back(temp);
-
-    _float3 vTarget = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-    m_pTransformCom->LookAt_XZ(vTarget);
+    m_pTransformCom->LookAt_XZ(m_TargetPos);
 
     int random = rand() % 10;
     switch (m_MonsterType)
