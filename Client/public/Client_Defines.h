@@ -20,6 +20,7 @@ extern HWND g_hWnd;
 extern _bool g_bChangeLevel;
 extern _bool g_bMainInventoryOpen;
 extern _bool g_bMCraftingTableOpen;
+extern _bool g_bFurnaceUiOpen;
 extern _float g_fBright;
 extern LPD3DXFONT g_pTitleFont;
 extern LPD3DXFONT g_pDetailFont;
@@ -27,8 +28,8 @@ extern LPD3DXFONT g_pWaveFont;
 
 using namespace Client;
 
-#define Rect_Model_Count 17
-#define Cube_Model_Count 7
+#define Rect_Model_Count 18
+#define Cube_Model_Count 9
 #define Item_Textue_Count 27
 
 

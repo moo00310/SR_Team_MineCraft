@@ -46,6 +46,9 @@ private:
 
 	HRESULT Ready_Layer_Missions(const _wstring& strLayerTag);
 
+	HRESULT Ready_Layer_Crosshair(const _wstring& strLayerTag);
+	
+
 private:
 	wchar_t m_szFPS[20]{};
 	float  ftime = { 0 };

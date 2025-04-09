@@ -64,26 +64,35 @@ void CItemRect::Update(_float fTimeDelta)
     _float fDist = Compute_PlayerDistance();
 
 
-    //먹어서 사라지는 거리
-    if (fDist < 0.2f)
+    if (m_fTime < m_fCanGetTime)
     {
-        m_pGameInstance->Play_Sound(TEXT("Minecraft - Item Pop"), SOUND_ITEM, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-
-        Destroy();
-        CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
+        m_fTime += fTimeDelta;
     }
-    //플레이어한테 딸려오는 거리
-    else if (fDist < 2.0f)
+    else
     {
-        _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
-        m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
+        //먹어서 사라지는 거리
+        if (fDist < 0.2f)
+        {
+            //OnDropItem(m_eItemName);
+
+            m_pGameInstance->Play_Sound(TEXT("Minecraft - Item Pop"), SOUND_ITEM, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+            Destroy();
+            CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
+        }
+        //플레이어한테 딸려오는 거리
+        else if (fDist < 2.0f)
+        {
+            _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
+            m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
+        }
     }
 
     if (!m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.f))
         return;
 
     list<CCollider*> Colliders;
-    Colliders = m_pTerrain->Active_Current_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
+    Colliders = m_pTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 3.f);
 
     //플레이어와 거리가 가까우면 중력적용
     m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.3f);

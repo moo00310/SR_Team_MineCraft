@@ -228,11 +228,11 @@ void CSteve::Move(_float fTimeDelta)
 
 	if (m_pGameInstance->Key_Down('C'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_WOOD_PICKAXE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_FURANCE, 1);
 	}
 	if (m_pGameInstance->Key_Down('V'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STONE_SWORD, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_FURANCE, 1);
 	}
 	if (m_pGameInstance->Key_Down('B'))
 	{
@@ -257,11 +257,21 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('J'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_DIRT, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STICK, 1);
 	}
 	if (m_pGameInstance->Key_Down('H'))
 	{
 		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_ROTTENFLESH, 1);
+	}
+
+	if (m_pGameInstance->Key_Down('T'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_FURANCE, 1);
+	}
+
+	if (m_pGameInstance->Key_Down('Y'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_CRAFTINGTABLE, 1);
 	}
 }
 

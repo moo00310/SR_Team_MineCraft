@@ -25,7 +25,7 @@ HRESULT CWarden::Initialize_Prototype()
 HRESULT CWarden::Initialize(void* pArg)
 {
     m_MonsterType = MT_WARDEN;
-    m_fAttackDistance = 3.f;
+    m_fAttackDistance = 10.f;
     m_fSpeed = 1.5f;
     m_Hp = 100.f;
     m_MaxHp = 100.f;
@@ -47,6 +47,7 @@ HRESULT CWarden::Initialize(void* pArg)
     // 콜백 등록
     m_skelAnime->SetFrameCallback(std::bind(&CWarden::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
 
+    // 임시 스폰
     m_pTransformCom->Set_State(CTransform::STATE_POSITION,_float3(10, 15, 10));
 	return S_OK;
 }
@@ -70,14 +71,7 @@ void CWarden::Update(_float fTimeDelta)
 
 void CWarden::Late_Update(_float fTimeDelta)
 {
-    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
-    {
-
-        m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
-
-        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-            return;
-    }
+    __super::Late_Update(fTimeDelta);
 }
 
 HRESULT CWarden::Render()
@@ -352,9 +346,6 @@ HRESULT CWarden::Ready_Animation()
     /*----------
      Find 모션
     --------*/
-
-    // 포효 좀더 길게
-
     mat2 = {};
     mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-30));
 
@@ -430,27 +421,63 @@ HRESULT CWarden::Ready_Animation()
     mat2 = {};
     mat2.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(70));
 
+    mat6 = {};
+    mat6.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(120));
+
     mat3 = {};
     mat3.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-30));
 
     mat4 = {};
-    mat4.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-30));
+    mat4.Turn_Radian(_float3(1.5f, -2.f, -0.5f), D3DXToRadian(-110));
+
+    mat5 = {};
+    mat5.Turn_Radian(_float3(1.5f, 2.f, 0.5f), D3DXToRadian(-110));
+
+    mat7 = {};
+    mat7.Turn_Radian(_float3(1.5f, -1.f, -1.f), D3DXToRadian(50));
+
+    mat8 = {};
+    mat8.Turn_Radian(_float3(1.5f, 1.f, 1.f), D3DXToRadian(50));
 
     KEYFREAME Attack2_Pelvis_1 = { 0.f, mat };
-    KEYFREAME Attack2_Pelvis_2 = { 1.f, mat2 };
+    KEYFREAME Attack2_Pelvis_2 = { 1.2f, mat2 };
     KEYFREAME Attack2_Pelvis_3 = { 1.5f,  mat3 };
     KEYFREAME Attack2_Pelvis_4 = { 2.f,  mat3 };
 
+    KEYFREAME Attack2_Neck_1 = { 0.f, mat };
+    KEYFREAME Attack2_Neck_2 = { 1.2f, mat6 };
+    KEYFREAME Attack2_Neck_3 = { 1.5f,  mat3 };
+    KEYFREAME Attack2_Neck_4 = { 2.f,  mat3 };
+
+    KEYFREAME Attack2_ArmR_1 = { 0.f, mat };
+    KEYFREAME Attack2_ArmR_2 = { 1.2f, mat4 };
+    KEYFREAME Attack2_ArmR_3 = { 1.5f,  mat7 };
+    KEYFREAME Attack2_ArmR_4 = { 2.f,  mat7 };
+
+    KEYFREAME Attack2_ArmL_1 = { 0.f, mat };
+    KEYFREAME Attack2_ArmL_2 = { 1.2f, mat5 };
+    KEYFREAME Attack2_ArmL_3 = { 1.5f,  mat8 };
+    KEYFREAME Attack2_ArmL_4 = { 2.f,  mat8 };
 
     m_skelAnime->Add_Animation(ANIM_type::Attack2_Pevis, Attack2_Pelvis_1);
     m_skelAnime->Add_Animation(ANIM_type::Attack2_Pevis, Attack2_Pelvis_2);
     m_skelAnime->Add_Animation(ANIM_type::Attack2_Pevis, Attack2_Pelvis_3);
     m_skelAnime->Add_Animation(ANIM_type::Attack2_Pevis, Attack2_Pelvis_4);
 
-    m_skelAnime->Add_Animation(ANIM_type::Attack2_Neck, Attack2_Pelvis_1);
-    m_skelAnime->Add_Animation(ANIM_type::Attack2_Neck, Attack2_Pelvis_2);
-    m_skelAnime->Add_Animation(ANIM_type::Attack2_Neck, Attack2_Pelvis_3);
-    m_skelAnime->Add_Animation(ANIM_type::Attack2_Neck, Attack2_Pelvis_4);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Neck, Attack2_Neck_1);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Neck, Attack2_Neck_2);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Neck, Attack2_Neck_3);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Neck, Attack2_Neck_4);
+
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Arm_R, Attack2_ArmR_1);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Arm_R, Attack2_ArmR_2);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Arm_R, Attack2_ArmR_3);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Arm_R, Attack2_ArmR_4);
+
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Arm_L, Attack2_ArmL_1);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Arm_L, Attack2_ArmL_2);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Arm_L, Attack2_ArmL_3);
+    m_skelAnime->Add_Animation(ANIM_type::Attack2_Arm_L, Attack2_ArmL_4);
 
 
     /*----------
@@ -540,13 +567,21 @@ void CWarden::Motion_Attack(_float fTimeDelta)
 void CWarden::Motion_Attack2(_float fTimeDelta)
 {
     if (m_skelAnime->is_AnimtionEND(Attack2_Neck) &&
-        m_skelAnime->is_AnimtionEND(Attack2_Pevis))
+        m_skelAnime->is_AnimtionEND(Attack2_Pevis) &&
+        m_skelAnime->is_AnimtionEND(Attack2_Arm_L)&&
+        m_skelAnime->is_AnimtionEND(Attack2_Arm_R)
+        )
     {
         m_eCurAnim = WALK;
+        isShootFollow = true;
     }
 
     m_skelAnime->Update_Animetion(Attack2_Pevis, fTimeDelta, 1);
     m_skelAnime->Update_Animetion(Attack2_Neck, fTimeDelta, 2);
+    m_skelAnime->Update_Animetion(Attack2_Arm_L, fTimeDelta, 5);
+    m_skelAnime->Update_Animetion(Attack2_Arm_R, fTimeDelta, 6);
+
+    Turn(fTimeDelta);
 }
 
 void CWarden::Motion_Dead(_float fTimeDelta)
@@ -576,11 +611,19 @@ void CWarden::Motion_Find(_float fTimeDelta)
     m_skelAnime->Update_Animetion(Find_Arm_R, fTimeDelta, 5);
     m_skelAnime->Update_Animetion(Find_Arm_L, fTimeDelta, 6);
 
+    // 여기다 안두면 애니메이션어 덛어씌워짐
     LookAtPlayer(fTimeDelta);
 }
 
 void CWarden::Turn(_float fTimeDelta)
 {
+    if (isShootFollow)
+    {
+        m_ShootPos = m_TargetPos;
+        m_ShootPos.y += 1.f;
+    }
+    
+    m_pTransformCom->LookAt_XZ(m_ShootPos);
 }
 
 HRESULT CWarden::Ready_BehaviorTree()
@@ -643,6 +686,12 @@ CGameObject* CWarden::Clone(void* pArg)
 
 void CWarden::FrameCallback(int animType, int frame)
 {
+    if (animType == CWarden::Attack2_Pevis &&
+        frame == 1)
+    {
+        isShootFollow = false;
+    }
+
 }
 
 void CWarden::Free()

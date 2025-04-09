@@ -79,6 +79,20 @@ HRESULT CItem::Initialize(void* pArg)
         {ITEMNAME::ITEM_WEPON_1, L"°Å´ëÇÑ ºÓÀº °Ë"},
         {ITEMNAME::ITEMNAME_WOOD_PICKAXE, L"³ª¹« °î±ªÀÌ"}
     };
+
+    UIOBJECT_DESC Desc{};
+    
+    Desc.fSizeX = 200.f;
+    Desc.fSizeY = 70.f;
+    Desc.fX = m_fX;
+    Desc.fY = m_fY;
+    
+    if (FAILED(__super::Initialize(&Desc)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Components()))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -102,6 +116,26 @@ HRESULT CItem::Render()
 {
     if (m_pFont != nullptr && m_bItemTextRender && *m_bItemTextRender)
     {
+
+        if (FAILED(m_pTextureCom->Bind_Resource(0)))
+            return E_FAIL;
+
+        if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+            return E_FAIL;
+
+        if (FAILED(m_pTransformCom->Bind_Resource()))
+            return E_FAIL;
+
+        __super::Begin();
+
+        m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
+        m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3((m_fX - g_iWinSizeX * 0.5f) + 120.f,  ( - m_fY + g_iWinSizeY * 0.5f) + 20.f, 0.f));
+
+        if (FAILED(m_pVIBufferCom->Render()))
+            return E_FAIL;
+
+        __super::End();
+
         m_pFont->DrawTextW(
             NULL,
             m_strText.c_str(),
@@ -143,6 +177,18 @@ void CItem::ItemMatch(ITEMNAME _ItemName, _bool* _bTestInfo, _float _fX, _float 
 
 HRESULT CItem::Ready_Components()
 {
+    if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_InfoBox"), TEXT("Com_Texture"),
+        reinterpret_cast<CComponent**>(&m_pTextureCom))))
+        return E_FAIL;
+
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"), TEXT("Com_VIBuffer"),
+        reinterpret_cast<CComponent**>(&m_pVIBufferCom))))
+        return E_FAIL;
+
+    if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
+        TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom))))
+        return E_FAIL;
+     
     return S_OK;
 }
 
@@ -175,6 +221,15 @@ CGameObject* CItem::Clone(void* pArg)
 
 void CItem::Free()
 {
-    __super::Free();
+    if (m_pFont)
+    {
+        m_pFont->Release();
+        m_pFont = nullptr;
+    }
+
     RemoveFontResourceEx(m_fontPath.c_str(), FR_PRIVATE, 0);
+    __super::Free();
+    Safe_Release(m_pVIBufferCom);
+    Safe_Release(m_pTextureCom);
+    Safe_Release(m_pTransformCom);
 }

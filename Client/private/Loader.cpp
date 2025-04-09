@@ -33,6 +33,7 @@
 #include "SkyBox.h"
 #include "Sun.h"
 #include "Clouds.h"
+#include "Crosshair.h"
 
 
 //지형 관련
@@ -47,6 +48,8 @@
 #include "RedTulip.h"
 #include "ItemCube.h"
 #include "ItemRect.h"
+#include "Furnace.h"
+#include "CraftingTableCube.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -77,7 +80,9 @@
 #include "Mouse_ItemFont.h"
 #include "Bag.h"
 #include "Item.h"
+#include "Crafting.h"
 #include "CraftingTable.h"
+#include "FurnaceUi.h"
 
 //미션 관련
 #include "MissionControl.h"
@@ -355,9 +360,15 @@ HRESULT CLoader::Loading_For_MOOPlay()
 HRESULT CLoader::Loading_For_YUPlay()
 {
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐을(를) 로딩중입니다."));
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Crosshair"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/crosshair/crosshair.png"), 1))))
+		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_MissionMainUi"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/missionMainUi.png"), 1))))
 		return E_FAIL;
+
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_WaveUi"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/WaveUi.png"), 1))))
 		return E_FAIL;
@@ -472,7 +483,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 	// 검기 텍스쳐.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, PROTOTYPE_COMPONENT_TEXTURE_SWORD_AURA,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Effect/sword_aura.png"), 1))))
-    return E_FAIL;
+		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Gunpowder*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Gunpowder"),
@@ -482,6 +493,26 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_Component_Texture_rottenFlesh */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_rottenFlesh"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/rottenFlesh.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_FurnaceOff */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOff"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceOff.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_FurnaceOn */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOn"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceOn.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_FurnaceUi */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceUi"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceUi.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_CraftingTable */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_CraftingTable"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/CraftingTable.png"), 1))))
 		return E_FAIL;
 
 	/* UI Component */
@@ -526,6 +557,10 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/font/font_%03d.png"), 10))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_InfoBox*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_InfoBox"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Info/InfoBox.png"), 1))))
+		return E_FAIL;
 	/*================================================================================================*/
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
@@ -693,6 +728,12 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
+
+	/* For.Prototype_GameObject_Crosshair */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Crosshair"),
+		CCrosshair::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/* UI GameObject */
 	/*================================================================================================*/
 	/* For.Prototype_GameObject_MainInventory */
@@ -776,11 +817,34 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CItem::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_Crafting*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Crafting"),
+		CCrafting::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+
 	/* For.Prototype_GameObject_CraftingTable*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTable"),
 		CCraftingTable::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+
+	/* For.Prototype_GameObject_FurnaceUi*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_FurnaceUi"),
+		CFurnaceUi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/*================================================================================================*/
+
+	/* For.Prototype_GameObject_Furnace */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Furnace"),
+		CFurnace::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_CraftingTableCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTableCube"),
+		CCraftingTableCube::Create(m_pGraphic_Device))))
+		return E_FAIL;
 
 	/* For.Prototype_GameObject_Dirt */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Dirt"),

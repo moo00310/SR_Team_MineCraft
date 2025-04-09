@@ -48,6 +48,7 @@ protected:
 	CNode* m_pBehaviorTree{ nullptr };
 	MonsterType m_MonsterType = { MT_END };
 	float m_fAttackDistance = {};
+	_float3 m_TargetPos = {};
 
 // Black_Board
 protected:
@@ -68,6 +69,7 @@ protected:
 	virtual void Motion_Attack(_float fTimeDelta) = 0;
 	virtual void Motion_Dead(_float fTimeDelta) = 0;
 	virtual void Turn(_float fTimeDelta) = 0;
+
 protected:
 	void OnPushPool() override;
 

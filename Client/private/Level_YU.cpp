@@ -60,6 +60,10 @@ HRESULT CLevel_YU::Initialize()
 
 	if (FAILED(Ready_Layer_GameMgr(TEXT("Ready_Layer_GameMgr"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
@@ -81,8 +85,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
+	//	return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -110,6 +114,9 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////////
+
+	
+
 	m_pGameInstance->PlayBGM(L"sweden");
 
 	return S_OK;
@@ -221,6 +228,16 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
+	/* Prototype_GameObject_FurnaceUi */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_FurnaceUi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	/* Prototype_GameObject_CraftingTable */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTable"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
 	/* Prototype_GameObject_Inventory_Bag */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Bag"),
 		LEVEL_YU, strLayerTag)))
@@ -259,6 +276,11 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 
 	/* Prototype_GameObject_Inventory_Item */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Inventory_Item"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	/* Prototype_GameObject_Crafting */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Crafting"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
@@ -397,6 +419,13 @@ HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Crosshair(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Crosshair"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 }
 
 HRESULT CLevel_YU::Ready_Layer_TPS_Arm(const _wstring& strLayerTag)

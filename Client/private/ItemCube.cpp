@@ -65,27 +65,33 @@ void CItemCube::Update(_float fTimeDelta)
 {
     _float fDist = Compute_PlayerDistance();
 
-
-    if (fDist < 0.2f)
+    if (m_fTime < m_fCanGetTime)
     {
-        OnDropItem(m_eItemName);
-
-        m_pGameInstance->Play_Sound(TEXT("Minecraft - Item Pop"), SOUND_ITEM, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-
-        Destroy();
-     CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
+        m_fTime += fTimeDelta;
     }
-    else if (fDist < 2.0f)
+    else
     {
-        _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
-        m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
+        if (fDist < 0.2f)
+        {
+            OnDropItem(m_eItemName);
+
+            m_pGameInstance->Play_Sound(TEXT("Minecraft - Item Pop"), SOUND_ITEM, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+            Destroy();
+            CUI_Mgr::Get_Instance()->ItemCount_Update(m_eItemName, 1);
+        }
+        else if (fDist < 2.0f)
+        {
+            _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
+            m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
+        }
     }
 
     if (!m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.f))
         return;
 
     list<CCollider*> Colliders;
-    Colliders = m_pTerrain->Active_Current_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 1.f);
+    Colliders = m_pTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 3.f);
 
     //플레이어와 거리가 가까우면 중력적용
     m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.3f);
@@ -155,10 +161,22 @@ HRESULT CItemCube::Set_ItemTypeAndBindTexture(ITEMNAME _name)
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
+    case Client::ITEMNAME_FURANCE:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOff"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEMNAME_CRAFTINGTABLE:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceOff"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
     default:
         break;
     }
-
+    
     return S_OK;
 }
 

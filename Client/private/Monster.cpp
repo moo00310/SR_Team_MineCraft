@@ -52,8 +52,8 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-
 	_float fDist = Comput_Distance();
+    m_TargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 
     if (fDist > 30.f)
     {
@@ -78,7 +78,13 @@ void CMonster::Update(_float fTimeDelta)
 
 void CMonster::Late_Update(_float fTimeDelta)
 {
-  
+    if (m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+    {
+        m_skelAnime->Update_RootBone(*m_pTransformCom->Get_WorldMatrix());
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+            return;
+    }
+
 }
 
 HRESULT CMonster::Render()
@@ -91,21 +97,17 @@ HRESULT CMonster::Render()
 float CMonster::Comput_Distance()
 {
     _float3 vMonsterPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-    _float3 vTargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-
-    _float3 vDiff = vTargetPos - vMonsterPos;
+    _float3 vDiff = m_TargetPos - vMonsterPos;
 
     return D3DXVec3Length(&vDiff);
 }
 
 void CMonster::Chase_Player(float _fTimeDelta)
 {
-    _float3 vTargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
     if (m_MonsterType != MT_WARDEN)
     {
-        m_pTransformCom->LookAt_XZ(vTargetPos);
-        m_pRigidbodyCom->Chase(vTargetPos, 2.f);
-        //m_pTransformCom->Chase(m_pCollider_CubeCom, COLLISION_BLOCK, _float3(vTargetPos.x, vTargetPos.y, vTargetPos.z), _fTimeDelta, 1.0f);
+        m_pTransformCom->LookAt_XZ(m_TargetPos);
+        m_pRigidbodyCom->Chase(m_TargetPos, 2.f);
     }
     else
     {
@@ -123,12 +125,14 @@ void CMonster::Chase_Player(float _fTimeDelta)
 
 void CMonster::LookAtPlayer(float _fTimeDelta)
 {
-    _float3 vTargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+    _float3 vTargetPos = m_TargetPos;
     vTargetPos.y += 1.f;
+
     if(m_eCurAnim == FIND)
         m_skelAnime->LookAt_Anim(vTargetPos, 2);
     else
         m_skelAnime->LookAt(vTargetPos, 2);
+
     float fAngle = m_skelAnime->RotateRootByNeckDelta(2, 0, _fTimeDelta);
     m_pTransformCom->TurnByAngle(_float3(0.f, 1.f, 0.f), fAngle);
 }
@@ -140,31 +144,28 @@ void CMonster::Knock_back(const _float3& vforce)
 
     _float3 temp = {};
     D3DXVec3Normalize(&temp, &vforce);
-    temp *= 3.f;
-    temp.y = 4.f;
+    temp *= 3.f;     temp.y = 4.f;
 
     m_pRigidbodyCom->Knock_back(temp);
-
-    _float3 vTarget = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
-    m_pTransformCom->LookAt_XZ(vTarget);
+    m_pTransformCom->LookAt_XZ(m_TargetPos);
 
     int random = rand() % 10;
     switch (m_MonsterType)
     {
     case Client::CMonster::MT_Zombie:
         if (random < 5) {
-            m_pGameInstance->Play_Sound(TEXT("Zombie_Hurt1"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Zombie_Hurt1"), SOUND_HIT, this, m_sound, m_TargetPos);
         }
         else {
-            m_pGameInstance->Play_Sound(TEXT("Zombie_Hurt2"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Zombie_Hurt2"), SOUND_HIT, this, m_sound, m_TargetPos);
         }
         break;
     case Client::CMonster::MT_Creeper:
         if (random < 5) {
-            m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt1"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt1"), SOUND_HIT, this, m_sound, m_TargetPos);
         }
         else {
-            m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt2"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt2"), SOUND_HIT, this, m_sound, m_TargetPos);
         }
         break;
     case Client::CMonster::MT_END:

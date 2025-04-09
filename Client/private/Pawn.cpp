@@ -66,8 +66,6 @@ HRESULT CPawn::Render()
 		m_pShaderCom->End();
 	}
 
-	// 뿔 렉트에 쓰레기값 들어가 있음
-
 	if (FAILED(m_pCollider_CubeCom->Render_Collider(true)))
 		return E_FAIL;
 

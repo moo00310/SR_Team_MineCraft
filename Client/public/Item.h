@@ -48,10 +48,13 @@ private:
 
 
 private:
-	ID3DXFont*	m_pFont = nullptr;
-	RECT		textRect = {0, 0, 0, 0};
-	map<ITEMNAME, _wstring> m_ItemMap;
-
+	map<ITEMNAME, _wstring>		m_ItemMap;
+	CVIBuffer_Rect*				m_pVIBufferCom = { nullptr };
+	CTransform*					m_pTransformCom = { nullptr };
+	ID3DXFont*					m_pFont = nullptr;
+	CTexture*					m_pTextureCom = { nullptr };
+	RECT						textRect = {0, 0, 0, 0};
+	
 public:
 	static CItem* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
