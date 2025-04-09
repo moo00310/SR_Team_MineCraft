@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Steve.h"
 #include "DestroyCube.h"
+#include "Crosshair.h"
 
 BEGIN(Client)
 
@@ -37,8 +38,9 @@ private:
     _float              m_fYaw{};
     _float              m_fPitch{};
     enum class E_CAMERA_MODE { FPS, TPS };
-    E_CAMERA_MODE       m_eCameraMode = E_CAMERA_MODE::TPS; // ±âº»°ª TPS
+    E_CAMERA_MODE       m_eCameraMode = E_CAMERA_MODE::TPS;
     CSteve*             m_pPlayer = {nullptr};
+    CCrosshair*         m_pCrosshair{ nullptr };
 
 private:
     //_float3             m_vCameraPos{};

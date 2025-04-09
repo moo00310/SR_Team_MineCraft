@@ -68,6 +68,8 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 	// 기본 모드를 TPS로 설정
 	m_eCameraMode = E_CAMERA_MODE::TPS;
 
+    m_pCrosshair = static_cast<CCrosshair*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Crosshair")));
+    Safe_AddRef(m_pCrosshair);
     //m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION));
 
     //m_vCurrentCameraPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION);
@@ -87,6 +89,16 @@ void CCamera_Player::Update(_float fTimeDelta)
     if (m_pGameInstance->Key_Down(VK_F5))
     {
         m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
+        
+        //CrossHair UI On/Off
+        if (m_eCameraMode == E_CAMERA_MODE::FPS)
+        {
+            m_pCrosshair->On();
+        }
+        else
+        {
+            m_pCrosshair->Off();
+        }
     }
 }
 
@@ -127,6 +139,55 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 	_float3 vHeadPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
 
     m_pPlayer->Set_AttackContinue(false);
+
+    //아이템 버리기
+    if (m_pGameInstance->Key_Down('Q'))
+    {
+        ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
+        //아이템이 없으면 실행 하지마
+        if (eCurItem == ITEMNAME_END)
+            return;
+
+        CUI_Mgr::Get_Instance()->ItemCount_Update(eCurItem, -1);
+
+        wchar_t layerName[100];
+        swprintf(layerName, 100, L"Layer_Chunk%d", 0); //0청크에 넣어도 상관 없을라나~
+
+        //2d 아이템들이면(ㅋㅋ)
+        if (eCurItem == ITEMNAME::ITEMNAME_APPLE ||
+            eCurItem == ITEMNAME::ITEMNAME_COAL || 
+            eCurItem == ITEMNAME::ITEMNAME_DANDELION||
+            eCurItem == ITEMNAME::ITEMNAME_GUNPOWDER || 
+            eCurItem == ITEMNAME::ITEMNAME_GRASS ||
+            eCurItem == ITEMNAME::ITEMNAME_IRON ||
+            eCurItem == ITEMNAME::ITEMNAME_REDTULIP ||
+            eCurItem == ITEMNAME::ITEMNAME_SEED)
+        {
+            if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+                return;
+
+            if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+                _copy->SetPos(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.0f, 1.5f, 0.0f });
+                _copy->Set_ItemTypeAndBindTexture(eCurItem);
+                _copy->Get_Rigidbody()->Set_isKnockBack(false); //이런 내가 싫다
+                _copy->Get_Rigidbody()->Set_Velocity(_float3{ 0.f, 0.f, 0.f });//나를 용서하시오
+                _copy->Get_Rigidbody()->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK) * 10.f);
+            }
+        }
+        else
+        {
+            if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"), LEVEL_YU, layerName)))
+                return;
+
+            if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+                _copy->SetPos(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.0f, 1.5f, 0.0f });
+                _copy->Set_ItemTypeAndBindTexture(eCurItem);
+                _copy->Get_Rigidbody()->Set_isKnockBack(false); //이런 내가 싫다
+                _copy->Get_Rigidbody()->Set_Velocity(_float3{ 0.f, 0.f, 0.f });//이런 내가 싫다
+                _copy->Get_Rigidbody()->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK) * 10.f);
+            }
+        }
+    }
 
 
     list<CCollider*> Colliders;
@@ -401,8 +462,9 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
     {
         //충돌체 추가
         _float3 vStevePos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
-        _float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
-        Colliders = m_pTerrain->Active_Near_Chunk_Colliders(vStevePos, m_fSpringArmLength * m_fSpringArmLength);
+        //_float3 vLook = m_pTransformCom->Get_State(CTransform::STATE_LOOK);
+        _float3 vMidPos = (m_pTransformCom->Get_State(CTransform::STATE_POSITION) + vStevePos) * 0.5f;
+        Colliders = m_pTerrain->Active_Near_Chunk_Colliders(vMidPos, m_fSpringArmLength * m_fSpringArmLength);
 
         // === 3인칭 스프링 암 거리 조절 ===
         _float fTargetDist{};
@@ -516,6 +578,7 @@ void CCamera_Player::Free()
 {
 	__super::Free();
 
+    Safe_Release(m_pCrosshair);
 	Safe_Release(m_pTerrain);
     Safe_Release(m_pPlayer);
     Safe_Release(m_pTarget_Transform_Com);
