@@ -53,6 +53,10 @@ private:
 	void Turn(_float fTimeDelta) override;
 
 private:
+	_float3 m_ShootPos = {};
+	_bool isShootFollow = true;
+
+private:
 	virtual HRESULT Ready_BehaviorTree() override;
 	void FrameCallback(int animType, int frame) override;
 
@@ -63,4 +67,3 @@ public:
 	virtual void Free();
 
 };
-
