@@ -60,6 +60,10 @@ HRESULT CLevel_YU::Initialize()
 
 	if (FAILED(Ready_Layer_GameMgr(TEXT("Ready_Layer_GameMgr"))))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Crosshair(TEXT("Layer_Crosshair"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
@@ -110,6 +114,9 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////////
+
+	
+
 	m_pGameInstance->PlayBGM(L"sweden");
 
 	return S_OK;
@@ -397,6 +404,13 @@ HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Crosshair(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Crosshair"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 }
 
 HRESULT CLevel_YU::Ready_Layer_TPS_Arm(const _wstring& strLayerTag)

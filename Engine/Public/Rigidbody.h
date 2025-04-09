@@ -43,6 +43,9 @@ public:
 	void				Set_Speed(_float fMaxSpeed) { m_fSpeed = fMaxSpeed; }
 
 	_bool				Get_isKnockBack() { return m_isKnockBack; }
+	void				Set_Velocity(_float3 vVelocity) { m_vVelocity = vVelocity; }//ㅎㅎ 이러는 내가 싫다
+	void				Set_isKnockBack(_bool b) { m_isKnockBack = b; }//ㅎㅎ이러는 내가 싫다
+
 private:
 	void				ClampVelocity();
 	void				ClampVelocityXZ();
