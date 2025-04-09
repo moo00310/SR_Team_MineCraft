@@ -232,7 +232,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('V'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_FURANCE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_OAKPLANKS, 1);
 	}
 	if (m_pGameInstance->Key_Down('B'))
 	{
