@@ -42,6 +42,9 @@ private:
 	_int		m_iItemCount = { 0 };
 	_int		m_iSlotIndex = { 0 };
 	ITEMNAME	m_ItemName = ITEMNAME_END;
+	
+	_int		m_iTest = { 0 };
+	_int		m_iTestIndex = { 0 };
 
 	vector<RECIPE_DESC> m_vecRecipelist;
 

@@ -252,7 +252,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	}
 
 	/* Prototype_GameObject_Item */
-	for (int i = 0; i < 56; ++i)
+	for (int i = 0; i < 56; ++i) // 56
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 			LEVEL_YU, strLayerTag, (int*)&i)))

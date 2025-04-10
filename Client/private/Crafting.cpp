@@ -74,22 +74,11 @@ void CCrafting::Crafing()
 			for (const auto& pair : recipe.inputPattern)
 			{
 				int iSlotIndex = pair.first;
-			
-				m_iItemCount += pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Get_ItemCount(); // => 5개 차감
-
-				if (pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Get_ItemCount() / 2 == 0)
-				{
-					pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemCount(0);
-					pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemName(ITEMNAME_END);
-					
-				}
-				else if (pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Get_ItemCount() / 2 == 1)
-				{
-					pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemCount(1);
-					
-				}
+				
+				pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemName(ITEMNAME_END);
 			}
 
+	
 			/* 결과 값 */
 			m_iItemCount /= 2;
 
