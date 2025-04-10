@@ -278,14 +278,19 @@ void CSteve::Move(_float fTimeDelta)
 		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_ROTTENFLESH, 1);
 	}
 
-	if (m_pGameInstance->Key_Down('T'))
+	if (m_pGameInstance->Key_Down('I'))
 	{
 		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_FURANCE, 1);
 	}
 
-	if (m_pGameInstance->Key_Down('Y'))
+	if (m_pGameInstance->Key_Down('O'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_CRAFTINGTABLE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_COAL, 1);
+	}
+
+	if (m_pGameInstance->Key_Down('P'))
+	{
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_RAWIRON, 1);
 	}
 }
 

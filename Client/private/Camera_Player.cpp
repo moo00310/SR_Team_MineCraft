@@ -11,6 +11,9 @@ using namespace DirectX;
 #include "MCTerrain.h"
 #include "Furnace.h"
 #include "CraftingTableCube.h"
+#include "BurnUi.h"
+#include "BurnResultUi.h"
+#include "FurnaceUi.h"
 
 CCamera_Player::CCamera_Player(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CCamera{ pGraphic_Device }
@@ -202,7 +205,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         Colliders = m_pTerrain->Active_Near_Chunk_Colliders(vSearchPos, 8.f);
     }
 
-    if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && !g_bMainInventoryOpen && !g_bFurnaceUiOpen)
+    if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && !g_bMainInventoryOpen && !g_bFurnaceUiOpen && !g_bMCraftingTableOpen)
     {
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
@@ -312,7 +315,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         m_DestroyCube->SetActive(false);
     }
 
-    if (m_pGameInstance->Key_Down(VK_RBUTTON) && !g_bMainInventoryOpen && !g_bFurnaceUiOpen)
+    if (m_pGameInstance->Key_Down(VK_RBUTTON) && !g_bMainInventoryOpen && !g_bFurnaceUiOpen && !g_bMCraftingTableOpen)
     {
         ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
@@ -346,6 +349,21 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                     m_isActiveMouse = true;
                     ShowCursor(true);
                     g_bFurnaceUiOpen = true;
+
+                    if (CFurnaceUi* _furnaceUi = dynamic_cast<CFurnaceUi*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_FurnaceUi")))) {
+                        _furnaceUi->Set_Furnace(_furnace);
+
+                        list<CGameObject*> _objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_FurnaceDetailUi"));
+                        for (auto& obj : _objlist) {
+                            if (CBurnUi* _burnUi = dynamic_cast<CBurnUi*>(obj)) {
+                                _furnaceUi->Set_FurnaceBurnUi(_burnUi);
+                            }
+                            if (CBurnResultUi* _burnUi = dynamic_cast<CBurnResultUi*>(obj)) {
+                                _furnaceUi->Set_FurnaceBurnResultUi(_burnUi);
+                            }
+                        }
+                    }
+                    
                     return;
                 }
 
@@ -378,11 +396,16 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     }
 
 
-    if (m_pGameInstance->Key_Down(VK_ESCAPE) || m_pGameInstance->Key_Down('E'))
+    if (m_pGameInstance->Key_Down(VK_ESCAPE))
     {
         if (m_isActiveMouse)
         {
+            g_bMainInventoryOpen = false; 
+            g_bFurnaceUiOpen = false;
+            g_bMCraftingTableOpen = false;
             m_isActiveMouse = false;
+            CUI_Mgr::Get_Instance()->Get_Item()->Clear_ItemTextRender();
+
             ShowCursor(false);
 
             RECT rc;
@@ -397,6 +420,31 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         {
             m_isActiveMouse = true;
             ShowCursor(true);
+        }
+    }
+
+    if (m_pGameInstance->Key_Down('E')) {
+        if (g_bFurnaceUiOpen || g_bMCraftingTableOpen)
+            return;
+
+        if (!g_bMainInventoryOpen) {
+            g_bMainInventoryOpen = true;
+            m_isActiveMouse = true;
+            ShowCursor(true);
+        }
+        else {
+            g_bMainInventoryOpen = false;
+            CUI_Mgr::Get_Instance()->Get_Item()->Clear_ItemTextRender();
+            m_isActiveMouse = false;
+            ShowCursor(false);
+
+            RECT rc;
+            GetClientRect(g_hWnd, &rc);
+            POINT ptCenter = { rc.right / 2, rc.bottom / 2 };
+
+            // 마우스를 다시 중앙으로 이동
+            ClientToScreen(g_hWnd, &ptCenter);
+            SetCursorPos(ptCenter.x, ptCenter.y);
         }
     }
 

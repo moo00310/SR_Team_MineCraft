@@ -230,7 +230,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 
 	/* Prototype_GameObject_FurnaceUi */
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_FurnaceUi"),
-		LEVEL_YU, strLayerTag)))
+		LEVEL_YU, TEXT("Layer_FurnaceUi"))))
 		return E_FAIL;
 
 	/* Prototype_GameObject_CraftingTable */
@@ -244,7 +244,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		return E_FAIL;
 
 	/* Prototype_GameObject_InventoryBack */
-	for (int i = 0; i < 56; ++i)
+	for (int i = 0; i < 59; ++i)
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_InventoryBack"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -252,7 +252,7 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 	}
 
 	/* Prototype_GameObject_Item */
-	for (int i = 0; i < 56; ++i) // 56
+	for (int i = 0; i < 59; ++i) // 58
 	{
 		if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Item"),
 			LEVEL_YU, strLayerTag, (int*)&i)))
@@ -284,9 +284,14 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
-	/* Prototype_GameObject_CraftingTable */
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CraftingTable"),
-		LEVEL_YU, strLayerTag)))
+	/* Prototype_GameObject_BurnUi */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_BurnUi"),
+		LEVEL_YU, TEXT("Layer_FurnaceDetailUi"))))
+		return E_FAIL;
+
+	/* Prototype_GameObject_BurnResultUi */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_BurnResultUi"),
+		LEVEL_YU, TEXT("Layer_FurnaceDetailUi"))))
 		return E_FAIL;
 
 	return S_OK;
