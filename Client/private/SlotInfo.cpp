@@ -38,7 +38,10 @@ HRESULT CSlotInfo::Initialize(void* pArg)
         {0, 44.f, 44.f, 630.f, 258.f},  // 50
         {0, 44.f, 44.f, 697.f, 121.f},  // 51~52
         {0, 44.f, 44.f, 697.f, 177.f},  // 53~54
-        {0, 44.f, 44.f, 878.f, 152.f}   // 55~
+        {0, 44.f, 44.f, 878.f, 152.f},  // 55~
+        {0, 44.f, 44.f, 560.f, 117.f},  // 56 화로
+        {0, 44.f, 44.f, 560.f, 230.f},  // 57 화로 
+        {0, 70.f, 70.f, 755.f, 175.f}   // 58 화로
     };
 
     if (m_iSlotIndexNum < 9) m_iCategory = 0;
@@ -51,7 +54,11 @@ HRESULT CSlotInfo::Initialize(void* pArg)
     else if (m_iSlotIndexNum == 50) m_iCategory = 7;
     else if (m_iSlotIndexNum < 53) m_iCategory = 8;
     else if (m_iSlotIndexNum < 55) m_iCategory = 9;
-    else m_iCategory = 10;
+    else if (m_iSlotIndexNum == 55) m_iCategory = 10;
+    else if (m_iSlotIndexNum == 56) m_iCategory = 11; //화로
+    else if (m_iSlotIndexNum == 57) m_iCategory = 12; //화로
+    else if (m_iSlotIndexNum == 58) m_iCategory = 13; //화로
+    else m_iCategory = 14;
 
     // 공통 속성 할당
     Desc.fSizeX = slotTable[m_iCategory].fSizeX;
