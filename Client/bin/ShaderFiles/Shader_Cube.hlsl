@@ -222,9 +222,9 @@ technique DefaultTechnique
         CULLMODE = NONE;
         ZENABLE = false;
         ZWRITEENABLE = false;
-        ALPHATESTENABLE = true;
-        ALPHAREF = 100;
-        ALPHAFUNC = GREATER;
+        //ALPHATESTENABLE = true;
+        //ALPHAREF = 100;
+        //ALPHAFUNC = GREATER;
         VertexShader = compile vs_3_0 VS_MAIN_Steve();
         PixelShader = compile ps_3_0 PS_MAIN_STEVE();
     }

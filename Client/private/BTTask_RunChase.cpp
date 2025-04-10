@@ -13,7 +13,6 @@ STATUS CBTTask_RunChase::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		return STATUS::SUCCESS;
 	}
 
-	cout << "플레이어한테 달려가는중" << endl;
 	pMonster->Chase_Player(_fTimeDelta);
 	pMonster->Set_Animation(CMonster::RUN);
 	return STATUS::RUNNING;

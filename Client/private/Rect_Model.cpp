@@ -1,4 +1,5 @@
 #include "Rect_Model.h"
+#include <iostream>
 
 CRect_Model::CRect_Model(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CRightHand_Object{ pGraphic_Device }
@@ -44,6 +45,8 @@ void CRect_Model::Late_Update(_float fTimeDelta)
 		m_RederID = 2;
 	else
 		m_RederID = 4;
+
+	cout << m_eCurAnim << endl;
 }
 
 HRESULT CRect_Model::Render()
@@ -207,20 +210,53 @@ HRESULT CRect_Model::Ready_Animation()
 	///*------------------------
 	//* Attack1 애니메이션 ( 근거리 공격 )
 	//----------------------------*/
+	matrix1 = { };
+	matrix1.Set_State(Matrix::STATE_POSITION, _float3(0.2f, 0.7f, 0.5f));
 
-	Swing1 = { 0.f, mat };
-	Swing2 = { 0.15f, matrix1 };
-	Swing3 = { 0.4f, matrix2 };
-	Swing4 = { 1.f, mat };
+	matrix2 = {};
+	matrix2.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(60));
+	matrix2.Set_State(Matrix::STATE_POSITION, _float3(-0.6f, 0.5f, -0.5f));
 
-	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing1);
-	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing2);
-	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing3);
-	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing4);
+	Matrix matrix3 = { };
+	matrix3.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(90));
+	matrix3.Set_State(Matrix::STATE_POSITION, _float3(-0.3f, -0.5f, -0.5f));
+
+	KEYFREAME Attack_Near_1 = { 0.f, mat };
+	KEYFREAME Attack_Near_2 = { 0.2f, matrix1 };
+	KEYFREAME Attack_Near_3 = { 0.5f, matrix2 };
+	KEYFREAME Attack_Near_4 = { 0.7f, matrix3 };
+	KEYFREAME Attack_Near_5 = { 1.f, mat };
+
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Near, Attack_Near_1);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Near, Attack_Near_2);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Near, Attack_Near_3);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Near, Attack_Near_4);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Near, Attack_Near_5);
 
 	///*------------------------
-	//* Attack2 애니메이션 (원거리 참격 )
+	//* Attack2 애니메이션 (원거리 참격)
 	//----------------------------*/
+
+	// 짐벌락 생겼나
+	// 축이 이상해
+	matrix1 = { };
+	matrix1.Set_State(Matrix::STATE_POSITION, _float3(-0.3f, 0.3f, -1.5f));
+	matrix1.Turn_Radian(_float3(-0.3f, -1.f, 0.8f), D3DXToRadian(120));
+
+	matrix2 = {};
+	matrix2.Set_State(Matrix::STATE_POSITION, _float3(-0.2f, 0.3f, -0.6f));
+	matrix2.Turn_Radian(_float3(0.f, -1.f, 0.f), D3DXToRadian(50));
+	matrix2.Turn_Radian(_float3(0.3f, 0.f, 0.3f), D3DXToRadian(60));
+
+	KEYFREAME Attack_Far_1 = { 0.f, mat };
+	KEYFREAME Attack_Far_2 = { 1.f, matrix1 };
+	KEYFREAME Attack_Far_3 = { 3.f, matrix2 };
+	//KEYFREAME Attack_Far_5 = { 1.f, mat };
+
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_1);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_2);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_3);
+	//m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_5);
 
 
 	return S_OK;
@@ -246,11 +282,11 @@ void CRect_Model::Update_State(_float fTimeDelta)
 	case RUN:
 		Motion_Run(fTimeDelta);
 		break;
-	case ATTACK_1:
-		Motion_Attack1(fTimeDelta);
-		break;
-	case ATTACK_2:
+	case ATTACK_Near:
 		Motion_Attack2(fTimeDelta);
+		break;
+	case ATTACK_Far:
+		Motion_Attack1(fTimeDelta);
 		break;
 	case ANIM_END:
 		break;
@@ -274,8 +310,7 @@ void CRect_Model::Motion_Swing(_float fTimeDelta)
 {
 	m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0);	
 
-	SwingFireSword();
-
+	
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
 		if (m_pSteve->Get_AttackContinue())
@@ -347,19 +382,21 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 
 void CRect_Model::Motion_Attack1(_float fTimeDelta)
 {
-	m_pSkeletalAnimator->Update_Animetion(ATTACK_1, fTimeDelta, 0);
-
-	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_1))
+	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_Near))
 	{
 		m_eCurAnim = INIT;
+		
 	}
+
+	//SwingFireSword();
+	m_pSkeletalAnimator->Update_Animetion(ATTACK_Near, fTimeDelta, 0);
 }
 
 void CRect_Model::Motion_Attack2(_float fTimeDelta)
 {
-	m_pSkeletalAnimator->Update_Animetion(ATTACK_2, fTimeDelta, 0);
+	m_pSkeletalAnimator->Update_Animetion(ATTACK_Far, fTimeDelta, 0);
 
-	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_2))
+	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_Far))
 	{
 		m_eCurAnim = INIT;
 	}
@@ -372,7 +409,7 @@ void CRect_Model::KeyInput()
 		ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
 		if (name == ITEM_WEPON_1)
 		{
-			m_eCurAnim = ATTACK_1;
+			m_eCurAnim = ATTACK_Near;
 		}
 		else
 		{
@@ -384,11 +421,12 @@ void CRect_Model::KeyInput()
 
 	if (m_pGameInstance->Key_Down(VK_RBUTTON))
 	{
-    if (Compute_Texture_Name() == ITEM_WEPON_1)
+		if (Compute_Texture_Name() == ITEM_WEPON_1)
 		{
 			AuraSword();
+			//m_eCurAnim = ATTACK_1;
 		}
-    else
+		else
 		{
 			m_eCurAnim = EAT;
 		}
@@ -396,7 +434,7 @@ void CRect_Model::KeyInput()
 		return;
 	}
 
-	if (m_eCurAnim == SWING || m_eCurAnim == EAT)
+	if (m_eCurAnim == SWING || m_eCurAnim == EAT || m_eCurAnim == ATTACK_Near ||  m_eCurAnim == ATTACK_Far)
 		return;
 
 	// 애니메이션 바꾸기
@@ -411,6 +449,7 @@ void CRect_Model::KeyInput()
 	{
 		m_eCurAnim = INIT;
 	}
+	
 }
 
 void CRect_Model::FireSword()
