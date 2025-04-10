@@ -21,7 +21,7 @@ HRESULT CParticleSonicBoom::Initialize(void* pArg)
 	IsTimer = true;	
 	fEndTimer = 1.4f;
 	IsTextureAnimation = true;
-	fAnimationFrame = 0.1f;
+	fAnimationFrame = 0.09f;
 	iTextureIndex = 15;	
 
 	if (FAILED(__super::Initialize(pArg)))

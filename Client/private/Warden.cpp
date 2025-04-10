@@ -559,6 +559,8 @@ void CWarden::Motion_Attack(_float fTimeDelta)
         m_bAnimEnd[ATTACK] = true;
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
         m_pTargetPawn->Knock_back(temp);
+
+        OnSonicBoomParticle();
     }
 
     m_skelAnime->Update_Animetion(Attack_Pevis, fTimeDelta, 1);
@@ -575,7 +577,7 @@ void CWarden::Motion_Attack2(_float fTimeDelta)
         )
     {
         m_bAnimEnd[ATTACK2] = true;
-        isShootFollow = true;
+        isShootFollow = true;        
     }
 
     m_skelAnime->Update_Animetion(Attack2_Pevis, fTimeDelta, 1);
@@ -703,6 +705,15 @@ void CWarden::FrameCallback(int animType, int frame)
         isShootFollow = false;
     }
 
+}
+
+void CWarden::OnSonicBoomParticle()
+{
+    CParticleEventManager::Get_Instance()->OnParticle(
+        PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,
+        m_pTransformCom,
+        1.f
+    );
 }
 
 void CWarden::Free()

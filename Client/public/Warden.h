@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "Monster.h"
 #include "Behavior_Tree.h"
+#include "ParticleEventManager.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -59,6 +60,9 @@ private:
 private:
 	virtual HRESULT Ready_BehaviorTree() override;
 	void FrameCallback(int animType, int frame) override;
+	
+	// 워든 공격 파티클.
+	void OnSonicBoomParticle();
 
 public:
 	static CWarden* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
