@@ -139,6 +139,22 @@ HRESULT CCube_Model::Ready_Animation()
     m_pSkeletalAnimator->Add_Animation(WALK, keyframe4);
     m_pSkeletalAnimator->Add_Animation(WALK, keyframe5);
 
+ ///*------------------------
+ //* Run 애니메이션 
+ //----------------------------*/
+
+    keyframe = { 0.f,    Matrix() };
+    keyframe2 = { 0.125f,matrix1 };
+    keyframe3 = { 0.25f, matrix2 };
+    keyframe4 = { 0.375f,matrix1 };
+    keyframe5 = { 0.5f, Matrix() };
+
+    m_pSkeletalAnimator->Add_Animation(RUN, keyframe);
+    m_pSkeletalAnimator->Add_Animation(RUN, keyframe2);
+    m_pSkeletalAnimator->Add_Animation(RUN, keyframe3);
+    m_pSkeletalAnimator->Add_Animation(RUN, keyframe4);
+    m_pSkeletalAnimator->Add_Animation(RUN, keyframe5);
+
 
     return S_OK;
 }
@@ -176,6 +192,15 @@ void CCube_Model::Motion_Walk(_float fTimeDelta)
     }
 }
 
+void CCube_Model::Motion_Run(_float fTimeDelta)
+{
+    m_pSkeletalAnimator->Update_Animetion(RUN, fTimeDelta, 0);
+
+    if (m_pSkeletalAnimator->is_AnimtionEND(RUN))
+    {
+        m_eCurAnim = RUN;
+    }
+}
 
 CCube_Model* CCube_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
@@ -220,6 +245,9 @@ void CCube_Model::Update_State(_float fTimeDelta)
         break;
     case WALK:
         Motion_Walk(fTimeDelta);
+        break;
+    case RUN:
+        Motion_Run(fTimeDelta);
         break;
     case EAT:
     case ANIM_END:

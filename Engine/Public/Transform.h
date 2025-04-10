@@ -98,6 +98,8 @@ public:
 	// 월드 좌표를 스크린 좌표료 변환.
 	_float2 WorldToScreen();
 
+public:
+	void Set_SpeedperSec(_float fSpeed) { m_fSpeedPerSec = fSpeed; }
 
 private:
 	_float4x4				m_WorldMatrix = {};

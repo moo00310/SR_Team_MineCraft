@@ -19,7 +19,7 @@ struct BlendState
 class ENGINE_DLL CSkeletalAnimator final : public CComponent
 {
 public:
-#define AnimTimeCount 20
+#define AnimTimeCount 30
 
 	typedef struct tagRigidbodyDesc
 	{

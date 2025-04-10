@@ -109,7 +109,7 @@ HRESULT CRect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(INIT, Init1);
 
 	///*------------------------
-	//* Swing ¾Ö´Ï¸ÞÀÌ¼Ç 
+	//* Swing ì• ë‹ˆë©”ì´ì…˜ 
 	//----------------------------*/
 	Matrix matrix1 = {  };
 	matrix1.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(100));
@@ -129,7 +129,7 @@ HRESULT CRect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(SWING, Swing4);
 
 	///*------------------------
-	//* WALK ¾Ö´Ï¸ÞÀÌ¼Ç 
+	//* WALK ì• ë‹ˆë©”ì´ì…˜ 
 	//----------------------------*/
 
 	matrix1 = { };
@@ -150,9 +150,25 @@ HRESULT CRect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(WALK, Walk4);
 	m_pSkeletalAnimator->Add_Animation(WALK, Walk5);
 
+///*------------------------
+//* Run ì• ë‹ˆë©”ì´ì…˜ 
+//----------------------------*/
+
+	Walk1 = { 0.f,    Matrix() };
+	Walk2 = { 0.125f, matrix1 };
+	Walk3 = { 0.25f,  matrix2 };
+	Walk4 = { 0.375f, matrix1 };
+	Walk5 = { 0.5f,  Matrix() };
+
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk1 );
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk2 );
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk3 );
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk4 );
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk5 );
+
 
 	///*------------------------
-	//* EAT ¾Ö´Ï¸ÞÀÌ¼Ç 
+	//* EAT ì• ë‹ˆë©”ì´ì…˜ 
 	//----------------------------*/
 
 
@@ -176,7 +192,6 @@ HRESULT CRect_Model::Ready_Animation()
 	KEYFREAME EAT9 = { 0.9f, matrix2 };
 	KEYFREAME EAT10 = { 1.0f, matrix1 };
 
-
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT1);
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT2); 
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT3);
@@ -187,6 +202,25 @@ HRESULT CRect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT8);
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT9);
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT10);
+
+
+	///*------------------------
+	//* Attack1 ì• ë‹ˆë©”ì´ì…˜ ( ê·¼ê±°ë¦¬ ê³µê²© )
+	//----------------------------*/
+
+	Swing1 = { 0.f, mat };
+	Swing2 = { 0.15f, matrix1 };
+	Swing3 = { 0.4f, matrix2 };
+	Swing4 = { 1.f, mat };
+
+	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing1);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing2);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing3);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing4);
+
+	///*------------------------
+	//* Attack2 ì• ë‹ˆë©”ì´ì…˜ (ì›ê±°ë¦¬ ì°¸ê²© )
+	//----------------------------*/
 
 
 	return S_OK;
@@ -208,6 +242,15 @@ void CRect_Model::Update_State(_float fTimeDelta)
 		break;
 	case EAT:
 		Motion_EAT(fTimeDelta);
+		break;
+	case RUN:
+		Motion_Run(fTimeDelta);
+		break;
+	case ATTACK_1:
+		Motion_Attack1(fTimeDelta);
+		break;
+	case ATTACK_2:
+		Motion_Attack2(fTimeDelta);
 		break;
 	case ANIM_END:
 		break;
@@ -252,6 +295,17 @@ void CRect_Model::Motion_Walk(_float fTimeDelta)
 	}
 }
 
+
+void CRect_Model::Motion_Run(_float fTimeDelta)
+{
+	m_pSkeletalAnimator->Update_Animetion(RUN, fTimeDelta, 0);
+
+	if (m_pSkeletalAnimator->is_AnimtionEND(RUN))
+	{
+		m_eCurAnim = RUN;
+	}
+}
+
 void CRect_Model::Motion_EAT(_float fTimeDelta)
 {	
 	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
@@ -262,26 +316,26 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 		
 	m_pSkeletalAnimator->Update_Animetion(EAT, fTimeDelta, 0);
 
-	// ¸Ô´Â ÆÄÆ¼Å¬.
+	// ë¨¹ëŠ” íŒŒí‹°í´.
 	if (m_fCurrentEatTime >= m_fEatCoolTime)
 	{
-		// º» Çà·Ä.
+		// ë³¸ í–‰ë ¬.
 		Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
 
-		// ¸Ô´Â ÆÄÆ¼Å¬ ÀÛµ¿.	
+		// ë¨¹ëŠ” íŒŒí‹°í´ ìž‘ë™.	
 		CParticleSystem* particle = CParticleEventManager::Get_Instance()->OnParticle(
 			PROTOTYPE_GAMEOBJECT_PARTICLE_EATING,
 			boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION)
 		);
 
-		// Æ÷Áö¼Ç¸¸ ³ÖÀ¸¸é È¸Àü ¾î±ß³ª´Ï±î ÀÌ°Íµµ ¶È°°ÀÌÇØ.
+		// í¬ì§€ì…˜ë§Œ ë„£ìœ¼ë©´ íšŒì „ ì–´ê¸‹ë‚˜ë‹ˆê¹Œ ì´ê²ƒë„ ë˜‘ê°™ì´í•´.
 		particle->GetTransform()->Set_Matrix(boneWorldMatrix);
 
-		// ½Ã°£ ÃÊ±âÈ­.
+		// ì‹œê°„ ì´ˆê¸°í™”.
 		m_fCurrentEatTime = 0.f;
 	}	
 
-	// ¸Ô´Â ÄðÅ¸ÀÓ.
+	// ë¨¹ëŠ” ì¿¨íƒ€ìž„.
 	m_fCurrentEatTime += fTimeDelta;
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(EAT))
@@ -291,30 +345,61 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 	}
 }
 
+void CRect_Model::Motion_Attack1(_float fTimeDelta)
+{
+	m_pSkeletalAnimator->Update_Animetion(ATTACK_1, fTimeDelta, 0);
+
+	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_1))
+	{
+		m_eCurAnim = INIT;
+	}
+}
+
+void CRect_Model::Motion_Attack2(_float fTimeDelta)
+{
+	m_pSkeletalAnimator->Update_Animetion(ATTACK_2, fTimeDelta, 0);
+
+	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_2))
+	{
+		m_eCurAnim = INIT;
+	}
+}
+
 void CRect_Model::KeyInput()
 {
 	if (m_pGameInstance->Key_Down(VK_LBUTTON))
 	{
-		m_eCurAnim = SWING;
+		ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
+		if (name == ITEM_WEPON_1)
+		{
+			m_eCurAnim = ATTACK_1;
+		}
+		else
+		{
+			m_eCurAnim = SWING;
+		}
+
 		return;
 	}
 
 	if (m_pGameInstance->Key_Down(VK_RBUTTON))
 	{
-		m_eCurAnim = EAT;		
-
-		if (Compute_Texture_Name() == ITEM_WEPON_1)
+    if (Compute_Texture_Name() == ITEM_WEPON_1)
 		{
 			AuraSword();
-		}		
-
+		}
+    else
+		{
+			m_eCurAnim = EAT;
+		}
+   
 		return;
 	}
 
 	if (m_eCurAnim == SWING || m_eCurAnim == EAT)
 		return;
 
-	// ¾Ö´Ï¸ÞÀÌ¼Ç ¹Ù²Ù±â
+	// ì• ë‹ˆë©”ì´ì…˜ ë°”ê¾¸ê¸°
 	if (m_pGameInstance->Key_Pressing('W') ||
 		m_pGameInstance->Key_Pressing('A') ||
 		m_pGameInstance->Key_Pressing('S') ||
@@ -340,7 +425,7 @@ void CRect_Model::FireSword()
 				PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME
 			);
 
-			// ¸Þ¸ð¸® ÇØÁ¦´Â ¾ÈÇÔ.
+			// ë©”ëª¨ë¦¬ í•´ì œëŠ” ì•ˆí•¨.
 			flameSword = nullptr;
 		}		
 
@@ -355,20 +440,20 @@ void CRect_Model::FireSword()
 				PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME
 			);
 
-			// ¸Þ¸ð¸® ÇØÁ¦´Â ¾ÈÇÔ.
+			// ë©”ëª¨ë¦¬ í•´ì œëŠ” ì•ˆí•¨.
 			flameSword = nullptr;
 		}
 
 		return;
 	}
 
-	// È¸Àü Çà·Ä.
+	// íšŒì „ í–‰ë ¬.
 	Matrix rotateMatrix = {};
 
-	// º» ¿ùµåÇà·Ä.
+	// ë³¸ ì›”ë“œí–‰ë ¬.
 	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
 
-	// È¸ÀüÇà·Ä °è»ê.
+	// íšŒì „í–‰ë ¬ ê³„ì‚°.
 	rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
 
 	if (flameSword == nullptr)
@@ -381,46 +466,46 @@ void CRect_Model::FireSword()
 		);
 	}
 
-	// ÆÄÆ¼Å¬ Àû¿ë.
+	// íŒŒí‹°í´ ì ìš©.
 	flameSword->Replay(boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
 
-	// ÀÚÀü * ºÎ¸ð
+	// ìžì „ * ë¶€ëª¨
 	flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
 }
 
 void CRect_Model::AuraSword()
 {
-	// °Ë±â.
+	// ê²€ê¸°.
 	CSwordAura* swordAura = (CSwordAura*)m_pGameInstance->PushPool(
-		LEVEL_YU,	// Àû¿ë ¾À.
-		PROTOTYPE_GAMEOBJECT_SWORD_AURA,	// °¡Á®¿Ã ÇÁ·ÎÅäÅ¸ÀÔ.
-		LEVEL_YU,		// °¡Á®¿Ã ¾À.
-		LAYER_EFFECT	// ¾Öµå¿ÀºêÁ§Æ®¿¡ Ãß°¡ÇÒ ·¹ÀÌ¾î.
+		LEVEL_YU,	// ì ìš© ì”¬.
+		PROTOTYPE_GAMEOBJECT_SWORD_AURA,	// ê°€ì ¸ì˜¬ í”„ë¡œí† íƒ€ìž….
+		LEVEL_YU,		// ê°€ì ¸ì˜¬ ì”¬.
+		LAYER_EFFECT	// ì• ë“œì˜¤ë¸Œì íŠ¸ì— ì¶”ê°€í•  ë ˆì´ì–´.
 	);
 
-	// Ä«¸Þ¶ó.
+	// ì¹´ë©”ë¼.
 	CCamera_Player* camera = (CCamera_Player*)m_pGameInstance->Get_Object(
 		LEVEL_YU,
 		TEXT("Layer_Camera"),
 		0
 	);
 
-	// Ä«¸Þ¶ó ¿ùµå Çà·Ä.
+	// ì¹´ë©”ë¼ ì›”ë“œ í–‰ë ¬.
 	const _float4x4* cameraWorldmat = camera->GetTransform()->Get_WorldMatrix();
 
-	// È¸Àü Çà·Ä.
+	// íšŒì „ í–‰ë ¬.
 	Matrix rotateMatrix = {};
 	Matrix scaleMatrix = {};
 
-	// °Ë±â 90µµ È¸Àü.
+	// ê²€ê¸° 90ë„ íšŒì „.
 	rotateMatrix = rotateMatrix.Turn_Radian(_float3(1.f, 0.f, 0.f), D3DXToRadian(-90.f));
 
-	// °Ë±â Å©±â ´Ã¸².
+	// ê²€ê¸° í¬ê¸° ëŠ˜ë¦¼.
 	scaleMatrix = scaleMatrix.Scaling(5.f, 5.f, 5.f);
 
 	swordAura->GetTransform()->Set_Matrix((_float4x4)scaleMatrix * (_float4x4)rotateMatrix * (*cameraWorldmat));
 
-	// ±âÁ¸ »ý¼º À§Ä¡°¡ Á» ³·°Ô.
+	// ê¸°ì¡´ ìƒì„± ìœ„ì¹˜ê°€ ì¢€ ë‚®ê²Œ.
 	_float3 pos = swordAura->GetTransform()->Get_State(CTransform::STATE_POSITION);
 
 	swordAura->GetTransform()->Set_State(
@@ -436,7 +521,7 @@ void CRect_Model::SwingFireSword()
 		return;
 	}
 
-	// º» Çà·Ä.
+	// ë³¸ í–‰ë ¬.
 	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
 
 	CParticleSystem* particle = CParticleEventManager::Get_Instance()->OnParticle(
