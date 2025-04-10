@@ -8,10 +8,13 @@ texture g_Texture;
 float g_Bright;
 
 // 안개가 시작되는 거리.
-float g_fFogDistance = 20.f;
+float g_fFogStartDistance = 5.f;
+
+// 안개가 끝나는 거리.
+float g_fFogEndDistance = 25.f;
 
 // 안개 색.
-vector g_vFogColor = vector(1.f, 1.f, 1.f, 1.f);
+vector g_vFogColor = vector(0.529f, 0.808f, 0.922f, 1.f);
 
 struct VS_IN
 {
@@ -88,35 +91,27 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
     
     // 안개 범위 바깥인가?
-    if (In.vDistance >= g_fFogDistance)
+    if (In.vDistance >= g_fFogEndDistance)
     {
-        // 안개와의 거리 차이.
-        float distance = saturate(In.vDistance - g_fFogDistance);
+        discard;
+    }
+    else if (In.vDistance >= g_fFogStartDistance)
+    {
+        float fEnd = g_fFogEndDistance - g_fFogStartDistance; // N
+        float fCurrent = g_fFogEndDistance - In.vDistance; // N~0
+        
+        // 안개와의 거리 차이.        
+        float distance = fCurrent / fEnd; // 1~0
         
         // 선형 보간.
-        float4 color = lerp(Out.vColor, g_vFogColor, distance);
+        float4 color = lerp(g_vFogColor, Out.vColor, distance);
         
         // 안개 색 입힘.
         Out.vColor.rgb = color * g_Bright;
-        
-        // 안개 색상 무시함.   
-        if (Out.vColor.r >= (g_vFogColor.r - distance) * g_Bright ||
-        Out.vColor.g >= (g_vFogColor.g - distance) * g_Bright ||
-        Out.vColor.b >= (g_vFogColor.b - distance) * g_Bright)
-        {
-            discard;
-        }
-        
-        // 검은색은 위에 조건문 안 먹어서 따로 예외처리함.
-        if (Out.vColor.r <= 0.f &&
-        Out.vColor.g <= 0.f &&
-        Out.vColor.b <= 0.f)
-        {
-            discard;
-        }
     }
     else
     {
+        // 안개 범위 안이면 기본색.
         Out.vColor.rgb *= g_Bright;
     }
     
