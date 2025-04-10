@@ -87,7 +87,7 @@ PS_OUT PS_MAIN(PS_IN In)
     {             
         // 안개 시작 거리에선 안개색상 지정.
         
-        float fEnd = g_fFogEndDistance - g_fFogStartDistance; // N
+        float fEnd = g_fFogEndDistance - g_fFogStartDistance;   // N
         float fCurrent = g_fFogEndDistance - In.vDistance;      // N~0
         
         // 안개와의 거리 차이.        

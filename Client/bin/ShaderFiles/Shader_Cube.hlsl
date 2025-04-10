@@ -128,11 +128,11 @@ PS_OUT PS_MAIN_STEVE(PS_IN In)
     {
         // 안개 시작 거리에선 안개색상 지정.
         
-        float fEnd = g_fFogEndDistance - g_fFogStartDistance; // N
-        float fCurrent = g_fFogEndDistance - In.vDistance; // N~0
+        float fEnd = g_fFogEndDistance - g_fFogStartDistance;   // N
+        float fCurrent = g_fFogEndDistance - In.vDistance;      // N~0
         
         // 안개와의 거리 차이.        
-        float distance = fCurrent / fEnd; // 1~0
+        float distance = fCurrent / fEnd;                       // 1~0
         
         // 선형 보간.
         float4 color = lerp(g_vFogColor, Out.vColor, distance);
