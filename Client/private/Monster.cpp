@@ -58,20 +58,20 @@ void CMonster::Priority_Update(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-	_float fDist = Comput_Distance();
+	
     m_TargetPos = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 
-    if (fDist > 30.f)
-    {
-        //타겟과 너무 멀다면-> 비활성화
-        return;
-    }
-    else if (fDist > 10.f && !m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
-    {
-        //타겟과 적당히 멀고, 눈에 안보이면 비활성화
-        return;
-    }
-
+    //_float fDist = Comput_Distance();
+    //if (fDist > 30.f)
+    //{
+    //    //타겟과 너무 멀다면-> 비활성화
+    //    return;
+    //}
+    //else if (fDist > 10.f && !m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.5f))
+    //{
+    //    //타겟과 적당히 멀고, 눈에 안보이면 비활성화
+    //    return;
+    //}
 
     if (m_pBehaviorTree && !isDead)
     {
@@ -110,10 +110,15 @@ float CMonster::Comput_Distance()
 
 void CMonster::Chase_Player(float _fTimeDelta)
 {
+
     if (m_MonsterType != MT_WARDEN)
     {
         m_pTransformCom->LookAt_XZ(m_TargetPos);
-        m_pRigidbodyCom->Chase(m_TargetPos, 2.f);
+
+        if (!m_pRigidbodyCom->Get_isKnockBack())
+        {
+            m_pRigidbodyCom->Chase(m_TargetPos, 2.f);
+        }
     }
     else
     {
@@ -123,7 +128,7 @@ void CMonster::Chase_Player(float _fTimeDelta)
     
     //전 프레임 상태가 공격 이었으면 무조건 속도 안났을 테니 점프 하지 못하게 해야함
     //움직일라 하는데 속도가 안난다 점프함 ㅋㅋ
-    if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 0.2f && m_eCurAnim == WALK)
+    if (D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) < 0.2f && (m_eCurAnim == WALK || m_eCurAnim == RUN))
     {
 		m_pRigidbodyCom->Jump(6.5f);
     }
@@ -166,11 +171,11 @@ void CMonster::Knock_back(const _float3& vforce)
     m_eColor = RENDERATTACKED;
     m_bGetHit = true;
 
-    _float3 temp = {};
-    D3DXVec3Normalize(&temp, &vforce);
-    temp *= 3.f;     temp.y = 4.f;
+    //_float3 temp = {};
+    //D3DXVec3Normalize(&temp, &vforce);
+    //temp *= 3.f;     temp.y = 4.f;
 
-    m_pRigidbodyCom->Knock_back(temp);
+    m_pRigidbodyCom->Knock_back(vforce);
     m_pTransformCom->LookAt_XZ(m_TargetPos);
 
     int random = rand() % 10;

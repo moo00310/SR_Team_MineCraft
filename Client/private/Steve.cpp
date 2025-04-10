@@ -134,7 +134,10 @@ void CSteve::Input_Key(_float fTimeDelta)
 		isAttack = true;
 	}
 
-	Move(fTimeDelta);
+	if (!Get_RigidBody()->Get_isKnockBack())
+	{
+		Move(fTimeDelta);
+	}
 }
 
 void CSteve::Move(_float fTimeDelta)
@@ -657,12 +660,12 @@ void CSteve::Knock_back(const _float3& vforce)
 	m_eColor = RENDERATTACKED;
 	m_bGetHit = true;
 
-	_float3 temp = {};
-	D3DXVec3Normalize(&temp, &vforce);
-	temp *= 5.f;
-	temp.y = 5.f;
+	//_float3 temp = {};
+	//D3DXVec3Normalize(&temp, &vforce);
+	//temp *= 5.f;
+	//temp.y = 5.f;
 
-	m_pRigidbodyCom->Knock_back(temp);
+	m_pRigidbodyCom->Knock_back(vforce);
 }
 
 const _float4x4& CSteve::GetSoketMatrix(int index)

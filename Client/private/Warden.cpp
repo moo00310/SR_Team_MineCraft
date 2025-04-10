@@ -888,28 +888,28 @@ void CWarden::FrameCallback(int animType, int frame)
 
     if (animType == Find_Pevis)
     {
-        m_pGameInstance->Play_Sound(TEXT("roar_1"), SOUND_SAY3, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->Play_Sound(TEXT("roar_1"), SOUND_SAY3, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
     }
 
-    if (animType == Attack_Pevis)
+    /*if (animType == Attack_Pevis)
     {
         m_pGameInstance->Play_Sound(TEXT("attack_impact_1"), SOUND_ATTACK, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
-    }
+    }*/
 
     if (animType == Attack2_Pevis)
     {
-        m_pGameInstance->Play_Sound(TEXT("sonic_charge1"), SOUND_ATTACK, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->Play_Sound(TEXT("sonic_charge1"), SOUND_ATTACK, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
     }
     
-    if (animType == Swing_Leg_R)
+    if (animType == Swing_Pevis || animType == Run_Pevis)
     {
-        m_pGameInstance->Play_Sound(TEXT("step_1"), SOUND_WALK1, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->Play_Sound(TEXT("step_1"), SOUND_WALK1, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         int random = rand() % 10;
         if (random < 4) {
             switch (random)
             {
             case 0:
-                m_pGameInstance->Play_Sound(TEXT("ambient_1"), SOUND_SAY1, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                m_pGameInstance->Play_Sound(TEXT("ambient_1"), SOUND_SAY1, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
                 break;
             case 1:
                 m_pGameInstance->Play_Sound(TEXT("heartbeat_1"), SOUND_SAY2, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));

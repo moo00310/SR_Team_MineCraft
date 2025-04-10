@@ -346,8 +346,12 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
         const _float fDamage{ -40.f };
         const _float fRange{ 10.f };
 
-        _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-        m_pTargetPawn->Knock_back(temp);
+        _float3 vForce{ m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
+        D3DXVec3Normalize(&vForce, &vForce);
+        vForce *= 3.f;
+        vForce.y += 4.f;
+
+        m_pTargetPawn->Knock_back(vForce);
         m_pTargetPawn->Add_Hp(fDamage);
 
         auto GameObjects = m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_Monster"));
@@ -366,7 +370,7 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
             if (D3DXVec3LengthSq(&vDiff) < fRange)
             {
                 pPawn->Add_Hp(fDamage);
-                pPawn->Knock_back(temp);
+                pPawn->Knock_back(vForce);
             }
         }
 
