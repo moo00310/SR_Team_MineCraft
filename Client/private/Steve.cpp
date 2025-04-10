@@ -98,8 +98,7 @@ void CSteve::Late_Update(_float fTimeDelta)
 			return;
 	}
 }
-		
-
+	
 HRESULT CSteve::Render()
 {
 	__super::Render();
@@ -165,12 +164,14 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Pressing('A'))
 	{
 		vDirection -= vRight;
+		mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(-30));
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 
 	}
 	if (m_pGameInstance->Key_Pressing('D'))
 	{
 		vDirection += vRight;
+		mat.Turn_Radian(_float3(0.f, 1.f, 0.f), D3DXToRadian(30));
 		m_skelAnime->Set_BoneLocalMatrix(0, mat);
 
 	}
@@ -180,7 +181,9 @@ void CSteve::Move(_float fTimeDelta)
 	{
 		D3DXVec3Normalize(&vDirection, &vDirection);
 		m_pRigidbodyCom->Move(vDirection);
-		m_eCurAnim = WALK;
+
+		if (m_isRun) m_eCurAnim = RUN;
+		else m_eCurAnim = WALK;	
 
 		if (m_pRigidbodyCom->isGround())
 			PlayDashParticle(fTimeDelta * D3DXVec3LengthSq(&m_pRigidbodyCom->Get_Velocity()) * 0.05f); //현재 속도 만큼 빨리 파티클 나오도록
@@ -192,7 +195,6 @@ void CSteve::Move(_float fTimeDelta)
 
 		if(!m_pRigidbodyCom->Get_isKnockBack())
 			m_pRigidbodyCom->StopMovement();
-
 	}
 
 	if (m_pGameInstance->Key_Down(VK_SPACE))
@@ -408,6 +410,45 @@ HRESULT CSteve::Ready_Animation()
 	m_skelAnime->Add_Animation(ANIM_type::Swing_BA, Walk_5_B);
 
 /*----------
+* Walk 모션
+------------*/
+	Walk_1_F = { 0.f,	mat }; //0
+	Walk_2_F = { 0.25f, mat2 }; //60
+	Walk_3_F = { 0.5f,	mat }; // 0
+	Walk_4_F = { 0.75f, mat3 }; // -60
+	Walk_5_F = { 1.0f,	mat }; // 0
+
+	Walk_1_B = { 0.f,	 mat };
+	Walk_2_B = { 0.25f,  mat3 };
+	Walk_3_B = { 0.5f,	 mat };
+	Walk_4_B = { 0.75f,  mat2 };
+	Walk_5_B = { 1.0f,	 mat };
+
+	m_skelAnime->Add_Animation(ANIM_type::Run_FF, Walk_1_F);
+	m_skelAnime->Add_Animation(ANIM_type::Run_FF, Walk_2_F);
+	m_skelAnime->Add_Animation(ANIM_type::Run_FF, Walk_3_F);
+	m_skelAnime->Add_Animation(ANIM_type::Run_FF, Walk_4_F);
+	m_skelAnime->Add_Animation(ANIM_type::Run_FF, Walk_5_F);
+										  
+	m_skelAnime->Add_Animation(ANIM_type::Run_FA, Walk_1_F);
+	m_skelAnime->Add_Animation(ANIM_type::Run_FA, Walk_2_F);
+	m_skelAnime->Add_Animation(ANIM_type::Run_FA, Walk_3_F);
+	m_skelAnime->Add_Animation(ANIM_type::Run_FA, Walk_4_F);
+	m_skelAnime->Add_Animation(ANIM_type::Run_FA, Walk_5_F);
+										  
+	m_skelAnime->Add_Animation(ANIM_type::Run_BF, Walk_1_B);
+	m_skelAnime->Add_Animation(ANIM_type::Run_BF, Walk_2_B);
+	m_skelAnime->Add_Animation(ANIM_type::Run_BF, Walk_3_B);
+	m_skelAnime->Add_Animation(ANIM_type::Run_BF, Walk_4_B);
+	m_skelAnime->Add_Animation(ANIM_type::Run_BF, Walk_5_B);
+										  
+	m_skelAnime->Add_Animation(ANIM_type::Run_BA, Walk_1_B);
+	m_skelAnime->Add_Animation(ANIM_type::Run_BA, Walk_2_B);
+	m_skelAnime->Add_Animation(ANIM_type::Run_BA, Walk_3_B);
+	m_skelAnime->Add_Animation(ANIM_type::Run_BA, Walk_4_B);
+	m_skelAnime->Add_Animation(ANIM_type::Run_BA, Walk_5_B);
+
+/*----------
 * IDEL 
 ------------*/
 
@@ -480,6 +521,9 @@ void CSteve::Update_State(_float fTimeDelta)
 	case CSteve::WALK:
 		Motion_Walk(fTimeDelta);
 		break;
+	case CSteve::RUN:
+		Motion_Run(fTimeDelta);
+		break;
 	case CSteve::ANIM_END:
 		break;
 	default:
@@ -536,6 +580,24 @@ void CSteve::Motion_Walk(_float fTimeDelta)
 		m_skelAnime->Update_Animetion(Swing_FA, fTimeDelta, 5);
 }
 
+void CSteve::Motion_Run(_float fTimeDelta)
+{
+	if (m_skelAnime->is_AnimtionEND(Run_BF) &&
+		m_skelAnime->is_AnimtionEND(Run_FF) &&
+		m_skelAnime->is_AnimtionEND(Run_BA) &&
+		m_skelAnime->is_AnimtionEND(Run_FA)
+		)
+	{
+		m_eCurAnim = RUN;
+	}
+
+	m_skelAnime->Update_Animetion(Run_BF, fTimeDelta, 3);
+	m_skelAnime->Update_Animetion(Run_FF, fTimeDelta, 4);
+	m_skelAnime->Update_Animetion(Run_BA, fTimeDelta, 6);
+	if (!isAttack)
+		m_skelAnime->Update_Animetion(Run_FA, fTimeDelta, 5);
+}
+
 void CSteve::Turn(_float fTimeDelta)
 {
 	// 역행렬을 가져와서 머리 회전
@@ -549,7 +611,6 @@ void CSteve::Turn(_float fTimeDelta)
 
 	// 몸(Root) 회전
 	m_skelAnime->IkLookAt(fTimeDelta, 0, 2);
-
 }
 
 
