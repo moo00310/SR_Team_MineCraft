@@ -42,10 +42,7 @@ private:
 	void AuraSword();
 
 	// 불검 휘두를 때 잔상.
-	void SwingFireSword();
-
-	// TODO :: 테스트용 워든 공격 파티클.
-	void SonicBoom();
+	void SwingFireSword();	
 
 	ITEMNAME Compute_Texture_Name();
 

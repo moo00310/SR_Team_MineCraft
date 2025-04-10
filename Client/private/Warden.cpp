@@ -558,7 +558,7 @@ void CWarden::Motion_Attack(_float fTimeDelta)
     {
         m_bAnimEnd[ATTACK] = true;
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-        m_pTargetPawn->Knock_back(temp);
+        m_pTargetPawn->Knock_back(temp);        
     }
 
     m_skelAnime->Update_Animetion(Attack_Pevis, fTimeDelta, 1);
@@ -575,7 +575,13 @@ void CWarden::Motion_Attack2(_float fTimeDelta)
         )
     {
         m_bAnimEnd[ATTACK2] = true;
-        isShootFollow = true;
+        isShootFollow = true;        
+
+        CParticleEventManager::Get_Instance()->OnParticle(
+            PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,
+            m_pTransformCom,
+            1.f
+        );
     }
 
     m_skelAnime->Update_Animetion(Attack2_Pevis, fTimeDelta, 1);
@@ -589,6 +595,13 @@ void CWarden::Motion_Attack2(_float fTimeDelta)
 void CWarden::Motion_Dead(_float fTimeDelta)
 {
     m_skelAnime->Update_Animetion(Dead, fTimeDelta, 0);
+
+    // »ç¸Á ÆÄÆ¼Å¬.
+    CParticleEventManager::Get_Instance()->OnParticle(
+        PROTOTYPE_GAMEOBJECT_PARTICLE_DIE,
+        m_pTransformCom,
+        0.5f
+    );
 
     if (m_skelAnime->is_AnimtionEND(Dead))
     {

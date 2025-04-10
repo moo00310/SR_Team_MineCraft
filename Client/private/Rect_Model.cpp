@@ -90,7 +90,7 @@ HRESULT CRect_Model::Ready_Bone()
 	mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
 
 	BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
-	BONE bone2 = { "Fx", 0, MAtrixTranslation(4.f/16.f, 4.f / 16.f, 0.f), MAtrixTranslation(4.f / 16.f, 4.f / 16.f, 0.f), Matrix(), Matrix()};
+	BONE bone2 = { "Fx", 0, MAtrixTranslation(0.f, 10.f / 16.f, 0.f), MAtrixTranslation(0.f, 10.f / 16.f, 0.f), Matrix(), Matrix()};
 
 	m_pSkeletalAnimator->Add_Bone(bone);
 	m_pSkeletalAnimator->Add_Bone(bone2);
@@ -302,8 +302,12 @@ void CRect_Model::KeyInput()
 	if (m_pGameInstance->Key_Down(VK_RBUTTON))
 	{
 		m_eCurAnim = EAT;		
-		//AuraSword();
-		SonicBoom();
+
+		if (Compute_Texture_Name() == ITEM_WEPON_1)
+		{
+			AuraSword();
+		}		
+
 		return;
 	}
 
@@ -329,41 +333,59 @@ void CRect_Model::FireSword()
 	
 	if (!m_isRender)
 	{
+		if (flameSword != nullptr)
+		{
+			m_pGameInstance->PopPool(
+				flameSword,
+				PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME
+			);
+
+			// 메모리 해제는 안함.
+			flameSword = nullptr;
+		}		
+
 		return;
 	}
-	if (Compute_Texture_Name() == ITEM_WEPON_1)
+	if (Compute_Texture_Name() != ITEM_WEPON_1)
 	{
-		// 회전 행렬.
-		Matrix rotateMatrix = {};
-
-		// 본 월드행렬.
-		Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
-
-		// 회전행렬 계산.
-		rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
-
-		if (flameSword == nullptr)
+		if (flameSword != nullptr)
 		{
-			flameSword = (CParticleSystem*)m_pGameInstance->PushPool(
-				LEVEL_STATIC,
-				PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
-				LEVEL_STATIC,
-				LAYER_PARTICLE
+			m_pGameInstance->PopPool(
+				flameSword,
+				PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME
 			);
+
+			// 메모리 해제는 안함.
+			flameSword = nullptr;
 		}
 
-		// 파티클 적용.
-		flameSword->Replay(boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
-
-		// 자전 * 부모
-		flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
+		return;
 	}
-	else
+
+	// 회전 행렬.
+	Matrix rotateMatrix = {};
+
+	// 본 월드행렬.
+	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
+
+	// 회전행렬 계산.
+	rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
+
+	if (flameSword == nullptr)
 	{
-		//flameSword->Replay(_float3(0.f,0.f,0.f));
+		flameSword = (CParticleSystem*)m_pGameInstance->PushPool(
+			LEVEL_STATIC,
+			PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
+			LEVEL_STATIC,
+			LAYER_PARTICLE
+		);
 	}
 
-	
+	// 파티클 적용.
+	flameSword->Replay(boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+
+	// 자전 * 부모
+	flameSword->GetTransform()->Set_Matrix(rotateMatrix * boneWorldMatrix);
 }
 
 void CRect_Model::AuraSword()
@@ -424,25 +446,7 @@ void CRect_Model::SwingFireSword()
 
 	particle->GetTransform()->Set_Matrix(boneWorldMatrix);
 
-	//particle->SetTimer(0.3f);
-}
-
-void CRect_Model::SonicBoom()
-{
-	// 카메라.
-	CCamera_Player* camera = (CCamera_Player*)m_pGameInstance->Get_Object(
-		LEVEL_YU,
-		TEXT("Layer_Camera"),
-		0
-	);
-
-	// 카메라 월드 행렬.
-	const _float4x4* cameraWorldmat = camera->GetTransform()->Get_WorldMatrix();
-
-	CParticleEventManager::Get_Instance()->OnParticle(
-		PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,
-		{0.f, 0.f, 0.f}
-	)->GetTransform()->Set_Matrix(*cameraWorldmat);
+	particle->SetTimer(0.3f);
 }
 
 ITEMNAME CRect_Model::Compute_Texture_Name()
