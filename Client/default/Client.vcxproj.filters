@@ -31,9 +31,6 @@
     <Filter Include="01.Levels\100.Tool_Level">
       <UniqueIdentifier>{f3ef3871-2c1e-4094-a3e4-0d46527dd77d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\96.Hero_Level">
-      <UniqueIdentifier>{0fddaa52-c229-4143-bb33-658575395b07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\95.Huck_Level">
       <UniqueIdentifier>{5e2cb000-7faa-4a12-9278-93b6fd4b74f1}</UniqueIdentifier>
     </Filter>
@@ -373,6 +370,12 @@
     <Filter Include="03.UI\12.Crosshair">
       <UniqueIdentifier>{550ba6df-19c3-4c08-ba35-1c758e5a3fd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Cutscene">
+      <UniqueIdentifier>{6d04bf8e-95cd-4a44-8270-877a40e284a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\97.Yu_Level\96.Hero_Level">
+      <UniqueIdentifier>{0fddaa52-c229-4143-bb33-658575395b07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -433,7 +436,7 @@
       <Filter>01.Levels\95.Huck_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_HERO.h">
-      <Filter>01.Levels\96.Hero_Level</Filter>
+      <Filter>01.Levels\97.Yu_Level\96.Hero_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Imgui\imgui.h">
       <Filter>100.Imgui</Filter>
@@ -814,6 +817,9 @@
     <ClInclude Include="..\public\BTTask_WalkChase.h">
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Camera_Cutscene.h">
+      <Filter>02.GameObjects\02.Camera\Cutscene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -866,7 +872,7 @@
       <Filter>01.Levels\95.Huck_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_HERO.cpp">
-      <Filter>01.Levels\96.Hero_Level</Filter>
+      <Filter>01.Levels\97.Yu_Level\96.Hero_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_WOO.cpp">
       <Filter>01.Levels\98.Woo_Level</Filter>
@@ -1242,6 +1248,9 @@
     </ClCompile>
     <ClCompile Include="..\private\BTTask_WalkChase.cpp">
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Camera_Cutscene.cpp">
+      <Filter>02.GameObjects\02.Camera\Cutscene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

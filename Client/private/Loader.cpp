@@ -34,6 +34,7 @@
 #include "Sun.h"
 #include "Clouds.h"
 #include "Crosshair.h"
+#include "Camera_Cutscene.h"
 
 
 //지형 관련
@@ -982,6 +983,10 @@ HRESULT CLoader::Loading_For_YUPlay()
 	
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GameMgr"),
 		CGameMgr::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Cutscene"),
+		Camera_Cutscene::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MissionControl"),

@@ -192,6 +192,15 @@ void CMonster::Knock_back(const _float3& vforce)
             m_pGameInstance->Play_Sound(TEXT("Creeper_Hurt2"), SOUND_HIT, this, m_sound, m_TargetPos);
         }
         break;
+
+    case Client::CMonster::MT_WARDEN:
+        if (random < 5) {
+            m_pGameInstance->Play_Sound(TEXT("hurt_1"), SOUND_HIT, this, m_sound, m_TargetPos);
+        }
+        else {
+            m_pGameInstance->Play_Sound(TEXT("hurt_2"), SOUND_HIT, this, m_sound, m_TargetPos);
+        }
+        break;
     case Client::CMonster::MT_END:
         break;
     default:

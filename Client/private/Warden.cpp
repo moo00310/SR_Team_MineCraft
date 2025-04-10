@@ -127,6 +127,14 @@ HRESULT CWarden::Render()
     return S_OK;
 }
 
+void CWarden::Dead_Pawn()
+{
+    CPawn::Dead_Pawn();
+
+    m_pGameInstance->Play_Sound(TEXT("death_1"), SOUND_DEAD, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
+}
+
 HRESULT CWarden::Ready_Components()
 {
 #pragma region ¿ÜÇü
@@ -701,6 +709,43 @@ void CWarden::FrameCallback(int animType, int frame)
         frame == 1)
     {
         isShootFollow = false;
+    }
+
+    if (animType == Find_Pevis)
+    {
+        m_pGameInstance->Play_Sound(TEXT("roar_1"), SOUND_SAY3, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+    }
+
+    if (animType == Attack_Pevis)
+    {
+        m_pGameInstance->Play_Sound(TEXT("attack_impact_1"), SOUND_ATTACK, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+    }
+
+    if (animType == Attack2_Pevis)
+    {
+        m_pGameInstance->Play_Sound(TEXT("sonic_charge1"), SOUND_ATTACK, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+    }
+    
+    if (animType == Swing_Leg_R)
+    {
+        m_pGameInstance->Play_Sound(TEXT("step_1"), SOUND_WALK1, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        int random = rand() % 10;
+        if (random < 4) {
+            switch (random)
+            {
+            case 0:
+                m_pGameInstance->Play_Sound(TEXT("ambient_1"), SOUND_SAY1, this, m_sound - 0.35, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                break;
+            case 1:
+                m_pGameInstance->Play_Sound(TEXT("heartbeat_1"), SOUND_SAY2, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+                break;
+            //case 2:
+            //    m_pGameInstance->Play_Sound(TEXT("heartbeat_2"), SOUND_SAY3, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            //    break;
+            default:
+                break;
+            }
+        }
     }
 
 }
