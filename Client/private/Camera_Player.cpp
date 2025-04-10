@@ -310,7 +310,12 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         {
             if (CMonster* monster = dynamic_cast<CMonster*>(pHitObject))
             {
-                monster->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+                _float3 vForce{ m_pTransformCom->Get_State(CTransform::STATE_LOOK) };
+                D3DXVec3Normalize(&vForce, &vForce);
+                vForce *= 3.f;
+                vForce.y = 4.f;
+
+                monster->Knock_back(vForce);
                 monster->Add_Hp(-10.f);
                 return;
             }
