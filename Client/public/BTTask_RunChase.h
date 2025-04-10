@@ -10,7 +10,5 @@ class CBTTask_RunChase : public CNode
 {
 public:
     STATUS Excute(CGameObject* _Obj, _float _fTimeDelta) override;
-
-    float fTime = 0;
 };
 END

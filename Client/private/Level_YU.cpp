@@ -85,8 +85,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
+		return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
