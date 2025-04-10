@@ -33,9 +33,6 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
-private:
-	_bool m_bEKeyPressed = { false };
-
 public:
 	static CMainInventory* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

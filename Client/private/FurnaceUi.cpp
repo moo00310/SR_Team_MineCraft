@@ -44,9 +44,6 @@ void CFurnaceUi::Priority_Update(_float fTimeDelta)
 
 void CFurnaceUi::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down('E') || m_pGameInstance->Key_Down(VK_ESCAPE)) {
-		g_bFurnaceUiOpen = false;
-	}
 }
 
 void CFurnaceUi::Late_Update(_float fTimeDelta)
