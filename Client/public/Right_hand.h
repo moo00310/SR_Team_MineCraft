@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Arm_Steve.h"
 #include "RightHand_Object.h"
+#include "Pawn.h"
 
 class CRight_hand final : public CGameObject
 {
@@ -20,7 +21,7 @@ public:
 	virtual void Late_Update(_float fTimeDelta);
 
 private:
-	CGameObject* m_pSteve = { nullptr };
+	CPawn* m_pSteve = { nullptr };
 	CRightHand_Object* m_pArm_Model = { nullptr };
 	CRightHand_Object* m_pRect_Model = { nullptr };
 	CRightHand_Object* m_pCube_Model = { nullptr };

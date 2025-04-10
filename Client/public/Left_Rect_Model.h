@@ -28,6 +28,7 @@ private:
 	void Motion_Idle(_float fTimeDelta) override;
 	void Motion_Swing(_float fTimeDelta) override;
 	void Motion_Walk(_float fTimeDelta) override;
+	void Motion_Run(_float fTimeDelta) override;
 	virtual void KeyInput() override;
 
 
@@ -35,6 +36,7 @@ public:
 	static CLeft_Rect_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
+
 
 };
 

@@ -95,6 +95,14 @@ void CRightHand_Object::ChangeTexture(int Num)
     m_TextrueNum = Num;
 }
 
+void CRightHand_Object::Set_RunAnimation()
+{
+    if (m_eCurAnim == SWING) return;
+
+    m_eCurAnim = RUN;
+    
+}
+
 HRESULT CRightHand_Object::Ready_Components()
 {
     // 쉐이더 컴포넌트
@@ -118,8 +126,13 @@ HRESULT CRightHand_Object::Update_Root(_float fTimeDelta)
     m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
     D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);
 
+    if (m_eCurAnim == RUN)
+        m_RunMatrix.Set_State(Matrix::STATE_POSITION, _float3(0.2f, 0.f, -0.3f));
+    else
+        m_RunMatrix = {};
+
     // 카메라 위치로 따라오게 하는 코드임
-    m_pSkeletalAnimator->Update_RootBone(m_FPS_mat * ViewMatrix);
+    m_pSkeletalAnimator->Update_RootBone(m_RunMatrix * m_FPS_mat * ViewMatrix);
 
     return S_OK;
 }

@@ -150,6 +150,22 @@ HRESULT CRect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(WALK, Walk4);
 	m_pSkeletalAnimator->Add_Animation(WALK, Walk5);
 
+///*------------------------
+//* Run 애니메이션 
+//----------------------------*/
+
+	Walk1 = { 0.f,    Matrix() };
+	Walk2 = { 0.125f, matrix1 };
+	Walk3 = { 0.25f,  matrix2 };
+	Walk4 = { 0.375f, matrix1 };
+	Walk5 = { 0.5f,  Matrix() };
+
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk1 );
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk2 );
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk3 );
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk4 );
+	m_pSkeletalAnimator->Add_Animation(RUN, Walk5 );
+
 
 	///*------------------------
 	//* EAT 애니메이션 
@@ -209,6 +225,9 @@ void CRect_Model::Update_State(_float fTimeDelta)
 	case EAT:
 		Motion_EAT(fTimeDelta);
 		break;
+	case RUN:
+		Motion_Run(fTimeDelta);
+		break;
 	case ANIM_END:
 		break;
 	default:
@@ -249,6 +268,17 @@ void CRect_Model::Motion_Walk(_float fTimeDelta)
 	if (m_pSkeletalAnimator->is_AnimtionEND(WALK))
 	{
 		m_eCurAnim = WALK;
+	}
+}
+
+
+void CRect_Model::Motion_Run(_float fTimeDelta)
+{
+	m_pSkeletalAnimator->Update_Animetion(RUN, fTimeDelta, 0);
+
+	if (m_pSkeletalAnimator->is_AnimtionEND(RUN))
+	{
+		m_eCurAnim = RUN;
 	}
 }
 
