@@ -118,14 +118,16 @@ PS_OUT PS_MAIN_STEVE(PS_IN In)
     PS_OUT Out;
 
     Out.vColor= tex2D(DefaultSampler, In.vTexcoord);
-    
-    // 안개 범위 바깥인가?
+        
     if (In.vDistance >= g_fFogEndDistance)
     {
+        // 안개 끝나는 거리 바깥에 있는 얘들은 아예 안 보이게 무시.
         discard;
     }
     else if (In.vDistance >= g_fFogStartDistance)
     {
+        // 안개 시작 거리에선 안개색상 지정.
+        
         float fEnd = g_fFogEndDistance - g_fFogStartDistance; // N
         float fCurrent = g_fFogEndDistance - In.vDistance; // N~0
         
