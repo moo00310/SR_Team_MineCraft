@@ -1,23 +1,23 @@
 #pragma once
 #include "Client_Defines.h"
 #include "UIObject.h"
-#include "BurnUi.h"
-#include "BurnResultUi.h"
+#include "Furnace.h"
 
 BEGIN(Engine)
 class CTexture;
 class CVIBuffer_Rect;
 class CTransform;
+class CShader;
 END
 
 BEGIN(Client)
 
-class CFurnaceUi final : public CUIObject
+class CBurnUi final : public CUIObject
 {
 private:
-	CFurnaceUi(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CFurnaceUi(CFurnaceUi& Prototype);
-	virtual ~CFurnaceUi() = default;
+	CBurnUi(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CBurnUi(CBurnUi& Prototype);
+	virtual ~CBurnUi() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -25,11 +25,7 @@ public:
 	virtual void Priority_Update(_float fTimeDelta)override;
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
-	virtual HRESULT Render()override;
-
-	void Set_FurnaceBurnUi(CBurnUi* _burnUi) { m_burnUi = _burnUi; }
-	void Set_FurnaceBurnResultUi(CBurnResultUi* _burnResultUi) { m_burnResultUi = _burnResultUi; }
-	void Set_Furnace(CFurnace* _furnace) { m_furnace = _furnace; }
+	virtual HRESULT Render(int _coalTime);
 
 private:
 	HRESULT Ready_Components();
@@ -37,12 +33,9 @@ private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
-
-	CBurnUi* m_burnUi;
-	CBurnResultUi* m_burnResultUi;
-	CFurnace* m_furnace;
+	CShader* m_pShaderCom = { nullptr };
 public:
-	static CFurnaceUi* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CBurnUi* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

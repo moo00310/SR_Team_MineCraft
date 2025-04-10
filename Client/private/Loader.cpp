@@ -83,6 +83,8 @@
 #include "Crafting.h"
 #include "CraftingTable.h"
 #include "FurnaceUi.h"
+#include "BurnUi.h"
+#include "BurnResultUi.h"
 
 //미션 관련
 #include "MissionControl.h"
@@ -842,6 +844,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_FurnaceUi*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_FurnaceUi"),
 		CFurnaceUi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_BurnUi*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_BurnUi"),
+		CBurnUi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_BurnResultUi*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_BurnResultUi"),
+		CBurnResultUi::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/*================================================================================================*/

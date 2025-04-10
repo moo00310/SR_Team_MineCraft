@@ -37,25 +37,18 @@ void CFurnace::Priority_Update(_float fTimeDelta)
     vector<CSlotInfo*> _vecSlotList = CUI_Mgr::Get_Instance()->Get_vecSlotInfoOriginlist();
     if (m_bFurnaceBurn) {
         m_iCoalTime--;
-        m_iIronTime--;
 
-        // 굽는 아이템이 없으면 burn false
-        if (_vecSlotList[56]->Get_ItemName() == ITEMNAME_END) {
-            m_bFurnaceBurn = false;
-            m_iIronTime = 600;
-            m_iCoalTime = 1000;
-        }
+        if (_vecSlotList[56]->Get_ItemName() == ITEMNAME_RAWIRON) 
+            m_iIronTime--;
 
         // 석탄이 없으면 burn false
         if (m_iCoalTime <= 0) {
             m_bFurnaceBurn = false;
-            m_iIronTime = 600;
-            m_iCoalTime = 1000;
         }
 
         // 철이 다 구워지면 
         if (m_iIronTime <= 0) {
-            m_iIronTime = 600;
+            m_iIronTime = 1000;
             if (_vecSlotList[56]->Get_ItemName() == ITEMNAME_RAWIRON) {
                 _vecSlotList[56]->Set_ItemCountAdd(-1);
                 
@@ -74,10 +67,11 @@ void CFurnace::Priority_Update(_float fTimeDelta)
     }
 
     if (!m_bFurnaceBurn) {
-        
         if ((_vecSlotList[56]->Get_ItemName() == ITEMNAME_RAWIRON) && (_vecSlotList[57]->Get_ItemName() == ITEMNAME_COAL)) {
             _vecSlotList[57]->Set_ItemCountAdd(-1);
             m_bFurnaceBurn = true;
+            m_iIronTime = 1000;
+            m_iCoalTime = 8000;
         }
     }
 

@@ -11,6 +11,8 @@ using namespace DirectX;
 #include "MCTerrain.h"
 #include "Furnace.h"
 #include "CraftingTableCube.h"
+#include "BurnUi.h"
+#include "BurnResultUi.h"
 #include "FurnaceUi.h"
 
 CCamera_Player::CCamera_Player(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -349,8 +351,19 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                     g_bFurnaceUiOpen = true;
 
                     if (CFurnaceUi* _furnaceUi = dynamic_cast<CFurnaceUi*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_FurnaceUi")))) {
-                        _furnaceUi->Set_FurnaceInfo(_furnace);
+                        _furnaceUi->Set_Furnace(_furnace);
+
+                        list<CGameObject*> _objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, TEXT("Layer_FurnaceDetailUi"));
+                        for (auto& obj : _objlist) {
+                            if (CBurnUi* _burnUi = dynamic_cast<CBurnUi*>(obj)) {
+                                _furnaceUi->Set_FurnaceBurnUi(_burnUi);
+                            }
+                            if (CBurnResultUi* _burnUi = dynamic_cast<CBurnResultUi*>(obj)) {
+                                _furnaceUi->Set_FurnaceBurnResultUi(_burnUi);
+                            }
+                        }
                     }
+                    
                     return;
                 }
 

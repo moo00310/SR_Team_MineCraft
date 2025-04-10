@@ -814,6 +814,12 @@
     <ClInclude Include="..\public\BTTask_WalkChase.h">
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BurnUi.h">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BurnResultUi.h">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1242,6 +1248,12 @@
     </ClCompile>
     <ClCompile Include="..\private\BTTask_WalkChase.cpp">
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BurnUi.cpp">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BurnResultUi.cpp">
+      <Filter>03.UI\11.FurnaceUi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

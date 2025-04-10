@@ -27,8 +27,8 @@ private:
 	CTexture* m_pTextureCom2 = nullptr;
 	bool m_bFurnaceBurn = false;
 
-	int m_iCoalTime = 8000;
-	int m_iIronTime = 1000;
+	int m_iCoalTime = 0;
+	int m_iIronTime = 0;
 
 public:
 	static CFurnace* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

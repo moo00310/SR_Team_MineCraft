@@ -284,6 +284,15 @@ HRESULT CLevel_YU::Ready_Layer_Inventory(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
+	/* Prototype_GameObject_BurnUi */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_BurnUi"),
+		LEVEL_YU, TEXT("Layer_FurnaceDetailUi"))))
+		return E_FAIL;
+
+	/* Prototype_GameObject_BurnResultUi */
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_BurnResultUi"),
+		LEVEL_YU, TEXT("Layer_FurnaceDetailUi"))))
+		return E_FAIL;
 
 	return S_OK;
 }

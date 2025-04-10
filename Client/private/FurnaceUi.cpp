@@ -71,6 +71,12 @@ HRESULT CFurnaceUi::Render()
 
 		__super::End();	
 
+		if (m_furnace->Get_FurnaceBurn()) {
+			m_burnUi->Render(m_furnace->Get_CoalTime());
+			m_burnResultUi->Render(m_furnace->Get_IronTime());
+		}
+
+
 	}
 	return S_OK;
 }
