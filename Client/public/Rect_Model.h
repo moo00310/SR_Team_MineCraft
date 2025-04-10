@@ -33,6 +33,8 @@ private:
 	void Motion_Walk(_float fTimeDelta) override; 
 	void Motion_Run(_float fTimeDelta) override; 
 	void Motion_EAT(_float fTimeDelta); 
+	void Motion_Attack1(_float fTimeDelta);
+	void Motion_Attack2(_float fTimeDelta);
 	virtual void KeyInput() override;
 
 private:

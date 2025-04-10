@@ -25,7 +25,6 @@ HRESULT CRight_hand::Initialize(void* pArg)
     m_pCube_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),2));
     m_pLeft_Rect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"), 3));
 
- 
     if (m_pArm_Model == nullptr ||
         m_pRect_Model == nullptr ||
         m_pSteve == nullptr ||
@@ -82,12 +81,10 @@ void CRight_hand::Update(_float fTimeDelta)
         m_pLeft_Rect_Model->Set_RunAnimation();
     }
 
-  
 }
 
 void CRight_hand::Late_Update(_float fTimeDelta)
 {
- 
     for (char key = '1'; key <= '9'; ++key)
     {
         if (m_pGameInstance->Key_Down(key))

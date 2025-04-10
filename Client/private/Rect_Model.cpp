@@ -192,7 +192,6 @@ HRESULT CRect_Model::Ready_Animation()
 	KEYFREAME EAT9 = { 0.9f, matrix2 };
 	KEYFREAME EAT10 = { 1.0f, matrix1 };
 
-
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT1);
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT2); 
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT3);
@@ -203,6 +202,25 @@ HRESULT CRect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT8);
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT9);
 	m_pSkeletalAnimator->Add_Animation(EAT, EAT10);
+
+
+	///*------------------------
+	//* Attack1 애니메이션 ( 근거리 공격 )
+	//----------------------------*/
+
+	Swing1 = { 0.f, mat };
+	Swing2 = { 0.15f, matrix1 };
+	Swing3 = { 0.4f, matrix2 };
+	Swing4 = { 1.f, mat };
+
+	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing1);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing2);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing3);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_1, Swing4);
+
+	///*------------------------
+	//* Attack2 애니메이션 (원거리 참격 )
+	//----------------------------*/
 
 
 	return S_OK;
@@ -227,6 +245,12 @@ void CRect_Model::Update_State(_float fTimeDelta)
 		break;
 	case RUN:
 		Motion_Run(fTimeDelta);
+		break;
+	case ATTACK_1:
+		Motion_Attack1(fTimeDelta);
+		break;
+	case ATTACK_2:
+		Motion_Attack2(fTimeDelta);
 		break;
 	case ANIM_END:
 		break;
@@ -321,19 +345,57 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 	}
 }
 
+void CRect_Model::Motion_Attack1(_float fTimeDelta)
+{
+	m_pSkeletalAnimator->Update_Animetion(ATTACK_1, fTimeDelta, 0);
+
+	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_1))
+	{
+		m_eCurAnim = INIT;
+	}
+}
+
+void CRect_Model::Motion_Attack2(_float fTimeDelta)
+{
+	m_pSkeletalAnimator->Update_Animetion(ATTACK_2, fTimeDelta, 0);
+
+	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_2))
+	{
+		m_eCurAnim = INIT;
+	}
+}
+
 void CRect_Model::KeyInput()
 {
 	if (m_pGameInstance->Key_Down(VK_LBUTTON))
 	{
-		m_eCurAnim = SWING;
+		ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
+		if (name == ITEM_WEPON_1)
+		{
+			m_eCurAnim = ATTACK_1;
+		}
+		else
+		{
+			m_eCurAnim = SWING;
+		}
+
 		return;
 	}
 
 	if (m_pGameInstance->Key_Down(VK_RBUTTON))
 	{
-		m_eCurAnim = EAT;		
+		ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
+		if (name == ITEM_WEPON_1)
+		{
+			m_eCurAnim = ATTACK_2;
+		}
+		else
+		{
+			m_eCurAnim = EAT;
+		}
+		
 		//AuraSword();
-		SonicBoom();
+		//SonicBoom();
 		return;
 	}
 
