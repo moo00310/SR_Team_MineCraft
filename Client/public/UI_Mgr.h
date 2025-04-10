@@ -60,6 +60,7 @@ public:
 
 	vector<CPlayerHP*>*				Get_vecPlayerHPlist(void)		{ return &m_vecPlayerHPlist; }
 	vector<CSlotInfo*>*				Get_vecSlotInfolist(void)		{ return &m_vecSlotInfolist; }
+	vector<CSlotInfo*>				Get_vecSlotInfoOriginlist(void)		{ return m_vecSlotInfolist; }
 	vector<CCheckBox*>*				Get_vecCheckBoxlist(void)		{ return &m_vecCheckBoxlist; }
 	vector<CInventory_Back*>*		Get_vecInventoryBacklist(void)	{ return &m_InventoryBacklist; }
 	vector<CSlotInfo*>*				Get_vecSlotFontRenderlist(void) { return &m_vecSlotFontRenderlist; }

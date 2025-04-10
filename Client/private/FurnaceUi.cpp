@@ -34,7 +34,6 @@ HRESULT CFurnaceUi::Initialize(void* pArg)
 
 	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
-
 	return S_OK;
 }
 
@@ -44,9 +43,6 @@ void CFurnaceUi::Priority_Update(_float fTimeDelta)
 
 void CFurnaceUi::Update(_float fTimeDelta)
 {
-	if (m_pGameInstance->Key_Down('E') || m_pGameInstance->Key_Down(VK_ESCAPE)) {
-		g_bFurnaceUiOpen = false;
-	}
 }
 
 void CFurnaceUi::Late_Update(_float fTimeDelta)
@@ -74,6 +70,13 @@ HRESULT CFurnaceUi::Render()
 			return E_FAIL;
 
 		__super::End();	
+
+		if (m_furnace->Get_FurnaceBurn()) {
+			m_burnUi->Render(m_furnace->Get_CoalTime());
+			m_burnResultUi->Render(m_furnace->Get_IronTime());
+		}
+
+
 	}
 	return S_OK;
 }
@@ -125,4 +128,5 @@ void CFurnaceUi::Free()
 	Safe_Release(m_pVIBufferCom);
 	Safe_Release(m_pTextureCom);
 	Safe_Release(m_pTransformCom);
+
 }

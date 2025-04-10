@@ -45,25 +45,6 @@ void CMainInventory::Priority_Update(_float fTimeDelta)
 
 void CMainInventory::Update(_float fTimeDelta)
 {
-    if (GetKeyState('E') & 0x8000 && !m_bEKeyPressed)
-    {
-        if (!g_bMainInventoryOpen)
-        {
-            g_bMainInventoryOpen = true;
-        }
-        else
-        {
-            g_bMainInventoryOpen = false;
-            CUI_Mgr::Get_Instance()->Get_Item()->Clear_ItemTextRender();
-        }
-            
-
-        m_bEKeyPressed = true;
-    }
-    else if (!(GetKeyState('E') & 0x8000))
-    {
-        m_bEKeyPressed = false;
-    }
 }
 
 void CMainInventory::Late_Update(_float fTimeDelta)

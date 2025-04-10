@@ -18,7 +18,7 @@ HRESULT CUIParticleRain::Initialize_Prototype()
 
 HRESULT CUIParticleRain::Initialize(void* pArg)
 {
-	iParticleCount = 50;
+	iParticleCount = 30;
 	IsBounding = true;
 
     UIOBJECT_DESC Desc{};
@@ -33,7 +33,7 @@ HRESULT CUIParticleRain::Initialize(void* pArg)
 		return E_FAIL;
 	}	
 
-	dwVpBatchSize = 50;
+	dwVpBatchSize = 30;
 	dwPointSize = GetScale(300.f);	// 포인트 스프라이트 크기.
 
 	ParticleBoundingBox box;
@@ -87,9 +87,8 @@ ParticleAttribute CUIParticleRain::OnSetAddParticle()
 {
 	ParticleAttribute att;
 	att.vPosition = { GetRandomFloat(float(0.f - g_iWinSizeX), float(g_iWinSizeX)), GetRandomFloat(200.f, 700.f), 0.f};
-	att.vColor = Float3ToHex({ 0.f, 0.f, 1.f });
-	//att.vVelocity = { 0.f, GetRandomFloat(-1200.f, -900.f), 0.f };	
-	att.vVelocity = { 0.f, GetRandomFloat(-800.f, -500.f), 0.f };
+	att.vColor = Float3ToHex({ 0.f, 0.f, 1.f });	
+	att.vVelocity = { 0.f, GetRandomFloat(-6000.f, -3000.f), 0.f };
 	att.IsAlive = true;
 
 	return att;
@@ -112,4 +111,5 @@ HRESULT CUIParticleRain::Ready_Components()
 void CUIParticleRain::OnBoundingExit(ParticleAttribute& particle)
 {
 	particle.vPosition = { GetRandomFloat(float(0.f - g_iWinSizeX), float(g_iWinSizeX)), 500.f, 0.f };
+	particle.vVelocity = { 0.f, GetRandomFloat(-6000.f, -3000.f), 0.f };
 }

@@ -820,6 +820,12 @@
     <ClInclude Include="..\public\Camera_Cutscene.h">
       <Filter>02.GameObjects\02.Camera\Cutscene</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BurnUi.h">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BurnResultUi.h">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1251,6 +1257,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_Cutscene.cpp">
       <Filter>02.GameObjects\02.Camera\Cutscene</Filter>
+  </ClCompile>
+    <ClCompile Include="..\private\BurnUi.cpp">
+      <Filter>03.UI\11.FurnaceUi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BurnResultUi.cpp">
+      <Filter>03.UI\11.FurnaceUi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
