@@ -100,7 +100,7 @@ ParticleAttribute CParticleSonicBoom::OnSetAddParticle()
 {	
 	ParticleAttribute att;
 	att.vPosition = { 0.f, 0.f, (_float)m_particleIndex };
-	//att.vColor = Float3ToHex({GetRandomFloat(0.1f, 0.5f), 0.f, 0.f});
+	att.vColor = Float3ToHex({1.f, 1.f, 1.f});
 	att.vVelocity = {0.f, 0.f, 0.f};
 
 	m_particleIndex++;

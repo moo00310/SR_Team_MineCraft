@@ -124,7 +124,7 @@ ParticleAttribute CParticleSwordFlame::OnSetAddParticle()
 {
 	ParticleAttribute att;
 	att.vPosition = { GetRandomFloat(0.1f, 0.4f), GetRandomFloat(-0.4f, 0.2f), GetRandomFloat(-0.4f, -0.3f) };
-	//att.vColor = Float3ToHex({GetRandomFloat(0.1f, 0.5f), 0.f, 0.f});
+	att.vColor = Float3ToHex({ 1.f, 1.f, 1.f });
 	att.vVelocity = { 0.f, 0.4f, 0.f };
 	att.IsTime = false;
 	att.fCurrentTime = 0.f;
