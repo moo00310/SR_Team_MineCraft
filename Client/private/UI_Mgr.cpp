@@ -20,6 +20,7 @@ void CUI_Mgr::Update(_float fTimeDelta)
 
 void CUI_Mgr::Late_Update(_float fTimeDelta)
 {
+	ShowInventoryTop();
 	PlayerHunger_Set(fTimeDelta);
 }
 
@@ -283,6 +284,28 @@ void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
 				m_vecSlotInfolist[iter]->Set_ItemID(m_ItemID);
 				m_vecSlotInfolist[iter]->Set_ItemCountRender(true);
 				iRemain -= 64;
+			}
+		}
+	}
+}
+
+void CUI_Mgr::ShowInventoryTop()
+{
+	if (!m_vecSlotInfolist.empty())
+	{
+		if (g_bFurnaceUiOpen)
+		{
+			for (int i = 45; i < 56; ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(true);
+			}
+
+		}
+		else
+		{
+			for (int i = 45; i < 56; ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(false);
 			}
 		}
 	}

@@ -46,6 +46,8 @@ public:
 	void ItemCount_Update(ITEMNAME _ItemNamem, _int AddCount);
 	/* 아이템 개수 나누기 */
 	void Split_ItemStack(_int _SlotIndex, ITEMID _ItemID, ITEMNAME _ItemName);
+	/* 화로, 제작대, 인벤토리 활성화 시 비활성되는 슬롯 관리*/
+	void ShowInventoryTop();
 
 	ITEMNAME GetItemTypeName();
 	ITEMNAME GetItemTypeName_Left();

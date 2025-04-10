@@ -118,7 +118,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 	GetCursorPos(&ptMouse);
 	ScreenToClient(g_hWnd, &ptMouse);
 
-    if (PtInRect(&rcRect, ptMouse) && m_ItemName != ITEMNAME_END)
+    if (PtInRect(&rcRect, ptMouse) && m_ItemName != ITEMNAME_END && !m_bShowInvenTop)
     {
         if (!m_bTestInfo)
         {
@@ -133,7 +133,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
  
 	/* 마우스 클릭 시 아이템 선택 및 교체 */
 	/* 마우스가 아이템 슬롯 위에 있고, 좌클릭이 떼어졌을 때 실행*/
-	if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON))
+	if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_LBUTTON) &&!m_bShowInvenTop)
 	{
 		/* 마우스에 아이템이 없으면 => 처음 실행 */
 		if (pMouse->Get_Picked() == false)
@@ -283,13 +283,12 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 	}
 
 
-    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_RBUTTON) && m_iItemCount > 1)
+    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_RBUTTON) && m_iItemCount > 1 && !m_bShowInvenTop)
     {
         if (pMouse->Get_Picked() == false)
         {
             _int iHalf = (m_iItemCount +1 ) / 2;
             _int iRemain = m_iItemCount - iHalf;
-
 
             m_iTensDigit = iHalf / 10;
             m_iOnesDigit = iHalf % 10;
@@ -335,7 +334,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 
 HRESULT CSlotInfo::Render()
 {
-    if (m_bCheck)
+    if (m_bCheck && !m_bShowInvenTop)
     {
         /* 아이템 이미지 렌더*/
         if (FAILED(RenderItemTexture(m_pItem_TextureCom, m_ItemName)))

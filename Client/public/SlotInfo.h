@@ -33,6 +33,7 @@ public:
 	_int			Get_ItemCount()			{ return m_iItemCount; }
 	_bool			Get_ItemCountRender()	{ return m_bCountRender; }
 	_bool			Get_Test()				{ return m_bTest; }
+	_bool			Get_ShowInvenTop()		{ return m_bShowInvenTop; }
 
 public:
 	void Set_ItemName(ITEMNAME _ItemName) { m_ItemName = _ItemName; }
@@ -40,6 +41,9 @@ public:
 	void Set_ItemCount(_int _itemCount) { m_iItemCount = _itemCount; }
 	void Set_ItemCountRender(_bool ItemCountRender) { m_bCountRender = ItemCountRender; }
 	void Set_Test(_bool _Test) { m_bTest = _Test; }
+	void Set_ShowInvenTop(_bool _ShowInvenTop) {m_bShowInvenTop = _ShowInvenTop;}
+
+	
 
 private:
 	HRESULT Ready_Components();
@@ -73,6 +77,7 @@ private:
 	_bool		m_bTest = { false };
 	_bool		m_bCountRender = { false };
 	_bool		m_bTestInfo = { false };
+	_bool		m_bShowInvenTop = { false };
 
 public:
 	static CSlotInfo* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
