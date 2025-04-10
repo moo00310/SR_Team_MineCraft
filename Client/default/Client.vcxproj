@@ -183,6 +183,8 @@
     <ClInclude Include="..\public\BTTask_Patrol.h" />
     <ClInclude Include="..\public\BTTask_RunChase.h" />
     <ClInclude Include="..\public\BTTask_WalkChase.h" />
+    <ClInclude Include="..\public\BurnResultUi.h" />
+    <ClInclude Include="..\public\BurnUi.h" />
     <ClInclude Include="..\public\Camera_Player.h" />
     <ClInclude Include="..\public\Camera_Free.h" />
     <ClInclude Include="..\public\Chase_Enemy_Node.h" />
@@ -201,6 +203,7 @@
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Creeper.h" />
     <ClInclude Include="..\public\Cube_Model.h" />
+    <ClInclude Include="..\public\Camera_Cutscene.h" />
     <ClInclude Include="..\public\DestroyCube.h" />
     <ClInclude Include="..\public\Edition.h" />
     <ClInclude Include="..\public\FireCrackerLoad.h" />
@@ -330,6 +333,8 @@
     <ClCompile Include="..\private\BTTask_Patrol.cpp" />
     <ClCompile Include="..\private\BTTask_RunChase.cpp" />
     <ClCompile Include="..\private\BTTask_WalkChase.cpp" />
+    <ClCompile Include="..\private\BurnResultUi.cpp" />
+    <ClCompile Include="..\private\BurnUi.cpp" />
     <ClCompile Include="..\private\Camera_Player.cpp" />
     <ClCompile Include="..\private\Camera_Free.cpp" />
     <ClCompile Include="..\private\Chase_Enemy_Node.cpp" />
@@ -344,6 +349,7 @@
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
     <ClCompile Include="..\private\Cube_Model.cpp" />
+    <ClCompile Include="..\private\Camera_Cutscene.cpp" />
     <ClCompile Include="..\private\DestroyCube.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
     <ClCompile Include="..\private\FireCrackerLoad.cpp" />

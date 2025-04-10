@@ -293,20 +293,39 @@ void CUI_Mgr::ShowInventoryTop()
 {
 	if (!m_vecSlotInfolist.empty())
 	{
+		if (g_bMainInventoryOpen) {
+			// 메인 슬롯 활성화
+			for (int i = 45; i < 56; ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(false);
+			}
+
+			//화로 슬롯 무시
+			for (int i = 56; i < 59; ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(true);
+			}
+
+			//크래프팅 슬롯 무시
+		}
+
+
 		if (g_bFurnaceUiOpen)
 		{
+			//화로 슬롯 활성화
+			for (int i = 56; i < 59; ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(false);
+			}
+
+			// 메인 슬롯 무시
 			for (int i = 45; i < 56; ++i)
 			{
 				m_vecSlotInfolist[i]->Set_ShowInvenTop(true);
 			}
 
-		}
-		else
-		{
-			for (int i = 45; i < 56; ++i)
-			{
-				m_vecSlotInfolist[i]->Set_ShowInvenTop(false);
-			}
+			// 크래프팅 슬롯 무시
+
 		}
 	}
 }

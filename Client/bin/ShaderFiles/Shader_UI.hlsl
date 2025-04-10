@@ -7,6 +7,9 @@ float g_alpha1;
 float GlowIntensity = 1.2f; // Çü±¤ °­µµ (°ªÀ» Å°¿ì¸é ´õ ¹à¾ÆÁü)
 float g_Time;
 
+float g_burn;
+float g_burnResult;
+
 sampler TextureSampler = sampler_state
 {
 	texture = g_Texture;
@@ -149,6 +152,29 @@ PS_OUT PS_MissionMainUi(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_BurnUi(PS_IN In)
+{
+    PS_OUT Out;
+    if (In.vTexcoord.y < (1.0 - g_burn))
+        discard; // ¶Ç´Â clip(-1); µÑ ´Ù µÊ
+	
+    float4 texColor = tex2D(TextureSampler, In.vTexcoord);
+
+    Out.vColor = texColor;
+    return Out;
+}
+
+PS_OUT PS_BurnResultUi(PS_IN In)
+{
+    PS_OUT Out;
+    if (In.vTexcoord.x > (1.0 - g_burnResult))
+        discard; // ¶Ç´Â clip(-1); µÑ ´Ù µÊ
+	
+    float4 texColor = tex2D(TextureSampler, In.vTexcoord);
+
+    Out.vColor = texColor;
+    return Out;
+}
 
 /* Technique Á¤ÀÇ */
 technique DefaultTechnique
@@ -221,6 +247,38 @@ technique DefaultTechnique
 
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_MissionMainUi();
+    }
+
+    pass FurnaceBurnPass
+    {
+        AlphaBlendEnable = TRUE;
+        SrcBlend = SRCALPHA;
+        DestBlend = INVSRCALPHA;
+        BlendOp = ADD;
+
+
+        CULLMODE = NONE;
+        ZWRITEENABLE = FALSE;
+        ZENABLE = FALSE;
+
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_BurnUi();
+    }
+
+    pass FurnaceBurnResultPass
+    {
+        AlphaBlendEnable = TRUE;
+        SrcBlend = SRCALPHA;
+        DestBlend = INVSRCALPHA;
+        BlendOp = ADD;
+
+
+        CULLMODE = NONE;
+        ZWRITEENABLE = FALSE;
+        ZENABLE = FALSE;
+
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_BurnResultUi();
     }
 }
 

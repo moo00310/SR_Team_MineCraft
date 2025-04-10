@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "Monster.h"
 #include "Behavior_Tree.h"
+#include "ParticleEventManager.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -37,7 +38,7 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
-
+	void Dead_Pawn() override;
 
 private:
 	HRESULT Ready_Components();
@@ -61,7 +62,7 @@ private:
 
 private:
 	virtual HRESULT Ready_BehaviorTree() override;
-	void FrameCallback(int animType, int frame) override;
+	void FrameCallback(int animType, int frame) override;	
 
 public:
 	static CWarden* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

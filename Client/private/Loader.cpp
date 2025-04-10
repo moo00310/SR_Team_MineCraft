@@ -34,6 +34,7 @@
 #include "Sun.h"
 #include "Clouds.h"
 #include "Crosshair.h"
+#include "Camera_Cutscene.h"
 
 
 //지형 관련
@@ -83,6 +84,8 @@
 #include "Crafting.h"
 #include "CraftingTable.h"
 #include "FurnaceUi.h"
+#include "BurnUi.h"
+#include "BurnResultUi.h"
 
 //미션 관련
 #include "MissionControl.h"
@@ -515,6 +518,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/CraftingTable.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Burn */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Burn"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/Burn.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_BurnResult */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_BurnResult"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/BurnResult.png"), 1))))
+		return E_FAIL;
+
 	/* UI Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/
@@ -834,6 +847,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CFurnaceUi::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_BurnUi*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_BurnUi"),
+		CBurnUi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_BurnResultUi*/
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_BurnResultUi"),
+		CBurnResultUi::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/*================================================================================================*/
 
 	/* For.Prototype_GameObject_Furnace */
@@ -982,6 +1005,10 @@ HRESULT CLoader::Loading_For_YUPlay()
 	
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_GameMgr"),
 		CGameMgr::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Cutscene"),
+		Camera_Cutscene::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MissionControl"),

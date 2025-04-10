@@ -98,7 +98,7 @@ ParticleAttribute CParticleExplosion::OnSetAddParticle()
 {	
 	ParticleAttribute att;
 	att.vPosition = { GetRandomFloat(-2.f, 2.f), GetRandomFloat(-2.f, 2.f), GetRandomFloat(-2.f, 2.f)};
-	//att.vColor = Float3ToHex({ 0.f, 1.f, 0.f });
+	att.vColor = Float3ToHex({ 1.f, 1.f, 1.f });
 	att.vVelocity = { 0.f, 0.f, 0.f };
 	//att.IsTime = true;
 	att.fCurrentTime = 0.f;

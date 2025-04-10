@@ -43,7 +43,7 @@ public:
 	void Set_Test(_bool _Test) { m_bTest = _Test; }
 	void Set_ShowInvenTop(_bool _ShowInvenTop) {m_bShowInvenTop = _ShowInvenTop;}
 
-	
+	void Set_ItemCountAdd(int _i);
 
 private:
 	HRESULT Ready_Components();
