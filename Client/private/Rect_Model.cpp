@@ -302,7 +302,12 @@ void CRect_Model::KeyInput()
 	if (m_pGameInstance->Key_Down(VK_RBUTTON))
 	{
 		m_eCurAnim = EAT;		
-		//AuraSword();		
+
+		if (Compute_Texture_Name() == ITEM_WEPON_1)
+		{
+			AuraSword();
+		}		
+
 		return;
 	}
 
