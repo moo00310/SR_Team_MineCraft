@@ -90,7 +90,7 @@ HRESULT CRect_Model::Ready_Bone()
 	mat.Set_State(mat.STATE_POSITION, _float3(1.f, -0.5f, 1.2f));
 
 	BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
-	BONE bone2 = { "Fx", 0, MAtrixTranslation(4.f/16.f, 4.f / 16.f, 0.f), MAtrixTranslation(4.f / 16.f, 4.f / 16.f, 0.f), Matrix(), Matrix()};
+	BONE bone2 = { "Fx", 0, MAtrixTranslation(0.f, 10.f / 16.f, 0.f), MAtrixTranslation(0.f, 10.f / 16.f, 0.f), Matrix(), Matrix()};
 
 	m_pSkeletalAnimator->Add_Bone(bone);
 	m_pSkeletalAnimator->Add_Bone(bone2);
@@ -424,7 +424,7 @@ void CRect_Model::SwingFireSword()
 
 	particle->GetTransform()->Set_Matrix(boneWorldMatrix);
 
-	//particle->SetTimer(0.3f);
+	particle->SetTimer(0.3f);
 }
 
 void CRect_Model::SonicBoom()
