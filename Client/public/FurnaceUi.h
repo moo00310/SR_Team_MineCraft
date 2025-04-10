@@ -1,6 +1,7 @@
 #pragma once
 #include "Client_Defines.h"
 #include "UIObject.h"
+#include "Furnace.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -25,17 +26,15 @@ public:
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
 
-private:
-	HRESULT Ready_Components();
+	void Set_FurnaceInfo(CFurnace* _furnace) { m_copyFurnace = _furnace; }
 
 private:
+	HRESULT Ready_Components();
+	CFurnace* m_copyFurnace={ nullptr };
+
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
-
-private:;
-	_bool m_bEKeyPressed = { false };
-
 public:
 	static CFurnaceUi* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

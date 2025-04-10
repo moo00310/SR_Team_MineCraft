@@ -515,6 +515,16 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/CraftingTable.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_Burn */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Burn"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/Burn.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_BurnResult */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_BurnResult"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/BurnResult.png"), 1))))
+		return E_FAIL;
+
 	/* UI Component */
 	/*================================================================================================*/
 	///* For.Prototype_Component_Texture_Inventory*/

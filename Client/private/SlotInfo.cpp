@@ -464,6 +464,14 @@ HRESULT CSlotInfo::Reset_RenderState()
 //    m_ItemName = static_cast<ITEMNAME>(TextureIndex);
 //}
 
+void CSlotInfo::Set_ItemCountAdd(int _i)
+{
+    m_iItemCount += _i;
+    if (m_iItemCount <= 0) {
+        m_ItemName = ITEMNAME_END;
+    }
+}
+
 HRESULT CSlotInfo::Ready_Components()
 {
     if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Item"), TEXT("Com_Texture"),

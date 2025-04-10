@@ -17,8 +17,18 @@ public:
 	HRESULT Drop_Item_OnDestroy(const _float3& fPos);
 	HRESULT Play_Destroy_Effect(const _float3& fPos);
 
+	bool Get_FurnaceBurn() { return m_bFurnaceBurn; }
+	int Get_CoalTime() { return m_iCoalTime; }
+	int Get_IronTime() { return m_iIronTime; }
+
 protected:
 	HRESULT Ready_Components();
+private:
+	CTexture* m_pTextureCom2 = nullptr;
+	bool m_bFurnaceBurn = false;
+
+	int m_iCoalTime = 8000;
+	int m_iIronTime = 1000;
 
 public:
 	static CFurnace* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
