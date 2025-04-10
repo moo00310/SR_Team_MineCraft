@@ -3,7 +3,6 @@
 
 STATUS CBTTask_Attack_Far::Excute(CGameObject* _Obj, _float _fTimeDelta)
 {
-	cout << "¿ø°Å¸®" << endl;
 	CMonster* pMonster = static_cast<CMonster*>(_Obj);
 
 	if (pMonster->GetAnimEnd(CMonster::ATTACK2))

@@ -3,7 +3,6 @@
 
 STATUS CBTTask_Idle::Excute(CGameObject* _Obj, _float _fTimeDelta)
 {
-	cout << "IDLE" << endl;
 	CMonster* pMonster = static_cast<CMonster*>(_Obj);
 	pMonster->Set_IDLETimeOver(_fTimeDelta);
 

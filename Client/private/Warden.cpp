@@ -726,11 +726,6 @@ void CWarden::Motion_Attack2(_float fTimeDelta)
         m_bAnimEnd[ATTACK2] = true;
         isShootFollow = true;        
 
-        CParticleEventManager::Get_Instance()->OnParticle(
-            PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,
-            m_pTransformCom,
-            1.f
-        );
     }
 
     m_skelAnime->Update_Animetion(Attack2_Pevis, fTimeDelta, 1);
@@ -884,6 +879,12 @@ void CWarden::FrameCallback(int animType, int frame)
         frame == 1)
     {
         isShootFollow = false;
+
+        CParticleEventManager::Get_Instance()->OnParticle(
+            PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,
+            m_pTransformCom,
+            1.f
+        );
     }
 
     if (animType == Find_Pevis)

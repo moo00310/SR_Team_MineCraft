@@ -17,7 +17,7 @@ class CRightHand_Object abstract : public CGameObject
 public:
 	enum ANIM {
 		INIT, SWING, WALK, EAT, RUN, 
-		ATTACK_1, ATTACK_2, ANIM_END
+		ATTACK_Near, ATTACK_Far, ANIM_END
 	};
 
 protected:

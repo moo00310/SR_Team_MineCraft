@@ -10,7 +10,6 @@ STATUS CBTTask_Find::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		return STATUS::SUCCESS;
 	}
 
-	cout << "Æ÷È¿" << endl;
 	pMonster->Set_Animation(CMonster::FIND);
 	return STATUS::RUNNING;
 }
