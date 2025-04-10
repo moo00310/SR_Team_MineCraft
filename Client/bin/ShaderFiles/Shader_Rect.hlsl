@@ -99,14 +99,17 @@ PS_OUT PS_MAIN(PS_IN In)
     {
         // 안개 시작 거리에선 안개색상 지정.
         
+        // 안개 끝거리 - 시작거리 결과 값.
         float fEnd = g_fFogEndDistance - g_fFogStartDistance;   // N
-        float fCurrent = g_fFogEndDistance - In.vDistance;      // N~0
         
-        // 안개와의 거리 차이.        
-        float distance = fCurrent / fEnd;                       // 1~0
+        // 안개 끝거리랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+        float fCurrent = g_fFogEndDistance - In.vDistance;      // N~0                
+        
+        // 선형보간에 쓰일 결과 값.
+        float fResult = fCurrent / fEnd;                        // 1~0
         
         // 선형 보간.
-        float4 color = lerp(g_vFogColor, Out.vColor, distance);
+        float4 color = lerp(g_vFogColor, Out.vColor, fResult);
         
         // 안개 색 입힘.
         Out.vColor.rgb = color * g_Bright;
