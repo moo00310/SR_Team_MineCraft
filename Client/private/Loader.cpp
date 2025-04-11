@@ -473,6 +473,35 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/redTulip0.png"), 1))))
 		return E_FAIL;
 
+	/* For.Prototype_Component_Texture_WoodPickAxe */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_WoodPickAxe"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/WoodPickAxe.png"), 1))))
+		return E_FAIL;
+	/* For.Prototype_Component_Texture_StonePickAxe */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_StonePickAxe"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/StonePickAxe.png"), 1))))
+		return E_FAIL;
+	/* For.Prototype_Component_Texture_StoneAxe */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_StoneAxe"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/StoneAxe.png"), 1))))
+		return E_FAIL;
+	/* For.Prototype_Component_Texture_StoneSword */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_StoneSword"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/StoneSword.png"), 1))))
+		return E_FAIL;
+	/* For.Prototype_Component_Texture_IronSword */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_IronSword"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/IronSword.png"), 1))))
+		return E_FAIL;
+	/* For.Prototype_Component_Texture_newSword */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_NewSword"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/newSword.png"), 1))))
+		return E_FAIL;
+	/* For.Prototype_Component_Texture_Torch */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Torch"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/torch.png"), 1))))
+		return E_FAIL;
+
 	// 1인칭 Rect_Texture
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Rect_Model"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Rect_model/Rect_model_%d.png"), Rect_Model_Count))))

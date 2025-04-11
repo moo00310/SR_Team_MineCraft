@@ -193,6 +193,48 @@ HRESULT CItemRect::Set_ItemTypeAndBindTexture(ITEMNAME _name)
             TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
             return E_FAIL;
         break;
+    case Client::ITEMNAME_STONE_AXE:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_StoneAxe"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEMNAME_STONE_PICKAXE:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_StonePickAxe"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEMNAME_STONE_SWORD:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_StoneSword"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEMNAME_WOOD_PICKAXE:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_WoodPickAxe"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEMNAME_STEEL_SWORD:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_IronSword"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEM_WEPON_1:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_NewSword"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
+    case Client::ITEMNAME_TORCH:
+        /* For.Com_Texture */
+        if (FAILED(__super::Add_Component(LEVEL_YU, TEXT("Prototype_Component_Texture_Torch"),
+            TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pTextureCom))))
+            return E_FAIL;
+        break;
     default:
         break;
     }
