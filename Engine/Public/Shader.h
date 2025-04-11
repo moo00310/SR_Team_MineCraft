@@ -19,6 +19,7 @@ public:
 	HRESULT Bind_Vector(D3DXHANDLE hParameter, const _float4* pVector);
 
 	HRESULT SetFloat(const char* variableName, float value);
+	HRESULT SetInt(const char* variableName, int value);
 
 public:
 	void Begin(_uint iPassIndex);

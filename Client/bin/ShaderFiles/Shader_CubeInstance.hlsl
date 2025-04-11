@@ -6,14 +6,30 @@ vector g_CameraWorld;
 
 texture g_Texture;
 
-// 안개가 시작되는 거리.
-float g_fFogStartDistance = 5.f;
+// 안개가 시작되는 범위.
+float g_fFogStartRange = 5.f;
 
-// 안개가 끝나는 거리.
-float g_fFogEndDistance = 25.f;
+// 안개가 끝나는 범위.
+float g_fFogEndRange = 25.f;
 
 // 안개 색.
 vector g_vFogColor = vector(0.529f, 0.808f, 0.922f, 1.f);
+
+// 스캔 시작 범위.
+float g_fScanStartRange;
+
+// 스캔 색.
+vector g_vScanColor = vector(1.f, 0.f, 1.f, 1.f);
+
+// 블럭 타입.
+// Client_Enum ITEMNAME 참조.
+int g_iBlockType;
+
+// 철.
+int g_iIronType = 900;
+
+// 석탄.
+int g_iCoalType = 901;
 
 struct VS_IN
 {
@@ -78,20 +94,20 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);    
           
-    if (In.vDistance >= g_fFogEndDistance)
+    if (In.vDistance >= g_fFogEndRange)
     {
-        // 안개 끝나는 거리 바깥에 있는 얘들은 아예 안 보이게 무시.
+        // 안개 끝나는 범위 바깥에 있는 얘들은 아예 안 보이게 무시.
         discard;
     }
-    else if (In.vDistance >= g_fFogStartDistance)
+    else if (In.vDistance >= g_fFogStartRange)
     {             
-        // 안개 시작 거리에선 안개색상 지정.
+        // 안개 시작 범위에선 안개색상 지정.
         
-        // 안개 끝거리 - 시작거리 결과 값.
-        float fEnd = g_fFogEndDistance - g_fFogStartDistance;   // N
+        // 안개 끝 범위 - 시작 범위 결과 값.
+        float fEnd = g_fFogEndRange - g_fFogStartRange;         // N
         
-        // 안개 끝거리랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
-        float fCurrent = g_fFogEndDistance - In.vDistance;      // N~0                
+        // 안개 끝 범위랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+        float fCurrent = g_fFogEndRange - In.vDistance;         // N~0                
         
         // 선형보간에 쓰일 결과 값.
         float fResult = fCurrent / fEnd;                        // 1~0
@@ -106,7 +122,7 @@ PS_OUT PS_MAIN(PS_IN In)
     {
         // 안개 범위 안이면 기본색.
         Out.vColor.rgb *= In.vBright;
-    }       
+    }        
     
     return Out;
 }
@@ -116,6 +132,74 @@ PS_OUT PS_MAIN_RED(PS_IN In)
     PS_OUT Out;
     
     Out.vColor = vector(1.f, 0.f, 0.f, 1.f);
+    
+    return Out;
+}
+
+PS_OUT PS_MAIN_SCAN(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
+    
+    // 스캔 범위 끝.
+    float fScanEndRange = g_fScanStartRange + 3.f;
+     
+    if (In.vDistance >= g_fFogEndRange)
+    {
+        // 안개 끝나는 범위 바깥에 있는 얘들은 아예 안 보이게 무시.
+        discard;
+    }
+    else if (In.vDistance >= fScanEndRange)
+    {
+        // 스캔 범위 바깥에 있는 얘들은 안개 쉐이딩 적용.
+        
+        // 안개 끝 범위 - 시작 범위 결과 값.
+        float fEnd = g_fFogEndRange - g_fFogStartRange; // N
+        
+        // 안개 끝 범위랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+        float fCurrent = g_fFogEndRange - In.vDistance; // N~0                
+        
+        // 선형보간에 쓰일 결과 값.
+        float fResult = fCurrent / fEnd; // 1~0
+        
+        // 선형 보간.
+        float4 color = lerp(g_vFogColor, Out.vColor, fResult);
+        
+        // 안개 색 입힘.
+        Out.vColor.rgb = color * In.vBright;
+    }
+    else if (In.vDistance >= g_fScanStartRange)
+    {
+        // 스캔 시작 범위에선 스캔 색상 지정.               
+        
+        // 스캔 끝 범위 - 스캔 시작 범위 결과 값.
+        float fEnd = fScanEndRange - g_fScanStartRange; // N
+        
+        // 스캔 끝 범위랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+        float fCurrent = fScanEndRange - In.vDistance; // N~0                
+        
+        // 선형보간에 쓰일 결과 값.
+        float fResult = fCurrent / fEnd;                // 1~0
+        
+        // 선형 보간.
+        float4 color = lerp(g_vScanColor, Out.vColor, fResult);
+        
+        // 스캔 색 입힘.
+        Out.vColor.rgb = color * In.vBright;
+    }
+    else
+    {
+        // 스캔 범위 안에 있으면 투명 블럭.
+        Out.vColor.rgb *= 1.f;
+        Out.vColor.a = 0.1f;
+        
+        // 광물들은 보이게 함.
+        if (g_iBlockType == g_iIronType || g_iBlockType == g_iCoalType)
+        {
+            Out.vColor.a = 1.f;
+        }
+    }        
     
     return Out;
 }
@@ -132,5 +216,15 @@ technique DefaultTechnique
     {
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_MAIN_RED();
+    }
+
+    pass ScanPass
+    {
+        ALPHABLENDENABLE = true;        
+        SrcBlend = SrcAlpha;
+        DestBlend = InvSrcAlpha;
+        BlendOp = Add;
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_MAIN_SCAN();
     }
 }

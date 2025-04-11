@@ -59,6 +59,7 @@ namespace Client
 		MINING_DIRT = 0,		// 흙.
 		MINING_WOOD,			// 나무.
 		MINING_STONE,			// 돌.
+		MINING_LEAF,			// 나뭇잎.
 		MINING_END
 	};
 }

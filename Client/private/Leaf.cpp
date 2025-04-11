@@ -57,7 +57,14 @@ HRESULT CLeaf::Render()
 	m_pTransformCom->Bind_Resource(m_pShaderCom);
 	m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 
-	m_pShaderCom->Begin(0);
+	if (g_bIsScan == false)
+	{
+		m_pShaderCom->Begin(0);
+	}
+	else
+	{
+		m_pShaderCom->Begin(2);
+	}
 
 	/* 정점을 그린다. */
 	if (FAILED(m_pVIBufferCom->Render()))
@@ -98,6 +105,11 @@ HRESULT CLeaf::Drop_Item_OnDestroy(const _float3& fPos)
 }
 HRESULT CLeaf::Play_Destroy_Effect(const _float3& fPos)
 {
+	CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_DESTROY,
+		fPos
+	);
+
 	//m_pGameInstance->Check_Sound_Stop(this, 0, SOUND_BLOCK);
 	m_pGameInstance->Play_Sound(TEXT("Grass_dig1"), SOUND_BLOCK_DIG, this, 1.f, fPos);
 

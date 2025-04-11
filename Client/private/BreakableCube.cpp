@@ -85,9 +85,18 @@ HRESULT CBreakableCube::Render()
         return E_FAIL;
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
+    m_pTransformCom->Bind_Resource_Scan(m_pShaderCom, g_fScanRange);
+    m_pTransformCom->Bind_Resource_BlockType(m_pShaderCom, m_itemName);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 
-    m_pShaderCom->Begin(0);
+    if (g_bIsScan == false)
+    {
+        m_pShaderCom->Begin(0);
+    }    
+    else
+    {
+        m_pShaderCom->Begin(2);
+    }
 
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))
@@ -358,6 +367,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_LEAF:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_CRAFTINGTABLE:
@@ -375,9 +385,11 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_COALORE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_IRONORE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_FURANCE:

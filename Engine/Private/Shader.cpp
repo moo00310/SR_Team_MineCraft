@@ -49,6 +49,14 @@ HRESULT CShader::SetFloat(const char* variableName, float value)
 	return m_pEffect->SetFloat(variableName, value);
 }
 
+HRESULT CShader::SetInt(const char* variableName, int value)
+{
+	if (!m_pEffect)
+		return E_FAIL;
+
+	return m_pEffect->SetInt(variableName, value);
+}
+
 void CShader::Begin(_uint iPassIndex)
 {
 	m_pEffect->Begin(nullptr, 0);

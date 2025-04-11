@@ -7,11 +7,11 @@ vector g_CameraWorld;
 texture g_Texture;
 float g_Bright;
 
-// 안개가 시작되는 거리.
-float g_fFogStartDistance = 5.f;
+// 안개가 시작되는 범위.
+float g_fFogStartRange = 5.f;
 
-// 안개가 끝나는 거리.
-float g_fFogEndDistance = 25.f;
+// 안개가 끝나는 범위.
+float g_fFogEndRange = 25.f;
 
 // 안개 색.
 vector g_vFogColor = vector(0.529f, 0.808f, 0.922f, 1.f);
@@ -90,20 +90,20 @@ PS_OUT PS_MAIN(PS_IN In)
     
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
         
-    if (In.vDistance >= g_fFogEndDistance)
+    if (In.vDistance >= g_fFogEndRange)
     {
-        // 안개 끝나는 거리 바깥에 있는 얘들은 아예 안 보이게 무시.
+        // 안개 끝나는 범위 바깥에 있는 얘들은 아예 안 보이게 무시.
         discard;
     }
-    else if (In.vDistance >= g_fFogStartDistance)
+    else if (In.vDistance >= g_fFogStartRange)
     {
-        // 안개 시작 거리에선 안개색상 지정.
+        // 안개 시작 범위에선 안개색상 지정.
         
-        // 안개 끝거리 - 시작거리 결과 값.
-        float fEnd = g_fFogEndDistance - g_fFogStartDistance;   // N
+        // 안개 끝 범위 - 시작 범위 결과 값.
+        float fEnd = g_fFogEndRange - g_fFogStartRange;          // N
         
-        // 안개 끝거리랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
-        float fCurrent = g_fFogEndDistance - In.vDistance;      // N~0                
+        // 안개 끝 범위랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+        float fCurrent = g_fFogEndRange - In.vDistance;         // N~0                
         
         // 선형보간에 쓰일 결과 값.
         float fResult = fCurrent / fEnd;                        // 1~0
@@ -111,14 +111,14 @@ PS_OUT PS_MAIN(PS_IN In)
         // 선형 보간.
         float4 color = lerp(g_vFogColor, Out.vColor, fResult);
         
-        // 안개 색 입힘.
-        Out.vColor.rgb = color * g_Bright;
-        
-        // 안개 범위에서 검은색 픽셀이 제대로 안 버려져서 0.2로 줌.
-        if (Out.vColor.r <= 0.2f && Out.vColor.g <= 0.2f && Out.vColor.b <= 0.2f)
+        // 검은색 픽셀 버림.
+        if (Out.vColor.r == 0.f && Out.vColor.g == 0.f && Out.vColor.b == 0.f)
         {
             discard;
-        }            
+        }
+        
+        // 안개 색 입힘.
+        Out.vColor.rgb = color * g_Bright;                          
     }
     else
     {
