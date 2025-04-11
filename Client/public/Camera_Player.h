@@ -30,30 +30,38 @@ public:
     virtual HRESULT Render() override;
     CTransform* GetTransform() const;
 
+
 private:
     POINT               m_ptOldMousePos = {};
     _float              m_fMouseSensor = {};
-    CTransform*         m_pTarget_Transform_Com = { nullptr };
-    CRigidbody*         m_pTarget_Rigidbody_Com = { nullptr };
+    CTransform* m_pTarget_Transform_Com = { nullptr };
+    CRigidbody* m_pTarget_Rigidbody_Com = { nullptr };
     _float              m_fYaw{};
     _float              m_fPitch{};
     enum class E_CAMERA_MODE { FPS, TPS };
     E_CAMERA_MODE       m_eCameraMode = E_CAMERA_MODE::TPS;
-    CSteve*             m_pPlayer = {nullptr};
-    CCrosshair*         m_pCrosshair{ nullptr };
+    CSteve* m_pPlayer = { nullptr };
+    CCrosshair* m_pCrosshair{ nullptr };
 
 private:
     //_float3             m_vCameraPos{};
     _bool               m_isActiveMouse{ false };
     _float              m_fWalkTime{};
     _float              m_fSpringArmLength{ 5.f };
-    CDestroyCube*       m_DestroyCube = { nullptr };
-	class CMCTerrain*   m_pTerrain = { nullptr };
+    CDestroyCube* m_DestroyCube = { nullptr };
+    class CMCTerrain* m_pTerrain = { nullptr };
+
+private:
+    _float m_AttackDamage = {};
+    _float m_AttackCoolTime = {};
+    _float m_CoolTimeDelta = {};
 
 private:
     void    Input_Key(_float fTimeDelta);
     void    Follow_Player(_float fTimeDelta);
     void    On_MouseMove(_float fTimeDelta);
+    void    Setting_Damage();
+
 private:
     HRESULT Ready_Components();
 
