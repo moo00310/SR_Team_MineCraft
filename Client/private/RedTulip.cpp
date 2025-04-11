@@ -61,6 +61,7 @@ HRESULT CRedTulip::Drop_Item_OnDestroy(const _float3& fPos)
 
     if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
         _copy->SetPos(fPos);
+        _copy->Set_Bright(fPos.y);
         _copy->Set_ItemTypeAndBindTexture(ITEMNAME_REDTULIP);
     }
 

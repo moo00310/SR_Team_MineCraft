@@ -19,10 +19,10 @@ HRESULT CStartButton::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = 450;
+    Desc.fSizeX = 650;
     Desc.fSizeY = 100;
     Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = g_iWinSizeY * 0.5f;
+    Desc.fY = g_iWinSizeY * 0.5f + 200;
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -43,8 +43,7 @@ void CStartButton::Priority_Update(_float fTimeDelta)
 
 void CStartButton::Update(_float fTimeDelta)
 {
-    if (GetKeyState(VK_LBUTTON) & 0x8000)
-    {
+    if (m_pGameInstance->Key_Down(VK_LBUTTON)) {
         if (true == __super::isPick(g_hWnd))
             g_bChangeLevel = true;
     }

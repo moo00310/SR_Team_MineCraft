@@ -63,6 +63,7 @@ HRESULT CIronOre::Drop_Item_OnDestroy(const _float3& vPos)
 
     if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
         _copy->SetPos(vPos);
+        _copy->Set_Bright(vPos.y);
         _copy->Set_ItemTypeAndBindTexture(ITEMNAME_RAWIRON);
     }
 

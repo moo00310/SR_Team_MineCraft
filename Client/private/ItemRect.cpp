@@ -128,7 +128,7 @@ HRESULT CItemRect::Render()
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
-    m_pShaderCom->SetFloat("g_Bright", g_fBright + 0.2f);
+    m_pShaderCom->SetFloat("g_Bright", m_bright + 0.2f);
     m_pShaderCom->Begin(1);
 
     /* 정점을 그린다. */
@@ -198,6 +198,11 @@ HRESULT CItemRect::Set_ItemTypeAndBindTexture(ITEMNAME _name)
     }
 
     return S_OK;
+}
+
+void CItemRect::Set_Bright(_float _y)
+{
+    m_bright = g_fBright * _y / 10.f;
 }
 
 HRESULT CItemRect::Ready_Components()

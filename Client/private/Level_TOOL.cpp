@@ -10,11 +10,11 @@ CLevel_TOOL::CLevel_TOOL(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_TOOL::Initialize()
 {
-	if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Steve(TEXT("Layer_Steve"))))
+	//	return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
-		return E_FAIL;
+	//if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
+	//	return E_FAIL;
 
 	if (FAILED(Ready_Layer_Tool(TEXT("Layer_Tool"))))
 		return E_FAIL;

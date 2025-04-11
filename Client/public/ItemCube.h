@@ -40,6 +40,7 @@ public:
 	HRESULT Set_ItemTypeAndBindTexture(ITEMNAME _type);
 	CRigidbody* Get_Rigidbody() { return m_pRigidbodyCom; }
 
+	void Set_Bright(_float _y);
 protected:
 	HRESULT Ready_Components();
 
@@ -63,6 +64,7 @@ private:
 	//생성되고 먹을 수 있는 타임
 	const _float m_fCanGetTime{ 1.f };
 
+	_float m_bright;
 private:
 	_float Compute_PlayerDistance();
 

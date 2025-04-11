@@ -64,11 +64,12 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
 
 void CBreakableCube::Update(_float fTimeDelta)
 {
-    Set_Bright();
+
 }
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
 {
+    Set_Bright();
     m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 }
 
@@ -209,6 +210,16 @@ HRESULT CBreakableCube::Delete_Cube(_float3 vPos)
     static_cast<_int>(vPos.z)
     };
 
+    int _intSave;
+    for (int i = 0; i < m_vecPositions.size(); ++i) {
+        if (m_vecPositions[i].x == key.x &&
+            m_vecPositions[i].y == key.y &&
+            m_vecPositions[i].z == key.z) {
+            _intSave = i;
+        }
+    }
+
+
     auto it = m_Colliders.find(key);
     if (it == m_Colliders.end())
         return E_FAIL;
@@ -279,6 +290,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
         case Client::ITEMNAME_WOOD:
             m_fHp -= attackDamage / m_fHardness;
             break;
+        case Client::ITEMNAME_CRAFTINGTABLE:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
         case Client::ITEMNAME_STONE:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
@@ -289,6 +303,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_IRONORE:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
+        case Client::ITEMNAME_FURANCE:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         default:
@@ -310,6 +327,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
         case Client::ITEMNAME_WOOD:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
+        case Client::ITEMNAME_CRAFTINGTABLE:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
         case Client::ITEMNAME_STONE:
             m_fHp -= attackDamage / 5.f;
             break;
@@ -321,6 +341,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             break;
         case Client::ITEMNAME_IRONORE:
             m_fHp -= attackDamage / 5.f;
+        case Client::ITEMNAME_FURANCE:
+            m_fHp -= attackDamage / 5.f;
+            break;
         default:
             break;
         }
@@ -335,6 +358,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_LEAF:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_CRAFTINGTABLE:
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_WOOD:
@@ -352,6 +378,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_IRONORE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        case Client::ITEMNAME_FURANCE:
             m_fHp -= attackDamage / 5.f;
             break;
         default:
@@ -384,9 +413,7 @@ float CBreakableCube::GetHP() const
 
 void CBreakableCube::Set_Bright()
 {
-
-    if (m_bChunkColliderActive)
-    {
+    if (CUI_Mgr::Get_Instance()->GetItemTypeName() == ITEMNAME_TORCH || CUI_Mgr::Get_Instance()->GetItemTypeName_Left() == ITEMNAME_TORCH) {
         CGameObject* pSteve{ nullptr };
         pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
 
@@ -396,9 +423,11 @@ void CBreakableCube::Set_Bright()
 
 
         for (int i = 0; i < m_vecPositions.size(); ++i) {
+            // 거리 재고
             _float3 vDiff{ vStevePos - m_vecPositions[i] };
             _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
 
+            // 가까우면 밝기 0.2 0.1씩 올려준거거든 
             if (fLengthSq < 5.f) {
                 m_vecBrights[i] = g_fBright + 0.2f * m_vecPositions[i].y / 10.f;
             }
@@ -410,11 +439,7 @@ void CBreakableCube::Set_Bright()
             }
         }
     }
-    else {
-        for (int i = 0; i < m_vecBrights.size(); ++i) {
-            m_vecBrights[i] = g_fBright * m_vecPositions[i].y / 10.f;
-        }
-    }
+
 }
 
 

@@ -52,6 +52,7 @@ public:
 	void Set_ChunkColliderActive(bool _b) { m_bChunkColliderActive = _b; }
 	bool Get_ChunkColliderActive() { return m_bChunkColliderActive; }
 
+
 	// 큐브 Hp 줄이기
 	virtual void Attacked_Block(_float3 vPos, int attackDamage, _float fDeltaTime);
 
@@ -84,6 +85,7 @@ protected:
 
 	// 현재 청크를 충돌 매니저에 올릴지 
 	bool m_bChunkColliderActive = false;
+
 
 	CVIBuffer_CubeInstance* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };

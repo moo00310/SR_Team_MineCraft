@@ -85,6 +85,7 @@ HRESULT CLeaf::Drop_Item_OnDestroy(const _float3& fPos)
 		if (CItemRect* pItem = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)))
 		{
 			pItem->SetPos(fPos);
+			pItem->Set_Bright(fPos.y);
 
 			if (random < 10)
 				pItem->Set_ItemTypeAndBindTexture(ITEMNAME_SAPLING);

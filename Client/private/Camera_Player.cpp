@@ -153,41 +153,17 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
         CUI_Mgr::Get_Instance()->ItemCount_Update(eCurItem, -1);
 
+        _float3 vPos = m_pPlayer->GetPos();
+        int x = static_cast<int>(vPos.x) / 16;
+        int z = static_cast<int>(vPos.z) / 16;
+        int width = static_cast<int>(sqrt(64));
+        int currentChunk= x + (width * z);
+
         wchar_t layerName[100];
-        swprintf(layerName, 100, L"Layer_Chunk%d", 0); //0청크에 넣어도 상관 없을라나~
+        swprintf(layerName, 100, L"Layer_Chunk%d", currentChunk); 
 
         //2d 아이템들이면(ㅋㅋ역겹네)
-        if (eCurItem == ITEMNAME::ITEMNAME_APPLE ||
-            eCurItem == ITEMNAME::ITEMNAME_COAL || 
-            eCurItem == ITEMNAME::ITEMNAME_DANDELION||
-            eCurItem == ITEMNAME::ITEMNAME_GUNPOWDER || 
-            eCurItem == ITEMNAME::ITEMNAME_GRASS ||
-            eCurItem == ITEMNAME::ITEMNAME_IRON ||
-            eCurItem == ITEMNAME::ITEMNAME_REDTULIP ||
-            eCurItem == ITEMNAME::ITEMNAME_ROTTENFLESH ||
-            eCurItem == ITEMNAME::ITEMNAME_SAPLING||
-            eCurItem == ITEMNAME::ITEMNAME_STICK||
-            eCurItem == ITEMNAME::ITEMNAME_WOOD_PICKAXE||
-            eCurItem == ITEMNAME::ITEMNAME_TORCH||
-            eCurItem == ITEMNAME::ITEMNAME_STONE_SWORD||
-            eCurItem == ITEMNAME::ITEMNAME_STONE_PICKAXE||
-            eCurItem == ITEMNAME::ITEMNAME_STONE_AXE||
-            eCurItem == ITEMNAME::ITEMNAME_STEEL_SWORD||
-            eCurItem == ITEMNAME::ITEMNAME_SEED
-            )
-        {
-            if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
-                return;
-
-            if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
-                _copy->SetPos(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.0f, 1.5f, 0.0f });
-                _copy->Set_ItemTypeAndBindTexture(eCurItem);
-                _copy->Get_Rigidbody()->Set_isKnockBack(false); //이런 내가 싫다
-                _copy->Get_Rigidbody()->Set_Velocity(_float3{ 0.f, 0.f, 0.f });//나를 용서하시오
-                _copy->Get_Rigidbody()->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK) * 10.f);
-            }
-        }
-        else
+        if (eCurItem <100)
         {
             if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"), LEVEL_YU, layerName)))
                 return;
@@ -195,8 +171,23 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
                 _copy->SetPos(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.0f, 1.5f, 0.0f });
                 _copy->Set_ItemTypeAndBindTexture(eCurItem);
+                _copy->Set_Bright(vPos.y);
                 _copy->Get_Rigidbody()->Set_isKnockBack(false); //이런 내가 싫다
                 _copy->Get_Rigidbody()->Set_Velocity(_float3{ 0.f, 0.f, 0.f });//이런 내가 싫다
+                _copy->Get_Rigidbody()->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK) * 10.f);
+            }
+        }
+        else if(100<= eCurItem && eCurItem<900)
+        {
+            if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
+                return;
+
+            if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
+                _copy->SetPos(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.0f, 1.5f, 0.0f });
+                _copy->Set_ItemTypeAndBindTexture(eCurItem);
+                _copy->Set_Bright(vPos.y);
+                _copy->Get_Rigidbody()->Set_isKnockBack(false); //이런 내가 싫다
+                _copy->Get_Rigidbody()->Set_Velocity(_float3{ 0.f, 0.f, 0.f });//나를 용서하시오
                 _copy->Get_Rigidbody()->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK) * 10.f);
             }
         }

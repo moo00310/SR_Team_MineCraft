@@ -78,9 +78,7 @@ private:
 private:
 	int m_iChunkCount = 0; // 청크 개수 
 	int m_prePlayerChunk = 0; //이전 청크
-	int m_currentPlayerChunk = 0; //현재 청크
-	bool prevF1State = false;
-	bool prevF2State = false;
+	int m_currentPlayerChunk = -1; //현재 청크
 
 	//스레드풀 적용 해봤는데 효과가 없었음...애초에 여기 연산이 그리 오래 걸리는게 아니었나?
     //CThreadPool m_ThreadPool;
