@@ -68,6 +68,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_Camera_Cutscene(TEXT("Layer_Camera_Cutscene"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;
 
@@ -86,8 +89,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
+		return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -115,9 +118,6 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////////
-
-	if (FAILED(Ready_Layer_Camera_Cutscene(TEXT("Layer_Camera_Cutscene"))))
-		return E_FAIL;
 
 	m_pGameInstance->PlayBGM(L"sweden");
 
@@ -193,7 +193,7 @@ HRESULT CLevel_YU::Ready_Layer_Steve(const _wstring& strLayerTag)
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 
-	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(5.f, 20.f, 5.f));
+	dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0))->SetPos(_float3(50.f, 20.f, 50.f));
 
 	CUI_Mgr::Get_Instance()->Set_Steve(dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0)));
 
@@ -391,9 +391,21 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Laye_Warden(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
-		LEVEL_YU, strLayerTag)))
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
+		LEVEL_YU, strLayerTag, 3)))
 		return E_FAIL;
+
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
+	//	LEVEL_YU, strLayerTag)))
+	//	return E_FAIL;
+
+	//_float3 vPos = _float3{ 30.f, 10.f, 30.f };
+	//CPawn* pPawn = static_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Monster")));
+	//pPawn->Set_Animation(CPawn::FIND);
+	//pPawn->Get_Transform()->Set_State(CTransform::STATE_POSITION, vPos);
+	//
+	//static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->Start_Cutscene(vPos);
+
 
 	return S_OK;
 }
