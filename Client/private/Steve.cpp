@@ -8,6 +8,12 @@
 #include <iostream>
 #include "Sound_Manager.h"
 
+_float g_fScanRange = 0.f;
+_float g_fScanTime = 0.f;
+_float g_fScanEndTime = 3.f;
+_float g_fScanSpeed = 50.f;
+_bool g_bIsScan = false;
+
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CPawn{ pGraphic_Device }
 {
@@ -78,6 +84,18 @@ void CSteve::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 
+	if (g_fScanTime >= g_fScanEndTime)
+	{
+		g_bIsScan = false;
+		g_fScanRange = 0.f;
+		g_fScanTime = 0.f;
+	}
+
+	if (g_bIsScan == true)
+	{
+		g_fScanRange += fTimeDelta * g_fScanSpeed;
+		g_fScanTime += fTimeDelta;
+	}	
 }
 
 void CSteve::Late_Update(_float fTimeDelta)
@@ -243,6 +261,7 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down('X'))
 	{
 		CUI_Mgr::Get_Instance()->PlayerExp_Set();
+		g_bIsScan = true;
 	}
 
 	if (m_pGameInstance->Key_Down('C'))

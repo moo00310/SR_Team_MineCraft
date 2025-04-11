@@ -15,8 +15,8 @@ float g_fFogEndRange = 25.f;
 // 안개 색.
 vector g_vFogColor = vector(0.529f, 0.808f, 0.922f, 1.f);
 
-// 스캔 시작 범위. 임시.
-float g_fScanStartRange = 5.f;
+// 스캔 시작 범위.
+float g_fScanStartRange;
 
 // 스캔 색.
 vector g_vScanColor = vector(1.f, 0.f, 1.f, 1.f);

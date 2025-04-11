@@ -85,9 +85,17 @@ HRESULT CBreakableCube::Render()
         return E_FAIL;
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
+    m_pTransformCom->Bind_Resource_Scan(m_pShaderCom, g_fScanRange);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 
-    m_pShaderCom->Begin(2);
+    if (g_bIsScan == false)
+    {
+        m_pShaderCom->Begin(0);
+    }    
+    else
+    {
+        m_pShaderCom->Begin(2);
+    }
 
     /* 정점을 그린다. */
     if (FAILED(m_pVIBufferCom->Render()))

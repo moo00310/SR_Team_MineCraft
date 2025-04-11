@@ -59,6 +59,7 @@ public:
 public:
 	HRESULT Bind_Resource();
 	HRESULT Bind_Resource(class CShader* pShader);
+	HRESULT Bind_Resource_Scan(class CShader* pShader, _float _fScanRange);
 
 public:
 	_float3 Compute_Scaled() const;

@@ -26,6 +26,13 @@ extern LPD3DXFONT g_pTitleFont;
 extern LPD3DXFONT g_pDetailFont;
 extern LPD3DXFONT g_pWaveFont;
 
+// 스캔 관련 변수들.
+extern _bool g_bIsScan;				// 스캔 발동 여부.
+extern _float g_fScanRange;			// 스캔 범위.
+extern _float g_fScanTime;			// 스캔 현재 시간.
+extern _float g_fScanEndTime;		// 스캔 지속시간.
+extern _float g_fScanSpeed;			// 스캔이 뻗어나가는 속도.
+
 using namespace Client;
 
 #define Rect_Model_Count 18
