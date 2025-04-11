@@ -32,7 +32,7 @@ HRESULT CInventory_Back::Initialize(void* pArg)
 	{1, 53.f, 52.5f, 630.f, 258.f},  // 50
 	{1, 53.f, 52.5f, 697.f, 121.f},  // 51~52
 	{1, 53.f, 52.5f, 697.f, 177.f},  // 53~54
-	{1, 53.f, 52.5f, 878.f, 152.f}   // 기타
+	{1, 53.f, 52.5f, 878.f, 152.f}   // 결과물
 	};
 
 	if (m_iSlotIndexNum < 9) m_iCategory = 0;
@@ -92,21 +92,25 @@ void CInventory_Back::Late_Update(_float fTimeDelta)
 
 HRESULT CInventory_Back::Render()
 {
-	//if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
-	//	return E_FAIL;
+	/*if (m_iSlotIndexNum == 55)
+	{
 
-	//if (FAILED(m_pVIBufferCom->Bind_Buffers()))
-	//	return E_FAIL;
+		if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
+			return E_FAIL;
 
-	//if (FAILED(m_pTransformCom->Bind_Resource()))
-	//	return E_FAIL;
+		if (FAILED(m_pVIBufferCom->Bind_Buffers()))
+			return E_FAIL;
 
-	//__super::Begin();
+		if (FAILED(m_pTransformCom->Bind_Resource()))
+			return E_FAIL;
 
-	//if (FAILED(m_pVIBufferCom->Render()))
-	//	return E_FAIL;
+		__super::Begin();
 
-	//__super::End();
+		if (FAILED(m_pVIBufferCom->Render()))
+			return E_FAIL;
+
+		__super::End();
+	}*/
 
 	return S_OK;
 }

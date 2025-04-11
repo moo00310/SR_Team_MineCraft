@@ -307,6 +307,10 @@ void CUI_Mgr::ShowInventoryTop()
 			}
 
 			//크래프팅 슬롯 무시
+			for (int i = 59; i < m_vecSlotInfolist.size(); ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(true);
+			}
 		}
 
 
@@ -325,7 +329,32 @@ void CUI_Mgr::ShowInventoryTop()
 			}
 
 			// 크래프팅 슬롯 무시
+			for (int i = 59; i < m_vecSlotInfolist.size(); ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(true);
+			}
+		}
 
+
+		if (g_bMCraftingTableOpen)
+		{
+			// 크래프팅 슬롯 활성화
+			for (int i = 59; i < m_vecSlotInfolist.size(); ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(false);
+			}
+
+			// 메인 슬롯 무시
+			for (int i = 45; i < 56; ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(true);
+			}
+
+			//화로 슬롯 무시
+			for (int i = 56; i < 59; ++i)
+			{
+				m_vecSlotInfolist[i]->Set_ShowInvenTop(true);
+			}
 		}
 	}
 }

@@ -19,9 +19,11 @@ private:
 public:
 	typedef struct tagRecipeDesc
 	{
-		map<int, ITEMNAME> inputPattern;
+		map<_int, ITEMNAME> inputPattern;
 		ITEMNAME resultItem = ITEMNAME_END;
-		int resultCount = { 0 };
+		_int resultCount = { 0 };
+		_int requiredItemCounts = { 0 };
+
 	}RECIPE_DESC;
 
 public:
@@ -34,17 +36,25 @@ public:
 
 public:
 	void Crafing();
+	void RButton();
 
 private:
 	HRESULT Ready_Components();
 
 private:
-	_int		m_iItemCount = { 0 };
+	_int		m_iItemTotalCount = { 0 };
+	_int		m_iSlotTotalCount = { 0 };
+	_int		m_iresultCount = { 0 };
+	_int		m_iTempCount = { 0 };
 	_int		m_iSlotIndex = { 0 };
 	ITEMNAME	m_ItemName = ITEMNAME_END;
 	
-	_int		m_iTest = { 0 };
-	_int		m_iTestIndex = { 0 };
+	_int		m_iRbuttonTotal = { 0 };
+
+
+
+	_bool		m_bMatch = { true };
+
 
 	vector<RECIPE_DESC> m_vecRecipelist;
 
