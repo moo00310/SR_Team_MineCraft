@@ -35,7 +35,7 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
         if (m_resetHpFrame > 10) {
             m_resetHpFrame = 0;
             m_fHp = 100;
-            cout << "Reset Hp" << m_fHp << endl;
+           // cout << "Reset Hp" << m_fHp << endl;
 
             //m_pGameInstance->Check_Sound_Stop(this, 0, 1);
         }
@@ -267,7 +267,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
 {
     if (m_attackedBlockPos != vPos) {
         m_fHp = 100;
-        cout << "Change Block" << m_fHp << endl;
+        //cout << "Change Block" << m_fHp << endl;
     }
 
     m_fHitSoundDelayAcc += fDeltaTime;

@@ -46,7 +46,6 @@ void CRect_Model::Late_Update(_float fTimeDelta)
 	else
 		m_RederID = 4;
 
-	cout << m_eCurAnim << endl;
 }
 
 HRESULT CRect_Model::Render()

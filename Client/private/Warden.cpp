@@ -806,6 +806,32 @@ void CWarden::Turn(_float fTimeDelta)
     m_pTransformCom->LookAt_XZ(m_ShootPos);
 }
 
+void CWarden::Attack_Boom()
+{
+    m_pGameInstance->Play_Sound(TEXT("sonic_boom1"), SOUND_ATTACK, this, 1.f, Get_Transform()->Get_State(CTransform::STATE_POSITION));
+
+    CGameObject* pHitObject{ nullptr };
+
+    pHitObject = m_pGameInstance->Ray_Cast(
+        Get_Transform()->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.f, 0.f },
+        Get_Transform()->Get_State(CTransform::STATE_LOOK),
+        20.f,
+        COLLISION_PLAYER
+    );
+    if (pHitObject)
+    {
+        static_cast<CPawn*>(pHitObject)->Add_Hp(-20.f);
+
+        _float3 vForce{ Get_Target()->Get_Transform()->Get_State(CTransform::STATE_POSITION) -Get_Transform()->Get_State(CTransform::STATE_POSITION) };
+        D3DXVec3Normalize(&vForce, &vForce);
+        vForce *= 15.f;
+        vForce.y += 15.f;
+
+
+        static_cast<CPawn*>(pHitObject)->Knock_back(vForce);
+    }
+}
+
 HRESULT CWarden::Ready_BehaviorTree()
 {
     // 루트 노드: Selector (적을 발견하면 따라가고, 아니면 순찰)
@@ -886,6 +912,8 @@ void CWarden::FrameCallback(int animType, int frame)
             m_pTransformCom,
             1.f
         );
+
+        Attack_Boom();
     }
 
     if (animType == Find_Pevis)
