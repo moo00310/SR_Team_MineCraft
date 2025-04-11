@@ -185,7 +185,7 @@ PS_OUT PS_MAIN_SCAN(PS_IN In)
     {
         // 스캔 범위 안에 있으면 투명 블럭.
         Out.vColor.rgb *= 1.f;
-        Out.vColor.a = 0.1f;
+        Out.vColor.a = 0.3f;
     }
     
     return Out;
@@ -216,6 +216,7 @@ technique DefaultTechnique
         SrcBlend = SrcAlpha;
         DestBlend = InvSrcAlpha;
         BlendOp = Add;
+        CullMode = NONE;
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_MAIN_SCAN();
     }
