@@ -151,16 +151,23 @@ HRESULT CTree::Ready_Pos(int height, int iAddLeaf, int treeIndex)
         _leafPos.push_back(_float3(leaf[j].x, 0.5f + height + 1, leaf[j].y) + m_Pos);
     }
 
-    if (iAddLeaf == 0) return S_OK;
+    //if (iAddLeaf == 0) return S_OK;
  
-    random_device rd;   // 시드 값 생성
-    mt19937 g(rd());    // Mersenne Twister 엔진 사용
-    shuffle(vecAddLeadPos.begin(), vecAddLeadPos.end(), g);
+    //random_device rd;   // 시드 값 생성
+    //mt19937 g(rd());    // Mersenne Twister 엔진 사용
+    //shuffle(vecAddLeadPos.begin(), vecAddLeadPos.end(), g);
 
-    for (int j = 0; j < iAddLeaf; j++)
-    {
-        _leafPos.push_back(_float3(vecAddLeadPos[j].x, 0.5f + vecAddLeadPos[j].y + height, vecAddLeadPos[j].z) + m_Pos);
-    }
+    //for (int j = 0; j < iAddLeaf;)
+    //{
+    //    _float3 _pos = _float3(vecAddLeadPos[j].x, 0.5f + vecAddLeadPos[j].y + height, vecAddLeadPos[j].z) + m_Pos;
+    //    for (int i = 0; i < _leafPos.size(); ++i) {
+    //        if (_pos != _leafPos[i]) {
+    //            continue;
+    //        }
+    //    }
+    //    _leafPos.push_back(_pos);
+    //    j++;
+    //}
 
     m_pWood->Set_InstanceBuffer(_woodPos, 1.f);
     m_pLeaf->Set_InstanceBuffer(_leafPos,1.f);

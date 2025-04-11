@@ -86,6 +86,7 @@ HRESULT CWood::Drop_Item_OnDestroy(const _float3& fPos)
 	if (CItemCube* pItem = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName)))
 	{
 		pItem->SetPos(fPos);
+		pItem->Set_Bright(fPos.y);
 		pItem->Set_ItemTypeAndBindTexture(ITEMNAME_WOOD);
 	}
 
