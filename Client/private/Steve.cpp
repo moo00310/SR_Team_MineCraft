@@ -352,8 +352,8 @@ HRESULT CSteve::Ready_Bone()
 		 { "Root"  , -1,  MAtrixTranslation(0.f, 0.f,0.f),	MAtrixTranslation(0.f	,0.f,	0.f),	Matrix(), Matrix() },  // root
 		 { "Pelvis",  0,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 6.f / 16.f, 0.f)},
 		 { "Neck"  ,  1,  MAtrixTranslation(0.f,  12.f / 16.f,0.f),	MAtrixTranslation(0.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, 4.f / 16.f, 0.f)},
-		 { "Leg_R",  1,	  MAtrixTranslation(2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(2.f / 16.f,	 0,		0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
-		 { "Leg_L" ,  1,  MAtrixTranslation(-2.f / 16.f,  0.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     0,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Leg_R",  0,	  MAtrixTranslation(2.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(2.f / 16.f,	  12.f / 16.f,		0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
+		 { "Leg_L" ,  0,  MAtrixTranslation(-2.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-2.f / 16.f,     12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_R" ,  1,  MAtrixTranslation(6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(6.f / 16.f,   12.f / 16.f	,0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Arm_L" ,  1,  MAtrixTranslation(-6.f / 16.f,  12.f / 16.f,	0.f),	MAtrixTranslation(-6.f / 16.f,   12.f / 16.f,	0.f), Matrix(), MAtrixTranslation(0, -6.f / 16.f, 0.f)},
 		 { "Soket_R" ,  5,  MAtrixTranslation(0.f,  -12.f / 16.f,	7.f / 16.f),	MAtrixTranslation(0.f,  -12.f / 16.f,	7.f / 16.f), Matrix(), Matrix()},
@@ -515,6 +515,65 @@ HRESULT CSteve::Ready_Animation()
 	m_skelAnime->Add_Animation(ANIM_type::Attack, Attack_5);
 
 
+	/*----------
+	* Wepon Attack_Near 모션
+	------------*/
+	mat2 = {};
+	mat2.Turn_Radian(_float3(-0.6f, 1.f, 0.2f), D3DXToRadian(45));
+
+	mat4 = {};
+	mat4.Turn_Radian(_float3(-0.6f, 1.f, 0.2f), D3DXToRadian(-45));
+
+	mat3 = {};
+	mat3.Turn_Radian(_float3(1.f, -0.5f, 0.25f), D3DXToRadian(-120));
+
+	Matrix mat5 = {};
+	mat5.Turn_Radian(_float3(1.f,0.f, 0.f), D3DXToRadian(30));
+
+	Matrix mat6 = {};
+	mat6.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(50));
+
+	Matrix mat7 = {};
+	mat7.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-30));
+
+
+	KEYFREAME Attack_Pelvis_Near_1 = { 0.f, mat };
+	KEYFREAME Attack_Pelvis_Near_2 = { 0.3f, mat2 };
+	KEYFREAME Attack_Pelvis_Near_3 = { 0.5f, mat4 };
+	KEYFREAME Attack_Pelvis_Near_4 = { 0.8f, mat };
+
+	KEYFREAME Attack_ArmR_Near_1 = { 0.f, mat };
+	KEYFREAME Attack_ArmR_Near_2 = { 0.3f, mat3 };
+	KEYFREAME Attack_ArmR_Near_3 = { 0.5f, mat5 };
+	KEYFREAME Attack_ArmR_Near_4 = { 0.8f, mat };
+
+	KEYFREAME Attack_ArmL_Near_1 = { 0.f, mat };
+	KEYFREAME Attack_ArmL_Near_2 = { 0.3f, mat3 };
+	KEYFREAME Attack_ArmL_Near_3 = { 0.5f,mat5 };
+	KEYFREAME Attack_ArmL_Near_4 = { 0.8f,mat };
+
+	KEYFREAME Attack_Wepon_Near_1 = { 0.f, mat };
+	KEYFREAME Attack_Wepon_Near_2 = { 0.3f, mat6 };
+	KEYFREAME Attack_Wepon_Near_3 = { 0.5f,mat6 };
+	KEYFREAME Attack_Wepon_Near_4 = { 0.8f,mat };
+
+
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_Pelvis, Attack_Pelvis_Near_1);
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_Pelvis, Attack_Pelvis_Near_2);
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_Pelvis, Attack_Pelvis_Near_3);
+
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_ArmR, Attack_ArmR_Near_1);
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_ArmR, Attack_ArmR_Near_2);
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_ArmR, Attack_ArmR_Near_3);
+
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_ArmL, Attack_ArmL_Near_1);
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_ArmL, Attack_ArmL_Near_2);
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_ArmL, Attack_ArmL_Near_3);
+
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_Wepon, Attack_Wepon_Near_1);
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_Wepon, Attack_Wepon_Near_2);
+	m_skelAnime->Add_Animation(ANIM_type::Wepon_Near_Attack_Wepon, Attack_Wepon_Near_3);
+
 	return S_OK;
 }
 
@@ -545,17 +604,10 @@ void CSteve::Update_State(_float fTimeDelta)
 
 	if (isAttack)
 	{
-		if (m_skelAnime->is_AnimtionEND(Attack))
-		{
-			// 캐릭터 레이어 걸려있으면 어택 반복
-			if (!m_isAttackContinue)
-			{
-				isAttack = false;
-				m_skelAnime->Reset_fElapsedTime(Swing_FA, Swing_BA);
-			}	
-		}
-
-		m_skelAnime->Update_Animetion(Attack, fTimeDelta, 5);
+		ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
+		if(eCurItem == ITEM_WEPON_1) Motion_Wepon_Attack(fTimeDelta);
+		else Motion_Attack(fTimeDelta);
+		
 	}
 }
 
@@ -609,6 +661,43 @@ void CSteve::Motion_Run(_float fTimeDelta)
 	m_skelAnime->Update_Animetion(Run_BA, fTimeDelta, 6);
 	if (!isAttack)
 		m_skelAnime->Update_Animetion(Run_FA, fTimeDelta, 5);
+}
+
+void CSteve::Motion_Attack(_float fTimeDelta)
+{
+	if (m_skelAnime->is_AnimtionEND(Attack)
+		)
+	{
+		// 캐릭터 레이어 걸려있으면 어택 반복
+		if (!m_isAttackContinue)
+		{
+			isAttack = false;
+			m_skelAnime->Reset_fElapsedTime(Swing_FA, Swing_BA);
+		}
+	}
+	m_skelAnime->Update_Animetion(Attack, fTimeDelta, 5);
+}
+
+void CSteve::Motion_Wepon_Attack(_float fTimeDelta)
+{
+	if (m_skelAnime->is_AnimtionEND(Wepon_Near_Attack_Pelvis) &&
+		m_skelAnime->is_AnimtionEND(Wepon_Near_Attack_ArmR) &&
+		m_skelAnime->is_AnimtionEND(Wepon_Near_Attack_ArmL)&&
+		m_skelAnime->is_AnimtionEND(Wepon_Near_Attack_Wepon) 
+		)
+	{
+		// 캐릭터 레이어 걸려있으면 어택 반복
+		if (!m_isAttackContinue)
+		{
+			isAttack = false;
+			m_skelAnime->Reset_fElapsedTime(Swing_FA, Swing_BA);
+		}
+	}
+
+	m_skelAnime->Update_Animetion(Wepon_Near_Attack_Pelvis, fTimeDelta, 1);
+	m_skelAnime->Update_Animetion(Wepon_Near_Attack_ArmR, fTimeDelta, 5);
+	m_skelAnime->Update_Animetion(Wepon_Near_Attack_ArmL, fTimeDelta, 6);
+	m_skelAnime->Update_Animetion(Wepon_Near_Attack_Wepon, fTimeDelta, 7);
 }
 
 void CSteve::Turn(_float fTimeDelta)

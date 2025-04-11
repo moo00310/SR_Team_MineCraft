@@ -280,14 +280,14 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         }
     }
 
+    m_CoolTimeDelta += fTimeDelta;
+
     //몬스터는 keydown
     if (m_pGameInstance->Key_Down(VK_LBUTTON)) {
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
         CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
         _float3 vDir{};
-
-        vector<_uint> Groups = { COLLISION_NON_PHYSIC_BLOCK, COLLISION_BLOCK };
 
         // 몬스터와 충돌 검사
         pHitObject = m_pGameInstance->Ray_Cast(
@@ -296,6 +296,10 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             5.f, // 최대 탐색 거리
             COLLISION_MONSTER, // 충돌 그룹
             &fDist); //거리저장
+
+        // 이거 카메라 위치 디바이스에 있는거 가져올수 있으면 
+        // 애니메이션코드에서 레이를 검사할까?
+        // 1. 애니메이션 코드에서 카메라를 알게한다.
 
         if (pHitObject)
         {
@@ -306,8 +310,16 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
                 vForce *= 3.f;
                 vForce.y = 4.f;
 
-                monster->Knock_back(vForce);
-                monster->Add_Hp(-10.f);
+                Setting_Damage();
+
+                if (m_CoolTimeDelta >= m_AttackCoolTime)
+                {
+                    monster->Knock_back(vForce);
+                    monster->Add_Hp(m_AttackDamage * -1.f);
+
+                    m_CoolTimeDelta = 0.f;
+                }
+  
                 return;
             }
 
@@ -579,6 +591,45 @@ void CCamera_Player::On_MouseMove(_float fTimeDelta)
     ClientToScreen(g_hWnd, &ptCenter);
     SetCursorPos(ptCenter.x, ptCenter.y);
 
+}
+
+void CCamera_Player::Setting_Damage()
+{
+    // 손에 들고있는 아이템 별로 데이미와 쿨타임 세팅함
+    ITEMNAME Name = CUI_Mgr::Get_Instance()->GetItemTypeName();
+
+    switch (Name)
+    {
+    case Client::ITEMNAME_WOOD_PICKAXE:
+        m_AttackDamage = 10.f;
+        m_AttackCoolTime = 1.f;
+        break;
+    case Client::ITEMNAME_STONE_PICKAXE:
+        m_AttackDamage = 10.f;
+        m_AttackCoolTime = 1.f;
+        break;
+    case Client::ITEMNAME_STONE_AXE:
+        m_AttackDamage = 10.f;
+        m_AttackCoolTime = 1.f;
+        break;
+    case Client::ITEMNAME_STONE_SWORD:
+        m_AttackDamage = 10.f;
+        m_AttackCoolTime = 1.f;
+        break;
+    case Client::ITEMNAME_STEEL_SWORD:
+        m_AttackDamage = 10.f;
+        m_AttackCoolTime = 1.f;
+        break;
+    case Client::ITEM_WEPON_1:
+        m_AttackDamage = 10.f;
+        m_AttackCoolTime = 0.8f;
+        break;
+    default:
+        m_AttackDamage = 10.f;
+        if(Name < ITEMNAME_CUBE_END || Name == ITEMNAME_END)    m_AttackCoolTime = 0.3f;
+        else  m_AttackCoolTime = 1.f;
+        break;
+    }
 }
 
 HRESULT CCamera_Player::Ready_Components()
