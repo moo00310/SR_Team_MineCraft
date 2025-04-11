@@ -35,6 +35,8 @@
 #include "ParticleSwordAura.h"
 #include "ParticleCrackerLoad.h"
 #include "ParticleSonicBoom.h"
+#include "ParticleLeafMining.h"
+#include "ParticleLeafDestroy.h"
 
 LPD3DXFONT g_pTitleFont = nullptr;
 LPD3DXFONT g_pDetailFont = nullptr;
@@ -250,6 +252,11 @@ HRESULT CMainApp::Ready_Particle()
 		CParticleStoneMining::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	// 나뭇잎 캐는 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_MINING,
+		CParticleLeafMining::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	// 흙 파괴 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
 		CParticleSandDestroy::Create(m_pGraphic_Device))))
@@ -258,6 +265,11 @@ HRESULT CMainApp::Ready_Particle()
 	// 돌 파괴 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_DESTROY,
 		CParticleStoneDestroy::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 나뭇잎 파괴 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_DESTROY,
+		CParticleLeafDestroy::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	// 폭발 파티클.
@@ -388,7 +400,7 @@ HRESULT CMainApp::Ready_Texture()
 
 	// TODO : 블럭 채굴/파괴 텍스쳐.	
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_MINING,
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/mining_%d.png"), 3))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/mining_%d.png"), 4))))
 		return E_FAIL;
 
 	// TODO : 폭발 텍스쳐.

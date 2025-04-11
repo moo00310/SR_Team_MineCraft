@@ -37,6 +37,12 @@ static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING = TEXT("Prototy
 // µ¹ ÆÄ±« ÆÄÆ¼Å¬.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_DESTROY = TEXT("Prototype_GameObject_Particle_Stone_Destroy");
 
+// ³ª¹µÀÙ Ã¤±¼ ÆÄÆ¼Å¬.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_MINING = TEXT("Prototype_GameObject_Particle_Leaf_Mining");
+
+// ³ª¹µÀÙ ÆÄ±« ÆÄÆ¼Å¬.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_DESTROY = TEXT("Prototype_GameObject_Particle_Leaf_Destroy");
+
 // Æø¹ß ÅØ½ºÃÄ.
 static const _wstring PROTOTYPE_COMPONENT_TEXTURE_EXPLOSION = TEXT("Prototype_Component_Texture_Explosion");
 
