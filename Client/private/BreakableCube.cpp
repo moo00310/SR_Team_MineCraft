@@ -86,6 +86,7 @@ HRESULT CBreakableCube::Render()
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTransformCom->Bind_Resource_Scan(m_pShaderCom, g_fScanRange);
+    m_pTransformCom->Bind_Resource_BlockType(m_pShaderCom, m_itemName);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 
     if (g_bIsScan == false)

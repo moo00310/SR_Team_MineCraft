@@ -83,6 +83,14 @@ HRESULT CTransform::Bind_Resource_Scan(CShader* pShader, _float _fScanRange)
 	return S_OK;
 }
 
+HRESULT CTransform::Bind_Resource_BlockType(CShader* pShader, _uint _iBlockType)
+{
+	if (FAILED(pShader->SetInt("g_iBlockType", _iBlockType)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 _float3 CTransform::Compute_Scaled() const
 {
 	_float3		vRight = Get_State(STATE_RIGHT);

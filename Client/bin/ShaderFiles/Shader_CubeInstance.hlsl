@@ -21,6 +21,16 @@ float g_fScanStartRange;
 // 스캔 색.
 vector g_vScanColor = vector(1.f, 0.f, 1.f, 1.f);
 
+// 블럭 타입.
+// Client_Enum ITEMNAME 참조.
+int g_iBlockType;
+
+// 철.
+int g_iIronType = 900;
+
+// 석탄.
+int g_iCoalType = 901;
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -112,7 +122,7 @@ PS_OUT PS_MAIN(PS_IN In)
     {
         // 안개 범위 안이면 기본색.
         Out.vColor.rgb *= In.vBright;
-    }       
+    }        
     
     return Out;
 }
@@ -133,7 +143,7 @@ PS_OUT PS_MAIN_SCAN(PS_IN In)
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
     
     // 스캔 범위 끝.
-    float fScanEndRange = g_fScanStartRange + 8.f;
+    float fScanEndRange = g_fScanStartRange + 3.f;
      
     if (In.vDistance >= g_fFogEndRange)
     {
@@ -180,9 +190,16 @@ PS_OUT PS_MAIN_SCAN(PS_IN In)
     }
     else
     {
-        // 스캔 범위 안에 있는 애들은 좀 더 밝게.
+        // 스캔 범위 안에 있으면 투명 블럭.
         Out.vColor.rgb *= 1.f;
-    }
+        Out.vColor.a = 0.1f;
+        
+        // 광물들은 보이게 함.
+        if (g_iBlockType == g_iIronType || g_iBlockType == g_iCoalType)
+        {
+            Out.vColor.a = 1.f;
+        }
+    }        
     
     return Out;
 }
@@ -203,6 +220,10 @@ technique DefaultTechnique
 
     pass ScanPass
     {
+        ALPHABLENDENABLE = true;        
+        SrcBlend = SrcAlpha;
+        DestBlend = InvSrcAlpha;
+        BlendOp = Add;
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_MAIN_SCAN();
     }

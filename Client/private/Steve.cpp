@@ -11,7 +11,7 @@
 _float g_fScanRange = 0.f;
 _float g_fScanTime = 0.f;
 _float g_fScanEndTime = 3.f;
-_float g_fScanSpeed = 50.f;
+_float g_fScanSpeed = 20.f;
 _bool g_bIsScan = false;
 
 CSteve::CSteve(LPDIRECT3DDEVICE9 pGraphic_Device)
