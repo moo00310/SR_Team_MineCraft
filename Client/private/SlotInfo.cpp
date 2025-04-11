@@ -41,8 +41,11 @@ HRESULT CSlotInfo::Initialize(void* pArg)
         {0, 44.f, 44.f, 878.f, 152.f},  // 55~
         {0, 44.f, 44.f, 560.f, 117.f},  // 56 화로
         {0, 44.f, 44.f, 560.f, 230.f},  // 57 화로 
-        {0, 70.f, 70.f, 755.f, 175.f}   // 58 화로
+        {0, 70.f, 70.f, 755.f, 175.f},   // 58 화로
+        {0, 44.f, 44.f, 560.f, 117.f},  // 59 ~ 67 제작 테이블 슬롯
+        {0, 70.f, 70.f, 782.f, 173.f} // 68 제작 결과 슬롯
     };
+
 
     if (m_iSlotIndexNum < 9) m_iCategory = 0;
     else if (m_iSlotIndexNum < 18) m_iCategory = 1;
@@ -58,6 +61,8 @@ HRESULT CSlotInfo::Initialize(void* pArg)
     else if (m_iSlotIndexNum == 56) m_iCategory = 11; //화로
     else if (m_iSlotIndexNum == 57) m_iCategory = 12; //화로
     else if (m_iSlotIndexNum == 58) m_iCategory = 13; //화로
+    else if (m_iSlotIndexNum < 68)  m_iCategory = 14; // 제작 테이블 슬롯
+    else if (m_iSlotIndexNum == 68) m_iCategory = 15; // 제작 결과 슬롯
     else m_iCategory = 14;
 
     // 공통 속성 할당
@@ -107,7 +112,6 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 	{
         return;
 	}
-
 
 	/* 아이템 정보 저장*/
 	CMouse* pMouse = CMouse::Get_Instance();
@@ -201,11 +205,12 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
                 /* 합을 확인해서 64가 넘어가면 합치기 X
                    그게 아니면 마우스에 아이템 정보들 넘겨주기*/
                 _int iTotalCount = pMouse->Get_ItemCount() + m_iItemCount;
-
+       
                 if (m_iItemCount >= 64)
                 {
                     return;
                 }
+
                 /* 교체 */
                 if(pMouse->Get_ItemCount() == 64)
                 {
@@ -218,12 +223,19 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
                 /* 합치기 구현*/
                 else
                 {
+                    if (iTotalCount > 64)
+                    {
+                        return;
+                    }
+
                     Set_ItemCount(iTotalCount);
                     pMouse->Set_Picked(false);
                     (*mouseItem)->Set_ItemName(ITEMNAME_END);
                     (*mouseItem)->Set_Check(false);
                     (*mouseItemFont)->Set_Check(false);
                 }
+
+               
 			}
 			/* 다른 아이템이면 */
             else
@@ -289,17 +301,10 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 		}
 	}
 
-
-    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_RBUTTON) && m_iItemCount > 1 && !m_bShowInvenTop)
+    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_RBUTTON) && m_iItemCount > 1 && !m_bShowInvenTop && m_iSlotIndexNum != 55)
     {
         if (pMouse->Get_Picked() == false)
         {
-            _int iHalf = (m_iItemCount +1 ) / 2;
-            _int iRemain = m_iItemCount - iHalf;
-
-            m_iTensDigit = iHalf / 10;
-            m_iOnesDigit = iHalf % 10;
-
             /* 1. 아이템 아이디 저장 */
             pMouse->Set_ItemID(m_ItemID);
             /* 2. 아이템 텍스쳐 번호 저장*/
@@ -307,33 +312,52 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
             /* 3. 아이템이 원래 있던 인벤토리 슬롯 번호 저장*/
             pMouse->Set_SlotIndex(m_iSlotIndexNum);
             /* 4. 마우스가 아이템을 들고 있는 상태로 변경 */
-            pMouse->Set_Picked(true);
-            /* 5. 현재 슬롯에 있는 아이템 개수 저장 */
-            pMouse->Set_ItemCount(iHalf);
-            /* 6. 마우스가 아이템을 들고 있는 상태로 저장*/
+            pMouse->Set_Picked(true);                      
+            pMouse->Set_ItemCount(m_iItemCount);
+            /* 5. 마우스가 아이템을 들고 있는 상태로 저장*/
             (*mouseItem)->Set_Check(true);
-            /* 마우스에 표시할 아이템 이미지 설정 */
+            /* 6. 마우스에 표시할 아이템 이미지 설정 */
             (*mouseItem)->Set_ItemName(m_ItemName);
 
-            /* 마우스에 표시할 아이템 개수 이미지 설정 (CMouse_ItemFont 클래스에서 렌더)*/
-            if (m_bCountRender && m_iTensDigit != 0 || m_iOnesDigit != 0)
-            {
-                /* 마우스가 아이템 개수를 들고 있는 상태로 저장*/
-                (*mouseItemFont)->Set_Check(true);
-                (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
-                (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
-            }
+            /* 55번 슬롯 제외 우클릭 시 절반으로 나누기 */
+			_int iHalf = (m_iItemCount + 1) / 2;
+			_int iRemain = m_iItemCount - iHalf;
 
-            m_iItemCount = iRemain;
+			m_iTensDigit = iHalf / 10;
+			m_iOnesDigit = iHalf % 10;
+
+			/* 5. 현재 슬롯에 있는 아이템 개수 저장 */
+			pMouse->Set_ItemCount(iHalf);
+			m_iItemCount = iRemain;
+
+			/* 마우스에 표시할 아이템 개수 이미지 설정 (CMouse_ItemFont 클래스에서 렌더)*/
+			if (m_bCountRender && m_iTensDigit != 0 || m_iOnesDigit != 0)
+			{
+				/* 마우스가 아이템 개수를 들고 있는 상태로 저장*/
+				(*mouseItemFont)->Set_Check(true);
+				(*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
+				(*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
+			}
+            
         }
-
         //pUI_Mgr->Split_ItemStack(m_iSlotIndexNum);
     }
     
     if (g_bMainInventoryOpen)
-    {
+    {        
         pUI_Mgr->Get_Crafting()->Crafing();
+
+        if (PtInRect(&rcRect, ptMouse) && m_iSlotIndexNum == 55 && m_pGameInstance->Key_Up(VK_RBUTTON) && !m_bShowInvenTop)
+        {           
+            pUI_Mgr->Get_Crafting()->RButton();
+
+        }
     }
+    //else
+    //{
+    //    (*mouseItem)->Set_Check(false);
+    //    (*mouseItemFont)->Set_Check(false);
+    //}
     
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
 		return;

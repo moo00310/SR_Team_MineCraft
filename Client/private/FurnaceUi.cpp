@@ -1,4 +1,4 @@
-#include "FurnaceUi.h"
+ #include "FurnaceUi.h"
 
 _bool g_bFurnaceUiOpen = false;
 
