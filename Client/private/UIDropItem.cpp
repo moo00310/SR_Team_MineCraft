@@ -53,7 +53,7 @@ void CUIDropItem::Update(_float fTimeDelta)
 	_float2 distancePosition = m_vTargetPosition - (_float2)m_pTransformCom->Get_State(CTransform::STATE_POSITION);
 	float distance = D3DXVec2Length(&distancePosition);
 
-	if (distance < 5.f)
+	if (distance < 10.f)
 	{
 		SetActive(false);
 		return;

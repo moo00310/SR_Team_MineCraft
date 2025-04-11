@@ -254,8 +254,12 @@ void CZombi::Motion_Attack(_float fTimeDelta)
     if (m_skelAnime->is_AnimtionEND(Attack))
     {
 
-        _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-        m_pTargetPawn->Knock_back(temp);
+        _float3 vForce{ m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION) };
+        D3DXVec3Normalize(&vForce, &vForce);
+        vForce *= 3.f;
+        vForce.y += 4.f;
+
+        m_pTargetPawn->Knock_back(vForce);
         m_pTargetPawn->Add_Hp(-10.f);
     }
 

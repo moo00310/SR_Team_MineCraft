@@ -203,6 +203,7 @@
     <ClInclude Include="..\public\Client_Enum.h" />
     <ClInclude Include="..\public\Creeper.h" />
     <ClInclude Include="..\public\Cube_Model.h" />
+    <ClInclude Include="..\public\Camera_Cutscene.h" />
     <ClInclude Include="..\public\DestroyCube.h" />
     <ClInclude Include="..\public\Edition.h" />
     <ClInclude Include="..\public\FireCrackerLoad.h" />
@@ -348,6 +349,7 @@
     <ClCompile Include="..\private\Cube.cpp" />
     <ClCompile Include="..\private\Creeper.cpp" />
     <ClCompile Include="..\private\Cube_Model.cpp" />
+    <ClCompile Include="..\private\Camera_Cutscene.cpp" />
     <ClCompile Include="..\private\DestroyCube.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
     <ClCompile Include="..\private\FireCrackerLoad.cpp" />

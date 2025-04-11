@@ -7,6 +7,7 @@
 #include "UI_Mgr.h"
 #include "Pawn.h"
 #include "Sun.h"
+#include "Camera_Cutscene.h"
 
 CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -85,8 +86,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	//if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
-	//	return E_FAIL;
+	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
+		return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -115,7 +116,8 @@ HRESULT CLevel_YU::Initialize()
 
 	///////////////////////////////////////////////////////////
 
-	
+	if (FAILED(Ready_Layer_Camera_Cutscene(TEXT("Layer_Camera_Cutscene"))))
+		return E_FAIL;
 
 	m_pGameInstance->PlayBGM(L"sweden");
 
@@ -132,6 +134,16 @@ void CLevel_YU::Update(_float fTimeDelta)
 		if (CSun* _sun = dynamic_cast<CSun*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Sun")))) {
 			_sun->Set_bAddTime();
 		}
+	}
+
+	if (m_pGameInstance->Key_Down(VK_ADD))
+	{
+		static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->Start_Cutscene({ 10.f, 10.f, 10.f });
+	}
+
+	if (m_pGameInstance->Key_Down(VK_SUBTRACT))
+	{
+		static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->End_Cutscene();
 	}
 }
 
@@ -429,6 +441,13 @@ HRESULT CLevel_YU::Ready_Layer_Missions(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Layer_Crosshair(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Crosshair"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+}
+
+HRESULT CLevel_YU::Ready_Layer_Camera_Cutscene(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Cutscene"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
 }

@@ -19,13 +19,12 @@ HRESULT CRight_hand::Initialize_Prototype()
 
 HRESULT CRight_hand::Initialize(void* pArg)
 {
-    m_pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+    m_pSteve = static_cast<CPawn*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")));
     m_pArm_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),0));
     m_pRect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),1));
     m_pCube_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),2));
     m_pLeft_Rect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"), 3));
 
- 
     if (m_pArm_Model == nullptr ||
         m_pRect_Model == nullptr ||
         m_pSteve == nullptr ||
@@ -74,13 +73,18 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
 
 void CRight_hand::Update(_float fTimeDelta)
 {
+    if (m_pSteve->isRun())
+    {
+        m_pArm_Model->Set_RunAnimation();
+        m_pRect_Model->Set_RunAnimation();
+        m_pCube_Model->Set_RunAnimation();
+        m_pLeft_Rect_Model->Set_RunAnimation();
+    }
 
-  
 }
 
 void CRight_hand::Late_Update(_float fTimeDelta)
 {
- 
     for (char key = '1'; key <= '9'; ++key)
     {
         if (m_pGameInstance->Key_Down(key))

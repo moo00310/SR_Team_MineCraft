@@ -17,6 +17,7 @@ public:
 	enum ANIM_type
 	{
 		Swing_FF, Swing_BF, Swing_BA, Swing_FA, Swing_R, Swing_L, Attack ,INIT,
+		Run_FF, Run_BF, Run_BA, Run_FA
 	};
 
 private:
@@ -68,6 +69,7 @@ private:
 	void Update_State(_float fTimeDelta) override;
 	void Motion_Idle(_float fTimeDelta) override;
 	void Motion_Walk(_float fTimeDelta) override;
+	void Motion_Run(_float fTimeDelta) ;
 	void Turn(_float fTimeDelta) override;
 
 	// 달리기 파티클.

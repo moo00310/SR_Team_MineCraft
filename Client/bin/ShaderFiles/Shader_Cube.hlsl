@@ -8,10 +8,13 @@ texture g_Texture;
 float g_Bright;
 
 // 안개가 시작되는 거리.
-float g_fFogDistance = 20.f;
+float g_fFogStartDistance = 5.f;
+
+// 안개가 끝나는 거리.
+float g_fFogEndDistance = 25.f;
 
 // 안개 색.
-vector g_vFogColor = vector(1.f, 1.f, 1.f, 1.f);
+vector g_vFogColor = vector(0.529f, 0.808f, 0.922f, 1.f);
 
 struct VS_IN
 {
@@ -115,42 +118,36 @@ PS_OUT PS_MAIN_STEVE(PS_IN In)
     PS_OUT Out;
 
     Out.vColor= tex2D(DefaultSampler, In.vTexcoord);
-    
-    // 안개 범위 바깥인가?
-    if (In.vDistance >= g_fFogDistance)
+        
+    if (In.vDistance >= g_fFogEndDistance)
     {
-        // 안개와의 거리 차이.
-        float distance = saturate(In.vDistance - g_fFogDistance);
+        // 안개 끝나는 거리 바깥에 있는 얘들은 아예 안 보이게 무시.
+        discard;
+    }
+    else if (In.vDistance >= g_fFogStartDistance)
+    {
+        // 안개 시작 거리에선 안개색상 지정.
+        
+        // 안개 끝거리 - 시작거리 결과 값.
+        float fEnd = g_fFogEndDistance - g_fFogStartDistance;   // N
+        
+        // 안개 끝거리랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+        float fCurrent = g_fFogEndDistance - In.vDistance;      // N~0                
+        
+        // 선형보간에 쓰일 결과 값.
+        float fResult = fCurrent / fEnd;                        // 1~0
         
         // 선형 보간.
-        float4 color = lerp(Out.vColor, g_vFogColor, distance);
+        float4 color = lerp(g_vFogColor, Out.vColor, fResult);
         
         // 안개 색 입힘.
         Out.vColor.rgb = color * g_Bright;
-        
-        // 안개 색상 무시함.   
-        if (Out.vColor.r >= (g_vFogColor.r - distance) * g_Bright ||
-        Out.vColor.g >= (g_vFogColor.g - distance) * g_Bright ||
-        Out.vColor.b >= (g_vFogColor.b - distance) * g_Bright)
-        {
-            discard;
-        }
-        
-        // 검은색은 위에 조건문 안 먹어서 따로 예외처리함.
-        if (Out.vColor.r <= 0.f &&
-        Out.vColor.g <= 0.f &&
-        Out.vColor.b <= 0.f)
-        {
-            discard;
-        }
     }
     else
     {
-        // 안개 범위 안이면.
+        // 안개 범위 안이면 기본색.
         Out.vColor.rgb *= g_Bright;
-    }
-    
-   // Out.vColor = float4(1, 0, 0, 1);
+    }     
     
     return Out;
 }
@@ -222,9 +219,9 @@ technique DefaultTechnique
         CULLMODE = NONE;
         ZENABLE = false;
         ZWRITEENABLE = false;
-        ALPHATESTENABLE = true;
-        ALPHAREF = 100;
-        ALPHAFUNC = GREATER;
+        //ALPHATESTENABLE = true;
+        //ALPHAREF = 100;
+        //ALPHAFUNC = GREATER;
         VertexShader = compile vs_3_0 VS_MAIN_Steve();
         PixelShader = compile ps_3_0 PS_MAIN_STEVE();
     }

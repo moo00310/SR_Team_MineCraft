@@ -39,28 +39,28 @@ HRESULT CMissionControl::Initialize(void* pArg)
 #pragma region init
 
 void CMissionControl::InitMissions1() {
-    // 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"나무", L"나무 5개 벌목하기",0, 5}
-    });
+    //// 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"나무", L"나무 5개 벌목하기",0, 5}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"제작대", L"제작대 만들기",0,1}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"제작대", L"제작대 만들기",0,1}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"돌칼", L"돌 칼 만들기",0,1},
-        { L"돌도끼", L"돌 도끼 만들기",0,1},
-        { L"돌곡괭이", L"돌 곡괭이 만들기",0,1}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"돌칼", L"돌 칼 만들기",0,1},
+    //    { L"돌도끼", L"돌 도끼 만들기",0,1},
+    //    { L"돌곡괭이", L"돌 곡괭이 만들기",0,1}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"사과", L"사과 먹고 배고픔 채우기",0,1}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"사과", L"사과 먹고 배고픔 채우기",0,1}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"블럭", L"블럭 5개 설치",0,5}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"블럭", L"블럭 5개 설치",0,5}
+    //});
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
@@ -69,7 +69,7 @@ void CMissionControl::InitMissions1() {
 }
 void CMissionControl::InitMissions2()
 {
-    m_Round2.emplace_back(std::vector<missionDetail>{
+    /*m_Round2.emplace_back(std::vector<missionDetail>{
         { L"석탄", L"석탄 채광기",0,3},
         { L"철",   L"철 채광하기" ,0,3}
     });
@@ -85,7 +85,7 @@ void CMissionControl::InitMissions2()
 
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"횃불", L"석탄으로 횃불 만들기",0,1}
-    });
+    });*/
 
     // 웨이브 미션 1: 좀비 7마리, 크리퍼 3마리 처치
     m_Round2Wave.emplace_back(std::vector<missionDetail>{

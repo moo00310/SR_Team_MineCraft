@@ -16,7 +16,8 @@ class CRightHand_Object abstract : public CGameObject
 {
 public:
 	enum ANIM {
-		INIT, SWING, WALK, EAT, ANIM_END
+		INIT, SWING, WALK, EAT, RUN, 
+		ATTACK_Near, ATTACK_Far, ANIM_END
 	};
 
 protected:
@@ -40,6 +41,8 @@ public:
 	void Set_TPSMatrix(const Matrix& mat) { m_TPS_mat = mat; }
 	void Set_FPSMatrix(const Matrix& mat) { m_FPS_mat = mat; }
 
+public:
+	void Set_RunAnimation();
 
 protected:
 	CTexture* m_pTextureCom = { nullptr };
@@ -66,12 +69,15 @@ protected:
 	virtual void Motion_Idle(_float fTimeDelta) = 0;
 	virtual void Motion_Swing(_float fTimeDelta) = 0;
 	virtual void Motion_Walk(_float fTimeDelta) = 0;
+	virtual void Motion_Run(_float fTimeDelta) = 0;
 	virtual void KeyInput() = 0;
+
 
 protected:
 	int m_TextrueNum = 0;
 	Matrix m_TPS_mat = {};
 	Matrix m_FPS_mat = {};
+	Matrix m_RunMatrix = {};
 
 public:
 	virtual CGameObject* Clone(void* pArg) =0;

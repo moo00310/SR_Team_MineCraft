@@ -156,7 +156,7 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         wchar_t layerName[100];
         swprintf(layerName, 100, L"Layer_Chunk%d", 0); //0청크에 넣어도 상관 없을라나~
 
-        //2d 아이템들이면(ㅋㅋ)
+        //2d 아이템들이면(ㅋㅋ역겹네)
         if (eCurItem == ITEMNAME::ITEMNAME_APPLE ||
             eCurItem == ITEMNAME::ITEMNAME_COAL || 
             eCurItem == ITEMNAME::ITEMNAME_DANDELION||
@@ -164,7 +164,17 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             eCurItem == ITEMNAME::ITEMNAME_GRASS ||
             eCurItem == ITEMNAME::ITEMNAME_IRON ||
             eCurItem == ITEMNAME::ITEMNAME_REDTULIP ||
-            eCurItem == ITEMNAME::ITEMNAME_SEED)
+            eCurItem == ITEMNAME::ITEMNAME_ROTTENFLESH ||
+            eCurItem == ITEMNAME::ITEMNAME_SAPLING||
+            eCurItem == ITEMNAME::ITEMNAME_STICK||
+            eCurItem == ITEMNAME::ITEMNAME_WOOD_PICKAXE||
+            eCurItem == ITEMNAME::ITEMNAME_TORCH||
+            eCurItem == ITEMNAME::ITEMNAME_STONE_SWORD||
+            eCurItem == ITEMNAME::ITEMNAME_STONE_PICKAXE||
+            eCurItem == ITEMNAME::ITEMNAME_STONE_AXE||
+            eCurItem == ITEMNAME::ITEMNAME_STEEL_SWORD||
+            eCurItem == ITEMNAME::ITEMNAME_SEED
+            )
         {
             if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemRect"), LEVEL_YU, layerName)))
                 return;
@@ -300,7 +310,12 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         {
             if (CMonster* monster = dynamic_cast<CMonster*>(pHitObject))
             {
-                monster->Knock_back(m_pTransformCom->Get_State(CTransform::STATE_LOOK));
+                _float3 vForce{ m_pTransformCom->Get_State(CTransform::STATE_LOOK) };
+                D3DXVec3Normalize(&vForce, &vForce);
+                vForce *= 3.f;
+                vForce.y = 4.f;
+
+                monster->Knock_back(vForce);
                 monster->Add_Hp(-10.f);
                 return;
             }

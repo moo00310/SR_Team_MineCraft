@@ -31,7 +31,10 @@ private:
 	void Motion_Idle(_float fTimeDelta) override;
 	void Motion_Swing(_float fTimeDelta) override;
 	void Motion_Walk(_float fTimeDelta) override; 
+	void Motion_Run(_float fTimeDelta) override; 
 	void Motion_EAT(_float fTimeDelta); 
+	void Motion_Attack1(_float fTimeDelta);
+	void Motion_Attack2(_float fTimeDelta);
 	virtual void KeyInput() override;
 
 private:
@@ -42,10 +45,7 @@ private:
 	void AuraSword();
 
 	// 불검 휘두를 때 잔상.
-	void SwingFireSword();
-
-	// TODO :: 테스트용 워든 공격 파티클.
-	void SonicBoom();
+	void SwingFireSword();	
 
 	ITEMNAME Compute_Texture_Name();
 

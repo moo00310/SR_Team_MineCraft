@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "Monster.h"
 #include "Behavior_Tree.h"
+#include "ParticleEventManager.h"
 
 BEGIN(Engine)
 class CTexture;
@@ -20,6 +21,8 @@ public:
 		Attack_Pevis, Attack_Arm_R, Attack_Arm_L,
 		Find_Pevis, Find_Arm_R, Find_Arm_L, Find_Neck,
 		Attack2_Pevis, Attack2_Arm_R, Attack2_Arm_L, Attack2_Neck,
+		Rest_Pelvis, Rest_Arm_R, Rest_Arm_L, Rest_Neck,
+		Run_Pevis, Run_Leg_R, Run_Leg_L, Run_Arm_R, Run_Arm_L,
 		Dead, INIT,
 	};
 
@@ -35,7 +38,7 @@ public:
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
 	virtual HRESULT Render()override;
-
+	void Dead_Pawn() override;
 
 private:
 	HRESULT Ready_Components();
@@ -50,6 +53,7 @@ private:
 	void Motion_Attack2(_float fTimeDelta);
 	void Motion_Dead(_float fTimeDelta) override;
 	void Motion_Find(_float fTimeDelta);
+	void Motion_Run(_float fTimeDelta);
 	void Turn(_float fTimeDelta) override;
 
 private:
@@ -58,7 +62,7 @@ private:
 
 private:
 	virtual HRESULT Ready_BehaviorTree() override;
-	void FrameCallback(int animType, int frame) override;
+	void FrameCallback(int animType, int frame) override;	
 
 public:
 	static CWarden* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
