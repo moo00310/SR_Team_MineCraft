@@ -829,6 +829,9 @@
     <ClInclude Include="..\public\ParticleLeafMining.h">
       <Filter>02.GameObjects\05.Particle\Mining</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\ParticleLeafDestroy.h">
+      <Filter>02.GameObjects\05.Particle\Destroy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1269,6 +1272,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleLeafMining.cpp">
       <Filter>02.GameObjects\05.Particle\Mining</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\ParticleLeafDestroy.cpp">
+      <Filter>02.GameObjects\05.Particle\Destroy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
