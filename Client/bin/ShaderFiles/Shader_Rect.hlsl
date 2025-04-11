@@ -113,6 +113,12 @@ PS_OUT PS_MAIN(PS_IN In)
         
         // 안개 색 입힘.
         Out.vColor.rgb = color * g_Bright;
+        
+        // 안개 범위에서 검은색 픽셀이 제대로 안 버려져서 0.2로 줌.
+        if (Out.vColor.r <= 0.2f && Out.vColor.g <= 0.2f && Out.vColor.b <= 0.2f)
+        {
+            discard;
+        }            
     }
     else
     {
