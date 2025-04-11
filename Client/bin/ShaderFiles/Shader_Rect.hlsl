@@ -123,6 +123,7 @@ PS_OUT PS_MAIN(PS_IN In)
     // 검정색이면 픽셀을 버림
     if (Out.vColor.r == 0 && Out.vColor.g == 0 && Out.vColor.b == 0)
         discard;
+    
 
     return Out;
 }
