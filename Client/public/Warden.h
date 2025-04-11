@@ -55,6 +55,7 @@ private:
 	void Motion_Find(_float fTimeDelta);
 	void Motion_Run(_float fTimeDelta);
 	void Turn(_float fTimeDelta) override;
+	void Attack_Boom();
 
 private:
 	_float3 m_ShootPos = {};
