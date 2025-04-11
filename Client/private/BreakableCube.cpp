@@ -279,6 +279,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
         case Client::ITEMNAME_WOOD:
             m_fHp -= attackDamage / m_fHardness;
             break;
+        case Client::ITEMNAME_CRAFTINGTABLE:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
         case Client::ITEMNAME_STONE:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
@@ -289,6 +292,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_IRONORE:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
+        case Client::ITEMNAME_FURANCE:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         default:
@@ -310,6 +316,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
         case Client::ITEMNAME_WOOD:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
+        case Client::ITEMNAME_CRAFTINGTABLE:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
         case Client::ITEMNAME_STONE:
             m_fHp -= attackDamage / 5.f;
             break;
@@ -321,6 +330,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             break;
         case Client::ITEMNAME_IRONORE:
             m_fHp -= attackDamage / 5.f;
+        case Client::ITEMNAME_FURANCE:
+            m_fHp -= attackDamage / 5.f;
+            break;
         default:
             break;
         }
@@ -335,6 +347,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_LEAF:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_CRAFTINGTABLE:
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_WOOD:
@@ -352,6 +367,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_IRONORE:
+            m_fHp -= attackDamage / 5.f;
+            break;
+        case Client::ITEMNAME_FURANCE:
             m_fHp -= attackDamage / 5.f;
             break;
         default:
