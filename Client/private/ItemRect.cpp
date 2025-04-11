@@ -128,7 +128,7 @@ HRESULT CItemRect::Render()
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
-    m_pShaderCom->SetFloat("g_Bright", g_fBright + 0.2f);
+    m_pShaderCom->SetFloat("g_Bright", m_bright + 0.2f);
     m_pShaderCom->Begin(1);
 
     /* 정점을 그린다. */

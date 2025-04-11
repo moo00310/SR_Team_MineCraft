@@ -64,11 +64,12 @@ void CBreakableCube::Priority_Update(_float fTimeDelta)
 
 void CBreakableCube::Update(_float fTimeDelta)
 {
-    Set_Bright();
+
 }
 
 void CBreakableCube::Late_Update(_float fTimeDelta)
 {
+    Set_Bright();
     m_pVIBufferCom->Update_InstanceBuffer(m_vecPositions, m_vecBrights);
 }
 
@@ -413,33 +414,27 @@ float CBreakableCube::GetHP() const
 void CBreakableCube::Set_Bright()
 {
 
-    if (m_bChunkColliderActive)
-    {
-        CGameObject* pSteve{ nullptr };
-        pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
+    CGameObject* pSteve{ nullptr };
+    pSteve = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve"));
 
-        CTransform* pTransformCom{ nullptr };
-        pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
-        _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
+    CTransform* pTransformCom{ nullptr };
+    pTransformCom = static_cast<CTransform*>(pSteve->Find_Component(TEXT("Com_Transform")));
+    _float3 vStevePos = { pTransformCom->Get_State(CTransform::STATE_POSITION) };
 
 
-        for (int i = 0; i < m_vecPositions.size(); ++i) {
-            _float3 vDiff{ vStevePos - m_vecPositions[i] };
-            _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+    for (int i = 0; i < m_vecPositions.size(); ++i) {
+        // 거리 재고
+        _float3 vDiff{ vStevePos - m_vecPositions[i] };
+        _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
 
-            if (fLengthSq < 5.f) {
-                m_vecBrights[i] = g_fBright + 0.2f * m_vecPositions[i].y / 10.f;
-            }
-            else if (fLengthSq < 10.f) {
-                m_vecBrights[i] = g_fBright + 0.1f * m_vecPositions[i].y / 10.f;
-            }
-            else {
-                m_vecBrights[i] = g_fBright * m_vecPositions[i].y / 10.f;
-            }
+        // 가까우면 밝기 0.2 0.1씩 올려준거거든 
+        if (fLengthSq < 5.f) {
+            m_vecBrights[i] = g_fBright + 0.2f * m_vecPositions[i].y / 10.f;
         }
-    }
-    else {
-        for (int i = 0; i < m_vecBrights.size(); ++i) {
+        else if (fLengthSq < 10.f) {
+            m_vecBrights[i] = g_fBright + 0.1f * m_vecPositions[i].y / 10.f;
+        }
+        else {
             m_vecBrights[i] = g_fBright * m_vecPositions[i].y / 10.f;
         }
     }
