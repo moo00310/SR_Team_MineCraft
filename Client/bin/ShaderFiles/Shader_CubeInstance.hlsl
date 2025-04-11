@@ -15,6 +15,12 @@ float g_fFogEndRange = 25.f;
 // 안개 색.
 vector g_vFogColor = vector(0.529f, 0.808f, 0.922f, 1.f);
 
+// 스캔 시작 범위. 임시.
+float g_fScanStartRange = 5.f;
+
+// 스캔 색.
+vector g_vScanColor = vector(1.f, 0.f, 1.f, 1.f);
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -120,6 +126,67 @@ PS_OUT PS_MAIN_RED(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_SCAN(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.vColor = tex2D(DefaultSampler, In.vTexcoord);
+    
+    // 스캔 범위 끝.
+    float fScanEndRange = g_fScanStartRange + 8.f;
+     
+    if (In.vDistance >= g_fFogEndRange)
+    {
+        // 안개 끝나는 범위 바깥에 있는 얘들은 아예 안 보이게 무시.
+        discard;
+    }
+    else if (In.vDistance >= fScanEndRange)
+    {
+        // 스캔 범위 바깥에 있는 얘들은 안개 쉐이딩 적용.
+        
+        // 안개 끝 범위 - 시작 범위 결과 값.
+        float fEnd = g_fFogEndRange - g_fFogStartRange; // N
+        
+        // 안개 끝 범위랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+        float fCurrent = g_fFogEndRange - In.vDistance; // N~0                
+        
+        // 선형보간에 쓰일 결과 값.
+        float fResult = fCurrent / fEnd; // 1~0
+        
+        // 선형 보간.
+        float4 color = lerp(g_vFogColor, Out.vColor, fResult);
+        
+        // 안개 색 입힘.
+        Out.vColor.rgb = color * In.vBright;
+    }
+    else if (In.vDistance >= g_fScanStartRange)
+    {
+        // 스캔 시작 범위에선 스캔 색상 지정.               
+        
+        // 스캔 끝 범위 - 스캔 시작 범위 결과 값.
+        float fEnd = fScanEndRange - g_fScanStartRange; // N
+        
+        // 스캔 끝 범위랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+        float fCurrent = fScanEndRange - In.vDistance; // N~0                
+        
+        // 선형보간에 쓰일 결과 값.
+        float fResult = fCurrent / fEnd;                // 1~0
+        
+        // 선형 보간.
+        float4 color = lerp(g_vScanColor, Out.vColor, fResult);
+        
+        // 스캔 색 입힘.
+        Out.vColor.rgb = color * In.vBright;
+    }
+    else
+    {
+        // 스캔 범위 안에 있는 애들은 좀 더 밝게.
+        Out.vColor.rgb *= 1.f;
+    }
+    
+    return Out;
+}
+
 technique DefaultTechnique
 {
     pass DefaultPass
@@ -132,5 +199,11 @@ technique DefaultTechnique
     {
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_MAIN_RED();
+    }
+
+    pass ScanPass
+    {
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_MAIN_SCAN();
     }
 }
