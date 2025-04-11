@@ -373,7 +373,7 @@
     <Filter Include="02.GameObjects\02.Camera\Cutscene">
       <UniqueIdentifier>{6d04bf8e-95cd-4a44-8270-877a40e284a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Levels\97.Yu_Level\96.Hero_Level">
+    <Filter Include="01.Levels\96.Hero_Level">
       <UniqueIdentifier>{0fddaa52-c229-4143-bb33-658575395b07}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -436,7 +436,7 @@
       <Filter>01.Levels\95.Huck_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Level_HERO.h">
-      <Filter>01.Levels\97.Yu_Level\96.Hero_Level</Filter>
+      <Filter>01.Levels\96.Hero_Level</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Imgui\imgui.h">
       <Filter>100.Imgui</Filter>
@@ -878,7 +878,7 @@
       <Filter>01.Levels\95.Huck_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_HERO.cpp">
-      <Filter>01.Levels\97.Yu_Level\96.Hero_Level</Filter>
+      <Filter>01.Levels\96.Hero_Level</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Level_WOO.cpp">
       <Filter>01.Levels\98.Woo_Level</Filter>
@@ -1257,7 +1257,7 @@
     </ClCompile>
     <ClCompile Include="..\private\Camera_Cutscene.cpp">
       <Filter>02.GameObjects\02.Camera\Cutscene</Filter>
-  </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\BurnUi.cpp">
       <Filter>03.UI\11.FurnaceUi</Filter>
     </ClCompile>

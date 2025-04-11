@@ -31,7 +31,7 @@ HRESULT CWarden::Initialize(void* pArg)
     m_MaxHp = 100.f;
 
     m_Coll_Size = { 0.5f, 1.0f, 0.5f };
-    m_Coll_Offset = { 0.f, 1.0f, 0.f };
+    m_Coll_Offset = { 0.f, 0.6f, 0.f };
 
     __super::Initialize(pArg);
 
@@ -837,8 +837,9 @@ HRESULT CWarden::Ready_BehaviorTree()
     RandomSelector->Add_Node(pFarAttack);
 
     // 루트 노드에 추가
-    pRoot->Add_Node(pChase);
     pRoot->Add_Node(pIsAttack);
+    pRoot->Add_Node(pChase);
+
     pRoot->Add_Node(pIdle);
 
     // 최종 트리 설정

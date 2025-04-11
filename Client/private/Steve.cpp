@@ -82,7 +82,7 @@ void CSteve::Update(_float fTimeDelta)
 
 void CSteve::Late_Update(_float fTimeDelta)
 {
-	m_pGameInstance->UpdateListener(GetPos(), m_pTransformCom->Get_State(CTransform::STATE_LOOK), m_pTransformCom->Get_State(CTransform::STATE_UP));
+	//m_pGameInstance->UpdateListener(GetPos(), m_pTransformCom->Get_State(CTransform::STATE_LOOK), m_pTransformCom->Get_State(CTransform::STATE_UP));
 
 	// 회전 및 애니메이션 상태 변경
 	Turn(fTimeDelta);

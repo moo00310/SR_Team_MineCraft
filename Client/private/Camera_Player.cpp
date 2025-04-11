@@ -87,6 +87,8 @@ void CCamera_Player::Priority_Update(_float fTimeDelta)
 
 void CCamera_Player::Update(_float fTimeDelta)
 {
+    m_pGameInstance->UpdateListener(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION), m_pTarget_Transform_Com->Get_State(CTransform::STATE_LOOK), m_pTarget_Transform_Com->Get_State(CTransform::STATE_UP));
+
     Input_Key(fTimeDelta);
 
     if (m_pGameInstance->Key_Down(VK_F5))

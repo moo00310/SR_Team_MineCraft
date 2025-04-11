@@ -1,6 +1,7 @@
 #include "MissionControl.h"
 #include "MCTerrain.h"
 #include "Monster.h"
+#include "Camera_Cutscene.h"
 
 CMissionControl::CMissionControl(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
@@ -40,7 +41,7 @@ HRESULT CMissionControl::Initialize(void* pArg)
 
 void CMissionControl::InitMissions1() {
     // 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
-    m_Round1.emplace_back(std::vector<missionDetail>{
+    /*m_Round1.emplace_back(std::vector<missionDetail>{
         { L"나무", L"나무 5개 벌목하기",0, 5}
     });
 
@@ -60,7 +61,7 @@ void CMissionControl::InitMissions1() {
 
     m_Round1.emplace_back(std::vector<missionDetail>{
         { L"블럭", L"블럭 5개 설치",0,5}
-    });
+    });*/
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
@@ -117,9 +118,11 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
             switch (m_currentStage)
             {
             case Client::CMissionControl::WAVE1:
+            {
+                vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
+
                 for (int i = 0; i < 5; i++)
                 {
-                    vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
                     int Random_pos = rand() % m_SpawnPos.size();
                     CGameObject* ptemp = nullptr;
 
@@ -131,7 +134,24 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
                     m_bIsWaveStart = false;
                     m_bIsWave = true;
                 }
+
+                int Random_pos = rand() % m_SpawnPos.size();
+                CGameObject* ptemp = nullptr;
+
+                ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
+                    LEVEL_YU, TEXT("Layer_Monster"));
+
+                if (ptemp == nullptr) return;
+                static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+
+                static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->Start_Cutscene(m_SpawnPos[Random_pos]);
+
+                m_bIsWaveStart = false;
+                m_bIsWave = true;
+
                 break;
+            }
+
             case Client::CMissionControl::WAVE2:
                 for (int i = 0; i < 5; i++)
                 {

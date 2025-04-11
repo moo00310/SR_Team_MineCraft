@@ -44,20 +44,28 @@ void Camera_Cutscene::Priority_Update(_float fTimeDelta)
 
 void Camera_Cutscene::Update(_float fTimeDelta)
 {
+	m_pGameInstance->UpdateListener(m_pTransformCom->Get_State(CTransform::STATE_POSITION), m_pTransformCom->Get_State(CTransform::STATE_LOOK), m_pTransformCom->Get_State(CTransform::STATE_UP));
+
 	// 누적 각도
 	m_fAngle += fTimeDelta * m_fSpeed; // 시간에 따라 회전
 
 	// 공전 거리
-	const _float fRadius = 10.f;
+	const _float fRadius = 5.f;
 
 	// 중심(m_vLook)을 기준으로 공전 궤도 상 위치 계산
 	_float3 vPos;
 	vPos.x = m_vLook.x + fRadius * cosf(m_fAngle);
 	vPos.z = m_vLook.z + fRadius * sinf(m_fAngle);
-	vPos.y = m_vLook.y + 5.f; // 필요에 따라 높이 조절
+	vPos.y = m_vLook.y + 2.f; // 필요에 따라 높이 조절
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
 	m_pTransformCom->LookAt(m_vLook);
+
+	if (m_fAngle > D3DXToRadian(270.f))
+	{
+		m_fAngle = 0.f;
+		End_Cutscene();
+	}
 
 	__super::Update_VP_Matrices();
 }
