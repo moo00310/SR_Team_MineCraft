@@ -604,6 +604,7 @@ void CCamera_Player::On_MouseMove(_float fTimeDelta)
 
 void CCamera_Player::Setting_Damage()
 {
+    // 손에 들고있는 아이템 별로 데이미와 쿨타임 세팅함
     ITEMNAME Name = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
     switch (Name)
@@ -630,7 +631,7 @@ void CCamera_Player::Setting_Damage()
         break;
     case Client::ITEM_WEPON_1:
         m_AttackDamage = 10.f;
-        m_AttackCoolTime = 1.f;
+        m_AttackCoolTime = 0.8f;
         break;
     default:
         m_AttackDamage = 10.f;
@@ -638,10 +639,6 @@ void CCamera_Player::Setting_Damage()
         else  m_AttackCoolTime = 1.f;
         break;
     }
-
-    // 렉트만 애니메이션 1초
-    // 나머지 0.3초
-
 }
 
 HRESULT CCamera_Player::Ready_Components()
