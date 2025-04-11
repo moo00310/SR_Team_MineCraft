@@ -64,6 +64,7 @@ HRESULT CStone::Drop_Item_OnDestroy(const _float3& vPos)
 
     if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
         _copy->SetPos(vPos);
+        _copy->Set_Bright(vPos.y);
         _copy->Set_ItemTypeAndBindTexture(ITEMNAME_COBBLESTONE);
     }
 

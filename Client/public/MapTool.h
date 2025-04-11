@@ -39,7 +39,7 @@ private:
 	int m_icaveSeed = 12345; //다양한 종류의 맵
 
 	int m_iDirtDeep=2;
-	int m_iStoneDeep=-2;
+	int m_iMapDeep=-2;
 
 	int m_iMapX = 32;
 	int m_iMapZ = 32;

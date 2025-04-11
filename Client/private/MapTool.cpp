@@ -119,7 +119,7 @@ HRESULT CMapTool::Render()
         ImGui::SliderFloat("Frequency", &m_fFrequency, 0.001f, 0.1f);
 
         ImGui::SliderInt("DirtDeep", &m_iDirtDeep, 0, 5);
-        ImGui::SliderInt("StoneDeep", &m_iStoneDeep, -10, 15);
+        ImGui::SliderInt("MapDeep", &m_iMapDeep, -10, 15);
 
         if (ImGui::Button("Show Height Gray Img", ImVec2(200, 50))) {
             if (heightMapTexture) {
@@ -221,6 +221,7 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
     D3DLOCKED_RECT caveLockedRect;
 
     int index = 0;
+
     vector<_float3> m_vecGrassDirt;
     vector<_float3> m_vecDirt;
     vector<_float3> m_vecStone;
@@ -251,7 +252,7 @@ HRESULT CMapTool::TerrainGenerationWithNoise()
                     }
 
                     int depth = m_iDirtDeep;
-                    int minDepth = m_iStoneDeep;
+                    int minDepth = m_iMapDeep;
                     while (heightValue > minDepth) {
                         heightValue--;
                         BLOCKDESC eblockData2;
@@ -398,7 +399,7 @@ struct SaveThreadParams {
     int pitchHeight;
     DWORD* cavePixels;
     int pitchCave;
-    int m_iDirtDeep, m_iStoneDeep;
+    int m_iDirtDeep, m_iMapDeep;
 };
 
 DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
@@ -431,13 +432,39 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
             m_vGrassDirt.push_back(eblockData);
 
             int depth = params->m_iDirtDeep;
-            int minDepth = params->m_iStoneDeep;
+            int minDepth = params->m_iMapDeep;
+            int stoneDepth = 2;
+            int coalDepth = 3;
 
             while (heightValue > minDepth) {
                 heightValue--;
                 BLOCKDESC eblockData2;
                 eblockData2.fPosition = _float3((float)x, (float)heightValue, (float)y);
-                eblockData2.eBlockType = (depth > 0) ? DIRT : GetBlockType(heightValue);
+
+                if (depth > 0) {
+                    eblockData2.eBlockType = DIRT;
+                }
+                else if (stoneDepth > 0) {
+                    eblockData2.eBlockType = STONE;
+                }
+                else if (coalDepth > 0) {
+                    int random = rand() % 100;
+                    if (random < 10) {
+                        eblockData2.eBlockType = COALORE;
+                    }
+                    else {
+                        eblockData2.eBlockType = STONE;
+                    }
+                }
+                else {
+                    int random = rand() % 100;
+                    if (random < 7) {
+                        eblockData2.eBlockType = IRONORE;
+                    }
+                    else {
+                        eblockData2.eBlockType = STONE;
+                    }
+                }
 
                 switch (eblockData2.eBlockType)
                 {
@@ -457,6 +484,8 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
                     break;
                 }
                 depth--;
+                stoneDepth--;
+                coalDepth--;
             }
         }
     }
@@ -513,7 +542,7 @@ HRESULT CMapTool::SaveData() {
     for (int chunkZ = 0; chunkZ < numChunksZ; chunkZ++) {
         for (int chunkX = 0; chunkX < numChunksX; chunkX++) {
             int index = chunkZ * numChunksX + chunkX;
-            params[index] = { chunkX, chunkZ, numChunksX, heightPixels, pitchHeight, cavePixels,pitchCave,m_iDirtDeep, m_iStoneDeep };
+            params[index] = { chunkX, chunkZ, numChunksX, heightPixels, pitchHeight, cavePixels,pitchCave,m_iDirtDeep, m_iMapDeep };
 
             hThreads[index] = CreateThread(NULL, 0, SaveChunkThread, &params[index], 0, NULL);
             if (!hThreads[index]) {

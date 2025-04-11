@@ -209,6 +209,16 @@ HRESULT CBreakableCube::Delete_Cube(_float3 vPos)
     static_cast<_int>(vPos.z)
     };
 
+    int _intSave;
+    for (int i = 0; i < m_vecPositions.size(); ++i) {
+        if (m_vecPositions[i].x == key.x &&
+            m_vecPositions[i].y == key.y &&
+            m_vecPositions[i].z == key.z) {
+            _intSave = i;
+        }
+    }
+
+
     auto it = m_Colliders.find(key);
     if (it == m_Colliders.end())
         return E_FAIL;

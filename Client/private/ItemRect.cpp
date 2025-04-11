@@ -200,6 +200,11 @@ HRESULT CItemRect::Set_ItemTypeAndBindTexture(ITEMNAME _name)
     return S_OK;
 }
 
+void CItemRect::Set_Bright(_float _y)
+{
+    m_bright = g_fBright * _y / 10.f;
+}
+
 HRESULT CItemRect::Ready_Components()
 {
     /* For.Com_VIBuffer */

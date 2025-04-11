@@ -30,31 +30,6 @@ HRESULT CMCTerrain::Initialize(void* pArg)
 	if (FAILED(Ready_Layer_BackGround()))
 		return E_FAIL;
 
-    //auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
-    //if (!pSteve) return E_FAIL;
-
-    //_float3 playerPos = pSteve->GetPos();
-
-    //// 플레이어가 위치한 청크 계산
-    //int x = static_cast<int>(playerPos.x) / 16;
-    //int z = static_cast<int>(playerPos.z) / 16;
-    //int width = static_cast<int>(sqrt(m_iChunkCount));
-    //m_currentPlayerChunk = x + (width * z);
-
-    //for (int dy = -1; dy <= 1; ++dy) {
-    //    for (int dx = -1; dx <= 1; ++dx) {
-    //        int newChunk = m_currentPlayerChunk + dx + dy * width;
-    //        // 왼쪽 경계 검사
-    //        if (m_currentPlayerChunk % width == 0 && dx == -1) continue;
-    //        // 오른쪽 경계 검사
-    //        if ((m_currentPlayerChunk + 1) % width == 0 && dx == 1) continue;
-
-    //        ActivateChunkLayer(newChunk, true);
-    //        m_ActiveChunkIndexies.emplace(newChunk);
-
-    //    }
-    //}
-
     return S_OK;
 }
 
@@ -366,44 +341,68 @@ list<CCollider*> CMCTerrain::Active_Current_Chunk_Colliders(_float3 vPos, _float
 
 
 
-
-void CMCTerrain::ActivateChunkLayer(int chunkIndex, bool _b) {
-    wchar_t layerName[100];
-    swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
-    list<CGameObject*> objlist = m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName);
-    for (auto obj : objlist) {
-        if (CBreakableCube* _cube = dynamic_cast<CBreakableCube*>(obj)) {
-            _cube->Set_ChunkColliderActive(_b);
-        }
-        if (CBreakableRect* _rect = dynamic_cast<CBreakableRect*>(obj)) {
-            _rect->Set_ChunkColliderActive(_b);
-        }
-
-        if (CTree* _Tree = dynamic_cast<CTree*>(obj)) {
-            _Tree->Get_Wood()->Set_ChunkColliderActive(_b);
-            _Tree->Get_Leaf()->Set_ChunkColliderActive(_b);
-        }
-    }
-
-};
-
 void CMCTerrain::Priority_Update(_float fTimeDelta)
 {
-
 }
 
 void CMCTerrain::Update(_float fTimeDelta)
 {
-    bool currF1State = (GetAsyncKeyState(VK_F1) & 0x8000) != 0;
-    bool currF2State = (GetAsyncKeyState(VK_F2) & 0x8000) != 0;
 
-    if (currF1State && !prevF1State)
-    {
-        // CheckColliderActive();
+    if (CSteve* _steve = dynamic_cast<CSteve*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Steve")))) {
+        m_prePlayerChunk = m_currentPlayerChunk;
+        m_currentPlayerChunk = Compute_ChunkIndex(_steve->GetPos());
+        // 청크가 변했으면
+        if (m_prePlayerChunk != m_currentPlayerChunk) {
+            // 렌더 비활성화
+            OffAllChunkLayer();
+
+            int width = static_cast<int>(sqrt(m_iChunkCount));
+
+            auto ActivateChunkLayer = [&](int chunkIndex) {
+                wchar_t layerName[100];
+                swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
+                m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true); };
+
+            // 3x3 영역 활성화
+            ActivateChunkLayer(m_currentPlayerChunk);
+            ActivateChunkLayer(m_currentPlayerChunk - width);
+            ActivateChunkLayer(m_currentPlayerChunk - width*2);
+            ActivateChunkLayer(m_currentPlayerChunk + width);
+            ActivateChunkLayer(m_currentPlayerChunk + width*2);
+
+            if (m_currentPlayerChunk % width != 0) {
+                ActivateChunkLayer(m_currentPlayerChunk - 1);
+                ActivateChunkLayer(m_currentPlayerChunk - width - 1);
+                ActivateChunkLayer(m_currentPlayerChunk - (width * 2) - 1);
+                ActivateChunkLayer(m_currentPlayerChunk + width - 1);
+                ActivateChunkLayer(m_currentPlayerChunk + (width * 2) - 1);
+
+                if ((m_currentPlayerChunk - 1) % width != 0) {
+                    ActivateChunkLayer(m_currentPlayerChunk - 2);
+                    ActivateChunkLayer(m_currentPlayerChunk - width - 2);
+                    ActivateChunkLayer(m_currentPlayerChunk - (width * 2) - 2);
+                    ActivateChunkLayer(m_currentPlayerChunk + width - 2);
+                    ActivateChunkLayer(m_currentPlayerChunk + (width * 2) - 2);
+                }
+            }
+
+            if ((m_currentPlayerChunk + 1) % width != 0) {
+                ActivateChunkLayer(m_currentPlayerChunk + 1);
+                ActivateChunkLayer(m_currentPlayerChunk - width + 1);
+                ActivateChunkLayer(m_currentPlayerChunk - (width * 2) + 1);
+                ActivateChunkLayer(m_currentPlayerChunk + width + 1);
+                ActivateChunkLayer(m_currentPlayerChunk + (width * 2) + 1);
+
+                if ((m_currentPlayerChunk + 2) % width != 0) {
+                    ActivateChunkLayer(m_currentPlayerChunk + 2);
+                    ActivateChunkLayer(m_currentPlayerChunk - width + 2);
+                    ActivateChunkLayer(m_currentPlayerChunk - (width * 2) + 2);
+                    ActivateChunkLayer(m_currentPlayerChunk + width + 2);
+                    ActivateChunkLayer(m_currentPlayerChunk + (width * 2) + 2);
+                }
+            }
+        }
     }
-
-    prevF1State = currF1State;
-    prevF2State = currF2State;
 }
 
 
@@ -753,51 +752,6 @@ void CMCTerrain::OffAllChunkLayer()
         swprintf(layerName, 100, L"Layer_Chunk%d", i);
 
         m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, false);
-    }
-}
-
-void CMCTerrain::GetPlayerChunk3x3()
-{
-    // 플레이어 위치 가져오기
-    auto* pSteve = dynamic_cast<CSteve*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_Steve"), 0));
-    if (!pSteve) return;
-    _float3 playerPos = pSteve->GetPos();
-
-    // 플레이어가 위치한 청크 계산
-    int x = static_cast<int>(playerPos.x) / 16;
-    int z = static_cast<int>(playerPos.z) / 16;
-    int width = static_cast<int>(sqrt(m_iChunkCount));
-    int chunk = x + (width * z);
-
-    auto ActivateChunkLayer = [&](int chunkIndex) {
-        wchar_t layerName[100];
-        swprintf(layerName, 100, L"Layer_Chunk%d", chunkIndex);
-        m_pGameInstance->SetLayerRenderActive(LEVEL_YU, layerName, true);
-
-        for (CGameObject* pGameObject : m_pGameInstance->Get_GameObjectList(LEVEL_YU, layerName)) {
-            if (CBreakableCube* pBreakableCube = dynamic_cast<CBreakableCube*>(pGameObject)) {
-                if (pBreakableCube->Get_ChunkColliderActive()) {
-                    m_pGameInstance->Add_CollisionGroup(COLLISION_BLOCK, pGameObject);
-                }
-            }
-        }
-     };
-
-    // 3x3 영역 활성화
-    ActivateChunkLayer(chunk);
-    ActivateChunkLayer(chunk - width);
-    ActivateChunkLayer(chunk + width);
-
-    if (chunk % width != 0) {
-        ActivateChunkLayer(chunk - 1);
-        ActivateChunkLayer(chunk - width - 1);
-        ActivateChunkLayer(chunk + width - 1);
-    }
-
-    if ((chunk + 1) % width != 0) {
-        ActivateChunkLayer(chunk + 1);
-        ActivateChunkLayer(chunk - width + 1);
-        ActivateChunkLayer(chunk + width + 1);
     }
 }
 

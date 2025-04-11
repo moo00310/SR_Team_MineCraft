@@ -64,6 +64,7 @@ HRESULT CGrassDirt::Drop_Item_OnDestroy(const _float3& fPos)
 
     if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
         _copy->SetPos(fPos);
+        _copy->Set_Bright(fPos.y);
         _copy->Set_ItemTypeAndBindTexture(ITEMNAME_DIRT);
     }
 

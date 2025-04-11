@@ -36,7 +36,8 @@ public:
 	void SetMatrix(const _float4x4& mat) { m_pTransformCom->MultiplyMatrix(mat); }
 	HRESULT Set_ItemTypeAndBindTexture(ITEMNAME _type);
 	CRigidbody* Get_Rigidbody() { return m_pRigidbodyCom; }
-	
+
+	void Set_Bright(_float _y);
 protected:
 	HRESULT Ready_Components();
 
@@ -51,7 +52,7 @@ protected:
 
 	CTransform* m_pPlayerTransformCom{ nullptr };
 	class  CMCTerrain* m_pTerrain{ nullptr };
-
+	_float m_bright;
 private:
 	//타임 저장
 	_float		m_fTime{ 0.f };
