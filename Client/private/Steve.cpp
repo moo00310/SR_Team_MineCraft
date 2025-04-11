@@ -267,6 +267,7 @@ void CSteve::Move(_float fTimeDelta)
 	{
 		CUI_Mgr::Get_Instance()->PlayerExp_Set();
 		g_bIsScan = true;
+		m_pGameInstance->Play_Sound(TEXT("ding"), SOUND_BLOCK_DIG, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	}
 
 	if (m_pGameInstance->Key_Down('C'))
