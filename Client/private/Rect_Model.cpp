@@ -223,9 +223,9 @@ HRESULT CRect_Model::Ready_Animation()
 
 	KEYFREAME Attack_Near_1 = { 0.f, mat };
 	KEYFREAME Attack_Near_2 = { 0.2f, matrix1 };
-	KEYFREAME Attack_Near_3 = { 0.5f, matrix2 };
-	KEYFREAME Attack_Near_4 = { 0.7f, matrix3 };
-	KEYFREAME Attack_Near_5 = { 1.f, mat };
+	KEYFREAME Attack_Near_3 = { 0.4f, matrix2 };
+	KEYFREAME Attack_Near_4 = { 0.6f, matrix3 };
+	KEYFREAME Attack_Near_5 = { 0.8f, mat };
 
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Near, Attack_Near_1);
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Near, Attack_Near_2);
@@ -237,8 +237,6 @@ HRESULT CRect_Model::Ready_Animation()
 	//* Attack2 애니메이션 (원거리 참격)
 	//----------------------------*/
 
-	// 짐벌락 생겼나
-	// 축이 이상해
 	matrix1 = { };
 	matrix1.Set_State(Matrix::STATE_POSITION, _float3(-0.3f, 0.3f, -1.5f));
 	matrix1.Turn_Radian(_float3(-0.3f, -1.f, 0.8f), D3DXToRadian(120));
@@ -249,14 +247,14 @@ HRESULT CRect_Model::Ready_Animation()
 	matrix2.Turn_Radian(_float3(0.3f, 0.f, 0.3f), D3DXToRadian(60));
 
 	KEYFREAME Attack_Far_1 = { 0.f, mat };
-	KEYFREAME Attack_Far_2 = { 1.f, matrix1 };
-	KEYFREAME Attack_Far_3 = { 3.f, matrix2 };
-	//KEYFREAME Attack_Far_5 = { 1.f, mat };
+	KEYFREAME Attack_Far_2 = { 0.1f, matrix1 };
+	KEYFREAME Attack_Far_3 = { 0.3f, matrix2 };
+	KEYFREAME Attack_Far_5 = { 0.5f, mat };
 
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_1);
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_2);
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_3);
-	//m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_5);
+	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_5);
 
 
 	return S_OK;
@@ -283,10 +281,10 @@ void CRect_Model::Update_State(_float fTimeDelta)
 		Motion_Run(fTimeDelta);
 		break;
 	case ATTACK_Near:
-		Motion_Attack2(fTimeDelta);
+		Motion_Attack1(fTimeDelta);
 		break;
 	case ATTACK_Far:
-		Motion_Attack1(fTimeDelta);
+		Motion_Attack2(fTimeDelta);
 		break;
 	case ANIM_END:
 		break;
@@ -424,7 +422,7 @@ void CRect_Model::KeyInput()
 		if (Compute_Texture_Name() == ITEM_WEPON_1)
 		{
 			AuraSword();
-			//m_eCurAnim = ATTACK_1;
+			m_eCurAnim = ATTACK_Far;
 		}
 		else
 		{
