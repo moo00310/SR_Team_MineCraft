@@ -7,7 +7,7 @@ vector g_CameraWorld;
 texture g_Texture;
 
 // 안개가 시작되는 범위.
-float g_fFogStartRange = 5.f;
+float g_fFogStartRange = 10.f;
 
 // 안개가 끝나는 범위.
 float g_fFogEndRange = 25.f;

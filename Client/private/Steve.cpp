@@ -266,6 +266,9 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down('X'))
 	{
 		CUI_Mgr::Get_Instance()->PlayerExp_Set();
+		if (!g_bIsScan) {
+			m_pGameInstance->Play_Sound(TEXT("scan"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		}
 		g_bIsScan = true;
 	}
 
@@ -888,7 +891,7 @@ void CSteve::Add_Hp(_float fAmount)
 	m_Hp += fAmount;
 	CUI_Mgr::Get_Instance()->SetHP();
 
-	m_pGameInstance->Play_Sound(TEXT("Player_Hurt_Old"), SOUND_HIT, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+	m_pGameInstance->Play_Sound(TEXT("Player_Hurt_Old"), SOUND_HIT, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 	if (m_Hp <= 0.f) 
 	{
 		Dead_Pawn();

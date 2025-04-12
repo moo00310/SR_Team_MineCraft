@@ -284,6 +284,46 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
 
     switch (_itemname)
     {
+    case Client::ITEMNAME_WOOD_PICKAXE:
+        switch (m_itemName)
+        {
+        case Client::ITEMNAME_GRASSDIRT:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_DIRT:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_LEAF:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_WOOD:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_OAKPLANKS:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_CRAFTINGTABLE:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_STONE:
+            m_fHp -= (attackDamage / m_fHardness) * 1.5;
+            break;
+        case Client::ITEMNAME_COBBLESTONE:
+            m_fHp -= (attackDamage / m_fHardness) * 1.5;
+            break;
+        case Client::ITEMNAME_COALORE:
+            m_fHp -= (attackDamage / m_fHardness) * 1.5;
+            break;
+        case Client::ITEMNAME_IRONORE:
+            m_fHp -= (attackDamage / m_fHardness) * 5;
+            break;
+        case Client::ITEMNAME_FURANCE:
+            m_fHp -= (attackDamage / m_fHardness) * 1.5;
+            break;
+        default:
+            break;
+        }
+        break;
     case Client::ITEMNAME_STONE_PICKAXE:
         switch (m_itemName)
         {
@@ -297,6 +337,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_WOOD:
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_OAKPLANKS:
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_CRAFTINGTABLE:
@@ -336,6 +379,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
         case Client::ITEMNAME_WOOD:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
+        case Client::ITEMNAME_OAKPLANKS:
+            m_fHp -= (attackDamage / m_fHardness) * 2;
+            break;
         case Client::ITEMNAME_CRAFTINGTABLE:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
@@ -350,6 +396,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             break;
         case Client::ITEMNAME_IRONORE:
             m_fHp -= attackDamage / 5.f;
+            break;
         case Client::ITEMNAME_FURANCE:
             m_fHp -= attackDamage / 5.f;
             break;
@@ -375,6 +422,9 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             break;
         case Client::ITEMNAME_WOOD:
             particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
+            m_fHp -= attackDamage / m_fHardness;
+            break;
+        case Client::ITEMNAME_OAKPLANKS:
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_STONE:
@@ -449,6 +499,11 @@ void CBreakableCube::Set_Bright()
             else {
                 m_vecBrights[i] = g_fBright * m_vecPositions[i].y / 10.f;
             }
+        }
+    }
+    else {
+        for (int i = 0; i < m_vecBrights.size(); ++i) {
+            m_vecBrights[i] = g_fBright * m_vecPositions[i].y / 8.f;
         }
     }
 

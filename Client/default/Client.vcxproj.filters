@@ -829,6 +829,9 @@
     <ClInclude Include="..\public\ParticleLeafDestroy.h">
       <Filter>02.GameObjects\05.Particle\Destroy</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\OakWood.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1272,6 +1275,9 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleLeafDestroy.cpp">
       <Filter>02.GameObjects\05.Particle\Destroy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\OakWood.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

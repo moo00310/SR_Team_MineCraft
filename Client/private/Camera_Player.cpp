@@ -339,6 +339,9 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     {
         ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
+        if (eCurItem >= 100)
+            return;
+
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
         CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
