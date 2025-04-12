@@ -399,7 +399,7 @@ struct SaveThreadParams {
     int pitchHeight;
     DWORD* cavePixels;
     int pitchCave;
-    int m_iDirtDeep, m_iMapDeep;
+    int m_iDirtDeep, m_iMapDeep, m_iStoneDeep, m_iCoalDeep;
 };
 
 DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
@@ -433,8 +433,8 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
 
             int depth = params->m_iDirtDeep;
             int minDepth = params->m_iMapDeep;
-            int stoneDepth = 2;
-            int coalDepth = 3;
+            int stoneDepth = params->m_iStoneDeep;
+            int coalDepth = params->m_iCoalDeep;
 
             while (heightValue > minDepth) {
                 heightValue--;
@@ -443,17 +443,21 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
 
                 if (depth > 0) {
                     eblockData2.eBlockType = DIRT;
+                    depth--;
                 }
                 else if (stoneDepth > 0) {
                     eblockData2.eBlockType = STONE;
+                    stoneDepth--;
                 }
                 else if (coalDepth > 0) {
                     int random = rand() % 100;
                     if (random < 10) {
                         eblockData2.eBlockType = COALORE;
+                        coalDepth--;
                     }
                     else {
                         eblockData2.eBlockType = STONE;
+                        coalDepth--;
                     }
                 }
                 else {
@@ -483,9 +487,6 @@ DWORD WINAPI SaveChunkThread(LPVOID lpParam) {
                 default:
                     break;
                 }
-                depth--;
-                stoneDepth--;
-                coalDepth--;
             }
         }
     }
@@ -542,7 +543,7 @@ HRESULT CMapTool::SaveData() {
     for (int chunkZ = 0; chunkZ < numChunksZ; chunkZ++) {
         for (int chunkX = 0; chunkX < numChunksX; chunkX++) {
             int index = chunkZ * numChunksX + chunkX;
-            params[index] = { chunkX, chunkZ, numChunksX, heightPixels, pitchHeight, cavePixels,pitchCave,m_iDirtDeep, m_iMapDeep };
+            params[index] = { chunkX, chunkZ, numChunksX, heightPixels, pitchHeight, cavePixels,pitchCave,m_iDirtDeep, m_iMapDeep,m_iStoneDeep ,m_iCoalDeep };
 
             hThreads[index] = CreateThread(NULL, 0, SaveChunkThread, &params[index], 0, NULL);
             if (!hThreads[index]) {
