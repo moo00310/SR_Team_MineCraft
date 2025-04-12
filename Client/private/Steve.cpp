@@ -84,6 +84,7 @@ void CSteve::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 
+	// 스캔 기능 로직.
 	if (g_fScanTime >= g_fScanEndTime)
 	{
 		g_bIsScan = false;
@@ -266,8 +267,15 @@ void CSteve::Move(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down('X'))
 	{
 		CUI_Mgr::Get_Instance()->PlayerExp_Set();
-		g_bIsScan = true;
-		m_pGameInstance->Play_Sound(TEXT("ding"), SOUND_BLOCK_DIG, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		
+		if (g_bIsScan == false)
+		{
+			m_pGameInstance->Play_Sound(TEXT("ding"), SOUND_BLOCK_DIG, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+		}
+
+		// 스캔 기능 활성화
+		// Update쪽에 관련 로직 있음.
+		g_bIsScan = true;		
 	}
 
 	if (m_pGameInstance->Key_Down('C'))
