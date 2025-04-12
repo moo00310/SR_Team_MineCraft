@@ -1,7 +1,7 @@
 #include "MissionControl.h"
 #include "MCTerrain.h"
 #include "Monster.h"
-#include "Camera_Cutscene.h"
+#include "Camera_Player.h"
 
 CMissionControl::CMissionControl(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
@@ -145,7 +145,7 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
                 if (ptemp == nullptr) return;
                 static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
 
-                static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->Start_Cutscene(m_SpawnPos[Random_pos]);
+                static_cast<CCamera_Player*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera")))->Start_Cutscene(m_SpawnPos[Random_pos]);
 
                 m_bIsWaveStart = false;
                 m_bIsWave = true;

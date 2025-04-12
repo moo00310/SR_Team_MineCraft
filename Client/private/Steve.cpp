@@ -7,6 +7,7 @@
 #include "UI_Mgr.h"
 #include <iostream>
 #include "Sound_Manager.h"
+#include "Camera_Player.h"
 
 _float g_fScanRange = 0.f;
 _float g_fScanTime = 0.f;
@@ -821,18 +822,36 @@ void CSteve::Motion_Wepon_Attack2(_float fTimeDelta)
 
 void CSteve::Turn(_float fTimeDelta)
 {
-	// 역행렬을 가져와서 머리 회전
-	Matrix		mat = {};
+	// === 카메라 뷰 역행렬 가져오기 ===
+	Matrix mat = {};
 	m_pGraphic_Device->GetTransform(D3DTS_VIEW, &mat);
 	D3DXMatrixInverse(&mat, nullptr, &mat);
+
+	// === 위치 제거 ===
 	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
 
-	// 본(Neck) 회전
+	// === 현재 카메라 모드 확인 ===
+
+	if (static_cast<CCamera_Player*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera")))->Get_CameraMode() == CCamera_Player::E_CAMERA_MODE::R_TPS)
+	{
+		// === 반대로 바라보게 회전 ===
+		// Z축 기준 뒤집기
+		_float3 vLook = mat.Get_State(Matrix::STATE_LOOK);
+		_float3 vRight = mat.Get_State(Matrix::STATE_RIGHT);
+		_float3 vUp = mat.Get_State(Matrix::STATE_UP);
+
+		// 반전된 Look 방향 적용
+		mat.Set_State(Matrix::STATE_LOOK, -vLook);
+		mat.Set_State(Matrix::STATE_RIGHT, -vRight); // 오른손 좌표계에 따라 바꿔야 할 수 있음
+	}
+
+	// === 본(Neck) 회전 ===
 	m_skelAnime->Set_BoneLocalMatrix(2, mat);
 
-	// 몸(Root) 회전
+	// === 몸(Root) 회전 (IK 보정) ===
 	m_skelAnime->IkLookAt(fTimeDelta, 0, 2);
 }
+
 
 
 void CSteve::PlayDashParticle(_float fTimeDelta)

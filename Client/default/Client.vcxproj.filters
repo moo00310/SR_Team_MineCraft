@@ -367,11 +367,11 @@
     <Filter Include="03.UI\12.Crosshair">
       <UniqueIdentifier>{550ba6df-19c3-4c08-ba35-1c758e5a3fd2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\02.Camera\Cutscene">
-      <UniqueIdentifier>{6d04bf8e-95cd-4a44-8270-877a40e284a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\96.Hero_Level">
       <UniqueIdentifier>{0fddaa52-c229-4143-bb33-658575395b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\02.Camera\Cutscene%28안씀%29">
+      <UniqueIdentifier>{6d04bf8e-95cd-4a44-8270-877a40e284a0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -815,7 +815,7 @@
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
     </ClInclude>
     <ClInclude Include="..\public\Camera_Cutscene.h">
-      <Filter>02.GameObjects\02.Camera\Cutscene</Filter>
+      <Filter>02.GameObjects\02.Camera\Cutscene%28안씀%29</Filter>
     </ClInclude>
     <ClInclude Include="..\public\BurnUi.h">
       <Filter>03.UI\11.FurnaceUi</Filter>
@@ -1262,7 +1262,7 @@
       <Filter>04.Behavior_Tree\BTNode\Warden\Task\Walk_Chase</Filter>
     </ClCompile>
     <ClCompile Include="..\private\Camera_Cutscene.cpp">
-      <Filter>02.GameObjects\02.Camera\Cutscene</Filter>
+      <Filter>02.GameObjects\02.Camera\Cutscene%28안씀%29</Filter>
     </ClCompile>
     <ClCompile Include="..\private\BurnUi.cpp">
       <Filter>03.UI\11.FurnaceUi</Filter>

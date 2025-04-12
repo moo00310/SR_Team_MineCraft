@@ -93,17 +93,29 @@ void CCamera_Player::Update(_float fTimeDelta)
 
     if (m_pGameInstance->Key_Down(VK_F5))
     {
-        m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
-        
-        //CrossHair UI On/Off
+        //m_eCameraMode = (m_eCameraMode == E_CAMERA_MODE::FPS) ? E_CAMERA_MODE::TPS : E_CAMERA_MODE::FPS;
+
         if (m_eCameraMode == E_CAMERA_MODE::FPS)
         {
-            m_pCrosshair->On();
+            m_eCameraMode = E_CAMERA_MODE::TPS;
         }
-        else
+        else if (m_eCameraMode == E_CAMERA_MODE::TPS)
         {
-            m_pCrosshair->Off();
+            m_eCameraMode = E_CAMERA_MODE::R_TPS;
+        }        
+        else if (m_eCameraMode == E_CAMERA_MODE::R_TPS)
+        {
+            m_eCameraMode = E_CAMERA_MODE::FPS;
         }
+    }
+
+    if (m_eCameraMode == E_CAMERA_MODE::FPS)
+    {
+        m_pCrosshair->On();
+    }
+    else
+    {
+        m_pCrosshair->Off();
     }
 }
 
@@ -115,7 +127,17 @@ void CCamera_Player::Late_Update(_float fTimeDelta)
     // 부드럽게 보간 (Lerp)
     m_fFov = Lerp(m_fFov, fTargetFov, fTimeDelta * 5.f); // 5.f는 속도 조절용
 
-    Follow_Player(fTimeDelta);
+    if (m_eCameraMode == CCamera_Player::E_CAMERA_MODE::FPS||
+        m_eCameraMode == CCamera_Player::E_CAMERA_MODE::TPS ||
+        m_eCameraMode == CCamera_Player::E_CAMERA_MODE::R_TPS)
+    {
+        Follow_Player(fTimeDelta);
+    }
+    else if (m_eCameraMode == CCamera_Player::E_CAMERA_MODE::CUTSCENE)
+    {
+        Orbit_Around_Pos(fTimeDelta);
+    }
+
     __super::Update_VP_Matrices();
 }
 
@@ -128,6 +150,18 @@ HRESULT CCamera_Player::Render()
 CTransform* CCamera_Player::GetTransform() const
 {
     return m_pTransformCom;
+}
+
+void CCamera_Player::Start_Cutscene(_float3 vPos)
+{
+    m_vCutScene_LookPos = vPos;
+    m_eCameraMode = E_CAMERA_MODE::CUTSCENE;
+}
+
+void CCamera_Player::End_Cutscene()
+{
+    m_vCutScene_LookPos = { 0.f, 0.f, 0.f };
+    m_eCameraMode = E_CAMERA_MODE::FPS;
 }
 
 void CCamera_Player::Input_Key(_float fTimeDelta)
@@ -566,6 +600,67 @@ void CCamera_Player::Follow_Player(_float fTimeDelta)
         {
             m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
         }
+    }
+    else if (m_eCameraMode == E_CAMERA_MODE::R_TPS)
+    {
+        // === 충돌체 추가 ===
+        _float3 vStevePos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, headHeight, 0.f };
+        _float3 vMidPos = (m_pTransformCom->Get_State(CTransform::STATE_POSITION) + vStevePos) * 0.5f;
+        Colliders = m_pTerrain->Active_Near_Chunk_Colliders(vMidPos, m_fSpringArmLength * m_fSpringArmLength);
+
+        // === 반대 방향 벡터 계산 (LookDir을 뒤집음) ===
+        _float3 vReverseLookDir = -vLookDir;
+
+        // === Ray Cast (반대 방향으로) ===
+        _float fTargetDist{};
+        CGameObject* pGameObject = m_pGameInstance->Ray_Cast_InstancedObjects(m_pTransformCom->Get_State(CTransform::STATE_POSITION), -vReverseLookDir, m_fSpringArmLength, COLLISION_BLOCK, &fTargetDist);
+
+        if (pGameObject)
+        {
+            fTargetDist = clamp(fTargetDist, 0.5f, m_fSpringArmLength);
+        }
+        else
+        {
+            fTargetDist = m_fSpringArmLength;
+        }
+
+        // === 최종 카메라 위치 계산 (플레이어 앞쪽으로) ===
+        _float3 vFinalCameraPos = playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f) + (vLookDir * fTargetDist);
+
+        // === 카메라 위치 적용 ===
+        m_pTransformCom->Set_State(CTransform::STATE_POSITION, vFinalCameraPos);
+        m_pTransformCom->LookAt(playerPos + _float3(0.f, headHeight, 0.f) + vRight * fShakeOffset_X + _float3(0.f, fShakeOffset_Y, 0.f));
+
+        // === 충돌체 해제 ===
+        for (auto pCollider : Colliders)
+        {
+            m_pGameInstance->Out_Collider_CollisiomGroup(COLLISION_BLOCK, pCollider);
+        }
+    }
+
+}
+
+void CCamera_Player::Orbit_Around_Pos(_float fTimeDelta)
+{
+    // 누적 각도
+    m_fAngle += fTimeDelta; // 시간에 따라 회전
+
+    // 공전 거리
+    const _float fRadius = 5.f;
+
+    // 중심(m_vLook)을 기준으로 공전 궤도 상 위치 계산
+    _float3 vPos;
+    vPos.x = m_vCutScene_LookPos.x + fRadius * cosf(m_fAngle);
+    vPos.z = m_vCutScene_LookPos.z + fRadius * sinf(m_fAngle);
+    vPos.y = m_vCutScene_LookPos.y + 2.f; // 필요에 따라 높이 조절
+
+    m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
+    m_pTransformCom->LookAt(m_vCutScene_LookPos);
+
+    if (m_fAngle > D3DXToRadian(270.f))
+    {
+        m_fAngle = 0.f;
+        End_Cutscene();
     }
 }
 
