@@ -459,9 +459,11 @@ HRESULT CLevel_YU::Ready_Layer_Crosshair(const _wstring& strLayerTag)
 
 HRESULT CLevel_YU::Ready_Layer_Camera_Cutscene(const _wstring& strLayerTag)
 {
-	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Cutscene"),
-		LEVEL_YU, strLayerTag)))
-		return E_FAIL;
+	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Cutscene"),
+	//	LEVEL_YU, strLayerTag)))
+	//	return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CLevel_YU::Ready_Layer_TPS_Arm(const _wstring& strLayerTag)

@@ -24,6 +24,7 @@ HRESULT CRight_hand::Initialize(void* pArg)
     m_pRect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),1));
     m_pCube_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"),2));
     m_pLeft_Rect_Model = static_cast<CRightHand_Object*>(m_pGameInstance->Get_Object(LEVEL_YU, TEXT("Layer_RightHand"), 3));
+    m_pCamera = static_cast<CCamera_Player*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera")));
 
     if (m_pArm_Model == nullptr ||
         m_pRect_Model == nullptr ||
@@ -37,38 +38,65 @@ HRESULT CRight_hand::Initialize(void* pArg)
     Safe_AddRef(m_pRect_Model);
     Safe_AddRef(m_pCube_Model);
     Safe_AddRef(m_pLeft_Rect_Model);
+    Safe_AddRef(m_pCamera);
 
     return S_OK;
 }
 
 void CRight_hand::Priority_Update(_float fTimeDelta)
 {
-    if (m_pGameInstance->Key_Down(VK_F5))
+    CCamera_Player::E_CAMERA_MODE eCameraMode{ m_pCamera->Get_CameraMode() };
+    if (eCameraMode == CCamera_Player::E_CAMERA_MODE::TPS ||
+        eCameraMode == CCamera_Player::E_CAMERA_MODE::R_TPS)
     {
-        if (isTPS == false)
-        {
-            m_pSteve->SetRender(true);
+        m_pSteve->SetRender(true);
 
-            m_pArm_Model->Set_isTps(true);
-            m_pRect_Model->Set_isTps(true);
-            m_pCube_Model->Set_isTps(true);
-            m_pLeft_Rect_Model->Set_isTps(true);
-            isTPS = true;
-        }
-        else
-        { 
-            m_pSteve->SetRender(false);
+        m_pArm_Model->Set_isTps(true);
+        m_pRect_Model->Set_isTps(true);
+        m_pCube_Model->Set_isTps(true);
+        m_pLeft_Rect_Model->Set_isTps(true);
 
-            m_pArm_Model->Set_isTps(false);
-            m_pRect_Model->Set_isTps(false);
-            m_pCube_Model->Set_isTps(false);
-            m_pLeft_Rect_Model->Set_isTps(false);
-            isTPS = false;
-        }
-
-        Chage_RightHand();
-        Chage_LeftHand();
     }
+    else
+    {
+        m_pSteve->SetRender(false);
+
+        m_pArm_Model->Set_isTps(false);
+        m_pRect_Model->Set_isTps(false);
+        m_pCube_Model->Set_isTps(false);
+        m_pLeft_Rect_Model->Set_isTps(false);
+    }
+
+    Chage_RightHand();
+    Chage_LeftHand();
+
+
+    //if (m_pGameInstance->Key_Down(VK_F5))
+    //{
+    //    if (isTPS == false)
+    //    {
+    //        m_pSteve->SetRender(true);
+
+    //        m_pArm_Model->Set_isTps(true);
+    //        m_pRect_Model->Set_isTps(true);
+    //        m_pCube_Model->Set_isTps(true);
+    //        m_pLeft_Rect_Model->Set_isTps(true);
+    //        isTPS = true;
+    //    }
+    //    else
+    //    { 
+    //        m_pSteve->SetRender(false);
+
+    //        m_pArm_Model->Set_isTps(false);
+    //        m_pRect_Model->Set_isTps(false);
+    //        m_pCube_Model->Set_isTps(false);
+    //        m_pLeft_Rect_Model->Set_isTps(false);
+    //        isTPS = false;
+    //    }
+
+    //    Chage_RightHand();
+    //    Chage_LeftHand();
+    //}
 }
 
 void CRight_hand::Update(_float fTimeDelta)
@@ -168,10 +196,15 @@ void CRight_hand::Change_Matrix(ITEMNAME name)
 
 void CRight_hand::Render_Arm()
 {
-    if (isTPS)
-        m_pArm_Model->SetRender(false);
-    else
+    if (m_pCamera->Get_CameraMode() == CCamera_Player::E_CAMERA_MODE::FPS)
+    {
         m_pArm_Model->SetRender(true);
+    }
+    else
+    {
+        m_pArm_Model->SetRender(false);
+    }
+
     m_pRect_Model->SetRender(false);
     m_pCube_Model->SetRender(false);
 }
@@ -232,4 +265,5 @@ void CRight_hand::Free()
     Safe_Release(m_pRect_Model);
     Safe_Release(m_pCube_Model);
     Safe_Release(m_pLeft_Rect_Model);
+    Safe_Release(m_pCamera);
 }
