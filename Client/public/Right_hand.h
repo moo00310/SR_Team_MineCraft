@@ -21,6 +21,9 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 
+public:
+	void OffRightHands();
+
 private:
 	CCamera_Player* m_pCamera = { nullptr };
 	CPawn* m_pSteve = { nullptr };

@@ -50,7 +50,6 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
         eCameraMode == CCamera_Player::E_CAMERA_MODE::R_TPS)
     {
         m_pSteve->SetRender(true);
-
         m_pArm_Model->Set_isTps(true);
         m_pRect_Model->Set_isTps(true);
         m_pCube_Model->Set_isTps(true);
@@ -97,6 +96,7 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
     //    Chage_RightHand();
     //    Chage_LeftHand();
     //}
+
 }
 
 void CRight_hand::Update(_float fTimeDelta)
@@ -113,16 +113,14 @@ void CRight_hand::Update(_float fTimeDelta)
 
 void CRight_hand::Late_Update(_float fTimeDelta)
 {
-    for (char key = '1'; key <= '9'; ++key)
-    {
-        if (m_pGameInstance->Key_Down(key))
-        {
-            Chage_RightHand();
-            Chage_LeftHand();
+}
 
-            break;
-        }
-    }
+void CRight_hand::OffRightHands()
+{
+    m_pArm_Model->SetRender(false);
+    m_pRect_Model->SetRender(false);
+    m_pCube_Model->SetRender(false);
+    m_pLeft_Rect_Model->SetRender(false);
 }
 
 void CRight_hand::Chage_RightHand()
@@ -144,7 +142,6 @@ void CRight_hand::Chage_LeftHand()
 void CRight_hand::Select_Render_Texture(ITEMNAME name)
 {
     int index = -1;
-
 
     if (name == 999)
     {

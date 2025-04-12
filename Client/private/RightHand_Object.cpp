@@ -49,14 +49,10 @@ void CRightHand_Object::Update(_float fTimeDelta)
 void CRightHand_Object::Late_Update(_float fTimeDelta)
 {
   
-    if (!m_isTPS)
-    {
-        Update_State(fTimeDelta);
+    Update_State(fTimeDelta);
 
-        if (FAILED(Update_Root(fTimeDelta)))
-            return;
-
-    }
+    if (FAILED(Update_Root(fTimeDelta)))
+        return;
 
     if (m_isRender)
     {
@@ -122,6 +118,8 @@ HRESULT CRightHand_Object::Ready_Components()
 
 HRESULT CRightHand_Object::Update_Root(_float fTimeDelta)
 {
+    if (m_isTPS) S_OK;
+
     Matrix		ViewMatrix = {};
     m_pGraphic_Device->GetTransform(D3DTS_VIEW, &ViewMatrix);
     D3DXMatrixInverse(&ViewMatrix, nullptr, &ViewMatrix);

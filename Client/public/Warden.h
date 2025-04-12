@@ -40,6 +40,9 @@ public:
 	virtual HRESULT Render()override;
 	void Dead_Pawn() override;
 
+public:
+	void SetAnimTime();
+
 private:
 	HRESULT Ready_Components();
 	HRESULT Ready_Bone() override;

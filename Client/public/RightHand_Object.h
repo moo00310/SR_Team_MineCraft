@@ -72,6 +72,8 @@ protected:
 	virtual void Motion_Run(_float fTimeDelta) = 0;
 	virtual void KeyInput() = 0;
 
+protected:
+	virtual void FrameCallback(int animType, int frame) {};
 
 protected:
 	int m_TextrueNum = 0;

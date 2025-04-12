@@ -1,4 +1,5 @@
 #include "Camera_Cutscene.h"
+#include "Right_hand.h"
 
 Camera_Cutscene::Camera_Cutscene(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CCamera{ pGraphic_Device }
@@ -88,12 +89,16 @@ void Camera_Cutscene::Start_Cutscene(_float3 vPos)
 	m_vCutScene_LookPos = vPos;
 
 	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera"))->SetActive(false);
+	static_cast<CRight_hand*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_RightHand_GameObject")))->OffRightHands();
+	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_RightHand_GameObject"))->SetActive(false);
 	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene"))->SetActive(true);
+
 }
 
 void Camera_Cutscene::End_Cutscene()
 {
 	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene"))->SetActive(false);
+	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_RightHand_GameObject"))->SetActive(true);
 	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera"))->SetActive(true);
 }
 

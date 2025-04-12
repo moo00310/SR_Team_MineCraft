@@ -32,7 +32,6 @@ void CCube_Model::Priority_Update(_float fTimeDelta)
 void CCube_Model::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-
 }
 
 void CCube_Model::Late_Update(_float fTimeDelta)
@@ -175,9 +174,6 @@ void CCube_Model::Motion_Swing(_float fTimeDelta)
 
     if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
     {
-        if (m_pSteve->Get_AttackContinue())
-            m_eCurAnim = SWING;
-        else
             m_eCurAnim = INIT;
     }
 }
@@ -235,6 +231,8 @@ void CCube_Model::Free()
 
 void CCube_Model::Update_State(_float fTimeDelta)
 {
+    if (m_isTPS) S_OK;
+
     switch (m_eCurAnim)
     {
     case INIT:
@@ -259,7 +257,7 @@ void CCube_Model::Update_State(_float fTimeDelta)
 
 void CCube_Model::KeyInput()
 {
-    if (m_pGameInstance->Key_Down(VK_LBUTTON) ||
+    if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && m_pSteve->Get_AttackContinue() ||
         m_pGameInstance->Key_Down(VK_RBUTTON))
     {
         m_eCurAnim = SWING;
