@@ -42,8 +42,16 @@ void CStone::Update(_float fTimeDelta)
 
 void CStone::Late_Update(_float fTimeDelta)
 {
-    if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
-        return;
+    if (g_bIsScan == true)
+    {
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_BLEND, this)))
+            return;
+    }
+    else
+    {
+        if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_NONBLEND, this)))
+            return;
+    }
 
 	__super::Late_Update(fTimeDelta);
 }
