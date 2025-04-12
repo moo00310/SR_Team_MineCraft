@@ -20,6 +20,9 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 
+public:
+	void OffRightHands();
+
 private:
 	CPawn* m_pSteve = { nullptr };
 	CRightHand_Object* m_pArm_Model = { nullptr };

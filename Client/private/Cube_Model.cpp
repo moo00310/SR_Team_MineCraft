@@ -175,9 +175,6 @@ void CCube_Model::Motion_Swing(_float fTimeDelta)
 
     if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
     {
-        if (m_pSteve->Get_AttackContinue())
-            m_eCurAnim = SWING;
-        else
             m_eCurAnim = INIT;
     }
 }
@@ -259,7 +256,7 @@ void CCube_Model::Update_State(_float fTimeDelta)
 
 void CCube_Model::KeyInput()
 {
-    if (m_pGameInstance->Key_Down(VK_LBUTTON) ||
+    if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && m_pSteve->Get_AttackContinue() ||
         m_pGameInstance->Key_Down(VK_RBUTTON))
     {
         m_eCurAnim = SWING;

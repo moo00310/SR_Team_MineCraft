@@ -305,16 +305,12 @@ void CRect_Model::Motion_Idle(_float fTimeDelta)
 
 void CRect_Model::Motion_Swing(_float fTimeDelta)
 {
-	m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0);	
-
-	
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
-		if (m_pSteve->Get_AttackContinue())
-			m_eCurAnim = SWING;
-		else
 			m_eCurAnim = INIT;
 	}
+
+	m_pSkeletalAnimator->Update_Animetion(SWING, fTimeDelta, 0);
 }
 
 void CRect_Model::Motion_Walk(_float fTimeDelta)
@@ -401,16 +397,22 @@ void CRect_Model::Motion_Attack2(_float fTimeDelta)
 
 void CRect_Model::KeyInput()
 {
-	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
 	{
 		ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
 		if (name == ITEM_WEPON_1)
 		{
 			m_eCurAnim = ATTACK_Near;
 		}
-		else
+		else if (name == ITEMNAME_STEEL_SWORD || 
+				name == ITEMNAME_STONE_SWORD)
 		{
 			m_eCurAnim = SWING;
+		}
+		else
+		{
+			if(m_pSteve->Get_AttackContinue())
+				m_eCurAnim = SWING;
 		}
 
 		return;

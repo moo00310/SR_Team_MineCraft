@@ -68,9 +68,6 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Camera(TEXT("Layer_Camera"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Layer_Camera_Cutscene(TEXT("Layer_Camera_Cutscene"))))
-		return E_FAIL;
-
 	if (FAILED(Ready_Layer_Inventory(TEXT("Layer_Inventory"))))
 		return E_FAIL;
 
@@ -109,7 +106,7 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	// 위 객체들을 관리하는 오브젝트
-	if (FAILED(Ready_Laye_RightHand(TEXT("Layer_Cube_RightHand"))))
+	if (FAILED(Ready_Laye_RightHand(TEXT("Layer_RightHand_GameObject"))))
 		return E_FAIL;	
 
 	///////////////////////////////////////////////////////////	
@@ -118,6 +115,11 @@ HRESULT CLevel_YU::Initialize()
 		return E_FAIL;
 
 	///////////////////////////////////////////////////////////
+
+	if (FAILED(Ready_Layer_Camera_Cutscene(TEXT("Layer_Camera_Cutscene"))))
+		return E_FAIL;
+
+
 
 	m_pGameInstance->PlayBGM(L"sweden");
 

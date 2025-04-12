@@ -147,7 +147,7 @@ void CSteve::Input_Key(_float fTimeDelta)
 		return;
 	}
 
-	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
 	{
 		isAttack = true;
 	}

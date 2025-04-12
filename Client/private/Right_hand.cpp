@@ -65,10 +65,10 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
             m_pLeft_Rect_Model->Set_isTps(false);
             isTPS = false;
         }
-
-        Chage_RightHand();
-        Chage_LeftHand();
     }
+
+    Chage_RightHand();
+    Chage_LeftHand();
 }
 
 void CRight_hand::Update(_float fTimeDelta)
@@ -85,16 +85,13 @@ void CRight_hand::Update(_float fTimeDelta)
 
 void CRight_hand::Late_Update(_float fTimeDelta)
 {
-    for (char key = '1'; key <= '9'; ++key)
-    {
-        if (m_pGameInstance->Key_Down(key))
-        {
-            Chage_RightHand();
-            Chage_LeftHand();
+}
 
-            break;
-        }
-    }
+void CRight_hand::OffRightHands()
+{
+    m_pArm_Model->SetRender(false);
+    m_pRect_Model->SetRender(false);
+    m_pCube_Model->SetRender(false);
 }
 
 void CRight_hand::Chage_RightHand()
@@ -116,7 +113,6 @@ void CRight_hand::Chage_LeftHand()
 void CRight_hand::Select_Render_Texture(ITEMNAME name)
 {
     int index = -1;
-
 
     if (name == 999)
     {

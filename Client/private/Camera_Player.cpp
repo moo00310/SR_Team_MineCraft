@@ -299,10 +299,6 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
             COLLISION_MONSTER, // 충돌 그룹
             &fDist); //거리저장
 
-        // 이거 카메라 위치 디바이스에 있는거 가져올수 있으면 
-        // 애니메이션코드에서 레이를 검사할까?
-        // 1. 애니메이션 코드에서 카메라를 알게한다.
-
         if (pHitObject)
         {
             if (CMonster* monster = dynamic_cast<CMonster*>(pHitObject))
