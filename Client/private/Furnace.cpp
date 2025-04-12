@@ -64,6 +64,20 @@ void CFurnace::Priority_Update(_float fTimeDelta)
                 
             }
         }
+
+        if (m_bParticle == false)
+        {
+            _float3 pos = m_vecPositions[0];
+            pos.y -= 0.4f;
+            pos.z += 0.55f;
+
+            CParticleEventManager::Get_Instance()->OnParticle(
+                PROTOTYPE_GAMEOBJECT_PARTICLE_FURNACE,
+                pos
+            );
+
+            m_bParticle = true;
+        }        
     }
 
     if (!m_bFurnaceBurn) {
@@ -73,6 +87,8 @@ void CFurnace::Priority_Update(_float fTimeDelta)
             m_iIronTime = 1000;
             m_iCoalTime = 8000;
         }
+
+        m_bParticle = false;
     }
 
     __super::Priority_Update(fTimeDelta);

@@ -37,6 +37,7 @@
 #include "ParticleSonicBoom.h"
 #include "ParticleLeafMining.h"
 #include "ParticleLeafDestroy.h"
+#include "ParticleFurnace.h"
 
 LPD3DXFONT g_pTitleFont = nullptr;
 LPD3DXFONT g_pDetailFont = nullptr;
@@ -315,6 +316,11 @@ HRESULT CMainApp::Ready_Particle()
 	// 워든 원거리 공격 파티클.
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,
 		CParticleSonicBoom::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	// 화로 불 파티클.
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_GAMEOBJECT_PARTICLE_FURNACE,
+		CParticleFurnace::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	return S_OK;
