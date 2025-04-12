@@ -98,18 +98,24 @@ void CCamera_Player::Update(_float fTimeDelta)
         if (m_eCameraMode == E_CAMERA_MODE::FPS)
         {
             m_eCameraMode = E_CAMERA_MODE::TPS;
-            m_pCrosshair->On();
         }
         else if (m_eCameraMode == E_CAMERA_MODE::TPS)
         {
             m_eCameraMode = E_CAMERA_MODE::R_TPS;
-            m_pCrosshair->Off();
         }        
         else if (m_eCameraMode == E_CAMERA_MODE::R_TPS)
         {
             m_eCameraMode = E_CAMERA_MODE::FPS;
-            m_pCrosshair->Off();
         }
+    }
+
+    if (m_eCameraMode == E_CAMERA_MODE::FPS)
+    {
+        m_pCrosshair->On();
+    }
+    else
+    {
+        m_pCrosshair->Off();
     }
 }
 
