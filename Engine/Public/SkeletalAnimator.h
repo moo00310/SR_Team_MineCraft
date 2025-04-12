@@ -43,6 +43,7 @@ public:
 	void Reset_fElapsedTime(int index, int targetIndex ) { fElapsedTime[index] = fElapsedTime[targetIndex]; }
 	void Set_ZeroAnimTime() { for (int i = 0; i < AnimTimeCount; i++) { fElapsedTime[i] = 0.f; } }
 	const Matrix& GetBoneWorldMatrix(int index);
+	void Set_fElapsedTime(int index, float fTime) { fElapsedTime[index] = fTime; }
 
 public:
 	void IkLookAt(float fTimeDelta, int boneIndex, int targetInex);

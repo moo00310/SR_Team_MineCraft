@@ -171,6 +171,7 @@
     <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\BreakableRect.h" />
     <ClInclude Include="..\public\BTDecorator_IsAttack.h" />
+    <ClInclude Include="..\public\BTDecorator_IsCutScene.h" />
     <ClInclude Include="..\public\BTDecorator_IsTargetNear.h" />
     <ClInclude Include="..\public\BTDistanceBranch.h" />
     <ClInclude Include="..\public\BTTask_Attack.h" />
@@ -323,6 +324,7 @@
     <ClCompile Include="..\private\BreakableCube.cpp" />
     <ClCompile Include="..\private\BreakableRect.cpp" />
     <ClCompile Include="..\private\BTDecorator_IsAttack.cpp" />
+    <ClCompile Include="..\private\BTDecorator_IsCutScene.cpp" />
     <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp" />
     <ClCompile Include="..\private\BTDistanceBranch.cpp" />
     <ClCompile Include="..\private\BTTask_Attack.cpp" />
