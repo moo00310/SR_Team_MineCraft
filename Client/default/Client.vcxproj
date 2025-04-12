@@ -237,6 +237,8 @@
     <ClInclude Include="..\public\ParticleEventManager.h" />
     <ClInclude Include="..\public\ParticleExplosion.h" />
     <ClInclude Include="..\public\ParticleFireCracker.h" />
+    <ClInclude Include="..\public\ParticleFurnace.h" />
+    <ClInclude Include="..\public\ParticleFurnaceCloud.h" />
     <ClInclude Include="..\public\ParticleLeafDestroy.h" />
     <ClInclude Include="..\public\ParticleLeafMining.h" />
     <ClInclude Include="..\public\ParticleSonicBoom.h" />
@@ -386,6 +388,8 @@
     <ClCompile Include="..\private\ParticleEventManager.cpp" />
     <ClCompile Include="..\private\ParticleExplosion.cpp" />
     <ClCompile Include="..\private\ParticleFireCracker.cpp" />
+    <ClCompile Include="..\private\ParticleFurnace.cpp" />
+    <ClCompile Include="..\private\ParticleFurnaceCloud.cpp" />
     <ClCompile Include="..\private\ParticleLeafDestroy.cpp" />
     <ClCompile Include="..\private\ParticleLeafMining.cpp" />
     <ClCompile Include="..\private\ParticleSonicBoom.cpp" />

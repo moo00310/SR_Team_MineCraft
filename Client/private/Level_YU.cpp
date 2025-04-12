@@ -86,8 +86,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
-		return E_FAIL;
+	/*if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
+		return E_FAIL;*/
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -686,6 +686,26 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
 		3)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
+	// 화로 불 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_FURNACE,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		1)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
+	// 화로 구름 파티클.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_STATIC,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_PARTICLE_FURNACE_CLOUD,	// 가져올 프로토타입.
+		LEVEL_STATIC,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		1)))				// 풀링 갯수.
 	{
 		return E_FAIL;
 	}

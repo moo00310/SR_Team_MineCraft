@@ -1,5 +1,7 @@
 #pragma once
 #include "BreakableCube.h"
+#include "ParticleEventManager.h"
+
 class CFurnace : public CBreakableCube
 {
 protected:
@@ -26,6 +28,7 @@ protected:
 private:
 	CTexture* m_pTextureCom2 = nullptr;
 	bool m_bFurnaceBurn = false;
+	bool m_bParticle = false;
 
 	int m_iCoalTime = 0;
 	int m_iIronTime = 0;
