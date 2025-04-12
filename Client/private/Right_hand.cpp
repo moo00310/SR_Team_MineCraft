@@ -92,6 +92,7 @@ void CRight_hand::OffRightHands()
     m_pArm_Model->SetRender(false);
     m_pRect_Model->SetRender(false);
     m_pCube_Model->SetRender(false);
+    m_pLeft_Rect_Model->SetRender(false);
 }
 
 void CRight_hand::Chage_RightHand()

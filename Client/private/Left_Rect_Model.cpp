@@ -160,12 +160,13 @@ HRESULT CLeft_Rect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(RUN, Walk5);
 
 
-
 	return S_OK;
 }
 
 void CLeft_Rect_Model::Update_State(_float fTimeDelta)
 {
+	if (m_isTPS) S_OK;
+
 	switch (m_eCurAnim)
 	{
 	case INIT:

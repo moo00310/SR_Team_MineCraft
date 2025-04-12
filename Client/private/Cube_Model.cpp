@@ -32,7 +32,6 @@ void CCube_Model::Priority_Update(_float fTimeDelta)
 void CCube_Model::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-
 }
 
 void CCube_Model::Late_Update(_float fTimeDelta)
@@ -232,6 +231,8 @@ void CCube_Model::Free()
 
 void CCube_Model::Update_State(_float fTimeDelta)
 {
+    if (m_isTPS) S_OK;
+
     switch (m_eCurAnim)
     {
     case INIT:

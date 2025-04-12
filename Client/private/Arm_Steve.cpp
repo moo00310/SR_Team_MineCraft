@@ -157,6 +157,8 @@ HRESULT CArm_Steve::Ready_Animation()
 
 void CArm_Steve::Update_State(_float fTimeDelta)
 {
+	if (m_isTPS) S_OK;
+
 	switch (m_eCurAnim)
 	{
 	case INIT:

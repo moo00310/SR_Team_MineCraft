@@ -22,6 +22,10 @@ HRESULT CRect_Model::Initialize(void* pArg)
 
 	__super::Initialize(pArg);	
 
+
+	// 콜백 등록
+	m_pSkeletalAnimator->SetFrameCallback(std::bind(&CRect_Model::FrameCallback, this, std::placeholders::_1, std::placeholders::_2));
+
 	return S_OK;
 }
 
@@ -93,9 +97,11 @@ HRESULT CRect_Model::Ready_Bone()
 
 	BONE bone = { "root", -1, mat, mat, Matrix(), Matrix() };
 	BONE bone2 = { "Fx", 0, MAtrixTranslation(0.f, 10.f / 16.f, 0.f), MAtrixTranslation(0.f, 10.f / 16.f, 0.f), Matrix(), Matrix()};
+	BONE bone3 = { "FxTPS", -1,  Matrix(), Matrix(), Matrix(), Matrix() };
 
 	m_pSkeletalAnimator->Add_Bone(bone);
 	m_pSkeletalAnimator->Add_Bone(bone2);
+	m_pSkeletalAnimator->Add_Bone(bone3);
 
 	return S_OK;
 }
@@ -246,9 +252,9 @@ HRESULT CRect_Model::Ready_Animation()
 	matrix2.Turn_Radian(_float3(0.3f, 0.f, 0.3f), D3DXToRadian(60));
 
 	KEYFREAME Attack_Far_1 = { 0.f, mat };
-	KEYFREAME Attack_Far_2 = { 0.1f, matrix1 };
-	KEYFREAME Attack_Far_3 = { 0.3f, matrix2 };
-	KEYFREAME Attack_Far_5 = { 0.5f, mat };
+	KEYFREAME Attack_Far_2 = { 0.3f, matrix1 };
+	KEYFREAME Attack_Far_3 = { 0.5f, matrix2 };
+	KEYFREAME Attack_Far_5 = { 0.8f, mat };
 
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_1);
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_2);
@@ -422,7 +428,6 @@ void CRect_Model::KeyInput()
 	{
 		if (Compute_Texture_Name() == ITEM_WEPON_1)
 		{
-			AuraSword();
 			m_eCurAnim = ATTACK_Far;
 		}
 		else
@@ -453,7 +458,6 @@ void CRect_Model::KeyInput()
 
 void CRect_Model::FireSword()
 {
-	
 	if (!m_isRender)
 	{
 		if (flameSword != nullptr)
@@ -485,15 +489,24 @@ void CRect_Model::FireSword()
 		return;
 	}
 
-	// 회전 행렬.
+
 	Matrix rotateMatrix = {};
+	Matrix boneWorldMatrix = {};
 
-	// 본 월드행렬.
-	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
-
-	// 회전행렬 계산.
-	rotateMatrix = rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(-35.f));
-
+	if (m_isTPS)
+	{
+		boneWorldMatrix = m_pSteve->GetSoketMatrix(7);
+		rotateMatrix.Scaling(2.f, 7.f, 0.f);
+		rotateMatrix.Turn_Radian_Safe_Scale(_float3(1.f, 0.f, 0.f), D3DXToRadian(90.f));
+		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.5f, 0.f, 0.5f));
+	}
+	else
+	{
+		boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
+		rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(0.f));
+		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.2f, -0.5f, 0.f));
+	}
+	
 	if (flameSword == nullptr)
 	{
 		flameSword = (CParticleSystem*)m_pGameInstance->PushPool(
@@ -575,6 +588,19 @@ void CRect_Model::SwingFireSword()
 ITEMNAME CRect_Model::Compute_Texture_Name()
 {
 	return ITEMNAME(m_TextrueNum + 100);
+}
+
+void CRect_Model::FrameCallback(int animType, int frame)
+{
+	// 여기다 먹는거 사운드
+
+	// 참격 이펙트 추가
+	if (animType == ATTACK_Far && frame == 2)
+	{
+		
+		AuraSword();
+	}
+		
 }
 
 CRect_Model* CRect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

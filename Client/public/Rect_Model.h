@@ -38,29 +38,26 @@ private:
 	virtual void KeyInput() override;
 
 private:
-	// 불검.
-	void FireSword();
+	CParticleSystem* flameSword = { nullptr };
+	_float m_fCurrentEatTime = { 0.f }; 	// 먹는거 현재 쿨타임.
+	const _float m_fEatCoolTime = { 0.23f }; 	// 먹는거 쿨타임.
+	int FX_BoeIndex = {};
 
-	// 검기.
-	void AuraSword();
+private:
+	void FireSword(); 	// 불검.
+	void AuraSword(); 	// 검기.
+	void SwingFireSword();	 	// 불검 휘두를 때 잔상.
 
-	// 불검 휘두를 때 잔상.
-	void SwingFireSword();	
-
+private:
 	ITEMNAME Compute_Texture_Name();
-
-	CParticleSystem* flameSword = {nullptr};	
+private:
+	virtual void FrameCallback(int animType, int frame) override;
 
 public:
 	static CRect_Model* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 
-private:
-	// 먹는거 현재 쿨타임.
-	_float m_fCurrentEatTime = {0.f};
 
-	// 먹는거 쿨타임.
-	const _float m_fEatCoolTime = {0.23f};
 };
 

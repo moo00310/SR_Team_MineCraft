@@ -11,6 +11,7 @@ STATUS CBTTask_WalkChase::Excute(CGameObject* _Obj, _float _fTimeDelta)
 		return STATUS::FAIL;
 	}
 
+	cout << "chase" << endl;
 	pMonster->Chase_Player(_fTimeDelta);
 	pMonster->Set_Animation(CMonster::WALK);
 	return STATUS::SUCCESS;
