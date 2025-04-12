@@ -1,5 +1,6 @@
 #include "Rect_Model.h"
 #include <iostream>
+#include "UI_Mgr.h"
 
 CRect_Model::CRect_Model(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CRightHand_Object{ pGraphic_Device }
@@ -376,6 +377,7 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 	{
 		m_fCurrentEatTime = 0.f;
 		m_eCurAnim = INIT;
+		CUI_Mgr::Get_Instance()->ItemCount_Update(name, -1);
 	}
 }
 

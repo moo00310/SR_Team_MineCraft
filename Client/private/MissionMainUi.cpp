@@ -118,7 +118,7 @@ HRESULT CMissionMainUi::Render()
 
         for (int i = 0; i < _vecMission.size(); ++i) {
             wstring _word;
-            if (_vecMission[i].curCount == _vecMission[i].endCount) {
+            if (_vecMission[i].curCount >= _vecMission[i].endCount) {
                 _word = _vecMission[i].word;
                 g_pDetailFont->DrawTextW(
                     nullptr,                   

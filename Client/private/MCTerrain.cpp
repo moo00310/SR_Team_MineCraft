@@ -507,6 +507,17 @@ void CMCTerrain::Create_Cube(_float3 vMyPos, ITEMNAME eItemName, _float3 vCreate
                 pCube->Set_BlockPositions(pos, eItemName);
             }
             break;
+        case Client::ITEMNAME_OAKPLANKS:
+            m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_OakWood"), LEVEL_YU, layerName);
+            pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
+            if (pCube) {
+                vector<D3DXVECTOR3> pos; 
+                pos.push_back(vCreatePos + vDir);
+                pCube->Set_InstanceBuffer(pos, 0.6f);
+                pCube->Set_MyChunk(Compute_ChunkIndex(vCreatePos));
+                pCube->Set_BlockPositions(pos, eItemName);
+            }
+            break;
         default:
             break;
         }
@@ -615,7 +626,7 @@ HRESULT CMCTerrain::Ready_Layer_BackGround()
                     int randWood = rand() % 3 + 4;
                     int ranLeaf = rand() % 8 + 4;
 
-                    CTree::DESC desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.5f, eblockData.fPosition.z), 0};
+                    CTree::DESC desc = { randWood, ranLeaf, _float3(eblockData.fPosition.x, eblockData.fPosition.y + 0.5f, eblockData.fPosition.z), i};
                     vecTreeDesc.push_back(desc);
                 }
                 else if (1 <= percent && percent < 5) {
