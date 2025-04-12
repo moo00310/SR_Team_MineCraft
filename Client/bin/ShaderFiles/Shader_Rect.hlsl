@@ -161,8 +161,7 @@ PS_OUT PS_MAIN_SWORD_AURA(PS_IN In)
         discard;
     
     // »¡°£»öÀ¸·Î ÁÜ.
-    Out.vColor.r = 1.f;        
-    Out.vColor.a = 0.1f;
+    Out.vColor.r = 1.f;    
     
     return Out;
 }
