@@ -51,6 +51,7 @@
 #include "ItemRect.h"
 #include "Furnace.h"
 #include "CraftingTableCube.h"
+#include "OakWood.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -456,6 +457,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_Component_Texture_Wood */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Wood"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/wood0.png"), 1))))
+		return E_FAIL;
+
+	/* For.Prototype_Component_Texture_OakWood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_OakWood"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/oakWood.png"), 1))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_Grass */
@@ -936,6 +942,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Wood */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Wood"),
 		CWood::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_OakWood */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_OakWood"),
+		COakWood::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	/* For.Prototype_GameObject_Leaf */
