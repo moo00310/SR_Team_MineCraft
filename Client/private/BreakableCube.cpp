@@ -501,6 +501,11 @@ void CBreakableCube::Set_Bright()
             }
         }
     }
+    else {
+        for (int i = 0; i < m_vecBrights.size(); ++i) {
+            m_vecBrights[i] = g_fBright * m_vecPositions[i].y / 8.f;
+        }
+    }
 
 }
 
