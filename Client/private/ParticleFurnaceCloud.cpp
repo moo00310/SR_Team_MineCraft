@@ -1,23 +1,23 @@
-#include "ParticleFurnace.h"
+#include "ParticleFurnaceCloud.h"
 
-CParticleFurnace::CParticleFurnace(LPDIRECT3DDEVICE9 pGraphic_Device) :
+CParticleFurnaceCloud::CParticleFurnaceCloud(LPDIRECT3DDEVICE9 pGraphic_Device) :
 	CParticleSystem(pGraphic_Device)
 {
 }
 
-CParticleFurnace::CParticleFurnace(const CParticleFurnace& Prototype) :
+CParticleFurnaceCloud::CParticleFurnaceCloud(const CParticleFurnaceCloud& Prototype) :
 	CParticleSystem(Prototype)
 {
 }
 
-HRESULT CParticleFurnace::Initialize_Prototype()
+HRESULT CParticleFurnaceCloud::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CParticleFurnace::Initialize(void* pArg)
+HRESULT CParticleFurnaceCloud::Initialize(void* pArg)
 {
-	iParticleCount = 5;		
+	iParticleCount = 3;
 	IsBounding = true;
 
 	if (FAILED(__super::Initialize(pArg)))
@@ -25,15 +25,15 @@ HRESULT CParticleFurnace::Initialize(void* pArg)
 		return E_FAIL;
 	}
 
-	dwVpBatchSize = 5;
-	dwPointSize = GetScale(0.15f);	// 포인트 스프라이트 크기.
+	dwVpBatchSize = 3;
+	dwPointSize = GetScale(0.2f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
 	dwPointScaleC = GetScale(1.f);
 
 	ParticleBoundingBox box;
 	box.vMinPosition = { -0.3f, 0.f, 0.f };		// 최소 범위.
-	box.vMaxPosition = { 0.3f, 0.2f, 0.f };		// 최대 범위.
+	box.vMaxPosition = { 0.3f, 1.2f, 0.f };		// 최대 범위.
 
 	// 파티클 경계선 셋팅 작업.
 	SetParticleBoundingBox(box);
@@ -47,38 +47,38 @@ HRESULT CParticleFurnace::Initialize(void* pArg)
 	if (FAILED(Ready_Components()))
 	{
 		return E_FAIL;
-	}	
+	}
 }
 
-CGameObject* CParticleFurnace::Clone(void* pArg)
+CGameObject* CParticleFurnaceCloud::Clone(void* pArg)
 {
-	CParticleFurnace* pInstance = new CParticleFurnace(*this);
+	CParticleFurnaceCloud* pInstance = new CParticleFurnaceCloud(*this);
 
 	if (FAILED(pInstance->Initialize(pArg)))
 	{
-		MSG_BOX("Failed to Clone : CParticleFurnace");
+		MSG_BOX("Failed to Clone : CParticleFurnaceCloud");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-CParticleFurnace* CParticleFurnace::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
+CParticleFurnaceCloud* CParticleFurnaceCloud::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 {
-	CParticleFurnace* pInstance = new CParticleFurnace(pGraphic_Device);
+	CParticleFurnaceCloud* pInstance = new CParticleFurnaceCloud(pGraphic_Device);
 
 	if (FAILED(pInstance->Initialize_Prototype()))
 	{
-		MSG_BOX("Failed to Created : CParticleFurnace");
+		MSG_BOX("Failed to Created : CParticleFurnaceCloud");
 		Safe_Release(pInstance);
 	}
 
 	return pInstance;
 }
 
-HRESULT CParticleFurnace::Ready_Components()
+HRESULT CParticleFurnaceCloud::Ready_Components()
 {
-	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_FLAME,
+	if (FAILED(__super::Add_Component(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_DASH,
 		TEXT("Com_Texture"), reinterpret_cast<CComponent**>(&m_pParticleTexture))))
 		return E_FAIL;
 
@@ -90,17 +90,18 @@ HRESULT CParticleFurnace::Ready_Components()
 	return S_OK;
 }
 
-ParticleAttribute CParticleFurnace::OnSetAddParticle()
+ParticleAttribute CParticleFurnaceCloud::OnSetAddParticle()
 {
 	ParticleAttribute att;
-	att.vPosition = { GetRandomFloat(-0.3f, 0.3f), GetRandomFloat(0.f, 0.1f), 0.f};
+	att.vPosition = { GetRandomFloat(-0.3f, 0.3f), GetRandomFloat(0.f, 0.1f), 0.f };
 	att.vColor = Float3ToHex({ 1.f, 1.f, 1.f });
-	att.vVelocity = { 0.f, 0.1f, 0.f };	
+	att.vVelocity = { 0.f, GetRandomFloat(0.2f, 0.3f), 0.f };
 
 	return att;
 }
 
-void CParticleFurnace::OnBoundingExit(ParticleAttribute& particle)
+void CParticleFurnaceCloud::OnBoundingExit(ParticleAttribute& particle)
 {
 	particle.vPosition = { GetRandomFloat(-0.3f, 0.3f), GetRandomFloat(0.f, 0.1f), 0.f };
+	particle.vVelocity = { 0.f, GetRandomFloat(0.2f, 0.3f), 0.f };
 }

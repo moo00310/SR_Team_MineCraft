@@ -103,6 +103,9 @@ static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM = TEXT("Prototype
 // 화로 불 파티클.
 static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_FURNACE = TEXT("Prototype_GameObject_Particle_Furnace");
 
+// 화로 연기 파티클.
+static const _wstring PROTOTYPE_GAMEOBJECT_PARTICLE_FURNACE_CLOUD = TEXT("Prototype_GameObject_Particle_Furnace_Cloud");
+
 /////////////////////////////////////////////////////////////////////////////
 
 // VIBuffer_Only 클래스 컴포넌트 태그.

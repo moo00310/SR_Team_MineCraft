@@ -67,13 +67,22 @@ void CFurnace::Priority_Update(_float fTimeDelta)
 
         if (m_bParticle == false)
         {
-            _float3 pos = m_vecPositions[0];
-            pos.y -= 0.4f;
-            pos.z += 0.55f;
+            _float3 posFire = m_vecPositions[0];
+            posFire.y -= 0.4f;
+            posFire.z += 0.55f;
+
+            _float3 posCloud = m_vecPositions[0];
+            posCloud.y -= 0.3f;
+            posCloud.z += 0.55f;
 
             CParticleEventManager::Get_Instance()->OnParticle(
                 PROTOTYPE_GAMEOBJECT_PARTICLE_FURNACE,
-                pos
+                posFire
+            );
+
+            CParticleEventManager::Get_Instance()->OnParticle(
+                PROTOTYPE_GAMEOBJECT_PARTICLE_FURNACE_CLOUD,
+                posCloud
             );
 
             m_bParticle = true;
