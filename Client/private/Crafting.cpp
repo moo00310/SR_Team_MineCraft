@@ -20,15 +20,41 @@ HRESULT CCrafting::Initialize_Prototype()
 HRESULT CCrafting::Initialize(void* pArg)
 {
 	/* 아이템 레시피 조합법 정의 */
-	RECIPE_DESC oakplanks1 = { {{51, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1 };
-	RECIPE_DESC oakplanks2 = { {{52, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1 };
-	RECIPE_DESC oakplanks3 = { {{53, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1 };
-	RECIPE_DESC oakplanks4 = { {{54, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1 };
-	RECIPE_DESC stick1 = { {{51, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1, 2 };
-	RECIPE_DESC stick2 = { {{52, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1, 2 };
-	RECIPE_DESC CraftingTable = { {{51, ITEMNAME_OAKPLANKS}, {52, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}}
-									, ITEMNAME_CRAFTINGTABLE, 1, 4 };
+	/*
+		_int itemCountPerSlot = { 0 }; // 슬롯당 필요한 아이템 개수
+		_int iTotalInputCout = { 0 }; // 조합에 들어가는 총 재료 개수
+		_int resultCount = { 0 }; // 레시피 조합 후 결과 아이템 개수
+	*/
+
+	RECIPE_DESC oakplanks1 = { {{51, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1, 4 };
+	RECIPE_DESC oakplanks2 = { {{52, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1, 4 };
+	RECIPE_DESC oakplanks3 = { {{53, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1, 4 };
+	RECIPE_DESC oakplanks4 = { {{54, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1, 4 };
+	RECIPE_DESC stick1 = { {{51, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1, 2, 4};
+	RECIPE_DESC stick2 = { {{52, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1, 2, 4 };
+	RECIPE_DESC CraftingTable = { {{51, ITEMNAME_OAKPLANKS}, {52, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}},
+	ITEMNAME_CRAFTINGTABLE, 1, 4, 1};
 	
+	RECIPE_DESC WoodPickAxe = { {{59, ITEMNAME_OAKPLANKS}, {60, ITEMNAME_OAKPLANKS}, {61, ITEMNAME_OAKPLANKS}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
+	ITEMNAME_WOOD_PICKAXE, 1, 5, 1};
+
+	RECIPE_DESC StonePickAxe = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {61, ITEMNAME_STONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
+	ITEMNAME_STONE_PICKAXE, 1, 5, 1 };
+	
+	RECIPE_DESC StoneAxe = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {62, ITEMNAME_STONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
+	ITEMNAME_STONE_AXE, 1, 5, 1 };
+	
+	RECIPE_DESC StonnSword = { {{60, ITEMNAME_STONE}, {63, ITEMNAME_STONE}, {66, ITEMNAME_STICK}},
+	ITEMNAME_STONE_SWORD, 1, 3, 1 };
+
+	RECIPE_DESC SteelSword = { {{60, ITEMNAME_IRON}, {63, ITEMNAME_IRON}, {66, ITEMNAME_STICK}},
+	ITEMNAME_STEEL_SWORD, 1, 3, 1 };
+
+	RECIPE_DESC Furance = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {61, ITEMNAME_STONE}, {62, ITEMNAME_STONE}, {64, ITEMNAME_STONE}, {65, ITEMNAME_STONE},
+		{66, ITEMNAME_STONE}, {67, ITEMNAME_STONE}},ITEMNAME_FURANCE, 1, 8, 1 };
+
+
+
 	m_vecRecipelist.push_back(oakplanks1);
 	m_vecRecipelist.push_back(oakplanks2);
 	m_vecRecipelist.push_back(oakplanks3);
@@ -36,6 +62,14 @@ HRESULT CCrafting::Initialize(void* pArg)
 	m_vecRecipelist.push_back(stick2);
 	m_vecRecipelist.push_back(stick1);
 	m_vecRecipelist.push_back(CraftingTable);
+	m_vecRecipelist.push_back(WoodPickAxe);
+	m_vecRecipelist.push_back(StonePickAxe);
+	m_vecRecipelist.push_back(StoneAxe);
+	m_vecRecipelist.push_back(StonnSword);
+	m_vecRecipelist.push_back(SteelSword);
+	m_vecRecipelist.push_back(Furance);
+
+
 
 	return S_OK;
 }
@@ -64,6 +98,10 @@ void CCrafting::Crafing()
 	if (pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount() > 0)
 		return;
 
+	if (pUI_Mgr->Get_vecSlotInfolist()->at(68)->Get_ItemCount() > 0)
+		return;
+
+
 	for (const auto& recipe : m_vecRecipelist)
 	{
 		m_bMatch = true;
@@ -83,38 +121,60 @@ void CCrafting::Crafing()
 
 		if (m_bMatch)
 		{
-			for (int i = 51; i < 55; ++i)
+			if (g_bMainInventoryOpen)
 			{
-				if (recipe.inputPattern.count(i) > 0)
-					continue;
-
-				if (pUI_Mgr->Get_vecSlotInfolist()->at(i)->Get_ItemName() != ITEMNAME_END)
+				for (int i = 51; i < 55; ++i)
 				{
-					m_bMatch = false;
-					break;
+					if (recipe.inputPattern.count(i) > 0)
+						continue;
+
+					if (pUI_Mgr->Get_vecSlotInfolist()->at(i)->Get_ItemName() != ITEMNAME_END)
+					{
+						m_bMatch = false;
+						break;
+					}
 				}
 			}
+			
+			if (g_bMCraftingTableOpen)
+			{
+				for (int i = 59; i < 68; ++i)
+				{
+					if (recipe.inputPattern.count(i) > 0)
+						continue;
+
+					if (pUI_Mgr->Get_vecSlotInfolist()->at(i)->Get_ItemName() != ITEMNAME_END)
+					{
+						m_bMatch = false;
+						break;
+					}
+				}
+			}
+	
 		}
 		if (m_bMatch)
 		{
-			/* 필요한 재료 개수 */
-			m_iItemTotalCount = recipe.requiredItemCounts;
+			/* 매칭된 레시피 저장 */
+			m_pMatchedRecipe = &recipe;
+			/* 필요한 재료 총 개수 */
+			m_iItemTotalCount = recipe.iTotalInputCout;
 			/* 필요한 슬롯의 개수 합 0*/
 			m_iSlotTotalCount = 0; 
 			/* 완성 개수 */
 			m_iresultCount = recipe.resultCount; 
-			/* 재료가 존재하는 슬롯 인덱스 */
+			/* 슬롯당 필요 개수*/
+			m_itemCountPerSlot = recipe.itemCountPerSlot;
 		
 			for (const auto& pair : recipe.inputPattern)
 			{
 				m_iSlotIndex = pair.first;
 
 				/* 슬롯에 들어간 아이템 개수 확인 */
-				m_iTempCount = pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndex)->Get_ItemCount();
+				//m_iTempCount = pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndex)->Get_ItemCount();
 				m_iSlotTotalCount += m_iTempCount;
 
 				/* 필요한 개수 마이너스 */
-				m_iTempCount -= recipe.resultCount;
+			/*	m_iTempCount -= recipe.itemCountPerSlot;
 
 				if (m_iTempCount <= 0)
 				{
@@ -123,21 +183,24 @@ void CCrafting::Crafing()
 				else
 				{
 					pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndex)->Set_ItemCount(m_iTempCount);
-				}
-			}
-			/* 레시피 조합 결과 아이템을 55번 슬롯에 넣기 */
-			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemName(recipe.resultItem);
-			if (recipe.resultItem == ITEMNAME_OAKPLANKS)
-			{
-				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(recipe.resultCount * 4);
-			}
-			else
-			{
-				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(recipe.resultCount);
+				}*/
 			}
 
-			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCountRender(true);
-			//pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemID(ITEMID_END);
+			if (g_bMCraftingTableOpen)
+			{
+				pUI_Mgr->Get_vecSlotInfolist()->at(68)->Set_ItemName(recipe.resultItem);
+				pUI_Mgr->Get_vecSlotInfolist()->at(68)->Set_ItemCount(recipe.resultCount);
+				pUI_Mgr->Get_vecSlotInfolist()->at(68)->Set_ItemCountRender(true);
+			}
+			else if (g_bMainInventoryOpen)
+			{
+				/* 레시피 조합 결과 아이템을 55번 슬롯에 넣기 */
+				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemName(recipe.resultItem);
+				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(recipe.resultCount);
+				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCountRender(true);
+				//pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemID(ITEMID_END);
+			}
+			
 			break;
 		}
 	}
@@ -150,46 +213,80 @@ void CCrafting::RButton()
 	if (pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount() <= 0)
 		return;
 
-	int iTemp = pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount();
-
-	if (m_bMatch)
+	if (m_bMatch && m_pMatchedRecipe != nullptr)
 	{
-		// m_iSlotTotalCount = 51 ~ 54번 슬롯 아이템 합				: 6개
-		// m_iItemTotalCount = 레시피에 필요한 아이템 총 개수		: 4개
-		// 슬롯 합 / 제작에 필요한 총 개수 = Test (제작된 개수)		:  6 / 4 = 1개 + 1 
-
-		m_iSlotTotalCount -= m_iItemTotalCount;
-		int Test = m_iSlotTotalCount / m_iItemTotalCount; 
-
-		if (pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndex)->Get_ItemName() == ITEMNAME_WOOD)
+		/*
+			_int itemCountPerSlot = { 0 }; // 슬롯당 필요한 아이템 개수
+			_int iTotalInputCout = { 0 }; // 조합에 들어가는 총 재료 개수
+			_int resultCount = { 0 }; // 레시피 조합 후 결과 아이템 개수
+		*/
+		_int iItemCount = { 0 };
+		_bool _bRun = { false };
+		
+		while (true)
 		{
-			/* 2 * 4 = 8 + at(55).count  */
-			int iTemp = pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount();
-			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(Test * 4 + iTemp);
+
+			for (const auto& pair : m_pMatchedRecipe->inputPattern)
+			{
+				_int SlotIndex = pair.first;
+
+				if (pUI_Mgr->Get_vecSlotInfolist()->at(SlotIndex)->Get_ItemCount() == 0)
+				{
+					_bRun = true;
+				}
+
+			}
+
+			iItemCount++;
+			
+			if (_bRun)
+			{
+
+				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(iItemCount * m_iresultCount);
+				break;
+			}
+			
+			for (const auto& pair : m_pMatchedRecipe->inputPattern)
+			{	
+				// 51, 52, 53, 54
+				_int SlotIndex = pair.first;
+				_int GetItemCount = pUI_Mgr->Get_vecSlotInfolist()->at(SlotIndex)->Get_ItemCount();
+
+				GetItemCount -= m_itemCountPerSlot;
+				pUI_Mgr->Get_vecSlotInfolist()->at(SlotIndex)->Set_ItemCount(GetItemCount);
+
+				if (GetItemCount == 0)
+					pUI_Mgr->Get_vecSlotInfolist()->at(SlotIndex)->Set_ItemName(ITEMNAME_END);
+
+				
+ 			}
+		}
+	}
+}
+
+void CCrafting::ConsumeRecipeItems()
+{
+	if (!m_pMatchedRecipe)
+		return;
+
+	CUI_Mgr* pUI_Mgr = CUI_Mgr::Get_Instance();
+
+	for (const auto& pair : m_pMatchedRecipe->inputPattern)
+	{
+		_int iSlotIndex = pair.first;
+		_int currentCount = pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Get_ItemCount();
+
+		currentCount -= m_itemCountPerSlot;
+
+		if (currentCount <= 0)
+		{
+			pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemName(ITEMNAME_END);
+			pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemCount(0);
 		}
 		else
 		{
-			pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(Test + 1);
+			pUI_Mgr->Get_vecSlotInfolist()->at(iSlotIndex)->Set_ItemCount(currentCount);
 		}
-		
-		pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCountRender(true);
-
-		for (int i = 51; i < 55; ++i)
-		{
-			int iTempCount = pUI_Mgr->Get_vecSlotInfolist()->at(i)->Get_ItemCount();
-
-			for (int j = 0; j < Test; ++j)
-			{
-				iTempCount -= m_iresultCount;
-				pUI_Mgr->Get_vecSlotInfolist()->at(i)->Set_ItemCount(iTempCount);
-
-				if (iTempCount == 0)
-				{
-					pUI_Mgr->Get_vecSlotInfolist()->at(i)->Set_ItemName(ITEMNAME_END);
-					break;
-				}
-			}
-        }
 	}
 }
 

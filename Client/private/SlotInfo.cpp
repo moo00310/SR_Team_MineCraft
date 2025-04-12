@@ -41,9 +41,11 @@ HRESULT CSlotInfo::Initialize(void* pArg)
         {0, 44.f, 44.f, 878.f, 152.f},  // 55~
         {0, 44.f, 44.f, 560.f, 117.f},  // 56 화로
         {0, 44.f, 44.f, 560.f, 230.f},  // 57 화로 
-        {0, 70.f, 70.f, 755.f, 175.f},   // 58 화로
-        {0, 44.f, 44.f, 560.f, 117.f},  // 59 ~ 67 제작 테이블 슬롯
-        {0, 70.f, 70.f, 782.f, 173.f} // 68 제작 결과 슬롯
+        {0, 70.f, 70.f, 755.f, 175.f},  // 58 화로
+        {1, 44.f, 44.f, 478.f, 118.f}, // 59 ~ 61 제작 테이블 슬롯
+        {1, 44.f, 44.f, 478.f, 173.f}, // 62 ~ 64 제작 테이블 슬롯
+        {1, 44.f, 44.f, 478.f, 228.f}, // 65 ~ 67 제작 테이블 슬롯
+        {0, 70.f, 70.f, 782.f, 173.f}   // 68 제작 결과 슬롯
     };
 
 
@@ -61,8 +63,10 @@ HRESULT CSlotInfo::Initialize(void* pArg)
     else if (m_iSlotIndexNum == 56) m_iCategory = 11; //화로
     else if (m_iSlotIndexNum == 57) m_iCategory = 12; //화로
     else if (m_iSlotIndexNum == 58) m_iCategory = 13; //화로
-    else if (m_iSlotIndexNum < 68)  m_iCategory = 14; // 제작 테이블 슬롯
-    else if (m_iSlotIndexNum == 68) m_iCategory = 15; // 제작 결과 슬롯
+    else if (m_iSlotIndexNum < 62)  m_iCategory = 14; // 제작 테이블 슬롯
+    else if (m_iSlotIndexNum < 65)  m_iCategory = 15; // 제작 테이블 슬롯
+    else if (m_iSlotIndexNum < 68)  m_iCategory = 16; // 제작 테이블 슬롯
+    else if (m_iSlotIndexNum == 68) m_iCategory = 17; // 제작 결과 슬롯
     else m_iCategory = 14;
 
     // 공통 속성 할당
@@ -80,6 +84,12 @@ HRESULT CSlotInfo::Initialize(void* pArg)
         Desc.fY += (m_iSlotIndexNum - 45) * 56.f;
     else if (m_iCategory == 8 || m_iCategory == 9)
         Desc.fX += (m_iSlotIndexNum - (m_iCategory == 8 ? 51 : 53)) * 58.f;
+    else if (m_iCategory == 14)
+         Desc.fX += (m_iSlotIndexNum - 59) * 58.f;
+    else if (m_iCategory == 15)
+        Desc.fX += (m_iSlotIndexNum - 62) * 58.f;
+    else if (m_iCategory == 16)
+        Desc.fX += (m_iSlotIndexNum - 65) * 58.f;
 
 
     if (FAILED(__super::Initialize(&Desc)))
@@ -149,6 +159,18 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 		/* 마우스에 아이템이 없으면 => 처음 실행 */
 		if (pMouse->Get_Picked() == false)
 		{
+            if (m_iSlotIndexNum == 55)
+            {
+                pUI_Mgr->Get_Crafting()->ConsumeRecipeItems();
+                pMouse->Set_OldItem(pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemName());
+                pMouse->Set_OldItemCount(pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount());
+            }
+            else if (m_iSlotIndexNum != 55)
+            {
+                pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemName(ITEMNAME_END);
+                pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(0);
+            }
+
 			if (m_ItemName != ITEMNAME_END)
 			{
 				/* 클릭한 슬롯의 아이템 및 폰트 저장*/		      
@@ -343,7 +365,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
         //pUI_Mgr->Split_ItemStack(m_iSlotIndexNum);
     }
     
-    if (g_bMainInventoryOpen)
+    if (g_bMainInventoryOpen || g_bMCraftingTableOpen)
     {        
         pUI_Mgr->Get_Crafting()->Crafing();
 

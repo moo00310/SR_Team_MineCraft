@@ -21,8 +21,9 @@ public:
 	{
 		map<_int, ITEMNAME> inputPattern;
 		ITEMNAME resultItem = ITEMNAME_END;
-		_int resultCount = { 0 };
-		_int requiredItemCounts = { 0 };
+		_int itemCountPerSlot = { 0 }; // 슬롯당 필요한 아이템 개수
+		_int iTotalInputCout = { 0 }; // 조합에 들어가는 총 재료 개수
+		_int resultCount = { 0 }; // 레시피 조합 후 결과 아이템 개수
 
 	}RECIPE_DESC;
 
@@ -37,6 +38,7 @@ public:
 public:
 	void Crafing();
 	void RButton();
+	void ConsumeRecipeItems();
 
 private:
 	HRESULT Ready_Components();
@@ -47,6 +49,7 @@ private:
 	_int		m_iresultCount = { 0 };
 	_int		m_iTempCount = { 0 };
 	_int		m_iSlotIndex = { 0 };
+	_int		m_itemCountPerSlot = { 0 };
 	ITEMNAME	m_ItemName = ITEMNAME_END;
 	
 	_int		m_iRbuttonTotal = { 0 };
@@ -57,6 +60,7 @@ private:
 
 
 	vector<RECIPE_DESC> m_vecRecipelist;
+	const RECIPE_DESC* m_pMatchedRecipe = nullptr;
 
 private:
 	CTexture* m_pTextureCom = { nullptr };

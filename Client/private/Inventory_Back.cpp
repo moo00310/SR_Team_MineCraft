@@ -32,7 +32,7 @@ HRESULT CInventory_Back::Initialize(void* pArg)
 	{1, 53.f, 52.5f, 630.f, 258.f},  // 50
 	{1, 53.f, 52.5f, 697.f, 121.f},  // 51~52
 	{1, 53.f, 52.5f, 697.f, 177.f},  // 53~54
-	{1, 53.f, 52.5f, 878.f, 152.f}   // 결과물
+	{1, 53.f, 52.5f, 478.f, 228.f}   // 결과물
 	};
 
 	if (m_iSlotIndexNum < 9) m_iCategory = 0;
