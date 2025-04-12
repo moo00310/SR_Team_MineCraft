@@ -5,6 +5,7 @@
 #include "Arm_Steve.h"
 #include "RightHand_Object.h"
 #include "Pawn.h"
+#include "Camera_Player.h"
 
 class CRight_hand final : public CGameObject
 {
@@ -20,7 +21,11 @@ public:
 	virtual void Update(_float fTimeDelta);
 	virtual void Late_Update(_float fTimeDelta);
 
+public:
+	void OffRightHands();
+
 private:
+	CCamera_Player* m_pCamera = { nullptr };
 	CPawn* m_pSteve = { nullptr };
 	CRightHand_Object* m_pArm_Model = { nullptr };
 	CRightHand_Object* m_pRect_Model = { nullptr };
@@ -28,7 +33,7 @@ private:
 	CRightHand_Object* m_pLeft_Rect_Model = { nullptr };
 
 private:
-	bool isTPS = true;
+	//bool isTPS = true;
 
 private:
 	void Chage_RightHand();

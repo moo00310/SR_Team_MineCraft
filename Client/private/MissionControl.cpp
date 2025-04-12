@@ -1,7 +1,7 @@
 #include "MissionControl.h"
 #include "MCTerrain.h"
 #include "Monster.h"
-#include "Camera_Cutscene.h"
+#include "Camera_Player.h"
 
 CMissionControl::CMissionControl(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CGameObject{ pGraphic_Device }
@@ -41,13 +41,14 @@ HRESULT CMissionControl::Initialize(void* pArg)
 
 void CMissionControl::InitMissions1() {
     // 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
-    /*m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"나무", L"나무 5개 벌목하기",0, 5}
-    });
-
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"제작대", L"제작대 만들기",0,1}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"나무", L"나무 5개 벌목하기",0, 5}
+    //});
+    //
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"제작대", L"제작대 만들기",0,1}
+    //});
+    /*
 
     m_Round1.emplace_back(std::vector<missionDetail>{
         { L"돌칼", L"돌 칼 만들기",0,1},
@@ -144,7 +145,7 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
                 if (ptemp == nullptr) return;
                 static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
 
-                static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->Start_Cutscene(m_SpawnPos[Random_pos]);
+                static_cast<CCamera_Player*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera")))->Start_Cutscene(m_SpawnPos[Random_pos]);
 
                 m_bIsWaveStart = false;
                 m_bIsWave = true;

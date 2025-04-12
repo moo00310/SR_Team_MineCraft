@@ -171,6 +171,7 @@
     <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\BreakableRect.h" />
     <ClInclude Include="..\public\BTDecorator_IsAttack.h" />
+    <ClInclude Include="..\public\BTDecorator_IsCutScene.h" />
     <ClInclude Include="..\public\BTDecorator_IsTargetNear.h" />
     <ClInclude Include="..\public\BTDistanceBranch.h" />
     <ClInclude Include="..\public\BTTask_Attack.h" />
@@ -227,6 +228,7 @@
     <ClInclude Include="..\public\Mouse.h" />
     <ClInclude Include="..\public\Mouse_Item.h" />
     <ClInclude Include="..\public\Mouse_ItemFont.h" />
+    <ClInclude Include="..\public\OakWood.h" />
     <ClInclude Include="..\public\ParticleAppleEating.h" />
     <ClInclude Include="..\public\ParticleCharging.h" />
     <ClInclude Include="..\public\ParticleCrackerLoad.h" />
@@ -325,6 +327,7 @@
     <ClCompile Include="..\private\BreakableCube.cpp" />
     <ClCompile Include="..\private\BreakableRect.cpp" />
     <ClCompile Include="..\private\BTDecorator_IsAttack.cpp" />
+    <ClCompile Include="..\private\BTDecorator_IsCutScene.cpp" />
     <ClCompile Include="..\private\BTDecorator_IsTargetNear.cpp" />
     <ClCompile Include="..\private\BTDistanceBranch.cpp" />
     <ClCompile Include="..\private\BTTask_Attack.cpp" />
@@ -376,6 +379,7 @@
     <ClCompile Include="..\private\Mouse.cpp" />
     <ClCompile Include="..\private\Mouse_Item.cpp" />
     <ClCompile Include="..\private\Mouse_ItemFont.cpp" />
+    <ClCompile Include="..\private\OakWood.cpp" />
     <ClCompile Include="..\private\ParticleAppleEating.cpp" />
     <ClCompile Include="..\private\ParticleCharging.cpp" />
     <ClCompile Include="..\private\ParticleCrackerLoad.cpp" />

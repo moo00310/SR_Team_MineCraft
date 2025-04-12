@@ -1,4 +1,5 @@
 #include "Camera_Cutscene.h"
+#include "Right_hand.h"
 
 Camera_Cutscene::Camera_Cutscene(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CCamera{ pGraphic_Device }
@@ -54,12 +55,12 @@ void Camera_Cutscene::Update(_float fTimeDelta)
 
 	// 중심(m_vLook)을 기준으로 공전 궤도 상 위치 계산
 	_float3 vPos;
-	vPos.x = m_vLook.x + fRadius * cosf(m_fAngle);
-	vPos.z = m_vLook.z + fRadius * sinf(m_fAngle);
-	vPos.y = m_vLook.y + 2.f; // 필요에 따라 높이 조절
+	vPos.x = m_vCutScene_LookPos.x + fRadius * cosf(m_fAngle);
+	vPos.z = m_vCutScene_LookPos.z + fRadius * sinf(m_fAngle);
+	vPos.y = m_vCutScene_LookPos.y + 2.f; // 필요에 따라 높이 조절
 
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, vPos);
-	m_pTransformCom->LookAt(m_vLook);
+	m_pTransformCom->LookAt(m_vCutScene_LookPos);
 
 	if (m_fAngle > D3DXToRadian(270.f))
 	{
@@ -85,15 +86,19 @@ HRESULT Camera_Cutscene::Render()
 
 void Camera_Cutscene::Start_Cutscene(_float3 vPos)
 {
-	m_vLook = vPos;
+	m_vCutScene_LookPos = vPos;
 
 	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera"))->SetActive(false);
+	static_cast<CRight_hand*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_RightHand_GameObject")))->OffRightHands();
+	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_RightHand_GameObject"))->SetActive(false);
 	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene"))->SetActive(true);
+
 }
 
 void Camera_Cutscene::End_Cutscene()
 {
 	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene"))->SetActive(false);
+	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_RightHand_GameObject"))->SetActive(true);
 	m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera"))->SetActive(true);
 }
 

@@ -7,6 +7,7 @@
 #include "BTTask_RunChase.h"
 #include "BTTask_Attack_Near.h"
 #include "BTTask_Attack_Far.h"
+#include "BTDecorator_IsCutScene.h"
 
 CWarden::CWarden(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CMonster{ pGraphic_Device }
@@ -49,6 +50,8 @@ HRESULT CWarden::Initialize(void* pArg)
 
     // 임시 스폰
     m_pTransformCom->Set_State(CTransform::STATE_POSITION,_float3(10, 15, 10));
+
+    SetAnimTime();
 	return S_OK;
 }
 
@@ -132,6 +135,14 @@ void CWarden::Dead_Pawn()
 
     m_pGameInstance->Play_Sound(TEXT("death_1"), SOUND_DEAD, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
+}
+
+void CWarden::SetAnimTime()
+{
+    m_skelAnime->Set_fElapsedTime(Rest_Pelvis, 2.f);
+    m_skelAnime->Set_fElapsedTime(Rest_Arm_R, 2.f);
+    m_skelAnime->Set_fElapsedTime(Rest_Arm_L, 2.f);
+    m_skelAnime->Set_fElapsedTime(Rest_Neck, 2.f);
 }
 
 HRESULT CWarden::Ready_Components()
@@ -572,24 +583,24 @@ HRESULT CWarden::Ready_Animation()
     mat5.Turn_Radian(_float3(1.f, 1.f, 0.f), D3DXToRadian(-80));
 
     KEYFREAME Rest_Pelvis_1 = { 0.f, mat };
-    KEYFREAME Rest_Pelvis_2 = { 0.5f, mat2 };
-    KEYFREAME Rest_Pelvis_3 = { 2.5f, mat2 };
-    KEYFREAME Rest_Pelvis_4 = { 3.f, mat };
+    KEYFREAME Rest_Pelvis_2 = { 1.5f, mat2 };
+    KEYFREAME Rest_Pelvis_3 = { 3.5f, mat2 };
+    KEYFREAME Rest_Pelvis_4 = { 5.f, mat };
 
     KEYFREAME Rest_Neck_1 = { 0.f, mat };
-    KEYFREAME Rest_Neck_2 = { 0.5f, mat3 };
-    KEYFREAME Rest_Neck_3 = { 2.5f, mat3 };
-    KEYFREAME Rest_Neck_4 = { 3.f, mat };
+    KEYFREAME Rest_Neck_2 = { 1.5f, mat3 };
+    KEYFREAME Rest_Neck_3 = { 3.5f, mat3 };
+    KEYFREAME Rest_Neck_4 = { 5.f, mat };
 
     KEYFREAME Rest_ArmR_1 = { 0.f, mat };
-    KEYFREAME Rest_ArmR_2 = { 0.5f, mat4 };
-    KEYFREAME Rest_ArmR_3 = { 2.5f, mat4 };
-    KEYFREAME Rest_ArmR_4 = { 3.f, mat };
+    KEYFREAME Rest_ArmR_2 = { 1.5f, mat4 };
+    KEYFREAME Rest_ArmR_3 = { 3.5f, mat4 };
+    KEYFREAME Rest_ArmR_4 = { 5.f, mat };
 
     KEYFREAME Rest_ArmL_1 = { 0.f, mat };
-    KEYFREAME Rest_ArmL_2 = { 0.5f, mat5 };
-    KEYFREAME Rest_ArmL_3 = { 2.5f, mat5 };
-    KEYFREAME Rest_ArmL_4 = { 3.f, mat };
+    KEYFREAME Rest_ArmL_2 = { 1.5f, mat5 };
+    KEYFREAME Rest_ArmL_3 = { 3.5f, mat5 };
+    KEYFREAME Rest_ArmL_4 = { 5.f, mat };
 
 
     m_skelAnime->Add_Animation(ANIM_type::Rest_Pelvis, Rest_Pelvis_1);
@@ -837,6 +848,7 @@ HRESULT CWarden::Ready_BehaviorTree()
     // 루트 노드: Selector (적을 발견하면 따라가고, 아니면 순찰)
     CSelectorNode* pRoot = new CSelectorNode(L"Root");
     CBTDecorator_IsAttack* pIsAttack = new CBTDecorator_IsAttack;
+    CBTDecorator_IsCutScene* pIsCutScene = new CBTDecorator_IsCutScene;
 
     // 행동노드
     CBTTask_WalkChase* pChase = new CBTTask_WalkChase;
@@ -845,6 +857,7 @@ HRESULT CWarden::Ready_BehaviorTree()
 
     CSequenceNode* pNearAttack = new CSequenceNode(L"Near_Attack_Sequence");
     CSequenceNode* pFarAttack = new CSequenceNode(L"Far_Attack_Sequence");
+    CSequenceNode* pCutScene = new CSequenceNode(L"CutScene_Sequence");
 
     CBTTask_Find* pFind = new CBTTask_Find;
     CBTTask_RunChase* pRunChase = new CBTTask_RunChase;
@@ -862,10 +875,13 @@ HRESULT CWarden::Ready_BehaviorTree()
     RandomSelector->Add_Node(pNearAttack);
     RandomSelector->Add_Node(pFarAttack);
 
-    // 루트 노드에 추가
-    pRoot->Add_Node(pIsAttack);
-    pRoot->Add_Node(pChase);
+    pIsCutScene->Set_DecoratorNodes(pCutScene, nullptr);
+    pCutScene->Add_Node(pFind);
 
+    // 루트 노드에 추가
+    pRoot->Add_Node(pIsCutScene);
+    pRoot->Add_Node(pChase);
+    pRoot->Add_Node(pIsAttack);
     pRoot->Add_Node(pIdle);
 
     // 최종 트리 설정

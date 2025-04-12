@@ -1,5 +1,6 @@
 #include "Arm_Steve.h"
 #include "GameInstance.h"
+#include <iostream>
 
 CArm_Steve::CArm_Steve(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CRightHand_Object{ pGraphic_Device }
@@ -156,6 +157,8 @@ HRESULT CArm_Steve::Ready_Animation()
 
 void CArm_Steve::Update_State(_float fTimeDelta)
 {
+	if (m_isTPS) S_OK;
+
 	switch (m_eCurAnim)
 	{
 	case INIT:
@@ -194,10 +197,7 @@ void CArm_Steve::Motion_Swing(_float fTimeDelta)
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(SWING))
 	{
-		if (m_pSteve->Get_AttackContinue())
-			m_eCurAnim = SWING;
-		else
-			m_eCurAnim = INIT;
+		m_eCurAnim = INIT;		
 	}
 }
 
@@ -223,7 +223,7 @@ void CArm_Steve::Motion_Run(_float fTimeDelta)
 
 void CArm_Steve::KeyInput()
 {
-	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && m_pSteve->Get_AttackContinue())
 	{
 		m_eCurAnim = SWING;
 		return;
