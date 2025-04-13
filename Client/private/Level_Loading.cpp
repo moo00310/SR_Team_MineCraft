@@ -25,8 +25,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 {
 	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
 	if (nullptr == pGameInstance)
-		return E_FAIL;
-	Safe_AddRef(pGameInstance);
+		return E_FAIL;	
 
 	/* For.Prototype_GameObject_LoadingScene*/
 	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_GameObject_LoadingScene"),
@@ -115,16 +114,12 @@ HRESULT CLevel_Loading::Render()
 
 HRESULT CLevel_Loading::Ready_Layer_LoadingScene(const _wstring& strLayerTag)
 {
-
-	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
-	Safe_AddRef(pGameInstance);
+	CGameInstance* pGameInstance = CGameInstance::Get_Instance();	
 
 	/* Prototype_GameObject_MainInventory */
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOADING, TEXT("Prototype_GameObject_LoadingScene"),
 		LEVEL_LOADING, strLayerTag)))
-		return E_FAIL;
-
-	Safe_Release(pGameInstance);
+		return E_FAIL;	
 
 	return S_OK;
 }
