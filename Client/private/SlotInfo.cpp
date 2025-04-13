@@ -159,17 +159,36 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 		/* 마우스에 아이템이 없으면 => 처음 실행 */
 		if (pMouse->Get_Picked() == false)
 		{
-            if (m_iSlotIndexNum == 55)
+            if (g_bMainInventoryOpen)
             {
-                pUI_Mgr->Get_Crafting()->ConsumeRecipeItems();
-                pMouse->Set_OldItem(pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemName());
-                pMouse->Set_OldItemCount(pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount());
+                if (m_iSlotIndexNum == 55)
+                {
+                    pUI_Mgr->Get_Crafting()->ConsumeRecipeItems();
+                    pMouse->Set_OldItem(pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemName());
+                    pMouse->Set_OldItemCount(pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount());
+                }
+                else if (m_iSlotIndexNum != 55)
+                {
+                    pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemName(ITEMNAME_END);
+                    pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(0);
+                }
             }
-            else if (m_iSlotIndexNum != 55)
+
+            if (g_bMCraftingTableOpen)
             {
-                pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemName(ITEMNAME_END);
-                pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(0);
+                if (m_iSlotIndexNum == 68)
+                {
+                    pUI_Mgr->Get_Crafting()->ConsumeRecipeItems();
+                    pMouse->Set_OldItem(pUI_Mgr->Get_vecSlotInfolist()->at(68)->Get_ItemName());
+                    pMouse->Set_OldItemCount(pUI_Mgr->Get_vecSlotInfolist()->at(68)->Get_ItemCount());
+                }
+                else if (m_iSlotIndexNum != 68)
+                {
+                    pUI_Mgr->Get_vecSlotInfolist()->at(68)->Set_ItemName(ITEMNAME_END);
+                    pUI_Mgr->Get_vecSlotInfolist()->at(68)->Set_ItemCount(0);
+                }
             }
+        
 
 			if (m_ItemName != ITEMNAME_END)
 			{
@@ -323,7 +342,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 		}
 	}
 
-    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_RBUTTON) && m_iItemCount > 1 && !m_bShowInvenTop && m_iSlotIndexNum != 55)
+    if (PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_RBUTTON) && m_iItemCount > 1 && !m_bShowInvenTop && m_iSlotIndexNum != 55 && m_iSlotIndexNum != 68)
     {
         if (pMouse->Get_Picked() == false)
         {
@@ -362,8 +381,30 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 			}
             
         }
-        //pUI_Mgr->Split_ItemStack(m_iSlotIndexNum);
     }
+
+  
+	else if (pMouse->Get_Picked() && PtInRect(&rcRect, ptMouse) && m_pGameInstance->Key_Up(VK_RBUTTON) && m_pGameInstance->Key_Pressing(VK_SHIFT) && !m_bShowInvenTop 
+        && pMouse->Get_ItemCount() > 1)
+	{
+        m_ItemName = (pMouse->Get_ItemName());
+        m_iItemCount = 1;
+        m_bCheck = true;
+        m_bCountRender = true;
+        pMouse->Set_ItemCount(pMouse->Get_ItemCount() - 1);
+
+        m_iTensDigit = pMouse->Get_ItemCount() / 10;
+        m_iOnesDigit = pMouse->Get_ItemCount() % 10;
+
+        if (m_bCountRender && m_iTensDigit != 0 || m_iOnesDigit != 0)
+        {
+            /* 마우스가 아이템 개수를 들고 있는 상태로 저장*/
+            (*mouseItemFont)->Set_Check(true);
+            (*mouseItemFont)->Set_ItemFont_Tens(m_iTensDigit);
+            (*mouseItemFont)->Set_ItemFont_Ones(m_iOnesDigit);
+        }
+	}
+
     
     if (g_bMainInventoryOpen || g_bMCraftingTableOpen)
     {        
@@ -375,12 +416,7 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
 
         }
     }
-    //else
-    //{
-    //    (*mouseItem)->Set_Check(false);
-    //    (*mouseItemFont)->Set_Check(false);
-    //}
-    
+
 	if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
 		return;
 }

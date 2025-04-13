@@ -67,6 +67,7 @@
 #include "StartButton.h"
 #include "Title.h"
 #include "Edition.h"
+#include "LoadingScene.h"
 #include "MainInventory.h"
 #include "SubInventory.h"
 #include "Inventory_Back.h"
@@ -190,7 +191,6 @@ HRESULT CLoader::Loading_For_Logo()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
-
 	/* For.Prototype_Component_Texture_MainLogo*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_MainLogo"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/MinecraftBanner.png"), 1))))
@@ -210,7 +210,6 @@ HRESULT CLoader::Loading_For_Logo()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_edition"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/title/edition.png"), 1))))
 		return E_FAIL;
-
 	#pragma endregion 
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩딩중입니다."));
@@ -239,7 +238,6 @@ HRESULT CLoader::Loading_For_Logo()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_Edition"),
 		CEdition::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
 	#pragma endregion 
 
 	/* For.Prototype_GameObject_BackGround */
