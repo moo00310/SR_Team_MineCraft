@@ -225,7 +225,7 @@ void CCrafting::RButton()
 		
 		while (true)
 		{
-
+			
 			for (const auto& pair : m_pMatchedRecipe->inputPattern)
 			{
 				_int SlotIndex = pair.first;

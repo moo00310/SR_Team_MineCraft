@@ -4,6 +4,7 @@
 #include "Steve.h"
 #include "DestroyCube.h"
 #include "Crosshair.h"
+#include "LayHitCube.h"
 
 BEGIN(Client)
 
@@ -50,6 +51,7 @@ private:
     E_CAMERA_MODE       m_eCameraMode = E_CAMERA_MODE::TPS;
     CSteve* m_pPlayer = { nullptr };
     CCrosshair* m_pCrosshair{ nullptr };
+    CLayHitCube* m_pHitCube{ nullptr };
 
 private:
     //_float3             m_vCameraPos{};
@@ -58,6 +60,7 @@ private:
     _float              m_fSpringArmLength{ 5.f };
     CDestroyCube* m_DestroyCube = { nullptr };
     class CMCTerrain* m_pTerrain = { nullptr };
+    vector<_uint> m_Groups;
 
 private:
     _float m_AttackDamage = {};
@@ -75,6 +78,7 @@ private:
     void    Orbit_Around_Pos(_float fTimeDelta);
     void    On_MouseMove(_float fTimeDelta);
     void    Setting_Damage();
+    void    LayHitCube();
 
 private:
     HRESULT Ready_Components();
