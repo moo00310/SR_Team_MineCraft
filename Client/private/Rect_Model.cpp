@@ -595,24 +595,36 @@ ITEMNAME CRect_Model::Compute_Texture_Name()
 void CRect_Model::FrameCallback(int animType, int frame)
 {
 	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(0);
+	_float3 playerPos = boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION);
 	//먹는 사운드
 	if (animType == EAT && frame == 0) {
-		m_pGameInstance->Play_Sound(TEXT("Player_Eat1"), SOUND_EAT, this, 0.8f, boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+		m_pGameInstance->Play_Sound(TEXT("Player_Eat1"), SOUND_EAT, this, 0.8f, playerPos);
 	}
 
 	if (animType == EAT && frame == 2) {
-		m_pGameInstance->Play_Sound(TEXT("Player_Eat2"), SOUND_EAT, this, 0.8f, boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+		m_pGameInstance->Play_Sound(TEXT("Player_Eat2"), SOUND_EAT, this, 0.8f, playerPos);
 	}
 
 	if (animType == EAT && frame == 4) {
-		m_pGameInstance->Play_Sound(TEXT("Player_Eat3"), SOUND_EAT, this, 0.8f, boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+		m_pGameInstance->Play_Sound(TEXT("Player_Eat3"), SOUND_EAT, this, 0.8f, playerPos);
 	}
 
 	// 참격 이펙트 추가
 	if (animType == ATTACK_Far && frame == 2)
 	{
 		
+		AuraSword(); 
+		m_pGameInstance->Play_Sound(TEXT("Player_FireSword_Sweep"), SOUND_ATTACK, this, 0.8f, playerPos);
+	}
+
+	if (animType == ATTACK_Near && frame == 2)
+	{
 		AuraSword();
+		m_pGameInstance->Play_Sound(TEXT("Player_FireNear"), SOUND_ATTACK, this, 0.8f, playerPos);
+	}
+
+	if (animType == SWING && frame == 1) {
+		m_pGameInstance->Play_Sound(TEXT("Player_Sword_Strong"), SOUND_ATTACK, this, 0.8f, playerPos);
 	}
 		
 }
