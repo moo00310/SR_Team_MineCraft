@@ -33,8 +33,7 @@ HRESULT CMainLogo::Initialize(void* pArg)
 
     m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
     m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
-    //m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(0, 0, 0.f));
-    
+
     return S_OK;
 }
 

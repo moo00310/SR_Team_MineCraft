@@ -16,6 +16,8 @@ public:
 	virtual void Update(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+	HRESULT Ready_Layer_LoadingScene(const _wstring& strLayerTag);
+
 private:
 	LEVEL				m_eNextLevelID = { LEVEL_END };
 	class CLoader*		m_pLoader = { nullptr };

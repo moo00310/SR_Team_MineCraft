@@ -299,7 +299,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('M'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STONE, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_COBBLESTONE, 1);
 	}
 
 	if (m_pGameInstance->Key_Down('L'))
@@ -312,7 +312,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('J'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STICK, 20);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GUNPOWDER, 1);
 	}
 	if (m_pGameInstance->Key_Down('H'))
 	{

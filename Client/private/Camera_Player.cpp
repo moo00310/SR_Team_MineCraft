@@ -369,8 +369,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     {
         ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
-        if (eCurItem >= 100)
-            return;
+      /*  if (eCurItem >= 100)
+            return;*/
 
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
@@ -476,7 +476,8 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         }
     }
 
-    if (m_pGameInstance->Key_Down('E')) {
+    if (m_pGameInstance->Key_Down('E'))
+    {
         if (g_bFurnaceUiOpen || g_bMCraftingTableOpen)
             return;
 

@@ -223,6 +223,7 @@
     <ClInclude Include="..\public\ItemRect.h" />
     <ClInclude Include="..\public\IObserver.h" />
     <ClInclude Include="..\public\Left_Rect_Model.h" />
+    <ClInclude Include="..\public\LoadingScene.h" />
     <ClInclude Include="..\public\MissionControl.h" />
     <ClInclude Include="..\public\MissionMainUi.h" />
     <ClInclude Include="..\public\Mouse.h" />
@@ -374,6 +375,7 @@
     <ClCompile Include="..\private\ItemRect.cpp" />
     <ClCompile Include="..\private\IObserver.cpp" />
     <ClCompile Include="..\private\Left_Rect_Model.cpp" />
+    <ClCompile Include="..\private\LoadingScene.cpp" />
     <ClCompile Include="..\private\MissionControl.cpp" />
     <ClCompile Include="..\private\MissionMainUi.cpp" />
     <ClCompile Include="..\private\Mouse.cpp" />

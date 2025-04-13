@@ -32,27 +32,32 @@ HRESULT CCrafting::Initialize(void* pArg)
 	RECIPE_DESC oakplanks4 = { {{54, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1, 4 };
 	RECIPE_DESC stick1 = { {{51, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1, 2, 4};
 	RECIPE_DESC stick2 = { {{52, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1, 2, 4 };
+	
+	RECIPE_DESC  Torch1 = { {{51, ITEMNAME_COAL}, {53, ITEMNAME_STICK}}, ITEMNAME_TORCH, 1, 2, 4 };
+	RECIPE_DESC  Torch2 = { {{52, ITEMNAME_COAL}, {54, ITEMNAME_STICK}}, ITEMNAME_TORCH, 1, 2, 4 };
+
 	RECIPE_DESC CraftingTable = { {{51, ITEMNAME_OAKPLANKS}, {52, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}},
 	ITEMNAME_CRAFTINGTABLE, 1, 4, 1};
 	
 	RECIPE_DESC WoodPickAxe = { {{59, ITEMNAME_OAKPLANKS}, {60, ITEMNAME_OAKPLANKS}, {61, ITEMNAME_OAKPLANKS}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
 	ITEMNAME_WOOD_PICKAXE, 1, 5, 1};
 
-	RECIPE_DESC StonePickAxe = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {61, ITEMNAME_STONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
+	RECIPE_DESC StonePickAxe = { {{59, ITEMNAME_COBBLESTONE}, {60, ITEMNAME_COBBLESTONE}, {61, ITEMNAME_COBBLESTONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
 	ITEMNAME_STONE_PICKAXE, 1, 5, 1 };
 	
-	RECIPE_DESC StoneAxe = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {62, ITEMNAME_STONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
+	RECIPE_DESC StoneAxe = { {{59, ITEMNAME_COBBLESTONE}, {60, ITEMNAME_COBBLESTONE}, {62, ITEMNAME_COBBLESTONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
 	ITEMNAME_STONE_AXE, 1, 5, 1 };
 	
-	RECIPE_DESC StonnSword = { {{60, ITEMNAME_STONE}, {63, ITEMNAME_STONE}, {66, ITEMNAME_STICK}},
+	RECIPE_DESC StonnSword = { {{60, ITEMNAME_COBBLESTONE}, {63, ITEMNAME_COBBLESTONE}, {66, ITEMNAME_STICK}},
 	ITEMNAME_STONE_SWORD, 1, 3, 1 };
 
 	RECIPE_DESC SteelSword = { {{60, ITEMNAME_IRON}, {63, ITEMNAME_IRON}, {66, ITEMNAME_STICK}},
 	ITEMNAME_STEEL_SWORD, 1, 3, 1 };
 
-	RECIPE_DESC Furance = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {61, ITEMNAME_STONE}, {62, ITEMNAME_STONE}, {64, ITEMNAME_STONE}, {65, ITEMNAME_STONE},
-		{66, ITEMNAME_STONE}, {67, ITEMNAME_STONE}},ITEMNAME_FURANCE, 1, 8, 1 };
+	RECIPE_DESC Furance = { {{59, ITEMNAME_COBBLESTONE}, {60, ITEMNAME_COBBLESTONE}, {61, ITEMNAME_COBBLESTONE}, {62, ITEMNAME_COBBLESTONE}, {64, ITEMNAME_COBBLESTONE}, {65, ITEMNAME_COBBLESTONE},
+		{66, ITEMNAME_COBBLESTONE}, {67, ITEMNAME_COBBLESTONE}},ITEMNAME_FURANCE, 1, 8, 1 };
 
+	RECIPE_DESC Wepon1 = { {{60, ITEMNAME_ROTTENFLESH}, {63, ITEMNAME_GUNPOWDER}, {66, ITEMNAME_STEEL_SWORD}},ITEM_WEPON_1, 1, 3, 1 };
 
 
 	m_vecRecipelist.push_back(oakplanks1);
@@ -61,6 +66,8 @@ HRESULT CCrafting::Initialize(void* pArg)
 	m_vecRecipelist.push_back(oakplanks4);
 	m_vecRecipelist.push_back(stick2);
 	m_vecRecipelist.push_back(stick1);
+	m_vecRecipelist.push_back(Torch1);
+	m_vecRecipelist.push_back(Torch2);
 	m_vecRecipelist.push_back(CraftingTable);
 	m_vecRecipelist.push_back(WoodPickAxe);
 	m_vecRecipelist.push_back(StonePickAxe);
@@ -68,8 +75,7 @@ HRESULT CCrafting::Initialize(void* pArg)
 	m_vecRecipelist.push_back(StonnSword);
 	m_vecRecipelist.push_back(SteelSword);
 	m_vecRecipelist.push_back(Furance);
-
-
+	m_vecRecipelist.push_back(Wepon1);
 
 	return S_OK;
 }
@@ -225,7 +231,6 @@ void CCrafting::RButton()
 		
 		while (true)
 		{
-
 			for (const auto& pair : m_pMatchedRecipe->inputPattern)
 			{
 				_int SlotIndex = pair.first;
@@ -236,9 +241,7 @@ void CCrafting::RButton()
 				}
 
 			}
-
-			iItemCount++;
-			
+		
 			if (_bRun)
 			{
 
@@ -246,6 +249,8 @@ void CCrafting::RButton()
 				break;
 			}
 			
+			iItemCount++;
+
 			for (const auto& pair : m_pMatchedRecipe->inputPattern)
 			{	
 				// 51, 52, 53, 54
@@ -257,8 +262,6 @@ void CCrafting::RButton()
 
 				if (GetItemCount == 0)
 					pUI_Mgr->Get_vecSlotInfolist()->at(SlotIndex)->Set_ItemName(ITEMNAME_END);
-
-				
  			}
 		}
 	}

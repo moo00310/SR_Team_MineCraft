@@ -81,7 +81,7 @@ void CLevel_Logo::Update(_float fTimeDelta)
 	/* 레벨 전환 */
 	if (g_bChangeLevel)
 	{
-		g_bChangeLevel = false;
+		//g_bChangeLevel = false;
 
 		if (FAILED(m_pGameInstance->Change_Level(LEVEL_LOADING,
 			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_YU))))

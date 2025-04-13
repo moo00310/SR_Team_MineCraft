@@ -371,10 +371,13 @@
       <UniqueIdentifier>{0fddaa52-c229-4143-bb33-658575395b07}</UniqueIdentifier>
     </Filter>
     <Filter Include="04.Behavior_Tree\BTNode\Warden\Decorator\is_CutScene">
-      <UniqueIdentifier>{35057dad-a57d-44c7-9fd5-65a02a435dfe}</UniqueIdentifier> 
+      <UniqueIdentifier>{35057dad-a57d-44c7-9fd5-65a02a435dfe}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\02.Camera\Cutscene%28안씀%29">
       <UniqueIdentifier>{6d04bf8e-95cd-4a44-8270-877a40e284a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\13.LoadingScene">
+      <UniqueIdentifier>{51f5769e-c763-4dcf-88b0-4dbd8c3eb7d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -837,12 +840,15 @@
     </ClInclude>
     <ClInclude Include="..\public\ParticleFurnaceCloud.h">
       <Filter>02.GameObjects\05.Particle</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\BTDecorator_IsCutScene.h">
       <Filter>04.Behavior_Tree\BTNode\Warden\Decorator\is_CutScene</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\OakWood.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LoadingScene.h">
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1293,12 +1299,15 @@
     </ClCompile>
     <ClCompile Include="..\private\ParticleFurnaceCloud.cpp">
       <Filter>02.GameObjects\05.Particle</Filter>
- </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\BTDecorator_IsCutScene.cpp">
       <Filter>04.Behavior_Tree\BTNode\Warden\Decorator\is_CutScene</Filter>
-      </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\OakWood.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LoadingScene.cpp">
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

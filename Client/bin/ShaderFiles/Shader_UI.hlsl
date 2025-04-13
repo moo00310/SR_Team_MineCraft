@@ -9,6 +9,21 @@ float g_Time;
 
 float g_burn;
 float g_burnResult;
+float g_LoadingPercent;
+
+// 회전을 적용한 UV 좌표 생성 함수
+float2 RotateUV(float2 uv, float angle)
+{
+    float2 center = float2(0.5, 0.5);
+    float2 delta = uv - center;
+    float cosA = cos(angle);
+    float sinA = sin(angle);
+
+    float2 rotated;
+    rotated.x = delta.x * cosA - delta.y * sinA;
+    rotated.y = delta.x * sinA + delta.y * cosA;
+    return rotated + center;
+}
 
 sampler TextureSampler = sampler_state
 {
@@ -176,6 +191,30 @@ PS_OUT PS_BurnResultUi(PS_IN In)
     return Out;
 }
 
+/* 중앙 로딩 아이콘 효과용 Pixel Shader */
+PS_OUT PS_LoadingIcon(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    // 회전 각도 (2 * PI * 로딩 퍼센트)
+    float angle = g_LoadingPercent * 6.2831853f;
+
+    // 회전된 UV 계산
+    float2 rotatedUV = RotateUV(In.vTexcoord, angle);
+
+    // 텍스처 샘플링
+    float4 texColor = tex2D(TextureSampler, rotatedUV);
+
+    // 밝기 조절 (로딩 퍼센트가 증가할수록 밝게)
+    float brightness = lerp(0.5f, 1.5f, g_LoadingPercent);
+    texColor.rgb *= brightness;
+
+    // 최종 출력
+    Out.vColor = texColor;
+    return Out;
+}
+
+
 /* Technique 정의 */
 technique DefaultTechnique
 {
@@ -279,6 +318,21 @@ technique DefaultTechnique
 
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_BurnResultUi();
+    }
+
+    pass P0
+    {
+        AlphaBlendEnable = TRUE;
+        SrcBlend = SRCALPHA;
+        DestBlend = INVSRCALPHA;
+        BlendOp = ADD;
+
+        CULLMODE = NONE;
+        ZWRITEENABLE = FALSE;
+        ZENABLE = FALSE;
+
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_LoadingIcon();
     }
 }
 
