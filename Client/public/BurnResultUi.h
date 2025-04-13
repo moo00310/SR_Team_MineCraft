@@ -25,7 +25,7 @@ public:
 	virtual void Priority_Update(_float fTimeDelta)override;
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
-	virtual HRESULT Render(int _ironTime);
+	virtual HRESULT Render(_float _ironTime);
 
 private:
 	HRESULT Ready_Components();

@@ -47,7 +47,7 @@ void CBurnResultUi::Late_Update(_float fTimeDelta)
 {
 }
 
-HRESULT CBurnResultUi::Render(int _ironTime)
+HRESULT CBurnResultUi::Render(_float _ironTime)
 {
 	if (g_bFurnaceUiOpen)
 	{
@@ -70,7 +70,7 @@ HRESULT CBurnResultUi::Render(int _ironTime)
 			return E_FAIL;
 
 		m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(0));
-		m_pShaderCom->SetFloat("g_burnResult", _ironTime/ 1000.f);
+		m_pShaderCom->SetFloat("g_burnResult", _ironTime);
 
 		m_pShaderCom->Begin(6);
 
