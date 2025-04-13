@@ -222,6 +222,7 @@
     <ClInclude Include="..\public\Item.h" />
     <ClInclude Include="..\public\ItemRect.h" />
     <ClInclude Include="..\public\IObserver.h" />
+    <ClInclude Include="..\public\LayHitCube.h" />
     <ClInclude Include="..\public\Left_Rect_Model.h" />
     <ClInclude Include="..\public\MissionControl.h" />
     <ClInclude Include="..\public\MissionMainUi.h" />
@@ -373,6 +374,7 @@
     <ClCompile Include="..\private\ISubject.cpp" />
     <ClCompile Include="..\private\ItemRect.cpp" />
     <ClCompile Include="..\private\IObserver.cpp" />
+    <ClCompile Include="..\private\LayHitCube.cpp" />
     <ClCompile Include="..\private\Left_Rect_Model.cpp" />
     <ClCompile Include="..\private\MissionControl.cpp" />
     <ClCompile Include="..\private\MissionMainUi.cpp" />

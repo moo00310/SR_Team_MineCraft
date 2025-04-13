@@ -73,22 +73,29 @@ HRESULT CCamera_Player::Initialize(void* pArg)
 
     m_pCrosshair = static_cast<CCrosshair*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Crosshair")));
     Safe_AddRef(m_pCrosshair);
-    //m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION));
 
+    m_pHitCube = static_cast<CLayHitCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_HitLayCube")));
+    Safe_AddRef(m_pHitCube);
+
+    //m_pTransformCom->Set_State(CTransform::STATE_POSITION, m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION));
     //m_vCurrentCameraPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION);
+
+    m_Groups = { COLLISION_NON_PHYSIC_BLOCK, COLLISION_BLOCK };
 
 	return S_OK;
 }
 
 void CCamera_Player::Priority_Update(_float fTimeDelta)
 {
-
+   
 }
 
 void CCamera_Player::Update(_float fTimeDelta)
 {
     m_pGameInstance->UpdateListener(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION), m_pTarget_Transform_Com->Get_State(CTransform::STATE_LOOK), m_pTarget_Transform_Com->Get_State(CTransform::STATE_UP));
-
+    
+    // 매프레임 돌면서 출동한 큐브 테두리 보여주는 애인데 레이가 안들어옴 이유를 모르게씀
+    // LayHitCube(); 
     Input_Key(fTimeDelta);
 
     if (m_pGameInstance->Key_Down(VK_F5))
@@ -249,15 +256,12 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
         CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
         _float3 vDir{};
 
-        vector<_uint> Groups = { COLLISION_NON_PHYSIC_BLOCK, COLLISION_BLOCK };
-
-
         // Ray Casting: Instancing된 오브젝트와 충돌 검사
         pHitObject = m_pGameInstance->Ray_Cast_MultiGroup_InstancedObjects(
             vHeadPos, // 시작 위치 (플레이어의 머리 위치)
             m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
             5.f, // 최대 탐색 거리
-            Groups, // 충돌 그룹
+            m_Groups, // 충돌 그룹
             &fDist, // 충돌한 거리 저장
             &vDir,  //충돌 방향 저장
             &pHitComponent // 충돌한 콜라이더 저장
@@ -322,7 +326,6 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     if (m_pGameInstance->Key_Down(VK_LBUTTON)) {
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
-        CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
         _float3 vDir{};
 
         // 몬스터와 충돌 검사
@@ -722,9 +725,43 @@ void CCamera_Player::Setting_Damage()
         break;
     default:
         m_AttackDamage = 10.f;
+        // 큐브랑 맨손은 휘두르기 쿨다임 0.3 // 렉트는 쿨타임 1초
         if(Name < ITEMNAME_CUBE_END || Name == ITEMNAME_END)    m_AttackCoolTime = 0.3f;
         else  m_AttackCoolTime = 1.f;
         break;
+    }
+}
+
+void CCamera_Player::LayHitCube()
+{
+    _float fDist;                  // 광선과 오브젝트 간의 거리
+    CGameObject* pHitObject;       // 충돌한 오브젝트
+    CComponent* pHitComponent = nullptr;     // 충돌한 컴포넌트 (콜라이더)
+    _float3 vDir{};
+    _float3 vHeadPos = m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f };
+
+    pHitObject = m_pGameInstance->Ray_Cast_MultiGroup_InstancedObjects(
+        vHeadPos, // 시작 위치 (플레이어의 머리 위치)
+        m_pTransformCom->Get_State(CTransform::STATE_LOOK), // 시선 방향
+        5.f, // 최대 탐색 거리
+        m_Groups, // 충돌 그룹
+        &fDist, // 충돌한 거리 저장
+        &vDir,  //충돌 방향 저장
+        &pHitComponent // 충돌한 콜라이더 저장
+    );
+
+    if (pHitObject)
+    {
+        CCollider_Cube* pCollider_Cube = static_cast<CCollider_Cube*>(pHitComponent);
+        if (!pCollider_Cube) return;
+
+        _float3 hitPosition{ pCollider_Cube->Get_Offset() };
+        m_pHitCube->SetActive(true);
+        m_pHitCube->GetTransform()->Set_State(CTransform::STATE_POSITION, hitPosition);
+    }
+    else
+    {
+        m_pHitCube->SetActive(false);
     }
 }
 
@@ -782,6 +819,7 @@ void CCamera_Player::Free()
 	__super::Free();
 
     Safe_Release(m_pCrosshair);
+    Safe_Release(m_pHitCube);
 	Safe_Release(m_pTerrain);
     Safe_Release(m_pPlayer);
     Safe_Release(m_pTarget_Transform_Com);

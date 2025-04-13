@@ -683,6 +683,8 @@ HRESULT CSteve::Ready_Animation()
 	m_skelAnime->Add_Animation(ANIM_type::Wepon_Far_Attack_ArmL, Attack_ArmL_Far_2);
 	m_skelAnime->Add_Animation(ANIM_type::Wepon_Far_Attack_ArmL, Attack_ArmL_Far_3);
 	m_skelAnime->Add_Animation(ANIM_type::Wepon_Far_Attack_ArmL, Attack_ArmL_Far_4);
+
+	return S_OK;
 }
 
 void CSteve::Update_State(_float fTimeDelta)

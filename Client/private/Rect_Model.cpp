@@ -559,7 +559,6 @@ void CRect_Model::AuraSword()
 
 	// 검기 크기 늘림.
 	scaleMatrix = scaleMatrix.Scaling(5.f, 5.f, 5.f);
-
 	swordAura->GetTransform()->Set_Matrix((_float4x4)scaleMatrix * (_float4x4)rotateMatrix * (*cameraWorldmat));
 
 	// 기존 생성 위치가 좀 낮게.
@@ -578,8 +577,23 @@ void CRect_Model::SwingFireSword()
 		return;
 	}
 
-	// 본 행렬.
-	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
+	Matrix boneWorldMatrix = {};
+	Matrix rotateMatrix = {};
+
+	if (m_isTPS)
+	{
+		boneWorldMatrix = m_pSteve->GetSoketMatrix(7);
+		rotateMatrix.Scaling(2.f, 7.f, 0.f);
+		rotateMatrix.Turn_Radian_Safe_Scale(_float3(1.f, 0.f, 0.f), D3DXToRadian(90.f));
+		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.5f, 0.f, 12.f));
+	}
+	else
+	{
+		boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
+		//rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(0.f));
+		//rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.2f, -0.5f, 0.f));
+	}
+
 
 	CParticleSystem* particle = CParticleEventManager::Get_Instance()->OnParticle(
 		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
@@ -587,7 +601,6 @@ void CRect_Model::SwingFireSword()
 	);
 
 	particle->GetTransform()->Set_Matrix(boneWorldMatrix);
-
 	particle->SetTimer(0.3f);
 }
 
