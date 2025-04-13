@@ -700,27 +700,27 @@ void CCamera_Player::Setting_Damage()
     switch (Name)
     {
     case Client::ITEMNAME_WOOD_PICKAXE:
-        m_AttackDamage = 10.f;
+        m_AttackDamage = 15.f;
         m_AttackCoolTime = 1.f;
         break;
     case Client::ITEMNAME_STONE_PICKAXE:
-        m_AttackDamage = 10.f;
+        m_AttackDamage = 15.f;
         m_AttackCoolTime = 1.f;
         break;
     case Client::ITEMNAME_STONE_AXE:
-        m_AttackDamage = 10.f;
+        m_AttackDamage = 15.f;
         m_AttackCoolTime = 1.f;
         break;
     case Client::ITEMNAME_STONE_SWORD:
-        m_AttackDamage = 10.f;
+        m_AttackDamage = 20.f;
         m_AttackCoolTime = 1.f;
         break;
     case Client::ITEMNAME_STEEL_SWORD:
-        m_AttackDamage = 10.f;
+        m_AttackDamage = 40.f;
         m_AttackCoolTime = 1.f;
         break;
     case Client::ITEM_WEPON_1:
-        m_AttackDamage = 10.f;
+        m_AttackDamage = 50.f;
         m_AttackCoolTime = 0.8f;
         break;
     default:
