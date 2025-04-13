@@ -594,7 +594,19 @@ ITEMNAME CRect_Model::Compute_Texture_Name()
 
 void CRect_Model::FrameCallback(int animType, int frame)
 {
-	// 여기다 먹는거 사운드
+	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(0);
+	//먹는 사운드
+	if (animType == EAT && frame == 0) {
+		m_pGameInstance->Play_Sound(TEXT("Player_Eat1"), SOUND_EAT, this, 0.8f, boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+	}
+
+	if (animType == EAT && frame == 2) {
+		m_pGameInstance->Play_Sound(TEXT("Player_Eat2"), SOUND_EAT, this, 0.8f, boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+	}
+
+	if (animType == EAT && frame == 4) {
+		m_pGameInstance->Play_Sound(TEXT("Player_Eat3"), SOUND_EAT, this, 0.8f, boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION));
+	}
 
 	// 참격 이펙트 추가
 	if (animType == ATTACK_Far && frame == 2)
