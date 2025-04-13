@@ -61,7 +61,6 @@ public:
 	HRESULT Update_RootBone(const Matrix& matrix);
 	void Set_BoneLocalMatrix(int boneIndex, D3DMATRIX& mat);
 
-
 public:
 	void DeBugBone(int BoneIndex);
 	void InitBone();

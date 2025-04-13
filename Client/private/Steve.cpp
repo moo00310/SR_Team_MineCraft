@@ -149,6 +149,12 @@ void CSteve::Input_Key(_float fTimeDelta)
 		return;
 	}
 
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		isAttack = true;
+		return;
+	}
+
 	if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
 	{
 		isAttack = true;
@@ -158,7 +164,7 @@ void CSteve::Input_Key(_float fTimeDelta)
 	{
 		isFarAttack = true;
 	}
-	
+
 	if (!Get_RigidBody()->Get_isKnockBack())
 	{
 		Move(fTimeDelta);
@@ -677,9 +683,6 @@ HRESULT CSteve::Ready_Animation()
 	m_skelAnime->Add_Animation(ANIM_type::Wepon_Far_Attack_ArmL, Attack_ArmL_Far_2);
 	m_skelAnime->Add_Animation(ANIM_type::Wepon_Far_Attack_ArmL, Attack_ArmL_Far_3);
 	m_skelAnime->Add_Animation(ANIM_type::Wepon_Far_Attack_ArmL, Attack_ArmL_Far_4);
-
-
-	return S_OK;
 }
 
 void CSteve::Update_State(_float fTimeDelta)
@@ -837,7 +840,7 @@ void CSteve::Turn(_float fTimeDelta)
 
 	// === 위치 제거 ===
 	mat.Set_State(mat.STATE_POSITION, _float3(0.f, 0.f, 0.f));
-
+	
 	// === 현재 카메라 모드 확인 ===
 
 	if (static_cast<CCamera_Player*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera")))->Get_CameraMode() == CCamera_Player::E_CAMERA_MODE::R_TPS)
@@ -859,8 +862,6 @@ void CSteve::Turn(_float fTimeDelta)
 	// === 몸(Root) 회전 (IK 보정) ===
 	m_skelAnime->IkLookAt(fTimeDelta, 0, 2);
 }
-
-
 
 void CSteve::PlayDashParticle(_float fTimeDelta)
 {

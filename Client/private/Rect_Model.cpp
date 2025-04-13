@@ -262,10 +262,8 @@ HRESULT CRect_Model::Ready_Animation()
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_3);
 	m_pSkeletalAnimator->Add_Animation(ATTACK_Far, Attack_Far_5);
 
-
 	return S_OK;
 }
-
 
 void CRect_Model::Update_State(_float fTimeDelta)
 {
@@ -405,6 +403,12 @@ void CRect_Model::Motion_Attack2(_float fTimeDelta)
 
 void CRect_Model::KeyInput()
 {
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		m_eCurAnim = SWING;
+		return;
+	}
+
 	if (m_pGameInstance->Key_Pressing(VK_LBUTTON))
 	{
 		ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
@@ -599,7 +603,6 @@ void CRect_Model::FrameCallback(int animType, int frame)
 	// 참격 이펙트 추가
 	if (animType == ATTACK_Far && frame == 2)
 	{
-		
 		AuraSword();
 	}
 		
