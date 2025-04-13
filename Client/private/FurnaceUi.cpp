@@ -72,11 +72,11 @@ HRESULT CFurnaceUi::Render()
 		__super::End();	
 
 		if (m_furnace->Get_FurnaceBurn()) {
-			m_burnUi->Render(m_furnace->Get_CoalTime());
-			m_burnResultUi->Render(m_furnace->Get_IronTime());
+			float coalPercent = (m_furnace->GetCoalCoolTime() - m_furnace->Get_CoalTime()) / m_furnace->GetCoalCoolTime();
+			float ironPercent = (m_furnace->GetIronCoolTime() - m_furnace->Get_IronTime()) / m_furnace->GetIronCoolTime();
+			m_burnUi->Render(coalPercent);
+			m_burnResultUi->Render(ironPercent);
 		}
-
-
 	}
 	return S_OK;
 }

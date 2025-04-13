@@ -19,7 +19,8 @@ public:
 		Swing_FF, Swing_BF, Swing_BA, Swing_FA, Swing_R, Swing_L, Attack ,INIT,
 		Run_FF, Run_BF, Run_BA, Run_FA,
 		Wepon_Near_Attack_Pelvis, Wepon_Near_Attack_ArmR, Wepon_Near_Attack_ArmL, Wepon_Near_Attack_Wepon,
-		Wepon_Far_Attack_Pelvis, Wepon_Far_Attack_ArmR, Wepon_Far_Attack_ArmL, Wepon_Far_Attack_Wepon
+		Wepon_Far_Attack_Pelvis, Wepon_Far_Attack_ArmR, Wepon_Far_Attack_ArmL, Wepon_Far_Attack_Wepon,
+		Sit_Pelvis, 
 	};
 
 private:
@@ -52,12 +53,11 @@ private:
 	ANIM m_eRreAnim = { ANIM_END };
 
 	bool isAttack = { false };	
+	bool isFarAttack = { false };
 	bool m_IsDashCoolTime = {false};
 	float m_fCurrentDashTime = { 0.f };
 	float m_fCoolTimeDash = { 0.4f };
 	bool m_isAttackContinue = { false };
-
-	bool isFarAttack = { false };
 
 private:
 	void	Input_Key(_float fTimeDelta);

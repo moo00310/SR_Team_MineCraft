@@ -418,6 +418,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_CRAFTINGTABLE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_WOOD:
@@ -425,6 +426,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_OAKPLANKS:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_STONE:
@@ -443,6 +445,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_FURANCE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         default:

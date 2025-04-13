@@ -36,7 +36,7 @@ HRESULT CUIDropItem::Initialize(void* pArg)
 	}
 
 	m_pTransformCom->Scaling(m_fSizeX, m_fSizeY, 1.f);
-	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
+	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));	
 
 	return S_OK;
 }
@@ -129,7 +129,7 @@ void CUIDropItem::Free()
 }
 
 void CUIDropItem::OnPushPool()
-{
+{	
 }
 
 void CUIDropItem::SetTransform(_float2 _position)
@@ -137,6 +137,21 @@ void CUIDropItem::SetTransform(_float2 _position)
 	m_fX = _position.x;
 	m_fY = _position.y;
 	m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
+
+	_float nx = 0.f;
+	_float ny = 0.f;
+
+	if (IsOutScreenX(nx) == true)
+	{
+		// 스크린 밖이면 안으로 끌고옴.
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(nx, ny, 0.f));
+	}
+
+	if (IsOutScreenY(ny) == true)
+	{
+		// 스크린 밖이면 안으로 끌고옴.
+		m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(nx, ny, 0.f));
+	}
 }
 
 void CUIDropItem::SetDirection(_float2 _direction)
@@ -159,6 +174,50 @@ void CUIDropItem::SetTargetPosition(_float2 _target)
 void CUIDropItem::SetItemName(ITEMNAME _itemName)
 {
 	m_kITEM_NAME = _itemName;
+}
+
+_bool CUIDropItem::IsOutScreenX(_float& _outX)
+{
+	_float3 position = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+
+	// 왼쪽 넘어갔는지 확인.
+	if (-(g_iWinSizeX * 0.5f) > position.x)
+	{
+		_outX = -(g_iWinSizeX * 0.5f);
+		return true;
+	}
+
+	// 오른쪽 넘어갔는지 확인.
+	if (g_iWinSizeX * 0.5f < position.x)
+	{
+		_outX = g_iWinSizeX * 0.5f;
+		return true;
+	}
+
+	// 없다면 false 반환.
+	return false;
+}
+
+_bool CUIDropItem::IsOutScreenY(_float& _outY)
+{
+	_float3 position = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+
+	// 상단 넘어갔는지 확인.
+	if (g_iWinSizeY * 0.5f < position.y)
+	{
+		_outY = g_iWinSizeY * 0.5f;
+		return true;
+	}
+
+	// 하단 넘어갔는지 확인.
+	if (-(g_iWinSizeY * 0.5f) > position.y)
+	{
+		_outY = -(g_iWinSizeY * 0.5f);
+		return true;
+	}
+
+	// 없다면 false 반환.
+	return false;
 }
 
 HRESULT CUIDropItem::Ready_Components()

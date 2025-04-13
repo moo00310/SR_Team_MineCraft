@@ -25,6 +25,7 @@
 #include "Left_Rect_Model.h"
 #include "GameMgr.h"
 #include "Warden.h"
+#include "LayHitCube.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -780,6 +781,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CCrosshair::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_LayHitCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_LayHitCube"),
+		CLayHitCube::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/* UI GameObject */
 	/*================================================================================================*/
 	/* For.Prototype_GameObject_MainInventory */
@@ -1177,7 +1183,6 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 #pragma endregion
 
-
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
 #pragma region PROTOTYPE
@@ -1222,6 +1227,7 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SkyBox"),
 		CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
 #pragma endregion
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

@@ -223,6 +223,12 @@ void CArm_Steve::Motion_Run(_float fTimeDelta)
 
 void CArm_Steve::KeyInput()
 {
+	if (m_pGameInstance->Key_Down(VK_LBUTTON))
+	{
+		m_eCurAnim = SWING;
+		return;
+	}
+
 	if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && m_pSteve->Get_AttackContinue())
 	{
 		m_eCurAnim = SWING;

@@ -42,6 +42,7 @@ private:
 	HRESULT Ready_Laye_Warden(const _wstring& strLayerTag);
 
 	HRESULT Ready_Layer_DestroyCube(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_HitCube(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_UI_DropItem(const _wstring& strLayerTag);
 
 	HRESULT Ready_Layer_Missions(const _wstring& strLayerTag);

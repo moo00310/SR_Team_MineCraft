@@ -19,6 +19,8 @@ HRESULT CParticleFurnace::Initialize(void* pArg)
 {
 	iParticleCount = 5;		
 	IsBounding = true;
+	IsTimer = true;
+	fEndTimer = 150.f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{

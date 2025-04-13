@@ -36,35 +36,10 @@ void CFurnace::Priority_Update(_float fTimeDelta)
 {
     vector<CSlotInfo*> _vecSlotList = CUI_Mgr::Get_Instance()->Get_vecSlotInfoOriginlist();
     if (m_bFurnaceBurn) {
-        m_iCoalTime--;
+        // 1초당 감소.
+        m_fCoalTime -= 1.f * fTimeDelta;
 
-        if (_vecSlotList[56]->Get_ItemName() == ITEMNAME_RAWIRON) 
-            m_iIronTime--;
-
-        // 석탄이 없으면 burn false
-        if (m_iCoalTime <= 0) {
-            m_bFurnaceBurn = false;
-        }
-
-        // 철이 다 구워지면 
-        if (m_iIronTime <= 0) {
-            m_iIronTime = 1000;
-            if (_vecSlotList[56]->Get_ItemName() == ITEMNAME_RAWIRON) {
-                _vecSlotList[56]->Set_ItemCountAdd(-1);
-                
-                // 철이 하나도 안구워져 있으면
-                if (_vecSlotList[58]->Get_ItemName() == ITEMNAME_END) {
-                    _vecSlotList[58]->Set_ItemName(ITEMNAME_IRON);
-                    _vecSlotList[58]->Set_ItemCount(1);
-                    _vecSlotList[58]->Set_ItemCountRender(true);
-                }
-                else {
-                    _vecSlotList[58]->Set_ItemCountAdd(1);
-                }
-                
-            }
-        }
-
+        // 파티클 활성화.
         if (m_bParticle == false)
         {
             _float3 posFire = m_vecPositions[0];
@@ -86,18 +61,44 @@ void CFurnace::Priority_Update(_float fTimeDelta)
             );
 
             m_bParticle = true;
-        }        
+        }
+
+        if (_vecSlotList[56]->Get_ItemName() == ITEMNAME_RAWIRON)
+            m_fIronTime -= 1.f * fTimeDelta;
+
+        // 석탄이 없으면 burn false
+        if (m_fCoalTime <= 0) {
+            m_bFurnaceBurn = false;
+            m_bParticle = false;
+        }
+
+        // 철이 다 구워지면 
+        if (m_fIronTime <= 0) {
+            m_fIronTime = m_fIronCoolTime;
+
+            if (_vecSlotList[56]->Get_ItemName() == ITEMNAME_RAWIRON) {
+                _vecSlotList[56]->Set_ItemCountAdd(-1);
+                
+                // 철이 하나도 안구워져 있으면
+                if (_vecSlotList[58]->Get_ItemName() == ITEMNAME_END) {
+                    _vecSlotList[58]->Set_ItemName(ITEMNAME_IRON);
+                    _vecSlotList[58]->Set_ItemCount(1);
+                    _vecSlotList[58]->Set_ItemCountRender(true);
+                }
+                else {
+                    _vecSlotList[58]->Set_ItemCountAdd(1);
+                }                                
+            }
+        }          
     }
 
     if (!m_bFurnaceBurn) {
         if ((_vecSlotList[56]->Get_ItemName() == ITEMNAME_RAWIRON) && (_vecSlotList[57]->Get_ItemName() == ITEMNAME_COAL)) {
             _vecSlotList[57]->Set_ItemCountAdd(-1);
             m_bFurnaceBurn = true;
-            m_iIronTime = 1000;
-            m_iCoalTime = 8000;
-        }
-
-        m_bParticle = false;
+            m_fIronTime = m_fIronCoolTime;          // 철이 나오는 시간.
+            m_fCoalTime = m_fCoalCoolTime;         // 석탄 하나 당 화로 유지 시간.
+        }        
     }
 
     __super::Priority_Update(fTimeDelta);

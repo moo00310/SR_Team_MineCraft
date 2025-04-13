@@ -170,7 +170,7 @@ PS_OUT PS_MissionMainUi(PS_IN In)
 PS_OUT PS_BurnUi(PS_IN In)
 {
     PS_OUT Out;
-    if (In.vTexcoord.y < (1.0 - g_burn))
+    if (In.vTexcoord.y < g_burn)
         discard; // ¶Ç´Â clip(-1); µÑ ´Ù µÊ
 	
     float4 texColor = tex2D(TextureSampler, In.vTexcoord);
@@ -182,7 +182,7 @@ PS_OUT PS_BurnUi(PS_IN In)
 PS_OUT PS_BurnResultUi(PS_IN In)
 {
     PS_OUT Out;
-    if (In.vTexcoord.x > (1.0 - g_burnResult))
+    if (In.vTexcoord.x > g_burnResult)
         discard; // ¶Ç´Â clip(-1); µÑ ´Ù µÊ
 	
     float4 texColor = tex2D(TextureSampler, In.vTexcoord);
