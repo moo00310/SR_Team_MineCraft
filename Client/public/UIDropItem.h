@@ -33,6 +33,13 @@ public:
 	void SetItemName(ITEMNAME _itemName);
 
 private:
+	// ÇöÀç ÁÂÇ¥°¡ UI ÁÂÇ¥¸¦ ¹þ¾î³µ´Â°¡? XÁÂÇ¥.
+	_bool IsOutScreenX(_float& _outX);
+
+	// ÇöÀç ÁÂÇ¥°¡ UI ÁÂÇ¥¸¦ ¹þ¾î³µ´Â°¡? YÁÂÇ¥.
+	_bool IsOutScreenY(_float& _outY);
+
+private:
 	HRESULT Ready_Components();
 
 	// UI ÁÂÇ¥°è ±âÁØ ¹æÇâ º¤ÅÍ.

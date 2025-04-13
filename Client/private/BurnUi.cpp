@@ -47,7 +47,7 @@ void CBurnUi::Late_Update(_float fTimeDelta)
 {
 }
 
-HRESULT CBurnUi::Render(int _coalTime)
+HRESULT CBurnUi::Render(_float _coalTime)
 {
 	if (g_bFurnaceUiOpen)
 	{
@@ -69,7 +69,7 @@ HRESULT CBurnUi::Render(int _coalTime)
 			return E_FAIL;
 
 		m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(0));
-		m_pShaderCom->SetFloat("g_burn", _coalTime / 8000.f);
+		m_pShaderCom->SetFloat("g_burn", _coalTime);
 
 		m_pShaderCom->Begin(5);
 

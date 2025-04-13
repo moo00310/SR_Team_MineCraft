@@ -17,13 +17,13 @@ HRESULT CParticleSwordFlame::Initialize_Prototype()
 
 HRESULT CParticleSwordFlame::Initialize(void* pArg)
 {
-	iParticleCount = 180;
+	iParticleCount = 20;
 	IsTimer = false;
 	IsBounding = true;	
 
 	ParticleBoundingBox box;
-	box.vMinPosition = {0.1f, -0.4f, -0.4f};
-	box.vMaxPosition = { 0.4f, 0.2f, -0.3f };
+	box.vMinPosition = {0.f, -0.1f, -0.5f};
+	box.vMaxPosition = { 0.5f, 0.3f, -0.1f };
 	SetParticleBoundingBox(box);
 
 	if (FAILED(__super::Initialize(pArg)))
@@ -31,7 +31,7 @@ HRESULT CParticleSwordFlame::Initialize(void* pArg)
 		return E_FAIL;
 	}
 
-	dwVpBatchSize = 180;
+	dwVpBatchSize = 20;
 	dwPointSize = GetScale(0.1f);	// 포인트 스프라이트 크기.
 	dwPointScaleA = GetScale(0.f);	// 포인트 스프라이트 거리별 크기.
 	dwPointScaleB = GetScale(0.f);
@@ -123,9 +123,9 @@ HRESULT CParticleSwordFlame::Ready_Components()
 ParticleAttribute CParticleSwordFlame::OnSetAddParticle()
 {
 	ParticleAttribute att;
-	att.vPosition = { GetRandomFloat(0.1f, 0.4f), GetRandomFloat(-0.4f, 0.2f), GetRandomFloat(-0.4f, -0.3f) };
-	att.vColor = Float3ToHex({ 1.f, 1.f, 1.f });
-	att.vVelocity = { 0.f, 0.4f, 0.f };
+	att.vPosition = { GetRandomFloat(0.25f, 0.35f), GetRandomFloat(0.f, 0.2f), GetRandomFloat(-0.4f, -0.2f) };
+	att.vColor = Float3ToHex({ 0.6f, 0.6f, 0.6f });
+	att.vVelocity = { GetRandomFloat(-0.2f, 0.2f), 0.4f, 0.1f };
 	att.IsTime = false;
 	att.fCurrentTime = 0.f;
 	//att.fEndTime = 0.4f;	
@@ -136,5 +136,5 @@ ParticleAttribute CParticleSwordFlame::OnSetAddParticle()
 
 void CParticleSwordFlame::OnBoundingExit(ParticleAttribute& particle)
 {
-	particle.vPosition = { GetRandomFloat(0.1f, 0.4f), GetRandomFloat(-0.4f, 0.2f), GetRandomFloat(-0.4f, -0.3f) };
+	particle.vPosition = { GetRandomFloat(0.25f, 0.35f), GetRandomFloat(0.f, 0.2f), GetRandomFloat(-0.4f, -0.2f) };
 }

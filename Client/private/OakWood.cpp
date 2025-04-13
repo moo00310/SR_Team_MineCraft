@@ -74,7 +74,7 @@ HRESULT COakWood::Drop_Item_OnDestroy(const _float3& fPos)
 HRESULT COakWood::Play_Destroy_Effect(const _float3& vPos)
 {
     CParticleEventManager::Get_Instance()->OnParticle(
-        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
+        PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING,
         vPos
     );
 
