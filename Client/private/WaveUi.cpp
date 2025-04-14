@@ -87,7 +87,7 @@ HRESULT CWaveUi::Render()
 
         m_pGraphic_Device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
         LONG gageLeft = 350;
-        LONG gageRight = gageLeft + m_fGageMount;
+        LONG gageRight = gageLeft + (LONG)m_fGageMount;
 
         RECT rectGage = { gageLeft, 90, gageRight, 100 };
         DWORD fillColor2 = D3DCOLOR_ARGB(255, 60, 179, 113);
