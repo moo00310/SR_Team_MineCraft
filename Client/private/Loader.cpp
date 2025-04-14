@@ -36,6 +36,7 @@
 #include "Clouds.h"
 #include "Crosshair.h"
 #include "Camera_Cutscene.h"
+#include "Exp_Orb.h"
 
 
 //지형 관련
@@ -404,6 +405,12 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_Component_Texture_Clouds */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Clouds"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/environment/clouds.png"), 1))))
+		return E_FAIL;
+	m_loadeCount++;
+
+	/* For.Prototype_Component_Texture_Exp_Orb */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Exp_Orb"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/Experience-orb/Experience-orb-%d.png"), 12))))
 		return E_FAIL;
 	m_loadeCount++;
 
@@ -1107,6 +1114,12 @@ HRESULT CLoader::Loading_For_YUPlay()
 	/* For.Prototype_GameObject_Clouds */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Clouds"),
 		CClouds::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	m_loadeCount++;
+
+	/* For.Prototype_GameObject_Clouds */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Exp_Orb"),
+		CExp_Orb::Create(m_pGraphic_Device))))
 		return E_FAIL;
 	m_loadeCount++;
 

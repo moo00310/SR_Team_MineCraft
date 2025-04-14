@@ -40,91 +40,92 @@ HRESULT CMissionControl::Initialize(void* pArg)
 #pragma region init
 
 void CMissionControl::InitMissions1() {
-    // ¹«¾ùÀ», ¾î¶»°Ô ÇÏ³Ä, Áö±İ ÇÑ °ª, ¿Ï·áµÇ´Â °ª  
+    // ë¬´ì—‡ì„, ì–´ë–»ê²Œ í•˜ëƒ, ì§€ê¸ˆ í•œ ê°’, ì™„ë£Œë˜ëŠ” ê°’  
+
     m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"wood", L"³ª¹« 5°³ ¹ú¸ñÇÏ±â",0, 1}
+        { L"wood", L"ë‚˜ë¬´ 5ê°œ ë²Œëª©í•˜ê¸°",0, 1}
     });
     
     //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"craftingtable", L"Á¦ÀÛ´ë ¸¸µé±â",0,1}
+    //    { L"craftingtable", L"ì œì‘ëŒ€ ë§Œë“¤ê¸°",0,1}
     //});
     //
     //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"stonesword", L"µ¹ Ä® ¸¸µé±â",0,1},
-    //    { L"stoneaxe", L"µ¹ µµ³¢ ¸¸µé±â",0,1},
-    //    { L"stonepickaxe", L"µ¹ °î±ªÀÌ ¸¸µé±â",0,1}
+    //    { L"stonesword", L"ëŒ ì¹¼ ë§Œë“¤ê¸°",0,1},
+    //    { L"stoneaxe", L"ëŒ ë„ë¼ ë§Œë“¤ê¸°",0,1},
+    //    { L"stonepickaxe", L"ëŒ ê³¡ê´­ì´ ë§Œë“¤ê¸°",0,1}
     //});
 
     //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"apple", L"»ç°ú ¸Ô°í ¹è°íÇÄ Ã¤¿ì±â",0,1}
+    //    { L"apple", L"ì‚¬ê³¼ ë¨¹ê³  ë°°ê³ í”” ì±„ìš°ê¸°",0,1}
     //});
 
     //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"block", L"ºí·° 5°³ ¼³Ä¡",0,5}
+    //    { L"block", L"ë¸”ëŸ­ 5ê°œ ì„¤ì¹˜",0,5}
     //});
 
-    // ¿şÀÌºê ¹Ì¼Ç 1 : Á»ºñ 5¸¶¸® Ã³Ä¡
+    // ì›¨ì´ë¸Œ ë¯¸ì…˜ 1 : ì¢€ë¹„ 5ë§ˆë¦¬ ì²˜ì¹˜
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"Á»ºñ 5¸¶¸® Ã³Áö",0,1}
+        { L"zombi", L"ì¢€ë¹„ 5ë§ˆë¦¬ ì²˜ì§€",0,1}
     });
 }
 void CMissionControl::InitMissions2()
 {
  /*   m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"coal", L"¼®Åº Ã¤±¤±â",0,3},
-        { L"iron",   L"Ã¶ Ã¤±¤ÇÏ±â" ,0,5}
+        { L"coal", L"ì„íƒ„ ì±„ê´‘ê¸°",0,3},
+        { L"iron",   L"ì²  ì±„ê´‘í•˜ê¸°" ,0,5}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"furnace", L"È­·Î ¸¸µé±â" ,0,1},
-        { L"burniron", L"Ã¶ ±¸¿ì±â",0,2}
+        { L"furnace", L"í™”ë¡œ ë§Œë“¤ê¸°" ,0,1},
+        { L"burniron", L"ì²  êµ¬ìš°ê¸°",0,2}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"ironsword", L"Ã¶°Ë ¸¸µé±â",0,1}
+        { L"ironsword", L"ì² ê²€ ë§Œë“¤ê¸°",0,1}
     });*/
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"torch", L"¼®ÅºÀ¸·Î È¶ºÒ ¸¸µé±â",0,1}
+        { L"torch", L"ì„íƒ„ìœ¼ë¡œ íšƒë¶ˆ ë§Œë“¤ê¸°",0,1}
     });
 
-    // ¿şÀÌºê ¹Ì¼Ç 1: Á»ºñ 7¸¶¸®, Å©¸®ÆÛ 3¸¶¸® Ã³Ä¡
+    // ì›¨ì´ë¸Œ ë¯¸ì…˜ 1: ì¢€ë¹„ 7ë§ˆë¦¬, í¬ë¦¬í¼ 3ë§ˆë¦¬ ì²˜ì¹˜
     m_Round2Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"Á»ºñ 7¸¶¸® Ã³Ä¡",0,1},
-        //{ L"creeper",  L"Å©¸®ÆÛ 3¸¶¸® Ã³Ä¡",0,1}
+        { L"zombi", L"ì¢€ë¹„ 7ë§ˆë¦¬ ì²˜ì¹˜",0,1},
+        //{ L"creeper",  L"í¬ë¦¬í¼ 3ë§ˆë¦¬ ì²˜ì¹˜",0,1}
     });
 }
 void CMissionControl::InitMissions3()
 {
     m_Round3.emplace_back(std::vector<missionDetail>{
-        { L"block", L"»õ·Î¿î ¹«±â ¸¸µé±â" ,0,1}
+        { L"block", L"ìƒˆë¡œìš´ ë¬´ê¸° ë§Œë“¤ê¸°" ,0,1}
     });
 
-    // ¿şÀÌºê ¹Ì¼Ç 1: º¸½º ¸ó½ºÅÍ Ã³Ä¡ & »ıÁ¸
+    // ì›¨ì´ë¸Œ ë¯¸ì…˜ 1: ë³´ìŠ¤ ëª¬ìŠ¤í„° ì²˜ì¹˜ & ìƒì¡´
     m_Round3Wave.emplace_back(std::vector<missionDetail>{
-        { L"warden", L"º¸½º ¸ó½ºÅÍ Ã³Áö" ,0,1},
-        { L"morning",  L"¾ÆÄ§±îÁö »ıÁ¸ÇÏ±â" ,0,1}
+        { L"warden", L"ë³´ìŠ¤ ëª¬ìŠ¤í„° ì²˜ì§€" ,0,1},
+        { L"morning",  L"ì•„ì¹¨ê¹Œì§€ ìƒì¡´í•˜ê¸°" ,0,1}
     });
 }
 float CMissionControl::GetRandomFloat(float lowBound, float highBound)
 {
-    // Àß¸øµÈ ÀÔ·Â 
+    // ì˜ëª»ëœ ì…ë ¥ 
     if (lowBound >= highBound)
     {
         return lowBound;
     }
 
-    // [0, 1] ¹üÀ§ÀÇ ÀÓÀÇÀÇ float È¹µæ.
+    // [0, 1] ë²”ìœ„ì˜ ì„ì˜ì˜ float íšë“.
     float f = (rand() % 10000) * 0.0001f;
 
-    // ÃÖÁ¾ÀûÀ¸·Î lowBound ~ highBound ¹üÀ§ °ª ¸®ÅÏ.
+    // ìµœì¢…ì ìœ¼ë¡œ lowBound ~ highBound ë²”ìœ„ ê°’ ë¦¬í„´.
     return (f * (highBound - lowBound)) + lowBound;
 }
 #pragma endregion
 
 void CMissionControl::Priority_Update(_float fTimeDelta)
 {
-    // ³¡³µÀ¸¸é ½Ã°£ ºü¸£°Ô °¡±â
+    // ëë‚¬ìœ¼ë©´ ì‹œê°„ ë¹ ë¥´ê²Œ ê°€ê¸°
     if (m_bDayFinish) {
         if (g_fBright <= 0.25) {
             m_sun->Set_bAddTime();
@@ -266,10 +267,10 @@ void CMissionControl::Update(_float fTimeDelta)
 {
     if (m_bIsFireCracker == true && m_fFireTime <= 0.f)
     {
-        // È­·ÁÇÑ ÆøÁ×ÀÌ ³ª¸¦ °¨½ÑD¤¿....
-        CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_YU,	// °¡Á®¿Ã ¾À
-            PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// °¡Á®¿Ã ÇÁ·ÎÅäÅ¸ÀÔ.
-            LEVEL_YU,	// Àû¿ë ¾À.
+        // í™”ë ¤í•œ í­ì£½ì´ ë‚˜ë¥¼ ê°ì‹¼Dã…....
+        CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_YU,	// ê°€ì ¸ì˜¬ ì”¬
+            PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// ê°€ì ¸ì˜¬ í”„ë¡œí† íƒ€ì….
+            LEVEL_YU,	// ì ìš© ì”¬.
             LAYER_PARTICLE);
 
         _float3 pos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
@@ -283,7 +284,7 @@ void CMissionControl::Update(_float fTimeDelta)
         m_fFireTime = m_fFireCoolTime;
     }
 
-    // ÆøÁ× ÄğÅ¸ÀÓ °¨¼Ò.
+    // í­ì£½ ì¿¨íƒ€ì„ ê°ì†Œ.
     if (m_bIsFireCracker == true)
     {
         m_fFireTime -= 1.f * fTimeDelta;
@@ -448,7 +449,7 @@ void CMissionControl::Late_Update(_float fTimeDelta)
 
 void CMissionControl::Spwan_Monster(int count)
 {
-    // ¸ó½ºÅÍ ½ºÆù°¡´ÉÇÑ À§Ä¡ µé°í¿È
+    // ëª¬ìŠ¤í„° ìŠ¤í°ê°€ëŠ¥í•œ ìœ„ì¹˜ ë“¤ê³ ì˜´
     m_SpawnPos = m_pTerrain->Get_SpwanAble();
 
     for (int i = 0; i < count; i++)

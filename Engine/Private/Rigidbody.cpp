@@ -174,7 +174,7 @@ HRESULT CRigidbody::Update_RayCast_InstancingObject(_float fTimeDelta, _uint iCo
 	m_isGround = false;
 
 	_float3 vOriginalPos = m_pTransform->Get_State(CTransform::STATE_POSITION);
-	_float3 vNextPosition = vOriginalPos + m_vVelocity * fTimeDelta; // 예측 위치
+	_float3 vNextPosition = vOriginalPos + m_vVelocity * fTimeDelta * m_fMass; // 예측 위치
 
 	m_pTransform->Set_State(CTransform::STATE_POSITION, vNextPosition);
 

@@ -107,7 +107,6 @@ void CItemCube::Update(_float fTimeDelta)
     list<CCollider*> Colliders;
     Colliders = m_pTerrain->Active_Near_Chunk_Colliders(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 3.f);
 
-    //플레이어와 거리가 가까우면 중력적용
     m_pRigidbodyCom->Update_RayCast_InstancingObject(fTimeDelta, COLLISION_BLOCK, 0.3f);
 
     for (CCollider* pCollider : Colliders)
