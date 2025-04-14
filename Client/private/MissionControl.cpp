@@ -1,4 +1,4 @@
-#include "MissionControl.h"
+﻿#include "MissionControl.h"
 #include "MCTerrain.h"
 #include "Monster.h"
 #include "Camera_Player.h"
@@ -39,30 +39,31 @@ HRESULT CMissionControl::Initialize(void* pArg)
 
 #pragma region init
 
-void CMissionControl::InitMissions1() {
+void CMissionControl::InitMissions1() 
+{
     // 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
 
     m_Round1.emplace_back(std::vector<missionDetail>{
         { L"wood", L"나무 5개 벌목하기",0, 1}
     });
     
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"craftingtable", L"제작대 만들기",0,1}
-    //});
-    //
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"stonesword", L"돌 칼 만들기",0,1},
-    //    { L"stoneaxe", L"돌 도끼 만들기",0,1},
-    //    { L"stonepickaxe", L"돌 곡괭이 만들기",0,1}
-    //});
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"craftingtable", L"제작대 만들기",0,1}
+    });
+    
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"stonesword", L"돌 칼 만들기",0,1},
+        { L"stoneaxe", L"돌 도끼 만들기",0,1},
+        { L"stonepickaxe", L"돌 곡괭이 만들기",0,1}
+    });
 
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"apple", L"사과 먹고 배고픔 채우기",0,1}
-    //});
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"apple", L"사과 먹고 배고픔 채우기",0,1}
+    });
 
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"block", L"블럭 5개 설치",0,5}
-    //});
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"block", L"블럭 5개 설치",0,5}
+    });
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
@@ -72,20 +73,20 @@ void CMissionControl::InitMissions1() {
 void CMissionControl::InitMissions2()
 {
 
- /*   m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"coal", L"석탄 채광기",0,3},
-        { L"iron",   L"철 채광하기" ,0,5}
+    m_Round2.emplace_back(std::vector<missionDetail>{
+        { L"coal", L"석탄 채광기", 0, 3},
+        { L"iron",   L"철 채광하기" ,0, 5}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"furnace", L"화로 만들기" ,0,1},
+        { L"furnace", L"화로 만들기", 0, 1},
         { L"burniron", L"철 구우기",0,2}
 
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"ironsword", L"철검 만들기",0,1}
-    });*/
+    });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"torch", L"석탄으로 횃불 만들기",0,1}
@@ -97,18 +98,20 @@ void CMissionControl::InitMissions2()
         //{ L"creeper",  L"크리퍼 3마리 처치",0,1}
     });
 }
+
 void CMissionControl::InitMissions3()
 {
     m_Round3.emplace_back(std::vector<missionDetail>{
-        { L"block", L"새로운 무기 만들기" ,0,1}
+        { L"block", L"새로운 무기 만들기", 0, 1}
     });
 
-    // 웨이브 미션 1: 보스 몬스터 처치 & 생존
-    m_Round3Wave.emplace_back(std::vector<missionDetail>{
-        { L"warden", L"보스 몬스터 처지" ,0,1},
-        { L"morning",  L"아침까지 생존하기" ,0,1}
-    });
+    //// 웨이브 미션 1: 보스 몬스터 처치 & 생존
+    //m_Round3Wave.emplace_back(std::vector<missionDetail>{
+    //    { L"warden", L"보스 몬스터 처지" ,0,1},
+    //    { L"morning",  L"아침까지 생존하기" ,0,1}
+    //});
 }
+
 float CMissionControl::GetRandomFloat(float lowBound, float highBound)
 {
     // 잘못된 입력 
