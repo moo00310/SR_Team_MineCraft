@@ -303,7 +303,7 @@ void CZombi::Motion_Dead(_float fTimeDelta)
         }
 
         if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
-            _control->Update_Mission(L"Á»ºñ");
+            _control->Update_Mission(L"zombi");
         }
     }
 }

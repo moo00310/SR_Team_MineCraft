@@ -1,5 +1,6 @@
 ﻿#include "CoalOre.h"
 #include "GameInstance.h"
+#include "MissionControl.h"
 
 CCoalOre::CCoalOre(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CBreakableCube(pGraphic_Device)
@@ -65,7 +66,9 @@ HRESULT CCoalOre::Drop_Item_OnDestroy(const _float3& fPos)
         _copy->Set_Bright(fPos.y);
         _copy->Set_ItemTypeAndBindTexture(ITEMNAME_COAL);
     }
-
+    if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+        _control->Update_Mission(L"coal");
+    }
     __super::Drop_Item_OnDestroy(fPos);
     return S_OK;
 }

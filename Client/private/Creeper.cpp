@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "MCTerrain.h"
 #include "BreakableRect.h"
+#include "MissionControl.h"
 #include "ItemRect.h"
 
 CCreeper::CCreeper(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -441,6 +442,10 @@ void CCreeper::Motion_Dead(_float fTimeDelta)
         if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
             _copy->SetPos(Pos);
             _copy->Set_ItemTypeAndBindTexture(ITEMNAME_GUNPOWDER);
+        }
+
+        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+            _control->Update_Mission(L"creeper");
         }
     }
 }

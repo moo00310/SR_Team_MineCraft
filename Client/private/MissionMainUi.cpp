@@ -18,7 +18,7 @@ HRESULT CMissionMainUi::Initialize(void* pArg)
 {
     Desc.fSizeX = 280.f;
     Desc.fSizeY = 300.f;
-    Desc.fX = 1135.f;
+    Desc.fX = 150.f;
     Desc.fY = 325.f;
 
     if (FAILED(__super::Initialize(&Desc)))
@@ -83,7 +83,7 @@ HRESULT CMissionMainUi::Render()
     m_pShaderCom->End();
     __super::End();
 
-    RECT rect = { 1000, 170, 1280, 250 };
+    RECT rect = { 0, 170, 300, 250 };
 
     g_pTitleFont->DrawTextW(
         nullptr,              
@@ -94,7 +94,7 @@ HRESULT CMissionMainUi::Render()
         D3DCOLOR_ARGB(255, 255, 255, 0) 
     );
 
-    rect = { 1000,210,1280,300 };
+    rect = { 0,210,300,300 };
     if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
         if (_control->Get_IsWave()) {
             g_pTitleFont->DrawTextW(
@@ -106,10 +106,10 @@ HRESULT CMissionMainUi::Render()
                 D3DCOLOR_ARGB(255, 255, 0, 0)
             );
 
-            rect = { 1000, 280, 1280, 300 };
+            rect = { 0, 280, 300, 300 };
         }
         else {
-            rect = { 1000, 210, 1280, 290 };
+            rect = { 0, 210, 300, 290 };
         }
     }
 

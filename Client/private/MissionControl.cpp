@@ -42,69 +42,68 @@ HRESULT CMissionControl::Initialize(void* pArg)
 void CMissionControl::InitMissions1() {
     // 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
     m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"나무", L"나무 5개 벌목하기",0, 5}
+        { L"wood", L"나무 5개 벌목하기",0, 5}
+    });
+    
+   /* m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"craftingtable", L"제작대 만들기",0,1}
     });
     
     m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"제작대", L"제작대 만들기",0,1}
-    });
-    /*
-
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"돌칼", L"돌 칼 만들기",0,1},
-        { L"돌도끼", L"돌 도끼 만들기",0,1},
-        { L"돌곡괭이", L"돌 곡괭이 만들기",0,1}
+        { L"stonesword", L"돌 칼 만들기",0,1},
+        { L"stoneaxe", L"돌 도끼 만들기",0,1},
+        { L"stonepickaxe", L"돌 곡괭이 만들기",0,1}
     });
 
     m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"사과", L"사과 먹고 배고픔 채우기",0,1}
+        { L"apple", L"사과 먹고 배고픔 채우기",0,1}
     });
 
     m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"블럭", L"블럭 5개 설치",0,5}
+        { L"block", L"블럭 5개 설치",0,5}
     });*/
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
-        { L"좀비", L"좀비 5마리 처지",0,5}
+        { L"zombi", L"좀비 5마리 처지",0,5}
     });
 }
 void CMissionControl::InitMissions2()
 {
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"석탄", L"석탄 채광기",0,3},
-        { L"철",   L"철 채광하기" ,0,3}
+        { L"coal", L"석탄 채광기",0,3},
+        { L"iron",   L"철 채광하기" ,0,5}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"화로", L"화로 만들기" ,0,1},
-        { L"철굽기", L"철 구우기",0,2}
+        { L"furnace", L"화로 만들기" ,0,1},
+        { L"burniron", L"철 구우기",0,2}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"철검", L"철검 만들기",0,1}
+        { L"ironsword", L"철검 만들기",0,1}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"횃불", L"석탄으로 횃불 만들기",0,1}
+        { L"torch", L"석탄으로 횃불 만들기",0,1}
     });
 
     // 웨이브 미션 1: 좀비 7마리, 크리퍼 3마리 처치
     m_Round2Wave.emplace_back(std::vector<missionDetail>{
-        { L"좀비", L"좀비 7마리 처치",0,7},
-        { L"크리퍼",  L"크리퍼 3마리 처치",0,3}
+        { L"zombi", L"좀비 7마리 처치",0,7},
+        { L"creeper",  L"크리퍼 3마리 처치",0,3}
     });
 }
 void CMissionControl::InitMissions3()
 {
     m_Round3.emplace_back(std::vector<missionDetail>{
-        { L"무기", L"새로운 무기 만들기" ,0,1}
+        { L"newsword", L"새로운 무기 만들기" ,0,1}
     });
 
     // 웨이브 미션 1: 보스 몬스터 처치 & 생존
     m_Round3Wave.emplace_back(std::vector<missionDetail>{
-        { L"보스", L"보스 몬스터 처지" ,0,1},
-        { L"아침",  L"아침까지 생존하기" ,0,1}
+        { L"warden", L"보스 몬스터 처지" ,0,1},
+        { L"morning",  L"아침까지 생존하기" ,0,1}
     });
 }
 #pragma endregion
@@ -136,6 +135,57 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
                     m_bIsWave = true;
                 }
 
+                m_bIsWaveStart = false;
+                m_bIsWave = true;
+
+                break;
+            }
+            case Client::CMissionControl::WAVE2:
+            {
+                m_bIsWaveStart = false;
+                m_bIsWave = true;
+                vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
+                for (int i = 0; i < 7; i++)
+                {
+                    int Random_pos = rand() % m_SpawnPos.size();
+                    CGameObject* ptemp = nullptr;
+
+                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+                        LEVEL_YU, TEXT("Layer_Monster"));
+
+                    if (ptemp == nullptr) return;
+                    static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+                }
+                for (int i = 0; i < 4; i++)
+                {
+                    int Random_pos = rand() % m_SpawnPos.size();
+                    CGameObject* ptemp = nullptr;
+
+                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+                        LEVEL_YU, TEXT("Layer_Monster"));
+
+                    if (ptemp == nullptr) return;
+                    static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+                }
+                break;
+            }
+            case Client::CMissionControl::WAVE3:
+            {
+                vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
+                for (int i = 0; i < 5; i++)
+                {
+                    int Random_pos = rand() % m_SpawnPos.size();
+                    CGameObject* ptemp = nullptr;
+
+                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+                        LEVEL_YU, TEXT("Layer_Monster"));
+
+                    if (ptemp == nullptr) return;
+                    static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+                    m_bIsWaveStart = false;
+                    m_bIsWave = true;
+                }
+
                 int Random_pos = rand() % m_SpawnPos.size();
                 CGameObject* ptemp = nullptr;
 
@@ -146,45 +196,8 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
                 static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
 
                 static_cast<CCamera_Player*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera")))->Start_Cutscene(m_SpawnPos[Random_pos]);
-
-                m_bIsWaveStart = false;
-                m_bIsWave = true;
-
                 break;
             }
-
-            case Client::CMissionControl::WAVE2:
-                for (int i = 0; i < 5; i++)
-                {
-                    vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
-                    int Random_pos = rand() % m_SpawnPos.size();
-                    CGameObject* ptemp = nullptr;
-
-                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
-                        LEVEL_YU, TEXT("Layer_Monster"));
-
-                    if (ptemp == nullptr) return;
-                    static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
-                    m_bIsWaveStart = false;
-                    m_bIsWave = true;
-                }
-                break;
-            case Client::CMissionControl::WAVE3:
-                for (int i = 0; i < 5; i++)
-                {
-                    vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
-                    int Random_pos = rand() % m_SpawnPos.size();
-                    CGameObject* ptemp = nullptr;
-
-                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
-                        LEVEL_YU, TEXT("Layer_Monster"));
-
-                    if (ptemp == nullptr) return;
-                    static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
-                    m_bIsWaveStart = false;
-                    m_bIsWave = true;
-                }
-                break;
             }
         }
     }
@@ -206,7 +219,7 @@ void CMissionControl::Update(_float fTimeDelta)
     case DAY1:
         for (int i = 0; i < m_Round1.size(); ++i) {
             for (int j = 0; j < m_Round1[i].size(); ++j) {
-                if (m_Round1[i][j].count == m_Round1[i][j].finishCount) {
+                if (m_Round1[i][j].count >= m_Round1[i][j].finishCount) {
                     if (m_Round1[i][j].finish)
                         continue;
                     m_Round1[i][j].finish = true;
@@ -231,7 +244,7 @@ void CMissionControl::Update(_float fTimeDelta)
     case WAVE1:
         for (int i = 0; i < m_Round1Wave.size(); ++i) {
             for (int j = 0; j < m_Round1Wave[i].size(); ++j) {
-                if (m_Round1Wave[i][j].count == m_Round1Wave[i][j].finishCount) {
+                if (m_Round1Wave[i][j].count >= m_Round1Wave[i][j].finishCount) {
                     if (m_Round1Wave[i][j].finish)
                         continue;
                     m_Round1Wave[i][j].finish = true;
@@ -253,7 +266,7 @@ void CMissionControl::Update(_float fTimeDelta)
     case DAY2:
         for (int i = 0; i < m_Round2.size(); ++i) {
             for (int j = 0; j < m_Round2[i].size(); ++j) {
-                if (m_Round2[i][j].count == m_Round2[i][j].finishCount) {
+                if (m_Round2[i][j].count >= m_Round2[i][j].finishCount) {
                     if (m_Round2[i][j].finish)
                         continue;
                     m_Round2[i][j].finish = true;
@@ -277,7 +290,7 @@ void CMissionControl::Update(_float fTimeDelta)
     case WAVE2:
         for (int i = 0; i < m_Round2Wave.size(); ++i) {
             for (int j = 0; j < m_Round2Wave[i].size(); ++j) {
-                if (m_Round2Wave[i][j].count == m_Round2Wave[i][j].finishCount) {
+                if (m_Round2Wave[i][j].count >= m_Round2Wave[i][j].finishCount) {
                     if (m_Round2Wave[i][j].finish)
                         continue;
                     m_Round2Wave[i][j].finish = true;
@@ -300,7 +313,7 @@ void CMissionControl::Update(_float fTimeDelta)
     case DAY3:
         for (int i = 0; i < m_Round3.size(); ++i) {
             for (int j = 0; j < m_Round3[i].size(); ++j) {
-                if (m_Round3[i][j].count == m_Round3[i][j].finishCount) {
+                if (m_Round3[i][j].count >= m_Round3[i][j].finishCount) {
                     if (m_Round3[i][j].finish)
                         continue;
                     m_Round2Wave[i][j].finish = true;
@@ -324,7 +337,7 @@ void CMissionControl::Update(_float fTimeDelta)
     case WAVE3:
         for (int i = 0; i < m_Round3Wave.size(); ++i) {
             for (int j = 0; j < m_Round3Wave[i].size(); ++j) {
-                if (m_Round3Wave[i][j].count == m_Round3Wave[i][j].finishCount) {
+                if (m_Round3Wave[i][j].count >= m_Round3Wave[i][j].finishCount) {
                     if (m_Round3Wave[i][j].finish)
                         continue;
                     m_Round3Wave[i][j].finish = true;
@@ -358,7 +371,7 @@ void CMissionControl::Update_Mission(wstring name)
 {
     switch (m_currentStage)
     {
-    case 0:
+    case DAY1:
         for (int i = 0; i < m_Round1.size(); ++i) {
             for (int j = 0; j < m_Round1[i].size(); ++j) {
                 if (m_Round1[i][j].name == name) {
@@ -367,7 +380,7 @@ void CMissionControl::Update_Mission(wstring name)
             }
         }
         break;
-    case 1:
+    case WAVE1:
         for (int i = 0; i < m_Round1Wave.size(); ++i) {
             for (int j = 0; j < m_Round1Wave[i].size(); ++j) {
                 if (m_Round1Wave[i][j].name == name) {
@@ -376,11 +389,38 @@ void CMissionControl::Update_Mission(wstring name)
             }
         }
         break;
-    case 2:
+    case DAY2:
         for (int i = 0; i < m_Round2.size(); ++i) {
             for (int j = 0; j < m_Round2[i].size(); ++j) {
                 if (m_Round2[i][j].name == name) {
                     m_Round2[i][j].count++;
+                }
+            }
+        }
+        break;
+    case WAVE2:
+        for (int i = 0; i < m_Round2Wave.size(); ++i) {
+            for (int j = 0; j < m_Round2Wave[i].size(); ++j) {
+                if (m_Round2Wave[i][j].name == name) {
+                    m_Round2Wave[i][j].count++;
+                }
+            }
+        }
+        break;
+    case DAY3:
+        for (int i = 0; i < m_Round3.size(); ++i) {
+            for (int j = 0; j < m_Round3[i].size(); ++j) {
+                if (m_Round3[i][j].name == name) {
+                    m_Round3[i][j].count++;
+                }
+            }
+        }
+        break;
+    case WAVE3:
+        for (int i = 0; i < m_Round3Wave.size(); ++i) {
+            for (int j = 0; j < m_Round3Wave[i].size(); ++j) {
+                if (m_Round3Wave[i][j].name == name) {
+                    m_Round3Wave[i][j].count++;
                 }
             }
         }
