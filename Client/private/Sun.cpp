@@ -124,6 +124,10 @@ void CSun::Orbit_Around_Earth()
 	if (m_bAddTimeFast) {
 		m_fAngle += 0.015f; // 회전 속도 증가
 	}
+
+	if (m_bLastWave) {
+		m_fAngle += 0.001f;
+	}
 	
 
 	if (-56 < m_fAngle) {
