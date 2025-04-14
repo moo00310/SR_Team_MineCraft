@@ -71,13 +71,13 @@ void CMissionControl::InitMissions1() {
 void CMissionControl::InitMissions2()
 {
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"coal", L"¼®Åº Ã¤±¤±â",0,3},
+        { L"coal", L"¼®Åº Ã¤±¤ÇÏ±â",0,3},
         { L"iron",   L"Ã¶ Ã¤±¤ÇÏ±â" ,0,5}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"furnace", L"È­·Î ¸¸µé±â" ,0,1},
-        { L"burniron", L"Ã¶ ±¸¿ì±â",0,2}
+        { L"burniron", L"Ã¶ ±Á±â",0,2}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
@@ -126,7 +126,7 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
                     int Random_pos = rand() % m_SpawnPos.size();
                     CGameObject* ptemp = nullptr;
 
-                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
                         LEVEL_YU, TEXT("Layer_Monster"));
 
                     if (ptemp == nullptr) return;

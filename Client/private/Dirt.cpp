@@ -84,14 +84,14 @@ HRESULT CDirt::Play_Destroy_Effect(const _float3& vPos)
         vPos
     );
 
-    m_pGameInstance->Play_Sound(TEXT("Gravel_dig1"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+    m_pGameInstance->Play_Sound(TEXT("Gravel_dig1"), SOUND_BLOCK_DIG, this, 0.7f, vPos);
 
     return S_OK;
 }
 
 void CDirt::PlaySound_Hit(_float3 vPos)
 {
-    m_pGameInstance->Play_Sound(TEXT("Gravel_hit1"), SOUND_BLOCK_HIT, this, 1.f, vPos);
+    m_pGameInstance->Play_Sound(TEXT("Gravel_hit1"), SOUND_BLOCK_HIT, this, 0.7f, vPos);
 }
 
 void CDirt::Play_Create_Sound(_float3 vPos)

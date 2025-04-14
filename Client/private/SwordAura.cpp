@@ -1,4 +1,5 @@
 #include "SwordAura.h"
+#include "Pawn.h"
 
 CSwordAura::CSwordAura(LPDIRECT3DDEVICE9 pGraphic_Device) :
 	CGameObject(pGraphic_Device)
@@ -88,6 +89,13 @@ void CSwordAura::Update(_float fTimeDelta)
 	if (pGameObject != nullptr)
 	{
 		// 몬스터 피격.
+		_float3 vForce{ m_pTransformCom->Get_State(CTransform::STATE_LOOK) };
+		D3DXVec3Normalize(&vForce, &vForce);
+		vForce *= 3.f;
+		vForce.y = 4.f;
+
+		static_cast<CPawn*>(pGameObject)->Add_Hp(-25.f);
+		static_cast<CPawn*>(pGameObject)->Knock_back(vForce);
 		m_fCurrentTime = 0.f;
 		SetActive(false);
 		return;
@@ -148,7 +156,7 @@ HRESULT CSwordAura::Ready_Components()
 		return E_FAIL;
 
 	/* For.Com_Transform */
-	CTransform::TRANSFORM_DESC		TransformDesc{ 90.f, D3DXToRadian(90.f) };
+	CTransform::TRANSFORM_DESC		TransformDesc{ 20.f, D3DXToRadian(90.f) };
 	if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
 		TEXT("Com_Transform"), reinterpret_cast<CComponent**>(&m_pTransformCom), &TransformDesc)))
 		return E_FAIL;

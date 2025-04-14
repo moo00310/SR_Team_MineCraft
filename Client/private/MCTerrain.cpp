@@ -807,8 +807,8 @@ const vector<_float3>& CMCTerrain::Get_SpwanAble()
             int newCol = col + dx;
 
             // 경계 체크 (예: 맵 밖은 제외)
-            if (newRow < 0 || newCol < 0) continue;
-            if (newCol >= width || newRow >= height) continue;
+            if (newRow < 2 || newCol < 2) continue;
+            if (newCol >= width - 2 || newRow >= height - 2) continue;
 
             int neighborChunk = newRow * width + newCol;
 
