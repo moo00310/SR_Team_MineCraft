@@ -42,35 +42,35 @@ HRESULT CMissionControl::Initialize(void* pArg)
 void CMissionControl::InitMissions1() {
     // 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
     m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"wood", L"나무 5개 벌목하기",0, 5}
+        { L"wood", L"나무 5개 벌목하기",0, 1}
     });
     
-   /* m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"craftingtable", L"제작대 만들기",0,1}
-    });
-    
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"stonesword", L"돌 칼 만들기",0,1},
-        { L"stoneaxe", L"돌 도끼 만들기",0,1},
-        { L"stonepickaxe", L"돌 곡괭이 만들기",0,1}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"craftingtable", L"제작대 만들기",0,1}
+    //});
+    //
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"stonesword", L"돌 칼 만들기",0,1},
+    //    { L"stoneaxe", L"돌 도끼 만들기",0,1},
+    //    { L"stonepickaxe", L"돌 곡괭이 만들기",0,1}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"apple", L"사과 먹고 배고픔 채우기",0,1}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"apple", L"사과 먹고 배고픔 채우기",0,1}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"block", L"블럭 5개 설치",0,5}
-    });*/
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"block", L"블럭 5개 설치",0,5}
+    //});
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"좀비 5마리 처지",0,5}
+        { L"zombi", L"좀비 5마리 처지",0,1}
     });
 }
 void CMissionControl::InitMissions2()
 {
-    m_Round2.emplace_back(std::vector<missionDetail>{
+ /*   m_Round2.emplace_back(std::vector<missionDetail>{
         { L"coal", L"석탄 채광기",0,3},
         { L"iron",   L"철 채광하기" ,0,5}
     });
@@ -82,7 +82,7 @@ void CMissionControl::InitMissions2()
 
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"ironsword", L"철검 만들기",0,1}
-    });
+    });*/
 
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"torch", L"석탄으로 횃불 만들기",0,1}
@@ -90,14 +90,14 @@ void CMissionControl::InitMissions2()
 
     // 웨이브 미션 1: 좀비 7마리, 크리퍼 3마리 처치
     m_Round2Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"좀비 7마리 처치",0,7},
-        { L"creeper",  L"크리퍼 3마리 처치",0,3}
+        { L"zombi", L"좀비 7마리 처치",0,1},
+        //{ L"creeper",  L"크리퍼 3마리 처치",0,1}
     });
 }
 void CMissionControl::InitMissions3()
 {
     m_Round3.emplace_back(std::vector<missionDetail>{
-        { L"newsword", L"새로운 무기 만들기" ,0,1}
+        { L"block", L"새로운 무기 만들기" ,0,1}
     });
 
     // 웨이브 미션 1: 보스 몬스터 처치 & 생존
@@ -131,8 +131,7 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
 
                     if (ptemp == nullptr) return;
                     static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
-                    m_bIsWaveStart = false;
-                    m_bIsWave = true;
+
                 }
 
                 m_bIsWaveStart = false;
@@ -171,8 +170,11 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
             }
             case Client::CMissionControl::WAVE3:
             {
+                m_bIsWaveStart = false;
+                m_bIsWave = true;
+                m_sun->Set_bLastWave();
                 vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     int Random_pos = rand() % m_SpawnPos.size();
                     CGameObject* ptemp = nullptr;
@@ -182,8 +184,19 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
 
                     if (ptemp == nullptr) return;
                     static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
-                    m_bIsWaveStart = false;
-                    m_bIsWave = true;
+                }
+
+                for (int i = 0; i < 5; i++)
+                {
+                    int Random_pos = rand() % m_SpawnPos.size();
+                    CGameObject* ptemp = nullptr;
+
+                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+                        LEVEL_YU, TEXT("Layer_Monster"));
+
+                    if (ptemp == nullptr) return;
+                    static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+
                 }
 
                 int Random_pos = rand() % m_SpawnPos.size();
@@ -201,6 +214,25 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
             }
         }
     }
+
+    if (m_bIsLastWave && !m_bDayFinish) {
+        if (m_sun->Get_Sun()) {
+            m_sun->Set_bLastWave();
+            Update_Mission(L"morning");
+        }
+        else {
+            m_fSpwanCoolTime += fTimeDelta;
+            if (m_fSpwanCoolTime >= 10.f)
+            {
+                int spawnCount = 20 - m_pGameInstance->GetActiveCount(TEXT("Layer_Monster"));
+                if (spawnCount == 0) return;
+
+                Spwan_Monster(spawnCount);
+                m_fSpwanCoolTime = 0.f;
+            }
+        }
+    }
+
 
     if (m_bNightFinish) {
         if (g_fBright >= 0.75) {
@@ -332,6 +364,7 @@ void CMissionControl::Update(_float fTimeDelta)
             m_pGameInstance->PlayBGM(L"MoogCity2");
             m_sun->Set_bAddTime();
             m_bIsWaveStart = true;
+            m_bIsLastWave = true;
         }
         break;
     case WAVE3:
@@ -351,10 +384,12 @@ void CMissionControl::Update(_float fTimeDelta)
 
         if (m_checkFinishStage) {
             m_currentStage = STAGE_END;
-            m_bNightFinish = true;
+            //m_bNightFinish = true;
             m_pGameInstance->PlayBGM(L"sweden");
-            m_sun->Set_bAddTime();
             m_bIsWave = false;
+            m_bIsLastWave = false;
+            m_pGameInstance->ClearPool(L"Prototype_GameObject_Zombi");
+            m_pGameInstance->ClearPool(L"Prototype_GameObject_Creeper");
         }
         break;
     default:
@@ -364,6 +399,34 @@ void CMissionControl::Update(_float fTimeDelta)
 
 void CMissionControl::Late_Update(_float fTimeDelta)
 {
+
+}
+
+void CMissionControl::Spwan_Monster(int count)
+{
+    // 몬스터 스폰가능한 위치 들고옴
+    m_SpawnPos = m_pTerrain->Get_SpwanAble();
+
+    for (int i = 0; i < count; i++)
+    {
+        int Random_pos = rand() % m_SpawnPos.size();
+        int Random_type = rand() % 2;
+        CGameObject* ptemp = nullptr;
+
+        if (Random_type == 0)
+        {
+            ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+                LEVEL_YU, TEXT("Layer_Monster"));
+        }
+        else
+        {
+            ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+                LEVEL_YU, TEXT("Layer_Monster"));
+        }
+
+        if (ptemp == nullptr) return;
+        static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+    }
 
 }
 

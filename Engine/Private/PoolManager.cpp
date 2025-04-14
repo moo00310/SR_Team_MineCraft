@@ -122,6 +122,21 @@ void CPoolManager::PopPool(CGameObject* _object, const _wstring& strPrototypeTag
 	m_mapActiveCount[strPrototypeTag]--;
 }
 
+void CPoolManager::ClearPool(const _wstring& strPrototypeTag) 
+{
+	if (m_mapPoolObjects->find(strPrototypeTag) != m_mapPoolObjects->end())
+	{
+		for (auto& obj : (*m_mapPoolObjects)[strPrototypeTag])
+		{
+			if (obj)
+				obj->SetActive(false);
+		}
+
+		// 활성 오브젝트 개수도 0으로 초기화
+		m_mapActiveCount[strPrototypeTag] = 0;
+	}
+}
+
 _uint CPoolManager::GetPoolCount(_wstring _tag)
 {
 	auto poolObject = m_mapPoolObjects->find(_tag);
