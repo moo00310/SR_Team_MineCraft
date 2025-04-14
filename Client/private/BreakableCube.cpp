@@ -569,11 +569,6 @@ HRESULT CBreakableCube::Drop_Item_OnDestroy(const _float3& vPos)
 
 HRESULT CBreakableCube::Play_Destroy_Effect(const _float3& vPos)
 {
-    CParticleEventManager::Get_Instance()->OnParticle(
-        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
-        vPos
-    );
-
     m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
 
     return S_OK;
