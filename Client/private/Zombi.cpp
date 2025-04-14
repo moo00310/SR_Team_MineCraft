@@ -299,6 +299,7 @@ void CZombi::Motion_Dead(_float fTimeDelta)
             return;
         if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
             _copy->SetPos(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            _copy->Set_Bright(m_pTransformCom->Get_State(CTransform::STATE_POSITION).y);
             _copy->Set_ItemTypeAndBindTexture(ITEMNAME_ROTTENFLESH);
         }
 
