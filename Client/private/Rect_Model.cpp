@@ -342,6 +342,9 @@ void CRect_Model::Motion_Run(_float fTimeDelta)
 
 void CRect_Model::Motion_EAT(_float fTimeDelta)
 {	
+	if (m_isRender == false)
+		return;
+
 	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
 	if (name != ITEMNAME_APPLE)
 	{

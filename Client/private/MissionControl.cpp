@@ -62,25 +62,25 @@ void CMissionControl::InitMissions1()
     });
 
     m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"block", L"블럭 5개 설치",0,5}
+        { L"block", L"블럭 5개 설치",0,1}
     });
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"좀비 5마리 처지",0,1}
+        { L"zombi", L"좀비 5마리 처지",0,5}
     });
 }
 void CMissionControl::InitMissions2()
 {
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"coal", L"석탄 채광기", 0, 3},
+        { L"coal", L"석탄 채광하기", 0, 3},
         { L"iron",   L"철 채광하기" ,0, 5}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"furnace", L"화로 만들기", 0, 1},
-        { L"burniron", L"철 구우기",0,2}
+        { L"burniron", L"철 굽기",0,2}
 
     });
 
@@ -94,8 +94,8 @@ void CMissionControl::InitMissions2()
 
     // 웨이브 미션 1: 좀비 7마리, 크리퍼 3마리 처치
     m_Round2Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"좀비 7마리 처치",0,1},
-        //{ L"creeper",  L"크리퍼 3마리 처치",0,1}
+        { L"zombi", L"좀비 7마리 처치",0, 1},
+        { L"creeper",  L"크리퍼 3마리 처치",0,1}
     });
 }
 
@@ -105,11 +105,11 @@ void CMissionControl::InitMissions3()
         { L"block", L"새로운 무기 만들기", 0, 1}
     });
 
-    //// 웨이브 미션 1: 보스 몬스터 처치 & 생존
-    //m_Round3Wave.emplace_back(std::vector<missionDetail>{
-    //    { L"warden", L"보스 몬스터 처지" ,0,1},
-    //    { L"morning",  L"아침까지 생존하기" ,0,1}
-    //});
+   // 웨이브 미션 1: 보스 몬스터 처치 & 생존
+   m_Round3Wave.emplace_back(std::vector<missionDetail>{
+       { L"warden", L"보스 몬스터 처지" ,0,1},
+       { L"morning",  L"아침까지 생존하기" ,0,1}
+   });
 }
 
 float CMissionControl::GetRandomFloat(float lowBound, float highBound)
@@ -146,7 +146,7 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
                     int Random_pos = rand() % m_SpawnPos.size();
                     CGameObject* ptemp = nullptr;
 
-                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
                         LEVEL_YU, TEXT("Layer_Monster"));
 
                     if (ptemp == nullptr) return;
