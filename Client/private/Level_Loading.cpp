@@ -126,7 +126,7 @@ HRESULT CLevel_Loading::Ready_Layer_LoadingScene(const _wstring& strLayerTag)
 	/* Prototype_GameObject_MainInventory */
 	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOADING, TEXT("Prototype_GameObject_LoadingScene"),
 		LEVEL_LOADING, strLayerTag)))
-		return E_FAIL;
+		return E_FAIL;	
 
 	return S_OK;
 }
