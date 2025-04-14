@@ -41,9 +41,9 @@ HRESULT CMissionControl::Initialize(void* pArg)
 
 void CMissionControl::InitMissions1() {
     // 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"wood", L"나무 5개 벌목하기",0, 5}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"wood", L"나무 5개 벌목하기",0, 5}
+    //});
     
    /* m_Round1.emplace_back(std::vector<missionDetail>{
         { L"craftingtable", L"제작대 만들기",0,1}
