@@ -37,6 +37,20 @@ private:
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
+	class CLoader* m_pLoader = { nullptr };
+
+public:
+	void Set_Loader(CLoader* pLoader) { m_pLoader = pLoader; }
+
+private:
+	ID3DXFont*	m_pFont = nullptr;
+	RECT		textRect = { 0, 0, 0, 0 };
+	WCHAR		m_szPath[MAX_PATH] = {};
+	_wstring	m_fontPath = L"";
+	_wstring	m_strText = L"";
+	wchar_t		m_szBuffer[128] = {};
+	_int		m_iPercent = { 0 };
+
 
 public:
 	static CLoadingScene* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
