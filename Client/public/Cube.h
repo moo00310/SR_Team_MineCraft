@@ -28,6 +28,10 @@ protected:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	virtual HRESULT Ready_Components();
+
+public:
+	bool isCreeperBoom = false;
+
 		
 public:
 	static CCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);

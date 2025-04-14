@@ -69,7 +69,9 @@ HRESULT CGrass::Drop_Item_OnDestroy(const _float3& fPos)
 HRESULT CGrass::Play_Destroy_Effect(const _float3& fPos)
 {
    // m_pGameInstance->Check_Sound_Stop(this, 0, SOUND_WEED);
-    m_pGameInstance->Play_Sound(TEXT("Grass_dig1"), SOUND_WEED, this, 1.f, fPos);
+
+   if (!isCreeperBoom)
+        m_pGameInstance->Play_Sound(TEXT("Grass_dig1"), SOUND_WEED, this, 0.5f, fPos);
 
     return S_OK;
 }
