@@ -48,8 +48,10 @@ void CRightHand_Object::Update(_float fTimeDelta)
 
 void CRightHand_Object::Late_Update(_float fTimeDelta)
 {
-  
-    Update_State(fTimeDelta);
+    if (!g_bMainInventoryOpen && !g_bFurnaceUiOpen && !g_bMCraftingTableOpen)
+    {
+        Update_State(fTimeDelta);
+    }
 
     if (FAILED(Update_Root(fTimeDelta)))
         return;
