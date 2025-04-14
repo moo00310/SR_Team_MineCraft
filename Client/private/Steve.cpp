@@ -278,7 +278,7 @@ void CSteve::Move(_float fTimeDelta)
 		
 		if (g_bIsScan == false)
 		{
-			m_pGameInstance->Play_Sound(TEXT("ding"), SOUND_BLOCK_DIG, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			m_pGameInstance->Play_Sound(TEXT("scan"), SOUND_EVENT, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 		}
 
 		// 스캔 기능 활성화
@@ -318,7 +318,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('J'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GUNPOWDER, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STONE_PICKAXE, 1);
 	}
 	if (m_pGameInstance->Key_Down('H'))
 	{

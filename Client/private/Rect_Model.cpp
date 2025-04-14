@@ -1,6 +1,7 @@
 #include "Rect_Model.h"
 #include <iostream>
 #include "UI_Mgr.h"
+#include "MissionControl.h"
 
 CRect_Model::CRect_Model(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CRightHand_Object{ pGraphic_Device }
@@ -376,6 +377,9 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 		m_fCurrentEatTime = 0.f;
 		m_eCurAnim = INIT;
 		CUI_Mgr::Get_Instance()->ItemCount_Update(name, -1);
+		if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+			_control->Update_Mission(L"apple");
+		}
 	}
 }
 
@@ -635,8 +639,7 @@ void CRect_Model::FrameCallback(int animType, int frame)
 
 	if (animType == ATTACK_Near && frame == 2)
 	{
-		AuraSword();
-		m_pGameInstance->Play_Sound(TEXT("Player_Sword_Strong"), SOUND_ATTACK, this, 0.8f, playerPos);
+		m_pGameInstance->Play_Sound(TEXT("Player_FireNear"), SOUND_ATTACK, this, 0.8f, playerPos);
 	}
 
 	if (animType == SWING && frame == 2)

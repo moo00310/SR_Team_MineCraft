@@ -8,6 +8,7 @@
 #include "BreakableRect.h"
 #include "Sun.h"
 #include "UI_Mgr.h"
+#include "MissionControl.h"
 
 CMCTerrain::CMCTerrain(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CGameObject { pGraphic_Device }
@@ -498,6 +499,7 @@ void CMCTerrain::Create_Cube(_float3 vMyPos, ITEMNAME eItemName, _float3 vCreate
                 pCube->Set_MyChunk(Compute_ChunkIndex(vCreatePos));
                 pCube->Set_BlockPositions(pos, eItemName);
                 CUI_Mgr::Get_Instance()->ItemCount_Update(eItemName, -1);
+                _bExist = true;
             }
             break;
         case Client::ITEMNAME_CRAFTINGTABLE:
@@ -510,6 +512,7 @@ void CMCTerrain::Create_Cube(_float3 vMyPos, ITEMNAME eItemName, _float3 vCreate
                 pCube->Set_MyChunk(Compute_ChunkIndex(vCreatePos));
                 pCube->Set_BlockPositions(pos, eItemName);
                 CUI_Mgr::Get_Instance()->ItemCount_Update(eItemName, -1);
+                _bExist = true;
             }
             break;
         case Client::ITEMNAME_OAKPLANKS:
@@ -522,10 +525,17 @@ void CMCTerrain::Create_Cube(_float3 vMyPos, ITEMNAME eItemName, _float3 vCreate
                 pCube->Set_MyChunk(Compute_ChunkIndex(vCreatePos));
                 pCube->Set_BlockPositions(pos, eItemName);
                 CUI_Mgr::Get_Instance()->ItemCount_Update(eItemName, -1);
+                _bExist = true;
             }
             break;
         default:
             break;
+        }
+    }
+
+    if (_bExist) {
+        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+            _control->Update_Mission(L"block");
         }
     }
 }

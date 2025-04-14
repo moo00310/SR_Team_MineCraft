@@ -1,6 +1,7 @@
 #include "Furnace.h"
 #include "GameInstance.h"
 #include "UI_Mgr.h"
+#include "MissionControl.h"
 
 CFurnace::CFurnace(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CBreakableCube(pGraphic_Device)
@@ -87,7 +88,10 @@ void CFurnace::Priority_Update(_float fTimeDelta)
                 }
                 else {
                     _vecSlotList[58]->Set_ItemCountAdd(1);
-                }                                
+                }   
+                if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                    _control->Update_Mission(L"burniron");
+                }
             }
         }          
     }

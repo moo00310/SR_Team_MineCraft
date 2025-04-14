@@ -299,11 +299,12 @@ void CZombi::Motion_Dead(_float fTimeDelta)
             return;
         if (CItemRect* _copy = dynamic_cast<CItemRect*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
             _copy->SetPos(m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+            _copy->Set_Bright(m_pTransformCom->Get_State(CTransform::STATE_POSITION).y);
             _copy->Set_ItemTypeAndBindTexture(ITEMNAME_ROTTENFLESH);
         }
 
         if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
-            _control->Update_Mission(L"Á»ºñ");
+            _control->Update_Mission(L"zombi");
         }
     }
 }

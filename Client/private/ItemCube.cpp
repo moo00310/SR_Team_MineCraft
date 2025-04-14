@@ -3,6 +3,7 @@
 #include "UI_Mgr.h"
 #include "MCTerrain.h"
 #include "Sound_Manager.h"
+#include "Steve.h"
 
 CItemCube::CItemCube(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CCube(pGraphic_Device) 
@@ -87,6 +88,17 @@ void CItemCube::Update(_float fTimeDelta)
             _float3 vStevePos = { m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{0.f, 1.5f, 0.f} };
             m_pTransformCom->Chase(vStevePos, fTimeDelta, 0.f);
         }
+
+        _float3 itemPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+        if(CUI_Mgr::Get_Instance()->GetItemTypeName() == ITEMNAME_TORCH || CUI_Mgr::Get_Instance()->GetItemTypeName_Left() == ITEMNAME_TORCH) {
+            if (fDist < 10) {
+                m_bright = g_fBright + 0.1f * itemPos.y / 10.f;
+            }
+        }
+        else {
+            m_bright = g_fBright * itemPos.y / 10.f;
+        }
+
     }
 
     if (!m_pGameInstance->Is_In_Frustum(m_pTransformCom->Get_State(CTransform::STATE_POSITION), 0.f))
@@ -190,7 +202,19 @@ HRESULT CItemCube::Set_ItemTypeAndBindTexture(ITEMNAME _name)
 
 void CItemCube::Set_Bright(_float _y)
 {
-    m_bright = g_fBright * _y / 10.f;
+    _float3 itemPos = m_pTransformCom->Get_State(CTransform::STATE_POSITION);
+    if (CUI_Mgr::Get_Instance()->GetItemTypeName() == ITEMNAME_TORCH || CUI_Mgr::Get_Instance()->GetItemTypeName_Left() == ITEMNAME_TORCH) {
+
+        _float3 vStevePos = m_pPlayerTransformCom->Get_State(CTransform::STATE_POSITION);
+        _float3 vDiff = itemPos - vStevePos;
+        _float fLengthSq{ D3DXVec3LengthSq(&vDiff) };
+        if (fLengthSq < 10) {
+            m_bright = g_fBright + 0.1f * itemPos.y / 10.f;
+        }
+    }
+    else {
+        m_bright = g_fBright * itemPos.y / 10.f;
+    }
 }
 
 HRESULT CItemCube::Ready_Components()

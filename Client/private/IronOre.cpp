@@ -1,5 +1,6 @@
 ﻿#include "IronOre.h"
 #include "GameInstance.h"
+#include "MissionControl.h"
 
 CIronOre::CIronOre(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CBreakableCube(pGraphic_Device)
@@ -69,7 +70,9 @@ HRESULT CIronOre::Drop_Item_OnDestroy(const _float3& vPos)
 
     m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
 
-
+    if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+        _control->Update_Mission(L"iron");
+    }
     return S_OK;
 }
 

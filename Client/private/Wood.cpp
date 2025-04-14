@@ -99,7 +99,7 @@ HRESULT CWood::Drop_Item_OnDestroy(const _float3& fPos)
 	}
 
 	if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
-		_control->Update_Mission(L"나무");
+		_control->Update_Mission(L"wood");
 	}
 
 	return S_OK;

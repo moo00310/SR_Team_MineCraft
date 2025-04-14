@@ -2,6 +2,7 @@
 #include "UI_Mgr.h"
 #include "Mouse.h"
 #include <Shlwapi.h>
+#include "MissionControl.h"
 #pragma comment(lib, "Shlwapi.lib")
 
 CSlotInfo::CSlotInfo(LPDIRECT3DDEVICE9 pGraphic_Device)
@@ -164,8 +165,24 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
                 if (m_iSlotIndexNum == 55)
                 {
                     pUI_Mgr->Get_Crafting()->ConsumeRecipeItems();
-                    pMouse->Set_OldItem(pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemName());
+                    ITEMNAME _item = pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemName();
+                    pMouse->Set_OldItem(_item);
                     pMouse->Set_OldItemCount(pUI_Mgr->Get_vecSlotInfolist()->at(55)->Get_ItemCount());
+
+                    switch (_item)
+                    {
+                    case Client::ITEMNAME_CRAFTINGTABLE:
+                        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                            _control->Update_Mission(L"craftingtable");
+                        }
+                        break;
+                    case Client::ITEMNAME_TORCH:
+                        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                            _control->Update_Mission(L"torch");
+                        }
+                        break;
+                    }
+
                 }
                 else if (m_iSlotIndexNum != 55)
                 {
@@ -179,8 +196,42 @@ void CSlotInfo::Late_Update(_float fTimeDelta)
                 if (m_iSlotIndexNum == 68)
                 {
                     pUI_Mgr->Get_Crafting()->ConsumeRecipeItems();
-                    pMouse->Set_OldItem(pUI_Mgr->Get_vecSlotInfolist()->at(68)->Get_ItemName());
+                    ITEMNAME _item = pUI_Mgr->Get_vecSlotInfolist()->at(68)->Get_ItemName();
+                    pMouse->Set_OldItem(_item);
                     pMouse->Set_OldItemCount(pUI_Mgr->Get_vecSlotInfolist()->at(68)->Get_ItemCount());
+                    switch (_item)
+                    {
+                    case Client::ITEMNAME_STONE_PICKAXE:
+                        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                            _control->Update_Mission(L"stonepickaxe");
+                        }
+                        break;
+                    case Client::ITEMNAME_STONE_AXE:
+                        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                            _control->Update_Mission(L"stoneaxe");
+                        }
+                        break;
+                    case Client::ITEMNAME_STONE_SWORD:
+                        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                            _control->Update_Mission(L"stonesword");
+                        }
+                        break;
+                    case Client::ITEMNAME_STEEL_SWORD:
+                        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                            _control->Update_Mission(L"ironsword");
+                        }
+                        break;
+                    case Client::ITEM_WEPON_1:
+                        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                            _control->Update_Mission(L"newsword");
+                        }
+                        break;
+                    case Client::ITEMNAME_FURANCE:
+                        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+                            _control->Update_Mission(L"furnace");
+                        }
+                        break;
+                    }
                 }
                 else if (m_iSlotIndexNum != 68)
                 {

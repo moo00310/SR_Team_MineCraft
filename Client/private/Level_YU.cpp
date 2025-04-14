@@ -134,12 +134,6 @@ void CLevel_YU::Update(_float fTimeDelta)
 	ftime += fTimeDelta;
 	m_iFPS++;
 
-	// 시간 빨리 가게 하려고
-	if (m_pGameInstance->Key_Down(VK_F1)) {
-		if (CSun* _sun = dynamic_cast<CSun*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Sun")))) {
-			_sun->Set_bAddTime();
-		}
-	}
 
 	if (m_pGameInstance->Key_Down(VK_ADD))
 	{
