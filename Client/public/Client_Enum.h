@@ -22,6 +22,7 @@ namespace Client
 		SOUND_HIT, 
 		SOUND_DEAD, 
 		SOUND_ATTACK,
+		SOUND_EAT,
 
 		SOUND_BLOCK_HIT, 
 		SOUND_BLOCK_DIG,

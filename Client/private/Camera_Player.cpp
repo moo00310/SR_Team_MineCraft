@@ -372,10 +372,6 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
     {
         ITEMNAME eCurItem = CUI_Mgr::Get_Instance()->GetItemTypeName();
 
-        /*if (eCurItem >= 100)
-
-            return;*/
-
         _float fDist;                  // 광선과 오브젝트 간의 거리
         CGameObject* pHitObject;       // 충돌한 오브젝트
         CComponent* pHitComponent;     // 충돌한 컴포넌트 (콜라이더)
@@ -442,8 +438,6 @@ void CCamera_Player::Input_Key(_float fTimeDelta)
 
                 _float3 vCreatePos = pCollider_Cube->Get_Offset() + pBreakableCube->GetPos();
                 m_pTerrain->Create_Cube(m_pTarget_Transform_Com->Get_State(CTransform::STATE_POSITION), eCurItem, vCreatePos, vDir);
-
-                CUI_Mgr::Get_Instance()->ItemCount_Update(eCurItem, -1);
 
                 //이놈이 실행하는게아니라
                 //활성화 된 청크에 있는 Breakable큐브 중 eHandBlock과 같은 타입의 큐브에서 Create 큐브를 호출해야함
