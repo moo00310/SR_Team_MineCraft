@@ -40,8 +40,6 @@
 #include "ParticleFurnace.h"
 #include "ParticleFurnaceCloud.h"
 
-#include "LoadingScene.h"
-
 LPD3DXFONT g_pTitleFont = nullptr;
 LPD3DXFONT g_pDetailFont = nullptr;
 LPD3DXFONT g_pWaveFont = nullptr;
@@ -384,6 +382,10 @@ void CMainApp::InitFont()
 
 HRESULT CMainApp::Ready_Texture()
 {
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Loading"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Loading/Loading.png"), 1))))
+		return E_FAIL;
+
 	// 피카츄 이미지
 	/* For.Prototype_Component_Texture_Player */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Player"),
@@ -450,11 +452,6 @@ HRESULT CMainApp::Ready_Texture()
 	/* For.Prototype_Component_Texture_SonicBoom*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, PROTOTYPE_COMPONENT_TEXTURE_SONIC_BOOM,
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Particle/sonic_boom_%d.png"), 16))))
-		return E_FAIL;
-
-	///* For.Prototype_Component_Texture_Loading*/
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Texture_Loading"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/Loading/Loading.png"), 1))))
 		return E_FAIL;
 
 	return S_OK;

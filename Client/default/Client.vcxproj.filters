@@ -376,9 +376,6 @@
     <Filter Include="02.GameObjects\02.Camera\Cutscene%28안씀%29">
       <UniqueIdentifier>{6d04bf8e-95cd-4a44-8270-877a40e284a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.UI\13.LoadingScene">
-      <UniqueIdentifier>{51f5769e-c763-4dcf-88b0-4dbd8c3eb7d7}</UniqueIdentifier>
-  </Filter>
     <Filter Include="02.GameObjects\00.Cube\04.LayHitCube">
       <UniqueIdentifier>{9e4e5820-ebfd-429e-b4dd-aa62358a1d66}</UniqueIdentifier>
     </Filter>
@@ -850,11 +847,11 @@
     <ClInclude Include="..\public\OakWood.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\LoadingScene.h">
-      <Filter>03.UI\13.LoadingScene</Filter>
-  </ClInclude>
     <ClInclude Include="..\public\LayHitCube.h">
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LoadingScene.h">
+      <Filter>01.Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1312,11 +1309,11 @@
     <ClCompile Include="..\private\OakWood.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\LoadingScene.cpp">
-      <Filter>03.UI\13.LoadingScene</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\LayHitCube.cpp">
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LoadingScene.cpp">
+      <Filter>01.Levels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
