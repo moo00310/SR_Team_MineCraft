@@ -242,7 +242,7 @@ void CMissionControl::Update(_float fTimeDelta)
 
         _float3 pos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
 
-        pos.z -= 2.f;
+        pos.z += GetRandomFloat(-2.f, 2.f);
         pos.y += 2.f;
         pos.x += GetRandomFloat(-2.f, 2.f);
 
