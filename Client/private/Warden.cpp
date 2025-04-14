@@ -831,13 +831,12 @@ void CWarden::Attack_Boom()
     );
     if (pHitObject)
     {
-        static_cast<CPawn*>(pHitObject)->Add_Hp(-20.f);
+        static_cast<CPawn*>(pHitObject)->Add_Hp(-40.f);
 
         _float3 vForce{ Get_Target()->Get_Transform()->Get_State(CTransform::STATE_POSITION) -Get_Transform()->Get_State(CTransform::STATE_POSITION) };
         D3DXVec3Normalize(&vForce, &vForce);
         vForce *= 15.f;
         vForce.y += 15.f;
-
 
         static_cast<CPawn*>(pHitObject)->Knock_back(vForce);
     }

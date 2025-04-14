@@ -19,11 +19,11 @@ HRESULT CCrafting::Initialize_Prototype()
 
 HRESULT CCrafting::Initialize(void* pArg)
 {
-	/* ¾ÆÀÌÅÛ ·¹½ÃÇÇ Á¶ÇÕ¹ı Á¤ÀÇ */
+	/* ì•„ì´í…œ ë ˆì‹œí”¼ ì¡°í•©ë²• ì •ì˜ */
 	/*
-		_int itemCountPerSlot = { 0 }; // ½½·Ô´ç ÇÊ¿äÇÑ ¾ÆÀÌÅÛ °³¼ö
-		_int iTotalInputCout = { 0 }; // Á¶ÇÕ¿¡ µé¾î°¡´Â ÃÑ Àç·á °³¼ö
-		_int resultCount = { 0 }; // ·¹½ÃÇÇ Á¶ÇÕ ÈÄ °á°ú ¾ÆÀÌÅÛ °³¼ö
+		_int itemCountPerSlot = { 0 }; // ìŠ¬ë¡¯ë‹¹ í•„ìš”í•œ ì•„ì´í…œ ê°œìˆ˜
+		_int iTotalInputCout = { 0 }; // ì¡°í•©ì— ë“¤ì–´ê°€ëŠ” ì´ ì¬ë£Œ ê°œìˆ˜
+		_int resultCount = { 0 }; // ë ˆì‹œí”¼ ì¡°í•© í›„ ê²°ê³¼ ì•„ì´í…œ ê°œìˆ˜
 	*/
 
 	RECIPE_DESC oakplanks1 = { {{51, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1, 4 };
@@ -32,27 +32,32 @@ HRESULT CCrafting::Initialize(void* pArg)
 	RECIPE_DESC oakplanks4 = { {{54, ITEMNAME_WOOD}}, ITEMNAME_OAKPLANKS, 1, 1, 4 };
 	RECIPE_DESC stick1 = { {{51, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1, 2, 4};
 	RECIPE_DESC stick2 = { {{52, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}}, ITEMNAME_STICK, 1, 2, 4 };
+	
+	RECIPE_DESC  Torch1 = { {{51, ITEMNAME_COAL}, {53, ITEMNAME_STICK}}, ITEMNAME_TORCH, 1, 2, 4 };
+	RECIPE_DESC  Torch2 = { {{52, ITEMNAME_COAL}, {54, ITEMNAME_STICK}}, ITEMNAME_TORCH, 1, 2, 4 };
+
 	RECIPE_DESC CraftingTable = { {{51, ITEMNAME_OAKPLANKS}, {52, ITEMNAME_OAKPLANKS}, {53, ITEMNAME_OAKPLANKS}, {54, ITEMNAME_OAKPLANKS}},
 	ITEMNAME_CRAFTINGTABLE, 1, 4, 1};
 	
 	RECIPE_DESC WoodPickAxe = { {{59, ITEMNAME_OAKPLANKS}, {60, ITEMNAME_OAKPLANKS}, {61, ITEMNAME_OAKPLANKS}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
 	ITEMNAME_WOOD_PICKAXE, 1, 5, 1};
 
-	RECIPE_DESC StonePickAxe = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {61, ITEMNAME_STONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
+	RECIPE_DESC StonePickAxe = { {{59, ITEMNAME_COBBLESTONE}, {60, ITEMNAME_COBBLESTONE}, {61, ITEMNAME_COBBLESTONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
 	ITEMNAME_STONE_PICKAXE, 1, 5, 1 };
 	
-	RECIPE_DESC StoneAxe = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {62, ITEMNAME_STONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
+	RECIPE_DESC StoneAxe = { {{59, ITEMNAME_COBBLESTONE}, {60, ITEMNAME_COBBLESTONE}, {62, ITEMNAME_COBBLESTONE}, {63, ITEMNAME_STICK}, {66, ITEMNAME_STICK}},
 	ITEMNAME_STONE_AXE, 1, 5, 1 };
 	
-	RECIPE_DESC StonnSword = { {{60, ITEMNAME_STONE}, {63, ITEMNAME_STONE}, {66, ITEMNAME_STICK}},
+	RECIPE_DESC StonnSword = { {{60, ITEMNAME_COBBLESTONE}, {63, ITEMNAME_COBBLESTONE}, {66, ITEMNAME_STICK}},
 	ITEMNAME_STONE_SWORD, 1, 3, 1 };
 
 	RECIPE_DESC SteelSword = { {{60, ITEMNAME_IRON}, {63, ITEMNAME_IRON}, {66, ITEMNAME_STICK}},
 	ITEMNAME_STEEL_SWORD, 1, 3, 1 };
 
-	RECIPE_DESC Furance = { {{59, ITEMNAME_STONE}, {60, ITEMNAME_STONE}, {61, ITEMNAME_STONE}, {62, ITEMNAME_STONE}, {64, ITEMNAME_STONE}, {65, ITEMNAME_STONE},
-		{66, ITEMNAME_STONE}, {67, ITEMNAME_STONE}},ITEMNAME_FURANCE, 1, 8, 1 };
+	RECIPE_DESC Furance = { {{59, ITEMNAME_COBBLESTONE}, {60, ITEMNAME_COBBLESTONE}, {61, ITEMNAME_COBBLESTONE}, {62, ITEMNAME_COBBLESTONE}, {64, ITEMNAME_COBBLESTONE}, {65, ITEMNAME_COBBLESTONE},
+		{66, ITEMNAME_COBBLESTONE}, {67, ITEMNAME_COBBLESTONE}},ITEMNAME_FURANCE, 1, 8, 1 };
 
+	RECIPE_DESC Wepon1 = { {{60, ITEMNAME_ROTTENFLESH}, {63, ITEMNAME_GUNPOWDER}, {66, ITEMNAME_STEEL_SWORD}},ITEM_WEPON_1, 1, 3, 1 };
 
 
 	m_vecRecipelist.push_back(oakplanks1);
@@ -61,6 +66,8 @@ HRESULT CCrafting::Initialize(void* pArg)
 	m_vecRecipelist.push_back(oakplanks4);
 	m_vecRecipelist.push_back(stick2);
 	m_vecRecipelist.push_back(stick1);
+	m_vecRecipelist.push_back(Torch1);
+	m_vecRecipelist.push_back(Torch2);
 	m_vecRecipelist.push_back(CraftingTable);
 	m_vecRecipelist.push_back(WoodPickAxe);
 	m_vecRecipelist.push_back(StonePickAxe);
@@ -68,8 +75,7 @@ HRESULT CCrafting::Initialize(void* pArg)
 	m_vecRecipelist.push_back(StonnSword);
 	m_vecRecipelist.push_back(SteelSword);
 	m_vecRecipelist.push_back(Furance);
-
-
+	m_vecRecipelist.push_back(Wepon1);
 
 	return S_OK;
 }
@@ -108,7 +114,7 @@ void CCrafting::Crafing()
 
 		for (const auto& pair : recipe.inputPattern)
 		{
-			/* ·¹½ÃÇÇ (½½·Ô ÀÎµ¦½º¿Í ½½·ÔÀÇ Àç·á)*/
+			/* ë ˆì‹œí”¼ (ìŠ¬ë¡¯ ì¸ë±ìŠ¤ì™€ ìŠ¬ë¡¯ì˜ ì¬ë£Œ)*/
 			_int iSlotIndex = pair.first;
 			ITEMNAME  requiredItem = pair.second;
 
@@ -154,26 +160,26 @@ void CCrafting::Crafing()
 		}
 		if (m_bMatch)
 		{
-			/* ¸ÅÄªµÈ ·¹½ÃÇÇ ÀúÀå */
+			/* ë§¤ì¹­ëœ ë ˆì‹œí”¼ ì €ì¥ */
 			m_pMatchedRecipe = &recipe;
-			/* ÇÊ¿äÇÑ Àç·á ÃÑ °³¼ö */
+			/* í•„ìš”í•œ ì¬ë£Œ ì´ ê°œìˆ˜ */
 			m_iItemTotalCount = recipe.iTotalInputCout;
-			/* ÇÊ¿äÇÑ ½½·ÔÀÇ °³¼ö ÇÕ 0*/
+			/* í•„ìš”í•œ ìŠ¬ë¡¯ì˜ ê°œìˆ˜ í•© 0*/
 			m_iSlotTotalCount = 0; 
-			/* ¿Ï¼º °³¼ö */
+			/* ì™„ì„± ê°œìˆ˜ */
 			m_iresultCount = recipe.resultCount; 
-			/* ½½·Ô´ç ÇÊ¿ä °³¼ö*/
+			/* ìŠ¬ë¡¯ë‹¹ í•„ìš” ê°œìˆ˜*/
 			m_itemCountPerSlot = recipe.itemCountPerSlot;
 		
 			for (const auto& pair : recipe.inputPattern)
 			{
 				m_iSlotIndex = pair.first;
 
-				/* ½½·Ô¿¡ µé¾î°£ ¾ÆÀÌÅÛ °³¼ö È®ÀÎ */
+				/* ìŠ¬ë¡¯ì— ë“¤ì–´ê°„ ì•„ì´í…œ ê°œìˆ˜ í™•ì¸ */
 				//m_iTempCount = pUI_Mgr->Get_vecSlotInfolist()->at(m_iSlotIndex)->Get_ItemCount();
 				m_iSlotTotalCount += m_iTempCount;
 
-				/* ÇÊ¿äÇÑ °³¼ö ¸¶ÀÌ³Ê½º */
+				/* í•„ìš”í•œ ê°œìˆ˜ ë§ˆì´ë„ˆìŠ¤ */
 			/*	m_iTempCount -= recipe.itemCountPerSlot;
 
 				if (m_iTempCount <= 0)
@@ -194,7 +200,7 @@ void CCrafting::Crafing()
 			}
 			else if (g_bMainInventoryOpen)
 			{
-				/* ·¹½ÃÇÇ Á¶ÇÕ °á°ú ¾ÆÀÌÅÛÀ» 55¹ø ½½·Ô¿¡ ³Ö±â */
+				/* ë ˆì‹œí”¼ ì¡°í•© ê²°ê³¼ ì•„ì´í…œì„ 55ë²ˆ ìŠ¬ë¡¯ì— ë„£ê¸° */
 				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemName(recipe.resultItem);
 				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCount(recipe.resultCount);
 				pUI_Mgr->Get_vecSlotInfolist()->at(55)->Set_ItemCountRender(true);
@@ -216,16 +222,15 @@ void CCrafting::RButton()
 	if (m_bMatch && m_pMatchedRecipe != nullptr)
 	{
 		/*
-			_int itemCountPerSlot = { 0 }; // ½½·Ô´ç ÇÊ¿äÇÑ ¾ÆÀÌÅÛ °³¼ö
-			_int iTotalInputCout = { 0 }; // Á¶ÇÕ¿¡ µé¾î°¡´Â ÃÑ Àç·á °³¼ö
-			_int resultCount = { 0 }; // ·¹½ÃÇÇ Á¶ÇÕ ÈÄ °á°ú ¾ÆÀÌÅÛ °³¼ö
+			_int itemCountPerSlot = { 0 }; // ìŠ¬ë¡¯ë‹¹ í•„ìš”í•œ ì•„ì´í…œ ê°œìˆ˜
+			_int iTotalInputCout = { 0 }; // ì¡°í•©ì— ë“¤ì–´ê°€ëŠ” ì´ ì¬ë£Œ ê°œìˆ˜
+			_int resultCount = { 0 }; // ë ˆì‹œí”¼ ì¡°í•© í›„ ê²°ê³¼ ì•„ì´í…œ ê°œìˆ˜
 		*/
 		_int iItemCount = { 0 };
 		_bool _bRun = { false };
 		
 		while (true)
 		{
-
 			for (const auto& pair : m_pMatchedRecipe->inputPattern)
 			{
 				_int SlotIndex = pair.first;
@@ -236,9 +241,7 @@ void CCrafting::RButton()
 				}
 
 			}
-
-			iItemCount++;
-			
+		
 			if (_bRun)
 			{
 
@@ -246,6 +249,8 @@ void CCrafting::RButton()
 				break;
 			}
 			
+			iItemCount++;
+
 			for (const auto& pair : m_pMatchedRecipe->inputPattern)
 			{	
 				// 51, 52, 53, 54
@@ -257,8 +262,6 @@ void CCrafting::RButton()
 
 				if (GetItemCount == 0)
 					pUI_Mgr->Get_vecSlotInfolist()->at(SlotIndex)->Set_ItemName(ITEMNAME_END);
-
-				
  			}
 		}
 	}

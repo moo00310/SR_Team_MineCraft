@@ -19,6 +19,8 @@ HRESULT CParticleFurnaceCloud::Initialize(void* pArg)
 {
 	iParticleCount = 3;
 	IsBounding = true;
+	IsTimer = true;
+	fEndTimer = 150.f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{

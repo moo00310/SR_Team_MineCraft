@@ -1,23 +1,22 @@
 #pragma once
 #include "Client_Defines.h"
 #include "UIObject.h"
-#include "Furnace.h"
 
 BEGIN(Engine)
 class CTexture;
 class CVIBuffer_Rect;
 class CTransform;
-class CShader;
 END
+
 
 BEGIN(Client)
 
-class CBurnResultUi final : public CUIObject
+class CLoadingScene : public CUIObject
 {
 private:
-	CBurnResultUi(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CBurnResultUi(CBurnResultUi& Prototype);
-	virtual ~CBurnResultUi() = default;
+	CLoadingScene(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CLoadingScene(CLoadingScene& Prototype);
+	virtual ~CLoadingScene() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -25,17 +24,22 @@ public:
 	virtual void Priority_Update(_float fTimeDelta)override;
 	virtual void Update(_float fTimeDelta)override;
 	virtual void Late_Update(_float fTimeDelta)override;
-	virtual HRESULT Render(_float _ironTime);
+	virtual HRESULT Render()override;
 
 private:
 	HRESULT Ready_Components();
 
+private:
+	UIOBJECT_DESC	Desc{};
+	_float m_fTime = { 0.f };
+private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 	CShader* m_pShaderCom = { nullptr };
+
 public:
-	static CBurnResultUi* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CLoadingScene* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
 };

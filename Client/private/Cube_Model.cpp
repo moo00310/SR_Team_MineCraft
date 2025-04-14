@@ -257,6 +257,12 @@ void CCube_Model::Update_State(_float fTimeDelta)
 
 void CCube_Model::KeyInput()
 {
+    if (m_pGameInstance->Key_Down(VK_LBUTTON))
+    {
+        m_eCurAnim = SWING;
+        return;
+    }
+
     if (m_pGameInstance->Key_Pressing(VK_LBUTTON) && m_pSteve->Get_AttackContinue() ||
         m_pGameInstance->Key_Down(VK_RBUTTON))
     {

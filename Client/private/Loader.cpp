@@ -25,6 +25,7 @@
 #include "Left_Rect_Model.h"
 #include "GameMgr.h"
 #include "Warden.h"
+#include "LayHitCube.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -66,6 +67,7 @@
 #include "StartButton.h"
 #include "Title.h"
 #include "Edition.h"
+#include "LoadingScene.h"
 #include "MainInventory.h"
 #include "SubInventory.h"
 #include "Inventory_Back.h"
@@ -189,7 +191,6 @@ HRESULT CLoader::Loading_For_Logo()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/Default%d.jpg"), 2))))
 		return E_FAIL;
 
-
 	/* For.Prototype_Component_Texture_MainLogo*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_MainLogo"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/MainLogo/MinecraftBanner.png"), 1))))
@@ -209,7 +210,6 @@ HRESULT CLoader::Loading_For_Logo()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_edition"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/title/edition.png"), 1))))
 		return E_FAIL;
-
 	#pragma endregion 
 
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩딩중입니다."));
@@ -238,7 +238,6 @@ HRESULT CLoader::Loading_For_Logo()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_GameObject_Edition"),
 		CEdition::Create(m_pGraphic_Device))))
 		return E_FAIL;
-
 	#pragma endregion 
 
 	/* For.Prototype_GameObject_BackGround */
@@ -782,6 +781,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CCrosshair::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
+	/* For.Prototype_GameObject_LayHitCube */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_LayHitCube"),
+		CLayHitCube::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	/* UI GameObject */
 	/*================================================================================================*/
 	/* For.Prototype_GameObject_MainInventory */
@@ -1179,7 +1183,6 @@ HRESULT CLoader::Loading_For_HEROPlay()
 
 #pragma endregion
 
-
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
 
 #pragma region PROTOTYPE
@@ -1224,6 +1227,7 @@ HRESULT CLoader::Loading_For_HEROPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_GameObject_SkyBox"),
 		CSkyBox::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
 #pragma endregion
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 

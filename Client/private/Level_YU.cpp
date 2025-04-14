@@ -44,6 +44,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_DestroyCube(LAYER_DESTROY_CUBE)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_HitCube(TEXT("Layer_HitLayCube"))))
+		return E_FAIL;
+
 	if (FAILED(Ready_Layer_Terrain(TEXT("Layer_Terrain"))))
 		return E_FAIL;
 
@@ -86,8 +89,8 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Laye_Zombi(TEXT("Layer_Monster"))))
 		return E_FAIL;
 
-	/*if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
-		return E_FAIL;*/
+	if (FAILED(Ready_Laye_Warden(TEXT("Layer_Monster"))))
+		return E_FAIL;
 
 	///// 오른손 객체들과 그걸 관리할 오브젝트
 	if (FAILED(Ready_Layer_TPS_Arm(TEXT("Layer_RightHand"))))
@@ -421,6 +424,15 @@ HRESULT CLevel_YU::Ready_Layer_DestroyCube(const _wstring& strLayerTag)
 	return S_OK;
 }
 
+HRESULT CLevel_YU::Ready_Layer_HitCube(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_LayHitCube"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CLevel_YU::Ready_Layer_UI_DropItem(const _wstring& strLayerTag)
 {
 	// 드랍 아이템 파티클.
@@ -457,6 +469,8 @@ HRESULT CLevel_YU::Ready_Layer_Crosshair(const _wstring& strLayerTag)
 	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Crosshair"),
 		LEVEL_YU, strLayerTag)))
 		return E_FAIL;
+
+	return S_OK;
 }
 
 HRESULT CLevel_YU::Ready_Layer_Camera_Cutscene(const _wstring& strLayerTag)

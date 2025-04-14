@@ -13,6 +13,7 @@
 #include "Level_Tool.h"
 
 #include "GameInstance.h"
+#include "LoadingScene.h"
 
 CLevel_Loading::CLevel_Loading(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -22,6 +23,19 @@ CLevel_Loading::CLevel_Loading(LPDIRECT3DDEVICE9 pGraphic_Device)
 
 HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 {
+	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
+	if (nullptr == pGameInstance)
+		return E_FAIL;
+	Safe_AddRef(pGameInstance);
+
+	/* For.Prototype_GameObject_LoadingScene*/
+	if (FAILED(pGameInstance->Add_Prototype(LEVEL_LOADING, TEXT("Prototype_GameObject_LoadingScene"),
+		CLoadingScene::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_LoadingScene(TEXT("Layer_Loadingscene"))))
+		return E_FAIL;
+
 	m_eNextLevelID = eNextLevelID;
 
 	/* 로딩레벨 자체에 필요한 객체를 생성한다. */
@@ -32,7 +46,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevelID)
 	m_pLoader = CLoader::Create(m_pGraphic_Device, m_eNextLevelID);
 	if (nullptr == m_pLoader)
 		return E_FAIL;
-	
+
 	return S_OK;
 }
 
@@ -95,6 +109,22 @@ void CLevel_Loading::Update(_float fTimeDelta)
 HRESULT CLevel_Loading::Render()
 {
 	m_pLoader->Output_LoadingText();
+
+	return S_OK;
+}
+
+HRESULT CLevel_Loading::Ready_Layer_LoadingScene(const _wstring& strLayerTag)
+{
+
+	CGameInstance* pGameInstance = CGameInstance::Get_Instance();
+	Safe_AddRef(pGameInstance);
+
+	/* Prototype_GameObject_MainInventory */
+	if (FAILED(pGameInstance->Add_GameObject(LEVEL_LOADING, TEXT("Prototype_GameObject_LoadingScene"),
+		LEVEL_LOADING, strLayerTag)))
+		return E_FAIL;
+
+	Safe_Release(pGameInstance);
 
 	return S_OK;
 }

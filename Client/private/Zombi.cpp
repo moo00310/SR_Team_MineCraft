@@ -23,8 +23,8 @@ HRESULT CZombi::Initialize(void* pArg)
     m_MonsterType = MT_Zombie;
     m_fAttackDistance = 2.f;
     m_fSpeed = 1.5f;
-    m_Hp = 100.f;
-    m_MaxHp = 100.f;
+    m_Hp = 50.f;
+    m_MaxHp = 50.f;
 
     m_Coll_Size = { 0.3f, 1.f, 0.3f };
     m_Coll_Offset = { 0.f, 1.f, 0.f };
@@ -260,7 +260,7 @@ void CZombi::Motion_Attack(_float fTimeDelta)
         vForce.y += 4.f;
 
         m_pTargetPawn->Knock_back(vForce);
-        m_pTargetPawn->Add_Hp(-10.f);
+        m_pTargetPawn->Add_Hp(-15.f);
     }
 
     m_skelAnime->Update_Animetion(Attack, fTimeDelta, 5);
