@@ -278,7 +278,7 @@ void CSteve::Move(_float fTimeDelta)
 		
 		if (g_bIsScan == false)
 		{
-			m_pGameInstance->Play_Sound(TEXT("ding"), SOUND_BLOCK_DIG, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+			m_pGameInstance->Play_Sound(TEXT("scan"), SOUND_EVENT, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 		}
 
 		// 스캔 기능 활성화

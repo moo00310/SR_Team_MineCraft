@@ -635,8 +635,7 @@ void CRect_Model::FrameCallback(int animType, int frame)
 
 	if (animType == ATTACK_Near && frame == 2)
 	{
-		AuraSword();
-		m_pGameInstance->Play_Sound(TEXT("Player_Sword_Strong"), SOUND_ATTACK, this, 0.8f, playerPos);
+		m_pGameInstance->Play_Sound(TEXT("Player_FireNear"), SOUND_ATTACK, this, 0.8f, playerPos);
 	}
 
 	if (animType == SWING && frame == 2)
