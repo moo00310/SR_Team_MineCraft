@@ -1,4 +1,7 @@
 #include "LoadingScene.h"
+#include <Shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
+#include "Loader.h"
 
 CLoadingScene::CLoadingScene(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CUIObject{ pGraphic_Device }
@@ -17,6 +20,37 @@ HRESULT CLoadingScene::Initialize_Prototype()
 
 HRESULT CLoadingScene::Initialize(void* pArg)
 {
+	GetModuleFileName(nullptr, m_szPath, MAX_PATH);
+	PathRemoveFileSpec(m_szPath);
+
+	m_fontPath = _wstring(m_szPath) + L"\\Resources\\Fonts\\font.ttf";
+	if (!AddFontResourceEx(m_fontPath.c_str(), FR_PRIVATE, 0))
+	{
+		MSG_BOX("Failed to Created : ItemFont");
+		return E_FAIL;
+	}
+
+	if (m_pFont == nullptr)
+	{
+		D3DXFONT_DESC fontDesc = {};
+		fontDesc.Height = 34;
+		fontDesc.Width = 0;
+		fontDesc.Weight = FW_NORMAL;
+		fontDesc.CharSet = DEFAULT_CHARSET;
+		fontDesc.OutputPrecision = OUT_DEFAULT_PRECIS;
+		fontDesc.Quality = CLEARTYPE_QUALITY;
+		fontDesc.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
+		lstrcpy(fontDesc.FaceName, L"Galmuri7 Regular");
+
+
+		if (FAILED(D3DXCreateFontIndirect(m_pGraphic_Device, &fontDesc, &m_pFont)))
+		{
+			MSG_BOX("폰트 생성 실패");
+		}
+	}
+
+	SetRect(&textRect, 0, 0, g_iWinSizeX, g_iWinSizeY);
+
 	UIOBJECT_DESC Desc{};
 
 	Desc.fSizeX = g_iWinSizeX;
@@ -38,10 +72,19 @@ HRESULT CLoadingScene::Initialize(void* pArg)
 
 void CLoadingScene::Priority_Update(_float fTimeDelta)
 {
+	if (m_pLoader != nullptr)
+	{
+		m_iPercent = m_pLoader->Get_Percent();
+
+		swprintf(m_szBuffer, 128, L"Loading... %d%%", m_iPercent);
+		m_strText = m_szBuffer;
+	}
 }
 
 void CLoadingScene::Update(_float fTimeDelta)
 {
+	
+
 }
 
 void CLoadingScene::Late_Update(_float fTimeDelta)
@@ -52,7 +95,7 @@ void CLoadingScene::Late_Update(_float fTimeDelta)
 
 HRESULT CLoadingScene::Render()
 {
-	if (g_bChangeLevel)
+	if (g_bChangeLevel && m_pLoader != nullptr)
 	{
 		if (FAILED(m_pTextureCom->Bind_Resource(0)))
 			return E_FAIL;
@@ -82,6 +125,15 @@ HRESULT CLoadingScene::Render()
 
 		//m_pShaderCom->End();
 		__super::End();
+
+		m_pFont->DrawTextW(
+			NULL,
+			m_strText.c_str(),
+			-1,
+			&textRect,
+			DT_NOCLIP,
+			D3DCOLOR_ARGB(255, 255, 255, 255)
+		);
 
 	}
 
@@ -135,6 +187,14 @@ CGameObject* CLoadingScene::Clone(void* pArg)
 
 void CLoadingScene::Free()
 {
+	if (m_pFont)
+	{
+		m_pFont->Release();
+		m_pFont = nullptr;
+	}
+
+	RemoveFontResourceEx(m_fontPath.c_str(), FR_PRIVATE, 0);
+	
 	__super::Free();
 
 	Safe_Release(m_pVIBufferCom);

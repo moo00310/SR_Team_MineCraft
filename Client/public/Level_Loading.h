@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "Level.h"
 
+
 BEGIN(Client)
 
 class CLevel_Loading final : public CLevel

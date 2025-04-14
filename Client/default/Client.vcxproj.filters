@@ -379,6 +379,9 @@
     <Filter Include="02.GameObjects\00.Cube\04.LayHitCube">
       <UniqueIdentifier>{9e4e5820-ebfd-429e-b4dd-aa62358a1d66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\13.LoadingScene">
+      <UniqueIdentifier>{4573e67b-c746-4859-9108-c9fddbe1fe03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -851,7 +854,7 @@
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
     </ClInclude>
     <ClInclude Include="..\public\LoadingScene.h">
-      <Filter>01.Levels</Filter>
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1313,7 +1316,7 @@
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
     </ClCompile>
     <ClCompile Include="..\private\LoadingScene.cpp">
-      <Filter>01.Levels</Filter>
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

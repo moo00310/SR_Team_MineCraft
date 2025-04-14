@@ -28,6 +28,14 @@ public:
 		SetWindowText(g_hWnd, m_szLoadingText);
 	}
 	
+public:
+	_int Get_Percent() const {
+
+		if (m_totalCount == 0)
+			return 0;
+
+		return (_int)(((_float)m_loadeCount / m_totalCount) * 100.f);
+	}
 
 private:
 	LPDIRECT3DDEVICE9			m_pGraphic_Device = { nullptr };
@@ -39,6 +47,13 @@ private:
 	HANDLE						m_hThread = {};
 	CRITICAL_SECTION			m_CriticalSection = {};
 	_tchar						m_szLoadingText[MAX_PATH] = {};
+
+
+private:
+	_int m_loadeCount = { 0 };
+	_int m_totalCount = 133;
+
+
 
 public:
 	HRESULT Loading_For_Logo();
