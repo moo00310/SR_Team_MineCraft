@@ -651,7 +651,7 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		PROTOTYPE_GAMEOBJECT_PARTICLE_FIRE_CRACKER,	// 가져올 프로토타입.
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
-		3)))				// 풀링 갯수.
+		5)))				// 풀링 갯수.
 	{
 		return E_FAIL;
 	}
@@ -681,7 +681,17 @@ HRESULT CLevel_YU::Ready_Layer_Particle(const _wstring& strLayerTag)
 		PROTOTYPE_GAMEOBJECT_PARTICLE_CRACKER_LOAD,	// 가져올 프로토타입.
 		LEVEL_STATIC,	// 가져올 씬.
 		strLayerTag,	// 애드오브젝트에 추가할 레이어.
-		3)))				// 풀링 갯수.
+		5)))				// 풀링 갯수.
+	{
+		return E_FAIL;
+	}
+
+	// 폭죽 길 오브젝트.
+	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU,		// 적용 씬.
+		PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// 가져올 프로토타입.
+		LEVEL_YU,	// 가져올 씬.
+		strLayerTag,	// 애드오브젝트에 추가할 레이어.
+		5)))				// 풀링 갯수.
 	{
 		return E_FAIL;
 	}

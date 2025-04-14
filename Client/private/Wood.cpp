@@ -107,7 +107,11 @@ HRESULT CWood::Drop_Item_OnDestroy(const _float3& fPos)
 
 HRESULT CWood::Play_Destroy_Effect(const _float3& vPos)
 {
-	//m_pGameInstance->Check_Sound_Stop(this, 0, SOUND_BLOCK);
+	CParticleEventManager::Get_Instance()->OnParticle(
+		PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING,
+		vPos
+	);
+
 	m_pGameInstance->Play_Sound(TEXT("Wood_dig"), SOUND_BLOCK_DIG, this, 1.f, vPos);
 
 	return S_OK;
