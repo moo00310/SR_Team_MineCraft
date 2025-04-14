@@ -106,6 +106,20 @@ void CMissionControl::InitMissions3()
         { L"morning",  L"아침까지 생존하기" ,0,1}
     });
 }
+float CMissionControl::GetRandomFloat(float lowBound, float highBound)
+{
+    // 잘못된 입력 
+    if (lowBound >= highBound)
+    {
+        return lowBound;
+    }
+
+    // [0, 1] 범위의 임의의 float 획득.
+    float f = (rand() % 10000) * 0.0001f;
+
+    // 최종적으로 lowBound ~ highBound 범위 값 리턴.
+    return (f * (highBound - lowBound)) + lowBound;
+}
 #pragma endregion
 
 void CMissionControl::Priority_Update(_float fTimeDelta)
@@ -206,6 +220,11 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
         if (g_fBright >= 0.75) {
             m_sun->Set_bAddTime();
             m_bNightFinish = false;
+
+            if (m_currentStage == STAGE_END)
+            {
+                m_bIsFireCracker = true;                
+            }
         }
     }
 
@@ -213,6 +232,31 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
 
 void CMissionControl::Update(_float fTimeDelta)
 {
+    if (m_bIsFireCracker == true && m_fFireTime <= 0.f)
+    {
+        // 화려한 폭죽이 나를 감싼Dㅏ....
+        CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_YU,	// 가져올 씬
+            PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// 가져올 프로토타입.
+            LEVEL_YU,	// 적용 씬.
+            LAYER_PARTICLE);
+
+        _float3 pos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+        pos.z -= 2.f;
+        pos.y += 2.f;
+        pos.x += GetRandomFloat(-2.f, 2.f);
+
+        obj->GetTransform()->Set_State(CTransform::STATE_POSITION, pos);
+
+        m_fFireTime = m_fFireCoolTime;
+    }
+
+    // 폭죽 쿨타임 감소.
+    if (m_bIsFireCracker == true)
+    {
+        m_fFireTime -= 1.f * fTimeDelta;
+    }    
+
     bool m_checkFinishStage = true;
     switch (m_currentStage)
     {

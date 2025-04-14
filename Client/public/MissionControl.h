@@ -3,6 +3,7 @@
 #include "Sun.h"
 #include "MCTerrain.h"
 #include "Steve.h"
+#include "FireCrackerLoad.h"
 
 BEGIN(Client)
 class CMissionControl :public CGameObject
@@ -43,6 +44,8 @@ private:
 	void InitMissions1();
 	void InitMissions2();
 	void InitMissions3();
+	float GetRandomFloat(float lowBound, float highBound);
+
 	CSun* m_sun = nullptr;
 	CMCTerrain* m_pTerrain = nullptr;
 	CSteve* m_pPlayer = nullptr;
@@ -51,6 +54,13 @@ private:
 	bool m_bNightFinish = false;
 	bool m_bIsWaveStart = false;
 	bool m_bIsWave = false;
+
+	// ÆøÁ×.
+	bool m_bIsFireCracker = false;
+	float m_fFireTime = 0.f;
+
+	// 2ÃÊ °£°ÝÀ¸·Î ÆøÁ× ¹ß»ç.
+	const float m_fFireCoolTime = 2.f;
 
 	Stage m_currentStage= DAY1;
 	vector<vector<missionDetail>> m_Round1;
