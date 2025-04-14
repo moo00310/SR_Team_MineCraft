@@ -207,7 +207,7 @@ HRESULT CBreakableCube::Create_Cube(_float3 vPos, _float3 _Dir)
 
 void CBreakableCube::Play_Create_Sound(_float3 vPos)
 {
-    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 0.8f, vPos);
 }
 
 

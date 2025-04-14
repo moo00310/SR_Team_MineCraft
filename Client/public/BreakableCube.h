@@ -109,7 +109,8 @@ protected:
 	_float m_fHitSoundDelayAcc{ 0.f };    // 누적 시간
 	const _float m_fHitSoundDelayLimit{ 0.25f }; // 쿨타임 제한
 
-  
+
+
 public:
 	static CBreakableCube* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

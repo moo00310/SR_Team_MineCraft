@@ -692,7 +692,7 @@ void CCamera_Player::Setting_Damage()
 {
     // 손에 들고있는 아이템 별로 데이미와 쿨타임 세팅함
     ITEMNAME Name = CUI_Mgr::Get_Instance()->GetItemTypeName();
-
+  
     switch (Name)
     {
     case Client::ITEMNAME_WOOD_PICKAXE:

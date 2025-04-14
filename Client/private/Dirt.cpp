@@ -65,7 +65,6 @@ HRESULT CDirt::Drop_Item_OnDestroy(const _float3& fPos)
     wchar_t layerName[100];
     swprintf(layerName, 100, L"Layer_Chunk%d", m_iMyChunk);
 
-    if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_ItemCube"), LEVEL_YU, layerName)))
         return E_FAIL;
 
     if (CItemCube* _copy = dynamic_cast<CItemCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName))) {
@@ -77,6 +76,9 @@ HRESULT CDirt::Drop_Item_OnDestroy(const _float3& fPos)
     return S_OK;
 }
 
+// 매개변수 만들어서 던지면 되긴하거든? 그럼 노가다긴함
+// 겟셋 만들어서 맴버변수로 분기 나눠도 되고 
+// 매개변수로 할까 맴버변수 파서 크리퍼에서 바꿀까 
 HRESULT CDirt::Play_Destroy_Effect(const _float3& vPos)
 {
     CParticleEventManager::Get_Instance()->OnParticle(
@@ -84,14 +86,15 @@ HRESULT CDirt::Play_Destroy_Effect(const _float3& vPos)
         vPos
     );
 
-    m_pGameInstance->Play_Sound(TEXT("Gravel_dig1"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+    if (!isCreeperBoom)   
+        m_pGameInstance->Play_Sound(TEXT("Gravel_dig1"), SOUND_BLOCK_DIG, this, 0.5f, vPos);
 
     return S_OK;
 }
 
 void CDirt::PlaySound_Hit(_float3 vPos)
 {
-    m_pGameInstance->Play_Sound(TEXT("Gravel_hit1"), SOUND_BLOCK_HIT, this, 1.f, vPos);
+    m_pGameInstance->Play_Sound(TEXT("Gravel_hit1"), SOUND_BLOCK_HIT, this, 0.5f, vPos);
 }
 
 void CDirt::Play_Create_Sound(_float3 vPos)

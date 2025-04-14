@@ -71,6 +71,7 @@ void CMissionControl::InitMissions1() {
 }
 void CMissionControl::InitMissions2()
 {
+
  /*   m_Round2.emplace_back(std::vector<missionDetail>{
         { L"coal", L"석탄 채광기",0,3},
         { L"iron",   L"철 채광하기" ,0,5}
@@ -79,6 +80,7 @@ void CMissionControl::InitMissions2()
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"furnace", L"화로 만들기" ,0,1},
         { L"burniron", L"철 구우기",0,2}
+
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
@@ -141,7 +143,7 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
                     int Random_pos = rand() % m_SpawnPos.size();
                     CGameObject* ptemp = nullptr;
 
-                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
                         LEVEL_YU, TEXT("Layer_Monster"));
 
                     if (ptemp == nullptr) return;

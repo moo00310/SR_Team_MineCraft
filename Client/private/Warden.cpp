@@ -29,8 +29,8 @@ HRESULT CWarden::Initialize(void* pArg)
 {
     m_MonsterType = MT_WARDEN;
     m_fSpeed = 2.5f;
-    m_Hp = 100.f;
-    m_MaxHp = 100.f;
+    m_Hp = 500.f; 
+    m_MaxHp = 500.f; 
 
     m_Coll_Size = { 0.5f, 1.0f, 0.5f };
     m_Coll_Offset = { 0.f, 0.6f, 0.f };
