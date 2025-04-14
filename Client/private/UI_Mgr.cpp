@@ -76,9 +76,10 @@ void CUI_Mgr::SetHP()
 			if (iOnesPlace != 0 && SteveHp > 0) 
 			{
 				m_vecPlayerHPlist[iIndex]->Set_TextureNum(2);
+				m_vecPlayerHPlist[iIndex]->Set_Flicker(true);
 			}
 
-			m_bPlayerHP_Shader = true;
+			PlayerHP_Shake(iIndex);
 		}
 	}
 }
@@ -87,7 +88,7 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 {
 	m_fHungerTime += fTimeDelta;
 
-	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 10.f)
+	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 5.f)
 	{
 		m_fHungerTime = 0.f;
 		
@@ -118,11 +119,48 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 			}
 		}
 
-		if (m_iallZeroCount == 10)
+		/*if (m_iallZeroCount == 10)
 		{
 			SetHP();
-			/* 음식 먹어서 배고픔 회복?하면 m_iallZeroCount 초기화 */
+		}*/
+	}
+}
+
+void CUI_Mgr::PlayerHunger_Heal(_float _fHealAmount)
+{
+	if (m_PlayerHungerlist.empty() || _fHealAmount <= 0.f)
+		return;
+
+	for (auto iter = m_PlayerHungerlist.begin(); iter != m_PlayerHungerlist.end(); ++iter)
+	{
+		if (_fHealAmount <= 0.f)
+			break;
+
+		_int texNum = (*iter)->Get_TextureNum();
+
+		if (texNum == 0) // 빈칸일때
+		{
+			if (_fHealAmount >= 1.f)
+			{
+				(*iter)->Set_TextureNum(1); // 풀로
+				_fHealAmount -= 1.f;
+			}
+			else if (_fHealAmount >= 0.5f)
+			{
+				(*iter)->Set_TextureNum(2); // 반으로
+				_fHealAmount -= 0.5f;
+			}
 		}
+
+		else if (texNum == 2) /* 반칸일때*/
+		{
+			if (_fHealAmount >= 0.5f)
+			{
+				(*iter)->Set_TextureNum(1); // 반으로
+				_fHealAmount -= 0.5f;
+			}
+		}
+		(*iter)->Set_Flicker(false);
 	}
 }
 
@@ -145,7 +183,7 @@ void CUI_Mgr::PlayerExp_Set()
 					(*iter)->Set_TextureNum(5);
 					(*iter)->Set_RenderOn(true);
 
-					//LevelUp();
+					LevelUp();
 
 					break;
 				}
@@ -156,7 +194,6 @@ void CUI_Mgr::PlayerExp_Set()
 					break;
 				}
 			}
-			/* 마지막 back -> 5가된다면 LevelUp() 호출 */
 		}
 	}
 }
@@ -168,6 +205,11 @@ void CUI_Mgr::LevelUp()
 	{
 		(*iter)->Set_RenderOn(false);
 	}
+
+	/*for (auto iter = m_PlayerLevellist.begin(); iter != m_PlayerLevellist.end() ++iter)
+	{
+
+	}*/
 }
 
 void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
@@ -358,6 +400,19 @@ void CUI_Mgr::ShowInventoryTop()
 		}
 	}
 }
+
+void CUI_Mgr::PlayerHP_Shake(_int _index)
+{
+	if (!m_vecPlayerHPlist.empty())
+	{
+		for (int i = _index; i < m_vecPlayerHPlist.size(); ++i)
+		{
+			m_vecPlayerHPlist[i]->Set_Flicker(true);
+		}
+	}
+
+}
+
 
 ITEMNAME CUI_Mgr::GetItemTypeName()
 {

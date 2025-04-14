@@ -48,6 +48,11 @@ public:
 	void Split_ItemStack(_int _SlotIndex, ITEMID _ItemID, ITEMNAME _ItemName);
 	/* 화로, 제작대, 인벤토리 활성화 시 비활성되는 슬롯 관리*/
 	void ShowInventoryTop();
+	/* UI 흔들림 확인 */
+	void PlayerHP_Shake(_int _index);
+	/* 배고픔 증가 */
+	void PlayerHunger_Heal(_float _fHealAmount);
+
 
 	ITEMNAME GetItemTypeName();
 	ITEMNAME GetItemTypeName_Left();
@@ -84,7 +89,6 @@ public:
 	CCrafting*	Set_Crafting(CCrafting* pCrafting)				{ return m_pCrafting = pCrafting; }
 	CItem*		Set_Item(CItem* pItem)							{ return m_pItem = pItem; }
 	CBag*		Set_Bag(CBag* pBag)								{ return m_pBag = pBag; }
-	
 
 private:
 	ITEMID	m_ItemID = ITEMID_END;
@@ -92,6 +96,7 @@ private:
 	_int	m_iallZeroCount = { 0 };
 	_int	m_iHP_ChangeCount = { 0 };
 	_bool	m_bPlayerHP_Shader = { false };
+	_bool	m_bShake = { false };
 
 private:
 	/* Player State 관련 */

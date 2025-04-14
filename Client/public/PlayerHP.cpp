@@ -53,6 +53,17 @@ void CPlayerHP::Late_Update(_float fTimeDelta)
 
     m_fTime = fTimeDelta;
 
+    if (m_bFlicker)
+    {
+        m_fFlickerTime += fTimeDelta;
+
+        if (m_fFlickerTime >= 1.f)
+        {
+            m_bFlicker = false;
+            m_fFlickerTime = 0.f;
+       }
+    }
+
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
@@ -80,11 +91,15 @@ HRESULT CPlayerHP::Render()
 
     m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(m_iTextureNum));
 
-    if (CUI_Mgr::Get_Instance()->Get_PlayerHP_Shader())
+    if (m_bFlicker)
     {
         float timeValue = GetTickCount64() * 0.001f;
         m_pShaderCom->SetFloat("g_Time", timeValue);
         m_pShaderCom->Begin(2);
+    }
+    else
+    {
+        m_pShaderCom->Begin(0);
     }
 
 	if (FAILED(m_pVIBufferCom->Render()))
@@ -114,8 +129,8 @@ HRESULT CPlayerHP::Ready_Components()
 
     if (FAILED(__super::Add_Component(LEVEL_STATIC, TEXT("Prototype_Component_Shader_UI"),
         TEXT("Com_Shader"), reinterpret_cast<CComponent**>(&m_pShaderCom))))
-
         return E_FAIL;
+
     return S_OK;
 }
 

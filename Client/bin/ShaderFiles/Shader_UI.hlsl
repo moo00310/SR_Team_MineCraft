@@ -10,6 +10,7 @@ float g_Time;
 float g_burn;
 float g_burnResult;
 float g_LoadingPercent;
+float g_ShakeStrength;
 
 // 회전을 적용한 UV 좌표 생성 함수
 float2 RotateUV(float2 uv, float angle)
@@ -56,14 +57,14 @@ VS_OUT VS_MAIN(VS_IN In)
 	VS_OUT Out = (VS_OUT)0;
 
 	matrix			matWV, matWVP;
-
+    
 	matWV = mul(g_WorldMatrix, g_ViewMatrix);
 	matWVP = mul(matWV, g_ProjMatrix);
-
+    
 	Out.vPosition = mul(float4(In.vPosition, 1.f), matWVP);
 	Out.vTexcoord = In.vTexcoord;	 
 	Out.vWorldPos = mul(float4(In.vPosition, 1.f), g_WorldMatrix).xyz;
-
+    
 	return Out;
 };
 
@@ -214,6 +215,13 @@ PS_OUT PS_LoadingIcon(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_ShakeEffect(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+	float2 offset = float2(sin(g_Time * 40.0f), cos(g_Time * 50.0f)) * g_ShakeStrength;
+	Out.vColor = tex2D(TextureSampler, In.vTexcoord + offset);
+	return Out;
+}
 
 /* Technique 정의 */
 technique DefaultTechnique
@@ -334,6 +342,19 @@ technique DefaultTechnique
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_LoadingIcon();
     }
+
+    pass ShakeEffectPass
+	{
+		AlphaBlendEnable = TRUE;
+		SrcBlend = SRCALPHA;
+		DestBlend = INVSRCALPHA;
+		BlendOp = ADD;
+		CULLMODE = NONE;
+		ZWRITEENABLE = FALSE;
+		ZENABLE = FALSE;
+		VertexShader = compile vs_3_0 VS_MAIN();
+		PixelShader = compile ps_3_0 PS_ShakeEffect();
+	}
 }
 
 

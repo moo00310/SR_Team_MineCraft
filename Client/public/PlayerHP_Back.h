@@ -36,11 +36,13 @@ private:
 private:
 	_int*	m_iHpCount = { nullptr };
 	_int	m_iHpIndex;
+	_bool	m_bAnyShake = { false };
 
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+	CShader* m_pShaderCom = { nullptr };
 
 public:
 	static CPlayerHP_Back* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
