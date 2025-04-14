@@ -40,77 +40,94 @@ HRESULT CMissionControl::Initialize(void* pArg)
 #pragma region init
 
 void CMissionControl::InitMissions1() {
-    // ¹«¾ùÀ», ¾î¶»°Ô ÇÏ³Ä, Áö±İ ÇÑ °ª, ¿Ï·áµÇ´Â °ª  
+    // ë¬´ì—‡ì„, ì–´ë–»ê²Œ í•˜ëƒ, ì§€ê¸ˆ í•œ ê°’, ì™„ë£Œë˜ëŠ” ê°’  
+
     m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"wood", L"³ª¹« 5°³ ¹ú¸ñÇÏ±â",0, 5}
+        { L"wood", L"ë‚˜ë¬´ 5ê°œ ë²Œëª©í•˜ê¸°",0, 1}
     });
     
-   /* m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"craftingtable", L"Á¦ÀÛ´ë ¸¸µé±â",0,1}
-    });
-    
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"stonesword", L"µ¹ Ä® ¸¸µé±â",0,1},
-        { L"stoneaxe", L"µ¹ µµ³¢ ¸¸µé±â",0,1},
-        { L"stonepickaxe", L"µ¹ °î±ªÀÌ ¸¸µé±â",0,1}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"craftingtable", L"ì œì‘ëŒ€ ë§Œë“¤ê¸°",0,1}
+    //});
+    //
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"stonesword", L"ëŒ ì¹¼ ë§Œë“¤ê¸°",0,1},
+    //    { L"stoneaxe", L"ëŒ ë„ë¼ ë§Œë“¤ê¸°",0,1},
+    //    { L"stonepickaxe", L"ëŒ ê³¡ê´­ì´ ë§Œë“¤ê¸°",0,1}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"apple", L"»ç°ú ¸Ô°í ¹è°íÇÄ Ã¤¿ì±â",0,1}
-    });
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"apple", L"ì‚¬ê³¼ ë¨¹ê³  ë°°ê³ í”” ì±„ìš°ê¸°",0,1}
+    //});
 
-    m_Round1.emplace_back(std::vector<missionDetail>{
-        { L"block", L"ºí·° 5°³ ¼³Ä¡",0,5}
-    });*/
+    //m_Round1.emplace_back(std::vector<missionDetail>{
+    //    { L"block", L"ë¸”ëŸ­ 5ê°œ ì„¤ì¹˜",0,5}
+    //});
 
-    // ¿şÀÌºê ¹Ì¼Ç 1 : Á»ºñ 5¸¶¸® Ã³Ä¡
+    // ì›¨ì´ë¸Œ ë¯¸ì…˜ 1 : ì¢€ë¹„ 5ë§ˆë¦¬ ì²˜ì¹˜
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"Á»ºñ 5¸¶¸® Ã³Áö",0,5}
+        { L"zombi", L"ì¢€ë¹„ 5ë§ˆë¦¬ ì²˜ì§€",0,1}
     });
 }
 void CMissionControl::InitMissions2()
 {
-    m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"coal", L"¼®Åº Ã¤±¤ÇÏ±â",0,3},
-        { L"iron",   L"Ã¶ Ã¤±¤ÇÏ±â" ,0,5}
+
+ /*   m_Round2.emplace_back(std::vector<missionDetail>{
+        { L"coal", L"ì„íƒ„ ì±„ê´‘ê¸°",0,3},
+        { L"iron",   L"ì²  ì±„ê´‘í•˜ê¸°" ,0,5}
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"furnace", L"È­·Î ¸¸µé±â" ,0,1},
-        { L"burniron", L"Ã¶ ±Á±â",0,2}
+        { L"furnace", L"í™”ë¡œ ë§Œë“¤ê¸°" ,0,1},
+        { L"burniron", L"ì²  êµ¬ìš°ê¸°",0,2}
+
     });
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"ironsword", L"Ã¶°Ë ¸¸µé±â",0,1}
-    });
+        { L"ironsword", L"ì² ê²€ ë§Œë“¤ê¸°",0,1}
+    });*/
 
     m_Round2.emplace_back(std::vector<missionDetail>{
-        { L"torch", L"¼®ÅºÀ¸·Î È¶ºÒ ¸¸µé±â",0,1}
+        { L"torch", L"ì„íƒ„ìœ¼ë¡œ íšƒë¶ˆ ë§Œë“¤ê¸°",0,1}
     });
 
-    // ¿şÀÌºê ¹Ì¼Ç 1: Á»ºñ 7¸¶¸®, Å©¸®ÆÛ 3¸¶¸® Ã³Ä¡
+    // ì›¨ì´ë¸Œ ë¯¸ì…˜ 1: ì¢€ë¹„ 7ë§ˆë¦¬, í¬ë¦¬í¼ 3ë§ˆë¦¬ ì²˜ì¹˜
     m_Round2Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"Á»ºñ 7¸¶¸® Ã³Ä¡",0,7},
-        { L"creeper",  L"Å©¸®ÆÛ 3¸¶¸® Ã³Ä¡",0,3}
+        { L"zombi", L"ì¢€ë¹„ 7ë§ˆë¦¬ ì²˜ì¹˜",0,1},
+        //{ L"creeper",  L"í¬ë¦¬í¼ 3ë§ˆë¦¬ ì²˜ì¹˜",0,1}
     });
 }
 void CMissionControl::InitMissions3()
 {
     m_Round3.emplace_back(std::vector<missionDetail>{
-        { L"newsword", L"»õ·Î¿î ¹«±â ¸¸µé±â" ,0,1}
+        { L"block", L"ìƒˆë¡œìš´ ë¬´ê¸° ë§Œë“¤ê¸°" ,0,1}
     });
 
-    // ¿şÀÌºê ¹Ì¼Ç 1: º¸½º ¸ó½ºÅÍ Ã³Ä¡ & »ıÁ¸
+    // ì›¨ì´ë¸Œ ë¯¸ì…˜ 1: ë³´ìŠ¤ ëª¬ìŠ¤í„° ì²˜ì¹˜ & ìƒì¡´
     m_Round3Wave.emplace_back(std::vector<missionDetail>{
-        { L"warden", L"º¸½º ¸ó½ºÅÍ Ã³Áö" ,0,1},
-        { L"morning",  L"¾ÆÄ§±îÁö »ıÁ¸ÇÏ±â" ,0,1}
+        { L"warden", L"ë³´ìŠ¤ ëª¬ìŠ¤í„° ì²˜ì§€" ,0,1},
+        { L"morning",  L"ì•„ì¹¨ê¹Œì§€ ìƒì¡´í•˜ê¸°" ,0,1}
     });
+}
+float CMissionControl::GetRandomFloat(float lowBound, float highBound)
+{
+    // ì˜ëª»ëœ ì…ë ¥ 
+    if (lowBound >= highBound)
+    {
+        return lowBound;
+    }
+
+    // [0, 1] ë²”ìœ„ì˜ ì„ì˜ì˜ float íšë“.
+    float f = (rand() % 10000) * 0.0001f;
+
+    // ìµœì¢…ì ìœ¼ë¡œ lowBound ~ highBound ë²”ìœ„ ê°’ ë¦¬í„´.
+    return (f * (highBound - lowBound)) + lowBound;
 }
 #pragma endregion
 
 void CMissionControl::Priority_Update(_float fTimeDelta)
 {
-    // ³¡³µÀ¸¸é ½Ã°£ ºü¸£°Ô °¡±â
+    // ëë‚¬ìœ¼ë©´ ì‹œê°„ ë¹ ë¥´ê²Œ ê°€ê¸°
     if (m_bDayFinish) {
         if (g_fBright <= 0.25) {
             m_sun->Set_bAddTime();
@@ -131,8 +148,7 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
 
                     if (ptemp == nullptr) return;
                     static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
-                    m_bIsWaveStart = false;
-                    m_bIsWave = true;
+
                 }
 
                 m_bIsWaveStart = false;
@@ -171,8 +187,11 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
             }
             case Client::CMissionControl::WAVE3:
             {
+                m_bIsWaveStart = false;
+                m_bIsWave = true;
+                m_sun->Set_bLastWave();
                 vector<_float3> m_SpawnPos = m_pTerrain->Get_SpwanAble();
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     int Random_pos = rand() % m_SpawnPos.size();
                     CGameObject* ptemp = nullptr;
@@ -182,8 +201,19 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
 
                     if (ptemp == nullptr) return;
                     static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
-                    m_bIsWaveStart = false;
-                    m_bIsWave = true;
+                }
+
+                for (int i = 0; i < 5; i++)
+                {
+                    int Random_pos = rand() % m_SpawnPos.size();
+                    CGameObject* ptemp = nullptr;
+
+                    ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+                        LEVEL_YU, TEXT("Layer_Monster"));
+
+                    if (ptemp == nullptr) return;
+                    static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+
                 }
 
                 int Random_pos = rand() % m_SpawnPos.size();
@@ -202,10 +232,34 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
         }
     }
 
+    if (m_bIsLastWave && !m_bDayFinish) {
+        if (m_sun->Get_Sun()) {
+            m_sun->Set_bLastWave();
+            Update_Mission(L"morning");
+        }
+        else {
+            m_fSpwanCoolTime += fTimeDelta;
+            if (m_fSpwanCoolTime >= 10.f)
+            {
+                int spawnCount = 20 - m_pGameInstance->GetActiveCount(TEXT("Layer_Monster"));
+                if (spawnCount == 0) return;
+
+                Spwan_Monster(spawnCount);
+                m_fSpwanCoolTime = 0.f;
+            }
+        }
+    }
+
+
     if (m_bNightFinish) {
         if (g_fBright >= 0.75) {
             m_sun->Set_bAddTime();
             m_bNightFinish = false;
+
+            if (m_currentStage == STAGE_END)
+            {
+                m_bIsFireCracker = true;                
+            }
         }
     }
 
@@ -213,6 +267,31 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
 
 void CMissionControl::Update(_float fTimeDelta)
 {
+    if (m_bIsFireCracker == true && m_fFireTime <= 0.f)
+    {
+        // í™”ë ¤í•œ í­ì£½ì´ ë‚˜ë¥¼ ê°ì‹¼Dã…....
+        CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_YU,	// ê°€ì ¸ì˜¬ ì”¬
+            PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// ê°€ì ¸ì˜¬ í”„ë¡œí† íƒ€ì….
+            LEVEL_YU,	// ì ìš© ì”¬.
+            LAYER_PARTICLE);
+
+        _float3 pos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+        pos.z += GetRandomFloat(-2.f, 2.f);
+        pos.y += 2.f;
+        pos.x += GetRandomFloat(-2.f, 2.f);
+
+        obj->GetTransform()->Set_State(CTransform::STATE_POSITION, pos);
+
+        m_fFireTime = m_fFireCoolTime;
+    }
+
+    // í­ì£½ ì¿¨íƒ€ì„ ê°ì†Œ.
+    if (m_bIsFireCracker == true)
+    {
+        m_fFireTime -= 1.f * fTimeDelta;
+    }    
+
     bool m_checkFinishStage = true;
     switch (m_currentStage)
     {
@@ -332,6 +411,7 @@ void CMissionControl::Update(_float fTimeDelta)
             m_pGameInstance->PlayBGM(L"MoogCity2");
             m_sun->Set_bAddTime();
             m_bIsWaveStart = true;
+            m_bIsLastWave = true;
         }
         break;
     case WAVE3:
@@ -351,10 +431,12 @@ void CMissionControl::Update(_float fTimeDelta)
 
         if (m_checkFinishStage) {
             m_currentStage = STAGE_END;
-            m_bNightFinish = true;
+            //m_bNightFinish = true;
             m_pGameInstance->PlayBGM(L"sweden");
-            m_sun->Set_bAddTime();
             m_bIsWave = false;
+            m_bIsLastWave = false;
+            m_pGameInstance->ClearPool(L"Prototype_GameObject_Zombi");
+            m_pGameInstance->ClearPool(L"Prototype_GameObject_Creeper");
         }
         break;
     default:
@@ -364,6 +446,34 @@ void CMissionControl::Update(_float fTimeDelta)
 
 void CMissionControl::Late_Update(_float fTimeDelta)
 {
+
+}
+
+void CMissionControl::Spwan_Monster(int count)
+{
+    // ëª¬ìŠ¤í„° ìŠ¤í°ê°€ëŠ¥í•œ ìœ„ì¹˜ ë“¤ê³ ì˜´
+    m_SpawnPos = m_pTerrain->Get_SpwanAble();
+
+    for (int i = 0; i < count; i++)
+    {
+        int Random_pos = rand() % m_SpawnPos.size();
+        int Random_type = rand() % 2;
+        CGameObject* ptemp = nullptr;
+
+        if (Random_type == 0)
+        {
+            ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Creeper"),
+                LEVEL_YU, TEXT("Layer_Monster"));
+        }
+        else
+        {
+            ptemp = m_pGameInstance->PushPool(LEVEL_YU, TEXT("Prototype_GameObject_Zombi"),
+                LEVEL_YU, TEXT("Layer_Monster"));
+        }
+
+        if (ptemp == nullptr) return;
+        static_cast<CMonster*>(ptemp)->Get_Transform()->Set_State(CTransform::STATE_POSITION, _float3(m_SpawnPos[Random_pos]));
+    }
 
 }
 

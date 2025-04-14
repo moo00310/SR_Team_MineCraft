@@ -119,6 +119,7 @@ public:
 
 	// 현재 태그 액티브 된 오브젝트 개수 반환.
 	int GetActiveCount(const _wstring& strPrototypeTag);
+	void ClearPool(const _wstring& strPrototypeTag);
 	
 #pragma endregion
 
