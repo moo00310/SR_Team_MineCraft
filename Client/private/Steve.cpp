@@ -318,7 +318,7 @@ void CSteve::Move(_float fTimeDelta)
 	}
 	if (m_pGameInstance->Key_Down('J'))
 	{
-		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_GUNPOWDER, 1);
+		CUI_Mgr::Get_Instance()->ItemCount_Update(ITEMNAME_STONE_PICKAXE, 1);
 	}
 	if (m_pGameInstance->Key_Down('H'))
 	{
