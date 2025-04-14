@@ -389,6 +389,10 @@ int CGameInstance::GetActiveCount(const _wstring& strPrototypeTag)
 {
 	return m_pPoolManager->GetActiveCount(strPrototypeTag);
 }
+void CGameInstance::ClearPool(const _wstring& strPrototypeTag)
+{
+	return m_pPoolManager->ClearPool(strPrototypeTag);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()

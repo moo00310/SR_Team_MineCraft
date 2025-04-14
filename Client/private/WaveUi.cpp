@@ -138,23 +138,40 @@ HRESULT CWaveUi::Render()
 
         RECT rect = { 10, 0, 160, 100 };
 
-        //switch (_control->Get_CurrentStage)
-        //{
-        //case 1:
-        //    break;
-        //case 3:
-        //    break;
-        //case 5:
-        //    break;
-        //}
-        g_pTitleFont->DrawTextW(
-            nullptr,
-            L"WAVE 1",
-            -1,
-            &rect,
-            DT_CENTER | DT_VCENTER | DT_SINGLELINE,
-            D3DCOLOR_ARGB(255, 255, 50, 59)
-        );
+        switch (_control->Get_CurrentStage())
+        {
+        case CMissionControl::WAVE1:
+            g_pTitleFont->DrawTextW(
+                nullptr,
+                L"WAVE 1",
+                -1,
+                &rect,
+                DT_CENTER | DT_VCENTER | DT_SINGLELINE,
+                D3DCOLOR_ARGB(255, 255, 50, 59)
+            );
+            break;
+        case CMissionControl::WAVE2:
+            g_pTitleFont->DrawTextW(
+                nullptr,
+                L"WAVE 3",
+                -1,
+                &rect,
+                DT_CENTER | DT_VCENTER | DT_SINGLELINE,
+                D3DCOLOR_ARGB(255, 255, 50, 59)
+            );
+            break;
+        case CMissionControl::WAVE3:
+            g_pTitleFont->DrawTextW(
+                nullptr,
+                L"WAVE 3",
+                -1,
+                &rect,
+                DT_CENTER | DT_VCENTER | DT_SINGLELINE,
+                D3DCOLOR_ARGB(255, 255, 50, 59)
+            );
+            break;
+        }
+
     }
     return S_OK;
 }

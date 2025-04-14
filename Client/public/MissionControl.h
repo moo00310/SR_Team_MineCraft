@@ -43,6 +43,7 @@ private:
 	void InitMissions1();
 	void InitMissions2();
 	void InitMissions3();
+
 	CSun* m_sun = nullptr;
 	CMCTerrain* m_pTerrain = nullptr;
 	CSteve* m_pPlayer = nullptr;
@@ -52,6 +53,12 @@ private:
 	bool m_bIsWaveStart = false;
 	bool m_bIsWave = false;
 
+	// 마지막 wave 위한 
+	bool m_bIsLastWave = false;
+	_float m_fSpwanCoolTime = {};
+	vector<_float3> m_SpawnPos;
+	void Spwan_Monster(int count);
+	
 	Stage m_currentStage= DAY1;
 	vector<vector<missionDetail>> m_Round1;
 	vector<vector<missionDetail>> m_Round1Wave;

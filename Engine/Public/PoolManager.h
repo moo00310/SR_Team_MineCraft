@@ -24,6 +24,8 @@ public:
 	// 해당 오브젝트 풀매니저로 반환.
 	void PopPool(CGameObject* _object, const _wstring& strPrototypeTag);
 
+	void ClearPool(const _wstring& strPrototypeTag);
+
 	// 해당 프로토타입 태그 풀링 갯수 반환.
 	_uint GetPoolCount(_wstring _tag);
 

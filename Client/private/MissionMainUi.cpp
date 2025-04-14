@@ -53,6 +53,9 @@ HRESULT CMissionMainUi::Render()
     if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
         if (_control->Get_IsWaveStart())
             return S_OK;
+
+        if (_control->Get_CurrentStage() == CMissionControl::STAGE_END)
+            return S_OK;
     }
 
     if (FAILED(m_pTextureCom->Bind_Resource(0)))
