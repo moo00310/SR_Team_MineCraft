@@ -868,6 +868,9 @@
     <ClInclude Include="..\public\CobbleStone.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\BossUI.h">
+      <Filter>08.Mission\Ui</Filter>
+   </ClInclude>
     <ClInclude Include="..\public\LoadingScene.h">
       <Filter>03.UI\13.LoadingScene</Filter>
     </ClInclude>
@@ -1339,6 +1342,9 @@
     <ClCompile Include="..\private\CobbleStone.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\BossUI.cpp">
+      <Filter>08.Mission\Ui</Filter>
+  </ClCompile>
     <ClCompile Include="..\private\LoadingScene.cpp">
       <Filter>03.UI\13.LoadingScene</Filter>
     </ClCompile>
@@ -1363,6 +1369,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Particle.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Billboard_UI.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>
