@@ -385,6 +385,12 @@
     <Filter Include="01.Levels\03.Ending">
       <UniqueIdentifier>{ec6e1157-600d-4e24-9c4b-694d59127510}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\13.Ending_Background">
+      <UniqueIdentifier>{bc262fbc-bf48-42b9-93d2-6959298d48a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.UI\14.Ending_Text">
+      <UniqueIdentifier>{189072e0-d803-4fa2-a156-359d124e740d}</UniqueIdentifier>
+        </Filter>
     <Filter Include="03.UI\13.LoadingScene">
       <UniqueIdentifier>{31668616-721e-4e2b-86dc-fe4cb43ac457}</UniqueIdentifier>
     </Filter>
@@ -868,6 +874,12 @@
     <ClInclude Include="..\public\CobbleStone.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\Ending_Background.h">
+      <Filter>03.UI\13.Ending_Background</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\Ending_Text.h">
+      <Filter>03.UI\14.Ending_Text</Filter>
+     </ClInclude>
     <ClInclude Include="..\public\BossUI.h">
       <Filter>08.Mission\Ui</Filter>
    </ClInclude>
@@ -1342,6 +1354,12 @@
     <ClCompile Include="..\private\CobbleStone.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\Ending_Background.cpp">
+      <Filter>03.UI\13.Ending_Background</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\Ending_Text.cpp">
+      <Filter>03.UI\14.Ending_Text</Filter>
+   </ClCompile>
     <ClCompile Include="..\private\BossUI.cpp">
       <Filter>08.Mission\Ui</Filter>
   </ClCompile>

@@ -59,6 +59,9 @@ HRESULT CWaveUi::Render()
 {
     CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")));
 
+    if (nullptr == _control)
+        return E_FAIL;
+
     if (_control->Get_IsWaveStart()) {
         m_pGraphic_Device->SetTexture(0, nullptr);
         RECT rect2 = { 350, 0, 900, 100 };
