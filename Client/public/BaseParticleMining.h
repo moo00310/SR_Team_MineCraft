@@ -20,6 +20,8 @@ public:
 	// CParticleSystem을(를) 통해 상속됨	
 	virtual void Free();
 
+	virtual void OnPushPool() override;
+
 protected:
 	virtual HRESULT Ready_Components() = 0;
 

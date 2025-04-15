@@ -38,6 +38,7 @@ CParticleWoodMining* CParticleWoodMining::Create(LPDIRECT3DDEVICE9 pGraphic_Devi
 
 void CParticleWoodMining::OnPushPool()
 {
+	__super::OnPushPool();
 	iCurrentTextureIndex = kMINING::MINING_WOOD;
 }
 

@@ -38,6 +38,7 @@ CParticleStoneMining* CParticleStoneMining::Create(LPDIRECT3DDEVICE9 pGraphic_De
 
 void CParticleStoneMining::OnPushPool()
 {
+	__super::OnPushPool();
 	iCurrentTextureIndex = kMINING::MINING_STONE;
 }
 

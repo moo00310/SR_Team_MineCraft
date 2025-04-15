@@ -38,6 +38,7 @@ CParticleLeafDestroy* CParticleLeafDestroy::Create(LPDIRECT3DDEVICE9 pGraphic_De
 
 void CParticleLeafDestroy::OnPushPool()
 {
+	__super::OnPushPool();
 	iCurrentTextureIndex = kMINING::MINING_LEAF;
 }
 

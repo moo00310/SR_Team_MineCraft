@@ -195,6 +195,7 @@
     <ClInclude Include="..\public\Client_Tag.h" />
     <ClInclude Include="..\public\Clouds.h" />
     <ClInclude Include="..\public\CoalOre.h" />
+    <ClInclude Include="..\public\CobbleStone.h" />
     <ClInclude Include="..\public\Crafting.h" />
     <ClInclude Include="..\public\CraftingTable.h" />
     <ClInclude Include="..\public\Crosshair.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="..\public\Camera_Cutscene.h" />
     <ClInclude Include="..\public\DestroyCube.h" />
     <ClInclude Include="..\public\Edition.h" />
+    <ClInclude Include="..\public\Level_Ending.h" />
     <ClInclude Include="..\public\Exp_Orb.h" />
     <ClInclude Include="..\public\FireCrackerLoad.h" />
     <ClInclude Include="..\public\Furnace.h" />
@@ -352,6 +354,7 @@
     <ClCompile Include="..\private\Check_Enemy_Node.cpp" />
     <ClCompile Include="..\private\Clouds.cpp" />
     <ClCompile Include="..\private\CoalOre.cpp" />
+    <ClCompile Include="..\private\CobbleStone.cpp" />
     <ClCompile Include="..\private\Crafting.cpp" />
     <ClCompile Include="..\private\CraftingTable.cpp" />
     <ClCompile Include="..\private\Crosshair.cpp" />
@@ -362,6 +365,7 @@
     <ClCompile Include="..\private\Camera_Cutscene.cpp" />
     <ClCompile Include="..\private\DestroyCube.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
+    <ClCompile Include="..\private\Level_Ending.cpp" />
     <ClCompile Include="..\private\Exp_Orb.cpp" />
     <ClCompile Include="..\private\FireCrackerLoad.cpp" />
     <ClCompile Include="..\private\Furnace.cpp" />

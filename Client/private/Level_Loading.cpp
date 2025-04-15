@@ -15,6 +15,8 @@
 #include "GameInstance.h"
 #include "LoadingScene.h"
 
+#include "Level_Ending.h"
+
 CLevel_Loading::CLevel_Loading(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
 {
@@ -101,6 +103,9 @@ void CLevel_Loading::Update(_float fTimeDelta)
 				pLevel = CLevel_TOOL::Create(m_pGraphic_Device);
 				break;
 
+			case LEVEL_ENDING:
+				pLevel = CLevel_Ending::Create(m_pGraphic_Device);
+				break;
 			}
 
 			if (nullptr == pLevel)
