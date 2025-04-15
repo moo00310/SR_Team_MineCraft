@@ -27,7 +27,7 @@ HRESULT CPlayerLevel::Initialize(void* pArg)
         Desc.fSizeY = 25.f;
         Desc.fX = 655.f;
         Desc.fY = 580.f;
-        m_iTextureNum = 9;
+        m_iTextureNum = 1;
         m_bRenderOn = true;
     }    
 
@@ -37,7 +37,7 @@ HRESULT CPlayerLevel::Initialize(void* pArg)
         Desc.fSizeY = 25.f;
         Desc.fX = 625.f;
         Desc.fY = 580.f;
-        m_iTextureNum = 9;
+        m_iTextureNum = 0;
         m_bRenderOn = true;
     }
 

@@ -107,23 +107,23 @@ HRESULT CLoadingScene::Render()
 			return E_FAIL;
 
 		__super::Begin();
-		//if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
-		//	return E_FAIL;
-		//if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
-		//	return E_FAIL;
-		//if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
-		//	return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_WorldMatrix())))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ViewMatrix", &m_ViewMatrix)))
+			return E_FAIL;
+		if (FAILED(m_pShaderCom->Bind_Matrix("g_ProjMatrix", &m_ProjMatrix)))
+			return E_FAIL;
 
 
-		//m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(0));
-		//m_pShaderCom->SetFloat("g_LoadingPercent", m_fTime);
-		//m_pShaderCom->Begin(7);
+		m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(0));
+		m_pShaderCom->SetFloat("g_Time", static_cast<float>(GetTickCount64()) * 0.001f);
+		m_pShaderCom->Begin(9);
 
 		if (FAILED(m_pVIBufferCom->Render()))
 			return E_FAIL;
 
 
-		//m_pShaderCom->End();
+		m_pShaderCom->End();
 		__super::End();
 
 		m_pFont->DrawTextW(

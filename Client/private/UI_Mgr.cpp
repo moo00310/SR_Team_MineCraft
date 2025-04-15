@@ -21,6 +21,7 @@ void CUI_Mgr::Update(_float fTimeDelta)
 void CUI_Mgr::Late_Update(_float fTimeDelta)
 {
 	ShowInventoryTop();
+	PlayerHunger_AutoHeal(fTimeDelta);
 	PlayerHunger_Set(fTimeDelta);
 }
 
@@ -76,9 +77,12 @@ void CUI_Mgr::SetHP()
 			if (iOnesPlace != 0 && SteveHp > 0) 
 			{
 				m_vecPlayerHPlist[iIndex]->Set_TextureNum(2);
+				
 			}
 
-			m_bPlayerHP_Shader = true;
+			m_vecPlayerHPlist[iIndex]->Set_Flicker(true);
+			//m_vecPlayerHPlist[iIndex]->Set_Shake(true);
+			PlayerHP_Shake(iIndex);
 		}
 	}
 }
@@ -87,7 +91,7 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 {
 	m_fHungerTime += fTimeDelta;
 
-	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 10.f)
+	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 15.f)
 	{
 		m_fHungerTime = 0.f;
 		
@@ -117,11 +121,128 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 				break;
 			}
 		}
+	}
+}
 
-		if (m_iallZeroCount == 10)
+void CUI_Mgr::PlayerHunger_Heal(_float _fHealAmount)
+{
+	if (m_PlayerHungerlist.empty() || _fHealAmount <= 0.f)
+		return;
+
+	for (auto iter = m_PlayerHungerlist.begin(); iter != m_PlayerHungerlist.end(); ++iter)
+	{
+		if (_fHealAmount <= 0.f)
+			break;
+
+		_int texNum = (*iter)->Get_TextureNum();
+
+		if (texNum == 0) // 빈칸일때
 		{
-			SetHP();
-			/* 음식 먹어서 배고픔 회복?하면 m_iallZeroCount 초기화 */
+			if (_fHealAmount >= 1.f)
+			{
+				(*iter)->Set_TextureNum(1); // 풀로
+				_fHealAmount -= 1.f;
+			}
+			else if (_fHealAmount >= 0.5f)
+			{
+				(*iter)->Set_TextureNum(2); // 반으로
+				_fHealAmount -= 0.5f;
+			}
+		}
+
+		else if (texNum == 2) /* 반칸일때*/
+		{
+			if (_fHealAmount >= 0.5f)
+			{
+				(*iter)->Set_TextureNum(1); // 반으로
+				_fHealAmount -= 0.5f;
+			}
+		}
+		(*iter)->Set_Flicker(false);
+	}
+}
+
+void CUI_Mgr::PlayerHunger_AutoHeal(_float _fTimeDelta)
+{
+	static _float fFullHungerTimer = 0.f;
+	static _float fMidHungerTimer = 0.f;
+
+	/* 배고픔 칸 개수 계산 */
+	_int iHungerTotal = 0;
+	
+	for (auto& hunger : m_PlayerHungerlist)
+	{
+		/* 풀*/
+		if (hunger->Get_TextureNum() == 1)
+			iHungerTotal += 2;
+		/* 반쪽 배고픔 */
+		else if (hunger->Get_TextureNum() == 2)
+			iHungerTotal += 1;
+	}
+
+	/* 배고픔 수치 20 (총10칸 1칸 다 차있으면 2 반쪽이면 1)*/
+	if (iHungerTotal == 20)
+	{
+		fFullHungerTimer += _fTimeDelta;
+
+		if (fFullHungerTimer >= 0.5f)
+		{
+			Player_HealHp(1.0f); 
+			fFullHungerTimer = 0.f;
+		}
+	}
+	else if (iHungerTotal >= 18)
+	{
+		fMidHungerTimer += _fTimeDelta;
+
+		if (fMidHungerTimer >= 4.0f)
+		{
+			Player_HealHp(0.5f);
+			fMidHungerTimer = 0.f;
+		}
+	}
+	else
+	{
+		fFullHungerTimer = 0.f;
+		fMidHungerTimer = 0.f;
+	}
+}
+
+void CUI_Mgr::Player_HealHp(_float _fHealAmount)
+{
+
+	if (_fHealAmount <= 0.f || m_vecPlayerHPlist.empty())
+		return;
+
+	for (auto iter = m_vecPlayerHPlist.begin(); iter != m_vecPlayerHPlist.end(); ++iter)
+	{
+		_int iTextNun = (*iter)->Get_TextureNum();
+
+		/* 빈칸 */
+		if (iTextNun == 0)
+		{
+			if (_fHealAmount >= 1.f)
+			{
+				(*iter)->Set_TextureNum(1);
+				(*iter)->Set_Flicker(true);
+				//(*iter)->Set_Shake(false);
+				_fHealAmount -= 1.f;
+			}
+			else if (_fHealAmount >= 0.5f)
+			{
+				(*iter)->Set_TextureNum(2);
+				(*iter)->Set_Flicker(true);
+				//(*iter)->Set_Shake(false);
+				_fHealAmount -= 0.5f;
+			}
+		}
+		/* 반칸 -> 풀칸*/
+		else if (iTextNun == 2 && _fHealAmount >= 0.5f)
+		{
+			(*iter)->Set_TextureNum(1);
+			(*iter)->Set_Flicker(true);
+			//(*iter)->Set_Shake(false);
+			_fHealAmount -= 0.5f;
 		}
 	}
 }
@@ -145,7 +266,7 @@ void CUI_Mgr::PlayerExp_Set()
 					(*iter)->Set_TextureNum(5);
 					(*iter)->Set_RenderOn(true);
 
-					//LevelUp();
+					LevelUp(1);
 
 					break;
 				}
@@ -156,17 +277,29 @@ void CUI_Mgr::PlayerExp_Set()
 					break;
 				}
 			}
-			/* 마지막 back -> 5가된다면 LevelUp() 호출 */
 		}
 	}
 }
 
-void CUI_Mgr::LevelUp()
+void CUI_Mgr::LevelUp(_int _iLevel)
 {
-	/* 레벨 표기 숫자 변경 */
+	/* 경험치 초기화 */
 	for (auto iter = m_PlayerExplist.begin(); iter != m_PlayerExplist.end(); ++iter)
 	{
 		(*iter)->Set_RenderOn(false);
+	}
+
+	/* 레벨 표기 숫자 변경 */
+	m_iLevel += _iLevel;
+	
+	_int iOnes = m_iLevel % 10;
+	_int iTens = m_iLevel / 10;
+
+	m_vecPlayerLevellist[0]->Set_TextureNum(iOnes);
+
+	if (iTens > 0)
+	{
+		m_vecPlayerLevellist[1]->Set_TextureNum(iTens);
 	}
 }
 
@@ -359,6 +492,18 @@ void CUI_Mgr::ShowInventoryTop()
 	}
 }
 
+void CUI_Mgr::PlayerHP_Shake(_int _index)
+{
+	if (!m_vecPlayerHPlist.empty())
+	{
+		for (int i = _index; i < m_vecPlayerHPlist.size(); ++i)
+		{
+			m_vecPlayerHPlist[i]->Set_Shake(true);
+		}
+	}
+
+}
+
 ITEMNAME CUI_Mgr::GetItemTypeName()
 {
 	// 현재 슬록 인덱스의 아이템 이름을 가져옴
@@ -393,7 +538,7 @@ void CUI_Mgr::Free()
 	m_vecPlayerHPlist.clear();
 	m_PlayerHungerlist.clear();
 	m_PlayerExplist.clear();
-	m_PlayerLevellist.clear();
+	m_vecPlayerLevellist.clear();
 	m_vecCheckBoxlist.clear();
 	m_MainInventorylist.clear();
 	m_SubInventorylist.clear();

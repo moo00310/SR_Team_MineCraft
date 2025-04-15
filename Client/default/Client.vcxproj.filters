@@ -631,9 +631,6 @@
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
     </ClInclude>
     <ClInclude Include="..\public\RedTulip.h" />
-    <ClInclude Include="..\public\UI_Mgr.h">
-      <Filter>03.UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\RedTulip.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClInclude>
@@ -862,6 +859,9 @@
     <ClInclude Include="..\public\Exp_Orb.h">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\UI_Mgr.h">
+      <Filter>03.UI</Filter>
+  </ClInclude>
     <ClInclude Include="..\public\Level_Ending.h">
       <Filter>01.Levels\03.Ending</Filter>
       </ClInclude>
@@ -1108,9 +1108,6 @@
     <ClCompile Include="..\private\ItemCube.cpp">
       <Filter>02.GameObjects\00.Cube\ItemObj</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\UI_Mgr.cpp">
-      <Filter>03.UI</Filter>
-    </ClCompile>
     <ClCompile Include="..\public\PlayerHP.cpp">
       <Filter>03.UI\06.PlayerState\00.PlayerHP</Filter>
     </ClCompile>
@@ -1333,6 +1330,9 @@
     <ClCompile Include="..\private\Exp_Orb.cpp">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClCompile>
+    <ClCompile Include="..\private\UI_Mgr.cpp">
+      <Filter>03.UI</Filter>
+     </ClCompile>
     <ClCompile Include="..\private\Level_Ending.cpp">
       <Filter>01.Levels\03.Ending</Filter>
     </ClCompile>

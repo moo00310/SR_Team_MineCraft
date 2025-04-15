@@ -20,7 +20,7 @@ HRESULT CMainLogo::Initialize(void* pArg)
 {
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = g_iWinSizeX + 200.f;
+    Desc.fSizeX = g_iWinSizeX + 100.f;
     Desc.fSizeY = g_iWinSizeY;
     Desc.fX = g_iWinSizeX * 0.5f;
     Desc.fY = g_iWinSizeY * 0.5f;
@@ -46,15 +46,15 @@ void CMainLogo::Update(_float fTimeDelta)
     /* 시간 누적 */
     elapsedTime += fTimeDelta;
 
-    if (5.0f > elapsedTime)
+    if (2.0f > elapsedTime)
     {
         m_pTransformCom->Go_Left(0.016f);
     }
-    if (elapsedTime >= 5.0f)
+    if (elapsedTime >= 2.0f)
     {
         m_pTransformCom->Go_Right(0.016f);
     }
-    if (elapsedTime >= 10.0f)
+    if (elapsedTime >= 4.0f)
     {
         elapsedTime = 0.0f;
     }

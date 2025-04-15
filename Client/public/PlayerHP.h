@@ -26,10 +26,14 @@ public:
 	virtual HRESULT Render()override;
 
 public:
-	_int Get_TextureNum() { return m_iTextureNum;}
+	_int	Get_TextureNum()	{ return m_iTextureNum;}
+	_bool	Get_Flicker()const	{ return m_bFlicker; }
+	_bool	Get_Shake()			{ return m_bAnyShake; }
 
 public:
-	void Set_TextureNum(_int TextureNum) { m_iTextureNum = TextureNum; }
+	void Set_TextureNum(_int TextureNum)	{ m_iTextureNum = TextureNum; }
+	void Set_Flicker(_bool Flicker) { m_bFlicker = Flicker; if (Flicker)  m_fFlickerTime = 0.f; }
+	void Set_Shake(_bool _Shake) { m_bAnyShake = _Shake; }
 
 private:
 	HRESULT Ready_Components();
@@ -41,6 +45,10 @@ private:
 	_int	m_iHpIndex;
 	_int	m_iTextureNum;
 	_float	m_fTime = { 0.f };
+	_bool	m_bFlicker = { false };
+	_bool	m_bAnyShake = { false };
+	_float  m_fFlickerTime = { 0.f };
+
 
 private:
 	UIOBJECT_DESC Desc{};

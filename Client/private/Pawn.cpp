@@ -158,7 +158,7 @@ void CPawn::Dead_Pawn()
 
 
 	//°æÇèÄ¡ 3°³ ¶³¾î¶ß¸²
-	for (_uint i = 0; i < 3; ++i)
+	for (_uint i = 0; i < 5; ++i)
 	{
 		m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Exp_Orb"),
 			LEVEL_YU, TEXT("Layer_Exp_Orb"));
