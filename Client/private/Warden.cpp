@@ -12,8 +12,8 @@
 
 _float g_fWaveRange = 0.f;
 _float g_fWaveTime = 0.f;
-_float g_fWaveEndTime = 2.f;
-_float g_fWaveSpeed = 2.f;
+_float g_fWaveEndTime = 1.f;
+_float g_fWaveSpeed = 6.f;
 _bool g_bIsWave = false;
 
 CWarden::CWarden(LPDIRECT3DDEVICE9 pGraphic_Device)
