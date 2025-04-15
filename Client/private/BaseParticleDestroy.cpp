@@ -18,6 +18,8 @@ HRESULT CBaseParticleDestroy::Initialize_Prototype()
 HRESULT CBaseParticleDestroy::Initialize(void* pArg)
 {
 	iParticleCount = 20;
+	IsTimer = true;
+	fEndTimer = 0.6f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
@@ -49,15 +51,19 @@ void CBaseParticleDestroy::Free()
 	__super::Free();
 }
 
+void CBaseParticleDestroy::OnPushPool()
+{
+	__super::OnPushPool();
+	IsTimer = true;
+	fEndTimer = 0.6f;
+}
+
 ParticleAttribute CBaseParticleDestroy::OnSetAddParticle()
 {
 	ParticleAttribute att;
 	att.vPosition = { 0.f, 0.f, 0.f };
 	att.vColor = Float3ToHex({ 1.f, 1.f, 1.f });
-	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };
-	att.IsTime = true;
-	att.fCurrentTime = 0.f;
-	att.fEndTime = 0.6f;
+	att.vVelocity = { GetRandomFloat(-3.f, 3.f), 0.f, GetRandomFloat(-3.f, 3.f) };	
 	att.IsAlive = false;
 
 	// 중력 적용.

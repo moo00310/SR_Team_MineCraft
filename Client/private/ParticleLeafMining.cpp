@@ -38,6 +38,7 @@ CParticleLeafMining* CParticleLeafMining::Create(LPDIRECT3DDEVICE9 pGraphic_Devi
 
 void CParticleLeafMining::OnPushPool()
 {
+	__super::OnPushPool();
 	iCurrentTextureIndex = kMINING::MINING_LEAF;
 }
 
