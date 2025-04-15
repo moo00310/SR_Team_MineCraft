@@ -36,7 +36,8 @@ private:
 private:
 	_int*	m_iHpCount = { nullptr };
 	_int	m_iHpIndex;
-	_bool	m_bAnyShake = { false };
+	_float	m_fTime = { 0.f };
+	_float  m_fShakeTime = { 0.f };
 
 private:
 	CTexture* m_pTextureCom = { nullptr };

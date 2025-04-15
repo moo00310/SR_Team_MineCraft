@@ -12,6 +12,9 @@ float g_burnResult;
 float g_LoadingPercent;
 float g_ShakeStrength;
 
+float startY = 0.618f;   // 물 시작 위치 (vTexcoord.y)
+float endY   = 0.9375f;  // 물 끝 위치
+
 // 회전을 적용한 UV 좌표 생성 함수
 float2 RotateUV(float2 uv, float angle)
 {
@@ -223,6 +226,28 @@ PS_OUT PS_ShakeEffect(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_WaterWobble(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    float2 uv = In.vTexcoord;
+
+    float strength = 0.005f + 0.003f * sin(g_Time * 2.0f);
+    float frequency = 50.0f + 30.0f * uv.y;
+
+    float offsetX = sin(g_Time * frequency + uv.y * 20.0f) * strength;
+    float offsetY = cos(g_Time * frequency + uv.x * 10.0f) * strength * 0.5f;
+
+    float startY = 0.618f;
+    float endY   = 0.9375f;
+
+    if (uv.y >= startY && uv.y <= endY)
+        uv += float2(offsetX, offsetY);
+
+    Out.vColor = tex2D(TextureSampler, uv);
+    return Out;
+}
+
 /* Technique 정의 */
 technique DefaultTechnique
 {
@@ -355,6 +380,21 @@ technique DefaultTechnique
 		VertexShader = compile vs_3_0 VS_MAIN();
 		PixelShader = compile ps_3_0 PS_ShakeEffect();
 	}
+
+     pass WaterSelectiveWobblePass
+    {
+        AlphaBlendEnable = TRUE;
+        SrcBlend = SRCALPHA;
+        DestBlend = INVSRCALPHA;
+        BlendOp = ADD;
+
+        CULLMODE = NONE;
+        ZWRITEENABLE = FALSE;
+        ZENABLE = FALSE;
+
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_WaterWobble();
+    }
 }
 
 

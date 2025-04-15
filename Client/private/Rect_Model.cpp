@@ -385,7 +385,7 @@ void CRect_Model::Motion_EAT(_float fTimeDelta)
 		}
 
 		/* 배고픔 증가 */
-		CUI_Mgr::Get_Instance()->PlayerHunger_Heal(2.5f);
+		CUI_Mgr::Get_Instance()->PlayerHunger_Heal(1.5f);
 	}
 }
 

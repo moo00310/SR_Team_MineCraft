@@ -41,7 +41,7 @@ public:
 	/* 플레이어 경험치*/
 	void PlayerExp_Set();
 	/* 플레이어 레벨업*/
-	void LevelUp();
+	void LevelUp(_int _iLevel);
 	/* 아이템 개수 업데이트*/
 	void ItemCount_Update(ITEMNAME _ItemNamem, _int AddCount);
 	/* 아이템 개수 나누기 */
@@ -52,6 +52,11 @@ public:
 	void PlayerHP_Shake(_int _index);
 	/* 배고픔 증가 */
 	void PlayerHunger_Heal(_float _fHealAmount);
+	/* 배고픔 확인 */
+	void PlayerHunger_AutoHeal(_float _fTimeDelta);
+	/* 체력 회복 */
+	void Player_HealHp(_float _fHealAmount);
+
 
 
 	ITEMNAME GetItemTypeName();
@@ -65,14 +70,14 @@ public:
 
 	vector<CPlayerHP*>*				Get_vecPlayerHPlist(void)		{ return &m_vecPlayerHPlist; }
 	vector<CSlotInfo*>*				Get_vecSlotInfolist(void)		{ return &m_vecSlotInfolist; }
-	vector<CSlotInfo*>				Get_vecSlotInfoOriginlist(void)		{ return m_vecSlotInfolist; }
+	vector<CSlotInfo*>				Get_vecSlotInfoOriginlist(void)	{ return m_vecSlotInfolist; }
 	vector<CCheckBox*>*				Get_vecCheckBoxlist(void)		{ return &m_vecCheckBoxlist; }
 	vector<CInventory_Back*>*		Get_vecInventoryBacklist(void)	{ return &m_InventoryBacklist; }
 	vector<CSlotInfo*>*				Get_vecSlotFontRenderlist(void) { return &m_vecSlotFontRenderlist; }
+	vector<CPlayerLevel*>*			Get_PlayerLevellist(void)		{ return &m_vecPlayerLevellist; }
 
 	list<CPlayerHunger*>*			Get_PlayerHungerlist(void)		{ return &m_PlayerHungerlist; }
 	list<CPlayerExp*>*				Get_PlayerExplist(void)			{ return &m_PlayerExplist; }
-	list<CPlayerLevel*>*			Get_PlayerLevellist(void)		{ return &m_PlayerLevellist; }
 	list<CMouse_Item*>*				Get_MouseItemlist(void)			{ return &m_MouseItemlist; }
 	list<CMouse_ItemFont*>*			Get_MouseItemFontlist(void)		{ return &m_MouseItemFontlist; }
 
@@ -95,15 +100,17 @@ private:
 	_float	m_fHungerTime = { 0.f };
 	_int	m_iallZeroCount = { 0 };
 	_int	m_iHP_ChangeCount = { 0 };
+	_int	m_iLevel = { 1 };
 	_bool	m_bPlayerHP_Shader = { false };
 	_bool	m_bShake = { false };
 
 private:
 	/* Player State 관련 */
 	vector<CPlayerHP*>			m_vecPlayerHPlist;
+	vector<CPlayerLevel*>		m_vecPlayerLevellist;
 	list<CPlayerHunger*>		m_PlayerHungerlist;
 	list<CPlayerExp*>			m_PlayerExplist;
-	list<CPlayerLevel*>			m_PlayerLevellist;
+	
 
 	/* Inventory 관련 */
 	vector<CSlotInfo*>			m_vecSlotInfolist;

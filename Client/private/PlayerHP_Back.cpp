@@ -48,6 +48,19 @@ void CPlayerHP_Back::Update(_float fTimeDelta)
 
 void CPlayerHP_Back::Late_Update(_float fTimeDelta)
 {
+    m_fTime = fTimeDelta;
+
+    if (CUI_Mgr::Get_Instance()->Get_vecPlayerHPlist()->at(m_iHpIndex)->Get_Shake())
+    {
+        m_fShakeTime += fTimeDelta;
+
+        if (m_fShakeTime >= 1.f)
+        {
+            CUI_Mgr::Get_Instance()->Get_vecPlayerHPlist()->at(m_iHpIndex)->Set_Shake(false);
+            m_fShakeTime = 0.f;
+        }
+    }
+
     if (FAILED(m_pGameInstance->Add_RenderGroup(CRenderer::RG_UI, this)))
         return;
 }
@@ -75,7 +88,7 @@ HRESULT CPlayerHP_Back::Render()
 
     m_pShaderCom->Bind_Texture("g_Texture", m_pTextureCom->Get_Texture(0));
 
-    if (CUI_Mgr::Get_Instance()->Get_vecPlayerHPlist()->at(m_iHpIndex)->Get_Flicker())
+    if (CUI_Mgr::Get_Instance()->Get_vecPlayerHPlist()->at(m_iHpIndex)->Get_Shake())
     {
         float fTimeValue = GetTickCount64() * 0.001f;
         m_pShaderCom->SetFloat("g_Time", fTimeValue);
@@ -167,4 +180,5 @@ void CPlayerHP_Back::Free()
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pTextureCom);
     Safe_Release(m_pTransformCom);
+    Safe_Release(m_pShaderCom);
 }

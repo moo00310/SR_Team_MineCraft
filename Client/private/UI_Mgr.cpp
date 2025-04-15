@@ -21,6 +21,7 @@ void CUI_Mgr::Update(_float fTimeDelta)
 void CUI_Mgr::Late_Update(_float fTimeDelta)
 {
 	ShowInventoryTop();
+	PlayerHunger_AutoHeal(fTimeDelta);
 	PlayerHunger_Set(fTimeDelta);
 }
 
@@ -76,9 +77,11 @@ void CUI_Mgr::SetHP()
 			if (iOnesPlace != 0 && SteveHp > 0) 
 			{
 				m_vecPlayerHPlist[iIndex]->Set_TextureNum(2);
-				m_vecPlayerHPlist[iIndex]->Set_Flicker(true);
+				
 			}
 
+			m_vecPlayerHPlist[iIndex]->Set_Flicker(true);
+			//m_vecPlayerHPlist[iIndex]->Set_Shake(true);
 			PlayerHP_Shake(iIndex);
 		}
 	}
@@ -88,7 +91,7 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 {
 	m_fHungerTime += fTimeDelta;
 
-	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 5.f)
+	if (!m_PlayerHungerlist.empty() && m_fHungerTime >= 15.f)
 	{
 		m_fHungerTime = 0.f;
 		
@@ -118,11 +121,6 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 				break;
 			}
 		}
-
-		/*if (m_iallZeroCount == 10)
-		{
-			SetHP();
-		}*/
 	}
 }
 
@@ -164,6 +162,91 @@ void CUI_Mgr::PlayerHunger_Heal(_float _fHealAmount)
 	}
 }
 
+void CUI_Mgr::PlayerHunger_AutoHeal(_float _fTimeDelta)
+{
+	static _float fFullHungerTimer = 0.f;
+	static _float fMidHungerTimer = 0.f;
+
+	/* ¹è°íÇÄ Ä­ °³¼ö °è»ê */
+	_int iHungerTotal = 0;
+	
+	for (auto& hunger : m_PlayerHungerlist)
+	{
+		/* Ç®*/
+		if (hunger->Get_TextureNum() == 1)
+			iHungerTotal += 2;
+		/* ¹ÝÂÊ ¹è°íÇÄ */
+		else if (hunger->Get_TextureNum() == 2)
+			iHungerTotal += 1;
+	}
+
+	/* ¹è°íÇÄ ¼öÄ¡ 20 (ÃÑ10Ä­ 1Ä­ ´Ù Â÷ÀÖÀ¸¸é 2 ¹ÝÂÊÀÌ¸é 1)*/
+	if (iHungerTotal == 20)
+	{
+		fFullHungerTimer += _fTimeDelta;
+
+		if (fFullHungerTimer >= 0.5f)
+		{
+			Player_HealHp(1.0f); 
+			fFullHungerTimer = 0.f;
+		}
+	}
+	else if (iHungerTotal >= 18)
+	{
+		fMidHungerTimer += _fTimeDelta;
+
+		if (fMidHungerTimer >= 4.0f)
+		{
+			Player_HealHp(0.5f);
+			fMidHungerTimer = 0.f;
+		}
+	}
+	else
+	{
+		fFullHungerTimer = 0.f;
+		fMidHungerTimer = 0.f;
+	}
+}
+
+void CUI_Mgr::Player_HealHp(_float _fHealAmount)
+{
+
+	if (_fHealAmount <= 0.f || m_vecPlayerHPlist.empty())
+		return;
+
+	for (auto iter = m_vecPlayerHPlist.begin(); iter != m_vecPlayerHPlist.end(); ++iter)
+	{
+		_int iTextNun = (*iter)->Get_TextureNum();
+
+		/* ºóÄ­ */
+		if (iTextNun == 0)
+		{
+			if (_fHealAmount >= 1.f)
+			{
+				(*iter)->Set_TextureNum(1);
+				(*iter)->Set_Flicker(true);
+				//(*iter)->Set_Shake(false);
+				_fHealAmount -= 1.f;
+			}
+			else if (_fHealAmount >= 0.5f)
+			{
+				(*iter)->Set_TextureNum(2);
+				(*iter)->Set_Flicker(true);
+				//(*iter)->Set_Shake(false);
+				_fHealAmount -= 0.5f;
+			}
+		}
+		/* ¹ÝÄ­ -> Ç®Ä­*/
+		else if (iTextNun == 2 && _fHealAmount >= 0.5f)
+		{
+			(*iter)->Set_TextureNum(1);
+			(*iter)->Set_Flicker(true);
+			//(*iter)->Set_Shake(false);
+			_fHealAmount -= 0.5f;
+		}
+	}
+}
+
 void CUI_Mgr::PlayerExp_Set()
 {
 	if (!m_PlayerExplist.empty())
@@ -183,7 +266,7 @@ void CUI_Mgr::PlayerExp_Set()
 					(*iter)->Set_TextureNum(5);
 					(*iter)->Set_RenderOn(true);
 
-					LevelUp();
+					LevelUp(1);
 
 					break;
 				}
@@ -198,18 +281,26 @@ void CUI_Mgr::PlayerExp_Set()
 	}
 }
 
-void CUI_Mgr::LevelUp()
+void CUI_Mgr::LevelUp(_int _iLevel)
 {
-	/* ·¹º§ Ç¥±â ¼ýÀÚ º¯°æ */
+	/* °æÇèÄ¡ ÃÊ±âÈ­ */
 	for (auto iter = m_PlayerExplist.begin(); iter != m_PlayerExplist.end(); ++iter)
 	{
 		(*iter)->Set_RenderOn(false);
 	}
 
-	/*for (auto iter = m_PlayerLevellist.begin(); iter != m_PlayerLevellist.end() ++iter)
-	{
+	/* ·¹º§ Ç¥±â ¼ýÀÚ º¯°æ */
+	m_iLevel += _iLevel;
+	
+	_int iOnes = m_iLevel % 10;
+	_int iTens = m_iLevel / 10;
 
-	}*/
+	m_vecPlayerLevellist[0]->Set_TextureNum(iOnes);
+
+	if (iTens > 0)
+	{
+		m_vecPlayerLevellist[1]->Set_TextureNum(iTens);
+	}
 }
 
 void CUI_Mgr::ItemCount_Update(ITEMNAME _ItemName, _int AddCount)
@@ -407,12 +498,11 @@ void CUI_Mgr::PlayerHP_Shake(_int _index)
 	{
 		for (int i = _index; i < m_vecPlayerHPlist.size(); ++i)
 		{
-			m_vecPlayerHPlist[i]->Set_Flicker(true);
+			m_vecPlayerHPlist[i]->Set_Shake(true);
 		}
 	}
 
 }
-
 
 ITEMNAME CUI_Mgr::GetItemTypeName()
 {
@@ -448,7 +538,7 @@ void CUI_Mgr::Free()
 	m_vecPlayerHPlist.clear();
 	m_PlayerHungerlist.clear();
 	m_PlayerExplist.clear();
-	m_PlayerLevellist.clear();
+	m_vecPlayerLevellist.clear();
 	m_vecCheckBoxlist.clear();
 	m_MainInventorylist.clear();
 	m_SubInventorylist.clear();

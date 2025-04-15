@@ -1,6 +1,7 @@
 #include "Exp_Orb.h"
 #include "MCTerrain.h"
 #include "Steve.h"
+#include "UI_Mgr.h"
 
 CExp_Orb::CExp_Orb(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject(pGraphic_Device)
@@ -56,6 +57,7 @@ void CExp_Orb::Update(_float fTimeDelta)
 	{
 		m_pGameInstance->Play_Sound(TEXT("orb"), SOUND_ITEM, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
+		CUI_Mgr::Get_Instance()->PlayerExp_Set();
 		Destroy();
 	}
 	else if (fDist < 5.f && m_fTime > 2.f)
