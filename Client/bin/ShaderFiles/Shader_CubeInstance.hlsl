@@ -117,7 +117,7 @@ VS_OUT VS_MAIN_WAVE(VS_IN In)
     
     if (wardenLength >= g_fWaveStartRange && wardenLength <= fWaveEndRange)
     {
-        Out.vPosition.y += range / 3.f;
+        Out.vPosition.y += range / 2.f;
     }
     
     return Out;
