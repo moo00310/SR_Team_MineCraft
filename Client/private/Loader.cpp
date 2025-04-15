@@ -37,6 +37,8 @@
 #include "Crosshair.h"
 #include "Camera_Cutscene.h"
 #include "Exp_Orb.h"
+#include "Ending_Background.h"
+#include "Ending_Text.h"
 
 
 //지형 관련
@@ -1129,7 +1131,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 	m_loadeCount++;
 
-	/* For.Prototype_GameObject_Clouds */
+	/* For.Prototype_GameObject_Exp_Orb */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Exp_Orb"),
 		CExp_Orb::Create(m_pGraphic_Device))))
 		return E_FAIL;
@@ -1675,8 +1677,18 @@ HRESULT CLoader::Loading_For_Ending()
 {
 
 	/* For.Prototype_Component_Texture_Ending_Background */
-	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Ending_Background"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/Experience-orb/Experience-orb-%d.png"), 12))))
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ENDING, TEXT("Prototype_Component_Texture_Ending_Background"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/ending_background/ending_background_%d.png"), 111))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ending_Background */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ENDING, TEXT("Prototype_GameObject_Ending_Background"),
+		CEnding_Background::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
+	/* For.Prototype_GameObject_Ending_Text */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_ENDING, TEXT("Prototype_GameObject_Ending_Text"),
+		CEnding_Text::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
 	m_isFinished = true;

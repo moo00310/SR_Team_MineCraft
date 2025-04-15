@@ -341,6 +341,7 @@ void CSound_Manager::LoadAllWavFiles(const std::wstring& folderPath)
     LoadSound(L"Beginning", "../../FMOD/Assets/background/Beginning.wav", true);
     LoadSound(L"pigstep", "../../FMOD/Assets/background/pigstep.wav", true);
     LoadSound(L"sweden", "../../FMOD/Assets/background/sweden.wav", true);
+    LoadSound(L"hal3_1", "../../FMOD/Assets/background/hal3_1.wav", true);
 }
 
 
