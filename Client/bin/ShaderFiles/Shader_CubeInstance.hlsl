@@ -28,6 +28,12 @@ vector g_vScanColor = vector(1.f, 0.f, 1.f, 1.f);
 // Client_Enum ITEMNAME ÂüÁ¶.
 int g_iBlockType;
 
+// ³ª¹«.
+int g_iWoodType = 4;
+
+// ³ª¹µÀÙ.
+int g_iLeafType = 6;
+
 // Ã¶.
 int g_iIronType = 900;
 
@@ -115,7 +121,7 @@ VS_OUT VS_MAIN_WAVE(VS_IN In)
     // ¼±Çü º¸°£.
     float range = lerp(0.f, fEnd, fResult);
     
-    if (wardenLength >= g_fWaveStartRange && wardenLength <= fWaveEndRange)
+    if (wardenLength >= g_fWaveStartRange && wardenLength <= fWaveEndRange && g_iBlockType != g_iWoodType && g_iBlockType != g_iLeafType)
     {
         Out.vPosition.y += range;
     }
