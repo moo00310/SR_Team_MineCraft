@@ -861,12 +861,15 @@
     </ClInclude>
     <ClInclude Include="..\public\UI_Mgr.h">
       <Filter>03.UI</Filter>
-  </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Level_Ending.h">
       <Filter>01.Levels\03.Ending</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\CobbleStone.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\BossUI.h">
+      <Filter>08.Mission\Ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1332,12 +1335,15 @@
     </ClCompile>
     <ClCompile Include="..\private\UI_Mgr.cpp">
       <Filter>03.UI</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\Level_Ending.cpp">
       <Filter>01.Levels\03.Ending</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CobbleStone.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\BossUI.cpp">
+      <Filter>08.Mission\Ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1360,6 +1366,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Particle.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Billboard_UI.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

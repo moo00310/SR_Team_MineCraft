@@ -49,6 +49,7 @@ private:
 
 	HRESULT Ready_Layer_Crosshair(const _wstring& strLayerTag);
 	HRESULT Ready_Layer_Camera_Cutscene(const _wstring& strLayerTag);
+	HRESULT Ready_Layer_BossUI(const _wstring& strLayerTag);
 	
 
 private:
