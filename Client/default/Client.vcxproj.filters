@@ -859,6 +859,9 @@
     <ClInclude Include="..\public\Exp_Orb.h">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClInclude>
+    <ClInclude Include="..\public\CobbleStone.h">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1323,6 +1326,9 @@
     </ClCompile>
     <ClCompile Include="..\private\Exp_Orb.cpp">
       <Filter>02.GameObjects\Exp_Orb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\CobbleStone.cpp">
+      <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

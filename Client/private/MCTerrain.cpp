@@ -528,6 +528,19 @@ void CMCTerrain::Create_Cube(_float3 vMyPos, ITEMNAME eItemName, _float3 vCreate
                 _bExist = true;
             }
             break;
+        case Client::ITEMNAME_COBBLESTONE:
+            m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_CobbleStone"), LEVEL_YU, layerName);
+            pCube = dynamic_cast<CBreakableCube*>(m_pGameInstance->Get_LastObject(LEVEL_YU, layerName));
+            if (pCube) {
+                vector<D3DXVECTOR3> pos;
+                pos.push_back(vCreatePos + vDir);
+                pCube->Set_InstanceBuffer(pos, 0.6f);
+                pCube->Set_MyChunk(Compute_ChunkIndex(vCreatePos));
+                pCube->Set_BlockPositions(pos, eItemName);
+                CUI_Mgr::Get_Instance()->ItemCount_Update(eItemName, -1);
+                _bExist = true;
+            }
+            break;
         default:
             break;
         }
