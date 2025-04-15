@@ -314,6 +314,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= (attackDamage / m_fHardness) * 1.5;
             break;
         case Client::ITEMNAME_COBBLESTONE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 1.5;
             break;
         case Client::ITEMNAME_COALORE:
@@ -362,6 +363,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_COBBLESTONE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_COALORE:
@@ -410,6 +412,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_COBBLESTONE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_COALORE:
@@ -458,6 +461,7 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_COBBLESTONE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_COALORE:

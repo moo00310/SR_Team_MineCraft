@@ -54,6 +54,7 @@
 #include "Furnace.h"
 #include "CraftingTableCube.h"
 #include "OakWood.h"
+#include "CobbleStone.h"
 
 //Hyock
 #include "HyockCube.h"
@@ -885,8 +886,15 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 	m_loadeCount++;
 
+	/* For.Prototype_GameObject_CobbleStone */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_CobbleStone"),
+		CCobbleStone::Create(m_pGraphic_Device))))
+		return E_FAIL;
+	m_loadeCount++;
+
 	/* UI GameObject */
 	/*================================================================================================*/
+
 	/* For.Prototype_GameObject_MainInventory */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_MainInventory"),
 		CMainInventory::Create(m_pGraphic_Device))))
