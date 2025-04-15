@@ -385,6 +385,9 @@
     <Filter Include="01.Levels\03.Ending">
       <UniqueIdentifier>{ec6e1157-600d-4e24-9c4b-694d59127510}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\13.LoadingScene">
+      <UniqueIdentifier>{31668616-721e-4e2b-86dc-fe4cb43ac457}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -853,20 +856,20 @@
     <ClInclude Include="..\public\LayHitCube.h">
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\LoadingScene.h">
-      <Filter>01.Levels</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Exp_Orb.h">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClInclude>
     <ClInclude Include="..\public\UI_Mgr.h">
       <Filter>03.UI</Filter>
-  </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\Level_Ending.h">
       <Filter>01.Levels\03.Ending</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="..\public\CobbleStone.h">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\public\LoadingScene.h">
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1324,20 +1327,20 @@
     <ClCompile Include="..\private\LayHitCube.cpp">
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\LoadingScene.cpp">
-      <Filter>01.Levels</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Exp_Orb.cpp">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClCompile>
     <ClCompile Include="..\private\UI_Mgr.cpp">
       <Filter>03.UI</Filter>
-     </ClCompile>
+    </ClCompile>
     <ClCompile Include="..\private\Level_Ending.cpp">
       <Filter>01.Levels\03.Ending</Filter>
     </ClCompile>
     <ClCompile Include="..\private\CobbleStone.cpp">
       <Filter>02.GameObjects\00.Cube\01.EnvironmentCube</Filter>
+    </ClCompile>
+    <ClCompile Include="..\private\LoadingScene.cpp">
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

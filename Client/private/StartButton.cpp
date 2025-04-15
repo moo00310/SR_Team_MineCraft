@@ -1,4 +1,7 @@
 #include "StartButton.h"
+#include "UI_Mgr.h"
+#include <Shlwapi.h>
+#pragma comment(lib, "Shlwapi.lib")
 
 CStartButton::CStartButton(LPDIRECT3DDEVICE9 pGraphic_Device)
     : CUIObject{ pGraphic_Device }
@@ -17,12 +20,47 @@ HRESULT CStartButton::Initialize_Prototype()
 
 HRESULT CStartButton::Initialize(void* pArg)
 {
+    GetModuleFileName(nullptr, m_szPath, MAX_PATH);
+    PathRemoveFileSpec(m_szPath);
+
+    m_fontPath = _wstring(m_szPath) + L"\\Resources\\Fonts\\font.ttf";
+    if (!AddFontResourceEx(m_fontPath.c_str(), FR_PRIVATE, 0))
+    {
+        MSG_BOX("Failed to Created : ItemFont");
+        return E_FAIL;
+    }
+
+    if (m_pFont == nullptr)
+    {
+        D3DXFONT_DESC fontDesc = {};
+        fontDesc.Height = 48;
+        fontDesc.Width = 0;
+        fontDesc.Weight = FW_NORMAL;
+        fontDesc.CharSet = DEFAULT_CHARSET;
+        fontDesc.OutputPrecision = OUT_DEFAULT_PRECIS;
+        fontDesc.Quality = CLEARTYPE_QUALITY;
+        fontDesc.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
+        lstrcpy(fontDesc.FaceName, L"Galmuri7 Regular");
+
+
+        if (FAILED(D3DXCreateFontIndirect(m_pGraphic_Device, &fontDesc, &m_pFont)))
+        {
+            MSG_BOX("폰트 생성 실패");
+        }
+    }
+
     UIOBJECT_DESC Desc{};
 
-    Desc.fSizeX = 650;
-    Desc.fSizeY = 100;
-    Desc.fX = g_iWinSizeX * 0.5f;
-    Desc.fY = g_iWinSizeY * 0.5f + 200;
+    Desc.fSizeX = 550;
+    Desc.fSizeY = 80;
+    Desc.fX = g_iWinSizeX * 0.5f; // 640 
+    Desc.fY = g_iWinSizeY * 0.5f + 220.f; // 580
+
+    SetRect(&textRect,
+        560.f,
+        550.f, // 540 
+        Desc.fX + (Desc.fSizeX * 0.5f),
+        Desc.fY + (Desc.fSizeY * 0.5f));
 
     if (FAILED(__super::Initialize(&Desc)))
         return E_FAIL;
@@ -34,15 +72,34 @@ HRESULT CStartButton::Initialize(void* pArg)
     m_pTransformCom->Set_State(CTransform::STATE_POSITION, _float3(m_fX - g_iWinSizeX * 0.5f, -m_fY + g_iWinSizeY * 0.5f, 0.f));
 
 
+    if (m_pFont == nullptr)
+        return E_FAIL;
+
     return S_OK;
 }
 
 void CStartButton::Priority_Update(_float fTimeDelta)
 {
+    swprintf(m_szBuffer, 128, L"게임 시작");
+    m_strText = m_szBuffer;
+
+    if (m_strText.empty())
+        return;
 }
 
 void CStartButton::Update(_float fTimeDelta)
 {
+    POINT ptMouse;
+    GetCursorPos(&ptMouse);
+    ScreenToClient(g_hWnd, &ptMouse);
+
+    if (PtInRect(&textRect, ptMouse))
+    {
+        m_iTextureNum = 1;
+    }
+    else
+        m_iTextureNum = 0;
+
     if (m_pGameInstance->Key_Down(VK_LBUTTON)) {
         if (true == __super::isPick(g_hWnd))
             g_bChangeLevel = true;
@@ -57,7 +114,7 @@ void CStartButton::Late_Update(_float fTimeDelta)
 
 HRESULT CStartButton::Render()
 {
-    if (FAILED(m_pTextureCom->Bind_Resource(0)))
+    if (FAILED(m_pTextureCom->Bind_Resource(m_iTextureNum)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Buffers()))
@@ -72,6 +129,15 @@ HRESULT CStartButton::Render()
         return E_FAIL;
 
     __super::End();
+
+    m_pFont->DrawTextW(
+        NULL,
+        m_strText.c_str(),
+        -1,
+        &textRect,
+        DT_NOCLIP,
+        D3DCOLOR_ARGB(255, 255, 255, 255)
+    );
 
     return S_OK;
 }

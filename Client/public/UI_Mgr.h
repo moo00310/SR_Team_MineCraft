@@ -56,8 +56,8 @@ public:
 	void PlayerHunger_AutoHeal(_float _fTimeDelta);
 	/* 체력 회복 */
 	void Player_HealHp(_float _fHealAmount);
-
-
+	/* 배고픔 0일때 체력 - */
+	void PlayerHunger_StarvationDamage(_float _fTimeDelta);
 
 	ITEMNAME GetItemTypeName();
 	ITEMNAME GetItemTypeName_Left();
@@ -67,7 +67,7 @@ public:
 	CBag*							Get_Bag()						{ return m_pBag; }
 	CItem*							Get_Item()						{ return m_pItem; }
 	CCrafting*						Get_Crafting()					{ return m_pCrafting; }
-
+	
 	vector<CPlayerHP*>*				Get_vecPlayerHPlist(void)		{ return &m_vecPlayerHPlist; }
 	vector<CSlotInfo*>*				Get_vecSlotInfolist(void)		{ return &m_vecSlotInfolist; }
 	vector<CSlotInfo*>				Get_vecSlotInfoOriginlist(void)	{ return m_vecSlotInfolist; }
@@ -90,10 +90,11 @@ public:
 		Safe_AddRef(pSteve);
 	}
 
-	void		Set_PlayerHP_Shader(_bool _bPlayerHP_Shader)	{ m_bPlayerHP_Shader = _bPlayerHP_Shader; }
-	CCrafting*	Set_Crafting(CCrafting* pCrafting)				{ return m_pCrafting = pCrafting; }
-	CItem*		Set_Item(CItem* pItem)							{ return m_pItem = pItem; }
-	CBag*		Set_Bag(CBag* pBag)								{ return m_pBag = pBag; }
+	void			Set_PlayerHP_Shader(_bool _bPlayerHP_Shader)	{ m_bPlayerHP_Shader = _bPlayerHP_Shader; }
+	CCrafting*		Set_Crafting(CCrafting* pCrafting)				{ return m_pCrafting = pCrafting; }
+	CItem*			Set_Item(CItem* pItem)							{ return m_pItem = pItem; }
+	CBag*			Set_Bag(CBag* pBag)								{ return m_pBag = pBag; }
+	
 
 private:
 	ITEMID	m_ItemID = ITEMID_END;
@@ -103,6 +104,7 @@ private:
 	_int	m_iLevel = { 1 };
 	_bool	m_bPlayerHP_Shader = { false };
 	_bool	m_bShake = { false };
+	_bool	m_bStarvationStart = { false };
 
 private:
 	/* Player State 관련 */
@@ -123,12 +125,11 @@ private:
 	list<CMouse_Item*>			m_MouseItemlist;
 	list<CMouse_ItemFont*>		m_MouseItemFontlist;
 
+	CCrafting*		m_pCrafting = { nullptr };
+	CSteve*			pSteve = { nullptr };
+	CItem*			m_pItem = { nullptr };
+	CBag*			m_pBag = { nullptr };
 	
-	CCrafting*	m_pCrafting = { nullptr };
-	CSteve*		pSteve = { nullptr };
-	CItem*		m_pItem = { nullptr };
-	CBag*		m_pBag = { nullptr };
-
 public:
 	virtual void Free();
 };
