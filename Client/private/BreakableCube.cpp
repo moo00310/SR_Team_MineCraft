@@ -86,16 +86,35 @@ HRESULT CBreakableCube::Render()
 
     m_pTransformCom->Bind_Resource(m_pShaderCom);
     m_pTransformCom->Bind_Resource_Scan(m_pShaderCom, g_fScanRange);
+    m_pTransformCom->Bind_Resource_WardenWave(m_pShaderCom, g_fWaveRange);
     m_pTransformCom->Bind_Resource_BlockType(m_pShaderCom, m_itemName);
+
+    if (m_Warden == nullptr)
+    {
+        m_Warden = (CWarden*)m_pGameInstance->Get_LastObject(
+            LEVEL_YU,
+            TEXT("Layer_Monster")
+            );
+    }
+
+    if (m_Warden != nullptr)
+    {
+        _float4 pos = (_float4)m_Warden->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+        m_pTransformCom->Bind_Resource_WardenPosition(m_pShaderCom, &pos);
+    }    
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 
-    if (g_bIsScan == false)
-    {
-        m_pShaderCom->Begin(0);
+    if (g_bIsScan == true)
+    {        
+        m_pShaderCom->Begin(2);
     }    
+    else if (g_bIsWave == true)
+    {
+        m_pShaderCom->Begin(3);
+    }
     else
     {
-        m_pShaderCom->Begin(2);
+        m_pShaderCom->Begin(0);
     }
 
     /* 정점을 그린다. */
