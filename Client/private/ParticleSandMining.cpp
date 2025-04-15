@@ -38,6 +38,7 @@ CParticleSandMining* CParticleSandMining::Create(LPDIRECT3DDEVICE9 pGraphic_Devi
 
 void CParticleSandMining::OnPushPool()
 {
+	__super::OnPushPool();
 	iCurrentTextureIndex = kMINING::MINING_DIRT;
 }
 
