@@ -207,6 +207,7 @@
     <ClInclude Include="..\public\Camera_Cutscene.h" />
     <ClInclude Include="..\public\DestroyCube.h" />
     <ClInclude Include="..\public\Edition.h" />
+    <ClInclude Include="..\public\Level_Ending.h" />
     <ClInclude Include="..\public\Exp_Orb.h" />
     <ClInclude Include="..\public\FireCrackerLoad.h" />
     <ClInclude Include="..\public\Furnace.h" />
@@ -362,6 +363,7 @@
     <ClCompile Include="..\private\Camera_Cutscene.cpp" />
     <ClCompile Include="..\private\DestroyCube.cpp" />
     <ClCompile Include="..\private\Edition.cpp" />
+    <ClCompile Include="..\private\Level_Ending.cpp" />
     <ClCompile Include="..\private\Exp_Orb.cpp" />
     <ClCompile Include="..\private\FireCrackerLoad.cpp" />
     <ClCompile Include="..\private\Furnace.cpp" />

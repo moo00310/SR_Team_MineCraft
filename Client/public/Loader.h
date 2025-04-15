@@ -64,6 +64,7 @@ public:
 	HRESULT Loading_For_WOOPlay();
 	HRESULT Loading_For_HECKPlay();
 	HRESULT Loading_For_TOOL();
+	HRESULT Loading_For_Ending();
 
 
 public:
