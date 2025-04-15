@@ -168,6 +168,7 @@
     <ClInclude Include="..\public\Bag.h" />
     <ClInclude Include="..\public\BaseParticleDestroy.h" />
     <ClInclude Include="..\public\Behavior_Tree.h" />
+    <ClInclude Include="..\public\BossUI.h" />
     <ClInclude Include="..\public\BreakableCube.h" />
     <ClInclude Include="..\public\BreakableRect.h" />
     <ClInclude Include="..\public\BTDecorator_IsAttack.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="..\private\Bag.cpp" />
     <ClCompile Include="..\private\BaseParticleDestroy.cpp" />
     <ClCompile Include="..\private\Behavior_Tree.cpp" />
+    <ClCompile Include="..\private\BossUI.cpp" />
     <ClCompile Include="..\private\BreakableCube.cpp" />
     <ClCompile Include="..\private\BreakableRect.cpp" />
     <ClCompile Include="..\private\BTDecorator_IsAttack.cpp" />
@@ -485,6 +487,17 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Billboard_UI.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">2.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">main</EntryPointName>
+    </FxCompile>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Cube.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_CubeInstance.hlsl" />
     <FxCompile Include="..\bin\ShaderFiles\Shader_Particle.hlsl" />

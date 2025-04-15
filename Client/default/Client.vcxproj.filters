@@ -390,6 +390,9 @@
     </Filter>
     <Filter Include="03.UI\14.Ending_Text">
       <UniqueIdentifier>{189072e0-d803-4fa2-a156-359d124e740d}</UniqueIdentifier>
+        </Filter>
+    <Filter Include="03.UI\13.LoadingScene">
+      <UniqueIdentifier>{31668616-721e-4e2b-86dc-fe4cb43ac457}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -859,9 +862,6 @@
     <ClInclude Include="..\public\LayHitCube.h">
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\LoadingScene.h">
-      <Filter>01.Levels</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Exp_Orb.h">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClInclude>
@@ -879,6 +879,12 @@
     </ClInclude>
     <ClInclude Include="..\public\Ending_Text.h">
       <Filter>03.UI\14.Ending_Text</Filter>
+     </ClInclude>
+    <ClInclude Include="..\public\BossUI.h">
+      <Filter>08.Mission\Ui</Filter>
+   </ClInclude>
+    <ClInclude Include="..\public\LoadingScene.h">
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1336,9 +1342,6 @@
     <ClCompile Include="..\private\LayHitCube.cpp">
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\LoadingScene.cpp">
-      <Filter>01.Levels</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Exp_Orb.cpp">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClCompile>
@@ -1356,6 +1359,12 @@
     </ClCompile>
     <ClCompile Include="..\private\Ending_Text.cpp">
       <Filter>03.UI\14.Ending_Text</Filter>
+   </ClCompile>
+    <ClCompile Include="..\private\BossUI.cpp">
+      <Filter>08.Mission\Ui</Filter>
+  </ClCompile>
+    <ClCompile Include="..\private\LoadingScene.cpp">
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1378,6 +1387,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\bin\ShaderFiles\Shader_Particle.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\bin\ShaderFiles\Shader_Billboard_UI.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

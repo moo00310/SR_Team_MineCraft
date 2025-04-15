@@ -45,7 +45,7 @@ void CSun::Priority_Update(_float fTimeDelta)
 			g_fBright = bright;
 		}
 		else {
-			g_fBright = 1 - bright;
+			g_fBright = 1 - bright + 0.2f;
 		}
 		
 		m_brightFrame = 0;

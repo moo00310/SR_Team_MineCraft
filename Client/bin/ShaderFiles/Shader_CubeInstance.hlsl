@@ -4,6 +4,9 @@ matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 // 카메라 월드 좌표.
 vector g_CameraWorld;
 
+// 우리 워든님의 월드 좌표.
+vector g_WardenWorld;
+
 texture g_Texture;
 
 // 안개가 시작되는 범위.
@@ -25,11 +28,21 @@ vector g_vScanColor = vector(1.f, 0.f, 1.f, 1.f);
 // Client_Enum ITEMNAME 참조.
 int g_iBlockType;
 
+// 나무.
+int g_iWoodType = 4;
+
+// 나뭇잎.
+int g_iLeafType = 6;
+
 // 철.
 int g_iIronType = 900;
 
 // 석탄.
 int g_iCoalType = 901;
+
+// 워든 충격파 시작 범위.
+float g_fWaveStartRange;
+
 
 struct VS_IN
 {
@@ -73,6 +86,49 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
+VS_OUT VS_MAIN_WAVE(VS_IN In)
+{
+    VS_OUT Out;
+    
+    // 충격파 범위 끝.
+    float fWaveEndRange = g_fWaveStartRange + 3.f;
+    
+    // 인스턴스 위치를 월드 변환에 추가
+    float4 worldPosition = float4(In.vPosition + In.vInstancePos, 1.0f); // vPosition을 float4로 처리
+    worldPosition = mul(worldPosition, g_WorldMatrix); // 월드 변환
+    
+    // 카메라와 월드 변환 된 블럭 거리 계산.
+    Out.vDistance = length(worldPosition - g_CameraWorld);
+    float wardenLength = length(worldPosition - g_WardenWorld);
+    
+    worldPosition = mul(worldPosition, g_ViewMatrix); // 뷰 변환
+    worldPosition = mul(worldPosition, g_ProjMatrix); // 프로젝션 변환
+        
+    Out.vPosition = worldPosition;
+    Out.vNormal = In.vNormal;
+    Out.vTexcoord = In.vTexcoord;
+    Out.vBright = In.vBright;
+    
+    // 웨이브 끝 범위 - 시작 범위 결과 값.
+    float fEnd = fWaveEndRange - g_fWaveStartRange; // N
+        
+    // 웨이브 끝 범위랑 현재 블럭 거리를 빼서 얼마 차이나는지 구한다.
+    float fCurrent = fWaveEndRange - wardenLength; // N~0                
+        
+    // 선형보간에 쓰일 결과 값.
+    float fResult = fCurrent / fEnd; // 1~0
+        
+    // 선형 보간.
+    float range = lerp(0.f, fEnd, fResult);
+    
+    if (wardenLength >= g_fWaveStartRange && wardenLength <= fWaveEndRange && g_iBlockType != g_iWoodType && g_iBlockType != g_iLeafType)
+    {
+        Out.vPosition.y += range;
+    }
+    
+    return Out;
+}
+
 
 struct PS_IN
 {
@@ -90,7 +146,7 @@ struct PS_OUT
 
 PS_OUT PS_MAIN(PS_IN In)
 {
-    PS_OUT Out;            
+    PS_OUT Out;                
     
     Out.vColor = tex2D(DefaultSampler, In.vTexcoord);    
           
@@ -226,5 +282,11 @@ technique DefaultTechnique
         BlendOp = Add;
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_MAIN_SCAN();
+    }
+
+    pass WardenWavePass
+    {
+        VertexShader = compile vs_3_0 VS_MAIN_WAVE();
+        PixelShader = compile ps_3_0 PS_MAIN();
     }
 }

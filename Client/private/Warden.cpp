@@ -10,6 +10,12 @@
 #include "BTDecorator_IsCutScene.h"
 #include "MissionControl.h"
 
+_float g_fWaveRange = 0.f;
+_float g_fWaveTime = 0.f;
+_float g_fWaveEndTime = 3.f;
+_float g_fWaveSpeed = 4.f;
+_bool g_bIsWave = false;
+
 CWarden::CWarden(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CMonster{ pGraphic_Device }
 {
@@ -64,8 +70,21 @@ void CWarden::Priority_Update(_float fTimeDelta)
 }
 
 void CWarden::Update(_float fTimeDelta)
-{
- 
+{        
+    // 지형 충격파 기능 로직.
+    if (g_fWaveTime >= g_fWaveEndTime)
+    {
+        g_bIsWave = false;
+        g_fWaveRange = 0.f;
+        g_fWaveTime = 0.f;
+    }
+
+    if (g_bIsWave == true)
+    {
+        g_fWaveRange += fTimeDelta * g_fWaveSpeed;
+        g_fWaveTime += fTimeDelta;
+    }
+
     __super::Update(fTimeDelta);
 
     Update_State(fTimeDelta);
@@ -131,8 +150,8 @@ HRESULT CWarden::Render()
 }
 
 void CWarden::Dead_Pawn()
-{
-    CPawn::Dead_Pawn();
+{        
+    CPawn::Dead_Pawn();    
 
     m_pGameInstance->Play_Sound(TEXT("death_1"), SOUND_DEAD, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
 
@@ -718,7 +737,9 @@ void CWarden::Motion_Attack(_float fTimeDelta)
     {
         m_bAnimEnd[ATTACK] = true;
         _float3 temp = m_pTargetPawn->Get_Transform()->Get_State(CTransform::STATE_POSITION) - m_pTransformCom->Get_State(CTransform::STATE_POSITION);
-        m_pTargetPawn->Knock_back(temp);        
+        m_pTargetPawn->Knock_back(temp);    
+
+        g_bIsWave = true;
     }
 
     m_skelAnime->Update_Animetion(Attack_Pevis, fTimeDelta, 1);
@@ -925,7 +946,7 @@ void CWarden::FrameCallback(int animType, int frame)
     if (animType == CWarden::Attack2_Pevis &&
         frame == 1)
     {
-        isShootFollow = false;
+        isShootFollow = false;        
 
         CParticleEventManager::Get_Instance()->OnParticle(
             PROTOTYPE_GAMEOBJECT_PARTICLE_SONIC_BOOM,

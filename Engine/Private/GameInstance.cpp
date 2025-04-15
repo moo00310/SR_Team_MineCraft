@@ -70,7 +70,6 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Out_ LP
 void CGameInstance::Update_Engine(_float fTimeDelta)
 {
 
-
 #pragma region PRIORITY_UPDATE
 	m_pObject_Manager->Priority_Update(fTimeDelta);
 #pragma endregion
@@ -101,7 +100,7 @@ HRESULT CGameInstance::Draw()
 
 	m_pRenderer->Draw();
 
-	m_pCollider_Manager->Render();
+	//m_pCollider_Manager->Render();
 
 	m_pLevel_Manager->Render();
 

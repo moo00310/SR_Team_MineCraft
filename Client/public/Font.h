@@ -8,14 +8,14 @@ class CVIBuffer_Rect;
 class CTransform;
 END
 
-BEGIN(Client)
 
-class CStartButton final : public CUIObject
+BEGIN(Client)
+class CFont final : public CUIObject
 {
 private:
-	CStartButton(LPDIRECT3DDEVICE9 pGraphic_Device);
-	CStartButton(CStartButton& Prototype);
-	virtual ~CStartButton() = default;
+	CFont(LPDIRECT3DDEVICE9 pGraphic_Device);
+	CFont(CFont& Prototype);
+	virtual ~CFont() = default;
 
 public:
 	virtual HRESULT Initialize_Prototype()override;
@@ -35,17 +35,13 @@ private:
 	_wstring	m_fontPath = L"";
 	_wstring	m_strText = L"";
 	wchar_t		m_szBuffer[128] = {};
-	_int		m_iTextureNum = { 0 };
+	_int		m_iPercent = { 0 };
 
-private:
-	CTexture* m_pTextureCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
-	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 public:
-	static CStartButton* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
+	static CFont* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free();
-};
 
+};
 END

@@ -397,7 +397,9 @@ void CRect_Model::Motion_Attack1(_float fTimeDelta)
 		
 	}
 
-	SwingFireSword();
+	if (m_isRender)
+		SwingFireSword();
+	
 	m_pSkeletalAnimator->Update_Animetion(ATTACK_Near, fTimeDelta, 0);
 }
 
@@ -409,7 +411,9 @@ void CRect_Model::Motion_Attack2(_float fTimeDelta)
 		m_eCurAnim = INIT;
 	}
 
-	SwingFireSword();
+	if (m_isRender)
+		SwingFireSword();
+
 	m_pSkeletalAnimator->Update_Animetion(ATTACK_Far, fTimeDelta, 0);
 }
 

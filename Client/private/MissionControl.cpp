@@ -24,6 +24,8 @@ HRESULT CMissionControl::Initialize(void* pArg)
     InitMissions2();
     InitMissions3();
 
+    m_currentStage = DAY3;
+
     if (CSun* _sun = dynamic_cast<CSun*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Sun")))) {
         m_sun = _sun;
     }

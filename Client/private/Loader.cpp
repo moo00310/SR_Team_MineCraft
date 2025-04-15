@@ -26,6 +26,7 @@
 #include "GameMgr.h"
 #include "Warden.h"
 #include "LayHitCube.h"
+#include "BossUI.h"
 
 //HERO
 #include "HeroCube.h" //콜라이더 테스트용 큐브
@@ -206,7 +207,7 @@ HRESULT CLoader::Loading_For_Logo()
 
 	/* For.Prototype_Component_Texture_StartButton*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_StartButton"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/StartButton/StartButton1.png"), 1))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/StartButton/StartButton_%d.png"), 2))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_title*/
@@ -387,7 +388,15 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_WaveUi"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/WaveUi.png"), 1))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_BossUi"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/BossUi.png"), 1))))
+		return E_FAIL;
 	
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_BossUI_Back"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/BossUI_Back.png"), 1))))
+		return E_FAIL;
+
 	m_loadeCount++;
 
 	// 깨지는 블럭 텍스쳐.
@@ -1238,6 +1247,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_WaveUi"),
 		CWaveUi::Create(m_pGraphic_Device))))
 		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_BossUi"),
+		CBossUI::Create(m_pGraphic_Device))))
+		return E_FAIL;
+
 	m_loadeCount++;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));

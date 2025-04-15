@@ -60,7 +60,9 @@ public:
 	HRESULT Bind_Resource();
 	HRESULT Bind_Resource(class CShader* pShader);
 	HRESULT Bind_Resource_Scan(class CShader* pShader, _float _fScanRange);
+	HRESULT Bind_Resource_WardenWave(class CShader* pShader, _float _fWaveRange);
 	HRESULT Bind_Resource_BlockType(class CShader* pShader, _uint _iBlockType);
+	HRESULT Bind_Resource_WardenPosition(class CShader* pShader, const _float4* _vWardenPosition);
 
 public:
 	_float3 Compute_Scaled() const;

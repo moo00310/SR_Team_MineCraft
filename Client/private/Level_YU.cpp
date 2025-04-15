@@ -123,6 +123,9 @@ HRESULT CLevel_YU::Initialize()
 	if (FAILED(Ready_Layer_Camera_Cutscene(TEXT("Layer_Camera_Cutscene"))))
 		return E_FAIL;
 
+	if (FAILED(Ready_Layer_BossUI(TEXT("Layer_BossUI"))))
+		return E_FAIL;
+
 	m_pGameInstance->PlayBGM(L"sweden");
 
 	return S_OK;
@@ -399,7 +402,7 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Laye_Warden(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
-		LEVEL_YU, strLayerTag, 3)))
+		LEVEL_YU, strLayerTag, 1)))
 		return E_FAIL;
 
 	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
@@ -480,6 +483,15 @@ HRESULT CLevel_YU::Ready_Layer_Camera_Cutscene(const _wstring& strLayerTag)
 	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Camera_Cutscene"),
 	//	LEVEL_YU, strLayerTag)))
 	//	return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CLevel_YU::Ready_Layer_BossUI(const _wstring& strLayerTag)
+{
+	if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_BossUi"),
+		LEVEL_YU, strLayerTag)))
+		return E_FAIL;
 
 	return S_OK;
 }

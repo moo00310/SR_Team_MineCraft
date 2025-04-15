@@ -93,8 +93,6 @@ _bool CUIObject::isPick(HWND hWnd)
 	return PtInRect(&rcUI, ptMouse);
 }
 
-
-
 void CUIObject::Free()
 {
 	__super::Free();

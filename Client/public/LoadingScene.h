@@ -11,7 +11,7 @@ END
 
 BEGIN(Client)
 
-class CLoadingScene : public CUIObject
+class CLoadingScene final : public CUIObject
 {
 private:
 	CLoadingScene(LPDIRECT3DDEVICE9 pGraphic_Device);
@@ -32,6 +32,7 @@ private:
 private:
 	UIOBJECT_DESC	Desc{};
 	_float m_fTime = { 0.f };
+
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTransform* m_pTransformCom = { nullptr };
