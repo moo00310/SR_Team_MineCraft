@@ -253,16 +253,15 @@ void CMissionControl::Priority_Update(_float fTimeDelta)
         }
     }
 
+    if (m_currentStage == STAGE_END)
+    {
+        m_bIsFireCracker = true;
+    }
 
     if (m_bNightFinish) {
         if (g_fBright >= 0.75) {
             m_sun->Set_bAddTime();
-            m_bNightFinish = false;
-
-            if (m_currentStage == STAGE_END)
-            {
-                m_bIsFireCracker = true;                
-            }
+            m_bNightFinish = false;            
         }
     }
 
