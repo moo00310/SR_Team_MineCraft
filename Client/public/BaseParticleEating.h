@@ -15,6 +15,7 @@ protected:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;	
+	virtual void OnPushPool() override;
 
 protected:
 	virtual HRESULT Ready_Components() override;

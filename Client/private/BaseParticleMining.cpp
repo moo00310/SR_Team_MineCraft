@@ -21,6 +21,8 @@ HRESULT CBaseParticleMining::Initialize(void* pArg)
 		0);
 
 	iParticleCount = 1;
+	IsTimer = true;
+	fEndTimer = 0.6f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
@@ -52,6 +54,13 @@ void CBaseParticleMining::Free()
 	__super::Free();
 }
 
+void CBaseParticleMining::OnPushPool()
+{
+	__super::OnPushPool();
+	IsTimer = true;
+	fEndTimer = 0.6f;
+}
+
 ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 {
 	float bight = m_Sun->GetBight();
@@ -59,10 +68,7 @@ ParticleAttribute CBaseParticleMining::OnSetAddParticle()
 	ParticleAttribute att;	
 	att.vPosition = { GetRandomFloat(-0.2f, 0.2f), GetRandomFloat(-0.2f, 0.2f), 0.f };	
 	att.vColor = Float3ToHex({ bight, bight, bight });
-	att.vVelocity = { GetRandomFloat(-2.f, 2.f), 0.f, GetRandomFloat(-2.f, 2.f) };
-	att.IsTime = true;
-	att.fCurrentTime = 0.f;
-	att.fEndTime = 0.6f;	
+	att.vVelocity = { GetRandomFloat(-2.f, 2.f), 0.f, GetRandomFloat(-2.f, 2.f) };	
 	att.IsAlive = false;
 
 	// 중력 적용.

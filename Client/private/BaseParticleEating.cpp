@@ -18,6 +18,8 @@ HRESULT CBaseParticleEating::Initialize_Prototype()
 HRESULT CBaseParticleEating::Initialize(void* pArg)
 {
 	iParticleCount = 5;
+	IsTimer = true;
+	fEndTimer = 0.5f;
 
 	if (FAILED(__super::Initialize(pArg)))
 	{
@@ -42,6 +44,13 @@ HRESULT CBaseParticleEating::Initialize(void* pArg)
 	}
 
 	return S_OK;
+}
+
+void CBaseParticleEating::OnPushPool()
+{
+	__super::OnPushPool();
+	IsTimer = true;
+	fEndTimer = 0.5f;
 }
 
 HRESULT CBaseParticleEating::Ready_Components()
