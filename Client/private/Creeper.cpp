@@ -382,9 +382,12 @@ void CCreeper::Motion_Attack(_float fTimeDelta)
 			m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.5f, 0.f },
             fRange
 		);
-        //파괴
+
 		for (auto pCollider : Colliders)
 		{
+            // 범죄 on ㅋㅋ
+            static_cast<CCube*>(pCollider->Get_Owner())->isCreeperBoom = true;
+
             if (CBreakableCube * pBreakableCube{ dynamic_cast<CBreakableCube*>(pCollider->Get_Owner()) })
             {
 				CCollider_Cube* pCubeCollider{ dynamic_cast<CCollider_Cube*>(pCollider) };
@@ -499,7 +502,7 @@ void CCreeper::FrameCallback(int animType, int frame)
     if (animType == Attack && frame == 0)
     {
         //std::cout << " 크리퍼 애니메이션: " << animType << ", 프레임: " << frame << std::endl;
-        m_pGameInstance->Play_Sound(TEXT("Creeper_Explosion"), SOUND_ATTACK, this, m_sound-0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+        m_pGameInstance->Play_Sound(TEXT("Creeper_Explosion"), SOUND_ATTACK, this, m_sound+0.1f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
     }
 }
 

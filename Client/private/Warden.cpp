@@ -8,6 +8,7 @@
 #include "BTTask_Attack_Near.h"
 #include "BTTask_Attack_Far.h"
 #include "BTDecorator_IsCutScene.h"
+#include "MissionControl.h"
 
 CWarden::CWarden(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CMonster{ pGraphic_Device }
@@ -28,8 +29,8 @@ HRESULT CWarden::Initialize(void* pArg)
 {
     m_MonsterType = MT_WARDEN;
     m_fSpeed = 2.5f;
-    m_Hp = 100.f;
-    m_MaxHp = 100.f;
+    m_Hp = 500.f; 
+    m_MaxHp = 500.f; 
 
     m_Coll_Size = { 0.5f, 1.0f, 0.5f };
     m_Coll_Offset = { 0.f, 0.6f, 0.f };
@@ -763,6 +764,10 @@ void CWarden::Motion_Dead(_float fTimeDelta)
         //m_isDestroyed = true;
         //m_pGameInstance->Play_Sound(TEXT("Zombie_Death"), SOUND_DEAD, this, m_sound, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
         m_pGameInstance->PopPool(this, TEXT("Layer_Monster"));
+
+        if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
+            _control->Update_Mission(L"warden");
+        }
     }
 }
 

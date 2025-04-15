@@ -30,6 +30,7 @@ public:
 	float GetBight() const;
 	bool Get_Sun() const { return m_isSun; }
 	void Set_bAddTime() { m_bAddTimeFast = !m_bAddTimeFast; }
+	void Set_bLastWave() { m_bLastWave = !m_bLastWave; }
 private:
 	CTexture* m_pTextureCom = { nullptr };
 	CTexture* m_pTextureCom2 = { nullptr };
@@ -52,6 +53,7 @@ private:
 	bool m_isSun = true;
 
 	bool m_bAddTimeFast = false;
+	bool m_bLastWave = false;
 public:
 	static CSun* Create(LPDIRECT3DDEVICE9 pGraphic_Device);
 	virtual CGameObject* Clone(void* pArg) override;

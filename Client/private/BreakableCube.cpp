@@ -207,7 +207,7 @@ HRESULT CBreakableCube::Create_Cube(_float3 vPos, _float3 _Dir)
 
 void CBreakableCube::Play_Create_Sound(_float3 vPos)
 {
-    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 0.8f, vPos);
 }
 
 
@@ -294,30 +294,38 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_LEAF:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_WOOD:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_OAKPLANKS:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_CRAFTINGTABLE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_STONE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 1.5;
             break;
         case Client::ITEMNAME_COBBLESTONE:
             m_fHp -= (attackDamage / m_fHardness) * 1.5;
             break;
         case Client::ITEMNAME_COALORE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 1.5;
             break;
         case Client::ITEMNAME_IRONORE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 5;
             break;
         case Client::ITEMNAME_FURANCE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 1.5;
             break;
         default:
@@ -334,30 +342,38 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_LEAF:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_WOOD:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_OAKPLANKS:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_CRAFTINGTABLE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_STONE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_COBBLESTONE:
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_COALORE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_IRONORE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_FURANCE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         default:
@@ -374,30 +390,38 @@ void CBreakableCube::Attacked_Block(_float3 vPos, int attackDamage, _float fDelt
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_LEAF:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_LEAF_MINING;
             m_fHp -= attackDamage / m_fHardness;
             break;
         case Client::ITEMNAME_WOOD:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_OAKPLANKS:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_CRAFTINGTABLE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_WOOD_MINING;
             m_fHp -= (attackDamage / m_fHardness) * 2;
             break;
         case Client::ITEMNAME_STONE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_COBBLESTONE:
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_COALORE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_IRONORE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         case Client::ITEMNAME_FURANCE:
+            particleTag = PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_MINING;
             m_fHp -= attackDamage / 5.f;
             break;
         default:
@@ -545,11 +569,6 @@ HRESULT CBreakableCube::Drop_Item_OnDestroy(const _float3& vPos)
 
 HRESULT CBreakableCube::Play_Destroy_Effect(const _float3& vPos)
 {
-    CParticleEventManager::Get_Instance()->OnParticle(
-        PROTOTYPE_GAMEOBJECT_PARTICLE_SAND_DESTROY,
-        vPos
-    );
-
     m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
 
     return S_OK;

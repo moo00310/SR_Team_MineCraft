@@ -1,5 +1,6 @@
 #include "Pawn.h"
 #include "MCTerrain.h"
+#include "Exp_Orb.h"
 
 CPawn::CPawn(LPDIRECT3DDEVICE9 pGraphic_Device)
 	:CGameObject{ pGraphic_Device }
@@ -154,4 +155,14 @@ void CPawn::Dead_Pawn()
 {
 	isDead = true;
 	m_eCurAnim = DEAD;
+
+
+	//°æÇèÄ¡ 3°³ ¶³¾î¶ß¸²
+	for (_uint i = 0; i < 3; ++i)
+	{
+		m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Exp_Orb"),
+			LEVEL_YU, TEXT("Layer_Exp_Orb"));
+		CGameObject* pExp_Orb = m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Exp_Orb"));
+		static_cast<CExp_Orb*>(pExp_Orb)->Get_Transform()->Set_State(CTransform::STATE_POSITION, m_pTransformCom->Get_State(CTransform::STATE_POSITION) + _float3{ 0.f, 1.f, 0.f });
+	}
 }

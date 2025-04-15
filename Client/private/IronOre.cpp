@@ -73,6 +73,12 @@ HRESULT CIronOre::Drop_Item_OnDestroy(const _float3& vPos)
     if (CMissionControl* _control = dynamic_cast<CMissionControl*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Mission")))) {
         _control->Update_Mission(L"iron");
     }
+
+    CParticleEventManager::Get_Instance()->OnParticle(
+        PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_DESTROY,
+        vPos
+    );
+
     return S_OK;
 }
 

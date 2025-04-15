@@ -342,6 +342,9 @@ void CRect_Model::Motion_Run(_float fTimeDelta)
 
 void CRect_Model::Motion_EAT(_float fTimeDelta)
 {	
+	if (m_isRender == false)
+		return;
+
 	ITEMNAME name = ITEMNAME(m_TextrueNum + 100);
 	if (name != ITEMNAME_APPLE)
 	{
@@ -400,12 +403,14 @@ void CRect_Model::Motion_Attack1(_float fTimeDelta)
 
 void CRect_Model::Motion_Attack2(_float fTimeDelta)
 {
-	m_pSkeletalAnimator->Update_Animetion(ATTACK_Far, fTimeDelta, 0);
 
 	if (m_pSkeletalAnimator->is_AnimtionEND(ATTACK_Far))
 	{
 		m_eCurAnim = INIT;
 	}
+
+	SwingFireSword();
+	m_pSkeletalAnimator->Update_Animetion(ATTACK_Far, fTimeDelta, 0);
 }
 
 void CRect_Model::KeyInput()
@@ -509,15 +514,15 @@ void CRect_Model::FireSword()
 	if (m_isTPS)
 	{
 		boneWorldMatrix = m_pSteve->GetSoketMatrix(7);
-		rotateMatrix.Scaling(2.f, 7.f, 0.f);
-		rotateMatrix.Turn_Radian_Safe_Scale(_float3(1.f, 0.f, 0.f), D3DXToRadian(90.f));
-		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.5f, 0.f, 0.5f));
+		rotateMatrix.Scaling(5.f, 10.f, 0.f);
+		rotateMatrix.Turn_Radian_Safe_Scale(_float3(1.f, 0.f, 0.f), D3DXToRadian(97.f));
+		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-1.5f, 0.f, -0.6f));
 	}
 	else
 	{
 		boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
 		rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(0.f));
-		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.2f, -0.5f, 0.f));
+		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.3f, -0.5f, 0.2f));
 	}
 	
 	if (flameSword == nullptr)
@@ -590,24 +595,24 @@ void CRect_Model::SwingFireSword()
 	if (m_isTPS)
 	{
 		boneWorldMatrix = m_pSteve->GetSoketMatrix(7);
-		rotateMatrix.Scaling(2.f, 7.f, 0.f);
-		rotateMatrix.Turn_Radian_Safe_Scale(_float3(1.f, 0.f, 0.f), D3DXToRadian(90.f));
-		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.5f, 0.f, 12.f));
+		rotateMatrix.Scaling(5.f, 10.f, 0.f);
+		rotateMatrix.Turn_Radian_Safe_Scale(_float3(1.f, 0.f, 0.f), D3DXToRadian(97.f));
+		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-1.5f, 0.f, 1.f));
 	}
 	else
 	{
 		boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(1);
-		//rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(0.f));
-		//rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.2f, -0.5f, 0.f));
+		rotateMatrix.Turn_Radian(_float3(0.f, 0.f, 1.f), D3DXToRadian(0.f));
+		rotateMatrix.Set_State(Matrix::STATE_POSITION, _float3(-0.3f, -0.5f, 0.2f));
 	}
 
-
+	Matrix Ruslt = rotateMatrix * boneWorldMatrix;
 	CParticleSystem* particle = CParticleEventManager::Get_Instance()->OnParticle(
 		PROTOTYPE_GAMEOBJECT_PARTICLE_SWORD_FLAME,
-		boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION)
+		Ruslt.Get_State(boneWorldMatrix.STATE_POSITION)
 	);
 
-	particle->GetTransform()->Set_Matrix(boneWorldMatrix);
+	particle->GetTransform()->Set_Matrix(Ruslt);
 	particle->SetTimer(0.3f);
 }
 
@@ -618,38 +623,48 @@ ITEMNAME CRect_Model::Compute_Texture_Name()
 
 void CRect_Model::FrameCallback(int animType, int frame)
 {
+	if (m_isRender == false)
+		return;
+
 	Matrix boneWorldMatrix = m_pSkeletalAnimator->GetBoneWorldMatrix(0);
 	_float3 playerPos = boneWorldMatrix.Get_State(boneWorldMatrix.STATE_POSITION);
-	//먹는 사운드
-	if (animType == EAT && frame == 0) {
-		m_pGameInstance->Play_Sound(TEXT("Player_Eat1"), SOUND_EAT, this, 0.8f, playerPos);
-	}
 
-	if (animType == EAT && frame == 2) {
-		m_pGameInstance->Play_Sound(TEXT("Player_Eat2"), SOUND_EAT, this, 0.8f, playerPos);
-	}
-
-	if (animType == EAT && frame == 4) {
-		m_pGameInstance->Play_Sound(TEXT("Player_Eat3"), SOUND_EAT, this, 0.8f, playerPos);
-	}
-
-	// 참격 이펙트 추가
-	if (animType == ATTACK_Far && frame == 2)
+	if (ITEMNAME_APPLE == Compute_Texture_Name())
 	{
-		AuraSword();
-		m_pGameInstance->Play_Sound(TEXT("Player_FireSword_Sweep"), SOUND_ATTACK, this, 0.8f, playerPos);
+		//먹는 사운드
+		if (animType == EAT && frame == 0) {
+			m_pGameInstance->Play_Sound(TEXT("Player_Eat1"), SOUND_EAT, this, 0.8f, playerPos);
+		}
+
+		if (animType == EAT && frame == 2) {
+			m_pGameInstance->Play_Sound(TEXT("Player_Eat2"), SOUND_EAT, this, 0.8f, playerPos);
+		}
+
+		if (animType == EAT && frame == 4) {
+			m_pGameInstance->Play_Sound(TEXT("Player_Eat3"), SOUND_EAT, this, 0.8f, playerPos);
+		}
 	}
 
-	if (animType == ATTACK_Near && frame == 2)
+	if (ITEM_WEPON_1 == Compute_Texture_Name())
 	{
-		m_pGameInstance->Play_Sound(TEXT("Player_FireNear"), SOUND_ATTACK, this, 0.8f, playerPos);
+		// 참격 이펙트 추가
+		if (animType == ATTACK_Far && frame == 2)
+		{
+			AuraSword();
+			m_pGameInstance->Play_Sound(TEXT("Player_FireSword_Sweep"), SOUND_ATTACK, this, 0.8f, playerPos);
+		}
+
+		if (animType == ATTACK_Near && frame == 2)
+		{
+			m_pGameInstance->Play_Sound(TEXT("Player_FireNear"), SOUND_ATTACK, this, 0.8f, playerPos);
+		}
 	}
 
 	if (animType == SWING && frame == 2)
 	{
 		m_pGameInstance->Play_Sound(TEXT("Player_Sword_Strong"), SOUND_ATTACK, this, 0.8f, playerPos);
 	}
-		
+
 }
 
 CRect_Model* CRect_Model::Create(LPDIRECT3DDEVICE9 pGraphic_Device)

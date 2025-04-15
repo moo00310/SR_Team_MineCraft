@@ -76,7 +76,10 @@ HRESULT CCoalOre::Drop_Item_OnDestroy(const _float3& fPos)
 HRESULT CCoalOre::Play_Destroy_Effect(const _float3& vPos)
 {
     // 필요 시 파티클 추가
-    // CParticleEventManager::Get_Instance()->OnParticle(...);
+    CParticleEventManager::Get_Instance()->OnParticle(
+        PROTOTYPE_GAMEOBJECT_PARTICLE_STONE_DESTROY,
+        vPos
+    );
 
     m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
 

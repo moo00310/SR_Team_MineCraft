@@ -68,35 +68,6 @@ void CRight_hand::Priority_Update(_float fTimeDelta)
 
     Chage_RightHand();
     Chage_LeftHand();
-
-
-    //if (m_pGameInstance->Key_Down(VK_F5))
-    //{
-    //    if (isTPS == false)
-    //    {
-    //        m_pSteve->SetRender(true);
-
-    //        m_pArm_Model->Set_isTps(true);
-    //        m_pRect_Model->Set_isTps(true);
-    //        m_pCube_Model->Set_isTps(true);
-    //        m_pLeft_Rect_Model->Set_isTps(true);
-    //        isTPS = true;
-    //    }
-    //    else
-    //    { 
-    //        m_pSteve->SetRender(false);
-
-    //        m_pArm_Model->Set_isTps(false);
-    //        m_pRect_Model->Set_isTps(false);
-    //        m_pCube_Model->Set_isTps(false);
-    //        m_pLeft_Rect_Model->Set_isTps(false);
-    //        isTPS = false;
-    //    }
-
-    //    Chage_RightHand();
-    //    Chage_LeftHand();
-    //}
-
 }
 
 void CRight_hand::Update(_float fTimeDelta)
