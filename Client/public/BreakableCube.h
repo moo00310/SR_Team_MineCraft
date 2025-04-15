@@ -7,6 +7,7 @@
 #include "ItemCube.h"
 #include "ItemRect.h"
 #include "ParticleEventManager.h"
+#include "Warden.h"
 
 BEGIN(Engine)
 class CVIBuffer_CubeInstance;
@@ -98,6 +99,9 @@ protected:
 	unordered_map<_int3, CCollider_Cube*> m_Colliders;
 
 	ITEMNAME m_itemName{ ITEMNAME_END };
+
+	// 얘는 워든이 생성 될 때 옵저버로 주소 넘겨받을거임.
+	CWarden* m_Warden = {nullptr};
 
 	float m_fHp = 100;
 	_float3 m_attackedBlockPos;

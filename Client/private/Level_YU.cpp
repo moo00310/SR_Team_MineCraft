@@ -397,7 +397,7 @@ HRESULT CLevel_YU::Ready_Laye_Zombi(const _wstring& strLayerTag)
 HRESULT CLevel_YU::Ready_Laye_Warden(const _wstring& strLayerTag)
 {
 	if (FAILED(m_pGameInstance->CreatePool(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),
-		LEVEL_YU, strLayerTag, 3)))
+		LEVEL_YU, strLayerTag, 1)))
 		return E_FAIL;
 
 	//if (FAILED(m_pGameInstance->Add_GameObject(LEVEL_YU, TEXT("Prototype_GameObject_Warden"),

@@ -83,9 +83,25 @@ HRESULT CTransform::Bind_Resource_Scan(CShader* pShader, _float _fScanRange)
 	return S_OK;
 }
 
+HRESULT CTransform::Bind_Resource_WardenWave(CShader* pShader, _float _fWaveRange)
+{
+	if (FAILED(pShader->SetFloat("g_fWaveStartRange", _fWaveRange)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 HRESULT CTransform::Bind_Resource_BlockType(CShader* pShader, _uint _iBlockType)
 {
 	if (FAILED(pShader->SetInt("g_iBlockType", _iBlockType)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+HRESULT CTransform::Bind_Resource_WardenPosition(CShader* pShader, const _float4* _vWardenPosition)
+{
+	if (FAILED(pShader->Bind_Vector("g_WardenWorld", _vWardenPosition)))
 		return E_FAIL;
 
 	return S_OK;

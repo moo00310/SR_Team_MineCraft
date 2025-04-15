@@ -33,6 +33,13 @@ extern _float g_fScanTime;			// 스캔 현재 시간.
 extern _float g_fScanEndTime;		// 스캔 지속시간.
 extern _float g_fScanSpeed;			// 스캔이 뻗어나가는 속도.
 
+// 워든 근거리 공격 관련 변수들.
+extern _bool g_bIsWave;				// 워든 근거리 웨이브 발동 여부.
+extern _float g_fWaveRange;			// 워든 근거리 공격 범위.
+extern _float g_fWaveTime;			// 워든 웨이브 현재 시간.
+extern _float g_fWaveEndTime;		// 워든 웨이브 지속시간.
+extern _float g_fWaveSpeed;			// 워든 웨이브 뻗어나가는 속도.
+
 using namespace Client;
 
 #define Rect_Model_Count 18
