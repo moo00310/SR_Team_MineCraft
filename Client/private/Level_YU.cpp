@@ -8,6 +8,7 @@
 #include "Pawn.h"
 #include "Sun.h"
 #include "Camera_Cutscene.h"
+#include "Level_Loading.h"
 
 CLevel_YU::CLevel_YU(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CLevel { pGraphic_Device }
@@ -133,14 +134,21 @@ void CLevel_YU::Update(_float fTimeDelta)
 	m_iFPS++;
 
 
+	//if (m_pGameInstance->Key_Down(VK_ADD))
+	//{
+	//	static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->Start_Cutscene({ 10.f, 10.f, 10.f });
+	//}
+
+	//if (m_pGameInstance->Key_Down(VK_SUBTRACT))
+	//{
+	//	static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->End_Cutscene();
+	//}
+
 	if (m_pGameInstance->Key_Down(VK_ADD))
 	{
-		static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->Start_Cutscene({ 10.f, 10.f, 10.f });
-	}
-
-	if (m_pGameInstance->Key_Down(VK_SUBTRACT))
-	{
-		static_cast<Camera_Cutscene*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Camera_Cutscene")))->End_Cutscene();
+		if (m_pGameInstance->Change_Level(LEVEL_LOADING,
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_END)))
+			return;
 	}
 }
 

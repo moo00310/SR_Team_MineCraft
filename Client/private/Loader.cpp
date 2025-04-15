@@ -1667,6 +1667,11 @@ HRESULT CLoader::Loading_For_TOOL()
 	return S_OK;
 }
 
+HRESULT CLoader::Loading_For_Ending()
+{
+	return S_OK;
+}
+
 CLoader* CLoader::Create(LPDIRECT3DDEVICE9 pGraphic_Device, LEVEL eNextLevelID)
 {
 	CLoader* pInstance = new CLoader(pGraphic_Device);
