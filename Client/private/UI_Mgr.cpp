@@ -23,6 +23,11 @@ void CUI_Mgr::Late_Update(_float fTimeDelta)
 	ShowInventoryTop();
 	PlayerHunger_AutoHeal(fTimeDelta);
 	PlayerHunger_Set(fTimeDelta);
+
+	if (m_bStarvationStart)
+	{
+		PlayerHunger_StarvationDamage(fTimeDelta);
+	}
 }
 
 void CUI_Mgr::Synchronize_Slots()
@@ -81,7 +86,6 @@ void CUI_Mgr::SetHP()
 			}
 
 			m_vecPlayerHPlist[iIndex]->Set_Flicker(true);
-			//m_vecPlayerHPlist[iIndex]->Set_Shake(true);
 			PlayerHP_Shake(iIndex);
 		}
 	}
@@ -104,7 +108,8 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 			
 				(*iter)->Set_Flicker(false);
 			
-				m_iallZeroCount++;
+				if(m_iallZeroCount <= 10)
+					m_iallZeroCount++;
 
 				break;
 			}
@@ -121,6 +126,11 @@ void CUI_Mgr::PlayerHunger_Set(_float fTimeDelta)
 				break;
 			}
 		}
+	}
+
+	if (m_iallZeroCount == 10 && !m_bStarvationStart)
+	{
+		m_bStarvationStart = true;
 	}
 }
 
@@ -142,11 +152,17 @@ void CUI_Mgr::PlayerHunger_Heal(_float _fHealAmount)
 			{
 				(*iter)->Set_TextureNum(1); // 풀로
 				_fHealAmount -= 1.f;
+
+				if (m_iallZeroCount > 0)
+					--m_iallZeroCount;
 			}
 			else if (_fHealAmount >= 0.5f)
 			{
 				(*iter)->Set_TextureNum(2); // 반으로
 				_fHealAmount -= 0.5f;
+
+				if (m_iallZeroCount > 0)
+					--m_iallZeroCount;
 			}
 		}
 
@@ -154,7 +170,7 @@ void CUI_Mgr::PlayerHunger_Heal(_float _fHealAmount)
 		{
 			if (_fHealAmount >= 0.5f)
 			{
-				(*iter)->Set_TextureNum(1); // 반으로
+				(*iter)->Set_TextureNum(1); // 풀로
 				_fHealAmount -= 0.5f;
 			}
 		}
@@ -225,14 +241,12 @@ void CUI_Mgr::Player_HealHp(_float _fHealAmount)
 			{
 				(*iter)->Set_TextureNum(1);
 				(*iter)->Set_Flicker(true);
-				//(*iter)->Set_Shake(false);
 				_fHealAmount -= 1.f;
 			}
 			else if (_fHealAmount >= 0.5f)
 			{
 				(*iter)->Set_TextureNum(2);
 				(*iter)->Set_Flicker(true);
-				//(*iter)->Set_Shake(false);
 				_fHealAmount -= 0.5f;
 			}
 		}
@@ -241,10 +255,33 @@ void CUI_Mgr::Player_HealHp(_float _fHealAmount)
 		{
 			(*iter)->Set_TextureNum(1);
 			(*iter)->Set_Flicker(true);
-			//(*iter)->Set_Shake(false);
 			_fHealAmount -= 0.5f;
 		}
 	}
+}
+
+void CUI_Mgr::PlayerHunger_StarvationDamage(_float _fTimeDelta)
+{
+	static _float fStarveTimer = 0.f;
+
+	if (m_iallZeroCount == 10)
+	{
+		fStarveTimer += _fTimeDelta;
+
+		if (fStarveTimer >= 4.0f)
+		{
+			pSteve->Add_Hp(-5);
+			SetHP();
+
+			fStarveTimer = 0.f;
+		}
+	}
+	else
+	{
+		fStarveTimer = 0.f;
+		m_bStarvationStart = false;
+	}
+
 }
 
 void CUI_Mgr::PlayerExp_Set()

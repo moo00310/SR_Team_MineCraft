@@ -14,6 +14,8 @@ float g_ShakeStrength;
 
 float startY = 0.618f;   // 물 시작 위치 (vTexcoord.y)
 float endY   = 0.9375f;  // 물 끝 위치
+float2 lightOrigin = float2(0.41f, 0.15f); // 빨간 네모 중앙 근처
+
 
 // 회전을 적용한 UV 좌표 생성 함수
 float2 RotateUV(float2 uv, float angle)
@@ -195,29 +197,6 @@ PS_OUT PS_BurnResultUi(PS_IN In)
     return Out;
 }
 
-/* 중앙 로딩 아이콘 효과용 Pixel Shader */
-PS_OUT PS_LoadingIcon(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT)0;
-
-    // 회전 각도 (2 * PI * 로딩 퍼센트)
-    float angle = g_LoadingPercent * 6.2831853f;
-
-    // 회전된 UV 계산
-    float2 rotatedUV = RotateUV(In.vTexcoord, angle);
-
-    // 텍스처 샘플링
-    float4 texColor = tex2D(TextureSampler, rotatedUV);
-
-    // 밝기 조절 (로딩 퍼센트가 증가할수록 밝게)
-    float brightness = lerp(0.5f, 1.5f, g_LoadingPercent);
-    texColor.rgb *= brightness;
-
-    // 최종 출력
-    Out.vColor = texColor;
-    return Out;
-}
-
 PS_OUT PS_ShakeEffect(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
@@ -247,6 +226,25 @@ PS_OUT PS_WaterWobble(PS_IN In)
     Out.vColor = tex2D(TextureSampler, uv);
     return Out;
 }
+
+PS_OUT PS_SunShaft(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT)0;
+    float2 uv = In.vTexcoord;
+
+    float2 delta = uv - lightOrigin;
+    float dist = length(delta);
+    
+    float ray = 1.0 - smoothstep(0.0, 0.5, dist);  // 광선 길이 조정
+    float intensity = ray * 0.4f;                 // 밝기 조절
+
+    float4 tex = tex2D(TextureSampler, uv);
+    tex.rgb += float3(1.0f, 1.0f, 0.8f) * intensity; // 노란 빛 추가
+
+    Out.vColor = tex;
+    return Out;
+}
+
 
 /* Technique 정의 */
 technique DefaultTechnique
@@ -353,21 +351,6 @@ technique DefaultTechnique
         PixelShader = compile ps_3_0 PS_BurnResultUi();
     }
 
-    pass P0
-    {
-        AlphaBlendEnable = TRUE;
-        SrcBlend = SRCALPHA;
-        DestBlend = INVSRCALPHA;
-        BlendOp = ADD;
-
-        CULLMODE = NONE;
-        ZWRITEENABLE = FALSE;
-        ZENABLE = FALSE;
-
-        VertexShader = compile vs_3_0 VS_MAIN();
-        PixelShader = compile ps_3_0 PS_LoadingIcon();
-    }
-
     pass ShakeEffectPass
 	{
 		AlphaBlendEnable = TRUE;
@@ -381,7 +364,7 @@ technique DefaultTechnique
 		PixelShader = compile ps_3_0 PS_ShakeEffect();
 	}
 
-     pass WaterSelectiveWobblePass
+    pass WaterSelectiveWobblePass
     {
         AlphaBlendEnable = TRUE;
         SrcBlend = SRCALPHA;
@@ -394,6 +377,21 @@ technique DefaultTechnique
 
         VertexShader = compile vs_3_0 VS_MAIN();
         PixelShader = compile ps_3_0 PS_WaterWobble();
+    }
+
+    pass SunShaftPass
+    {
+        AlphaBlendEnable = TRUE;
+        SrcBlend = SRCALPHA;
+        DestBlend = INVSRCALPHA;
+        BlendOp = ADD;
+
+        CULLMODE = NONE;
+        ZWRITEENABLE = FALSE;
+        ZENABLE = FALSE;
+
+        VertexShader = compile vs_3_0 VS_MAIN();
+        PixelShader = compile ps_3_0 PS_SunShaft();
     }
 }
 

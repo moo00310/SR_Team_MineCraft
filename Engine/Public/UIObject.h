@@ -39,11 +39,11 @@ protected:
 	_float4x4			m_OldViewMatrix = {};
 	_float4x4			m_OldProjMatrix = {};
 
+
 protected:
 	void Begin();
 	void End();
 	_bool isPick(HWND hWnd);
-
 
 public:
 	virtual CGameObject* Clone(void* pArg) = 0;
