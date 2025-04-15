@@ -94,7 +94,7 @@ HRESULT CPlayerHP_Back::Render()
         m_pShaderCom->SetFloat("g_Time", fTimeValue);
         m_pShaderCom->SetFloat("g_ShakeStrength", 0.02f); // 필요 시 강도 조절
 
-        m_pShaderCom->Begin(8);
+        m_pShaderCom->Begin(7);
     }
     else
     {

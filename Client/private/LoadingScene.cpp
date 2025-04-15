@@ -2,6 +2,7 @@
 #include <Shlwapi.h>
 #pragma comment(lib, "Shlwapi.lib")
 #include "Loader.h"
+#include "UI_Mgr.h"
 
 CLoadingScene::CLoadingScene(LPDIRECT3DDEVICE9 pGraphic_Device)
 	: CUIObject{ pGraphic_Device }
@@ -78,7 +79,12 @@ void CLoadingScene::Priority_Update(_float fTimeDelta)
 
 		swprintf(m_szBuffer, 128, L"Loading... %d%%", m_iPercent);
 		m_strText = m_szBuffer;
+
+		if (m_strText.empty())
+			return;
 	}
+
+	
 }
 
 void CLoadingScene::Update(_float fTimeDelta)
@@ -182,6 +188,7 @@ CGameObject* CLoadingScene::Clone(void* pArg)
 		MSG_BOX("Failed to Created : CLoadingScene");
 		Safe_Release(pInstance);
 	}
+	
 	return pInstance;
 }
 

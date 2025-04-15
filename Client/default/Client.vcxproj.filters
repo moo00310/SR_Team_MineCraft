@@ -385,6 +385,9 @@
     <Filter Include="01.Levels\03.Ending">
       <UniqueIdentifier>{ec6e1157-600d-4e24-9c4b-694d59127510}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.UI\13.LoadingScene">
+      <UniqueIdentifier>{31668616-721e-4e2b-86dc-fe4cb43ac457}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -853,9 +856,6 @@
     <ClInclude Include="..\public\LayHitCube.h">
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
     </ClInclude>
-    <ClInclude Include="..\public\LoadingScene.h">
-      <Filter>01.Levels</Filter>
-    </ClInclude>
     <ClInclude Include="..\public\Exp_Orb.h">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClInclude>
@@ -870,6 +870,9 @@
     </ClInclude>
     <ClInclude Include="..\public\BossUI.h">
       <Filter>08.Mission\Ui</Filter>
+   </ClInclude>
+    <ClInclude Include="..\public\LoadingScene.h">
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1327,9 +1330,6 @@
     <ClCompile Include="..\private\LayHitCube.cpp">
       <Filter>02.GameObjects\00.Cube\04.LayHitCube</Filter>
     </ClCompile>
-    <ClCompile Include="..\private\LoadingScene.cpp">
-      <Filter>01.Levels</Filter>
-    </ClCompile>
     <ClCompile Include="..\private\Exp_Orb.cpp">
       <Filter>02.GameObjects\Exp_Orb</Filter>
     </ClCompile>
@@ -1344,6 +1344,9 @@
     </ClCompile>
     <ClCompile Include="..\private\BossUI.cpp">
       <Filter>08.Mission\Ui</Filter>
+  </ClCompile>
+    <ClCompile Include="..\private\LoadingScene.cpp">
+      <Filter>03.UI\13.LoadingScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

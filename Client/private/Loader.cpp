@@ -201,7 +201,7 @@ HRESULT CLoader::Loading_For_Logo()
 
 	/* For.Prototype_Component_Texture_StartButton*/
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_LOGO, TEXT("Prototype_Component_Texture_StartButton"),
-		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/StartButton/StartButton1.png"), 1))))
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Textures/UI/StartButton/StartButton_%d.png"), 2))))
 		return E_FAIL;
 
 	/* For.Prototype_Component_Texture_title*/
