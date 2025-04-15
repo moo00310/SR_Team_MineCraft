@@ -113,11 +113,11 @@ VS_OUT VS_MAIN_WAVE(VS_IN In)
     float fResult = fCurrent / fEnd; // 1~0
         
     // 선형 보간.
-    float range = lerp(g_fWaveStartRange, fWaveEndRange, fResult);
+    float range = lerp(0.f, fEnd, fResult);
     
     if (wardenLength >= g_fWaveStartRange && wardenLength <= fWaveEndRange)
     {
-        Out.vPosition.y += range / 2.f;
+        Out.vPosition.y += range;
     }
     
     return Out;
