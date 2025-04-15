@@ -100,7 +100,7 @@ protected:
 
 	ITEMNAME m_itemName{ ITEMNAME_END };
 
-	// 얘는 워든이 생성 될 때 옵저버로 주소 넘겨받을거임.
+	// 워든 주소.
 	CWarden* m_Warden = {nullptr};
 
 	float m_fHp = 100;
