@@ -193,5 +193,11 @@ CGameObject* CBossUI::Clone(void* pArg)
 void CBossUI::Free()
 {
 	__super::Free();
+
 	Safe_Release(m_pPawn);
+	Safe_Release(m_pTextureCom);
+	Safe_Release(m_pTextureCom_Back);
+	Safe_Release(m_pTransformCom);
+	Safe_Release(m_pShaderCom);
+	Safe_Release(m_pVIBufferCom);
 }
