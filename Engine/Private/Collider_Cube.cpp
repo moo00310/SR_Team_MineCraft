@@ -138,52 +138,52 @@ HRESULT CCollider_Cube::Update_Collider()
 HRESULT CCollider_Cube::Render_Collider(_bool isHit)
 {
 	// 세계 변환 행렬 가져오기
-	_float4x4 matWorld = *m_pTransformCom->Get_WorldMatrix();
+	//_float4x4 matWorld = *m_pTransformCom->Get_WorldMatrix();
 
-	// 회전 값 제거 (단위 행렬의 방향 벡터 유지)
-	matWorld._11 = 1.0f; matWorld._12 = 0.0f; matWorld._13 = 0.0f;
-	matWorld._21 = 0.0f; matWorld._22 = 1.0f; matWorld._23 = 0.0f;
-	matWorld._31 = 0.0f; matWorld._32 = 0.0f; matWorld._33 = 1.0f;
+	//// 회전 값 제거 (단위 행렬의 방향 벡터 유지)
+	//matWorld._11 = 1.0f; matWorld._12 = 0.0f; matWorld._13 = 0.0f;
+	//matWorld._21 = 0.0f; matWorld._22 = 1.0f; matWorld._23 = 0.0f;
+	//matWorld._31 = 0.0f; matWorld._32 = 0.0f; matWorld._33 = 1.0f;
 
-	// 변환 행렬 적용
-	m_pGraphic_Device->SetTransform(D3DTS_WORLD, &matWorld);
+	//// 변환 행렬 적용
+	//m_pGraphic_Device->SetTransform(D3DTS_WORLD, &matWorld);
 
-	// 와이어프레임 모드 설정
-	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	//// 와이어프레임 모드 설정
+	//m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-	// 충돌 여부에 따른 색상 적용
-	if (isHit)
-	{
-		m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 0, 0)); // 빨간색
-		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
-		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TFACTOR);
-	}
-	else
-	{
-		// 원래 텍스처 사용
-		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-		m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
-	}
+	//// 충돌 여부에 따른 색상 적용
+	//if (isHit)
+	//{
+	//	m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 0, 0)); // 빨간색
+	//	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	//	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TFACTOR);
+	//}
+	//else
+	//{
+	//	// 원래 텍스처 사용
+	//	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	//	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	//	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+	//}
 
-	// 정점 및 인덱스 버퍼 설정
-	m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iStride);
-	m_pGraphic_Device->SetFVF(m_dwFVF);
-	m_pGraphic_Device->SetIndices(m_pIB);
+	//// 정점 및 인덱스 버퍼 설정
+	//m_pGraphic_Device->SetStreamSource(0, m_pVB, 0, m_iStride);
+	//m_pGraphic_Device->SetFVF(m_dwFVF);
+	//m_pGraphic_Device->SetIndices(m_pIB);
 
-	// 도형 그리기
-	m_pGraphic_Device->DrawIndexedPrimitive(m_ePrimitiveType, 0, 0, m_iNumVertices, 0, m_iNumPrimitive);
+	//// 도형 그리기
+	//m_pGraphic_Device->DrawIndexedPrimitive(m_ePrimitiveType, 0, 0, m_iNumVertices, 0, m_iNumPrimitive);
 
-	// 상태 복구 - 솔리드 모드로 변경
-	m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	//// 상태 복구 - 솔리드 모드로 변경
+	//m_pGraphic_Device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-	// 상태 복구 - 텍스처 팩터 기본값으로 변경
-	m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
+	//// 상태 복구 - 텍스처 팩터 기본값으로 변경
+	//m_pGraphic_Device->SetRenderState(D3DRS_TEXTUREFACTOR, 0xFFFFFFFF);
 
-	// 텍스처 단계 원래대로 복구
-	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
-	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-	m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+	//// 텍스처 단계 원래대로 복구
+	//m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	//m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	//m_pGraphic_Device->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
 
 	return S_OK;
 }
