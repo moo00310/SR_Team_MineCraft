@@ -1674,6 +1674,11 @@ HRESULT CLoader::Loading_For_TOOL()
 HRESULT CLoader::Loading_For_Ending()
 {
 
+	/* For.Prototype_Component_Texture_Ending_Background */
+	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Ending_Background"),
+		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/Experience-orb/Experience-orb-%d.png"), 12))))
+		return E_FAIL;
+
 	m_isFinished = true;
 	return S_OK;
 }
