@@ -171,6 +171,10 @@ HRESULT CLoader::Loading()
 		hr = Loading_For_TOOL();
 		break;
 
+	case LEVEL_ENDING:
+		hr = Loading_For_Ending();
+		break;
+
 	}
 
 	LeaveCriticalSection(&m_CriticalSection); //오류 나서 두개 위치 바꿈
@@ -433,7 +437,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 	m_loadeCount++;
 
-	Sleep(1000);
+	//Sleep(1000);
 	/* For.Prototype_Component_Texture_CobbleStone */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_CobbleStone"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/cobbleStone%d.png"), 1))))
@@ -538,7 +542,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 	m_loadeCount++;
 
-	Sleep(1000);
+	//Sleep(1000);
 	/* For.Prototype_Component_Texture_IronSword */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_IronSword"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/IronSword.png"), 1))))
@@ -598,7 +602,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/MCTextures/furnaceOn.png"), 1))))
 		return E_FAIL;
 	m_loadeCount++;
-	Sleep(1000);
+	//Sleep(1000);
 
 	/* For.Prototype_Component_Texture_FurnaceUi */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_FurnaceUi"),
@@ -680,7 +684,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 	m_loadeCount++;
 	/*================================================================================================*/
-	Sleep(1000);
+	//Sleep(1000);
 	lstrcpy(m_szLoadingText, TEXT("모델을(를) 로딩중입니다."));
 	Engine::CUBE cube{ _float2(64.f, 32.f), _float3(16.f, 16.f, 16.f), _float2(0.f, 0.f) };
 	/* For.Prototype_Component_VIBuffer_CubeInstance */
@@ -745,7 +749,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 
 #pragma region 좀비 텍스처, 모델, 원형객체
-	Sleep(1000);
+	//Sleep(1000);
 	//텍스처
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Zombi"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Zombi/zombie.png"), 1))))
@@ -789,7 +793,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 #pragma endregion
 
 #pragma region 워든 텍스쳐 모델 원형객체
-	Sleep(1000);
+	//Sleep(1000);
 	//텍스처
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_Texture_Warden"),
 		CTexture::Create(m_pGraphic_Device, TEXT("../Bin/Resources/Model_Texture/Warden/warden.png"), 1))))
@@ -797,7 +801,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 	m_loadeCount++;
 
 	// 모델
-	Sleep(1000);
+	//Sleep(1000);
 	/* For.Prototype_Component_VIBuffer_Warden */
 	cube = { _float2(128.f, 128.f), _float3(16.f, 16.f, 10.f), _float2(0.f, 32.f) };
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_Component_VIBuffer_Warden_Head"),
@@ -869,11 +873,11 @@ HRESULT CLoader::Loading_For_YUPlay()
 	m_loadeCount++;
 
 	lstrcpy(m_szLoadingText, TEXT("사운드을(를) 로딩중입니다."));
-	Sleep(1000);
+	//Sleep(1000);
 
 
 	lstrcpy(m_szLoadingText, TEXT("원형객체을(를) 로딩중입니다."));
-	Sleep(1000);
+	//Sleep(1000);
 	/* For.Prototype_GameObject_Crosshair */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Crosshair"),
 		CCrosshair::Create(m_pGraphic_Device))))
@@ -1021,7 +1025,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 		return E_FAIL;
 	m_loadeCount++;
 	/*================================================================================================*/
-	Sleep(1000);
+	//Sleep(1000);
 
 	/* For.Prototype_GameObject_Furnace */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Furnace"),
@@ -1163,7 +1167,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 
 	//===============================================================================================
 		// 스티브 게임 오브젝트
-	Sleep(1000);
+	//Sleep(1000);
 	/* For.Prototype_GameObject_Steve */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Steve"),
 		CSteve::Create(m_pGraphic_Device))))
@@ -1178,7 +1182,7 @@ HRESULT CLoader::Loading_For_YUPlay()
 	m_loadeCount++;
 
 	//==================================<스티브 오른손 물건임>================================================
-	Sleep(1000);
+	//Sleep(1000);
 	/* For.Prototype_GameObject_Rect_Model */
 	if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_YU, TEXT("Prototype_GameObject_Rect_Model"),
 		CRect_Model::Create(m_pGraphic_Device))))
@@ -1669,6 +1673,8 @@ HRESULT CLoader::Loading_For_TOOL()
 
 HRESULT CLoader::Loading_For_Ending()
 {
+
+	m_isFinished = true;
 	return S_OK;
 }
 

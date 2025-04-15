@@ -132,7 +132,9 @@ void CLevel_YU::Update(_float fTimeDelta)
 {
 	ftime += fTimeDelta;
 	m_iFPS++;
-
+	 
+	CUI_Mgr::Get_Instance()->Update(fTimeDelta);
+	CUI_Mgr::Get_Instance()->Late_Update(fTimeDelta);
 
 	//if (m_pGameInstance->Key_Down(VK_ADD))
 	//{
@@ -147,7 +149,7 @@ void CLevel_YU::Update(_float fTimeDelta)
 	if (m_pGameInstance->Key_Down(VK_ADD))
 	{
 		if (m_pGameInstance->Change_Level(LEVEL_LOADING,
-			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_END)))
+			CLevel_Loading::Create(m_pGraphic_Device, LEVEL_ENDING)))
 			return;
 	}
 }
@@ -782,4 +784,7 @@ CLevel_YU* CLevel_YU::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
 void CLevel_YU::Free()
 {
 	__super::Free();
+
+	//CUI_Mgr::Get_Instance()->Free();
+	//CUI_Mgr::Get_Instance()->Destroy_Instance();
 }

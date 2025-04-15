@@ -126,8 +126,8 @@ void CMainApp::Update(_float fTimeDelta)
 {
 	m_pGameInstance->Update_Engine(fTimeDelta);
 
-	CUI_Mgr::Get_Instance()->Update(fTimeDelta);
-	CUI_Mgr::Get_Instance()->Late_Update(fTimeDelta);
+	//CUI_Mgr::Get_Instance()->Update(fTimeDelta);
+	//CUI_Mgr::Get_Instance()->Late_Update(fTimeDelta);
 }
 
 HRESULT CMainApp::Render()
