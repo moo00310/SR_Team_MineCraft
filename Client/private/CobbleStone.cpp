@@ -88,19 +88,19 @@ HRESULT CCobbleStone::Play_Destroy_Effect(const _float3& vPos)
     );
 
     if (!isCreeperBoom)   
-        m_pGameInstance->Play_Sound(TEXT("Gravel_dig1"), SOUND_BLOCK_DIG, this, 0.5f, vPos);
+        m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 0.5f, vPos);
 
     return S_OK;
 }
 
 void CCobbleStone::PlaySound_Hit(_float3 vPos)
 {
-    m_pGameInstance->Play_Sound(TEXT("Gravel_hit1"), SOUND_BLOCK_HIT, this, 0.5f, vPos);
+    m_pGameInstance->Play_Sound(TEXT("Stone_hit1"), SOUND_BLOCK_HIT, this, 0.5f, vPos);
 }
 
 void CCobbleStone::Play_Create_Sound(_float3 vPos)
 {
-    m_pGameInstance->Play_Sound(TEXT("Gravel_dig1"), SOUND_BLOCK_DIG, this, 1.f, vPos);
+    m_pGameInstance->Play_Sound(TEXT("Stone_dig2"), SOUND_BLOCK_DIG, this, 1.f, vPos);
 }
 
 HRESULT CCobbleStone::Ready_Components()
