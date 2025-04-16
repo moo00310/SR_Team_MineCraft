@@ -1252,7 +1252,6 @@ HRESULT CLoader::Loading_For_YUPlay()
 		CBossUI::Create(m_pGraphic_Device))))
 		return E_FAIL;
 
-	m_loadeCount++;
 
 	lstrcpy(m_szLoadingText, TEXT("로딩이 완료되었습니다."));
 
