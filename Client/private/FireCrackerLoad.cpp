@@ -77,6 +77,8 @@ void CFireCrackerLoad::Update(_float fTimeDelta)
 			m_pTransformCom
 		);
 
+		m_pGameInstance->Play_Sound(m_szSound, m_kSoundType, this, 1.f, m_pTransformCom->Get_State(CTransform::STATE_POSITION));
+
 		fCurrentCount = 0.f;
 		SetActive(false);
 		return;
@@ -108,6 +110,12 @@ void CFireCrackerLoad::OnPushPool()
 CTransform* CFireCrackerLoad::GetTransform() const
 {
 	return m_pTransformCom;
+}
+
+void CFireCrackerLoad::SetSound(_wstring _soundName, SOUND_TYPE _type)
+{
+	m_szSound = _soundName;
+	m_kSoundType = _type;
 }
 
 HRESULT CFireCrackerLoad::Ready_Components()

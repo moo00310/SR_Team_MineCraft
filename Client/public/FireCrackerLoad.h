@@ -27,14 +27,17 @@ public:
 	virtual void OnPushPool() override;
 
 	CTransform* GetTransform() const;
+	void SetSound(_wstring _soundName, SOUND_TYPE _type);
 
 private:
-	HRESULT Ready_Components();
+	HRESULT Ready_Components();	
 
 private:
 	CTransform* m_pTransformCom = { nullptr };
 	_float fEndCount = { 0.5f };
 	_float fCurrentCount = { 0.f };
+	_wstring m_szSound;
+	SOUND_TYPE m_kSoundType;
 };
 
 END

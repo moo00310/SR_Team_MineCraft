@@ -33,6 +33,12 @@ namespace Client
 
 		SOUND_ITEM,
 		SOUND_WEED,
+
+		SOUND_FIRE1,	// 폭죽
+		SOUND_FIRE2,
+		SOUND_FIRE3,
+		SOUND_FIRE_LOAD,
+
 		SOUND_END
 	};
 

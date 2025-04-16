@@ -272,18 +272,61 @@ void CMissionControl::Update(_float fTimeDelta)
     if (m_bIsFireCracker == true && m_fFireTime <= 0.f)
     {
         // 화려한 폭죽이 나를 감싼Dㅏ....
-        CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_YU,	// 가져올 씬
-            PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// 가져올 프로토타입.
-            LEVEL_YU,	// 적용 씬.
-            LAYER_PARTICLE);
 
-        _float3 pos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+        // 1번째 폭죽.
+        {
+            CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_YU,	// 가져올 씬
+                PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// 가져올 프로토타입.
+                LEVEL_YU,	// 적용 씬.
+                LAYER_PARTICLE);
 
-        pos.z += GetRandomFloat(-2.f, 2.f);
-        pos.y += 2.f;
-        pos.x += GetRandomFloat(-2.f, 2.f);
+            obj->SetSound(TEXT("blast1"), SOUND_FIRE1);
 
-        obj->GetTransform()->Set_State(CTransform::STATE_POSITION, pos);
+            _float3 pos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+            pos.z += GetRandomFloat(-2.f, 2.f);
+            pos.y += 2.f;
+            pos.x += GetRandomFloat(-2.f, 2.f);
+
+            obj->GetTransform()->Set_State(CTransform::STATE_POSITION, pos);            
+        }        
+
+        // 2번째 폭죽.
+        {
+            CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_YU,	// 가져올 씬
+                PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// 가져올 프로토타입.
+                LEVEL_YU,	// 적용 씬.
+                LAYER_PARTICLE);
+
+            obj->SetSound(TEXT("blast2"), SOUND_FIRE2);
+
+            _float3 pos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+            pos.z += GetRandomFloat(-2.f, 2.f);
+            pos.y += 2.f;
+            pos.x += GetRandomFloat(-2.f, 2.f);
+
+            obj->GetTransform()->Set_State(CTransform::STATE_POSITION, pos);
+        }
+
+        // 3번째 폭죽.
+        {
+            CFireCrackerLoad* obj = (CFireCrackerLoad*)m_pGameInstance->PushPool(LEVEL_YU,	// 가져올 씬
+                PROTOTYPE_GAMEOBJECT_CRACKER_LOAD,	// 가져올 프로토타입.
+                LEVEL_YU,	// 적용 씬.
+                LAYER_PARTICLE);
+
+            obj->SetSound(TEXT("blast3"), SOUND_FIRE3);
+
+            _float3 pos = m_pPlayer->Get_Transform()->Get_State(CTransform::STATE_POSITION);
+
+            pos.z += GetRandomFloat(-2.f, 2.f);
+            pos.y += 2.f;
+            pos.x += GetRandomFloat(-2.f, 2.f);
+
+            obj->GetTransform()->Set_State(CTransform::STATE_POSITION, pos);
+            m_pGameInstance->Play_Sound(TEXT("launch"), SOUND_FIRE_LOAD, obj, 1.f, obj->GetTransform()->Get_State(CTransform::STATE_POSITION));
+        }
 
         m_fFireTime = m_fFireCoolTime;
     }
