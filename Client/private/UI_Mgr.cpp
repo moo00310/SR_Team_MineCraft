@@ -270,6 +270,7 @@ void CUI_Mgr::PlayerHunger_StarvationDamage(_float _fTimeDelta)
 
 		if (fStarveTimer >= 4.0f)
 		{
+			if (pSteve->Get_Hp() <= 10) return;
 			pSteve->Add_Hp(-5);
 			SetHP();
 

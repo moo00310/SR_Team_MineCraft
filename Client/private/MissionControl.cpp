@@ -24,8 +24,6 @@ HRESULT CMissionControl::Initialize(void* pArg)
     InitMissions2();
     InitMissions3();
 
-    m_currentStage = DAY3;
-
     if (CSun* _sun = dynamic_cast<CSun*>(m_pGameInstance->Get_LastObject(LEVEL_YU, TEXT("Layer_Sun")))) {
         m_sun = _sun;
     }
@@ -45,27 +43,27 @@ void CMissionControl::InitMissions1()
 {
     // 무엇을, 어떻게 하냐, 지금 한 값, 완료되는 값  
 
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"wood", L"나무 5개 벌목하기",0, 1}
-    //});
-    //
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"craftingtable", L"제작대 만들기",0,1}
-    //});
-    //
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"stonesword", L"돌 칼 만들기",0,1},
-    //    { L"stoneaxe", L"돌 도끼 만들기",0,1},
-    //    { L"stonepickaxe", L"돌 곡괭이 만들기",0,1}
-    //});
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"wood", L"나무 5개 벌목하기",0, 5}
+    });
+    
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"craftingtable", L"제작대 만들기",0,1}
+    });
+    
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"stonesword", L"돌 칼 만들기",0,1},
+        { L"stoneaxe", L"돌 도끼 만들기",0,1},
+        { L"stonepickaxe", L"돌 곡괭이 만들기",0,1}
+    });
 
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"apple", L"사과 먹고 배고픔 채우기",0,1}
-    //});
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"apple", L"사과 먹고 배고픔 채우기",0,1}
+    });
 
-    //m_Round1.emplace_back(std::vector<missionDetail>{
-    //    { L"block", L"블럭 5개 설치",0,1}
-    //});
+    m_Round1.emplace_back(std::vector<missionDetail>{
+        { L"block", L"블럭 5개 설치",0,5}
+    });
 
     // 웨이브 미션 1 : 좀비 5마리 처치
     m_Round1Wave.emplace_back(std::vector<missionDetail>{
@@ -82,7 +80,7 @@ void CMissionControl::InitMissions2()
 
     m_Round2.emplace_back(std::vector<missionDetail>{
         { L"furnace", L"화로 만들기", 0, 1},
-        { L"burniron", L"철 굽기",0,2}
+        { L"burniron", L"철 굽기",0, 2}
 
     });
 
@@ -96,15 +94,15 @@ void CMissionControl::InitMissions2()
 
     // 웨이브 미션 1: 좀비 7마리, 크리퍼 3마리 처치
     m_Round2Wave.emplace_back(std::vector<missionDetail>{
-        { L"zombi", L"좀비 7마리 처치",0, 1},
-        { L"creeper",  L"크리퍼 3마리 처치",0,1}
+        { L"zombi", L"좀비 7마리 처치",0, 7},
+        { L"creeper",  L"크리퍼 3마리 처치",0,3}
     });
 }
 
 void CMissionControl::InitMissions3()
 {
     m_Round3.emplace_back(std::vector<missionDetail>{
-        { L"block", L"새로운 무기 만들기", 0, 1}
+        { L"newsword", L"새로운 무기 만들기", 0, 1}
     });
 
    // 웨이브 미션 1: 보스 몬스터 처치 & 생존
