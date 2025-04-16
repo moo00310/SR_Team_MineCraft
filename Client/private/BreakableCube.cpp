@@ -97,11 +97,12 @@ HRESULT CBreakableCube::Render()
             );
     }
 
-    if (m_Warden != nullptr)
+    if (m_Warden != nullptr && !m_Warden->Get_isDestroy()) //씬 넘어갈때 오류나서 !m_Warden->Get_isDestroy() 추가했으요(영웅)
     {
         _float4 pos = (_float4)m_Warden->Get_Transform()->Get_State(CTransform::STATE_POSITION);
         m_pTransformCom->Bind_Resource_WardenPosition(m_pShaderCom, &pos);
     }    
+
     m_pTextureCom->Bind_Resource(m_pShaderCom, "g_Texture", 1);
 
     if (g_bIsScan == true)

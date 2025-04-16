@@ -45,6 +45,8 @@ void CEnding_Text::Late_Update(_float fTimeDelta)
 
 HRESULT CEnding_Text::Render()
 {
+	__super::Begin();
+
 	// 특정 위치
 	_int iX = static_cast<_int>(m_fX); // 원하는 X 위치
 	_int iY = static_cast<_int>(m_fY); // 원하는 Y 위치
@@ -72,6 +74,8 @@ HRESULT CEnding_Text::Render()
 		DT_CENTER | DT_VCENTER | DT_SINGLELINE,
 		D3DCOLOR_ARGB(255, 255, 255, 255)
 	);
+
+	__super::End();
 
 	return S_OK;
 }

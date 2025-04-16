@@ -28,7 +28,7 @@ private:
 	_float m_fTime{ 0.f };
 private:
 	CTexture* m_pTextureCom = { nullptr };
-	CTransform* m_pTransformCom = { nullptr };
+	//CTransform* m_pTransformCom = { nullptr };
 	CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
 private:
