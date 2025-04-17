@@ -71,19 +71,19 @@ HRESULT CLevel_Ending::Ready_Layer_BackGround(const _wstring& strLayerTag)
 void CLevel_Ending::Ready_EndingEvents()
 {
 	m_EndingEvents.push_back({ 0.f,		L"임무결 (팀장)" });
-	m_EndingEvents.push_back({ 1.f,		L"- 모델링, 애니메이션" });
+	m_EndingEvents.push_back({ 1.f,		L"- 모델링, 애니메이션, 몬스터AI" });
 
 	m_EndingEvents.push_back({ 3.f,		L"최유경" });
-	m_EndingEvents.push_back({ 4.f,		L"- 맵" });
+	m_EndingEvents.push_back({ 4.f,		L"- 맵, 블럭 최적화" });
 
 	m_EndingEvents.push_back({ 6.f,		L"장현우" });
-	m_EndingEvents.push_back({ 7.f,		L"- UI" });
+	m_EndingEvents.push_back({ 7.f,		L"- UI, 크래프팅" });
 
 	m_EndingEvents.push_back({ 9.f,		L"한영웅" });
-	m_EndingEvents.push_back({ 10.f,	L"- 프레임워크" });
+	m_EndingEvents.push_back({ 10.f,	L"- 프레임워크, 충돌 최적화" });
 
 	m_EndingEvents.push_back({ 12.f,    L"김동혁" });
-	m_EndingEvents.push_back({ 13.f,	L"- 파티클시스템" });
+	m_EndingEvents.push_back({ 13.f,	L"- FX, 파티클시스템" });
 }
 
 CLevel_Ending* CLevel_Ending::Create(LPDIRECT3DDEVICE9 pGraphic_Device)
